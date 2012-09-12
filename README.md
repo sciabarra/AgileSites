@@ -1,12 +1,8 @@
-scalawcs
-========
+# ScalaWCS
 
 Scala development framework for Oracle WebCenter Sites
 
-
-# hell
-
-ssss
+Check [[documentation|http://github.com/sciabarra/scalawcs/wiki]].
 
 
 
