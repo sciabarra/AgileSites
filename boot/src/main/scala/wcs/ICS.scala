@@ -482,5 +482,11 @@ class ICS(val ics: COM.FutureTense.Interfaces.ICS) {
 	 * 
 	 * def xmlDebug() { return ics.xmlDebug(); }
 	 */
+  
+  def apply(name: String) = {
+    //wcs.tag.Asset.load();
+    wcs.tag.Asset.load(GetVar("c"), GetVar("cid"))()(ics);   
+   
+  }
 
 }
