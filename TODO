@@ -1,3 +1,2 @@
-- remove the distinction betweel development and production deploy (packaging directly in place)
-
-
+- if possible remove the distinction between development and production deploy 
+(for example packaging directly in place)

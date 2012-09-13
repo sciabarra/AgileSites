@@ -4,24 +4,20 @@ import sys.process._
 
 object ScalaWcsBuild extends Build {
 
-  val _scalaVersion = "2.9.2"
-  val _organization = "com.sciabarra"
-
   lazy val wcsHome = SettingKey[String]("wcs-home", "WCS Home Directory")
   lazy val wcsWebapp = SettingKey[String]("wcs-webapp", "WCS Webapp CS Directory")
-  lazy val wcsDeploy = InputKey[Unit]("wcs-deploy", "WCS Deploy")
-  
-
-  lazy val _unmanagedBase = unmanagedBase <<= wcsWebapp { base => file(base) / "WEB-INF" / "lib" }
+  lazy val wcsSetup = InputKey[Unit]("wcs-setup", "WCS Deploy")
 
   val _wcsHome = wcsHome := "sites"
   val _wcsWebapp = wcsWebapp := "cs"
 
-  val _wcsDeploy = wcsDeploy <<= inputTask {
+  val _unmanagedBase = unmanagedBase <<= wcsWebapp { base => file(base) / "WEB-INF" / "lib" }
+
+  val _wcsSetup = wcsSetup <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
       (argTask, managedClasspath in Compile, Keys.`package` in Compile,
-        classDirectory in Compile, wcsHome, wcsWebapp) map {
-          (args, classpath, jar, classes, home, webapp) =>
+        classDirectory in Compile, wcsHome, wcsWebapp, publishLocal) map {
+          (args, classpath, jar, classes, home, webapp, _) =>
 
             val destlib = file(webapp) / "WEB-INF" / "lib"
             val jars = classpath.filter(!_.data.isDirectory).map(_.data)
@@ -35,10 +31,10 @@ object ScalaWcsBuild extends Build {
             // copy jars to wcs
             //println("\nCopying to WCS:")
             val copied = for (file <- jars) yield {
-              val src = destlib / file.getName
-              IO.copyFile(file, src)
-              println(">>> " + file)
-              src.getAbsolutePath
+              val tgt = destlib / file.getName
+              IO.copyFile(file, tgt)
+              println(">>> " + tgt)
+              tgt.getAbsolutePath
             }
 
             val pw = new java.io.PrintWriter(destfile)
@@ -66,52 +62,48 @@ object ScalaWcsBuild extends Build {
         //println(dstDir)
         val tlds = file(srcDir) / "WEB-INF" / "futuretense_cs"
 
-        println(tlds)
-
         val l = for {
           tld <- tlds.listFiles
           if tld.getName.endsWith(".tld")
-        } yield {
-          //println(tld)
           val src = tld.getAbsolutePath
           val cls = Tld2Tag.tld2class(src)
-          val dst = dstDir / cls + ".scala"
-          //println("====\n" + dst)
+          val dst = file(dstDir / cls + ".scala")
+          if !dst.exists
+        } yield {
           print(cls + " ")
           val body = Tld2Tag(src)
-          val dstFile = file(dst)
-          IO.write(dstFile, body)
-          dstFile
+          IO.write(dst, body)
+          dst
         }
         l.toSeq
     }
 
-  override lazy val settings = super.settings ++
-    Seq(wcsHome := "sites", wcsWebapp := "cs")
-
-  lazy val boot: Project = Project(
-    id = "scalawcs-boot",
-    base = file("boot"),
+  lazy val setup: Project = Project(
+    id = "setup",
+    base = file("setup"),
     settings = Defaults.defaultSettings ++ Seq(
-      name := "ScalaWCS-boot",
-      organization := "com.sciabarra",
-      version := "0.1",
+      scalaVersion := "2.9.1",
+      organization := "org.scalawcs",
+      name := "scalawcs-setup",
+      version := "0.2",
       libraryDependencies ++= Seq(
-        "org.apache.tomcat" % "servlet-api" % "6.0.32",
-        "commons-logging" % "commons-logging" % "1.1.1"),
-      scalaVersion := "2.9.2", _wcsWebapp, _unmanagedBase, _tagGenerator))
+        //"org.apache.tomcat" % "servlet-api" % "6.0.32",
+        //"commons-logging" % "commons-logging" % "1.1.1",
+        "org.specs2" %% "specs2" % "1.12.1"),
+      _unmanagedBase,
+      _tagGenerator))
 
   lazy val root: Project = Project(
-    id = "scalawcs",
+    id = "root",
     base = file("."),
     settings = Defaults.defaultSettings ++ Seq(
-      name := "ScalaWCS",
-      organization := "com.sciabarra",
-      version := "0.1",
-      scalaVersion := "2.9.2",
+      scalaVersion := "2.9.1",
+      organization := "org.scalawcs",
+      name := "scalawcs-app",
+      version := "0.2",
       libraryDependencies ++= Seq(
-        "com.sciabarra" %% "scalawcs-boot" % "0.1",
-        "org.apache.tomcat" % "servlet-api" % "6.0.32",
-        "commons-logging" % "commons-logging" % "1.1.1"),
-      _wcsHome, _wcsWebapp, _wcsDeploy, _unmanagedBase)) aggregate (boot)
+        "org.scalawcs" %% "scalawcs-setup" % "0.2",
+        "org.specs2" %% "specs2" % "1.12.1"),
+      _unmanagedBase,
+      _wcsSetup))
 }

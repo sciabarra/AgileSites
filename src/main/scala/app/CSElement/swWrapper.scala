@@ -10,3 +10,4 @@ class swWrapper extends Element {
 	<h2>Test</h2>
     <p>Salve.</p>
 }
+

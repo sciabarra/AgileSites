@@ -6,7 +6,7 @@ object Tld2Tag {
   def tld2class(s: String) = {
     val f = (new File(s)).getName
     val f1 = f.take(f.size - 4)
-    "%s%s".format(f1.charAt(0).toUpperCase, f1.substring(1))
+    "%s%s".format(f1.charAt(0).toUpper, f1.substring(1))
   }
 
   def preHead(s: String) = """package wcs.tag
