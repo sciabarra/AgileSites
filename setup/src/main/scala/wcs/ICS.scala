@@ -1,34 +1,70 @@
 package wcs
 
-import java.io.OutputStream;
-import java.security.Principal;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Map;
-import java.util.Vector;
+import java.io.OutputStream
+import java.security.Principal
+import java.util.Collection
+import java.util.Enumeration
+import java.util.Map
+import java.util.Vector
+import scala.collection.immutable
+import COM.FutureTense.Cache.Satellite
+import COM.FutureTense.ContentServer.PageData
+import COM.FutureTense.Interfaces.FTVAL
+import COM.FutureTense.Interfaces.FTValList
+import COM.FutureTense.Interfaces.IJSPObject
+import COM.FutureTense.Interfaces.IList
+import COM.FutureTense.Interfaces.IMIMENotifier
+import COM.FutureTense.Interfaces.IProperties
+import COM.FutureTense.Interfaces.ISearchEngine
+import COM.FutureTense.Interfaces.ISyncHash
+import COM.FutureTense.Interfaces.PastramiEngine
+import COM.FutureTense.Util.ftErrors
+import com.fatwire.cs.core.db.PreparedStmt
+import com.fatwire.cs.core.db.StatementParam
+import com.fatwire.cs.core.uri.Definition
+import org.eintr.loglady.Logging
 
-import COM.FutureTense.Cache.Satellite;
-import COM.FutureTense.ContentServer.PageData;
-import COM.FutureTense.Interfaces.FTVAL;
-import COM.FutureTense.Interfaces.FTValList;
-import COM.FutureTense.Interfaces.IJSPObject;
-import COM.FutureTense.Interfaces.IList;
-import COM.FutureTense.Interfaces.IMIMENotifier;
-import COM.FutureTense.Interfaces.IProperties;
-import COM.FutureTense.Interfaces.ISearchEngine;
-//import COM.FutureTense.Interfaces.IServlet;
-import COM.FutureTense.Interfaces.ISyncHash;
-//import COM.FutureTense.Interfaces.IURLDefinition;
-import COM.FutureTense.Interfaces.PastramiEngine;
-import COM.FutureTense.Util.ftErrors;
-//import COM.FutureTense.XML.Template.Seed;
+/**
+ * Scala Wrapper on the ICS interface
+ */
+class ICS(val ics: COM.FutureTense.Interfaces.ICS) extends Logging {
 
-import com.fatwire.cs.core.db.PreparedStmt;
-import com.fatwire.cs.core.db.StatementParam;
-import com.fatwire.cs.core.uri.Definition;
+  /**
+   * Return Some variable value if the variable is available or None if there is no such variable
+   */
+  def apply(s: String) = {
+    val v = ics.GetVar(s)
+    if (v == null)
+      None
+    else
+      Some(v)
+  }
 
-class ICS(val ics: COM.FutureTense.Interfaces.ICS) {
+  val voidList = List[immutable.Map[String, String]]()
 
+  /**
+   * Return WCS lists as  Seq of Maps
+   */
+  def list(s: String): Seq[immutable.Map[String, String]] = {
+        
+    val ls = ics.GetList(s)
+    if (ls == null)
+      return voidList
+   
+
+    val l = for (i <- 1 to ls.numRows) yield {
+      ls.moveTo(i)
+      val ll = for (j <- 1 to ls.numColumns) yield {
+        val name = ls.getColumnName(i)
+        val value = ls.getValue(name)
+        name -> value
+      }
+      ll.toMap
+    }
+    l.toSeq
+     }
+
+  // proxyed methods
   def AppEvent(arg0: String, arg1: String, arg2: String, arg3: FTValList) = ics.AppEvent(arg0, arg1, arg2, arg3)
 
   def BlobServer(arg0: FTValList, arg1: IMIMENotifier,
@@ -404,7 +440,7 @@ class ICS(val ics: COM.FutureTense.Interfaces.ICS) {
 
   def getIProperties() = ics.getIProperties();
 
-  /*
+    /*
 	 * def getIServlet() { return ics.getIServlet(); }
 	 */
 
@@ -422,6 +458,7 @@ class ICS(val ics: COM.FutureTense.Interfaces.ICS) {
 
   def getTrackingStatus(arg0: String, arg1: String) = ics.getTrackingStatus(arg0, arg1);
 
+  
   def getURL(arg0: Definition, arg1: String) = ics.getURL(arg0, arg1);
 
   /*
@@ -482,6 +519,5 @@ class ICS(val ics: COM.FutureTense.Interfaces.ICS) {
 	 * 
 	 * def xmlDebug() { return ics.xmlDebug(); }
 	 */
-   
 
 }

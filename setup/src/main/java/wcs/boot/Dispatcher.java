@@ -46,7 +46,7 @@ public class Dispatcher {
 			cid = ics.GetVar("eid");
 		}
 		if (cid == null)
-			return "wcs.ElementNotFound";
+			return "wcs.NotFound";
 
 		String obj = gen("obj");
 		String name = gen("name");

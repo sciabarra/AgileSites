@@ -1,12 +1,13 @@
 *.class
 *.log
+.history
+.DS_Store
+.cache
+.classpath
+.project
+.settings/
 # sbt specific
-dist/*
 target/
-lib_managed/
-src_managed/
+tags/
 project/boot/
 project/plugins/project/
-# Scala-IDE specific
-.scala_dependencies.classpath
-.cache

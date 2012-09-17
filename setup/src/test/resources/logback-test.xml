@@ -1,0 +1,25 @@
+<configuration>
+    
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender" >
+        <file>scalawcs.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder" >
+            <pattern>*** %d{HH:mm:ss.SSS} %level %logger%n%msg%n</pattern>
+        </encoder>  
+    </appender>
+    
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{ss.SSS} [%-5level:%logger{0}] %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	
+    <root level="debug" >
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </root>
+    
+    <logger name="wcs.test.StubIList" level="info"/>
+    <logger name="wcs.test.StubICS" level="trace"/>
+    
+</configuration>
