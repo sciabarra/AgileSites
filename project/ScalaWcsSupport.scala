@@ -9,17 +9,10 @@ object ScalaWcsSupport {
   lazy val wcsCsdtJar = SettingKey[String]("wcs-csdt-jar", "WCS CSDT Jar")
 
   lazy val wcsSite = SettingKey[String]("wcs-site", "WCS Site for site")
-  lazy val wcsUser = SettingKey[String]("wcs-site", "WCS Site for user")
-  lazy val wcsPassword = SettingKey[String]("wcs-site", "WCS Site password")
+  lazy val wcsUser = SettingKey[String]("wcs-user", "WCS Site for user")
+  lazy val wcsPassword = SettingKey[String]("wcs-password", "WCS Site password")
 
   lazy val wcsSetup = InputKey[Unit]("wcs-setup", "WCS Setup")
-
-  // configurations default values
-  val wcsHomeTask = wcsHome := "sites"
-  val wcsWebappTask = wcsWebapp := "cs"
-
-  // jars to include when performing a setup
-  val includeFilterSetup = "scala-*" || "scalawcs-*"
 
   // generate tag access classes from tld files
   val tagGeneratorTask = (sourceGenerators in Compile) <+=
@@ -48,11 +41,17 @@ object ScalaWcsSupport {
   // setup task
   val wcsSetupTask = wcsSetup <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
-      (argTask, managedClasspath in Compile, Keys.`package` in Compile,
-        classDirectory in Compile, wcsHome, wcsWebapp,
-        publishLocal in ScalaWcsBuild.setup, publishLocal in ScalaWcsBuild.tags) map {
-          (args, classpath, jar, classes, home, webapp, _, _) =>
+      (argTask,
+        publishLocal in ScalaWcsBuild.setup,
+        publishLocal in ScalaWcsBuild.tags,
+        managedClasspath in Compile,
+        Keys.`package` in Compile,
+        classDirectory in Compile,
+        wcsHome, wcsWebapp, wcsSite) map {
+          (args, _, _, classpath, jar, classes, home, webapp, site) =>
 
+            // jars to include when performing a setup
+            val includeFilterSetup = "scala-*" || "scalawcs-*"
             val destlib = file(webapp) / "WEB-INF" / "lib"
             val jars = classpath.files filter (includeFilterSetup accept _)
 
@@ -65,22 +64,41 @@ object ScalaWcsSupport {
             }
 
             // write an appropriate property file
+
+            var scalawcsJar =
+              if (args.indexOf("devel") != -1) {
+                // write a property to find the package jar build by sbt
+                println("\nConfigured in Development Mode\nuse ~package to compile\njar in " + jar)
+                jar.toString
+              } else {
+                // directly locate the original sbt 
+                val destjar = file(home) / jar.getName
+                IO.copyFile(jar, destjar)
+                println(">>> " + destjar)
+                println("\nConfigured in Production Mode\njar in " + destjar)
+                destjar.toString
+              }
+
+            // write the property file in classpath
             val destfile = file(webapp) / "WEB-INF" / "classes" / "scalawcs.properties"
-            val develMode = args.indexOf("devel") != -1;
             val pw = new java.io.PrintWriter(destfile)
-            if (develMode) {
-              // write a property to find the package jar build by sbt
-              pw.println("scalawcs.jar=%s".format(jar.toString))
-              println("\nConfigured in Development Mode\nuse ~package to compile\njar in " + jar)
-            } else {
-              // directly locate the original sbt 
-              val destjar = file(home) / jar.getName
-              IO.copyFile(jar, destjar)
-              println(">>> " + destjar)
-              pw.println("scalawcs.jar=%s".format(destjar.toString))
-              println("\nConfigured in Production Mode\njar in " + destjar)
-            }
+            pw.println("scalawcs.jar=%s".format(scalawcsJar))
             pw.close
+
+            // create csdt export file
+            file("export").mkdir
+            (file("export") / "envision").mkdir
+            (file("export") / "envision" / site).mkdir
+
+            // write property file
+            val configFile = file(home) / "futuretense.ini"
+            val config = new java.util.Properties
+            config.load(new java.io.FileReader(configFile))
+            config.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
+            config.setProperty("scalawcs.jar", scalawcsJar)
+            IO.copyFile(configFile, file(configFile.getAbsolutePath + ".orig." + System.currentTimeMillis))
+            config.store(new java.io.FileWriter(configFile), "updated by ScalaWCS setup")
+
             println("*** Please restart WCS ***")
         }
   }
