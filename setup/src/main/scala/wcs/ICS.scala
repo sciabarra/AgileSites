@@ -46,23 +46,25 @@ class ICS(val ics: COM.FutureTense.Interfaces.ICS) extends Logging {
    * Return WCS lists as  Seq of Maps
    */
   def list(s: String): Seq[immutable.Map[String, String]] = {
-        
+
     val ls = ics.GetList(s)
     if (ls == null)
       return voidList
-   
 
+    //log.trace("numRows=%d", ls.numRows)
+    //log.trace("numColumns=%d", ls.numColumns)
+    
     val l = for (i <- 1 to ls.numRows) yield {
       ls.moveTo(i)
       val ll = for (j <- 1 to ls.numColumns) yield {
-        val name = ls.getColumnName(i)
+        val name = ls.getColumnName(j)
         val value = ls.getValue(name)
         name -> value
       }
       ll.toMap
     }
     l.toSeq
-     }
+  }
 
   // proxyed methods
   def AppEvent(arg0: String, arg1: String, arg2: String, arg3: FTValList) = ics.AppEvent(arg0, arg1, arg2, arg3)
@@ -440,7 +442,7 @@ class ICS(val ics: COM.FutureTense.Interfaces.ICS) extends Logging {
 
   def getIProperties() = ics.getIProperties();
 
-    /*
+  /*
 	 * def getIServlet() { return ics.getIServlet(); }
 	 */
 
@@ -458,7 +460,6 @@ class ICS(val ics: COM.FutureTense.Interfaces.ICS) extends Logging {
 
   def getTrackingStatus(arg0: String, arg1: String) = ics.getTrackingStatus(arg0, arg1);
 
-  
   def getURL(arg0: Definition, arg1: String) = ics.getURL(arg0, arg1);
 
   /*

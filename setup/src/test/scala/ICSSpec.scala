@@ -1,35 +1,31 @@
 import org.specs2.mutable._
+import wcs.test.StubIList
 import wcs.test.StubICS
 import wcs.ICS
+import org.eintr.loglady.Logging
 
-class ICSSpec extends Specification {
-   
-  val ics = new StubICS(Map("a" -> "1")) 
-  ics.addList("l",  Map("a" -> List("1","2","3"), "b"-> List("10","20","30")))
-  ics.addList("ll",  Map("a" -> List("1","2","3"), "b"-> List("10","20")))
+class ICSSpec extends Specification with Logging {
+
+  val ics = new StubICS(Map("a" -> "1", "b" -> "2"))
+
+  ics.addList("l1", Map("v" -> List("hello")))
+  ics.addList("l3", Map("w" -> List("1", "2", "3")))
+  ics.addList("l22", Map("x" -> List("10", "20"), "y" -> List("100", "200")))
+
+  val x: ICS = new ICS(ics)
   
-  val x = new ICS(ics)
-
-  "ICS.apply should" in {
-
-    "return None for a non existent variable " in {
-      x("b") must_== None
-    }
-
-    "return Some thing for existent variables" in {
-      x("a") must_== Some("1")
-    }
+  override def is = 
+    "StubICSSpec should"											^
+  																	p^
+    "x(a).get=1"													! { x("a").get must_== "1" } ^
+    "x(b).get=2"													! { x("b").get must_== "2" } ^
+    "x(c)=None"														! { x("c") must_== None} ^
+    "x.list(l1) size=1"											    ! { x.list("l1").size must_== 1 } ^
+    "x.list(l1) width=1"											! { x.list("l1")(0).keys.size must_== 1 } ^
+    "x.list(l22) size=2"											! { x.list("l22").size must_== 2 } ^
+    "x.list(l22) width=2"											! { log.trace(x.list("l22").toString); x.list("l22")(0).keys.size must_== 2 } ^
+    "x.list(l3).sum=6"												! { x.list("l3").map(_("w").toInt).sum must_== 6} ^
+    "x.list(l22)=[[10,100],[20,200]]"								! { x.list("l22") must_== List(Map("x"->"10", "y"->"100"),Map("x"->"20", "y"->"200")) }
     
-  }
-  
-  "ICS.list should" in {
-    "return a void list for non existent values" in {
-      x.list("n").size == 0
-    }
     
-    "return a  list of maps for existent values" in {
-      x.list("l").size == 3
-    }
-    
-  }
 }

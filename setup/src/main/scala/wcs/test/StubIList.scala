@@ -43,8 +43,8 @@ class StubIList(val name: String, val listMap: Map[String, List[String]]) extend
   def flush(): Unit = {}
 
   def getColumnName(arg0: Int): String = {
-    if (arg0 > 0 && arg0 < _numColumns)
-      columns(arg0)
+    if (arg0 > 0 && arg0 <= _numColumns)
+      columns(arg0-1)
     else
       null
   }

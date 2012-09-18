@@ -19,7 +19,5 @@
         <appender-ref ref="FILE" />
     </root>
     
-    <logger name="wcs.test.StubIList" level="info"/>
-    <logger name="wcs.test.StubICS" level="trace"/>
     
 </configuration>
