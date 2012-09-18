@@ -8,6 +8,8 @@ object ScalaWcsBuild extends Build {
   lazy val wcsHome = SettingKey[String]("wcs-home", "WCS Home Directory")
   lazy val wcsWebapp = SettingKey[String]("wcs-webapp", "WCS Webapp CS Directory")
   lazy val wcsSetup = InputKey[Unit]("wcs-setup", "WCS Deploy")
+  lazy val wcsImport = InputKey[Unit]("wcs-import", "WCS Import")
+  lazy val wcsExport = InputKey[Unit]("wcs-export", "WCS Export")
 
   // parameters
   val commonDependencies = Seq(
@@ -26,14 +28,68 @@ object ScalaWcsBuild extends Build {
   val _wcsWebapp = wcsWebapp := "cs"
   val _unmanagedBase = unmanagedBase in Compile <<= wcsWebapp { base => file(base) / "WEB-INF" / "lib" }
 
+  // generate tag access classes from tld files
+  val _tagGenerator = (sourceGenerators in Compile) <+=
+    (sourceManaged in Compile, wcsWebapp) map {
+      (dstDir, srcDir) =>
+        //println(dstDir)
+        val tlds = file(srcDir) / "WEB-INF" / "futuretense_cs"
+
+        val l = for {
+          tld <- tlds.listFiles
+          if tld.getName.endsWith(".tld")
+          val src = tld.getAbsolutePath
+          val cls = Tld2Tag.tld2class(src)
+          val dst = file(dstDir / cls + ".scala")
+        } yield {
+          if (!dst.exists) {
+            print(cls + " ")
+            val body = Tld2Tag(src)
+            IO.write(dst, body)
+          }
+          dst
+        }
+        l.toSeq
+    }
+
+  // projects
+  lazy val setup: Project = Project(
+    id = "setup",
+    base = file("setup"),
+    settings = Defaults.defaultSettings ++ Seq(
+      scalaVersion := "2.9.1",
+      organization := "org.scalawcs",
+      name := "scalawcs-setup",
+      version := "0.2",
+      libraryDependencies ++= commonDependencies ++ Seq(
+        "commons-logging" % "commons-logging" % "1.1.1",
+        "javax.servlet" % "servlet-api" % "2.5"),
+      _unmanagedBase,
+      _includeFiltersUnmanagedJars))
+
+  lazy val tags: Project = Project(
+    id = "tags",
+    base = file("tags"),
+    settings = Defaults.defaultSettings ++ Seq(
+      scalaVersion := "2.9.1",
+      organization := "org.scalawcs",
+      name := "scalawcs-tags",
+      version := "0.2",
+      libraryDependencies ++= commonDependencies ++ Seq(
+        "commons-logging" % "commons-logging" % "1.1.1",
+        "javax.servlet" % "servlet-api" % "2.5"),
+      _unmanagedBase,
+      _includeFiltersUnmanagedJars,
+      _tagGenerator))
+
   val _wcsSetup = wcsSetup <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
       (argTask, managedClasspath in Compile, Keys.`package` in Compile,
-        classDirectory in Compile, wcsHome, wcsWebapp, publishLocal) map {
-          (args, classpath, jar, classes, home, webapp, _) =>
+        classDirectory in Compile, wcsHome, wcsWebapp, publishLocal in setup, publishLocal in tags) map {
+          (args, classpath, jar, classes, home, webapp, _, _) =>
 
-            val destlib = file(webapp) / "WEB-INF" / "lib"                    
-            val jars = classpath.files filter( _includeFilterSetup accept _)
+            val destlib = file(webapp) / "WEB-INF" / "lib"
+            val jars = classpath.files filter (_includeFilterSetup accept _)
 
             // copy jars to wcs
             val copied = for (file <- jars) yield {
@@ -64,60 +120,6 @@ object ScalaWcsBuild extends Build {
             println("*** Please restart WCS ***")
         }
   }
-
-  // generate tag access classes from tld files
-  val _tagGenerator = (sourceGenerators in Compile) <+=
-    (sourceManaged in Compile, wcsWebapp) map {
-      (dstDir, srcDir) =>
-        //println(dstDir)
-        val tlds = file(srcDir) / "WEB-INF" / "futuretense_cs"
-
-        val l = for {
-          tld <- tlds.listFiles
-          if tld.getName.endsWith(".tld")
-          val src = tld.getAbsolutePath
-          val cls = Tld2Tag.tld2class(src)
-          val dst = file(dstDir / cls + ".scala")
-          //if !dst.exists
-        } yield {
-          print(cls + " ")
-          val body = Tld2Tag(src)
-          IO.write(dst, body)
-          dst
-        }
-        l.toSeq
-    }
-
-  
-  // projects
-  lazy val setup: Project = Project(
-    id = "setup",
-    base = file("setup"),
-    settings = Defaults.defaultSettings ++ Seq(
-      scalaVersion := "2.9.1",
-      organization := "org.scalawcs",
-      name := "scalawcs-setup",
-      version := "0.2",
-      libraryDependencies ++= commonDependencies ++ Seq(
-        "commons-logging" % "commons-logging" % "1.1.1",
-        "javax.servlet" % "servlet-api" % "2.5"),
-      _unmanagedBase, 
-      _includeFiltersUnmanagedJars))
-
-  lazy val tags: Project = Project(
-    id = "tags",
-    base = file("tags"),
-    settings = Defaults.defaultSettings ++ Seq(
-      scalaVersion := "2.9.1",
-      organization := "org.scalawcs",
-      name := "scalawcs-tags",
-      version := "0.2",
-      libraryDependencies ++= commonDependencies ++ Seq(
-        "commons-logging" % "commons-logging" % "1.1.1",
-        "javax.servlet" % "servlet-api" % "2.5"),
-      _unmanagedBase,
-      _includeFiltersUnmanagedJars,
-      _tagGenerator))
 
   lazy val app: Project = Project(
     id = "app",
