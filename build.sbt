@@ -10,6 +10,9 @@ wcsCsdtJar in ThisBuild := "../ContentServer/11.1.1.6.0/csdt-client-1.2.jar"
 // site to import/export
 wcsSite in ThisBuild := "ScalaWCS"
 
+//url to content server
+wcsUrl in ThisBuild := "http://localhost:8380/cs/"
+
 // user to import/export
 wcsUser in ThisBuild := "fwadmin"
 

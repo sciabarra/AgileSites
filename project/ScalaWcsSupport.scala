@@ -6,13 +6,15 @@ object ScalaWcsSupport {
   // new settings
   lazy val wcsHome = SettingKey[String]("wcs-home", "WCS Home Directory")
   lazy val wcsWebapp = SettingKey[String]("wcs-webapp", "WCS Webapp CS Directory")
-  lazy val wcsCsdtJar = SettingKey[String]("wcs-csdt-jar", "WCS CSDT Jar")
+  lazy val wcsSetup = InputKey[Unit]("wcs-setup", "WCS Setup")
 
-  lazy val wcsSite = SettingKey[String]("wcs-site", "WCS Site for site")
   lazy val wcsUser = SettingKey[String]("wcs-user", "WCS Site for user")
   lazy val wcsPassword = SettingKey[String]("wcs-password", "WCS Site password")
+  lazy val wcsUrl = SettingKey[String]("wcs-url", "WCS URL")
+  lazy val wcsSite = SettingKey[String]("wcs-site", "WCS Site for site")
 
-  lazy val wcsSetup = InputKey[Unit]("wcs-setup", "WCS Setup")
+  lazy val wcsCsdtJar = SettingKey[String]("wcs-csdt-jar", "WCS CSDT Jar")
+  lazy val wcsCsdt = InputKey[Unit]("wcs-csdt", "WCS CSDT")
 
   // generate tag access classes from tld files
   val tagGeneratorTask = (sourceGenerators in Compile) <+=
@@ -38,6 +40,25 @@ object ScalaWcsSupport {
         l.toSeq
     }
 
+  val wcsCsdtTask = wcsCsdt <<= inputTask {
+    (argTask: TaskKey[Seq[String]]) =>
+      (argTask, wcsUrl, wcsSite, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
+        (args, url, site, user, password, classpath, s, runner) =>
+          val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d).*.jar$".r;
+          val seljars = classpath.files.filter(f => !re.findAllIn(f.getName).isEmpty)
+          val cmd = Array(url + "ContentServer",
+            "username=" + user,
+            "password=" + password,
+            "cmd=" + (if (args.size > 0) args(0) else "listcs"),
+            "fromSites=" + site,
+            "datastore=" + site,
+            "resources=" + (if (args.size > 1) args(1) else "@ALL_ASSETS"))
+          //println(cmd.mkString("java -cp "+seljars.mkString(":")+" com.fatwire.csdt.client.main.CSDT ", " ", ""))
+          Run.run("com.fatwire.csdt.client.main.CSDT",
+            seljars, cmd, s.log)(runner)
+
+      }
+  }
   // setup task
   val wcsSetupTask = wcsSetup <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
@@ -64,7 +85,6 @@ object ScalaWcsSupport {
             }
 
             // write an appropriate property file
-
             var scalawcsJar =
               if (args.indexOf("devel") != -1) {
                 // write a property to find the package jar build by sbt
@@ -101,11 +121,6 @@ object ScalaWcsSupport {
 
             println("*** Please restart WCS ***")
         }
-  }
-
-  def wcsCsdtCommand = Command.args("wcs-csdt", "WCS CSDT Interface") { (state, args) =>
-    println("Hi " + args.mkString(" "))
-    state
   }
 
 }

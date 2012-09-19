@@ -8,13 +8,14 @@ object ScalaWcsBuild extends Build {
   lazy val wcsWebapp = ScalaWcsSupport.wcsWebapp
   lazy val wcsCsdtJar = ScalaWcsSupport.wcsCsdtJar
 
+  lazy val wcsUrl = ScalaWcsSupport.wcsUrl
   lazy val wcsSite = ScalaWcsSupport.wcsSite
   lazy val wcsUser = ScalaWcsSupport.wcsUser
   lazy val wcsPassword = ScalaWcsSupport.wcsPassword
-  
+
   lazy val tagGeneratorTask = ScalaWcsSupport.tagGeneratorTask
   lazy val wcsSetupTask = ScalaWcsSupport.wcsSetupTask
-  lazy val wcsCsdtCommand = ScalaWcsSupport.wcsCsdtCommand
+  lazy val wcsCsdtTask = ScalaWcsSupport.wcsCsdtTask
 
   // parameters
   val commonDependencies = Seq(
@@ -24,7 +25,8 @@ object ScalaWcsBuild extends Build {
     "ch.qos.logback" % "logback-classic" % "1.0.7" % "test")
 
   // jars to include as unmanaged
-  val includeFilterUnmanagedJars = includeFilter in unmanagedJars := "commons-*" || "http-*" || "cs-*" ||
+  val includeFilterUnmanagedJars = includeFilter in unmanagedJars := "commons-*" || "http-*" ||
+    "cs-*" || "wem-sso-api-*" || "rest-api-*" || "cas-client-*" ||
     "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar"
 
   val unmanagedBaseTask = unmanagedBase in Compile <<= wcsWebapp { base => file(base) / "WEB-INF" / "lib" }
@@ -43,7 +45,8 @@ object ScalaWcsBuild extends Build {
         "commons-logging" % "commons-logging" % "1.1.1",
         "javax.servlet" % "servlet-api" % "2.5"),
       unmanagedBaseTask,
-      includeFilterUnmanagedJars))
+      includeFilterUnmanagedJars,
+      unmanagedJarsTask))
 
   lazy val tags: Project = Project(
     id = "tags",
@@ -74,6 +77,7 @@ object ScalaWcsBuild extends Build {
       unmanagedBaseTask,
       unmanagedJarsTask,
       includeFilterUnmanagedJars,
+      fork := true,
       wcsSetupTask,
-      commands ++= Seq(wcsCsdtCommand)))
+      wcsCsdtTask))
 }
