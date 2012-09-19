@@ -72,7 +72,7 @@ object ScalaWcsSupport {
           (args, _, _, classpath, jar, classes, home, webapp, site) =>
 
             // jars to include when performing a setup
-            val includeFilterSetup = "scala-*" || "scalawcs-*"
+            val includeFilterSetup = "scala-*" || "scalawcs-*" || "loglady*"
             val destlib = file(webapp) / "WEB-INF" / "lib"
             val jars = classpath.files filter (includeFilterSetup accept _)
 
@@ -88,15 +88,15 @@ object ScalaWcsSupport {
             var scalawcsJar =
               if (args.indexOf("devel") != -1) {
                 // write a property to find the package jar build by sbt
-                println("\nConfigured in Development Mode\nuse ~package to compile\njar in " + jar)
-                jar.toString
+                println("\nConfigured in Development Mode\nuse ~package to compile\njar in " + jar.getAbsolutePath)
+                jar.getAbsolutePath.toString
               } else {
                 // directly locate the original sbt 
                 val destjar = file(home) / jar.getName
                 IO.copyFile(jar, destjar)
                 println(">>> " + destjar)
-                println("\nConfigured in Production Mode\njar in " + destjar)
-                destjar.toString
+                println("\nConfigured in Production Mode\njar in " + destjar.getAbsolutePath)
+                destjar.getAbsolutePath.toString
               }
 
             // write the property file in classpath
