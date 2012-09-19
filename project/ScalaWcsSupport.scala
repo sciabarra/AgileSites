@@ -76,39 +76,20 @@ object ScalaWcsSupport {
             val destlib = file(webapp) / "WEB-INF" / "lib"
             val jars = classpath.files filter (includeFilterSetup accept _)
 
-            // copy jars to wcs
-            val copied = for (file <- jars) yield {
-              val tgt = destlib / file.getName
-              IO.copyFile(file, tgt)
-              println(">>> " + tgt)
-              tgt.getAbsolutePath
-            }
-
             // write an appropriate property file
             var scalawcsJar =
               if (args.indexOf("devel") != -1) {
                 // write a property to find the package jar build by sbt
-                println("\nConfigured in Development Mode\nuse ~package to compile\njar in " + jar.getAbsolutePath)
+                println("\n*** Configured in Development Mode\n*** Use ~package to compile continusly\n*** Jar in " + jar.getAbsolutePath)
                 jar.getAbsolutePath.toString
               } else {
                 // directly locate the original sbt 
                 val destjar = file(home) / jar.getName
                 IO.copyFile(jar, destjar)
                 println(">>> " + destjar)
-                println("\nConfigured in Production Mode\njar in " + destjar.getAbsolutePath)
+                println("\n*** Configured in Production Mode\n***jar in " + destjar.getAbsolutePath)
                 destjar.getAbsolutePath.toString
               }
-
-            // write the property file in classpath
-            val destfile = file(webapp) / "WEB-INF" / "classes" / "scalawcs.properties"
-            val pw = new java.io.PrintWriter(destfile)
-            pw.println("scalawcs.jar=%s".format(scalawcsJar))
-            pw.close
-
-            // create csdt export file
-            file("export").mkdir
-            (file("export") / "envision").mkdir
-            (file("export") / "envision" / site).mkdir
 
             // write property file
             val configFile = file(home) / "futuretense.ini"
@@ -119,7 +100,22 @@ object ScalaWcsSupport {
             IO.copyFile(configFile, file(configFile.getAbsolutePath + ".orig." + System.currentTimeMillis))
             config.store(new java.io.FileWriter(configFile), "updated by ScalaWCS setup")
 
-            println("*** Please restart WCS ***")
+            // copy jars to wcs
+            if (args.indexOf("hot") == -1) {
+              for (file <- jars) yield {
+                val tgt = destlib / file.getName
+                IO.copyFile(file, tgt)
+                println(">>> " + tgt)
+                tgt.getAbsolutePath
+              }
+              println("*** You need to restart WCS")
+            }
+
+            // create csdt export file
+            file("export").mkdir
+            (file("export") / "envision").mkdir
+            (file("export") / "envision" / site).mkdir
+
         }
   }
 
