@@ -21,6 +21,9 @@ object ScalaWcsBuild extends Build {
   val commonDependencies = Seq(
     "org.slf4j" % "slf4j-api" % "1.6.6",
     "org.eintr.loglady" %% "loglady" % "1.0.0",
+    "commons-logging" % "commons-logging" % "1.1.1",
+    "javax.servlet" % "servlet-api" % "2.5",
+
     "org.specs2" %% "specs2" % "1.12.1" % "test",
     "ch.qos.logback" % "logback-classic" % "1.0.7" % "test")
 
@@ -41,9 +44,7 @@ object ScalaWcsBuild extends Build {
       organization := "org.scalawcs",
       name := "scalawcs-setup",
       version := "0.2",
-      libraryDependencies ++= commonDependencies ++ Seq(
-        "commons-logging" % "commons-logging" % "1.1.1",
-        "javax.servlet" % "servlet-api" % "2.5"),
+      libraryDependencies ++= commonDependencies,
       unmanagedBaseTask,
       includeFilterUnmanagedJars,
       unmanagedJarsTask))
@@ -56,9 +57,7 @@ object ScalaWcsBuild extends Build {
       organization := "org.scalawcs",
       name := "scalawcs-tags",
       version := "0.2",
-      libraryDependencies ++= commonDependencies ++ Seq(
-        "commons-logging" % "commons-logging" % "1.1.1",
-        "javax.servlet" % "servlet-api" % "2.5"),
+      libraryDependencies ++= commonDependencies,
       unmanagedBaseTask,
       includeFilterUnmanagedJars,
       tagGeneratorTask))
