@@ -1,14 +1,44 @@
-import org.specs2.mutable._
-import wcs.test.StubIList
+package test
 
-class StubIListSpec extends Specification {
-  
-  sequential
+import wcs.tag._
 
-  val l0 = new StubIList("l0", Map())
-  val l1 = new StubIList("l1", Map("a" -> List("1")))
-  val l3 = new StubIList("l3", Map("b" -> List("1", "2", "3")))
-  val l22 = new StubIList("l22", Map("a" -> List("1", "2"), "b" -> List("10", "20", "30")))
+import COM.FutureTense.Interfaces.IList
+import COM.FutureTense.Interfaces.ICS
+
+/**
+ * This class validates some assertions that are implemented by StubIList
+ */
+class IListSpec(val x: wcs.ICS) extends Specification {
+  implicit val ics = x.ics
+
+  import Listobject._
+
+  //val l0 = new StubIList("l0", Map())
+  create("l0", "")
+  tolist("l0", "l0")
+  val l0 = ics.GetList("l0")
+
+  //val l1 = new StubIList("l1", Map("a" -> List("1")))
+  create("l1", "a")
+  addrow("l1", 'a := "1")
+  tolist("l1", "l1")
+  val l1 = ics.GetList("l1")
+
+  //val l3 = new StubIList("l3", Map("b" -> List("1", "2", "3")))
+  create("l3", "b")
+  addrow("l3", 'b := "1")
+  addrow("l3", 'b := "2")
+  addrow("l3", 'b := "3")
+  tolist("l3", "l3")
+  val l3 = ics.GetList("l3")
+
+  //val l22 = new StubIList("l22", Map("a" -> List("1", "2"), "b" -> List("10", "20", "30")))
+  create("l22", "a,b")
+  addrow("l22", 'a := "1", 'b := "10")
+  addrow("l22", 'a := "2", 'b := "20")
+  tolist("l22", "l22")
+  //addrow("l22", 'b := "30")
+  val l22 = ics.GetList("l22")
 
   "StubIList void should" in {
     " one column but unnamed" in {
@@ -39,10 +69,12 @@ class StubIListSpec extends Specification {
 
   "StubIList 3 rows should " in {
     "be 3 long" in {
+      println("ncol=" + l3.numColumns())
       l3.numRows must_== 3
     }
 
     "be 1 large" in {
+
       l3.numColumns() must_== 1
     }
 

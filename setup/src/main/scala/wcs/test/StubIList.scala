@@ -3,16 +3,16 @@ package wcs.test
 import COM.FutureTense.Interfaces.IList
 import org.eintr.loglady.Logging
 
+
 class StubIList(val name: String, val listMap: Map[String, List[String]]) extends IList with Logging {
 
   log.trace("listMap=%s", listMap)
 
   private var curRow = 0
-  private val columns = listMap.keys.toArray
-  private val (_numRows, _hasData, _numColumns) =
-    if (listMap.isEmpty) (0, false, 0)
+  private val (columns, _numRows, _hasData, _numColumns) =
+    if (listMap.isEmpty) (new Array[String](1), 0, false, 1)
     else
-      (listMap.values.map { _.size }.min, true, columns.size)
+      (listMap.keys.toArray, listMap.values.map { _.size }.min, true, listMap.keys.size)
 
   log.trace("numRows=%s", _numRows)
 
@@ -28,7 +28,7 @@ class StubIList(val name: String, val listMap: Map[String, List[String]]) extend
   def getValue(arg0: String): String = {
     val v = listMap.get(arg0).getOrElse(null)
     if (v == null)
-      null
+      throw new java.lang.NoSuchFieldException(arg0)
     else
       v(curRow)
     //listMap(arg0)(curRow) 
@@ -43,8 +43,8 @@ class StubIList(val name: String, val listMap: Map[String, List[String]]) extend
   def flush(): Unit = {}
 
   def getColumnName(arg0: Int): String = {
-    if (arg0 > 0 && arg0 <= _numColumns)
-      columns(arg0-1)
+    if (arg0 >= 0 && arg0 < _numColumns)
+      columns(arg0)
     else
       null
   }
@@ -55,10 +55,13 @@ class StubIList(val name: String, val listMap: Map[String, List[String]]) extend
   def moveTo(row: Int): Boolean = {
     if (row <= _numRows) {
       curRow = row - 1
+      log.trace("moved to %s", curRow)
       true
     } else {
+      log.trace("not moved")
       false
     }
+    
   }
 
   def atEnd(): Boolean = { curRow == _numRows }

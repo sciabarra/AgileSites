@@ -14,10 +14,11 @@
 		</encoder>
 	</appender>
 	
-    <root level="debug" >
+    <root level="info" >
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
     
+    <logger name="wcs.test.StubIList" level="info"/>
     
 </configuration>

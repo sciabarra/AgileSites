@@ -30,9 +30,15 @@ import org.eintr.loglady.Logging
 class ICS(val ics: COM.FutureTense.Interfaces.ICS) extends Logging {
 
   /**
+   * the value or a null string if none
+   */
+  def apply(s: String) = get(s).getOrElse("")
+
+  /**
    * Return Some variable value if the variable is available or None if there is no such variable
    */
-  def apply(s: String) = {
+
+  def get(s: String) = {
     val v = ics.GetVar(s)
     if (v == null)
       None
@@ -53,10 +59,10 @@ class ICS(val ics: COM.FutureTense.Interfaces.ICS) extends Logging {
 
     //log.trace("numRows=%d", ls.numRows)
     //log.trace("numColumns=%d", ls.numColumns)
-    
+
     val l = for (i <- 1 to ls.numRows) yield {
       ls.moveTo(i)
-      val ll = for (j <- 1 to ls.numColumns) yield {
+      val ll = for (j <- 0 to ls.numColumns-1) yield {
         val name = ls.getColumnName(j)
         val value = ls.getValue(name)
         name -> value
