@@ -23,7 +23,6 @@ object ScalaWcsBuild extends Build {
     "org.eintr.loglady" %% "loglady" % "1.0.0",
     "commons-logging" % "commons-logging" % "1.1.1",
     "javax.servlet" % "servlet-api" % "2.5",
-
     "org.specs2" %% "specs2" % "1.12.1" % "test",
     "ch.qos.logback" % "logback-classic" % "1.0.7" % "test")
 
@@ -57,7 +56,8 @@ object ScalaWcsBuild extends Build {
       organization := "org.scalawcs",
       name := "scalawcs-tags",
       version := "0.2",
-      libraryDependencies ++= commonDependencies,
+      libraryDependencies ++= commonDependencies
+        ++ Seq("org.scalawcs" %% "scalawcs-setup" % "0.2"),
       unmanagedBaseTask,
       includeFilterUnmanagedJars,
       tagGeneratorTask))

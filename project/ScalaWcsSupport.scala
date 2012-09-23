@@ -29,6 +29,7 @@ object ScalaWcsSupport {
           val src = tld.getAbsolutePath
           val cls = Tld2Tag.tld2class(src)
           val dst = file(dstDir / cls + ".scala")
+          //if tld.getName.equalsIgnoreCase("listobject.tld") // select only one for debug generator
         } yield {
           if (!dst.exists) {
             print(cls + " ")

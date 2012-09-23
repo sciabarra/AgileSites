@@ -9,21 +9,39 @@ object Tld2Tag {
     "%s%s".format(f1.charAt(0).toUpper, f1.substring(1))
   }
 
-  def preHead(s: String) = """package wcs.tag
+  def preHead(s: String) = {
+    val cl = tld2class(s)
+    """package wcs.tag
+    
 import COM.FutureTense.Interfaces.FTValList
 import COM.FutureTense.Interfaces.ICS
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
-object %s {
-""".format(tld2class(s))
+    
+object %s  {
+ val log = LoggerFactory.getLogger("wcs.tag.%s")
+""".format(cl, cl)
+  }
 
   val preBody = """ {
   val _args_ : FTValList = new FTValList()
 """
 
-  def postBody(lib: String, tag: String) = """
-  _ics_.runTag("%s.%s", _args_);
+  def postBody(lib: String, tag: String) = {
+
+    val lt = lib.toUpperCase + "." + tag.toUpperCase;
+
+    """
+  _params_.foreach {
+     x => _args_.setValString(x._1.toString.substring(1), x._2)
+  } 
+  _ics_.LogMsg(ftValList2String("%s", _args_))
+  _ics_.runTag("%s", _args_);
  }
-""".format(lib.toUpperCase, tag.toUpperCase)
+""".format(lt, lt)
+
+  }
 
   val postHead = """
 }
@@ -49,13 +67,13 @@ object %s {
         "`" + (attr \\ "name" text) + "`" + ": String"
       }
 
+      val argOptional = for (attr <- optional) yield {
+        "`" + (attr \\ "name" text) + "`" + ": String = null"
+      }
+
       val valRequired = for (attr <- required) yield {
         val name = (attr \\ "name" text)
         "  _args_.setValString(\"" + name.toUpperCase + "\", `" + name + "`)"
-      }
-
-      val argOptional = for (attr <- optional) yield {
-        "`" + (attr \\ "name" text) + "`" + ": String = null"
       }
 
       val valOptional = for (attr <- optional) yield {
@@ -64,11 +82,13 @@ object %s {
           "    _args_.setValString(\"" + name.toUpperCase + "\", `" + name + "`)"
       }
 
-
-      " def `" + tagname + "`" +
-        argRequired.mkString("(", ",\n", ")" +
-          argOptional.mkString("(", ",\n", ")") +
-          "(implicit _ics_ : ICS) =") +
+      " def `" + tagname + "`(\n" +
+        (argRequired).mkString(",\n") +
+        (if (argRequired.isEmpty) "" else ",") +
+        "\n_params_ : Tuple2[Symbol,String]*)" +
+        (if (argOptional.isEmpty) ""
+        else argOptional.mkString("(", ",\n", ")")) +
+        "(implicit _ics_ : ICS) =" +
         preBody +
         (valRequired ++ valOptional).mkString("\n") +
         postBody(libname, tagname)
@@ -80,5 +100,12 @@ object %s {
       postHead
 
     //"%d".format(tags.size)
+
+  }
+
+  def main(args: Array[String]) {
+    args.foreach {
+      a: String => println(Tld2Tag(a))
+    }
   }
 }
