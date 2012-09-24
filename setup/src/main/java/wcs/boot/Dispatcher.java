@@ -63,7 +63,7 @@ public class Dispatcher {
 		else
 			value = value.replace("/", ".");
 
-		String className = "app." + c + "." + value;
+		String className = "app.view." + c + "." + value;
 
 		System.out.println(className);
 
@@ -107,17 +107,16 @@ public class Dispatcher {
 	}
 
 	/**
-	 * Call the appropriate class after reloading the jar and creating a wrapper
+	 * Call the given class after reloading the jar and creating a wrapper
 	 * for ICS and the Element
 	 * 
 	 * @param ics
 	 * @return
 	 */
-	public String dispatch(ICS ics) {
+	public String dispatch(ICS ics, String className) {
 		try {
 
 			// jar & classname
-			String className = className(ics);
 			ClassLoader cl = loadJar(jar);
 
 			// instantiate
@@ -126,8 +125,8 @@ public class Dispatcher {
 			Object obj = clazz.newInstance();
 
 			// cast and execute
-			if (obj instanceof wcs.Element) {
-				wcs.Element element = (wcs.Element) obj;
+			if (obj instanceof Element) {
+				Element element = (Element) obj;
 				return element.exec(ics);
 			}
 			return "<h1>Not Found " + className + "<h1>";
@@ -137,4 +136,15 @@ public class Dispatcher {
 		}
 
 	}
+	
+	/**
+	 * Call dispatched with a classname
+	 * 
+	 * @param ics
+	 * @return
+	 */
+	public String dispatch(ICS ics) {
+		return dispatch(ics,className(ics));
+	}
+
 }
