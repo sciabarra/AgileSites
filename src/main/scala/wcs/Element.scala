@@ -1,14 +1,18 @@
 package wcs
 
-
+import wcs.core.{Element => CoreElement}
 
 import scala.xml.NodeSeq
-import wcs.boot.{Element => JElement };
-import COM.FutureTense.Interfaces.{ICS => JICS };
 
-abstract class Element extends JElement {
-  
-  def exec(jics: JICS) = apply(new ICS(jics)).toString
+import COM.FutureTense.Interfaces.ICS;
 
-  def apply(ics: X): NodeSeq
+abstract class Element extends CoreElement {
+
+  implicit var ics: ICS = null
+
+  def exec(_ics: ICS) = {
+    ics = _ics
+    apply(new X(_ics)).toString
+  }
+  def apply(x: X): NodeSeq
 }

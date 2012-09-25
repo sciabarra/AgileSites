@@ -1,7 +1,8 @@
-package test
+package app.test
 
 import COM.FutureTense.Interfaces.ICS
 import COM.FutureTense.Interfaces.FTValList
+import wcs._
 
 class RunTagSpec(ics: ICS) extends Specification {
 

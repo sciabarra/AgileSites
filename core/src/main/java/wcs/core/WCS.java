@@ -1,8 +1,11 @@
-package wcs.boot;
+package wcs.core;
 
 import java.io.File;
 
 public class WCS {
+	
+	public final static boolean debug = System.getProperty("wcs.core.debug")!=null;
+		
 	static Dispatcher dispatcher = null;
 
 	public static String dispatch(COM.FutureTense.Interfaces.ICS ics) {

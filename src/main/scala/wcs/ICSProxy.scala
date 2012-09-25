@@ -27,7 +27,7 @@ import org.eintr.loglady.Logging
 /**
  * Proxy methods to non-deprecated ICS methods
  */
-trait ICSProxy extends ICSReceiver {
+trait ICSProxy {
 
   var ics: COM.FutureTense.Interfaces.ICS
 

@@ -1,3 +1,8 @@
 package app.view
-class Index extends wcs.boot.Index
+
+class Index 
+
+
+// just a placeholder for now
+
 

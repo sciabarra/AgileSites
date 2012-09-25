@@ -1,9 +1,9 @@
-package test
+package app.test
 
 import wcs._
 import wcs.tag._
 
-class TagSpec(x: ICS) extends Specification {
+class TagSpec(x: X) extends Specification {
   implicit val ics = x.ics
   
   "create list with tag" in {

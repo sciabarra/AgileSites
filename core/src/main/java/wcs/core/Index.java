@@ -1,4 +1,4 @@
-package wcs.boot;
+package wcs.core;
 
 public interface Index {
 	public String[] getTemplates();

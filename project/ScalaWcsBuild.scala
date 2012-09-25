@@ -35,33 +35,21 @@ object ScalaWcsBuild extends Build {
   val unmanagedJarsTask = unmanagedJars in Compile <+= wcsCsdtJar map { jar => Attributed.blank(file(jar)) }
 
   // projects
-  lazy val setup: Project = Project(
-    id = "setup",
-    base = file("setup"),
+  lazy val core: Project = Project(
+    id = "core",
+    base = file("core"),
     settings = Defaults.defaultSettings ++ Seq(
       scalaVersion := "2.9.1",
       organization := "org.scalawcs",
-      name := "scalawcs-setup",
-      version := "0.2",
+      name := "scalawcs-core",
+      version := "0.1",
       libraryDependencies ++= commonDependencies,
       unmanagedBaseTask,
       includeFilterUnmanagedJars,
-      unmanagedJarsTask))
-
-  lazy val tags: Project = Project(
-    id = "tags",
-    base = file("tags"),
-    settings = Defaults.defaultSettings ++ Seq(
-      scalaVersion := "2.9.1",
-      organization := "org.scalawcs",
-      name := "scalawcs-tags",
-      version := "0.2",
-      libraryDependencies ++= commonDependencies
-        ++ Seq("org.scalawcs" %% "scalawcs-setup" % "0.2"),
-      unmanagedBaseTask,
-      includeFilterUnmanagedJars,
+      unmanagedJarsTask,
       tagGeneratorTask))
-
+      
+      
   lazy val app: Project = Project(
     id = "app",
     base = file("."),
@@ -71,8 +59,7 @@ object ScalaWcsBuild extends Build {
       name := "scalawcs-app",
       version := "0.2",
       libraryDependencies ++= commonDependencies ++
-        Seq("org.scalawcs" %% "scalawcs-setup" % "0.2",
-          "org.scalawcs" %% "scalawcs-tags" % "0.2"),
+        Seq("org.scalawcs" %% "scalawcs-core" % "0.1"),
       unmanagedBaseTask,
       unmanagedJarsTask,
       includeFilterUnmanagedJars,

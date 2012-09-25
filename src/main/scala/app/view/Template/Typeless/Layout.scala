@@ -1,7 +1,7 @@
-package app.Template.Typeless
+package app.view.Template.Typeless
 
 import wcs._
 
 class swLayout extends Element {
-  def apply(ics: ICS) = <p>Layout</p>
+  def apply(x: X) = <p>Layout</p>
 }

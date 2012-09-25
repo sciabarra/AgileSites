@@ -64,16 +64,15 @@ object ScalaWcsSupport {
   val wcsSetupTask = wcsSetup <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
       (argTask,
-        publishLocal in ScalaWcsBuild.setup,
-        publishLocal in ScalaWcsBuild.tags,
+        publishLocal in ScalaWcsBuild.core,
         managedClasspath in Compile,
         Keys.`package` in Compile,
         classDirectory in Compile,
         wcsHome, wcsWebapp, wcsSite) map {
-          (args, _, _, classpath, jar, classes, home, webapp, site) =>
+          (args, _, classpath, jar, classes, home, webapp, site) =>
 
             // jars to include when performing a setup
-            val includeFilterSetup = "scala-*" || "scalawcs-*" || "loglady*"
+            val includeFilterSetup = "scala-library*" || "scalawcs-core*" 
             val destlib = file(webapp) / "WEB-INF" / "lib"
             val jars = classpath.files filter (includeFilterSetup accept _)
 
@@ -81,14 +80,17 @@ object ScalaWcsSupport {
             var scalawcsJar =
               if (args.indexOf("devel") != -1) {
                 // write a property to find the package jar build by sbt
-                println("\n*** Configured in Development Mode\n*** Use ~package to compile continusly\n*** Jar in " + jar.getAbsolutePath)
+                println("\n*** Configured in Development Mode\n" +
+                  "*** Use ~package to compile continusly\n*** Jar in "
+                  + jar.getAbsolutePath)
                 jar.getAbsolutePath.toString
               } else {
                 // directly locate the original sbt 
                 val destjar = file(home) / jar.getName
                 IO.copyFile(jar, destjar)
                 println(">>> " + destjar)
-                println("\n*** Configured in Production Mode\n***jar in " + destjar.getAbsolutePath)
+                println("\n*** Configured in Production Mode\n" +
+                  "***jar in " + destjar.getAbsolutePath)
                 destjar.getAbsolutePath.toString
               }
 
@@ -98,8 +100,10 @@ object ScalaWcsSupport {
             config.load(new java.io.FileReader(configFile))
             config.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
             config.setProperty("scalawcs.jar", scalawcsJar)
-            IO.copyFile(configFile, file(configFile.getAbsolutePath + ".orig." + System.currentTimeMillis))
-            config.store(new java.io.FileWriter(configFile), "updated by ScalaWCS setup")
+            IO.copyFile(configFile, file(configFile.getAbsolutePath
+              + ".orig." + System.currentTimeMillis))
+            config.store(new java.io.FileWriter(configFile),
+              "updated by ScalaWCS setup")
 
             // copy jars to wcs
             if (args.indexOf("hot") == -1) {

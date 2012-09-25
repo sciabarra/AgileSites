@@ -2,19 +2,15 @@ package wcs
 
 import scala.collection.immutable
 
-import wcs.ICSProxy
-import java.io.OutputStream
-import java.security.Principal
-import java.util.Collection
-import java.util.Enumeration
-import java.util.Map
-import java.util.Vector
-
+import COM.FutureTense.Interfaces.ICS
 
 /**
  * Scala API on top of ICS
  */
-class X extends ICSProxy {
+class X(_ics: ICS) extends ICSProxy {
+    
+  var ics = _ics
+  
   /**
    * the value or a null string if none
    */

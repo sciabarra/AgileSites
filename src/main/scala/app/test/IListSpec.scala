@@ -1,4 +1,5 @@
-package test
+package app.test
+
 
 import wcs.tag._
 
@@ -8,7 +9,7 @@ import COM.FutureTense.Interfaces.ICS
 /**
  * This class validates some assertions that are implemented by StubIList
  */
-class IListSpec(val x: wcs.ICS) extends Specification {
+class IListSpec(val x: wcs.X) extends Specification {
   implicit val ics = x.ics
 
   import Listobject._

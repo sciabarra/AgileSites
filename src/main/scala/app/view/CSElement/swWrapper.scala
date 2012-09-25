@@ -1,14 +1,14 @@
-package app.CSElement
+package app.view.CSElement
 
-import test._
 import wcs._
 import wcs.tag._
+import app.test._
 import java.io.CharArrayWriter
 import java.io.PrintWriter
 
 class swWrapper extends Element {
 
-  def apply(x: ICS) = {
+  def apply(x: X) = {
     implicit val ics = x.ics
 
     import Listobject._

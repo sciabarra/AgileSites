@@ -1,10 +1,10 @@
-package wcs.boot;
+package wcs.core;
 
 import java.util.Map;
 
 
 /**
- * Interface for the Router (Satellite Serve)
+ * Interface for the Router (assemble/disassemble) and post (actions)
  * 
  * @author msciab
  *

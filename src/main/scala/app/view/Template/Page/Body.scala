@@ -1,10 +1,10 @@
-package app.Template.Page
+package app.view.Template.Page
 
 import wcs._
 
 class swBody extends Element {
 
-  def apply(ics: ICS) =
+  def apply(x: X) =
     <p>Hello</p>
     /*
     <p>{ v("title") }</p>

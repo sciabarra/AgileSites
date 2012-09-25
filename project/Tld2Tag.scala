@@ -13,15 +13,12 @@ object Tld2Tag {
     val cl = tld2class(s)
     """package wcs.tag
     
-import COM.FutureTense.Interfaces.FTValList
 import COM.FutureTense.Interfaces.ICS
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-
+import COM.FutureTense.Interfaces.FTValList
     
-object %s  {
- val log = LoggerFactory.getLogger("wcs.tag.%s")
-""".format(cl, cl)
+object %s  {    
+  val _debug = java.lang.System.getProperty("wcs.tag.debug") != null;
+ """.format(cl)
   }
 
   val preBody = """ {
@@ -36,7 +33,8 @@ object %s  {
   _params_.foreach {
      x => _args_.setValString(x._1.toString.substring(1), x._2)
   } 
-  _ics_.LogMsg(ftValList2String("%s", _args_))
+  if(_debug)
+     Console.println(ftValList2String("%s", _args_))
   _ics_.runTag("%s", _args_);
  }
 """.format(lt, lt)
@@ -44,6 +42,20 @@ object %s  {
   }
 
   val postHead = """
+  // dump an ftval list for logging
+  def ftValList2String(name: String, vl: FTValList) = {
+    var sb = new StringBuilder()
+    sb.append(">>>");
+    sb.append(name)
+    sb.append(":")
+    val en = vl.keys
+    while (en.hasMoreElements()) {
+      val k = en.nextElement().toString()
+      val v = vl.getValString(k)
+      sb.append(" %s=%s".format(k, v))
+    }
+    sb.toString()
+  }
 }
 """
 

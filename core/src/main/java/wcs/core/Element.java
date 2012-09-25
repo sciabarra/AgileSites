@@ -1,4 +1,4 @@
-package wcs.boot;
+package wcs.core;
 
 import COM.FutureTense.Interfaces.ICS;
 

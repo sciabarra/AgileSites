@@ -1,7 +1,7 @@
 import org.specs2.mutable._
 import wcs.test.StubIList
 import wcs.test.StubICS
-import wcs.ICS
+import wcs._
 import org.eintr.loglady.Logging
 
 class ICSSpec extends Specification with Logging {
@@ -12,7 +12,7 @@ class ICSSpec extends Specification with Logging {
   ics.addList("l3", Map("w" -> List("1", "2", "3")))
   ics.addList("l22", Map("x" -> List("10", "20"), "y" -> List("100", "200")))
 
-  val x: ICS = new ICS(ics)
+  val x: X = new X(ics)
   
   override def is = 
     "ICSSpec should"											    ^
