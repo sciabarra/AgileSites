@@ -26,7 +26,7 @@ import COM.FutureTense.Interfaces.IProperties
 /**
  * Mock class simulating (part of) ICS behaviour
  */
-class StubICS extends ICS {
+class MockICS extends ICS {
 
   var varMap = Map[String, String]()
   var listMap = Map[String, IList]()
@@ -34,7 +34,7 @@ class StubICS extends ICS {
   def this(map: Map[String, String]) = { this(); this.varMap = map }
 
   def addList(name: String, map: Map[String, List[String]]) = {
-    listMap = listMap + (name -> new StubIList(name, map))
+    listMap = listMap + (name -> new MockIList(name, map))
   }
 
   // implemented

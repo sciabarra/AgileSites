@@ -1,12 +1,11 @@
 import org.specs2.mutable._
-import wcs.test.StubIList
-import wcs.test.StubICS
-import wcs._
 import org.eintr.loglady.Logging
+import wcs.test._
+import wcs._
 
 class ICSSpec extends Specification with Logging {
 
-  val ics = new StubICS(Map("a" -> "1", "b" -> "2"))
+  val ics = new MockICS(Map("a" -> "1", "b" -> "2"))
 
   ics.addList("l1", Map("v" -> List("hello")))
   ics.addList("l3", Map("w" -> List("1", "2", "3")))

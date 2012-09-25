@@ -1,14 +1,14 @@
 import org.specs2.mutable._
-import wcs.test.StubIList
+import wcs.test.MockIList
 
 class StubIListSpec extends Specification {
   
   sequential
 
-  val l0 = new StubIList("l0", Map())
-  val l1 = new StubIList("l1", Map("a" -> List("1")))
-  val l3 = new StubIList("l3", Map("b" -> List("1", "2", "3")))
-  val l22 = new StubIList("l22", Map("a" -> List("1", "2"), "b" -> List("10", "20", "30")))
+  val l0 = new MockIList("l0", Map())
+  val l1 = new MockIList("l1", Map("a" -> List("1")))
+  val l3 = new MockIList("l3", Map("b" -> List("1", "2", "3")))
+  val l22 = new MockIList("l22", Map("a" -> List("1", "2"), "b" -> List("10", "20", "30")))
 
   "StubIList void should" in {
     " one column but unnamed" in {

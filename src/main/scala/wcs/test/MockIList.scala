@@ -4,7 +4,7 @@ import COM.FutureTense.Interfaces.IList
 import org.eintr.loglady.Logging
 
 
-class StubIList(val name: String, val listMap: Map[String, List[String]]) extends IList with Logging {
+class MockIList(val name: String, val listMap: Map[String, List[String]]) extends IList with Logging {
 
   log.trace("listMap=%s", listMap)
 
