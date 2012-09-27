@@ -3,7 +3,9 @@ package wcs.core;
 import java.io.File;
 
 public class WCS {
-	
+
+	java.util.logging.Logger log = java.util.logging.Logger.getLogger(WCS.class.getCanonicalName());
+
 	public final static boolean debug = System.getProperty("wcs.core.debug")!=null;
 		
 	static Dispatcher dispatcher = null;

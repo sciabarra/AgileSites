@@ -11,7 +11,7 @@ import java.util.Map;
  */
 
 public interface Router {
-
+	
 	public void decode(String url);
 	
 	public void encode(Map<String, String[]> map);

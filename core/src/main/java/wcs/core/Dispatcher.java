@@ -7,6 +7,9 @@ import COM.FutureTense.Interfaces.ICS;
 
 public class Dispatcher {
 
+	java.util.logging.Logger log = java.util.logging.Logger
+			.getLogger(Dispatcher.class.getCanonicalName());
+
 	private Loader loader;
 
 	/**
@@ -15,8 +18,10 @@ public class Dispatcher {
 	 * @param jar
 	 */
 	public Dispatcher(File jar) {
-		if (WCS.debug)
+		if (WCS.debug) {
 			System.out.println(">>>DISPATCHER: jar=" + jar);
+			log.fine("jar=" + jar);
+		}
 		setJar(jar);
 	}
 
@@ -36,7 +41,7 @@ public class Dispatcher {
 			cid = ics.GetVar("eid");
 		}
 		if (cid == null)
-			return "wcs.NotFound";
+			return "wcs.util.ElementNotFound";
 
 		// checking the name
 		assetLoad(ics, "asset", c, cid);
@@ -51,8 +56,10 @@ public class Dispatcher {
 
 		String className = "app.view." + c + "." + value;
 
-		if (WCS.debug)
+		if (WCS.debug) {
 			System.out.println(">>>DISPATCHER: " + className);
+			log.fine("classname=" + className);
+		}
 
 		return className;
 	}
@@ -106,18 +113,18 @@ public class Dispatcher {
 	private String assetLoad(ICS ics, String name, String type, String objectid) {
 		FTValList args = new FTValList();
 
-		if (WCS.debug)
-			System.out.print(">>DISPATCHER: asset:load name=" + name + " type="
-					+ type + " objectid=" + objectid + " => ");
-
 		args.setValString("NAME", name);
 		args.setValString("OBJECTID", objectid);
 		args.setValString("TYPE", type);
 
 		String _output = ics.runTag("ASSET.LOAD", args);
 
-		if (WCS.debug)
-			System.out.println(">>>DISPATCHER:" + _output);
+		if (WCS.debug) {
+			System.out.print(">>DISPATCHER: asset:load name=" + name + " type="
+					+ type + " objectid=" + objectid + " => " + _output);
+			log.fine("asset:load name=" + name + " type=" + type + " objectid="
+					+ objectid + " =>" + _output);
+		}
 
 		return _output == null ? "" : _output;
 	}
@@ -134,17 +141,20 @@ public class Dispatcher {
 	private String assetGet(ICS ics, String name, String field, String output) {
 		FTValList args = new FTValList();
 
-		if (WCS.debug)
-			System.out.print(">>>DISPATCHER: asset:get name=" + name
-					+ " field=" + field + " output=" + output + " => ");
-
 		args.setValString("NAME", name);
 		args.setValString("FIELD", field);
 		args.setValString("OUTPUT", output);
 
 		String _output = ics.runTag("ASSET.GET", args);
-		if (WCS.debug)
-			System.out.println(">>>DISPATCHER:" + _output);
+
+		if (WCS.debug) {
+			System.out.print(">>>DISPATCHER: asset:get name=" + name
+					+ " field=" + field + " output=" + output + " => "
+					+ _output);
+			log.fine("asset:get name=" + name + " field=" + field + " output="
+					+ output + " => " + _output);
+		}
+
 		return _output == null ? "" : _output;
 	}
 }

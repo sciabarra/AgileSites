@@ -1,10 +1,9 @@
 import org.specs2.mutable._
-import org.eintr.loglady.Logging
 import wcs.test._
 import wcs._
 
-class ICSSpec extends Specification with Logging {
-
+class ICSSpec extends Specification with Log {
+  
   val ics = new MockICS(Map("a" -> "1", "b" -> "2"))
 
   ics.addList("l1", Map("v" -> List("hello")))
@@ -24,7 +23,7 @@ class ICSSpec extends Specification with Logging {
     "x.list(l1) size=1"											    ! { x.list("l1").size must_== 1 } ^
     "x.list(l1) width=1"											! { x.list("l1")(0).keys.size must_== 1 } ^
     "x.list(l22) size=2"											! { x.list("l22").size must_== 2 } ^
-    "x.list(l22) width=2"											! { log.trace(x.list("l22").toString); x.list("l22")(0).keys.size must_== 2 } ^
+    "x.list(l22) width=2"											! { x.list("l22")(0).keys.size must_== 2 } ^
     "x.list(l3).sum=6"												! { x.list("l3").map(_("w").toInt).sum must_== 6} ^
     "x.list(l22)=[[10,100],[20,200]]"								! { x.list("l22") must_== List(Map("x"->"10", "y"->"100"),Map("x"->"20", "y"->"200")) }
     

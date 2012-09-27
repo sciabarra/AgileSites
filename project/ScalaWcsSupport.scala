@@ -1,5 +1,8 @@
 import sbt._
 import Keys._
+import sbtassembly.Plugin._
+import AssemblyKeys._
+
 
 object ScalaWcsSupport {
 
@@ -7,6 +10,7 @@ object ScalaWcsSupport {
   lazy val wcsHome = SettingKey[String]("wcs-home", "WCS Home Directory")
   lazy val wcsWebapp = SettingKey[String]("wcs-webapp", "WCS Webapp CS Directory")
   lazy val wcsSetup = InputKey[Unit]("wcs-setup", "WCS Setup")
+  lazy val wcsDeploy = TaskKey[String]("wcs-deploy", "WCS Deploy")
 
   lazy val wcsUser = SettingKey[String]("wcs-user", "WCS Site for user")
   lazy val wcsPassword = SettingKey[String]("wcs-password", "WCS Site password")
@@ -29,7 +33,7 @@ object ScalaWcsSupport {
           val src = tld.getAbsolutePath
           val cls = Tld2Tag.tld2class(src)
           val dst = file(dstDir / cls + ".scala")
-          //if tld.getName.equalsIgnoreCase("listobject.tld") // select only one for debug generator
+          // if tld.getName.equalsIgnoreCase("listobject.tld") // select only one for debug generator
         } yield {
           if (!dst.exists) {
             print(cls + " ")
@@ -57,43 +61,29 @@ object ScalaWcsSupport {
           //println(cmd.mkString("java -cp "+seljars.mkString(":")+" com.fatwire.csdt.client.main.CSDT ", " ", ""))
           Run.run("com.fatwire.csdt.client.main.CSDT",
             seljars, cmd, s.log)(runner)
-
       }
   }
+
+  // deploy task  
+  val wcsDeployTask = wcsDeploy <<=
+    (assembly, wcsHome) map {
+      (jar, home) =>
+        val destjar = file(home) / jar.getName
+        IO.copyFile(jar, destjar)
+        println("+++ " + destjar.getAbsolutePath)
+        destjar.getAbsolutePath.toString
+    }
+
   // setup task
   val wcsSetupTask = wcsSetup <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
       (argTask,
         publishLocal in ScalaWcsBuild.core,
+        wcsDeploy,
         managedClasspath in Compile,
-        Keys.`package` in Compile,
         classDirectory in Compile,
         wcsHome, wcsWebapp, wcsSite) map {
-          (args, _, classpath, jar, classes, home, webapp, site) =>
-
-            // jars to include when performing a setup
-            val includeFilterSetup = "scala-library*" || "scalawcs-core*" 
-            val destlib = file(webapp) / "WEB-INF" / "lib"
-            val jars = classpath.files filter (includeFilterSetup accept _)
-
-            // write an appropriate property file
-            var scalawcsJar =
-              if (args.indexOf("devel") != -1) {
-                // write a property to find the package jar build by sbt
-                println("\n*** Configured in Development Mode\n" +
-                  "*** Use ~package to compile continusly\n*** Jar in "
-                  + jar.getAbsolutePath)
-                jar.getAbsolutePath.toString
-              } else {
-                // directly locate the original sbt 
-                val destjar = file(home) / jar.getName
-                IO.copyFile(jar, destjar)
-                println(">>> " + destjar)
-                println("\n*** Configured in Production Mode\n" +
-                  "***jar in " + destjar.getAbsolutePath)
-                destjar.getAbsolutePath.toString
-              }
-
+          (args, _, scalawcsJar, classpath, classes, home, webapp, site) =>
             // write property file
             val configFile = file(home) / "futuretense.ini"
             val config = new java.util.Properties
@@ -105,15 +95,27 @@ object ScalaWcsSupport {
             config.store(new java.io.FileWriter(configFile),
               "updated by ScalaWCS setup")
 
-            // copy jars to wcs
-            if (args.indexOf("hot") == -1) {
-              for (file <- jars) yield {
-                val tgt = destlib / file.getName
-                IO.copyFile(file, tgt)
-                println(">>> " + tgt)
-                tgt.getAbsolutePath
-              }
-              println("*** You need to restart WCS")
+            // jars to include when performing a setup
+            val destlib = file(webapp) / "WEB-INF" / "lib"
+
+            val addJars = classpath.files filter
+              (ScalaWcsBuild.addFilterSetup accept _)
+
+            val removeJars = destlib.listFiles filter
+              (ScalaWcsBuild.removeFilterSetup accept _)
+
+            // remove jars
+            for (file <- removeJars) {
+              val tgt = destlib / file.getName
+              tgt.delete
+              println("--- " + tgt.getAbsolutePath)
+            }
+
+            // add jars
+            for (file <- addJars) yield {
+              val tgt = destlib / file.getName
+              IO.copyFile(file, tgt)
+              println("+++ " + tgt.getAbsolutePath)
             }
 
             // create csdt export file
@@ -121,6 +123,7 @@ object ScalaWcsSupport {
             (file("export") / "envision").mkdir
             (file("export") / "envision" / site).mkdir
 
+            println("*** You need to restart WCS")
         }
   }
 

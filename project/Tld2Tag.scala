@@ -18,7 +18,9 @@ import COM.FutureTense.Interfaces.FTValList
     
 object %s  {    
   val _debug = java.lang.System.getProperty("wcs.tag.debug") != null;
- """.format(cl)
+  val log  = java.util.logging.Logger.getLogger("%s");
+
+ """.format(cl,cl)
   }
 
   val preBody = """ {
@@ -33,11 +35,13 @@ object %s  {
   _params_.foreach {
      x => _args_.setValString(x._1.toString.substring(1), x._2)
   } 
-  if(_debug)
-     Console.println(ftValList2String("%s", _args_))
   _ics_.runTag("%s", _args_);
- }
-""".format(lt, lt)
+  if(_debug) {
+     Console.println(ftValList2String("%s", _args_))
+     log.finest(ftValList2String("%s", _args_))
+  }
+}
+""".format(lt, lt, lt)
 
   }
 

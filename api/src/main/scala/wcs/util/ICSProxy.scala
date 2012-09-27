@@ -1,4 +1,4 @@
-package wcs
+package wcs.util
 
 import java.io.OutputStream
 import java.security.Principal
@@ -22,7 +22,6 @@ import COM.FutureTense.Util.ftErrors
 import com.fatwire.cs.core.db.PreparedStmt
 import com.fatwire.cs.core.db.StatementParam
 import com.fatwire.cs.core.uri.Definition
-import org.eintr.loglady.Logging
 
 /**
  * Proxy methods to non-deprecated ICS methods

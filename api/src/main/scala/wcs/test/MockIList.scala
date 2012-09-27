@@ -1,12 +1,9 @@
 package wcs.test
 
 import COM.FutureTense.Interfaces.IList
-import org.eintr.loglady.Logging
+import wcs.Log
 
-
-class MockIList(val name: String, val listMap: Map[String, List[String]]) extends IList with Logging {
-
-  log.trace("listMap=%s", listMap)
+class MockIList(val name: String, val listMap: Map[String, List[String]]) extends IList with Log {
 
   private var curRow = 0
   private val (columns, _numRows, _hasData, _numColumns) =
@@ -14,7 +11,7 @@ class MockIList(val name: String, val listMap: Map[String, List[String]]) extend
     else
       (listMap.keys.toArray, listMap.values.map { _.size }.min, true, listMap.keys.size)
 
-  log.trace("numRows=%s", _numRows)
+  trace("numRows=%s", _numRows.toString)
 
   def getName(): String = { name }
 
@@ -55,13 +52,13 @@ class MockIList(val name: String, val listMap: Map[String, List[String]]) extend
   def moveTo(row: Int): Boolean = {
     if (row <= _numRows) {
       curRow = row - 1
-      log.trace("moved to %s", curRow)
+      trace("moved to %s", curRow.toString)
       true
     } else {
-      log.trace("not moved")
+      trace("not moved")
       false
     }
-    
+
   }
 
   def atEnd(): Boolean = { curRow == _numRows }

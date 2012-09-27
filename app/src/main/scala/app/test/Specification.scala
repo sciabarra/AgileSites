@@ -69,7 +69,7 @@ trait Specification {
   implicit def a2must(a: => Any) = new Must(a)
 
   def println(s: Any) {
-    Console.println(s)
+    //Console.println(s)
     output.append(s.toString()).append("\n")
   }
 

@@ -14,6 +14,9 @@ import java.net.URLClassLoader;
  */
 public class Loader {
 
+	java.util.logging.Logger log = java.util.logging.Logger
+			.getLogger(Loader.class.getCanonicalName());
+
 	private File jar;
 	private long jarTimestamp = 0;
 	private URLClassLoader ucl;
@@ -38,14 +41,17 @@ public class Loader {
 	public ClassLoader loadJar() throws MalformedURLException {
 
 		if (jar == null) {
-			if (WCS.debug)
+			if (WCS.debug) {
 				System.out.println(">>>LOADER: no jar specified");
+				log.severe("no jar specified");
+			}
+
 			return mycl;
 		}
 
 		if (!jar.exists()) {
-			if (WCS.debug)
-				System.out.println(">>>LOADER: jar not found!!!");
+			System.out.println(">>>LOADER: jar not found!!!");
+			log.severe("no jar specified");
 			return mycl;
 		}
 
@@ -56,8 +62,10 @@ public class Loader {
 		long curTimestamp = jar.lastModified();
 		if (curTimestamp > jarTimestamp) {
 			URL url = jar.toURI().toURL();
-			if (WCS.debug)
-				System.out.println(">>>LOADER: reloading " + url);
+
+			System.out.println(">>>LOADER: reloading " + url);
+			log.info("reloading " + url);
+
 			jarTimestamp = curTimestamp;
 			ucl = new URLClassLoader(new URL[] { url }, mycl);
 		}
