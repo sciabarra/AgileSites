@@ -7,11 +7,11 @@ wcsWebapp in ThisBuild := "../App_Server/apache-tomcat-6.0.32/webapps/cs/"
 // location of the csdt-client jar
 wcsCsdtJar in ThisBuild := "../ContentServer/11.1.1.6.0/csdt-client-1.2.jar"
 
-// site to import/export
-wcsSite in ThisBuild := "ScalaWCS"
-
 //url to content server
 wcsUrl in ThisBuild := "http://localhost:8380/cs/"
+
+// site to import/export
+wcsSite in ThisBuild := "ScalaWCS"
 
 // user to import/export
 wcsUser in ThisBuild := "fwadmin"

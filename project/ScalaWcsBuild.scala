@@ -21,21 +21,15 @@ object ScalaWcsBuild extends Build {
   lazy val wcsDeployTask = ScalaWcsSupport.wcsDeployTask
   lazy val wcsCsdtTask = ScalaWcsSupport.wcsCsdtTask
 
-  // parameters
-  val commonDependencies = Seq(
-    "javax.servlet" % "servlet-api" % "2.5",
-    "commons-logging" % "commons-logging" % "1.1.1",
-    "org.specs2" %% "specs2" % "1.12.1" % "test")
-
   // remove then add those jars in setup
   val addFilterSetup = "scala-library*" || "scalawcs-core*"
-  val removeFilterSetup = addFilterSetup
-  //|| "slf4j-jdk14*"
+  val removeFilterSetup = addFilterSetup 
+
+  // configuring WCS jars as unmanaged lib
   val unmanagedFilter = "commons-*" || "http-*" || "cs-*" ||
     "wem-sso-api-*" || "rest-api-*" || "cas-client-*" ||
     "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar"
 
-  // jars to include as unmanaged
   val includeFilterUnmanagedJars = includeFilter in unmanagedJars := unmanagedFilter
 
   val unmanagedBaseTask = unmanagedBase in Compile <<= wcsWebapp {
@@ -45,58 +39,63 @@ object ScalaWcsBuild extends Build {
     jar => Attributed.blank(file(jar))
   }
 
-  // common settings
+  /// COMMONS
+  val coreDependencies = Seq(
+    "javax.servlet" % "servlet-api" % "2.5",
+    "commons-logging" % "commons-logging" % "1.1.1",
+    "org.specs2" %% "specs2" % "1.12.1" % "test")
+
   val commonSettings = Defaults.defaultSettings ++ Seq(
     scalaVersion := "2.9.1",
-    organization := "org.scalawcs",
-    libraryDependencies ++= commonDependencies,
-    // collect jars from WCS
+    organization := "org.scalawcs", // collect jars from WCS
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
     unmanagedJarsTask)
 
-  // projects
+  /// CORE
   lazy val core: Project = Project(
     id = "core",
     base = file("core"),
     settings = commonSettings ++ Seq(
+      libraryDependencies ++= coreDependencies,
       name := "scalawcs-core",
       version := "0.2",
       tagGeneratorTask))
+
+  /// API 
+
+  val commonDependencies = coreDependencies ++
+    Seq("org.scalawcs" %% "scalawcs-core" % "0.2")
 
   lazy val api: Project = Project(
     id = "api",
     base = file("api"),
     settings = commonSettings ++ Seq(
+      libraryDependencies ++= commonDependencies,
       name := "scalawcs-api",
-      version := "0.2",
-      libraryDependencies ++=
-        (commonDependencies
-          ++ Seq("org.scalawcs" %% "scalawcs-core" % "0.1"))))
+      version := "0.2"))
+
+  /// APP 
 
   lazy val app: Project = Project(
     id = "app",
     base = file("app"),
     settings = commonSettings ++ Seq(
+      libraryDependencies ++= commonDependencies,
       name := "scalawcs-app",
-      version := "0.2",
-      libraryDependencies ++=
-        commonDependencies)) dependsOn (api)
+      version := "0.2")) dependsOn (api)
 
   lazy val all: Project = Project(
     id = "all",
     base = file("."),
-    settings = commonSettings ++
-      Seq(
-        name := "scalawcs-all",
-        version := "0.2",
-        libraryDependencies ++=
-          (commonDependencies ++
-            Seq("org.scalawcs" %% "scalawcs-core" % "0.1")),
-        wcsSetupTask,
-        wcsDeployTask,
-        wcsCsdtTask) ++
-        assemblySettings ++ Seq(
-          assembleArtifact in packageScala := false,
-          excludedJars in assembly <<= (fullClasspath in assembly))) dependsOn (app) aggregate (app, api, core)
+    settings = commonSettings ++ assemblySettings ++ Seq(
+      libraryDependencies ++= commonDependencies,
+      name := "scalawcs-all",
+      version := "0.2",
+      wcsCsdtTask,
+      wcsSetupTask,
+      wcsDeployTask,
+      assembleArtifact in packageScala := false,
+      excludedJars in assembly <<= (fullClasspath in assembly))) dependsOn (app)
+
 }

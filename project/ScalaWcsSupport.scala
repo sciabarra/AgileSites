@@ -3,7 +3,6 @@ import Keys._
 import sbtassembly.Plugin._
 import AssemblyKeys._
 
-
 object ScalaWcsSupport {
 
   // new settings
@@ -78,31 +77,42 @@ object ScalaWcsSupport {
   val wcsSetupTask = wcsSetup <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
       (argTask,
-        publishLocal in ScalaWcsBuild.core,
+        Keys.`package` in Compile in ScalaWcsBuild.core,
         wcsDeploy,
-        managedClasspath in Compile,
+        managedClasspath in Runtime,
         classDirectory in Compile,
         wcsHome, wcsWebapp, wcsSite) map {
-          (args, _, scalawcsJar, classpath, classes, home, webapp, site) =>
+          (args, corejar, appjar, classpath, classes, home, webapp, site) =>
             // write property file
             val configFile = file(home) / "futuretense.ini"
             val config = new java.util.Properties
             config.load(new java.io.FileReader(configFile))
             config.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
-            config.setProperty("scalawcs.jar", scalawcsJar)
-            IO.copyFile(configFile, file(configFile.getAbsolutePath
-              + ".orig." + System.currentTimeMillis))
+            config.setProperty("scalawcs.jar", appjar);
             config.store(new java.io.FileWriter(configFile),
               "updated by ScalaWCS setup")
 
             // jars to include when performing a setup
             val destlib = file(webapp) / "WEB-INF" / "lib"
 
+            // add jars ... but with an hack
+            // remove the scalawcs-core from the the classpath
+            // and add the one just packaged
+            //val jarFiles = classpath.files filterNot
+            //  (_.getName startsWith "scalawcs-core")
+            //val addJars = (jarFiles :+ corejar) filter
+            //  (ScalaWcsBuild.addFilterSetup accept _)
+
             val addJars = classpath.files filter
               (ScalaWcsBuild.addFilterSetup accept _)
 
             val removeJars = destlib.listFiles filter
               (ScalaWcsBuild.removeFilterSetup accept _)
+
+            // create csdt export file
+            file("export").mkdir
+            (file("export") / "envision").mkdir
+            (file("export") / "envision" / site).mkdir
 
             // remove jars
             for (file <- removeJars) {
@@ -115,13 +125,10 @@ object ScalaWcsSupport {
             for (file <- addJars) yield {
               val tgt = destlib / file.getName
               IO.copyFile(file, tgt)
+
+              //println("<<< " + file.getAbsolutePath)
               println("+++ " + tgt.getAbsolutePath)
             }
-
-            // create csdt export file
-            file("export").mkdir
-            (file("export") / "envision").mkdir
-            (file("export") / "envision" / site).mkdir
 
             println("*** You need to restart WCS")
         }

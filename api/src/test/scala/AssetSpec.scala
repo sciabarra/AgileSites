@@ -1,6 +1,6 @@
 import org.specs2.mutable._
 
-class LostSpec extends Specification {
+class AssetSpec extends Specification {
 
   "apply 'x' should" in {
     "return Some thing for existent variables" in {
