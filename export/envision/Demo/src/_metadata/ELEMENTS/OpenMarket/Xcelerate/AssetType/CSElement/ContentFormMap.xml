@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/CSElement/ContentFormName
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+
+<!-- in case we are copying, clear out the rootelement -->
+<if COND="Variables.updatetype=setformdefaults">
+<then>
+	<ASSET.SET NAME="theCurrentAsset" FIELD="rootelement" VALUE="Variables.empty"/>
+</then>
+</if>
+
+<!-- Template editing form -->
+<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/CSElement/ContentFormSetVar"/>
+
+<callelement NAME="OpenMarket/Xcelerate/AssetType/CSElement/ContentFormNavBar">
+	<argument NAME="CurrentCat" VALUE="Map"/>
+</callelement>
+<tr>
+<td>
+<SETCOUNTER NAME="count" VALUE="0"/>
+
+<IF COND="Variables.ContentDetails:Mapping:Total!=0" >
+<THEN>
+   <SETCOUNTER NAME="count" VALUE="Variables.ContentDetails:Mapping:Total"/>
+</THEN>
+</IF>
+<INCCOUNTER NAME="count" VALUE="1"/>
+<table border="0" cellpadding="0" cellspacing="0">
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/CSElement/ContentFormMapDetail">
+		<ARGUMENT NAME="total" VALUE="Counters.count"/>
+	</CALLELEMENT>
+</table>
+<XLAT.LOOKUP KEY="dvin/TreeApplet/AddNew" VARNAME="_XLAT_"/>
+<XLAT.LOOKUP KEY="dvin/TreeApplet/AddNew" VARNAME="mouseover" ESCAPE="true"/>
+<A HREF="javascript:void(0)" onclick="return FixpagenameWithCheck('Variables.ThisPage','ContentFormMap');" onmouseover="window.status='Variables.mouseover';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables.mouseover,Variables.ThisPage">
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/AddAnother"/></CALLELEMENT>
+</A>
+</td>
+</tr>
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/CSElement/ContentFormFooter">
+		<argument NAME="NoContinue" VALUE="true"/>
+	</callelement>
+
+</table>
+
+</FTCS>

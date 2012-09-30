@@ -56,7 +56,7 @@ object ScalaWcsSupport {
             "cmd=" + (if (args.size > 0) args(0) else "listcs"),
             "fromSites=" + site,
             "datastore=" + site,
-            "resources=" + (if (args.size > 1) args(1) else "@ALL_ASSETS"))
+            "resources=" + (if (args.size > 1) args(1) else "@ALL_NONASSETS;@ALL_ASSETS"))
           //println(cmd.mkString("java -cp "+seljars.mkString(":")+" com.fatwire.csdt.client.main.CSDT ", " ", ""))
           Run.run("com.fatwire.csdt.client.main.CSDT",
             seljars, cmd, s.log)(runner)

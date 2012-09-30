@@ -14,5 +14,6 @@ abstract class Element extends CoreElement {
     ics = _ics
     apply(new X(_ics)).toString
   }
+  
   def apply(x: X): NodeSeq
 }

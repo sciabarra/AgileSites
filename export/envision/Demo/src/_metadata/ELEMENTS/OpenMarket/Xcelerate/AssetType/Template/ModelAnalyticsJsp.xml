@@ -1,0 +1,19 @@
+<%-- 
+	Analytics Image tag 
+	Data capture code for asset uses and user information
+--%>
+<ics:if condition=\'<%="true".equalsIgnoreCase(ics.GetProperty("analytics.enabled", "futuretense_xcel.ini", true))%>\'>
+<ics:then>
+<ics:if condition=\'<%=ics.GetVar("packedargs") != null%>\'>
+<ics:then>
+<render:unpackarg unpack="recid" remove="true" packed=\'<%=ics.GetVar("packedargs")%>\' outvar="packedargs"/>
+</ics:then>
+</ics:if>
+<render:callelement elementname="Analytics/AddAnalyticsImgTag">
+<render:argument name="c" value=\'<%=ics.GetVar("c")%>\'/>
+<render:argument name="cid" value=\'<%=ics.GetVar("cid")%>\'/>
+<render:argument name="site" value=\'<%=ics.GetVar("site")%>\'/>
+<render:argument name="recid" value=\'<%=ics.GetVar("recid")%>\'/>
+</render:callelement>
+</ics:then>                               
+</ics:if>
