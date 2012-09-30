@@ -96,6 +96,6 @@ object ScalaWcsBuild extends Build {
       wcsSetupTask,
       wcsDeployTask,
       assembleArtifact in packageScala := false,
-      excludedJars in assembly <<= (fullClasspath in assembly))) aggregate (app, api, core)
+      excludedJars in assembly <<= (fullClasspath in assembly))) dependsOn(app) aggregate (app, api, core)
 
 }
