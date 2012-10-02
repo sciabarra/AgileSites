@@ -1,3 +1,6 @@
+// versions (currently only valid values are 11g or 7.6)
+wcsVersion in ThisBuild := "11g"
+
 // home directory of WCS
 wcsHome in ThisBuild := "../ContentServer/11.1.1.6.0/"
 

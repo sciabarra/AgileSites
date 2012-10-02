@@ -1,6 +1,6 @@
 package wcs
 
-import wcs.util.ICSProxy
+import wcs.core.ICSProxy
 import scala.collection.immutable
 
 import COM.FutureTense.Interfaces.ICS

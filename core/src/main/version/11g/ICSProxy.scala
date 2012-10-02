@@ -1,4 +1,4 @@
-package wcs.util
+package wcs.core
 
 import java.io.OutputStream
 import java.security.Principal

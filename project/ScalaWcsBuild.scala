@@ -13,14 +13,15 @@ object ScalaWcsBuild extends Build {
 
   lazy val wcsUrl = ScalaWcsSupport.wcsUrl
   lazy val wcsSite = ScalaWcsSupport.wcsSite
+  lazy val wcsVersion = ScalaWcsSupport.wcsVersion
   lazy val wcsUser = ScalaWcsSupport.wcsUser
   lazy val wcsPassword = ScalaWcsSupport.wcsPassword
 
-  lazy val tagGeneratorTask = ScalaWcsSupport.tagGeneratorTask
   lazy val wcsSetupTask = ScalaWcsSupport.wcsSetupTask
   lazy val wcsDeployTask = ScalaWcsSupport.wcsDeployTask
-  lazy val wcsCopyStaticTask = ScalaWcsSupport.wcsCopyStaticTask
   lazy val wcsCsdtTask = ScalaWcsSupport.wcsCsdtTask
+  lazy val wcsCopyStaticTask = ScalaWcsSupport.wcsCopyStaticTask
+  lazy val coreGeneratorTask = ScalaWcsSupport.coreGeneratorTask
   
   // remove then add those jars in setup
   val addFilterSetup = "scala-library*" || "scalawcs-core*"
@@ -61,7 +62,7 @@ object ScalaWcsBuild extends Build {
       libraryDependencies ++= coreDependencies,
       name := "scalawcs-core",
       version := "0.2",
-      tagGeneratorTask))
+      coreGeneratorTask))
 
   /// API 
 
@@ -97,6 +98,6 @@ object ScalaWcsBuild extends Build {
       wcsSetupTask,
       wcsDeployTask,
       assembleArtifact in packageScala := false,
-      excludedJars in assembly <<= (fullClasspath in assembly))) dependsOn(app) aggregate (app, api, core)
+      excludedJars in assembly <<= (fullClasspath in assembly))) dependsOn(app) aggregate (app, api)
 
 }

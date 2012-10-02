@@ -17,33 +17,49 @@ object ScalaWcsSupport {
   lazy val wcsPassword = SettingKey[String]("wcs-password", "WCS Site password")
   lazy val wcsUrl = SettingKey[String]("wcs-url", "WCS URL")
   lazy val wcsSite = SettingKey[String]("wcs-site", "WCS Site for site")
+  lazy val wcsVersion = SettingKey[String]("wcs-version", "WCS or Fatwire Version")
 
   lazy val wcsCsdtJar = SettingKey[String]("wcs-csdt-jar", "WCS CSDT Jar")
   lazy val wcsCsdt = InputKey[Unit]("wcs-csdt", "WCS CSDT")
 
   // generate tag access classes from tld files
-  val tagGeneratorTask = (sourceGenerators in Compile) <+=
-    (sourceManaged in Compile, wcsWebapp) map {
-      (dstDir, srcDir) =>
+  val coreGeneratorTask = (sourceGenerators in Compile) <+=
+    (sourceManaged in Compile, wcsWebapp, baseDirectory, wcsVersion) map {
+      (dstDir, srcDir, base, version) =>
         //println(dstDir)
-        val tlds = file(srcDir) / "WEB-INF" / "futuretense_cs"
 
+        // generate tags
+        val tlds = file(srcDir) / "WEB-INF" / "futuretense_cs"
         val l = for {
           tld <- tlds.listFiles
           if tld.getName.endsWith(".tld")
           val src = tld.getAbsolutePath
           val cls = Tld2Tag.tld2class(src)
           val dst = file(dstDir / cls + ".scala")
-          // if tld.getName.equalsIgnoreCase("listobject.tld") // select only one for debug generator
+          //if tld.getName.equalsIgnoreCase("listobject.tld") // select only one for debug generator
         } yield {
           if (!dst.exists) {
-            print(cls + " ")
             val body = Tld2Tag(src)
             IO.write(dst, body)
+            //print(cls + " ")
+            println("+++ " + dst)
           }
           dst
         }
-        l.toSeq
+
+        // copy versioned class
+        val src = base / "src" / "main" / "version" / version
+        val ll = for {
+          file <- src.listFiles
+          dfile = dstDir / file.getName
+          if !dfile.exists
+        } yield {
+          println("+++ " + dfile)
+          (file, dfile)
+        }
+
+        // return files generated and copied
+        l.toSeq ++ IO.copy(ll)
     }
 
   val wcsCsdtTask = wcsCsdt <<= inputTask {
@@ -76,21 +92,23 @@ object ScalaWcsSupport {
         destjar.getAbsolutePath.toString
     }
 
-  // copy resources to webapp task
+  def recursiveCopy(src: File, tgt: File) {
+    val nsrc = src.getPath.length
+    val cplist = (src ** "*").get.filterNot(_.isDirectory) map {
+      x =>
+        val dest = tgt / x.getPath.substring(nsrc)
+        println("+++ " + dest)
+        (x, dest)
+    }
+    IO.copy(cplist)
+  }
 
+  // copy resources to webapp task
   val wcsCopyStaticTask = wcsCopyStatic <<=
     (baseDirectory, wcsWebapp) map {
       (base, tgt) =>
-        
         val src = base / "src" / "main" / "static"
-        val nsrc = src.getPath.length
-        val cplist = (src ** "*").get.filterNot(_.isDirectory) map {
-          x =>
-            val dest = file(tgt) / x.getPath.substring(nsrc)
-            println("+++ " + dest)
-            (x, dest)
-        }
-        IO.copy(cplist)
+        recursiveCopy(src, file(tgt))
     }
 
   // setup task
@@ -101,8 +119,8 @@ object ScalaWcsSupport {
         wcsDeploy,
         managedClasspath in Runtime,
         classDirectory in Compile,
-        wcsHome, wcsWebapp, wcsSite) map {
-          (args, corejar, appjar, classpath, classes, home, webapp, site) =>
+        wcsHome, wcsWebapp, wcsSite, wcsVersion) map {
+          (args, corejar, appjar, classpath, classes, home, webapp, site, version) =>
             // write property file
             val configFile = file(home) / "futuretense.ini"
             val config = new java.util.Properties
@@ -115,14 +133,6 @@ object ScalaWcsSupport {
             // jars to include when performing a setup
             val destlib = file(webapp) / "WEB-INF" / "lib"
 
-            // add jars ... but with an hack
-            // remove the scalawcs-core from the the classpath
-            // and add the one just packaged
-            //val jarFiles = classpath.files filterNot
-            //  (_.getName startsWith "scalawcs-core")
-            //val addJars = (jarFiles :+ corejar) filter
-            //  (ScalaWcsBuild.addFilterSetup accept _)
-
             val addJars = classpath.files filter
               (ScalaWcsBuild.addFilterSetup accept _)
 
@@ -132,7 +142,7 @@ object ScalaWcsSupport {
             // create csdt export file
             file("export").mkdir
             (file("export") / "envision").mkdir
-            (file("export") / "envision" / site).mkdir
+            (file("export") / "envision" / (site + version)).mkdir
 
             // remove jars
             for (file <- removeJars) {
