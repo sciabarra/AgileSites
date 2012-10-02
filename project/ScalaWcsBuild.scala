@@ -19,8 +19,9 @@ object ScalaWcsBuild extends Build {
   lazy val tagGeneratorTask = ScalaWcsSupport.tagGeneratorTask
   lazy val wcsSetupTask = ScalaWcsSupport.wcsSetupTask
   lazy val wcsDeployTask = ScalaWcsSupport.wcsDeployTask
+  lazy val wcsCopyStaticTask = ScalaWcsSupport.wcsCopyStaticTask
   lazy val wcsCsdtTask = ScalaWcsSupport.wcsCsdtTask
-
+  
   // remove then add those jars in setup
   val addFilterSetup = "scala-library*" || "scalawcs-core*"
   val removeFilterSetup = addFilterSetup 
@@ -76,14 +77,14 @@ object ScalaWcsBuild extends Build {
       version := "0.2"))
 
   /// APP 
-
   lazy val app: Project = Project(
     id = "app",
     base = file("app"),
     settings = commonSettings ++ Seq(
       libraryDependencies ++= commonDependencies,
       name := "scalawcs-app",
-      version := "0.2")) dependsOn (api)
+      version := "0.2",
+      wcsCopyStaticTask)) dependsOn (api)
 
   lazy val all: Project = Project(
     id = "all",

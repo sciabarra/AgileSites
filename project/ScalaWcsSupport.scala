@@ -8,8 +8,10 @@ object ScalaWcsSupport {
   // new settings
   lazy val wcsHome = SettingKey[String]("wcs-home", "WCS Home Directory")
   lazy val wcsWebapp = SettingKey[String]("wcs-webapp", "WCS Webapp CS Directory")
+
   lazy val wcsSetup = InputKey[Unit]("wcs-setup", "WCS Setup")
   lazy val wcsDeploy = TaskKey[String]("wcs-deploy", "WCS Deploy")
+  lazy val wcsCopyStatic = TaskKey[Unit]("wcs-copy-static", "WCS copy resources")
 
   lazy val wcsUser = SettingKey[String]("wcs-user", "WCS Site for user")
   lazy val wcsPassword = SettingKey[String]("wcs-password", "WCS Site password")
@@ -70,7 +72,25 @@ object ScalaWcsSupport {
         val destjar = file(home) / jar.getName
         IO.copyFile(jar, destjar)
         println("+++ " + destjar.getAbsolutePath)
+
         destjar.getAbsolutePath.toString
+    }
+
+  // copy resources to webapp task
+
+  val wcsCopyStaticTask = wcsCopyStatic <<=
+    (baseDirectory, wcsWebapp) map {
+      (base, tgt) =>
+        
+        val src = base / "src" / "main" / "static"
+        val nsrc = src.getPath.length
+        val cplist = (src ** "*").get.filterNot(_.isDirectory) map {
+          x =>
+            val dest = file(tgt) / x.getPath.substring(nsrc)
+            println("+++ " + dest)
+            (x, dest)
+        }
+        IO.copy(cplist)
     }
 
   // setup task
