@@ -23,13 +23,6 @@ public class WCS {
 				return "Not found " + jar;
 		}
 
-		if (clazz == null)
-			return dispatcher.dispatch(ics);
-		else
-			return dispatcher.dispatch(ics, clazz);
-	}
-
-	public static String dispatch(COM.FutureTense.Interfaces.ICS ics) {
-		return dispatch(ics, null);
+		return dispatcher.dispatch(ics, clazz);
 	}
 }

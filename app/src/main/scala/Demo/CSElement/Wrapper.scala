@@ -8,8 +8,8 @@ import Demo.test._
 
 class Wrapper extends Element with Log {
 
- 
   def apply(e: Env) = {
+    implicit val ics = e.ics
 
     // excercise log
     info("INFO Hello, world!!!")
@@ -18,8 +18,7 @@ class Wrapper extends Element with Log {
     warn("WARN Hello, world!!!")
 
     // call a tag
-    implicit val ics = e.ics
-    
+
     import Listobject._
     create("l", "a,b")
     addrow("l", 'a := "1", 'b := "2")
@@ -38,7 +37,7 @@ class Wrapper extends Element with Log {
         <h3>{ caw.toString() }</h3>
     }*/
 
-    try { 
+    try {
       <h1>{ e("pagename") }</h1>
       <p>List ncol:{ ics.GetList("l").numColumns() }</p>
       <p>List nrows:{ ics.GetList("l").numRows() }</p>
