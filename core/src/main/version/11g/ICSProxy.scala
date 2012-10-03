@@ -26,7 +26,7 @@ import com.fatwire.cs.core.uri.Definition
 /**
  * Proxy methods to non-deprecated ICS methods
  */
-trait ICSProxy {
+class ICSProxy {
 
   var ics: COM.FutureTense.Interfaces.ICS = null
   

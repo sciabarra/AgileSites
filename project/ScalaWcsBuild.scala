@@ -3,6 +3,7 @@ import Keys._
 import sys.process._
 import sbtassembly.Plugin._
 import AssemblyKeys._
+import com.typesafe.sbteclipse.plugin.EclipsePlugin.EclipseKeys
 
 object ScalaWcsBuild extends Build {
 
@@ -97,6 +98,7 @@ object ScalaWcsBuild extends Build {
       wcsCsdtTask,
       wcsSetupTask,
       wcsDeployTask,
+      EclipseKeys.skipProject := true,
       assembleArtifact in packageScala := false,
       excludedJars in assembly <<= (fullClasspath in assembly))) dependsOn(app) aggregate (app, api)
 
