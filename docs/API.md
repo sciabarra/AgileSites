@@ -4,15 +4,15 @@
 
 Dispatcher invokes classes implementing the ``wcs.Element`` trait.
 
-Each Element must implement the method ``apply(x: X)`` 
+Each Element must implement the method ``apply(e: Env)`` 
 
-This ``x: X`` variable is the entry point to invoke the enviroment.
+This ``x: Env`` variable is the entry point to invoke the enviroment.
 
 ## Accessing variables and lists ##
 
-- Read a variable as a String: <br>``x("var")``
+- Read a variable as a String: <br>``e("var")``
 
-- Read a list as a sequence and then iterate it: <br>``x.list("list")``
+- Read a list as a sequence and then iterate it: <br>``e.list("list")``
 
 Example:
 
