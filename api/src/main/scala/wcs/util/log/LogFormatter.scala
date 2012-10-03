@@ -1,4 +1,4 @@
-package wcs.util
+package wcs.util.log
 
 class LogFormatter {
 

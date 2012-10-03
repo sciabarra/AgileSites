@@ -1,19 +1,14 @@
 package wcs
 
-import wcs.core.{Element => CoreElement}
-
-import scala.xml.NodeSeq
-
 import COM.FutureTense.Interfaces.ICS;
+import scala.xml.NodeSeq
+import wcs.core.{ Element => CoreElement }
 
 abstract class Element extends CoreElement {
 
-  implicit var ics: ICS = null
-
-  def exec(_ics: ICS) = {
-    ics = _ics
-    apply(new X(_ics)).toString
+  def exec(ics: ICS) = {
+    apply(new Env(ics)).toString
   }
-  
-  def apply(x: X): NodeSeq
+
+  def apply(e: Env): NodeSeq
 }

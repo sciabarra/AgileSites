@@ -1,9 +1,11 @@
-package wcs.test
+package wcs.implx
 
-import COM.FutureTense.Interfaces.IList
 import wcs.Log
 
-class MockIList(val name: String, val listMap: Map[String, List[String]]) extends IList with Log {
+import COM.FutureTense.Interfaces.IList
+
+
+class MapListIList(val name: String, val listMap: Map[String, List[String]]) extends IList with Log {
 
   private var curRow = 0
   private val (columns, _numRows, _hasData, _numColumns) =

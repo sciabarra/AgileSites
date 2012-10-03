@@ -1,4 +1,4 @@
-package Demo.test
+package wcs.util
 
 trait Specification {
 

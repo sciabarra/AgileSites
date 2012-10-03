@@ -1,17 +1,23 @@
 package wcs
 
-import wcs.core.ICSProxy
 import scala.collection.immutable
 
 import COM.FutureTense.Interfaces.ICS
+import COM.FutureTense.Interfaces.IList
+import wcs.core.ICSProxy
 
 /**
  * Scala API on top of ICS
  */
-class X(_ics: ICS) extends ICSProxy {
-    
-  var ics = _ics
-  
+class Env(_ics: ICS) extends ICSProxy {
+
+  init(_ics)
+
+  /**
+   * Set a ilist from the env
+   */
+  //def setList(k: java.lang.String, l: IList): Env
+
   /**
    * the value or a null string if none
    */
@@ -20,28 +26,23 @@ class X(_ics: ICS) extends ICSProxy {
   /**
    * Return Some variable value if the variable is available or None if there is no such variable
    */
-
-  def get(s: String) = {
-    val v = ics.GetVar(s)
+  def get(s: String): Option[String] = {
+    val v = _ics.GetVar(s)
     if (v == null)
       None
     else
       Some(v)
   }
 
-  val voidList = List[immutable.Map[String, String]]()
-
   /**
-   * Return WCS lists as  Seq of Maps
+   * Return a ilists as  Seq of Maps
    */
   def list(s: String): Seq[immutable.Map[String, String]] = {
+    val voidList = List[immutable.Map[String, String]]()
 
-    val ls = ics.GetList(s)
+    val ls = _ics.GetList(s)
     if (ls == null)
       return voidList
-
-    //log.trace("numRows=%d", ls.numRows)
-    //log.trace("numColumns=%d", ls.numColumns)
 
     val l = for (i <- 1 to ls.numRows) yield {
       ls.moveTo(i)

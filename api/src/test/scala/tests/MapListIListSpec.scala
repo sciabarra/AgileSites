@@ -1,11 +1,11 @@
 package tests
 
 import org.specs2.mutable._
-import wcs.test.MockIList
+import wcs.implx.MapListIList
 import wcs.Log
 
-class MockIListSpec extends Specification with Log {
-  
+class MapListIListSpec extends Specification with Log {
+
   sequential
 
   error("error ")
@@ -15,12 +15,12 @@ class MockIListSpec extends Specification with Log {
   trace("trace ")
   dump("dump ")
 
-  val l0 = new MockIList("l0", Map())
-  val l1 = new MockIList("l1", Map("a" -> List("1")))
-  val l3 = new MockIList("l3", Map("b" -> List("1", "2", "3")))
-  val l22 = new MockIList("l22", Map("a" -> List("1", "2"), "b" -> List("10", "20", "30")))
+  val l0 = new MapListIList("l0", Map())
+  val l1 = new MapListIList("l1", Map("a" -> List("1")))
+  val l3 = new MapListIList("l3", Map("b" -> List("1", "2", "3")))
+  val l22 = new MapListIList("l22", Map("a" -> List("1", "2"), "b" -> List("10", "20", "30")))
 
-  "StubIList void should" in {
+  "MapListIList void should" in {
     " one column but unnamed" in {
       l0.numColumns() must_== 1
       l0.getColumnName(1) must_== null
@@ -38,7 +38,7 @@ class MockIListSpec extends Specification with Log {
     }
   }
 
-  "StubIList one row should " in {
+  "MapListIList one row should " in {
     "be 1 length" in {
       l1.numColumns must_== 1
     }
@@ -47,7 +47,7 @@ class MockIListSpec extends Specification with Log {
     "not found key" in { l1.getValue("b") must throwA[java.lang.NoSuchFieldException] }
   }
 
-  "StubIList 3 rows should " in {
+  "MapListIList 3 rows should " in {
     "be 3 long" in {
       l3.numRows must_== 3
     }
@@ -61,7 +61,7 @@ class MockIListSpec extends Specification with Log {
     "found key" in { l3.getValue("b") must_!= null }
   }
 
-  "StubIList 2x2 rows should" in {
+  "MapListIList 2x2 rows should" in {
     "be 2 long" in {
       l22.numRows must_== 2
     }

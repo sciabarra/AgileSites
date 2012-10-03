@@ -11,7 +11,7 @@
         <description>Template</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Users/msciab/Work/product/ScalaWCS/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp1/dcs5881886153019558827.tmp</urldescriptorspec>
+        <urldescriptorspec>/Users/msciab/Work/product/ScalaWCS/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp20/dcs1159735051951140554.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-Template</uid>
         <useDimension></useDimension>
@@ -987,7 +987,7 @@ DQo=</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Sun Sep 30 22:14:03 CEST 2012
+#Wed Oct 03 14:08:24 CEST 2012
 key=@ASSET_TYPE-CSSystem-AssetType-Template
 type=ASSET_TYPE
 sites=avisports,Demo,FirstSiteII,ScalaWCS

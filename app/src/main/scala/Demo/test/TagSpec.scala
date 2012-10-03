@@ -2,9 +2,11 @@ package Demo.test
 
 import wcs._
 import wcs.tag._
+import wcs.util.Specification
+import wcs.Env
 
-class TagSpec(x: X) extends Specification {
-  implicit val ics = x.ics
+class TagSpec(e: Env) extends Specification {
+  implicit val ics = e.ics
   
   "create list with tag" in {
     import Listobject._

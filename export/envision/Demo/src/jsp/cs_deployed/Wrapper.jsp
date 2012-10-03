@@ -20,5 +20,5 @@ OUTPUT
 <%-- Record dependencies for the SiteEntry and the CSElement --%>
 <ics:if condition='<%=ics.GetVar("seid")!=null%>'><ics:then><render:logdep cid='<%=ics.GetVar("seid")%>' c="SiteEntry"/></ics:then></ics:if>
 <ics:if condition='<%=ics.GetVar("eid")!=null%>'><ics:then><render:logdep cid='<%=ics.GetVar("eid")%>' c="CSElement"/></ics:then></ics:if>
-<%=wcs.core.WCS.dispatch(ics, "Demo.view.CSElement.Wrapper")%>
+<%=wcs.core.WCS.dispatch(ics, "Demo.CSElement.Wrapper")%>
 </cs:ftcs>

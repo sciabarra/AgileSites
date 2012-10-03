@@ -52,14 +52,14 @@ object ScalaWcsSupport {
         val ll = for {
           file <- src.listFiles
           dfile = dstDir / file.getName
-          if !dfile.exists
         } yield {
           println("+++ " + dfile)
-          (file, dfile)
+          IO.copyFile(file, dfile)
+          dfile
         }
 
         // return files generated and copied
-        l.toSeq ++ IO.copy(ll)
+        l.toSeq ++ ll.toSeq
     }
 
   val wcsCsdtTask = wcsCsdt <<= inputTask {

@@ -3,13 +3,15 @@ package Demo.test
 import wcs.tag._
 import COM.FutureTense.Interfaces.IList
 import COM.FutureTense.Interfaces.ICS
+
 import wcs.Log
+import wcs.util.Specification
 
 /**
  * This class validates some assertions that are implemented by StubIList
  */
-class IListSpec(val x: wcs.X) extends Specification with Log {
-  implicit val ics = x.ics
+class IListSpec(val e: wcs.Env) extends Specification with Log {
+  implicit val ics = e.ics
 
   info("IListSpec")
 

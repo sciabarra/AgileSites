@@ -1,18 +1,18 @@
-package wcs.test
+package wcs.implx
 
+import java.io.OutputStream
+import java.security.Principal
+import java.util.Enumeration
 import com.fatwire.cs.core.uri.Definition
+import com.fatwire.cs.core.db.StatementParam
+import com.fatwire.cs.core.db.PreparedStmt
+import COM.FutureTense.ContentServer.PageData
+import COM.FutureTense.XML.Template.Seed
 import COM.FutureTense.Util.ftErrors
 import COM.FutureTense.Cache.Satellite
 import COM.FutureTense.Interfaces.ICS
-import java.io.OutputStream
-import java.util.Enumeration
-import COM.FutureTense.ContentServer.PageData
-import COM.FutureTense.XML.Template.Seed
-import com.fatwire.cs.core.db.PreparedStmt
-import java.security.Principal
 import COM.FutureTense.Interfaces.FTVAL
 import COM.FutureTense.Interfaces.IList
-import com.fatwire.cs.core.db.StatementParam
 import COM.FutureTense.Interfaces.FTValList
 import COM.FutureTense.Interfaces.ISearchEngine
 import COM.FutureTense.Interfaces.ISyncHash
@@ -22,37 +22,51 @@ import COM.FutureTense.Interfaces.IJSPObject
 import COM.FutureTense.Interfaces.PastramiEngine
 import COM.FutureTense.Interfaces.IMIMENotifier
 import COM.FutureTense.Interfaces.IProperties
+import java.io.File
 
 /**
  * Mock class simulating (part of) ICS behaviour
  */
-class MockICS extends ICS {
+class XmlICS extends ICS {
 
+  var base: File = new File(".")
   var varMap = Map[String, String]()
   var listMap = Map[String, IList]()
 
-  def this(map: Map[String, String]) = { this(); this.varMap = map }
-
-  def addList(name: String, map: Map[String, List[String]]) = {
-    listMap = listMap + (name -> new MockIList(name, map))
+  def init(baseDir: String) {
+    base = new File(baseDir)
   }
+
+  def addMapList(name: String, map: Map[String, List[String]]) = {
+    listMap = listMap + (name -> new MapListIList(name, map))
+  }
+
+  def addMapVar(map: Map[String, String]) = { this.varMap = map }
 
   // implemented
   def GetVar(arg0: String): String = { varMap.get(arg0).getOrElse { null } }
 
   def GetList(arg0: String): IList = { listMap.getOrElse(arg0, null) }
 
-  // unimplemented
+  // to be implemented soon (but yet unimplemeneted)
 
-  def PushVars(): Unit = {}
+  def GetList(arg0: String, arg1: Boolean): IList = { null }
 
-  def PopVars(): Unit = {}
+  def RenameList(arg0: String, arg1: String): Boolean = { false }
+
+  def CopyList(arg0: String, arg1: String): Boolean = { false }
 
   def SetVar(arg0: String, arg1: String): Unit = {}
 
   def SetVar(arg0: String, arg1: Int): Unit = {}
 
   def SetVar(arg0: String, arg1: FTVAL): Unit = {}
+
+  // unimplemented
+
+  def PushVars(): Unit = {}
+
+  def PopVars(): Unit = {}
 
   def SetObj(arg0: String, arg1: Object): Boolean = { false }
 
@@ -147,12 +161,6 @@ class MockICS extends ICS {
   def CatalogDef(arg0: String, arg1: String, arg2: StringBuffer): IList = { null }
 
   def CatalogIndexDef(arg0: String, arg1: String, arg2: StringBuffer): IList = { null }
-
-  def GetList(arg0: String, arg1: Boolean): IList = { null }
-
-  def RenameList(arg0: String, arg1: String): Boolean = { false }
-
-  def CopyList(arg0: String, arg1: String): Boolean = { false }
 
   def CatalogManager(arg0: FTValList): Boolean = { false }
 

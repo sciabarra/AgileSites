@@ -28,13 +28,10 @@ import com.fatwire.cs.core.uri.Definition
  */
 trait ICSProxy {
 
-  var ics: COM.FutureTense.Interfaces.ICS
-
-  /**
-   * Initialize a proxy with a value
-   */
-  def init(ics: COM.FutureTense.Interfaces.ICS) { this.ics = ics }
-
+  var ics: COM.FutureTense.Interfaces.ICS = null
+  
+  def init(_ics: COM.FutureTense.Interfaces.ICS) { ics = _ics }
+  
   // proxyed methods
   def AppEvent(arg0: String, arg1: String, arg2: String, arg3: FTValList) = ics.AppEvent(arg0, arg1, arg2, arg3)
 

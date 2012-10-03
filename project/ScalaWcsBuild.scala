@@ -61,13 +61,13 @@ object ScalaWcsBuild extends Build {
     settings = commonSettings ++ Seq(
       libraryDependencies ++= coreDependencies,
       name := "scalawcs-core",
-      version := "0.2",
+      version := "0.3", // if you change this, fix dependencies, too!
       coreGeneratorTask))
 
   /// API 
 
   val commonDependencies = coreDependencies ++
-    Seq("org.scalawcs" %% "scalawcs-core" % "0.2")
+    Seq("org.scalawcs" %% "scalawcs-core" % "0.3")
 
   lazy val api: Project = Project(
     id = "api",
