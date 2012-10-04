@@ -14,11 +14,6 @@ class Env(_ics: ICS) extends ICSProxy {
   init(_ics)
 
   /**
-   * Set a ilist from the env
-   */
-  //def setList(k: java.lang.String, l: IList): Env
-
-  /**
    * the value or a null string if none
    */
   def apply(s: String) = get(s).getOrElse("")
