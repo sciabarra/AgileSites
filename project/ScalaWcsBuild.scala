@@ -25,11 +25,11 @@ object ScalaWcsBuild extends Build {
   lazy val coreGeneratorTask = ScalaWcsSupport.coreGeneratorTask
   
   // remove then add those jars in setup
-  val addFilterSetup = "scala-library*" || "scalawcs-core*" || "jsoup*"
+  val addFilterSetup = "scala-library*" || "scalawcs-core*" 
   val removeFilterSetup = addFilterSetup 
 
   // configuring WCS jars as unmanaged lib
-  val unmanagedFilter = "commons-*" || "http-*" || "cs-*" ||
+  val unmanagedFilter = "commons-*" || "http-*" || "jsoup-*" || "cs-*" ||
     "wem-sso-api-*" || "rest-api-*" || "cas-client-*" ||
     "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar"
 
@@ -46,7 +46,6 @@ object ScalaWcsBuild extends Build {
   val coreDependencies = Seq(
     "javax.servlet" % "servlet-api" % "2.5",
     "commons-logging" % "commons-logging" % "1.1.1",
-    "org.jsoup" % "jsoup" % "1.7.1",
     "org.specs2" %% "specs2" % "1.12.1" % "test")
 
   val commonSettings = Defaults.defaultSettings ++ Seq(

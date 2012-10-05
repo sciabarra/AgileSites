@@ -12,7 +12,7 @@ class Wrapper extends Element with Log {
   def apply(e: Env) = Seq(
     <h1>Hello</h1>,
     "<p><b>",
-    element("helloword"),
+    element("HelloWorld"),
     "</b></p>")
 
 }
