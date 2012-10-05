@@ -1,5 +1,6 @@
 package Demo.test
 
+import wcs._
 import wcs.tag._
 import COM.FutureTense.Interfaces.IList
 import COM.FutureTense.Interfaces.ICS

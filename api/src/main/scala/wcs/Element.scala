@@ -1,36 +1,42 @@
 package wcs
 
-import COM.FutureTense.Interfaces.ICS
 import scala.xml.NodeSeq
 import wcs.core.{ Element => CoreElement }
+import wcs.util.Future
+import wcs.util.FutureCallElement
+import wcs.util.FutureElem
 import java.io.PrintWriter
+import COM.FutureTense.Interfaces.ICS
 
-abstract class Element extends CoreElement  with Log {
+abstract class Element extends CoreElement with Log {
+
+  def element(name: String, args: Tuple2[Symbol, String]*) = {
+    new FutureCallElement(name, args: _*)
+  }			
 
   def exec(ics: ICS) = try {
-    apply(new Env(ics)) match {
-      case a: Seq[Any] =>
-        a map { _.toString } mkString ""
-      case x @ _ =>
-        debug("here: "+x.getClass)
-        x.toString
+
+    for (fut <- apply(new Env(ics))) {
+      debug(fut(ics))
     }
+    ""
+
   } catch {
     case t: Throwable =>
 
-      // extract the stacktrace
-      val caw = new java.io.CharArrayWriter
-      val pw = new java.io.PrintWriter(caw)
-      t.printStackTrace(pw)
-
       // message
+      val msg = <h1>{ t.getMessage }</h1>
+                <pre>{ stacktrace(t) }</pre>.toString
 
-      <h1>{ t.getMessage }</h1>
-      <pre>{ caw.toString() }</pre>.toString
+      ics.StreamText(msg)
+
+      ""
 
     case e @ _ =>
-      <pre>{ e.toString }</pre>.toString
+      val msg = <pre>{ e.toString }</pre>.toString
+      ics.StreamText(msg)
+      ""
   }
 
-  def apply(e: Env): Any
+  def apply(e: Env): Seq[Future]
 }
