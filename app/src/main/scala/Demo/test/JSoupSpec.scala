@@ -1,9 +1,9 @@
 package Demo.test
 
-import wcs.util.Specification
-import wcs.Env
+import wcs.scala.Env
+import wcs.scala.util.Specification
 import org.jsoup._
-import wcs.Log
+import wcs.scala.Log
 
 class JSoupSpec extends Specification {
 }

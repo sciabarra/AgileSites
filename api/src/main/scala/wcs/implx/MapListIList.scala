@@ -1,6 +1,6 @@
 package wcs.implx
 
-import wcs.Log
+import wcs.scala.Log
 
 import COM.FutureTense.Interfaces.IList
 

@@ -1,4 +1,4 @@
-package wcs
+package wcs.scala
 
 import scala.annotation.elidable
 import scala.annotation.elidable._
@@ -8,7 +8,7 @@ import java.util.logging.{ Logger => JLogger }
 trait Log {
 
   @elidable(FINEST) implicit val _name = this.getClass.getCanonicalName
-  @elidable(FINEST) val _handler = new wcs.util.log.LogHandler
+  @elidable(FINEST) val _handler = new wcs.util.LogHandler
 
   /** Format a string using params, if any, otherwise use the string as-is */
   @inline protected final def format(fmt: String, params: Seq[Any]) = {

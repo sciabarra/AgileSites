@@ -1,17 +1,17 @@
 package Demo.test
 
-import wcs._
 import wcs.tag._
+import wcs.scala.tag._
 import COM.FutureTense.Interfaces.IList
 import COM.FutureTense.Interfaces.ICS
 
-import wcs.Log
-import wcs.util.Specification
+import wcs.scala.Log
+import wcs.scala.util.Specification
 
 /**
  * This class validates some assertions that are implemented by StubIList
  */
-class IListSpec(val e: wcs.Env) extends Specification with Log {
+class IListSpec(val e: wcs.scala.Env) extends Specification with Log {
   implicit val ics = e.ics
 
   info("IListSpec")

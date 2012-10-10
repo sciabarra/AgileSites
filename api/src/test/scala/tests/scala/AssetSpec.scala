@@ -1,4 +1,4 @@
-package tests
+package tests.scala
 
 import org.specs2.mutable._
 

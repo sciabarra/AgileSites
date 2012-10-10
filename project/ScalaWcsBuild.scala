@@ -46,11 +46,13 @@ object ScalaWcsBuild extends Build {
   val coreDependencies = Seq(
     "javax.servlet" % "servlet-api" % "2.5",
     "commons-logging" % "commons-logging" % "1.1.1",
+    "com.novocode" % "junit-interface" % "0.8" % "test->default",
     "org.specs2" %% "specs2" % "1.12.1" % "test")
 
   val commonSettings = Defaults.defaultSettings ++ Seq(
     scalaVersion := "2.9.1",
     organization := "org.scalawcs", // collect jars from WCS
+    compileOrder := CompileOrder.JavaThenScala,
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
     unmanagedJarsTask)

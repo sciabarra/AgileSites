@@ -1,4 +1,4 @@
-package wcs.util
+package wcs.scala.util
 
 import COM.FutureTense.Interfaces.ICS
 import scala.xml.NodeSeq

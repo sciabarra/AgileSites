@@ -3,7 +3,7 @@ package Demo.test
 import COM.FutureTense.Interfaces.ICS
 import COM.FutureTense.Interfaces.FTValList
 import wcs._
-import wcs.util.Specification
+import wcs.scala.util.Specification
 
 class RunTagSpec(ics: ICS) extends Specification {
 

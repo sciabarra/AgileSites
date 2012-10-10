@@ -1,6 +1,6 @@
 package Demo.test
-import wcs.Env
-import wcs.Log
+import wcs.scala.Env
+import wcs.scala.Log
 import scala.xml.NodeSeq
 
 object AllTests extends Log {

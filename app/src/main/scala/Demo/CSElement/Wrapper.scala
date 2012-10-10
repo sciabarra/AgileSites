@@ -1,6 +1,6 @@
 package Demo.CSElement
 
-import wcs._
+import wcs.scala._
 import wcs.tag._
 
 import java.io.CharArrayWriter
@@ -12,8 +12,8 @@ class Wrapper extends Element with Log {
   def apply(e: Env) = Seq(
     <h1>Hello</h1>,
     "<p><b>",
-    element("HelloWorld"),
-    "</b></p>")
+    call("HelloWorld"),
+    "</b></p>").toString
 
 }
 
