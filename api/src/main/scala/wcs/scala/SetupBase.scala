@@ -7,7 +7,7 @@ import wcs.java.{ SiteEntry => JSiteEntry }
 /**
  * Setup wrapper in Scala
  */
-abstract class BaseSetup extends JSetupBase {
+abstract class SetupBase extends JSetupBase {
 
   case class CSElement(name: String, element: String)
 

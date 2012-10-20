@@ -1,4 +1,4 @@
-package Demo.test
+package demo.test
 
 import wcs.scala.tag._
 import COM.FutureTense.Interfaces.IList

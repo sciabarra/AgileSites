@@ -1,4 +1,4 @@
-package Demo.test
+package demo.test
 
 import wcs.scala.Env
 import wcs.scala.util.Specification

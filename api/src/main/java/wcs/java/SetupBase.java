@@ -1,6 +1,6 @@
 package wcs.java;
 
-abstract public class SetupBase {
+abstract public class SetupBase implements wcs.core.Setup {
 
 	/**
 	 * Execute the backup creating the assets using the Asset API
@@ -15,14 +15,15 @@ abstract public class SetupBase {
 		sb.append("Installing: username="+username+ "password="+password);
 
 		for (CSElement cselement : getCSElements()) {
-			sb.append("CSElement: " + cselement.getName());
+			sb.append("\nCSElement: " + cselement.getName());
 		}
 		for (SiteEntry siteentry : getSiteEntries()) {
-			sb.append("SiteEntry: " + siteentry.getName());
+			sb.append("\nSiteEntry: " + siteentry.getName());
 		}
 		for (Template template : getTemplates()) {
-			sb.append("Template: " + template.getName());
+			sb.append("\nTemplate: " + template.getName());
 		}
+		sb.append("\n");
 		return sb.toString();
 	}
 

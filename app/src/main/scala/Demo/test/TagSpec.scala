@@ -1,4 +1,4 @@
-package Demo.test
+package demo.test
 
 import wcs.scala._
 import wcs.scala.tag._

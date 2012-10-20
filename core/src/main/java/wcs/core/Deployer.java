@@ -23,6 +23,14 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
  */
 public class Deployer {
 
+	String invoker = "<%@ taglib prefix=\"cs\" uri=\"futuretense_cs/ftcs1_0.tld\"\n"
+			+ "%><cs:ftcs><% String result =\"\"; try { result = wcs.core.WCS.deploy(ics, "
+			+ "ics.GetVar(\"site\"), "
+			+ "ics.GetVar(\"username\"),"
+			+ "ics.GetVar(\"password\")); } catch(Exception ex) { ex.printStackTrace(); }"
+			+ " %><%= result %></cs:ftcs>";
+
+	String site;
 	String url;
 	String username;
 	String password;
@@ -33,7 +41,7 @@ public class Deployer {
 	HttpState state = new HttpState();
 
 	public Deployer() {
-		this("http://localhost:8380/cs/", "fwadmin", "xceladmin");
+		this("http://localhost:8380/cs/", "Demo", "fwadmin", "xceladmin");
 	}
 
 	/**
@@ -43,9 +51,10 @@ public class Deployer {
 	 * @param username
 	 * @param password
 	 */
-	public Deployer(String url, String username, String password) {
+	public Deployer(String url, String site, String username, String password) {
 		this.username = username;
 		this.password = password;
+		this.site = site;
 		this.url = url;
 		if (!url.endsWith("/"))
 			url = url + "/";
@@ -139,10 +148,10 @@ public class Deployer {
 	 * @return
 	 * @throws IOException
 	 */
-	public String invoke(String name)
-			throws IOException {
+	public String invoke(String name) throws IOException {
 		String url = cs + //
 				"?pagename=" + name + //
+				"&site=" + site + //
 				"&username=" + username + //
 				"&password=" + password;
 		return get(url);
@@ -189,8 +198,8 @@ public class Deployer {
 	}
 
 	/**
-	 * Perform all the deploy: createa a new element with a random name, then run the created element 
-	 * that is supposed
+	 * Perform all the deploy: createa a new element with a random name, then
+	 * run the created element that is supposed
 	 * 
 	 * @return
 	 * @throws Exception
@@ -199,13 +208,13 @@ public class Deployer {
 		StringBuilder sb = new StringBuilder();
 
 		String name = "AAA-ScalaWCS-" + System.currentTimeMillis() + "-"
-				+ Math.floor(Math.random() * 1000000);
+				+ Math.round(Math.random() * 100000);
 
 		sb.append("<h1>Login</h1>\n");
 		sb.append(login());
 
 		sb.append("<h1>Create Element</h1>\n");
-		sb.append(createElement(name, "Hello from deployer.\n3+3=<%= 3+3 %>.\n"));
+		sb.append(createElement(name, invoker));
 
 		sb.append("<h1>Create Entry</h1>\n");
 		sb.append(createEntry(name));
@@ -213,9 +222,10 @@ public class Deployer {
 		sb.append("<h1>Deploy</h1>\n");
 		sb.append(invoke(name));
 
-		sb.append("<b1>Remove Element and Entry</h1>\n");
-		sb.append(delete("elementcatalog", "elementname", name));
-		sb.append(delete("sitecatalog", "pagename", name));
+		sb.append("created " + name);
+		// sb.append("<h1>Remove Element and Entry</h1>\n");
+		// sb.append(delete("elementcatalog", "elementname", name));
+		// sb.append(delete("sitecatalog", "pagename", name));
 
 		sb.append("<h1>Logout</h1>\n");
 		sb.append(logout());

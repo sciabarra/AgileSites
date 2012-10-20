@@ -67,6 +67,7 @@ object ScalaWcsBuild extends Build {
     base = file("core"),
     settings = commonSettings ++ Seq(
       libraryDependencies ++= coreDependencies,
+      publishArtifact in packageDoc := false,     
       name := "scalawcs-core",
       version := "0.4", // if you change this, fix dependencies, too!
       coreGeneratorTask))

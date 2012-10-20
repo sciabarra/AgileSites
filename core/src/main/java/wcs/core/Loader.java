@@ -17,20 +17,18 @@ public class Loader {
 	java.util.logging.Logger log = java.util.logging.Logger
 			.getLogger(Loader.class.getCanonicalName());
 
-	private File jar;
 	private long jarTimestamp = 0;
 	private URLClassLoader ucl;
 	private ClassLoader mycl = getClass().getClassLoader();
-	private String setupClass;
+	private File jar;
 
 	/**
 	 * Build a loader
 	 * 
 	 * @param file
 	 */
-	public Loader(File file, String setupSite) {
+	public Loader(File file) {
 		jar = file;
-		this.setupClass = setupSite.toLowerCase() + ".model." + "Setup";
 	}
 
 	/**
@@ -43,17 +41,13 @@ public class Loader {
 	public ClassLoader loadJar() throws MalformedURLException {
 
 		if (jar == null) {
-			if (WCS.debug) {
-				System.out.println(">>>LOADER: no jar specified");
-				log.severe("no jar specified");
-			}
 
+			WCS.debug("[Loader]: no jar specified");
 			return mycl;
 		}
 
 		if (!jar.exists()) {
-			System.out.println(">>>LOADER: jar not found!!!");
-			log.severe("no jar specified");
+			WCS.debug("[Loader]: jar not found!!!");
 			return mycl;
 		}
 
@@ -65,8 +59,7 @@ public class Loader {
 		if (curTimestamp > jarTimestamp) {
 			URL url = jar.toURI().toURL();
 
-			System.out.println(">>>LOADER: reloading " + url);
-			log.info("reloading " + url);
+			WCS.debug("[Loader] reloading " + url);
 
 			jarTimestamp = curTimestamp;
 			ucl = new URLClassLoader(new URL[] { url }, mycl);
@@ -74,33 +67,6 @@ public class Loader {
 		}
 		return ucl;
 
-	}
-	
-	/**
-	 * Perform installation of the jar calling the setup method
-	 * 
-	 * @return
-	 */
-	public String installJar(String user, String pass) {
-		// perform initialization
-		try {
-			
-			@SuppressWarnings("rawtypes")
-			Class clazz = Class.forName(setupClass, true, loadJar());
-			Object obj = clazz.newInstance();
-			
-			// cast and execute
-			if (obj instanceof Setup) {
-				Setup setup = (Setup) obj;
-				return setup.exec(user, pass);
-			} else
-				return "Error in configuration - cannot find setup class";
-			
-		} catch (Exception ex) {
-			System.out.println(">>>LOADER: setup exception " + ex.getMessage());
-			log.warning("setup exception " + ex.getMessage());
-			return ex.getMessage();
-		}
 	}
 
 }

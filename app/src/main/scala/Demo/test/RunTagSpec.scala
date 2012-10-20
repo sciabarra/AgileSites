@@ -1,4 +1,4 @@
-package Demo.test
+package demo.test
 
 import COM.FutureTense.Interfaces.ICS
 import COM.FutureTense.Interfaces.FTValList

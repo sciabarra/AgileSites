@@ -2,7 +2,7 @@ package demo
 
 import demo.view._
 
-class Setup extends wcs.scala.BaseSetup {
+class Setup extends wcs.scala.SetupBase {
 
   def templates =
     Template("TestTemplateScala", classOf[TestElementScala].toString) ::
@@ -21,6 +21,6 @@ class Setup extends wcs.scala.BaseSetup {
 
 object Setup {
   def main(args: Array[String]) {
-    new demo.Setup().exec("fwadmin", "xceladmin");
+    println(new demo.Setup().exec("fwadmin", "xceladmin"))
   }
 }
