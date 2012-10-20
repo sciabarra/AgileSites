@@ -6,12 +6,12 @@ object Tld2Tag {
   def tld2class(s: String) = {
     val f = (new File(s)).getName
     val f1 = f.take(f.size - 4)
-    "%s%s".format(f1.charAt(0).toUpper, f1.substring(1))
+    "%s%sTag".format(f1.charAt(0).toUpper, f1.substring(1))
   }
 
   def preHead(s: String) = {
     val cl = tld2class(s)
-    """package wcs.tag
+    """package wcs.scala.tag
     
 import COM.FutureTense.Interfaces.ICS
 import COM.FutureTense.Interfaces.FTValList
@@ -19,7 +19,7 @@ import COM.FutureTense.Interfaces.FTValList
 object %s  {    
   val _debug = java.lang.System.getProperty("wcs.tag.debug") != null;
   val log  = java.util.logging.Logger.getLogger("%s");
-
+    
  """.format(cl,cl)
   }
 
@@ -40,6 +40,7 @@ object %s  {
      Console.println(ftValList2String("%s", _args_))
      log.finest(ftValList2String("%s", _args_))
   }
+  _ics_.GetErrno
 }
 """.format(lt, lt, lt)
 
@@ -104,7 +105,7 @@ object %s  {
         "\n_params_ : Tuple2[Symbol,String]*)" +
         (if (argOptional.isEmpty) ""
         else argOptional.mkString("(", ",\n", ")")) +
-        "(implicit _ics_ : ICS) =" +
+        "(implicit _ics_ : ICS) : Int =" +
         preBody +
         (valRequired ++ valOptional).mkString("\n") +
         postBody(libname, tagname)

@@ -8,7 +8,8 @@ import java.util.logging.{ Logger => JLogger }
 trait Log {
 
   @elidable(FINEST) implicit val _name = this.getClass.getCanonicalName
-  @elidable(FINEST) val _handler = new wcs.util.LogHandler
+
+  @elidable(FINEST) val _handler = new wcs.scala.util.LogHandler
 
   /** Format a string using params, if any, otherwise use the string as-is */
   @inline protected final def format(fmt: String, params: Seq[Any]) = {
@@ -38,4 +39,23 @@ trait Log {
   @elidable(SEVERE) def error(message: String, params: Any*) {
     _handler.error(format(message, params))
   }
+
+  /**
+   * Passthrough logger function for tests
+   */
+
+  def log[T](msg: String, t: T): T = {
+    info(msg + " " + t.toString)
+    t
+  }
+
+  /**
+   * Disabled passthrough
+   */
+  def log[T](t: T): T = log("", t)
+
+  def nlog[T](msg: String, t: T): T = t
+
+  def nlog[T](t: T): T = t
+
 }

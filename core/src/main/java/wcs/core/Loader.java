@@ -21,14 +21,16 @@ public class Loader {
 	private long jarTimestamp = 0;
 	private URLClassLoader ucl;
 	private ClassLoader mycl = getClass().getClassLoader();
+	private String setupClass;
 
 	/**
 	 * Build a loader
 	 * 
 	 * @param file
 	 */
-	public Loader(File file) {
+	public Loader(File file, String setupSite) {
 		jar = file;
+		this.setupClass = setupSite.toLowerCase() + ".model." + "Setup";
 	}
 
 	/**
@@ -68,9 +70,37 @@ public class Loader {
 
 			jarTimestamp = curTimestamp;
 			ucl = new URLClassLoader(new URL[] { url }, mycl);
+
 		}
 		return ucl;
 
+	}
+	
+	/**
+	 * Perform installation of the jar calling the setup method
+	 * 
+	 * @return
+	 */
+	public String installJar(String user, String pass) {
+		// perform initialization
+		try {
+			
+			@SuppressWarnings("rawtypes")
+			Class clazz = Class.forName(setupClass, true, loadJar());
+			Object obj = clazz.newInstance();
+			
+			// cast and execute
+			if (obj instanceof Setup) {
+				Setup setup = (Setup) obj;
+				return setup.exec(user, pass);
+			} else
+				return "Error in configuration - cannot find setup class";
+			
+		} catch (Exception ex) {
+			System.out.println(">>>LOADER: setup exception " + ex.getMessage());
+			log.warning("setup exception " + ex.getMessage());
+			return ex.getMessage();
+		}
 	}
 
 }

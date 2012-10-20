@@ -1,15 +1,14 @@
 package Demo.test
 
-import wcs.tag._
-import wcs.scala.tag._
 import wcs.scala._
+import wcs.scala.tag._
 import wcs.scala.util.Specification
 
 class TagSpec(e: Env) extends Specification {
   implicit val ics = e.ics
 
   "create list with tag" in {
-    import Listobject._
+    import ListobjectTag._
     create("l", "a,b")
     
     addrow("l", 'a := "1", 'b := "2")    

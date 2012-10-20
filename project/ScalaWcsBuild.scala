@@ -18,15 +18,16 @@ object ScalaWcsBuild extends Build {
   lazy val wcsUser = ScalaWcsSupport.wcsUser
   lazy val wcsPassword = ScalaWcsSupport.wcsPassword
 
+  lazy val wcsConfigTask = ScalaWcsSupport.wcsConfigTask
   lazy val wcsSetupTask = ScalaWcsSupport.wcsSetupTask
   lazy val wcsDeployTask = ScalaWcsSupport.wcsDeployTask
   lazy val wcsCsdtTask = ScalaWcsSupport.wcsCsdtTask
   lazy val wcsCopyStaticTask = ScalaWcsSupport.wcsCopyStaticTask
   lazy val coreGeneratorTask = ScalaWcsSupport.coreGeneratorTask
-  
+
   // remove then add those jars in setup
-  val addFilterSetup = "scala-library*" || "scalawcs-core*" 
-  val removeFilterSetup = addFilterSetup 
+  val addFilterSetup = "scala-library*" || "scalawcs-core*"
+  val removeFilterSetup = addFilterSetup
 
   // configuring WCS jars as unmanaged lib
   val unmanagedFilter = "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
@@ -46,13 +47,16 @@ object ScalaWcsBuild extends Build {
   val coreDependencies = Seq(
     "javax.servlet" % "servlet-api" % "2.5",
     "commons-logging" % "commons-logging" % "1.1.1",
-    "com.novocode" % "junit-interface" % "0.8" % "test->default",
+    "commons-httpclient" % "commons-httpclient" % "3.1",
+    //"net.databinder.dispatch" %% "dispatch-core" % "0.9.2",
+    //"jtidy" % "jtidy" % "4aug2000r7-dev",
+    "com.novocode" % "junit-interface" % "0.8" % "test",
     "org.specs2" %% "specs2" % "1.12.1" % "test")
 
   val commonSettings = Defaults.defaultSettings ++ Seq(
     scalaVersion := "2.9.1",
     organization := "org.scalawcs", // collect jars from WCS
-    compileOrder := CompileOrder.JavaThenScala,
+    compileOrder := CompileOrder.Mixed,
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
     unmanagedJarsTask)
@@ -64,13 +68,12 @@ object ScalaWcsBuild extends Build {
     settings = commonSettings ++ Seq(
       libraryDependencies ++= coreDependencies,
       name := "scalawcs-core",
-      version := "0.3", // if you change this, fix dependencies, too!
+      version := "0.4", // if you change this, fix dependencies, too!
       coreGeneratorTask))
 
   /// API 
-
   val commonDependencies = coreDependencies ++
-    Seq("org.scalawcs" %% "scalawcs-core" % "0.3")
+    Seq("org.scalawcs" %% "scalawcs-core" % "0.4")
 
   lazy val api: Project = Project(
     id = "api",
@@ -90,6 +93,7 @@ object ScalaWcsBuild extends Build {
       version := "0.2",
       wcsCopyStaticTask)) dependsOn (api)
 
+  /// ALL
   lazy val all: Project = Project(
     id = "all",
     base = file("."),
@@ -98,10 +102,11 @@ object ScalaWcsBuild extends Build {
       name := "scalawcs-all",
       version := "0.2",
       wcsCsdtTask,
+      wcsConfigTask,
       wcsSetupTask,
       wcsDeployTask,
       EclipseKeys.skipProject := true,
       assembleArtifact in packageScala := false,
-      excludedJars in assembly <<= (fullClasspath in assembly))) dependsOn(app) aggregate (app, api)
+      excludedJars in assembly <<= (fullClasspath in assembly))) dependsOn (app) aggregate (app, api)
 
 }

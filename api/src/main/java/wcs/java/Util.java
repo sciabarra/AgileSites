@@ -52,7 +52,7 @@ public class Util {
 	
 	
 	/**
-	 * Shortcut to create am arg, to be used with a static import 
+	 * Shortcut to create an arg, to be used with a static import 
 	 * 
 	 * @param name
 	 * @param value

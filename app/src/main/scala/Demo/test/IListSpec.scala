@@ -1,6 +1,5 @@
 package Demo.test
 
-import wcs.tag._
 import wcs.scala.tag._
 import COM.FutureTense.Interfaces.IList
 import COM.FutureTense.Interfaces.ICS
@@ -16,7 +15,7 @@ class IListSpec(val e: wcs.scala.Env) extends Specification with Log {
 
   info("IListSpec")
 
-  import Listobject._
+  import ListobjectTag._
 
   //val l0 = new StubIList("l0", Map())
   create("l0", "")

@@ -1,84 +1,103 @@
 import scala.xml._
 import java.io.File
 
-/**
-
-class Listobjet {
-    
-  class Create {
-    FTValList args = new FTValList();
-    Create(String name) {
-        args.setValString("name", name)
-    }
-    Create arg(String value) {  setVal("arg", value); this; }
-    public int run(ICS ics) { return ics.runTag(args); }
-  }
-  public static Create create(String name) {
-     return new Create(name);
-  } 
-     
-}
- * 
- */
 object Tld2Tagj {
+
+  val javaKeywords = Set(
+    "abstract", "continue", "for", "new", "switch",
+    "assert", "default", "goto", "package", "synchronized",
+    "boolean", "do", "if", "private", "this",
+    "break", "double", "implements", "protected", "throw",
+    "byte", "else", "import", "public", "throws",
+    "case", "enum", "instanceof", "return", "transient",
+    "catch", "extends", "int", "short", "try",
+    "char", "final", "interface", "static", "void",
+    "class", "finally", "long", "strictfp", "volatile",
+    "const", "float", "native", "super", "while", "string", "system")
 
   def tld2class(s: String) = {
     val f = (new File(s)).getName
     val f1 = f.take(f.size - 4)
-    "%s%s".format(f1.charAt(0).toUpper, f1.substring(1))
+    "%s%sTag".format(f1.charAt(0).toUpper, f1.substring(1))
   }
 
   def preHead(s: String) = {
     val cl = tld2class(s)
     """package wcs.java.tag;
     
-import COM.FutureTense.Interfaces.ICS;
-import COM.FutureTense.Interfaces.FTValList;
+import COM.FutureTense.Interfaces.*;
+import java.util.logging.*;
+import java.lang.String;
     
-class %s  {    
-  boolean _debug = java.lang.System.getProperty("wcs.tag.debug") != null;
-  java.util.logging.Logger log  = java.util.logging.Logger.getLogger("%s");
-
- """.format(cl,cl)
+public class %s  {    
+  private static boolean debug = java.lang.System.getProperty("wcs.tag.debug") != null;
+  private static Logger log = Logger.getLogger("%s");  
+  static String ftValList2String(String name, FTValList vl)  {
+    StringBuilder sb = new StringBuilder();
+    sb.append(">>>");
+    sb.append(name);
+    sb.append(":");
+    java.util.Enumeration en = vl.keys();
+    while (en.hasMoreElements()) {
+      String k = en.nextElement().toString();
+      Object v = vl.getValString(k);
+      sb.append( " "+k+"="+v);
+    }
+    return sb.toString();
+  }
+    
+ """.format(cl, cl)
   }
 
-  val preBody = """ {
-  val _args_ : FTValList = new FTValList()
-"""
+  def body(lib: String, name: String, reqArgs: List[String], optArgs: List[String]): String = {
 
-  def postBody(lib: String, tag: String) = {
+    val uname = if (javaKeywords.contains(name)) name + "_" else name
+    val cname = uname(0).toUpperCase + uname.substring(1)
+    val lname = uname.toLowerCase;
+    val tname = lib.toUpperCase + "." + uname.toUpperCase
 
-    val lt = lib.toUpperCase + "." + tag.toUpperCase;
+    val parList = reqArgs.map("String " + _.toString) mkString ","
+
+    val parnameList = reqArgs.map(_.toString) mkString ","
+
+    val setRequired = reqArgs.map(x => "args.setValString(\"" + x + "\", " + x + ");").mkString("\n")
+
+    val setOptional = optArgs map { x =>
+      """ %s %s(String val) { args.setValString("%s", val); return this; } 
+      """.format(cname, x, x)
+    } mkString "\n";
 
     """
-  _params_.foreach {
-     x => _args_.setValString(x._1.toString.substring(1), x._2)
-  } 
-  _ics_.runTag("%s", _args_);
-  if(_debug) {
-     Console.println(ftValList2String("%s", _args_))
-     log.finest(ftValList2String("%s", _args_))
+public static class %s {
+  private FTValList args = new FTValList();
+  public %s set(String name, String value) { args.setValString(name,value); return this; }
+%s
+""".format(cname, cname, setOptional) +
+      """
+  public %s(%s) {
+%s
+  }
+""".format(cname, parList, setRequired) +
+      """
+  public int run(ICS ics) { 
+      ics.runTag("%s", args); 
+      if(debug) {
+         java.lang.System.err.println(ftValList2String("%s", args));
+         log.finest(ftValList2String("%s", args));
+      }
+      return ics.GetErrno(); 
   }
 }
-""".format(lt, lt, lt)
+""".format(tname, cname, cname) +
+      """
+public static %s %s(%s) {
+  return new %s(%s);
+}
+""".format(cname, lname, parList, cname, parnameList)
 
   }
 
   val postHead = """
-  // dump an ftval list for logging
-  def ftValList2String(name: String, vl: FTValList) = {
-    var sb = new StringBuilder()
-    sb.append(">>>");
-    sb.append(name)
-    sb.append(":")
-    val en = vl.keys
-    while (en.hasMoreElements()) {
-      val k = en.nextElement().toString()
-      val v = vl.getValString(k)
-      sb.append(" %s=%s".format(k, v))
-    }
-    sb.toString()
-  }
 }
 """
 
@@ -93,40 +112,16 @@ class %s  {
     val res = for (tag <- xml \\ "tag") yield {
 
       val tagname = (tag \ "name").text
-      val attrs = tag \\ "attribute"
 
+      val attrs = tag \\ "attribute"
       val required = attrs.filter { a => (a \ "required").text == "true" }.distinct
       val optional = attrs.filter { a => (a \ "required").text == "false" }.distinct
 
-      val argRequired = for (attr <- required) yield {
-        "`" + (attr \\ "name" text) + "`" + ": String"
-      }
+      val reqList = required.map { _ \\ "name" text }.toList
+      val optList = optional.map { _ \\ "name" text }.toList
 
-      val argOptional = for (attr <- optional) yield {
-        "`" + (attr \\ "name" text) + "`" + ": String = null"
-      }
+      body(libname, tagname, reqList, optList)
 
-      val valRequired = for (attr <- required) yield {
-        val name = (attr \\ "name" text)
-        "  _args_.setValString(\"" + name.toUpperCase + "\", `" + name + "`)"
-      }
-
-      val valOptional = for (attr <- optional) yield {
-        val name = (attr \\ "name" text)
-        "  if(`" + name + "`!=null)\n" +
-          "    _args_.setValString(\"" + name.toUpperCase + "\", `" + name + "`)"
-      }
-
-      " def `" + tagname + "`(\n" +
-        (argRequired).mkString(",\n") +
-        (if (argRequired.isEmpty) "" else ",") +
-        "\n_params_ : Tuple2[Symbol,String]*)" +
-        (if (argOptional.isEmpty) ""
-        else argOptional.mkString("(", ",\n", ")")) +
-        "(implicit _ics_ : ICS) =" +
-        preBody +
-        (valRequired ++ valOptional).mkString("\n") +
-        postBody(libname, tagname)
     }
 
     // result
@@ -139,8 +134,14 @@ class %s  {
   }
 
   def main(args: Array[String]) {
+    import java.io._
     args.foreach {
-      a: String => println(Tld2Tag(a))
+      f: String =>
+        val jf = "\\.tld$".r.replaceAllIn(f, ".java")
+        println("+++ " + jf)
+        val out = new FileWriter(jf)
+        out.write(Tld2Tagj(jf))
+        out.close
     }
   }
 }

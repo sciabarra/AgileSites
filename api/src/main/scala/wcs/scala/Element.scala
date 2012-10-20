@@ -1,8 +1,8 @@
 package wcs.scala
 
-import scala.xml.NodeSeq
 import wcs.scala._
-import wcs.core.{ Element => JElement }
+import wcs.java.{ Element => JElement }
+import scala.xml.NodeSeq
 import COM.FutureTense.Interfaces.ICS
 
 abstract class Element extends JElement with Log {
@@ -11,11 +11,16 @@ abstract class Element extends JElement with Log {
    * Execute the element
    *
    */
-
   override def exec(ics: ICS): String = {
     //TODO
     return null;
   }
+  
+  /**
+   * This method must not be implemented - the apply(e: wcs.scala.Env) should instead
+   */
+  def apply(e: wcs.java.Env): String = null
+  
 
   /**
    * Call another element
@@ -29,11 +34,13 @@ abstract class Element extends JElement with Log {
    * Generate an url for an asset specified by id
    */
   def url(id: Tuple2[String, Long]) = {
+    
     // TODO
+    
   }
 
   /**
    * Apply the element
    */
-  def apply(e: wcs.scala.Env): String;
+  def apply(e: wcs.scala.Env): String
 }

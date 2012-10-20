@@ -1,6 +1,6 @@
 package wcs.java;
 
-class Picker {
+public class Picker {
 
 	/**
 	 * Create a picker for a given resource

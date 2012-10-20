@@ -32,36 +32,59 @@ public class Asset {
 		// TODO
 		return null;
 	}
-
+	
+	
 	/**
-	 * Read a field of the asset
-	 * 
-	 * @param field
-	 * @return
+	 * Return the file field
 	 */
-	public String getField(String field) {
+	public String getFile() {
 		// TODO
 		return null;
 	}
 
 	/**
-	 * Read an attribute field and return an asset id
+	 * Return the path field
+	 */
+	public String getPath() {
+		// TODO
+		return null;
+	}
+	
+	/**
+	 * Return the start date field
+	 */
+	public Date getStartDate() {
+		// TODO
+		return null;
+	}
+	
+	/**
+	 * Return the end date field
+	 */
+	public Date getEndDate() {
+		// TODO
+		return null;
+	}
+	
+
+	/**
+	 * Read an attribute  asset and return an asset id
 	 * 
 	 * @param asset
 	 * @return
 	 */
-	public Long getAsset(String asset) {
+	public String getAssetI(String asset) {
 		// TODO
 		return null;
 	}
 
 	/**
-	 * Read an attribute field and return an asset id
+	 * Read an attribute asset multivalued and a list of  asset id
 	 * 
 	 * @param asset
 	 * @return
 	 */
-	public List<Long> getAssets(String asset) {
+	public List<String> getAssetIds(String asset) {
 		// TODO
 		return null;
 	}

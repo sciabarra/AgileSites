@@ -8,16 +8,16 @@ object ScalaWcsSupport {
   // new settings
   lazy val wcsHome = SettingKey[String]("wcs-home", "WCS Home Directory")
   lazy val wcsWebapp = SettingKey[String]("wcs-webapp", "WCS Webapp CS Directory")
-
-  lazy val wcsSetup = InputKey[Unit]("wcs-setup", "WCS Setup")
-  lazy val wcsDeploy = TaskKey[String]("wcs-deploy", "WCS Deploy")
-  lazy val wcsCopyStatic = TaskKey[Unit]("wcs-copy-static", "WCS copy resources")
-
   lazy val wcsUser = SettingKey[String]("wcs-user", "WCS Site for user")
   lazy val wcsPassword = SettingKey[String]("wcs-password", "WCS Site password")
   lazy val wcsUrl = SettingKey[String]("wcs-url", "WCS URL")
   lazy val wcsSite = SettingKey[String]("wcs-site", "WCS Site for site")
   lazy val wcsVersion = SettingKey[String]("wcs-version", "WCS or Fatwire Version")
+
+  lazy val wcsSetup = InputKey[Unit]("wcs-setup", "WCS Setup")
+  lazy val wcsConfig = TaskKey[String]("wcs-config", "WCS Write configurations")
+  lazy val wcsDeploy = TaskKey[String]("wcs-deploy", "WCS Deploy")
+  lazy val wcsCopyStatic = TaskKey[Unit]("wcs-copy-static", "WCS copy resources")
 
   lazy val wcsCsdtJar = SettingKey[String]("wcs-csdt-jar", "WCS CSDT Jar")
   lazy val wcsCsdt = InputKey[Unit]("wcs-csdt", "WCS CSDT")
@@ -36,7 +36,8 @@ object ScalaWcsSupport {
           val src = tld.getAbsolutePath
           val cls = Tld2Tag.tld2class(src)
           val dst = file(dstDir / cls + ".scala")
-          //if tld.getName.equalsIgnoreCase("listobject.tld") // select only one for debug generator
+          val dstj = file(dstDir / cls + ".java")
+          //if tld.getName.equalsIgnoreCase("csmac.tld") // select only one for debug generator
         } yield {
           if (!dst.exists) {
             val body = Tld2Tag(src)
@@ -44,7 +45,13 @@ object ScalaWcsSupport {
             //print(cls + " ")
             println("+++ " + dst)
           }
-          dst
+          if (!dstj.exists) {
+            val bodyj = Tld2Tagj(src)
+            IO.write(dstj, bodyj)
+            println("+++ " + dstj)
+          }
+
+          dst :: dstj :: Nil
         }
 
         // copy versioned class
@@ -59,7 +66,7 @@ object ScalaWcsSupport {
         }
 
         // return files generated and copied
-        l.toSeq ++ ll.toSeq
+        l.toSeq.flatten ++ ll.toSeq
     }
 
   val wcsCsdtTask = wcsCsdt <<= inputTask {
@@ -111,24 +118,50 @@ object ScalaWcsSupport {
         recursiveCopy(src, file(tgt))
     }
 
+  val wcsConfigTask = wcsConfig <<=
+    (wcsDeploy, wcsHome, wcsWebapp, wcsSite, wcsUser, wcsPassword) map {
+      (appjar, home, webapp, site, username, password) =>
+
+        // create local export dir for csdt
+        file("export").mkdir
+        (file("export") / "envision").mkdir
+        (file("export") / "envision" / site).mkdir
+
+        // configure futurentense. init
+        val configFile = file(home) / "futuretense.ini"
+        val config = new java.util.Properties
+        config.load(new java.io.FileReader(configFile))
+
+        // set standard properties
+        config.setProperty("scalawcs.site", site);
+        config.setProperty("scalawcs.user", username);
+        config.setProperty("scalawcs.password", password);
+        config.setProperty("scalawcs.jar", appjar);
+        config.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
+        config.store(new java.io.FileWriter(configFile),
+          "updated by ScalaWCS setup")
+
+        // same properties also for core in the classpath
+        val otherConfigFile = file(webapp) / "WEB-INF" / "classes" / "scalawcs.prp"
+        val otherConfig = new java.util.Properties
+        otherConfig.setProperty("scalawcs.site", site);
+        otherConfig.setProperty("scalawcs.user", username);
+        otherConfig.setProperty("scalawcs.password", password);
+        otherConfig.setProperty("scalawcs.jar", appjar);
+        otherConfig.store(new java.io.FileWriter(otherConfigFile),
+          "created by ScalaWCS setup")
+
+        // configure
+
+        configFile.getAbsolutePath
+    }
+
   // setup task
   val wcsSetupTask = wcsSetup <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
-      (argTask,
-        Keys.`package` in Compile in ScalaWcsBuild.core,
-        wcsDeploy,
-        managedClasspath in Runtime,
-        classDirectory in Compile,
-        wcsHome, wcsWebapp, wcsSite, wcsVersion) map {
-          (args, corejar, appjar, classpath, classes, home, webapp, site, version) =>
-            // write property file
-            val configFile = file(home) / "futuretense.ini"
-            val config = new java.util.Properties
-            config.load(new java.io.FileReader(configFile))
-            config.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
-            config.setProperty("scalawcs.jar", appjar);
-            config.store(new java.io.FileWriter(configFile),
-              "updated by ScalaWCS setup")
+      (argTask, wcsConfig, Keys.`package` in Compile in ScalaWcsBuild.core,
+        managedClasspath in Runtime, classDirectory in Compile, wcsWebapp) map {
+          (args, _, corejar, classpath, classes, webapp) =>
 
             // jars to include when performing a setup
             val destlib = file(webapp) / "WEB-INF" / "lib"
@@ -140,9 +173,6 @@ object ScalaWcsSupport {
               (ScalaWcsBuild.removeFilterSetup accept _)
 
             // create csdt export file
-            file("export").mkdir
-            (file("export") / "envision").mkdir
-            (file("export") / "envision" / (site + version)).mkdir
 
             // remove jars
             for (file <- removeJars) {

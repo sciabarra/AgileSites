@@ -1,6 +1,4 @@
 import scala.xml.NodeSeq
-import wcs.scala.util.FutureElem
-import wcs.scala.util.Future
 import java.io.CharArrayWriter
 import java.io.PrintWriter
 import scala.xml.Elem
