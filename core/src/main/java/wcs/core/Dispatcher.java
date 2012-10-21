@@ -1,7 +1,6 @@
 package wcs.core;
 
 import java.io.File;
-
 import COM.FutureTense.Interfaces.ICS;
 
 public class Dispatcher {
@@ -19,15 +18,12 @@ public class Dispatcher {
 	static Dispatcher getDispatcher(ICS ics) {
 		if (dispatcher == null) {
 			File jar = new File(ics.GetProperty("scalawcs.jar"));
-			String site = ics.GetProperty("scalawcs.site");
 
 			if (jar.exists()) {
-				WCS.debug("[Dispatcher.getDispatcher] site " //
-						+ site + " from " + jar);
+				WCS.debug("[Dispatcher.getDispatcher] from " + jar);
 				dispatcher = new Dispatcher(jar);
 			} else {
-				WCS.debug("[Dispatcher.getDispatcher] Jar " + jar + "for "
-						+ site + "not found");
+				WCS.debug("[Dispatcher.getDispatcher] not found jar " + jar);
 			}
 		}
 		return dispatcher;
@@ -58,7 +54,6 @@ public class Dispatcher {
 			ClassLoader cl = loader.loadJar();
 
 			// instantiate
-
 			@SuppressWarnings("rawtypes")
 			Class clazz = Class.forName(className, true, cl);
 			Object obj = clazz.newInstance();
@@ -81,8 +76,10 @@ public class Dispatcher {
 	}
 
 	/**
-	 * Call the given class after reloading the jar and creating a wrapper for
-	 * ICS and the Element
+	 * Deploy will invoke the <site>.Model class passing username and password.
+	 * 
+	 * Note that <site> is the site name lower case, with spaces replaced with
+	 * "_" and other characters stripped down
 	 * 
 	 * @param ics
 	 * @return
@@ -93,9 +90,11 @@ public class Dispatcher {
 			WCS.debug("site is null!!!");
 			return "Cannot deploy, no site!";
 		}
+
 		String className = site.toLowerCase().replace(" ", "_")
 				.replaceAll("[^a-zA-Z_\\.]", "")
-				+ ".Setup";
+				+ ".Model";
+
 		WCS.debug("[Dispatcher.deploy] className=" + className);
 
 		try {

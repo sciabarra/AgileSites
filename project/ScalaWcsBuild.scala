@@ -23,6 +23,8 @@ object ScalaWcsBuild extends Build {
   lazy val wcsDeployTask = ScalaWcsSupport.wcsDeployTask
   lazy val wcsCsdtTask = ScalaWcsSupport.wcsCsdtTask
   lazy val wcsCopyStaticTask = ScalaWcsSupport.wcsCopyStaticTask
+  lazy val wcsPackageJarTask = ScalaWcsSupport.wcsPackageJarTask
+  lazy val wcsUpdateModelTask = ScalaWcsSupport.wcsUpdateModelTask
   lazy val coreGeneratorTask = ScalaWcsSupport.coreGeneratorTask
 
   // remove then add those jars in setup
@@ -47,9 +49,8 @@ object ScalaWcsBuild extends Build {
   val coreDependencies = Seq(
     "javax.servlet" % "servlet-api" % "2.5",
     "commons-logging" % "commons-logging" % "1.1.1",
-    "commons-httpclient" % "commons-httpclient" % "3.1",
-    //"net.databinder.dispatch" %% "dispatch-core" % "0.9.2",
-    //"jtidy" % "jtidy" % "4aug2000r7-dev",
+    //"net.databinder.dispatch" %% "dispatch-core" % "0.9.2", // not used yet
+    //"jtidy" % "jtidy" % "4aug2000r7-dev",  // not used yet
     "com.novocode" % "junit-interface" % "0.8" % "test",
     "org.specs2" %% "specs2" % "1.12.1" % "test")
 
@@ -67,7 +68,7 @@ object ScalaWcsBuild extends Build {
     base = file("core"),
     settings = commonSettings ++ Seq(
       libraryDependencies ++= coreDependencies,
-      publishArtifact in packageDoc := false,     
+      publishArtifact in packageDoc := false,
       name := "scalawcs-core",
       version := "0.4", // if you change this, fix dependencies, too!
       coreGeneratorTask))
@@ -91,8 +92,7 @@ object ScalaWcsBuild extends Build {
     settings = commonSettings ++ Seq(
       libraryDependencies ++= commonDependencies,
       name := "scalawcs-app",
-      version := "0.2",
-      wcsCopyStaticTask)) dependsOn (api)
+      version := "0.2")) dependsOn (api)
 
   /// ALL
   lazy val all: Project = Project(
@@ -106,6 +106,9 @@ object ScalaWcsBuild extends Build {
       wcsConfigTask,
       wcsSetupTask,
       wcsDeployTask,
+      wcsCopyStaticTask,
+      wcsPackageJarTask,
+      wcsUpdateModelTask,
       EclipseKeys.skipProject := true,
       assembleArtifact in packageScala := false,
       excludedJars in assembly <<= (fullClasspath in assembly))) dependsOn (app) aggregate (app, api)

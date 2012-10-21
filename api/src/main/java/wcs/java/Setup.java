@@ -1,6 +1,6 @@
 package wcs.java;
 
-abstract public class SetupBase implements wcs.core.Setup {
+abstract public class Setup implements wcs.core.Setup {
 
 	/**
 	 * Execute the backup creating the assets using the Asset API

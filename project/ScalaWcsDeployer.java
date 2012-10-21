@@ -1,5 +1,3 @@
-package wcs.core;
-
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -21,7 +19,7 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
  * @author msciab
  * 
  */
-public class Deployer {
+public class ScalaWcsDeployer {
 
 	String invoker = "<%@ taglib prefix=\"cs\" uri=\"futuretense_cs/ftcs1_0.tld\"\n"
 			+ "%><cs:ftcs><% String result =\"\"; try { result = wcs.core.WCS.deploy(ics, "
@@ -37,10 +35,12 @@ public class Deployer {
 	String cm;
 	String cs;
 
+	String status = "OK";
+
 	HttpClient client = new HttpClient();
 	HttpState state = new HttpState();
 
-	public Deployer() {
+	public ScalaWcsDeployer() {
 		this("http://localhost:8380/cs/", "Demo", "fwadmin", "xceladmin");
 	}
 
@@ -51,7 +51,8 @@ public class Deployer {
 	 * @param username
 	 * @param password
 	 */
-	public Deployer(String url, String site, String username, String password) {
+	public ScalaWcsDeployer(String url, String site, String username,
+			String password) {
 		this.username = username;
 		this.password = password;
 		this.site = site;
@@ -157,13 +158,23 @@ public class Deployer {
 		return get(url);
 	}
 
+	/**
+	 * Delete an entry from a table
+	 * 
+	 * @param table
+	 * @param key
+	 * @param value
+	 * @return
+	 * @throws IOException
+	 */
 	public String delete(String table, String key, String value)
 			throws IOException {
 		String url = cm + //
 				"?ftcmd=deleterow" + //
-				"&Delete+uploaded+file(s)=yes" + //
-				"&tablekey=" + key + // ,
-				"&tablekeyvalue=" + value;
+				"&tablename=" + table + //
+				"&tablekey=" + key + //
+				"&tablekeyvalue=" + value + //
+				"&Delete+uploaded+file(s)=yes"; //
 		return get(url);
 	}
 
@@ -198,42 +209,61 @@ public class Deployer {
 	}
 
 	/**
-	 * Perform all the deploy: createa a new element with a random name, then
-	 * run the created element that is supposed
+	 * Return the status
+	 * 
+	 * @return
+	 */
+	public String getStatus() {
+		return status;
+	}
+
+	/**
+	 * Perform all the deployment: createa a new element with a random name,
+	 * then run the created element that is supposed
 	 * 
 	 * @return
 	 * @throws Exception
 	 */
-	public String deploy() throws Exception {
+	public String deploy() {
 		StringBuilder sb = new StringBuilder();
+		try {
 
-		String name = "AAA-ScalaWCS-" + System.currentTimeMillis() + "-"
-				+ Math.round(Math.random() * 100000);
+			String name = "AAA-ScalaWCS-" + Math.round(Math.random() * 100000);
 
-		sb.append("<h1>Login</h1>\n");
-		sb.append(login());
+			sb.append("*** Login\n");
+			sb.append(login());
 
-		sb.append("<h1>Create Element</h1>\n");
-		sb.append(createElement(name, invoker));
+			sb.append("*** Create Element\n");
+			sb.append(createElement(name, invoker));
 
-		sb.append("<h1>Create Entry</h1>\n");
-		sb.append(createEntry(name));
+			sb.append("*** Create Entry\n");
+			sb.append(createEntry(name));
 
-		sb.append("<h1>Deploy</h1>\n");
-		sb.append(invoke(name));
+			sb.append("*** Deploy\n");
+			sb.append(invoke(name));
 
-		sb.append("created " + name);
-		// sb.append("<h1>Remove Element and Entry</h1>\n");
-		// sb.append(delete("elementcatalog", "elementname", name));
-		// sb.append(delete("sitecatalog", "pagename", name));
+			sb.append("*** Remove Element and Entry\n");
+			sb.append(delete("elementcatalog", "elementname", name));
+			sb.append(delete("sitecatalog", "pagename", name));
 
-		sb.append("<h1>Logout</h1>\n");
-		sb.append(logout());
-
+			sb.append("*** Logout\n");
+			sb.append(logout());
+		} catch (Exception ex) {
+			status = "EXCEPTION: " + ex.getMessage();
+			ex.printStackTrace();
+			sb.append(status);
+		}
 		return sb.toString();
 	}
 
+	/**
+	 * Testing main
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
+
 	public static void main(String[] args) throws Exception {
-		System.out.println(new Deployer().deploy());
+		System.out.println(new ScalaWcsDeployer().deploy());
 	}
 }

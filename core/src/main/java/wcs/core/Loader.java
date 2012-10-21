@@ -14,9 +14,6 @@ import java.net.URLClassLoader;
  */
 public class Loader {
 
-	java.util.logging.Logger log = java.util.logging.Logger
-			.getLogger(Loader.class.getCanonicalName());
-
 	private long jarTimestamp = 0;
 	private URLClassLoader ucl;
 	private ClassLoader mycl = getClass().getClassLoader();
@@ -51,8 +48,8 @@ public class Loader {
 			return mycl;
 		}
 
-		// System.out.println("curTimestamp=" + curTimestamp);
-		// System.out.println("jarTimestamp=" + jarTimestamp);
+		// WCS.debug("curTimestamp=" + curTimestamp);
+		// WCS.debug("jarTimestamp=" + jarTimestamp);
 
 		// reloading jar if modified
 		long curTimestamp = jar.lastModified();

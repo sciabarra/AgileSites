@@ -16,8 +16,11 @@ object ScalaWcsSupport {
 
   lazy val wcsSetup = InputKey[Unit]("wcs-setup", "WCS Setup")
   lazy val wcsConfig = TaskKey[String]("wcs-config", "WCS Write configurations")
-  lazy val wcsDeploy = TaskKey[String]("wcs-deploy", "WCS Deploy")
+
+  lazy val wcsDeploy = TaskKey[Unit]("wcs-deploy", "WCS Deploy")
   lazy val wcsCopyStatic = TaskKey[Unit]("wcs-copy-static", "WCS copy resources")
+  lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
+  lazy val wcsUpdateModel = TaskKey[String]("wcs-update-model", "WCS update content model")
 
   lazy val wcsCsdtJar = SettingKey[String]("wcs-csdt-jar", "WCS CSDT Jar")
   lazy val wcsCsdt = InputKey[Unit]("wcs-csdt", "WCS CSDT")
@@ -69,6 +72,20 @@ object ScalaWcsSupport {
         l.toSeq.flatten ++ ll.toSeq
     }
 
+  // copy files from a src dir to a taget dir recursively - not used for now
+  def recursiveCopy(src: File, tgt: File) = {
+    val nsrc = src.getPath.length
+    val cplist = (src ** "*").get.filterNot(_.isDirectory) map {
+      x =>
+        val dest = tgt / x.getPath.substring(nsrc)
+        println("+++ " + dest)
+        (x, dest)
+    }
+    IO.copy(cplist)
+    cplist.size
+  }
+
+  // interface to csdt from sbt
   val wcsCsdtTask = wcsCsdt <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
       (argTask, wcsUrl, wcsSite, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
@@ -88,38 +105,40 @@ object ScalaWcsSupport {
       }
   }
 
-  // deploy task  
-  val wcsDeployTask = wcsDeploy <<=
+  // package jar task - build the jar and copy it  to destination 
+  val wcsPackageJarTask = wcsPackageJar <<=
     (assembly, wcsHome) map {
       (jar, home) =>
         val destjar = file(home) / jar.getName
         IO.copyFile(jar, destjar)
         println("+++ " + destjar.getAbsolutePath)
-
         destjar.getAbsolutePath.toString
     }
 
-  def recursiveCopy(src: File, tgt: File) {
-    val nsrc = src.getPath.length
-    val cplist = (src ** "*").get.filterNot(_.isDirectory) map {
-      x =>
-        val dest = tgt / x.getPath.substring(nsrc)
-        println("+++ " + dest)
-        (x, dest)
-    }
-    IO.copy(cplist)
-  }
-
-  // copy resources to webapp task
+  // copy resources from the app to the webapp task
   val wcsCopyStaticTask = wcsCopyStatic <<=
     (baseDirectory, wcsWebapp) map {
       (base, tgt) =>
-        val src = base / "src" / "main" / "static"
+        val src = base / "app" / "src" / "main" / "static"
         recursiveCopy(src, file(tgt))
     }
 
+  // copy resources to the webapp task
+  val wcsUpdateModelTask = wcsUpdateModel <<=
+    (wcsUrl, wcsSite, wcsUser, wcsPassword, wcsPackageJar) map {
+      (url, site, user, pass, _) =>
+        val deployer = new ScalaWcsDeployer(url, site, user, pass)
+        println(deployer.deploy())
+        deployer.getStatus
+    }
+
+  // deploy task  
+  val wcsDeployTask = wcsDeploy <<=
+    (wcsCopyStatic, wcsUpdateModel) map { (count, update) => () }
+
+  // configuring everything
   val wcsConfigTask = wcsConfig <<=
-    (wcsDeploy, wcsHome, wcsWebapp, wcsSite, wcsUser, wcsPassword) map {
+    (wcsPackageJar, wcsHome, wcsWebapp, wcsSite, wcsUser, wcsPassword) map {
       (appjar, home, webapp, site, username, password) =>
 
         // create local export dir for csdt
@@ -190,7 +209,7 @@ object ScalaWcsSupport {
               println("+++ " + tgt.getAbsolutePath)
             }
 
-            println("*** You need to restart WCS")
+            println("*** You need to restart WCS then perform wcs-deploy ***")
         }
   }
 

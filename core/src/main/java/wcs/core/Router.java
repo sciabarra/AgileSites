@@ -2,9 +2,10 @@ package wcs.core;
 
 import java.util.Map;
 
-
 /**
  * Interface for the Router (assemble/disassemble) and post (actions)
+ * 
+ * TODO
  * 
  * @author msciab
  *

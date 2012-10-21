@@ -1,5 +1,5 @@
 package wcs.scala
-import wcs.java.{ SetupBase => JSetupBase }
+import wcs.java.{ Setup => JSetup }
 import wcs.java.{ CSElement => JCSElement }
 import wcs.java.{ Template => JTemplate }
 import wcs.java.{ SiteEntry => JSiteEntry }
@@ -7,7 +7,7 @@ import wcs.java.{ SiteEntry => JSiteEntry }
 /**
  * Setup wrapper in Scala
  */
-abstract class SetupBase extends JSetupBase {
+abstract class Setup extends JSetup {
 
   case class CSElement(name: String, element: String)
 
