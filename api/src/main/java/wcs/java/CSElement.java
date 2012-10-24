@@ -1,22 +1,23 @@
 package wcs.java;
 
-public class CSElement {
-	
-	public CSElement(String name, String element) {
-		super();
-		this.name = name;
+import com.fatwire.assetapi.data.AssetData;
+import static wcs.java.Util.id;
+
+public class CSElement extends Asset {
+
+	public CSElement(Long id, String name, String description, String element) {
+		super(id("CSElement", id), name, description);
 		this.element = element;
 	}
 
-	private String name;
-	
 	private String element;
-
-	public String getName() {
-		return name;
-	}
 
 	public String getElement() {
 		return element;
-	}	
+	}
+
+	AssetData data() {
+		return null;
+	}
+
 }

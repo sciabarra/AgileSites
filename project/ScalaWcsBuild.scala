@@ -33,7 +33,7 @@ object ScalaWcsBuild extends Build {
 
   // configuring WCS jars as unmanaged lib
   val unmanagedFilter = "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
-    "wem-sso-api-*" || "rest-api-*" || "cas-client-*" ||
+    "wem-sso-api-*" || "rest-api-*" || "cas-client-*" || "assetapi*" ||
     "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar"
 
   val includeFilterUnmanagedJars = includeFilter in unmanagedJars := unmanagedFilter

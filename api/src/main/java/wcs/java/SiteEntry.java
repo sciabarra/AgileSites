@@ -1,21 +1,20 @@
 package wcs.java;
 
-public class SiteEntry {
+import static wcs.java.Util.id;
 
-	public SiteEntry(String name, String element, boolean wrapper) {
-		super();
-		this.name = name;
+import com.fatwire.assetapi.data.AssetData;
+
+public class SiteEntry extends Asset {
+
+	public SiteEntry(Long id, String name, String description, String element,
+			boolean wrapper) {
+		super(id("SiteEntry", id), name, description);
 		this.element = element;
 		this.wrapper = wrapper;
 	}
 
-	private String name;
 	private String element;
 	private boolean wrapper;
-
-	public String getName() {
-		return name;
-	}
 
 	public String getElement() {
 		return element;
@@ -23,6 +22,12 @@ public class SiteEntry {
 
 	public boolean isWrapper() {
 		return wrapper;
+	}
+
+	@Override
+	AssetData data() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -5,7 +5,23 @@ import java.util.List;
 
 import wcs.java.Util.Id;
 
-public class Asset {
+import com.fatwire.assetapi.data.AssetData;
+
+public abstract class Asset {
+
+	private Id id;
+	private String name;
+	private String description;
+
+	public Asset() {
+
+	}
+
+	public Asset(Id id, String name, String description) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+	}
 
 	/**
 	 * Return this asset id
@@ -13,27 +29,23 @@ public class Asset {
 	 * @return
 	 */
 	public Id getId() {
-		// TODO
-		return null;
+		return id;
 	}
 
 	/**
 	 * Return this asset name
 	 */
 	public String getName() {
-		// TODO
-		return null;
+		return name;
 	}
 
 	/**
 	 * Return the description
 	 */
 	public String getDescription() {
-		// TODO
-		return null;
+		return description;
 	}
-	
-	
+
 	/**
 	 * Return the file field
 	 */
@@ -49,7 +61,7 @@ public class Asset {
 		// TODO
 		return null;
 	}
-	
+
 	/**
 	 * Return the start date field
 	 */
@@ -57,7 +69,7 @@ public class Asset {
 		// TODO
 		return null;
 	}
-	
+
 	/**
 	 * Return the end date field
 	 */
@@ -65,21 +77,20 @@ public class Asset {
 		// TODO
 		return null;
 	}
-	
 
 	/**
-	 * Read an attribute  asset and return an asset id
+	 * Read an attribute asset and return an asset id
 	 * 
 	 * @param asset
 	 * @return
 	 */
-	public String getAssetI(String asset) {
+	public String getAssetId(String asset) {
 		// TODO
 		return null;
 	}
 
 	/**
-	 * Read an attribute asset multivalued and a list of  asset id
+	 * Read an attribute asset multivalued and a list of asset id
 	 * 
 	 * @param asset
 	 * @return
@@ -148,5 +159,14 @@ public class Asset {
 		// TODO
 		return null;
 	}
-
+	
+	
+	/**
+	 * Define asset data for this asset
+	 * 
+	 * @return
+	 */
+	abstract AssetData data();
+	
+	
 }
