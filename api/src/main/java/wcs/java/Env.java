@@ -1,14 +1,13 @@
 package wcs.java;
 
-import static wcs.java.Util.id;
-
 import java.util.List;
 import java.util.Map;
-
 import wcs.core.ICSProxyJ;
 import wcs.java.Util.Arg;
-import wcs.java.Util.Id;
+import wcs.java.Util.Qid;
 import COM.FutureTense.Interfaces.ICS;
+
+import static wcs.java.Util.qid;
 
 /**
  * Env
@@ -45,7 +44,7 @@ public class Env extends ICSProxyJ {
 	 */
 	public List<Map<String, Object>> getList(String list) {
 		// TODO
-		return null ;//ics.GetList(list);
+		return null;// ics.GetList(list);
 	}
 
 	/**
@@ -54,7 +53,7 @@ public class Env extends ICSProxyJ {
 	 * @param id
 	 * @return
 	 */
-	public Asset getAsset(Id id) {
+	public Asset getAsset(Qid id) {
 		// TODO
 		return null;
 	}
@@ -64,9 +63,9 @@ public class Env extends ICSProxyJ {
 	 * 
 	 * @return
 	 */
-	public Id getId() {
-		return id(getVar("c"), Long.parseLong(getVar("cid")));
-
+	public Qid getQid() {
+		return qid(getVar("c"), Long.parseLong(getVar("cid")));
+		// TODO logic to get the subtype
 	}
 
 	/**
@@ -76,7 +75,7 @@ public class Env extends ICSProxyJ {
 	 * @param name
 	 * @param args
 	 */
-	public void call(Id id, String name, Arg... args) {
+	public void call(Qid id, String name, Arg... args) {
 		// TODO
 	}
 

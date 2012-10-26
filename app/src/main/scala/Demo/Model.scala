@@ -7,23 +7,19 @@ class Model extends wcs.scala.Setup {
   val n = 10000000;
 
   def site = Site(n, "Test", "Test Site",
-    Array("CEElement", "Templates", "SiteEntry"),
+    Array("CSElement", "Template", "SiteEntry"),
     Array("fwadmin"),
     Array("AdvancedUser"))
 
-  def templates =
-    Template(n, "TestTemplateScala", "TestTemplateScala", classOf[TestElementScala].toString) ::
-      // not sure why I cannot use classOf with a Java class
-      Template(n + 1, "TestTemplateJava", "Test Template Java", "demo.view.TestElementJava") ::
+  def assets =
+    CSElement(n + 1, "TestCSElement", "Test CSElement", classOf[Tester].toString) ::
+      //SiteEntry(n + 2, "TestSiteEntry", "Test CSElement", classOf[Tester].toString) ::
+      //Template(n + 3, "TestTemplateScala", "TestTemplateScala", classOf[TestElementScala].toString) ::
       Nil
 
-  def csElements =
-    CSElement(n + 2, "TestCSElement", "Test CSElement", classOf[Tester].toString) ::
-      Nil
+  // not sure why I cannot use classOf with a Java class
+  //  Template(n + 1, "TestTemplateJava", "Test Template Java", "demo.view.TestElementJava") ::
 
-  def siteEntries =
-    SiteEntry(n + 3, "TestSiteEntry", "Test CSElement", classOf[Tester].toString) ::
-      Nil
 }
 
 object Model {

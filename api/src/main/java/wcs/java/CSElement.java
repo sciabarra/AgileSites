@@ -1,12 +1,14 @@
 package wcs.java;
 
 import com.fatwire.assetapi.data.AssetData;
-import static wcs.java.Util.id;
+import com.fatwire.assetapi.data.BlobObjectImpl;
+
+import static wcs.java.Util.qid;
 
 public class CSElement extends Asset {
 
 	public CSElement(Long id, String name, String description, String element) {
-		super(id("CSElement", id), name, description);
+		super(qid("CSElement", id), name, description);
 		this.element = element;
 	}
 
@@ -16,8 +18,14 @@ public class CSElement extends Asset {
 		return element;
 	}
 
-	AssetData data() {
-		return null;
+	void setData(AssetData data) {
+		// element name
+		data.getAttributeData("elementname").setData(element);
+		// root element
+		data.getAttributeData("rootelement").setData(element);
+		// blob
+		byte[] bytes = ("<b>" + element + "</b>").getBytes();
+		data.getAttributeData("url").setData(
+				new BlobObjectImpl(element, "AgileWCS", bytes));
 	}
-
 }

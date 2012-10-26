@@ -10,35 +10,32 @@ import wcs.java.{ SiteEntry => JSiteEntry }
  */
 abstract class Setup extends JSetup {
 
-  case class Site(id: Long, name: String, description: String, types: Array[String], users: Array[String], roles: Array[String])
+  class Asset
 
-  case class CSElement(id: Long, name: String, description: String, element: String)
+  case class Site(id: Long, name: String, description: String, types: Array[String], users: Array[String], roles: Array[String]) extends Asset
 
-  case class Template(id: Long, name: String, description: String, element: String, cscache: String = "true, ~0", sscache: String = "true,~0")
+  case class CSElement(id: Long, name: String, description: String, element: String) extends Asset
 
-  case class SiteEntry(id: Long, name: String, description: String, element: String, wrapper: Boolean = false)
+  case class Template(id: Long, name: String, description: String, element: String, cscache: String = "true, ~0", sscache: String = "true,~0") extends Asset
 
-  //override def getSite = new wcs.java.Site(site.id, site.name, site.description, site.types, site, users, site.roles)
-
-  //	public Site(final Long id, final String name, final String description, final String[] types, final String[] users, final String[] roles) 
-
-  override def getCSElements = Array[wcs.java.CSElement](
-    csElements map { x => new JCSElement(x.id, x.name, x.description, x.element) }: _*)
-
-  override def getTemplates = Array[JTemplate](
-    templates map { x => new JTemplate(x.id, x.name, x.description, x.element, x.cscache, x.sscache) }: _*)
-
-  override def getSiteEntries = Array[JSiteEntry](
-    siteEntries map { x => new JSiteEntry(x.id, x.name, x.description, x.element, x.wrapper) }: _*)
-
-  override def getSite = new JSite(site.id, site.name, site.description, site.types, site.users, site.roles)
+  case class SiteEntry(id: Long, name: String, description: String, element: String, wrapper: Boolean = false) extends Asset
 
   def site: Site
 
-  def csElements: List[CSElement]
+  def assets: List[Asset]
 
-  def templates: List[Template]
+  override def getSite = new JSite(site.id, site.name, site.description, site.types, site.users, site.roles)
 
-  def siteEntries: List[SiteEntry]
+  override def getAssets = Array[wcs.java.Asset](
+    assets map { a =>
+      a match {
+        case x: CSElement =>
+          new JCSElement(x.id, x.name, x.description, x.element)
+        case x: Template =>
+          new JTemplate(x.id, x.name, x.description, x.element, x.cscache, x.sscache)
+        case x: SiteEntry =>
+          new JSiteEntry(x.id, x.name, x.description, x.element, x.wrapper)
+      }
+    }: _*)
 
 }

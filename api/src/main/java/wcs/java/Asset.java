@@ -2,23 +2,20 @@ package wcs.java;
 
 import java.sql.Date;
 import java.util.List;
-
-import wcs.java.Util.Id;
-
+import wcs.java.Util.Qid;
 import com.fatwire.assetapi.data.AssetData;
 
 public abstract class Asset {
 
-	private Id id;
+	private Qid qid;
 	private String name;
 	private String description;
 
 	public Asset() {
-
 	}
 
-	public Asset(Id id, String name, String description) {
-		this.id = id;
+	public Asset(Qid qid, String name, String description) {
+		this.qid = qid;
 		this.name = name;
 		this.description = description;
 	}
@@ -28,8 +25,8 @@ public abstract class Asset {
 	 * 
 	 * @return
 	 */
-	public Id getId() {
-		return id;
+	public Qid getQid() {
+		return qid;
 	}
 
 	/**
@@ -159,14 +156,16 @@ public abstract class Asset {
 		// TODO
 		return null;
 	}
-	
-	
+
 	/**
 	 * Define asset data for this asset
 	 * 
 	 * @return
 	 */
-	abstract AssetData data();
-	
-	
+	abstract void setData(AssetData data);
+
+	public String toString() {
+		return name + "@" + qid;
+	}
+
 }

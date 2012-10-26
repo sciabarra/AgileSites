@@ -15,19 +15,30 @@ import com.fatwire.assetapi.data.AssetData;
 public class Util {
 
 	/**
-	 * Id class
+	 * Qualified Id class
 	 * 
 	 * @author msciab
 	 * 
 	 */
-	static class Id {
-		public Id(String type, Long id) {
-			this.type = type;
-			this.id = id;
+	static class Qid {
+		public Qid(String type, Long id) {
+			this(type, null, id);
 		}
 
-		String type;
-		Long id;
+		public Qid(String type, String subtype, Long id) {
+			this.type = type;
+			this.subtype = subtype;
+			this.id = id;
+
+		}
+
+		public Long id;
+		public String type;
+		public String subtype = null;
+
+		public String toString() {
+			return type + (subtype == null ? "" : "/" + subtype) + ":" + id;
+		}
 	}
 
 	/**
@@ -54,8 +65,19 @@ public class Util {
 	 * @param id
 	 * @return
 	 */
-	public static Id id(String type, long id) {
-		return new Id(type, id);
+	public static Qid qid(String type, long id) {
+		return new Qid(type, id);
+	}
+
+	/**
+	 * Shortcut to create an id, to be used with a static import
+	 * 
+	 * @param type
+	 * @param id
+	 * @return
+	 */
+	public static Qid id(String type, String subtype, long id) {
+		return new Qid(type, subtype, id);
 	}
 
 	/**

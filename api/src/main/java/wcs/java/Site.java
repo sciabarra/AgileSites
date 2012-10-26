@@ -3,21 +3,25 @@ package wcs.java;
 import java.util.List;
 
 import com.fatwire.assetapi.common.SiteAccessException;
+import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AssetId;
+import com.fatwire.assetapi.data.AttributeData;
 import com.fatwire.assetapi.site.SiteInfo;
 import com.fatwire.assetapi.site.SiteManager;
 
 public class Site {
-	/*
-	 * private Long id; private String name; private String description; private
-	 * List<String> types; private List<String> users; private List<String>
-	 * roles;
-	 */
+
+	private static Log log = new Log(Setup.class);
+
 	private com.fatwire.assetapi.site.Site site;
+
+	private String name;
 
 	public Site(final Long id, final String name, final String description,
 			final String[] types, final String[] users, final String[] roles) {
 		super();
+
+		this.name = name;
 
 		site = new com.fatwire.assetapi.site.Site() {
 
@@ -125,14 +129,38 @@ public class Site {
 		// sim.update(arg0
 		boolean found = false;
 		for (SiteInfo inf : sim.list()) {
+			// {dbg(inf.getName());
 			if (inf.getName().equals(site.getName()))
 				found = true;
 		}
-		if (found)
+		if (!found) {
+			log.info("Creating  " + site);
 			sim.create(Util.list(site));
-		else
+		} else {
+			log.info("Updating site " + site);
 			sim.update(Util.list(site));
-
+		}
 		return site.getName();
+	}
+
+	/**
+	 * Set site data
+	 * 
+	 * @param data
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void setData(AssetData data) {
+
+		AttributeData attrs = data.getAttributeData("Publist");
+		List list = attrs.getDataAsList();
+		for (Object obj : list)
+			if (obj.toString().equals(name))
+				return;
+		list.add(name);
+		attrs.setDataAsList(list);
+	}
+
+	public String toString() {
+		return "Site(" + site.getName() + ":" + site.getId() + ")";
 	}
 }

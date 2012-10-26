@@ -155,7 +155,12 @@ public class ScalaWcsDeployer {
 				"&site=" + site + //
 				"&username=" + username + //
 				"&password=" + password;
-		return get(url);
+
+		// StringTokenizer st = new StringTokenizer(get(url), "\r\n");
+		// StringBuilder sb = new StringBuilder();
+		// while()
+
+		return get(url).replace('\r', '\n');
 	}
 
 	/**

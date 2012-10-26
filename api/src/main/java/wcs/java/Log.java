@@ -36,4 +36,8 @@ public class Log {
 		System.out.println("[ERROR](" + className + ") " + message);
 	}
 
+	public static void dbg(String message) {
+		System.out.println(" *** " + message);
+	}
+
 }

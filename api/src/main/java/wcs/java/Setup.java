@@ -1,9 +1,6 @@
 package wcs.java;
 
-import java.util.Collections;
-import java.util.Iterator;
 import com.fatwire.assetapi.common.AssetAccessException;
-import com.fatwire.assetapi.common.SiteAccessException;
 import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AssetDataManager;
 import com.fatwire.assetapi.data.AssetId;
@@ -16,6 +13,10 @@ import com.fatwire.assetapi.site.SiteManager;
 import com.fatwire.system.Session;
 import com.fatwire.system.SessionFactory;
 import com.openmarket.xcelerate.asset.AssetIdImpl;
+import java.util.Collections;
+import java.util.Iterator;
+
+import wcs.java.Asset;
 
 abstract public class Setup implements wcs.core.Setup {
 
@@ -27,25 +28,11 @@ abstract public class Setup implements wcs.core.Setup {
 	public abstract Site getSite();
 
 	/**
-	 * Return templates to create
+	 * Return assets to create
 	 * 
 	 * @return
 	 */
-	public abstract Template[] getTemplates();
-
-	/**
-	 * Return cselements to create
-	 * 
-	 * @return
-	 */
-	public abstract CSElement[] getCSElements();
-
-	/**
-	 * Return cselements to create
-	 * 
-	 * @return
-	 */
-	public abstract SiteEntry[] getSiteEntries();
+	public abstract Asset[] getAssets();
 
 	// implementation
 
@@ -74,17 +61,11 @@ abstract public class Setup implements wcs.core.Setup {
 		try {
 			sb.append("\nSite: " + getSite().createOrUpdate(sim));
 
-			for (CSElement cselement : getCSElements())
-				sb.append("\n" + insertOrUpdate(cselement));
+			for (Asset asset : getAssets())
+				sb.append("\n" + insertOrUpdate(asset));
 
-			for (SiteEntry siteentry : getSiteEntries())
-				sb.append("\n" + insertOrUpdate(siteentry));
-
-			for (Template template : getTemplates())
-				sb.append("\n" + insertOrUpdate(template));
-
-		} catch (SiteAccessException e) {
-			sb.append("Exception: " + e.getMessage());
+		} catch (Exception e) {
+			sb.append("\nException: " + e.getMessage());
 			log.warn(e.getMessage());
 		}
 		sb.append("\nSetup.exec END\n");
@@ -122,18 +103,21 @@ abstract public class Setup implements wcs.core.Setup {
 	 * @return
 	 */
 	AssetData findByName(String name, String type, String subtype) {
+		log.debug("findByName " + name + ":" + type);
 		Condition c = ConditionFactory.createCondition(type, OpTypeEnum.EQUALS,
 				name);
 		Query query = new SimpleQuery(type, subtype, c,
 				Collections.singletonList("name"));
 		try {
 			for (AssetData data : adm.read(query)) {
+				log.trace("found");
 				return data;
 			}
 		} catch (AssetAccessException e) {
 			log.warn("EXCEPTION " + e.getMessage());
 			e.printStackTrace();
 		}
+		log.trace("not found");
 		return null;
 	}
 
@@ -144,21 +128,49 @@ abstract public class Setup implements wcs.core.Setup {
 	 * @param helper
 	 */
 	String insertOrUpdate(Asset asset) {
-		String what = asset.getName() + ":" + asset.getId() + "("
-				+ asset.getName() + ")";
-		AssetData data = findByName(asset.getName(), asset.getId().type, null);
-		try {
-			if (data == null) {
-				adm.insert(Util.listData(asset.data()));
+		log.debug("insertOrUpdate " + asset);
 
-			} else {
-				adm.update(Util.listData(asset.data()));
-			}
-			return what + " OK";
+		// if (!false)
+		// return asset+" OK";
+
+		String what = asset.getName() + ":" + asset.getQid() + "("
+				+ asset.getName() + ")";
+
+		AssetData data = findByName(asset.getName(), asset.getQid().type, null);
+
+		try {
+
+			// inserting
+			if (data == null)
+				return what + ": " + insert(asset);
+
+			// updating
+			return what + ": " + update(asset, data);
+
 		} catch (AssetAccessException e) {
 			e.printStackTrace();
 			return what + " ERROR: " + e.getMessage();
 		}
-
 	}
+
+	String insert(Asset asset) throws AssetAccessException {
+		log.debug("inserting " + asset);
+		AssetData data = adm.newAssetData(asset.getQid().type,
+				asset.getQid().subtype);
+		getSite().setData(data);
+		data.getAttributeData("name").setData(asset.getName());
+		data.getAttributeData("description").setData(asset.getDescription());
+		asset.setData(data);
+		adm.insert(Util.listData(data));
+		return "OK";
+	}
+
+	String update(Asset asset, AssetData data) throws AssetAccessException {
+		log.debug("update " + asset);
+		getSite().setData(data);
+		asset.setData(data);
+		adm.update(Util.listData(data));
+		return "OK";
+	}
+
 }
