@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 import wcs.core.ICSProxyJ;
 import wcs.java.Util.Arg;
-import wcs.java.Util.Qid;
+import wcs.java.Util.Id;
 import COM.FutureTense.Interfaces.ICS;
 
-import static wcs.java.Util.qid;
+import static wcs.java.Util.id;
 
 /**
  * Env
@@ -53,7 +53,7 @@ public class Env extends ICSProxyJ {
 	 * @param id
 	 * @return
 	 */
-	public Asset getAsset(Qid id) {
+	public Asset getAsset(Id id) {
 		// TODO
 		return null;
 	}
@@ -63,8 +63,8 @@ public class Env extends ICSProxyJ {
 	 * 
 	 * @return
 	 */
-	public Qid getQid() {
-		return qid(getVar("c"), Long.parseLong(getVar("cid")));
+	public Id getId() {
+		return id(getVar("c"), Long.parseLong(getVar("cid")));
 		// TODO logic to get the subtype
 	}
 
@@ -75,7 +75,7 @@ public class Env extends ICSProxyJ {
 	 * @param name
 	 * @param args
 	 */
-	public void call(Qid id, String name, Arg... args) {
+	public void call(Id id, String name, Arg... args) {
 		// TODO
 	}
 

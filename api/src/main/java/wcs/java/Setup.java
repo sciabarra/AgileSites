@@ -1,22 +1,21 @@
 package wcs.java;
 
+import java.util.Iterator;
+import java.util.List;
+
 import com.fatwire.assetapi.common.AssetAccessException;
 import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AssetDataManager;
 import com.fatwire.assetapi.data.AssetId;
+import com.fatwire.assetapi.data.MutableAssetData;
 import com.fatwire.assetapi.query.Condition;
 import com.fatwire.assetapi.query.ConditionFactory;
 import com.fatwire.assetapi.query.OpTypeEnum;
-import com.fatwire.assetapi.query.Query;
 import com.fatwire.assetapi.query.SimpleQuery;
 import com.fatwire.assetapi.site.SiteManager;
 import com.fatwire.system.Session;
 import com.fatwire.system.SessionFactory;
 import com.openmarket.xcelerate.asset.AssetIdImpl;
-import java.util.Collections;
-import java.util.Iterator;
-
-import wcs.java.Asset;
 
 abstract public class Setup implements wcs.core.Setup {
 
@@ -65,8 +64,7 @@ abstract public class Setup implements wcs.core.Setup {
 				sb.append("\n" + insertOrUpdate(asset));
 
 		} catch (Exception e) {
-			sb.append("\nException: " + e.getMessage());
-			log.warn(e.getMessage());
+			sb.append("\nException: " + log.error(e));
 		}
 		sb.append("\nSetup.exec END\n");
 		return sb.toString();
@@ -102,15 +100,17 @@ abstract public class Setup implements wcs.core.Setup {
 	 * @param subtype
 	 * @return
 	 */
-	AssetData findByName(String name, String type, String subtype) {
+	MutableAssetData findByName(String name, String type, String subtype,
+			List<String> attributes) {
 		log.debug("findByName " + name + ":" + type);
-		Condition c = ConditionFactory.createCondition(type, OpTypeEnum.EQUALS,
-				name);
-		Query query = new SimpleQuery(type, subtype, c,
-				Collections.singletonList("name"));
+		Condition c = ConditionFactory.createCondition("name",
+				OpTypeEnum.EQUALS, name);
+		SimpleQuery query = new SimpleQuery(type, subtype, c, attributes);
+		// query.getProperties().setIsBasicSearch(true);
+		// query.getProperties().setReadAll(false);
 		try {
-			for (AssetData data : adm.read(query)) {
-				log.trace("found");
+			for (MutableAssetData data : adm.readForUpdate(query)) {
+				log.trace("found asset");
 				return data;
 			}
 		} catch (AssetAccessException e) {
@@ -133,43 +133,61 @@ abstract public class Setup implements wcs.core.Setup {
 		// if (!false)
 		// return asset+" OK";
 
-		String what = asset.getName() + ":" + asset.getQid() + "("
+		String what = asset.getName() + ":" + asset.getId() + "("
 				+ asset.getName() + ")";
-
-		AssetData data = findByName(asset.getName(), asset.getQid().type, null);
 
 		try {
 
+			MutableAssetData data = findByName(asset.getName(),
+					asset.getId().type, null, asset.getAttributes());
+
 			// inserting
 			if (data == null)
-				return what + ": " + insert(asset);
+				return what + " INSERTING: " + insert(asset);
 
 			// updating
-			return what + ": " + update(asset, data);
+			return what + " UPDATING: " + update(asset, data);
 
 		} catch (AssetAccessException e) {
-			e.printStackTrace();
+			log.error(e);
 			return what + " ERROR: " + e.getMessage();
 		}
 	}
 
 	String insert(Asset asset) throws AssetAccessException {
 		log.debug("inserting " + asset);
-		AssetData data = adm.newAssetData(asset.getQid().type,
-				asset.getQid().subtype);
+		AssetId aid = new AssetIdImpl(asset.getId().type,
+				asset.getId().id.longValue());
+
+		MutableAssetData data = adm.newAssetData(aid.getType(),
+				asset.getSubtype());
+		data.setAssetId(aid);
 		getSite().setData(data);
 		data.getAttributeData("name").setData(asset.getName());
 		data.getAttributeData("description").setData(asset.getDescription());
 		asset.setData(data);
-		adm.insert(Util.listData(data));
-		return "OK";
+		try {
+			adm.insert(Util.listData(data));
+		} catch (Exception e) {
+			log.error(e);
+			return "ERROR: " + e;
+		}
+		return "INSERT OK";
 	}
 
-	String update(Asset asset, AssetData data) throws AssetAccessException {
+	String update(Asset asset, MutableAssetData data)
+			throws AssetAccessException {
 		log.debug("update " + asset);
 		getSite().setData(data);
 		asset.setData(data);
-		adm.update(Util.listData(data));
+		// String dump = "\nAsset: " + data.getAssetId() + Util.dump(data);
+		// log.debug(dump);
+		try {
+			adm.update(Util.listData(data), false);
+		} catch (Exception e) {
+			log.error(e);
+			return "ERROR: " + e;
+		}
 		return "OK";
 	}
 

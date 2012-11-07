@@ -2,22 +2,35 @@ package wcs.java;
 
 import java.sql.Date;
 import java.util.List;
-import wcs.java.Util.Qid;
-import com.fatwire.assetapi.data.AssetData;
+
+import wcs.java.Util.Id;
+
+import com.fatwire.assetapi.data.AttributeData;
+import com.fatwire.assetapi.data.MutableAssetData;
 
 public abstract class Asset {
+	private static Log log = new Log(Asset.class);
 
-	private Qid qid;
+	private Id id;
+	private String subtype;
 	private String name;
 	private String description;
 
 	public Asset() {
 	}
 
-	public Asset(Qid qid, String name, String description) {
-		this.qid = qid;
+	public Asset(Id id, String subtype, String name, String description) {
+		this.id = id;
+		this.subtype = subtype;
 		this.name = name;
 		this.description = description;
+	}
+
+	/**
+	 * Return this asset typesub
+	 */
+	public String getSubtype() {
+		return subtype;
 	}
 
 	/**
@@ -25,8 +38,8 @@ public abstract class Asset {
 	 * 
 	 * @return
 	 */
-	public Qid getQid() {
-		return qid;
+	public Id getId() {
+		return id;
 	}
 
 	/**
@@ -153,19 +166,36 @@ public abstract class Asset {
 	 * @return
 	 */
 	public List<Date> getDates(String attribute) {
-		// TODO
 		return null;
 	}
+
+	/**
+	 * Return a list of expected attributes
+	 */
+	abstract List<String> getAttributes();
 
 	/**
 	 * Define asset data for this asset
 	 * 
 	 * @return
 	 */
-	abstract void setData(AssetData data);
+	abstract void setData(MutableAssetData data);
 
+	/**
+	 * Print it
+	 */
 	public String toString() {
-		return name + "@" + qid;
+		return name + "@" + id;
+	}
+
+	void addAttribute(MutableAssetData data, String key, Object value) {
+		log.debug(key + "=" + value);
+		AttributeData attr = data.getAttributeData(key);
+		if (attr != null)
+			attr.setData(value);
+		else {
+			log.warn("no attribute for " + key);
+		}
 	}
 
 }

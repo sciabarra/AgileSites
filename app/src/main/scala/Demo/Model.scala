@@ -11,10 +11,10 @@ class Model extends wcs.scala.Setup {
     Array("fwadmin"),
     Array("AdvancedUser"))
 
-  def assets =
-    CSElement(n + 1, "TestCSElement", "Test CSElement", classOf[Tester].toString) ::
-      //SiteEntry(n + 2, "TestSiteEntry", "Test CSElement", classOf[Tester].toString) ::
-      //Template(n + 3, "TestTemplateScala", "TestTemplateScala", classOf[TestElementScala].toString) ::
+  def assets: List[Asset] =
+    CSElement(n + 1, "TestCSElement", "Test CSElement", classOf[Tester].getCanonicalName()) ::
+      Template(n + 2, "TestTemplateScala", "TestTemplate", classOf[TestElementScala].getCanonicalName()) ::
+      SiteEntry(n + 3, "TestSiteEntry", "Test CSElement", classOf[Tester].toString, true, n + 1) ::
       Nil
 
   // not sure why I cannot use classOf with a Java class

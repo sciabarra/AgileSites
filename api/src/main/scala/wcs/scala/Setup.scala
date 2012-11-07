@@ -18,7 +18,7 @@ abstract class Setup extends JSetup {
 
   case class Template(id: Long, name: String, description: String, element: String, cscache: String = "true, ~0", sscache: String = "true,~0") extends Asset
 
-  case class SiteEntry(id: Long, name: String, description: String, element: String, wrapper: Boolean = false) extends Asset
+  case class SiteEntry(id: Long, name: String, description: String, element: String, wrapper: Boolean = false, csElementId: Long) extends Asset
 
   def site: Site
 
@@ -34,7 +34,7 @@ abstract class Setup extends JSetup {
         case x: Template =>
           new JTemplate(x.id, x.name, x.description, x.element, x.cscache, x.sscache)
         case x: SiteEntry =>
-          new JSiteEntry(x.id, x.name, x.description, x.element, x.wrapper)
+          new JSiteEntry(x.id, x.name, x.description, x.element, x.wrapper, x.csElementId)
       }
     }: _*)
 

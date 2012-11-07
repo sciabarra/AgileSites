@@ -10,5 +10,5 @@ if ! test -d $JSK_HOME/App_Server ; then
 fi
 cd $JSK_HOME/App_Server/apache-tomcat-*/bin/
 pwd
-sh catalina.sh.org run
+sh catalina.sh.org ${1:-run}
 cd -

@@ -69,7 +69,8 @@ public class ScalaWcsDeployer {
 		int c = in.read();
 		while (c != -1) {
 			// System.out.print((char)c);
-			// if (c != '\r')
+			if (c == '\r')
+				c = '\n';
 			sb.append((char) c);
 			c = in.read();
 		}

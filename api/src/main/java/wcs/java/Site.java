@@ -3,9 +3,8 @@ package wcs.java;
 import java.util.List;
 
 import com.fatwire.assetapi.common.SiteAccessException;
-import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AssetId;
-import com.fatwire.assetapi.data.AttributeData;
+import com.fatwire.assetapi.data.MutableAssetData;
 import com.fatwire.assetapi.site.SiteInfo;
 import com.fatwire.assetapi.site.SiteManager;
 
@@ -27,7 +26,7 @@ public class Site {
 
 			@Override
 			public List<String> getAssetTypes() {
-				return Util.array2list(types);
+				return Util.array2listString(types);
 			}
 
 			@Override
@@ -67,12 +66,12 @@ public class Site {
 
 			@Override
 			public List<String> getUserRoles(String arg0) {
-				return Util.array2list(roles);
+				return Util.array2listString(roles);
 			}
 
 			@Override
 			public List<String> getUsers() {
-				return Util.array2list(users);
+				return Util.array2listString(users);
 
 			}
 
@@ -148,16 +147,22 @@ public class Site {
 	 * 
 	 * @param data
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void setData(AssetData data) {
+	// TODO make publication
+	// @SuppressWarnings({ "rawtypes", "unchecked" })
+	public void setData(MutableAssetData data) {
 
-		AttributeData attrs = data.getAttributeData("Publist");
-		List list = attrs.getDataAsList();
-		for (Object obj : list)
-			if (obj.toString().equals(name))
-				return;
-		list.add(name);
-		attrs.setDataAsList(list);
+		data.getAttributeData("Publist").setDataAsList(Util.listString(name));
+		/*
+		 * AttributeData attrs = data.getAttributeData("Publist");
+		 * 
+		 * List list = attrs.getDataAsList(); if (list == null) list = new
+		 * LinkedList(); for (Object obj : list) if
+		 * (obj.toString().equals(name)) {
+		 * log.trace("site already in place, nothing to do"); return; }
+		 * list.add(name); log.trace("Publist=" + list);
+		 * 
+		 * attrs.setDataAsList(Util.listString(name));
+		 */
 	}
 
 	public String toString() {

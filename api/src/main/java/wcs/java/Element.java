@@ -2,7 +2,7 @@ package wcs.java;
 
 import COM.FutureTense.Interfaces.ICS;
 import wcs.java.Util.Arg;
-import wcs.java.Util.Qid;
+import wcs.java.Util.Id;
 
 /**
  * 
@@ -39,7 +39,7 @@ public abstract class Element implements wcs.core.Element {
 	 * @param id
 	 * @return
 	 */
-	public String url(Qid id) {
+	public String url(Id id) {
 		// TODO
 		return null;
 	}

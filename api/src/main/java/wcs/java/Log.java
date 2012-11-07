@@ -1,5 +1,8 @@
 package wcs.java;
 
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
+
 public class Log {
 
 	String className;
@@ -34,6 +37,13 @@ public class Log {
 
 	void error(String message) {
 		System.out.println("[ERROR](" + className + ") " + message);
+	}
+
+	String error(Exception e) {
+		CharArrayWriter caw = new CharArrayWriter();
+		e.printStackTrace(new PrintWriter(caw));
+		error("Exception: " + caw.toString());
+		return caw.toString();
 	}
 
 	public static void dbg(String message) {
