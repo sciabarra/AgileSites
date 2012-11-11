@@ -1,14 +1,9 @@
 package wcs.java;
 
-import static wcs.java.Util.attrArray;
-import static wcs.java.Util.attrStruct;
 import static wcs.java.Util.attrStructKV;
 import static wcs.java.Util.id;
 
-import java.util.HashMap;
 import java.util.List;
-
-import wcs.java.Util;
 
 import com.fatwire.assetapi.data.MutableAssetData;
 
@@ -44,7 +39,6 @@ public class SiteEntry extends Asset {
 	}
 
 	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	void setData(MutableAssetData data) {
 		// root element
 		data.getAttributeData("category").setData("");
@@ -62,16 +56,6 @@ public class SiteEntry extends Asset {
 		data.getAttributeData("pagecriteria").setDataAsList(
 				Util.listString("c", "cid", "context", "p", "rendermode",
 						"site", "sitepfx", "ft_ss"));
-
-		/*
-		 * HashMap mapSiteEntry = new HashMap<String, Object>();
-		 * mapSiteEntry.put( "defaultarguments", // attrArray(
-		 * "defaultarguments", // attrStructKV("seid", "" + id), //
-		 * attrStructKV("site", "Test"), attrStructKV("rendermode", "live")));
-		 * 
-		 * data.getAttributeData("defaultarguments") .setData(
-		 * Util.list(attrStruct("Structure defaultarguments", mapSiteEntry)));
-		 */
 
 		data.getAttributeData("defaultarguments").setDataAsList(
 				Util.list(

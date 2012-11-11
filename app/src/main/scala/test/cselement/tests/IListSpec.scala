@@ -1,4 +1,4 @@
-package demo.test
+package test.cselement.tests
 
 import wcs.scala.tag._
 import COM.FutureTense.Interfaces.IList

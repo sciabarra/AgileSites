@@ -1,9 +1,9 @@
-package demo.view;
+package demo.template;
 
 import wcs.java.Element;
 import wcs.java.Env;
 
-public class TestElementJava extends Element {
+public class Layout extends Element {
 
 	@Override
 	public String apply(Env env) {

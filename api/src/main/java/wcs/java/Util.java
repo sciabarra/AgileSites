@@ -222,6 +222,7 @@ public class Util {
 	 * @param value
 	 * @return
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static AttributeDataImpl attrStructKV(String name, String value) {
 		HashMap map = new HashMap<String, Object>();
 		map.put("name", attrString("name", name));

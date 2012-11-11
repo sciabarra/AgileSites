@@ -8,15 +8,29 @@ import com.fatwire.assetapi.data.MutableAssetData;
 import com.fatwire.assetapi.site.SiteInfo;
 import com.fatwire.assetapi.site.SiteManager;
 
+/**
+ * Represent a site - currently only the name of the site is stored
+ * 
+ * It will contains much more in future - some private code is already availabe
+ * 
+ * @author msciab
+ * 
+ */
 public class Site {
-
-	private static Log log = new Log(Setup.class);
-
-	private com.fatwire.assetapi.site.Site site;
 
 	private String name;
 
-	public Site(final Long id, final String name, final String description,
+	private com.fatwire.assetapi.site.Site site;
+
+	private static Log log = new Log(Setup.class);
+
+	public Site(String name) {
+		this.name = name;
+	}
+
+	// future use
+	@SuppressWarnings("unused")
+	private Site(final Long id, final String name, final String description,
 			final String[] types, final String[] users, final String[] roles) {
 		super();
 
@@ -147,7 +161,7 @@ public class Site {
 	 * 
 	 * @param data
 	 */
-	// TODO make publication
+	// FIXME full implementation - for now just fix the current site
 	// @SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setData(MutableAssetData data) {
 

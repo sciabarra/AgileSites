@@ -12,7 +12,6 @@ import com.fatwire.assetapi.query.Condition;
 import com.fatwire.assetapi.query.ConditionFactory;
 import com.fatwire.assetapi.query.OpTypeEnum;
 import com.fatwire.assetapi.query.SimpleQuery;
-import com.fatwire.assetapi.site.SiteManager;
 import com.fatwire.system.Session;
 import com.fatwire.system.SessionFactory;
 import com.openmarket.xcelerate.asset.AssetIdImpl;
@@ -37,7 +36,8 @@ abstract public class Setup implements wcs.core.Setup {
 
 	private Session session;
 	private AssetDataManager adm;
-	private SiteManager sim;
+	// future use
+	//private SiteManager sim;
 
 	/**
 	 * Execute the setup creating the assets using the Asset API
@@ -50,7 +50,9 @@ abstract public class Setup implements wcs.core.Setup {
 		session = SessionFactory.newSession(username, password);
 		adm = (AssetDataManager) session.getManager(AssetDataManager.class
 				.getName());
-		sim = (SiteManager) session.getManager(SiteManager.class.getName());
+
+		// future use
+		// sim = (SiteManager) session.getManager(SiteManager.class.getName());
 
 		log.debug("created session, adm, sim");
 
@@ -58,7 +60,9 @@ abstract public class Setup implements wcs.core.Setup {
 		sb.append("Setup.exec BEGIN");
 
 		try {
-			sb.append("\nSite: " + getSite().createOrUpdate(sim));
+
+			// future use
+			// sb.append("\nSite: " + getSite().createOrUpdate(sim));
 
 			for (Asset asset : getAssets())
 				sb.append("\n" + insertOrUpdate(asset));

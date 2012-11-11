@@ -1,11 +1,14 @@
-package demo.test
+package test.cselement
 
-import wcs.scala.Env
-import wcs.scala.Log
+import wcs.scala._
 import scala.xml.NodeSeq
+import test.cselement.tests.RunTagSpec
+import test.cselement.tests.TagSpec
+import test.cselement.tests.IListSpec
 
-object AllTests extends Log {
-  def apply(e: Env): NodeSeq = {
+class AllTests extends Element {
+
+  def apply(e: Env): String = {
 
     /* exercise log
     info("INFO Hello, world!!!")
@@ -13,13 +16,14 @@ object AllTests extends Log {
     trace("TRACE Hello, world!!!")
     warn("WARN Hello, world!!!")
     */
-    
+
     <h1>Tests</h1>
     <h2>RunTagSpec</h2>
     <pre>{ new RunTagSpec(e.ics) }</pre>
     <h2>TagSpec</h2>
     <pre>{ new TagSpec(e) }</pre>
     <h2>IListSpec</h2>
-    <pre>{ new IListSpec(e) }</pre>
+    <pre>{ new IListSpec(e) }</pre>.toString
+
   }
 }

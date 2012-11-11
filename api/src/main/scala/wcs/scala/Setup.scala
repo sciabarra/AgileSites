@@ -12,8 +12,10 @@ abstract class Setup extends JSetup {
 
   class Asset
 
-  case class Site(id: Long, name: String, description: String, types: Array[String], users: Array[String], roles: Array[String]) extends Asset
-
+  // future use
+  //case class Site(id: Long, name: String, description: String, types: Array[String], users: Array[String], roles: Array[String]) extends Asset
+  case class Site(name: String)
+  
   case class CSElement(id: Long, name: String, description: String, element: String) extends Asset
 
   case class Template(id: Long, name: String, description: String, element: String, cscache: String = "true, ~0", sscache: String = "true,~0") extends Asset
@@ -24,7 +26,9 @@ abstract class Setup extends JSetup {
 
   def assets: List[Asset]
 
-  override def getSite = new JSite(site.id, site.name, site.description, site.types, site.users, site.roles)
+  // future use
+  //override def getSite = new JSite(site.id, site.name, site.description, site.types, site.users, site.roles)
+  override def getSite = new JSite(site.name)
 
   override def getAssets = Array[wcs.java.Asset](
     assets map { a =>
