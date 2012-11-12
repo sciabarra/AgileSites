@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Page/LoadSiteTreeNodes
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/GetDefaultNodeBehavior" />
+
+<!-- Load operation -->
+<SETVAR NAME="loadexecuted" VALUE="false"/>
+		
+<!-- We arrive here if we are displaying the contents of the 'placed' or 'unplaced' node in the tree -->
+<if COND="Variables.loadpages=Placed">
+<then>
+  <IF cond="Variables.showParents=true">
+  <THEN>				
+	   <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/PlacedPageParents"/>		 
+  </THEN>
+  <ELSE>
+	   <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/PlacedPageChildren"/>		
+  </ELSE>
+  </IF>						
+</then>
+</if>
+	
+<!--  Is it Unplaced Page Query  -->		
+<if COND="Variables.loadpages=Unplaced">
+<then>
+ <IF cond="Variables.showParents=true">
+ <THEN>				
+	   <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/UnplacedPageParents"/>		 
+ </THEN>
+ <ELSE>
+	   <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/UnplacedPageChildren"/>		
+ </ELSE>
+ </IF>				
+</then>
+</if>
+	
+<!--  Has the load site nodes request been executed --> 	
+<if COND="Variables.loadexecuted=false">
+<then>
+ 	<SETVAR NAME="assetid" VALUE="Variables.loadpages"/>
+
+	<IF cond="Variables.showParents=true">
+ 	<THEN>				
+	   <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/PageParents"/>		 
+ 	</THEN>
+ 	<ELSE>
+	   <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/PageChildren"/>		
+ 	</ELSE>
+ 	</IF>				
+</then>
+</if>
+
+</FTCS>

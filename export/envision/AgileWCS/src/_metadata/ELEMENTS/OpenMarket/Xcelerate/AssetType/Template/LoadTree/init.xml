@@ -1,0 +1,74 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ftcs SYSTEM "futuretense_cs.dtd">
+<ftcs version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/Template/LoadTree/init
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<IF cond="Variables.cs_environment=ucform">
+<THEN>
+    <IF cond="Variables.showParents=true">
+    <THEN>				
+	    <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/LoadTree/initParents"/>		  
+	 </THEN>
+	 <ELSE>
+	    <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/LoadTree/initChildren"/>		
+	 </ELSE>
+	 </IF>			   	
+</THEN>
+<ELSE>
+
+<ics.clearerrno/>
+<setvar name="tablename" value="Template"/>
+<execsql list="Testcount" 
+         sql="SELECT count(*) as mycount FROM Template,AssetPublication
+                WHERE status!='VO'
+                    AND Template.id = AssetPublication.assetid 
+                    AND (AssetPublication.pubid = SessionVariables.pubid OR AssetPublication.pubid=0)" TABLE="Template,AssetPublication"/>
+                    
+<LOGMSG STR="E_LoadTree / init    TEMPLATE TAB   template count Testcount.mycount    " />
+                    
+<if cond="Testcount.mycount!=0">
+<then>
+    <satellite.link assembler="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+        <satellite.argument name="AssetType" value="Variables.AssetType"/>
+        <satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/Variables.AssetType/LoadTree"/>
+        <satellite.argument name="op" value="load"/>
+    </satellite.link>
+</then>
+<else>
+    <removevar name="LoadURL"/>
+</else>
+</if>
+
+<callelement name="OpenMarket/Gator/UIFramework/BuildTreeNodeID" scoped="STACKED">
+    <argument name="AdHoc" value="Variables.AssetType"/>
+    <argument name="TreeNodeID" value="Variables.empty"/>
+</callelement>
+
+<removevar name="ExecuteURL"/>
+<removevar name="OKActions"/>
+ 
+<satellite.link assembler="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+    <satellite.argument name="AssetType" value="Variables.AssetType"/>
+</satellite.link>
+
+<callelement name="OpenMarket/Gator/UIFramework/BuildTreeNode">
+    <argument name="Label" value="Template"/>
+    <argument name="Description" value="Template"/>
+    <argument name="ID" value="Variables.TreeNodeID"/>
+    <!-- LoadURL implicitly passed in -->
+    <argument name="OpURL" value="Variables.OpURL"/>
+    <argument name="OKActions" value="refresh"/>
+    <argument name="Image" value="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/Variables.AssetType.png"/>
+    <argument name="RefreshKeys" value="Dummy__Template"/>
+</callelement>
+
+</ELSE>
+</IF>
+
+</ftcs>

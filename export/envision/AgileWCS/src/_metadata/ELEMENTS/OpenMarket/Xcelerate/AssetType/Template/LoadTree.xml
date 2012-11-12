@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ftcs SYSTEM "futuretense_cs.dtd">
+<ftcs version="1.2">
+<setvar name="cs.contenttype" value="text/html; charset=UTF-8"/>
+<callelement name="OpenMarket/Xcelerate/UIFramework/BasicEnvironment"/>
+
+<if cond="Variables.command=GetTypes">
+<then>
+    <setvar name="Variables.varname" value="Variables.AssetType"/>
+</then>
+<else>
+    <callelement name="OpenMarket/Xcelerate/AssetType/Template/LoadTree/Variables.op"/>
+</else>
+</if>
+</ftcs> 
