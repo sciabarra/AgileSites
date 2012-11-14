@@ -10,9 +10,9 @@ class Setup extends wcs.scala.Setup {
   def site = Site("Test")
 
   def assets: List[Asset] =
-    Template(b, "Layout", "Layout", "test.template.Layout") ::
-      CSElement(b + 1, "AllTests", "AllTests", "test.template.AllTests") ::
-      SiteEntry(b + 2, "AllTests", "AllTests", "test.template.AllTests", true, b + 1) ::
+    Template(b, "JavaTests", "Java Tests", "test.template.JavaTests") ::
+      CSElement(b + 1, "ScalaTests", "Scala Tests", "test.cselement.ScalaTests") ::
+      SiteEntry(b + 2, "ScalaTests", "Scala Tests", "ScalaTests", true, b + 1) ::
       Nil
 
 }

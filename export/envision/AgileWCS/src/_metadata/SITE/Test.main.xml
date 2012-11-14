@@ -40,7 +40,7 @@
             <COM.FutureTense.Interfaces.FTVAL serialization="custom">
               <COM.FutureTense.Interfaces.FTVAL>
                 <int>30</int>
-                <string>1336168706518</string>
+                <string>1336168710184</string>
               </COM.FutureTense.Interfaces.FTVAL>
             </COM.FutureTense.Interfaces.FTVAL>
             <string>oversion</string>
@@ -61,7 +61,7 @@
             <COM.FutureTense.Interfaces.FTVAL serialization="custom">
               <COM.FutureTense.Interfaces.FTVAL>
                 <int>30</int>
-                <string>1336168706519</string>
+                <string>1336168710185</string>
               </COM.FutureTense.Interfaces.FTVAL>
             </COM.FutureTense.Interfaces.FTVAL>
           </hashtable>
@@ -90,14 +90,14 @@
             <COM.FutureTense.Interfaces.FTVAL serialization="custom">
               <COM.FutureTense.Interfaces.FTVAL>
                 <int>30</int>
-                <string>Test</string>
+                <string>Test Site</string>
               </COM.FutureTense.Interfaces.FTVAL>
             </COM.FutureTense.Interfaces.FTVAL>
             <string>id</string>
             <COM.FutureTense.Interfaces.FTVAL serialization="custom">
               <COM.FutureTense.Interfaces.FTVAL>
                 <int>30</int>
-                <string>1336168706518</string>
+                <string>1336168710184</string>
               </COM.FutureTense.Interfaces.FTVAL>
             </COM.FutureTense.Interfaces.FTVAL>
             <string>cs_preview</string>
@@ -151,7 +151,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Mon Nov 12 00:43:14 CET 2012
+#Wed Nov 14 22:55:30 CET 2012
 key=@SITE-Test
 type=SITE
 

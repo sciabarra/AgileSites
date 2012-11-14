@@ -11,7 +11,7 @@
         <description>Template</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Users/msciab/Work/product/ScalaWCS/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp179/dcs5592188122156060284.tmp</urldescriptorspec>
+        <urldescriptorspec>/Users/msciab/Work/product/ScalaWCS/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp6825/dcs2882667320550131025.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-Template</uid>
         <useDimension></useDimension>
@@ -703,11 +703,12 @@ DQo=</byte-array>
       <associations/>
       <siteNames class="list">
         <string>avisports</string>
-        <string>Demo</string>
-        <string>Docs</string>
         <string>FatPhone</string>
         <string>FirstSiteII</string>
+        <string>iUI</string>
+        <string>ScalaWCS</string>
         <string>Test</string>
+        <string>Yaml</string>
       </siteNames>
     </data>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -989,9 +990,9 @@ DQo=</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Mon Nov 12 00:43:12 CET 2012
+#Wed Nov 14 22:55:29 CET 2012
 key=@ASSET_TYPE-CSSystem-AssetType-Template
 type=ASSET_TYPE
-sites=avisports,Demo,Docs,FatPhone,FirstSiteII,Test
+sites=avisports,FatPhone,FirstSiteII,iUI,ScalaWCS,Test,Yaml
 
 ==================___ END METADATA ___==================-->

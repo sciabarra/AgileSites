@@ -11,7 +11,7 @@
         <description>CSElement</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Users/msciab/Work/product/ScalaWCS/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp179/dcs6115989731545376003.tmp</urldescriptorspec>
+        <urldescriptorspec>/Users/msciab/Work/product/ScalaWCS/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp6825/dcs2404077814047647166.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-CSElement</uid>
         <useDimension></useDimension>
@@ -395,11 +395,12 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA0KDQo=</byte-array>
       <associations/>
       <siteNames class="list">
         <string>avisports</string>
-        <string>Demo</string>
-        <string>Docs</string>
         <string>FatPhone</string>
         <string>FirstSiteII</string>
+        <string>iUI</string>
+        <string>ScalaWCS</string>
         <string>Test</string>
+        <string>Yaml</string>
       </siteNames>
     </data>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -609,9 +610,9 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA0KDQo=</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Mon Nov 12 00:43:13 CET 2012
+#Wed Nov 14 22:55:30 CET 2012
 key=@ASSET_TYPE-CSSystem-AssetType-CSElement
 type=ASSET_TYPE
-sites=avisports,Demo,Docs,FatPhone,FirstSiteII,Test
+sites=avisports,FatPhone,FirstSiteII,iUI,ScalaWCS,Test,Yaml
 
 ==================___ END METADATA ___==================-->

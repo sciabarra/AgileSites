@@ -14,7 +14,7 @@ wcsCsdtJar in ThisBuild := "../ContentServer/11.1.1.6.0/csdt-client-1.2.jar"
 wcsUrl in ThisBuild := "http://localhost:8380/cs/"
 
 // comma separates list of sites to import/export
-wcsSites in ThisBuild := "Demo,Test,Docs"
+wcsSites in ThisBuild := "Test,Yaml,iUI"
 
 // user to import/export
 wcsUser in ThisBuild := "fwadmin"

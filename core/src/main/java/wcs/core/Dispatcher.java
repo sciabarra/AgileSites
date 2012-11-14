@@ -1,6 +1,8 @@
 package wcs.core;
 
 import java.io.File;
+import java.util.StringTokenizer;
+
 import COM.FutureTense.Interfaces.ICS;
 
 public class Dispatcher {
@@ -84,49 +86,69 @@ public class Dispatcher {
 	 * @param ics
 	 * @return
 	 */
-	public String deploy(ICS ics, String site, String user, String pass) {
+	public String deploy(ICS ics, String sites, String user, String pass) {
 
-		if (site == null) {
+		if (sites == null) {
 			WCS.debug("site is null!!!");
-			return "Cannot deploy, no site!";
+			return "Cannot Setup, no sites specified!";
 		}
 
-		String className = site.toLowerCase().replace(" ", "_")
-				.replaceAll("[^a-zA-Z_\\.]", "")
-				+ ".Model";
-
-		WCS.debug("[Dispatcher.deploy] className=" + className);
-
+		ClassLoader cl = null;
 		try {
 			// jar & classname
-			ClassLoader cl = loader.loadJar();
+			cl = loader.loadJar();
 			WCS.debug("[Dispatcher.deploy] loaded classloader " + cl);
-
-			// instantiate
-			@SuppressWarnings("rawtypes")
-			Class clazz = Class.forName(className, true, cl);
-			WCS.debug("[Dispatcher.deploy] loaded class " + clazz);
-
-			Object obj = clazz.newInstance();
-			WCS.debug("[Dispatcher.deploy] loaded instance " + obj);
-
-			// cast and execute
-			if (obj instanceof wcs.core.Setup) {
-				WCS.debug("[Dispatcher.deploy] obj is a wcs.core.Setup");
-				Setup setup = (wcs.core.Setup) obj;
-				return setup.exec(user, pass);
-			} else {
-				WCS.debug("[Dispatcher.deploy] obj is NOT a wcs.core.Setup");
-			}
-			return "<h1>Not Found Setup for " + site + "<h1>";
-
-		} catch (Exception e) {
-			WCS.debug("[Dispacher.deploy] exception loading " + className
-					+ " : " + e.getMessage());
-			e.printStackTrace();
-			return "<h1>Exception</h1><p>Class: " + className
-					+ "</p>\n<p>Message: " + e.getMessage() + "</p>\n";
+		} catch (Exception ex) {
+			WCS.debug("[Dispacher.deploy] exception loading jar"
+					+ ex.getMessage());
+			ex.printStackTrace();
+			return "<h1>Exception</h1><p>Loading Jar: " + "</p>\n<p>Message: "
+					+ ex.getMessage() + "</p>\n";
 
 		}
+
+		StringTokenizer st = new StringTokenizer(sites, ",");
+		StringBuilder msg = new StringBuilder();
+
+		while (st.hasMoreTokens()) {
+
+			// next setup to run...
+			String site = st.nextToken().trim();
+
+			String className = site.toLowerCase().replace(" ", "_")
+					.replaceAll("[^a-zA-Z_\\.]", "")
+					+ ".Setup";
+
+			WCS.debug("[Dispatcher.deploy] invoking " + className);
+
+			try {
+				// instantiate
+				@SuppressWarnings("rawtypes")
+				Class clazz = Class.forName(className, true, cl);
+				WCS.debug("[Dispatcher.deploy] loaded class " + clazz);
+
+				Object obj = clazz.newInstance();
+				WCS.debug("[Dispatcher.deploy] loaded instance " + obj);
+
+				// cast to Setup and execute
+				if (obj instanceof wcs.core.Setup) {
+					WCS.debug("[Dispatcher.deploy] obj is a wcs.core.Setup");
+					Setup setup = (wcs.core.Setup) obj;
+					msg.append(setup.exec(user, pass));
+				} else {
+					WCS.debug("[Dispatcher.deploy] obj is NOT a wcs.core.Setup");
+					msg.append("<h1>Not Found Setup for " + site + "<h1>");
+				}
+			} catch (Exception e) {
+				// logging errors and returning the message
+				WCS.debug("[Dispacher.deploy] exception loading " + className
+						+ " : " + e.getMessage());
+				e.printStackTrace();
+				msg.append("<h1>Exception</h1><p>Class: " + className
+						+ "</p>\n<p>Message: " + e.getMessage() + "</p>\n");
+
+			}
+		}
+		return msg.toString();
 	}
 }
