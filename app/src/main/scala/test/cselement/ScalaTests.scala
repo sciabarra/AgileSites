@@ -6,7 +6,7 @@ import test.cselement.tests.RunTagSpec
 import test.cselement.tests.TagSpec
 import test.cselement.tests.IListSpec
 
-class TAllTests extends Element {
+class ScalaTests extends Element {
 
   def apply(e: Env): String = {
 
@@ -15,7 +15,7 @@ class TAllTests extends Element {
     debug("DEBUG Hello, world!!!")
     trace("TRACE Hello, world!!!")
     warn("WARN Hello, world!!!")
-    */
+    
 
     <h1>Tests</h1>
     <h2>RunTagSpec</h2>
@@ -24,6 +24,9 @@ class TAllTests extends Element {
     <pre>{ new TagSpec(e) }</pre>
     <h2>IListSpec</h2>
     <pre>{ new IListSpec(e) }</pre>.toString
+    */
+    
+    <h1>Hello World, from Scala</h1>.toString
 
   }
 }

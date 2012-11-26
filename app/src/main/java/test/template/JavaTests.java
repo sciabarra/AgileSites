@@ -7,7 +7,7 @@ public class JavaTests extends Element {
 
 	@Override
 	public String apply(Env env) {
-		return "<h1>Hello, world, from Java</h1>";
+		return "<h1>Hello world. Called from Java</h1>";
 	}
 
 }
