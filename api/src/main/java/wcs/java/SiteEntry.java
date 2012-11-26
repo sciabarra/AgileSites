@@ -1,7 +1,6 @@
 package wcs.java;
 
 import static wcs.java.Util.attrStructKV;
-import static wcs.java.Util.id;
 
 import java.util.List;
 
@@ -9,19 +8,16 @@ import com.fatwire.assetapi.data.MutableAssetData;
 
 public class SiteEntry extends Asset {
 
-	public SiteEntry(Long id, String name, String description, String element,
-			boolean wrapper, long csElementId) {
-		super(id("SiteEntry", id), "", name, description);
-		this.id = id;
+	public SiteEntry(String name, String description, String element,
+			boolean wrapper) {
+		super("SiteEntry", "", name, description);
 		this.element = element;
 		this.wrapper = wrapper;
-		this.csElementId = csElementId;
 	}
 
 	private long id;
 	private String element;
 	private boolean wrapper;
-	private long csElementId;
 
 	public String getElement() {
 		return element;
@@ -44,8 +40,10 @@ public class SiteEntry extends Asset {
 		data.getAttributeData("category").setData("");
 		data.getAttributeData("pagename").setData(element);
 		data.getAttributeData("cs_wrapper").setData(wrapper ? "y" : "n");
-		data.getAttributeData("cselement_id").setData(
-				"CSElement:" + csElementId);
+
+		// data.getAttributeData("cselement_id").setData(
+		// "CSElement:" + csElementId);
+
 		data.getAttributeData("acl").setData("");
 		data.getAttributeData("cscacheinfo").setData("false");
 		data.getAttributeData("sscacheinfo").setData("false");

@@ -3,6 +3,8 @@ package wcs.java;
 import java.util.Iterator;
 import java.util.List;
 
+import COM.FutureTense.Interfaces.ICS;
+
 import com.fatwire.assetapi.common.AssetAccessException;
 import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AssetDataManager;
@@ -36,8 +38,9 @@ abstract public class Setup implements wcs.core.Setup {
 
 	private Session session;
 	private AssetDataManager adm;
+
 	// future use
-	//private SiteManager sim;
+	// private SiteManager sim;
 
 	/**
 	 * Execute the setup creating the assets using the Asset API
@@ -45,7 +48,7 @@ abstract public class Setup implements wcs.core.Setup {
 	 * @param username
 	 * @param password
 	 */
-	public String exec(String username, String password) {
+	public String exec(ICS ics, String username, String password) {
 
 		session = SessionFactory.newSession(username, password);
 		adm = (AssetDataManager) session.getManager(AssetDataManager.class
@@ -65,7 +68,7 @@ abstract public class Setup implements wcs.core.Setup {
 			// sb.append("\nSite: " + getSite().createOrUpdate(sim));
 
 			for (Asset asset : getAssets())
-				sb.append("\n" + insertOrUpdate(asset));
+				sb.append("\n" + insertOrUpdate(ics, asset));
 
 		} catch (Exception e) {
 			sb.append("\nException: " + log.error(e));
@@ -131,41 +134,43 @@ abstract public class Setup implements wcs.core.Setup {
 	 * @param adm
 	 * @param helper
 	 */
-	String insertOrUpdate(Asset asset) {
+	String insertOrUpdate(ICS ics, Asset asset) {
 		log.debug("insertOrUpdate " + asset);
 
 		// if (!false)
 		// return asset+" OK";
 
-		String what = asset.getName() + ":" + asset.getId() + "("
-				+ asset.getName() + ")";
+		String what = asset.toString();
 
 		try {
 
 			MutableAssetData data = findByName(asset.getName(),
-					asset.getId().type, null, asset.getAttributes());
+					asset.getType(), null, asset.getAttributes());
 
 			// inserting
 			if (data == null)
-				return what + " INSERTING: " + insert(asset);
+				return what + " INSERTING: "
+						+ insert(asset, Long.parseLong(ics.genID(true)));
 
 			// updating
 			return what + " UPDATING: " + update(asset, data);
 
-		} catch (AssetAccessException e) {
+		} catch (Exception e) {
 			log.error(e);
 			return what + " ERROR: " + e.getMessage();
 		}
 	}
 
-	String insert(Asset asset) throws AssetAccessException {
+	String insert(Asset asset, long id) throws AssetAccessException {
 		log.debug("inserting " + asset);
-		AssetId aid = new AssetIdImpl(asset.getId().type,
-				asset.getId().id.longValue());
 
-		MutableAssetData data = adm.newAssetData(aid.getType(),
+		AssetId aid = new AssetIdImpl(asset.getType(), id);
+
+		MutableAssetData data = adm.newAssetData(asset.getType(),
 				asset.getSubtype());
+
 		data.setAssetId(aid);
+
 		getSite().setData(data);
 		data.getAttributeData("name").setData(asset.getName());
 		data.getAttributeData("description").setData(asset.getDescription());
@@ -182,8 +187,10 @@ abstract public class Setup implements wcs.core.Setup {
 	String update(Asset asset, MutableAssetData data)
 			throws AssetAccessException {
 		log.debug("update " + asset);
+
 		getSite().setData(data);
 		asset.setData(data);
+
 		// String dump = "\nAsset: " + data.getAssetId() + Util.dump(data);
 		// log.debug(dump);
 		try {

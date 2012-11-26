@@ -5,7 +5,6 @@ import static wcs.java.Util.attrBlob;
 import static wcs.java.Util.attrString;
 import static wcs.java.Util.attrStruct;
 import static wcs.java.Util.attrStructKV;
-import static wcs.java.Util.id;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,12 +16,20 @@ public class Template extends Asset {
 
 	// private final static Log log = new Log(Template.class);
 
-	public Template(Long id, String name, String description, String element,
-			String cscache, String sscache) {
-		super(id("Template", id), "", name, description);
+	private String myname;
+
+	public Template(String subtype, String name, String description,
+			String element, String cscache, String sscache) {
+		super("Template", subtype, name, description);
 		this.element = element;
 		this.cscache = cscache;
 		this.sscache = sscache;
+
+		if (subtype != null && subtype.trim().length() == 0)
+			myname = name;
+		else
+			myname = subtype + "/" + name;
+
 	}
 
 	private String element;
@@ -30,6 +37,12 @@ public class Template extends Asset {
 	private String cscache;
 
 	private String sscache;
+
+	
+	@Override
+	public String getName() {
+		return myname;
+	}
 
 	public String getElement() {
 		return element;
@@ -50,21 +63,39 @@ public class Template extends Asset {
 				"applicablesubtypes", "Thumbnail");
 	}
 
+	String template(String clazz) {
+		return "<%@ taglib prefix=\"cs\" uri=\"futuretense_cs/ftcs1_0.tld\"\n"
+				+ "%><%@ taglib prefix=\"asset\" uri=\"futuretense_cs/asset.tld\"\n"
+				+ "%><%@ taglib prefix=\"ics\" uri=\"futuretense_cs/ics.tld\"\n"
+				+ "%><%@ taglib prefix=\"render\" uri=\"futuretense_cs/render.tld\"\n"
+				+ "%><%@ page import=\"wcs.core.WCS\"\n"
+				+ "%><cs:ftcs><ics:if condition='<%=ics.GetVar(\"tid\")!=null%>'><ics:then><render:logdep\ncid='<%=ics.GetVar(\"tid\")%>' c=\"Template\"/></ics:then></ics:if>"
+				+ "<%\nString r = WCS.dispatch(ics, \"" + clazz
+				+ "\");\nif(r!=null) ics.StreamText(r); %></cs:ftcs>";
+	}
+
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	void setData(MutableAssetData data) {
 
 		// log.info(Util.dump(data));
 
-		final String body = "<b>" + element + "</b>";
-		final AttributeData blob = attrBlob("url", element, body);
+		
+		// String rootelement = getSubtype() + "/" + getName();
+
+		final String folder = getSubtype().equals("") ? "Typeless"
+				: getSubtype();
+		final String file = element + ".jsp";
+		final String body = template(element);
+
+		final AttributeData blob = attrBlob("url", folder, file, body);
 
 		HashMap mapElement = new HashMap<String, Object>();
 
 		mapElement.put("elementname", attrString("elementname", element));
 		mapElement.put("description", attrString("description", element));
 		mapElement.put("resdetails1",
-				attrString("resdetails1", "tid=" + getId().id));
+				attrString("resdetails1", "tid=" + data.getAssetId().getId()));
 		mapElement.put("resdetails2", attrString("resdetails2", "agilewcs=1"));
 		mapElement.put("csstatus", attrString("csstatus", "live"));
 		mapElement.put("cscacheinfo", attrString("cscacheinfo", "false"));

@@ -1,11 +1,13 @@
 package wcs.core;
 
+import COM.FutureTense.Interfaces.ICS;
+
 /**
  * Setup interface. Dispatched will call this class to perform setup
  * 
  * @author msciab
- *
+ * 
  */
 public interface Setup {
-	public String exec(String username, String password);
+	public String exec(ICS ics, String username, String password);
 }

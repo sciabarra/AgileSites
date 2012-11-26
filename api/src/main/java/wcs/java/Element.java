@@ -19,8 +19,16 @@ public abstract class Element implements wcs.core.Element {
 	 */
 	@Override
 	public String exec(ICS ics) {
-		//TODO
-		return null;
+		try {
+			Env env = new Env(ics);
+			String res = apply(env);
+			// TODO split stream
+			ics.StreamText(res);
+			return null;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return ex.getMessage();
+		}
 	}
 
 	/**

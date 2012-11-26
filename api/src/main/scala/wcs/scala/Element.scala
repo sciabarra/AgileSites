@@ -12,21 +12,29 @@ abstract class Element extends JElement with Log {
    *
    */
   override def exec(ics: ICS): String = {
-    //TODO
-    return null;
+
+    try {
+      val env = new Env(ics);
+      val res = apply(env);
+      // TODO split stream
+      ics.StreamText(res);
+      return null;
+    } catch {
+      case ex =>
+        ex.printStackTrace();
+        ex.getMessage();
+    }
   }
-  
+
   /**
    * This method must not be implemented - the apply(e: wcs.scala.Env) should instead
    */
   def apply(e: wcs.java.Env): String = null
-  
 
   /**
    * Call another element
    */
   def call(name: String, args: Tuple2[Symbol, String]*) = {
-
     // TODO
   }
 
@@ -34,9 +42,9 @@ abstract class Element extends JElement with Log {
    * Generate an url for an asset specified by id
    */
   def url(id: Tuple2[String, Long]) = {
-    
+
     // TODO
-    
+
   }
 
   /**

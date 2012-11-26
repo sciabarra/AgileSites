@@ -110,43 +110,47 @@ public class Dispatcher {
 		StringTokenizer st = new StringTokenizer(sites, ",");
 		StringBuilder msg = new StringBuilder();
 
+		String[] setupClasses = { ".Setup", ".JavaSetup", ".ScalaSetup" };
+
 		while (st.hasMoreTokens()) {
 
 			// next setup to run...
 			String site = st.nextToken().trim();
 
-			String className = site.toLowerCase().replace(" ", "_")
-					.replaceAll("[^a-zA-Z_\\.]", "")
-					+ ".Setup";
+			for (String setupClass : setupClasses) {
 
-			WCS.debug("[Dispatcher.deploy] invoking " + className);
+				String className = site.toLowerCase().replace(" ", "_")
+						.replaceAll("[^a-zA-Z_\\.]", "")
+						+ setupClass;
+				try {
+					// instantiate
+					@SuppressWarnings("rawtypes")
+					Class clazz = Class.forName(className, true, cl);
+					WCS.debug("[Dispatcher.deploy] loaded class " + clazz);
 
-			try {
-				// instantiate
-				@SuppressWarnings("rawtypes")
-				Class clazz = Class.forName(className, true, cl);
-				WCS.debug("[Dispatcher.deploy] loaded class " + clazz);
+					Object obj = clazz.newInstance();
+					WCS.debug("[Dispatcher.deploy] loaded instance " + obj);
 
-				Object obj = clazz.newInstance();
-				WCS.debug("[Dispatcher.deploy] loaded instance " + obj);
+					// cast to Setup and execute
+					if (obj instanceof wcs.core.Setup) {
+						WCS.debug("[Dispatcher.deploy] obj is a wcs.core.Setup");
+						Setup setup = (wcs.core.Setup) obj;
+						msg.append(setup.exec(ics, user, pass));
+					} else {
+						WCS.debug("[Dispatcher.deploy] obj is NOT a wcs.core.Setup");
+						msg.append("<h1>Not Found Setup for " + site + "<h1>");
+					}
+				} catch (ClassNotFoundException cnfe) {
+					WCS.debug("[Dispacher.deploy] not found " + className);
+				} catch (Exception e) {
+					// logging errors and returning the message
+					WCS.debug("[Dispacher.deploy] exception loading "
+							+ className + " : " + e.getMessage());
+					e.printStackTrace();
+					msg.append("<h1>Exception</h1><p>Class: " + className
+							+ "</p>\n<p>Message: " + e.getMessage() + "</p>\n");
 
-				// cast to Setup and execute
-				if (obj instanceof wcs.core.Setup) {
-					WCS.debug("[Dispatcher.deploy] obj is a wcs.core.Setup");
-					Setup setup = (wcs.core.Setup) obj;
-					msg.append(setup.exec(user, pass));
-				} else {
-					WCS.debug("[Dispatcher.deploy] obj is NOT a wcs.core.Setup");
-					msg.append("<h1>Not Found Setup for " + site + "<h1>");
 				}
-			} catch (Exception e) {
-				// logging errors and returning the message
-				WCS.debug("[Dispacher.deploy] exception loading " + className
-						+ " : " + e.getMessage());
-				e.printStackTrace();
-				msg.append("<h1>Exception</h1><p>Class: " + className
-						+ "</p>\n<p>Message: " + e.getMessage() + "</p>\n");
-
 			}
 		}
 		return msg.toString();

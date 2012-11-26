@@ -265,11 +265,11 @@ public class Util {
 	 * @param value
 	 * @return
 	 */
-	public static AttributeDataImpl attrBlob(String name, String filename,
-			String value) {
+	public static AttributeDataImpl attrBlob(String name, String folder,
+			String filename, String value) {
 		AttributeTypeEnum type = AttributeTypeEnum.URL;
 		return new AttributeDataImpl(def(name, type), name, type,
-				new BlobObjectImpl(filename, "", value.getBytes()));
+				new BlobObjectImpl(filename, folder, value.getBytes()));
 
 	}
 }

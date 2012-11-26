@@ -3,15 +3,14 @@ package wcs.java;
 import java.sql.Date;
 import java.util.List;
 
-import wcs.java.Util.Id;
-
 import com.fatwire.assetapi.data.AttributeData;
 import com.fatwire.assetapi.data.MutableAssetData;
 
 public abstract class Asset {
+
 	private static Log log = new Log(Asset.class);
 
-	private Id id;
+	private String type;
 	private String subtype;
 	private String name;
 	private String description;
@@ -19,27 +18,28 @@ public abstract class Asset {
 	public Asset() {
 	}
 
-	public Asset(Id id, String subtype, String name, String description) {
-		this.id = id;
+	public Asset(String type, String subtype, String name, String description) {
+		this.type = type;
 		this.subtype = subtype;
 		this.name = name;
 		this.description = description;
 	}
 
 	/**
-	 * Return this asset typesub
+	 * Return this asset type
 	 */
-	public String getSubtype() {
-		return subtype;
+	public String getType() {
+		return type;
 	}
 
 	/**
-	 * Return this asset id
-	 * 
-	 * @return
+	 * Return this asset subtype
 	 */
-	public Id getId() {
-		return id;
+	public String getSubtype() {
+		if (subtype == null)
+			return "";
+		else
+			return subtype;
 	}
 
 	/**
@@ -185,7 +185,11 @@ public abstract class Asset {
 	 * Print it
 	 */
 	public String toString() {
-		return name + "@" + id;
+		return name
+				+ "("
+				+ type
+				+ ((subtype != null && subtype.trim().length() > 0) ? "/"
+						+ subtype : "") + ")";
 	}
 
 	void addAttribute(MutableAssetData data, String key, Object value) {

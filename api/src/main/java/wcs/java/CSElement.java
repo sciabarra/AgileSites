@@ -1,7 +1,5 @@
 package wcs.java;
 
-import static wcs.java.Util.id;
-
 import java.util.List;
 
 import com.fatwire.assetapi.data.BlobObject;
@@ -10,8 +8,9 @@ import com.fatwire.assetapi.data.MutableAssetData;
 
 public class CSElement extends Asset {
 
-	public CSElement(Long id, String name, String description, String element) {
-		super(id("CSElement", id), "", name, description);
+	public CSElement(String name, String description,
+			String element) {
+		super("CSElement", "", name, description);
 		this.element = element;
 	}
 
@@ -26,10 +25,22 @@ public class CSElement extends Asset {
 				"rootelement", "url", "resdetails1", "resdetails2");
 	}
 
+	String template(String clazz) {
+		return "<%@ taglib prefix=\"cs\" uri=\"futuretense_cs/ftcs1_0.tld\"\n"
+				+ "%><%@ taglib prefix=\"asset\" uri=\"futuretense_cs/asset.tld\"\n"
+				+ "%><%@ taglib prefix=\"ics\" uri=\"futuretense_cs/ics.tld\"\n"
+				+ "%><%@ taglib prefix=\"render\" uri=\"futuretense_cs/render.tld\"\n"
+				+ "%><%@ page import=\"wcs.core.WCS\"\n"
+				+ "%><cs:ftcs><ics:if condition='<%=ics.GetVar(\"seid\")!=null%>'><ics:then><render:logdep\ncid='<%=ics.GetVar(\"seid\")%>' c=\"SiteEntry\"/></ics:then></ics:if>"
+				+ "<ics:if condition='<%=ics.GetVar(\"eid\")!=null%>'><ics:then><render:logdep\ncid='<%=ics.GetVar(\"eid\")%>' c=\"CSElement\"/></ics:then></ics:if>"
+				+ "<%\nString r = WCS.dispatch(ics, \"" + clazz
+				+ "\");\nif(r!=null) ics.StreamText(r); %></cs:ftcs>";
+	}
+
 	void setData(MutableAssetData data) {
 
-		//data.getAttributeData("createdby").setData("agilewcs");
-		//data.getAttributeData("createddate").setData(new Date());
+		// data.getAttributeData("createdby").setData("agilewcs");
+		// data.getAttributeData("createddate").setData(new Date());
 
 		// element name
 		data.getAttributeData("elementname").setData(element);
@@ -43,38 +54,14 @@ public class CSElement extends Asset {
 				"eid=" + data.getAssetId().getId());
 		data.getAttributeData("resdetails2").setData("agilewcs=1");
 
-
 		// blob
-		byte[] bytes = ("<i>" + element + "</i>").getBytes();
-		BlobObject blob = new BlobObjectImpl(element, "", bytes);
+		byte[] bytes = template(element).getBytes();
+		BlobObject blob = new BlobObjectImpl(element + ".jsp", "AgileWCS",
+				bytes);
 
 		data.getAttributeData("url").setData(blob);
 
 		// data.getAttributeData("Mapping").setData(new ArrayList());
-
 		// data.getAttributeData("Mapping").setData(new AttributeMan HashMap());
-
-		/*
-		 * 
-		 * List<AttributeData> mappingArray = new ArrayList<AttributeData>();
-		 * AttributeData adata = new AttributeDataImpl(null, null,
-		 * AttributeTypeEnum.STRUCT, mappingArray); HashMap map = new HashMap();
-		 * AttributeData ad = new AttributeDataImpl(); map.put("key", new
-		 * AttributeData());
-		 * 
-		 * for (int i=0; i<mappingArray.size(); i++) { } %> { HashMap mappingMap
-		 * = (HashMap)mappingArray.get(i).getData(); String key =
-		 * (String)((AttributeData)mappingMap.get("key")).getData(); String type
-		 * = (String)((AttributeData)mappingMap.get("type")).getData(); String
-		 * value = (String)((AttributeData)mappingMap.get("value")).getData();
-		 * String siteid =
-		 * (String)((AttributeData)mappingMap.get("siteid")).getData();
-		 * out.println("Mapping Entry #"+String.valueOf(i+1));
-		 * out.println("<br/>"); out.println("Key: "+key);
-		 * out.println("Type: "+type); out.println("Value: "+value);
-		 * out.println("Siteid: "+siteid); out.println("<br/>"); }
-		 */
-		// addAttribute(data, "url", blob);
-
 	}
 }
