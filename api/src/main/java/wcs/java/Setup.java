@@ -67,8 +67,10 @@ abstract public class Setup implements wcs.core.Setup {
 			// future use
 			// sb.append("\nSite: " + getSite().createOrUpdate(sim));
 
-			for (Asset asset : getAssets())
+			for (Asset asset : getAssets()) {
+				asset.setSite(this.getSite().getName());
 				sb.append("\n" + insertOrUpdate(ics, asset));
+			}
 
 		} catch (Exception e) {
 			sb.append("\nException: " + log.error(e));

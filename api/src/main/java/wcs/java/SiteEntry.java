@@ -8,16 +8,18 @@ import com.fatwire.assetapi.data.MutableAssetData;
 
 public class SiteEntry extends Asset {
 
-	public SiteEntry(String name, String description, String element,
-			boolean wrapper) {
+	private String element;
+	private String elementname;
+
+	private boolean wrapper;
+
+	public SiteEntry(String name, String description, boolean wrapper,
+			String elementname, String element) {
 		super("SiteEntry", "", name, description);
 		this.element = element;
+		this.elementname = elementname;
 		this.wrapper = wrapper;
 	}
-
-	private long id;
-	private String element;
-	private boolean wrapper;
 
 	public String getElement() {
 		return element;
@@ -38,7 +40,7 @@ public class SiteEntry extends Asset {
 	void setData(MutableAssetData data) {
 		// root element
 		data.getAttributeData("category").setData("");
-		data.getAttributeData("pagename").setData(element);
+		data.getAttributeData("pagename").setData(elementname);
 		data.getAttributeData("cs_wrapper").setData(wrapper ? "y" : "n");
 
 		// data.getAttributeData("cselement_id").setData(
@@ -57,8 +59,8 @@ public class SiteEntry extends Asset {
 
 		data.getAttributeData("defaultarguments").setDataAsList(
 				Util.list(
-						attrStructKV("seid", "" + id), //
-						attrStructKV("site", "Test"),
+						attrStructKV("seid", "" + data.getAssetId().getId()), //
+						attrStructKV("site", getSite()),
 						attrStructKV("rendermode", "live")));
 
 	}

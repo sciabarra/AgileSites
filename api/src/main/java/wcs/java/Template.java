@@ -16,14 +16,20 @@ public class Template extends Asset {
 
 	// private final static Log log = new Log(Template.class);
 
-	private String myname;
+	private String element;
+
+	private String cscache;
+
+	private String sscache;
+
+	String myname;
 
 	public Template(String subtype, String name, String description,
-			String element, String cscache, String sscache) {
+			String element) {
 		super("Template", subtype, name, description);
 		this.element = element;
-		this.cscache = cscache;
-		this.sscache = sscache;
+		this.cscache = "false";
+		this.sscache = "false";
 
 		if (subtype != null && subtype.trim().length() == 0)
 			myname = name;
@@ -32,13 +38,12 @@ public class Template extends Asset {
 
 	}
 
-	private String element;
+	public Template setCache(String cscache, String sscache) {
+		this.cscache = cscache;
+		this.sscache = sscache;
+		return this;
+	}
 
-	private String cscache;
-
-	private String sscache;
-
-	
 	@Override
 	public String getName() {
 		return myname;
@@ -80,7 +85,6 @@ public class Template extends Asset {
 
 		// log.info(Util.dump(data));
 
-		
 		// String rootelement = getSubtype() + "/" + getName();
 
 		final String folder = getSubtype().equals("") ? "Typeless"
@@ -108,7 +112,7 @@ public class Template extends Asset {
 				"defaultarguments", //
 				attrArray(
 						"defaultarguments", //
-						attrStructKV("site", "Test"),
+						attrStructKV("site", getSite()),
 						attrStructKV("rendermode", "live")));
 		mapElement.put(
 				"siteentry",

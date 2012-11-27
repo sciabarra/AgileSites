@@ -8,7 +8,7 @@ class Setup extends wcs.scala.Setup {
 
   def assets: List[Asset] =
     CSElement("ScalaTests", "Scala Tests", classOf[test.cselement.ScalaTests]) ::
-      SiteEntry("ScalaTests", "Scala Tests", "ScalaTests", true) ::
+      SiteEntry("ScalaTests", "Scala Tests", true, "ScalaTests", classOf[test.cselement.ScalaTests]) ::
       Nil
 
 }

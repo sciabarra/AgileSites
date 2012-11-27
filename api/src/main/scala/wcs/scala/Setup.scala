@@ -17,11 +17,11 @@ abstract class Setup extends JSetup {
 
   case class Site(name: String)
 
-  case class Template(subtype: String, name: String, description: String, element: Class[_ <: wcs.core.Element], cscache: String = "true,~0", sscache: String = "true,~0") extends Asset
+  case class Template(subtype: String, name: String, description: String, element: Class[_ <: wcs.core.Element], cscache: String = "false", sscache: String = "false") extends Asset
 
   case class CSElement(name: String, description: String, element: Class[_ <: wcs.core.Element]) extends Asset
 
-  case class SiteEntry(name: String, description: String, element: String, wrapper: Boolean = false) extends Asset
+  case class SiteEntry(name: String, description: String, wrapper: Boolean, elementname: String, element: Class[_ <: wcs.core.Element]) extends Asset
 
   // abstract functions to be overriden
 
@@ -39,9 +39,9 @@ abstract class Setup extends JSetup {
         case x: CSElement =>
           new JCSElement(x.name, x.description, x.element.getCanonicalName())
         case x: Template =>
-          new JTemplate(x.subtype, x.name, x.description, x.element.getCanonicalName(), x.cscache, x.sscache)
+          new JTemplate(x.subtype, x.name, x.description, x.element.getCanonicalName()).setCache(x.cscache, x.sscache)
         case x: SiteEntry =>
-          new JSiteEntry(x.name, x.description, x.element, x.wrapper)
+          new JSiteEntry(x.name, x.description, x.wrapper, x.elementname, x.element.getCanonicalName())
       }
     }: _*)
 

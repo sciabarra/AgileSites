@@ -179,6 +179,10 @@ public class Site {
 		 */
 	}
 
+	public String getName() {
+		return name;
+	}
+	
 	public String toString() {
 		return "Site(" + site.getName() + ":" + site.getId() + ")";
 	}

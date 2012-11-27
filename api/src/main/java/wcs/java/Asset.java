@@ -14,6 +14,8 @@ public abstract class Asset {
 	private String subtype;
 	private String name;
 	private String description;
+	private String site;
+	
 
 	public Asset() {
 	}
@@ -24,6 +26,15 @@ public abstract class Asset {
 		this.name = name;
 		this.description = description;
 	}
+	
+	public void setSite(String site) {
+		this.site = site;
+	}
+	
+	public String getSite() {
+		return site;
+	}
+
 
 	/**
 	 * Return this asset type
