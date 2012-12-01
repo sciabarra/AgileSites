@@ -3,7 +3,7 @@ import Keys._
 import sbtassembly.Plugin._
 import AssemblyKeys._
 
-object WcsSupport {
+object AgileWcsSupport {
 
   // new settings
   lazy val wcsHome = SettingKey[String]("wcs-home", "WCS Home Directory")
@@ -127,7 +127,7 @@ object WcsSupport {
   val wcsUpdateModelTask = wcsUpdateModel <<=
     (wcsUrl, wcsSites, wcsUser, wcsPassword, wcsPackageJar) map {
       (url, sites, user, pass, _) =>
-        val deployer = new WcsDeployer(url, sites, user, pass)
+        val deployer = new AgileWcsDeployer(url, sites, user, pass)
         println(deployer.deploy())
         deployer.getStatus
     }
@@ -151,24 +151,26 @@ object WcsSupport {
         val config = new java.util.Properties
         config.load(new java.io.FileReader(configFile))
 
-        // set standard properties
-        config.setProperty("scalawcs.site", site);
-        config.setProperty("scalawcs.user", username);
-        config.setProperty("scalawcs.password", password);
-        config.setProperty("scalawcs.jar", appjar);
+        /*
+        config.setProperty("agilewcs.site", site);
+        config.setProperty("agilewcs.user", username);
+        config.setProperty("agilewcs.password", password);
+        */
+        config.setProperty("agilewcs.jar", appjar);
         config.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
         config.store(new java.io.FileWriter(configFile),
-          "updated by ScalaWCS setup")
+          "updated by AgileWCS setup")
 
         // same properties also for core in the classpath
-        val otherConfigFile = file(webapp) / "WEB-INF" / "classes" / "scalawcs.prp"
+        // NOTE this config file is currently unused
+        val otherConfigFile = file(webapp) / "WEB-INF" / "classes" / "agilewcs.prp"
         val otherConfig = new java.util.Properties
-        otherConfig.setProperty("scalawcs.site", site);
-        otherConfig.setProperty("scalawcs.user", username);
-        otherConfig.setProperty("scalawcs.password", password);
-        otherConfig.setProperty("scalawcs.jar", appjar);
+        otherConfig.setProperty("agilewcs.site", site);
+        otherConfig.setProperty("agilewcs.user", username);
+        otherConfig.setProperty("agilewcs.password", password);
+        otherConfig.setProperty("agilewcs.jar", appjar);
         otherConfig.store(new java.io.FileWriter(otherConfigFile),
-          "created by ScalaWCS setup")
+          "created by AgileWCS setup")
 
         // configure
 
@@ -178,7 +180,7 @@ object WcsSupport {
   // setup task
   val wcsSetupTask = wcsSetup <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
-      (argTask, wcsConfig, Keys.`package` in Compile in ScalaWcsBuild.core,
+      (argTask, wcsConfig, Keys.`package` in Compile in AgileWcsBuild.core,
         managedClasspath in Runtime, classDirectory in Compile, wcsWebapp) map {
           (args, _, corejar, classpath, classes, webapp) =>
 
@@ -186,10 +188,10 @@ object WcsSupport {
             val destlib = file(webapp) / "WEB-INF" / "lib"
 
             val addJars = classpath.files filter
-              (ScalaWcsBuild.addFilterSetup accept _)
+              (AgileWcsBuild.addFilterSetup accept _)
 
             val removeJars = destlib.listFiles filter
-              (ScalaWcsBuild.removeFilterSetup accept _)
+              (AgileWcsBuild.removeFilterSetup accept _)
 
             // create csdt export file
 
@@ -209,7 +211,7 @@ object WcsSupport {
               println("+++ " + tgt.getAbsolutePath)
             }
 
-            println("*** You need to restart WCS then perform wcs-deploy ***")
+            println("*** You need to restart WCS and then execute \"wcs-deploy\" ***")
         }
   }
 

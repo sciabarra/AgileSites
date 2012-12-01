@@ -5,30 +5,30 @@ import sbtassembly.Plugin._
 import AssemblyKeys._
 import com.typesafe.sbteclipse.plugin.EclipsePlugin.EclipseKeys
 
-object ScalaWcsBuild extends Build {
+object AgileWcsBuild extends Build {
 
   // settings
-  lazy val wcsHome = WcsSupport.wcsHome
-  lazy val wcsWebapp = WcsSupport.wcsWebapp
-  lazy val wcsCsdtJar = WcsSupport.wcsCsdtJar
+  lazy val wcsHome = AgileWcsSupport.wcsHome
+  lazy val wcsWebapp = AgileWcsSupport.wcsWebapp
+  lazy val wcsCsdtJar = AgileWcsSupport.wcsCsdtJar
 
-  lazy val wcsUrl = WcsSupport.wcsUrl
-  lazy val wcsSites = WcsSupport.wcsSites
-  lazy val wcsVersion = WcsSupport.wcsVersion
-  lazy val wcsUser = WcsSupport.wcsUser
-  lazy val wcsPassword = WcsSupport.wcsPassword
+  lazy val wcsUrl = AgileWcsSupport.wcsUrl
+  lazy val wcsSites = AgileWcsSupport.wcsSites
+  lazy val wcsVersion = AgileWcsSupport.wcsVersion
+  lazy val wcsUser = AgileWcsSupport.wcsUser
+  lazy val wcsPassword = AgileWcsSupport.wcsPassword
 
-  lazy val wcsConfigTask = WcsSupport.wcsConfigTask
-  lazy val wcsSetupTask = WcsSupport.wcsSetupTask
-  lazy val wcsDeployTask = WcsSupport.wcsDeployTask
-  lazy val wcsCsdtTask = WcsSupport.wcsCsdtTask
-  lazy val wcsCopyStaticTask = WcsSupport.wcsCopyStaticTask
-  lazy val wcsPackageJarTask = WcsSupport.wcsPackageJarTask
-  lazy val wcsUpdateModelTask = WcsSupport.wcsUpdateModelTask
-  lazy val coreGeneratorTask = WcsSupport.coreGeneratorTask
+  lazy val wcsConfigTask = AgileWcsSupport.wcsConfigTask
+  lazy val wcsSetupTask = AgileWcsSupport.wcsSetupTask
+  lazy val wcsDeployTask = AgileWcsSupport.wcsDeployTask
+  lazy val wcsCsdtTask = AgileWcsSupport.wcsCsdtTask
+  lazy val wcsCopyStaticTask = AgileWcsSupport.wcsCopyStaticTask
+  lazy val wcsPackageJarTask = AgileWcsSupport.wcsPackageJarTask
+  lazy val wcsUpdateModelTask = AgileWcsSupport.wcsUpdateModelTask
+  lazy val coreGeneratorTask = AgileWcsSupport.coreGeneratorTask
 
   // remove then add those jars in setup
-  val addFilterSetup = "scala-library*" || "scalawcs-core*"
+  val addFilterSetup = "scala-library*" || "agilewcs-core*" || "junit*" || "specs2*"
   val removeFilterSetup = addFilterSetup
 
   // configuring WCS jars as unmanaged lib
@@ -49,14 +49,13 @@ object ScalaWcsBuild extends Build {
   val coreDependencies = Seq(
     "javax.servlet" % "servlet-api" % "2.5",
     "commons-logging" % "commons-logging" % "1.1.1",
-    //"net.databinder.dispatch" %% "dispatch-core" % "0.9.2", // not used yet
-    //"jtidy" % "jtidy" % "4aug2000r7-dev",  // not used yet
-    "com.novocode" % "junit-interface" % "0.8" % "test",
-    "org.specs2" %% "specs2" % "1.12.1" % "test")
+    "org.specs2" %% "specs2" % "1.12.1",
+    "junit" % "junit" % "4.8.2",
+    "com.novocode" % "junit-interface" % "0.8" % "test")
 
   val commonSettings = Defaults.defaultSettings ++ Seq(
-    scalaVersion := "2.9.1",
-    organization := "org.scalawcs", // collect jars from WCS
+    scalaVersion := "2.9.2",
+    organization := "org.agilewcs", // collect jars from WCS
     compileOrder := CompileOrder.Mixed,
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
@@ -69,21 +68,21 @@ object ScalaWcsBuild extends Build {
     settings = commonSettings ++ Seq(
       libraryDependencies ++= coreDependencies,
       publishArtifact in packageDoc := false,
-      name := "scalawcs-core",
+      name := "agilewcs-core",
       version := "0.4", // if you change this, fix dependencies, too!
       coreGeneratorTask))
 
   /// API 
   val commonDependencies = coreDependencies ++
-    Seq("org.scalawcs" %% "scalawcs-core" % "0.4")
+    Seq("org.agilewcs" %% "agilewcs-core" % "0.4")
 
   lazy val api: Project = Project(
     id = "api",
     base = file("api"),
     settings = commonSettings ++ Seq(
       libraryDependencies ++= commonDependencies,
-      name := "scalawcs-api",
-      version := "0.2"))
+      name := "agilewcs-api",
+      version := "0.3"))
 
   /// APP 
   lazy val app: Project = Project(
@@ -91,8 +90,8 @@ object ScalaWcsBuild extends Build {
     base = file("app"),
     settings = commonSettings ++ Seq(
       libraryDependencies ++= commonDependencies,
-      name := "scalawcs-app",
-      version := "0.2")) dependsOn (api)
+      name := "agilewcs-app",
+      version := "0.3")) dependsOn (api)
 
   /// ALL
   lazy val all: Project = Project(
@@ -100,8 +99,8 @@ object ScalaWcsBuild extends Build {
     base = file("."),
     settings = commonSettings ++ assemblySettings ++ Seq(
       libraryDependencies ++= commonDependencies,
-      name := "scalawcs-all",
-      version := "0.2",
+      name := "agilewcs-all",
+      version := "0.3",
       wcsCsdtTask,
       wcsConfigTask,
       wcsSetupTask,

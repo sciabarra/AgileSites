@@ -19,7 +19,7 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
  * @author msciab
  * 
  */
-public class WcsDeployer {
+public class AgileWcsDeployer {
 
 	String invoker = "<%@ taglib prefix=\"cs\" uri=\"futuretense_cs/ftcs1_0.tld\"\n"
 			+ "%><cs:ftcs><% String result =\"\"; try { result = wcs.core.WCS.deploy(ics, "
@@ -40,7 +40,7 @@ public class WcsDeployer {
 	HttpClient client = new HttpClient();
 	HttpState state = new HttpState();
 
-	public WcsDeployer() {
+	public AgileWcsDeployer() {
 		// simple constructor for test
 		this("http://localhost:8380/cs/", "Demo", "fwadmin", "xceladmin");
 	}
@@ -52,7 +52,7 @@ public class WcsDeployer {
 	 * @param username
 	 * @param password
 	 */
-	public WcsDeployer(String url, String site, String username, String password) {
+	public AgileWcsDeployer(String url, String site, String username, String password) {
 		this.username = username;
 		this.password = password;
 		this.site = site;
@@ -234,7 +234,7 @@ public class WcsDeployer {
 		StringBuilder sb = new StringBuilder();
 		try {
 
-			String name = "AAA-ScalaWCS-" + Math.round(Math.random() * 100000);
+			String name = "AAAgileWCS-" + Math.round(Math.random() * 100000);
 
 			sb.append("*** Login\n");
 			sb.append(login());
@@ -270,6 +270,6 @@ public class WcsDeployer {
 	 */
 
 	public static void main(String[] args) throws Exception {
-		System.out.println(new WcsDeployer().deploy());
+		System.out.println(new AgileWcsDeployer().deploy());
 	}
 }
