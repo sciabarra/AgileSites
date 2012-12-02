@@ -13,29 +13,38 @@ public abstract class Asset {
 	private String type;
 	private String subtype;
 	private String name;
-	private String description;
 	private String site;
-	
+	private String description;
 
 	public Asset() {
 	}
 
-	public Asset(String type, String subtype, String name, String description) {
+	public Asset(String type, String subtype, String name) {
 		this.type = type;
 		this.subtype = subtype;
 		this.name = name;
-		this.description = description;
+		this.description = "";
+	}
+
+	public String getSite() {
+		return site;
 	}
 	
 	public void setSite(String site) {
 		this.site = site;
 	}
-	
-	public String getSite() {
-		return site;
+
+	/**
+	 * Return the description
+	 */
+	public String getDescription() {
+		return description;
 	}
 
-
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	/**
 	 * Return this asset type
 	 */
@@ -58,13 +67,6 @@ public abstract class Asset {
 	 */
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * Return the description
-	 */
-	public String getDescription() {
-		return description;
 	}
 
 	/**
@@ -213,4 +215,5 @@ public abstract class Asset {
 		}
 	}
 
+	
 }

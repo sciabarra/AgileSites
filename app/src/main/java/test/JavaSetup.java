@@ -15,8 +15,7 @@ public class JavaSetup extends Setup {
 	@Override
 	public Asset[] getAssets() {
 		return new Asset[] { //
-		new Template("", "JavaTests", "Java Tests", "test.template.JavaTests")
-				.setCache("false", "false") };
+		new Template("Runner", "test.template.Runner") };
 
 	}
 }

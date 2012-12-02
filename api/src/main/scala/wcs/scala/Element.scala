@@ -4,8 +4,16 @@ import wcs.scala._
 import wcs.java.{ Element => JElement }
 import scala.xml.NodeSeq
 import COM.FutureTense.Interfaces.ICS
+import scala.xml.NodeBuffer
 
 abstract class Element extends JElement with Log {
+
+  // convert a NodeSeq in a string
+  implicit def nodeSeq2String(buf: NodeSeq): String =
+    (for (node <- buf.elements) yield node.toString).mkString
+
+  implicit def nodeBuffer2String(buf: NodeBuffer): String =
+    (for (node <- buf.elements) yield node.toString).mkString
 
   /**
    * Execute the element

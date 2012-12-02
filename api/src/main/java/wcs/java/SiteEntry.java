@@ -13,9 +13,9 @@ public class SiteEntry extends Asset {
 
 	private boolean wrapper;
 
-	public SiteEntry(String name, String description, boolean wrapper,
+	public SiteEntry(String name, boolean wrapper,
 			String elementname, String element) {
-		super("SiteEntry", "", name, description);
+		super("SiteEntry", "", name);
 		this.element = element;
 		this.elementname = elementname;
 		this.wrapper = wrapper;
@@ -63,5 +63,15 @@ public class SiteEntry extends Asset {
 						attrStructKV("site", getSite()),
 						attrStructKV("rendermode", "live")));
 
+	}
+	/**
+	 * Fluent description setter 
+	 * 
+	 * @param description
+	 * @return
+	 */
+	public Asset description(String description) {
+		setDescription(description);
+		return this;
 	}
 }

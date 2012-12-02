@@ -22,23 +22,47 @@ public class Template extends Asset {
 
 	private String sscache;
 
-	String myname;
+	private String myname;
 
-	public Template(String subtype, String name, String description,
-			String element) {
-		super("Template", subtype, name, description);
+	/**
+	 * Create a typeless template with a given top element
+	 * 
+	 */
+	public Template(String name, String element) {
+		this("", name, element);
+	}
+
+	/**
+	 * Create a template with given subtype, name, and top element
+	 * 
+	 * Description defaults to the name, cache defaults to false/false
+	 * 
+	 * @param subtype
+	 * @param name
+	 * @param description
+	 * @param element
+	 */
+	public Template(String subtype, String name, String element) {
+		super("Template", subtype, name);
 		this.element = element;
-		this.cscache = "false";
-		this.sscache = "false";
 
 		if (subtype != null && subtype.trim().length() == 0)
 			myname = name;
 		else
 			myname = subtype + "/" + name;
 
+		cache("false", "flase");
 	}
 
-	public Template setCache(String cscache, String sscache) {
+	/**
+	 * Fluent cache setter
+	 * 
+	 * @param cscache
+	 * @param sscache
+	 * @return
+	 */
+
+	public Template cache(String cscache, String sscache) {
 		this.cscache = cscache;
 		this.sscache = sscache;
 		return this;
@@ -68,7 +92,7 @@ public class Template extends Asset {
 				"applicablesubtypes", "Thumbnail");
 	}
 
-	String template(String clazz) {
+	private String template(String clazz) {
 		return "<%@ taglib prefix=\"cs\" uri=\"futuretense_cs/ftcs1_0.tld\"\n"
 				+ "%><%@ taglib prefix=\"asset\" uri=\"futuretense_cs/asset.tld\"\n"
 				+ "%><%@ taglib prefix=\"ics\" uri=\"futuretense_cs/ics.tld\"\n"
@@ -136,5 +160,16 @@ public class Template extends Asset {
 
 		data.getAttributeData("applicablesubtypes").setData("*");
 
+	}
+
+	/**
+	 * Fluent description setter
+	 * 
+	 * @param description
+	 * @return
+	 */
+	public Asset description(String description) {
+		setDescription(description);
+		return this;
 	}
 }

@@ -15,15 +15,16 @@ public class Setup extends wcs.java.Setup {
 	@Override
 	public Asset[] getAssets() {
 		return new Asset[] {
-				new Template("", "DjLayout", "Demo Jquery Mobile Layout", //
-						"demo.template.DjLayout").setCache("false", "false"),
-				new Template("Page", "DjBody", "Demo Jquery Mobile Page Body",
-						"demo.template.page.DjBody").setCache("false", "false"),
-				new CSElement("DjRedirect", "Demo JqueryMobile Redirect",
-						"demo.template.DjRedirect") // ,
+				new Template("DjLayout", "demo.template.DjLayout")//
+						.cache("false", "false") //
+						.description("Demo Jquery Mobile Layout"), //
+				new Template("Page", "DjBody", "demo.template.page.DjBody")//
+						.cache("false", "false")//
+						.description("Demo Jquery Mobile Page Body"),
+				new CSElement("DjRedirect", "demo.template.DjRedirect")
+						.description("Demo JqueryMobile Redirect") // ,
 		// new SiteEntry("DjRedirect", "Demo JqueryMobile Redirect",
 		// "DjRedirect", true)
 		};
 	}
-
 }

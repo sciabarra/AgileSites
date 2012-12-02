@@ -6,15 +6,20 @@ import com.fatwire.assetapi.data.BlobObject;
 import com.fatwire.assetapi.data.BlobObjectImpl;
 import com.fatwire.assetapi.data.MutableAssetData;
 
+/**
+ * CSElement definition class
+ * 
+ * @author msciab
+ *
+ */
 public class CSElement extends Asset {
 
-	public CSElement(String name, String description,
-			String element) {
-		super("CSElement", "", name, description);
+	private String element;
+
+	public CSElement(String name, String element) {
+		super("CSElement", "", name);
 		this.element = element;
 	}
-
-	private String element;
 
 	public String getElement() {
 		return element;
@@ -25,7 +30,7 @@ public class CSElement extends Asset {
 				"rootelement", "url", "resdetails1", "resdetails2");
 	}
 
-	String template(String clazz) {
+	private String template(String clazz) {
 		return "<%@ taglib prefix=\"cs\" uri=\"futuretense_cs/ftcs1_0.tld\"\n"
 				+ "%><%@ taglib prefix=\"asset\" uri=\"futuretense_cs/asset.tld\"\n"
 				+ "%><%@ taglib prefix=\"ics\" uri=\"futuretense_cs/ics.tld\"\n"
@@ -63,5 +68,17 @@ public class CSElement extends Asset {
 
 		// data.getAttributeData("Mapping").setData(new ArrayList());
 		// data.getAttributeData("Mapping").setData(new AttributeMan HashMap());
+	}
+	
+	
+	/**
+	 * Fluent description setter 
+	 * 
+	 * @param description
+	 * @return
+	 */
+	public Asset description(String description) {
+		setDescription(description);
+		return this;
 	}
 }

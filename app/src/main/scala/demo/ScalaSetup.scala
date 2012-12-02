@@ -7,7 +7,7 @@ class ScalaSetup extends wcs.scala.Setup {
   def site = Site("Demo")
 
   def assets: List[Asset] =
-    Template("", "DyLayout", "Demo Yaml Layout", classOf[demo.template.DyLayout]) ::
+    Template("DyLayout", classOf[demo.template.DyLayout], description = "Demo Yaml Layout") ::
       Nil
 
 }
