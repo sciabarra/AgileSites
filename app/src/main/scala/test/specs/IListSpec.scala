@@ -1,11 +1,10 @@
 package test.specs
 
 import wcs.scala.tag._
+import wcs.scala.util.Specification
 import COM.FutureTense.Interfaces.IList
 import COM.FutureTense.Interfaces.ICS
-
 import wcs.scala.Log
-import wcs.scala.util.Specification
 
 /**
  * This class validates some assertions that are implemented by StubIList

@@ -8,6 +8,15 @@ import org.junit.runner.notification.RunListener;
 
 public abstract class TestRunnerElement extends Element {
 
+	/**
+	 * Override this method to allow for test execution.
+	 * 
+	 * @return
+	 */
+	protected boolean isProduction() {
+		return true;
+	}
+
 	@SuppressWarnings("rawtypes")
 	abstract public Class[] tests();
 
@@ -40,10 +49,12 @@ public abstract class TestRunnerElement extends Element {
 
 		@Override
 		public void testStarted(Description description) throws Exception {
+
 			// sb.append("TestStarted").append(description.toString()).append("<br>");
 			sb.append("<b>").append(description.getClassName()).append(".")
 					.append(description.getMethodName()).append("</b>: ");
 			lastFailure = null;
+
 			super.testStarted(description);
 		}
 
@@ -107,8 +118,22 @@ public abstract class TestRunnerElement extends Element {
 
 	}
 
+	private static ThreadLocal<Env> currEnv = new ThreadLocal<Env>();
+
+	public static Env getEnv() {
+		return currEnv.get();
+	}
+
 	@Override
 	public String apply(Env e) {
+
+		currEnv.set(e);
+		
+		System.out.println(Thread.currentThread());
+
+		if (isProduction()) {
+			return "Sorry.";
+		}
 
 		String test = e.getVar("test");
 		if (test == null)

@@ -7,7 +7,9 @@ import wcs.java.TestRunnerElement;
 
 public class Runner extends TestRunnerElement {
 
-	String boh="";
+	public boolean isProduction() {
+		return false;
+	}
 	
 	@SuppressWarnings("rawtypes")
 	@Override

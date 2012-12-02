@@ -35,7 +35,7 @@ trait Specification {
         println("!!! expected: " + a)
         println("??? found   : " + b)
       } else {
-        println("Ok.")
+        //println("Ok.")
       }
     }
 
@@ -44,7 +44,7 @@ trait Specification {
         println("!!! expected: " + a)
         println("??? found   : " + b)
       } else {
-        println("Ok.")
+        //println("Ok.")
       }
     }
 
@@ -55,7 +55,7 @@ trait Specification {
         println("??? no exception thrown")
       } else {
         if (b.getClass == ae.getClass()) {
-          println("Ok.")
+          //println("Ok.")
         } else {
           println("!!! Expected Exception " + b.getClass)
           println("??? Found    Exception " + ae.getClass)
