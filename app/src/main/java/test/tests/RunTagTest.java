@@ -10,11 +10,11 @@ public class RunTagTest {
 	public void testOk() {
 		assertTrue(true);
 	}
-	
 
 	@Test
-	public void testKo() {
-		fail("ko!");
+	public void testOk2() {
+		// fail("ko!");
+		assertTrue(true);
 	}
 
 }

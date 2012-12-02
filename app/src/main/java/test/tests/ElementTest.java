@@ -12,9 +12,10 @@ public class ElementTest {
 	}
 	
 
-	//@Test
-	public void testKo() {
-		fail("ko!");
+	@Test
+	public void testOk2() {
+		//fail("ko!");
+		assertTrue(true);
 	}
 
 }
