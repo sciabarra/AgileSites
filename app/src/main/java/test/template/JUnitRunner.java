@@ -5,7 +5,7 @@ import test.tests.ElementTest;
 import test.tests.RunTagTest;
 import wcs.java.TestRunnerElement;
 
-public class Runner extends TestRunnerElement {
+public class JUnitRunner extends TestRunnerElement {
 
 	public boolean isProduction() {
 		return false;

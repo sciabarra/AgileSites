@@ -1,7 +1,7 @@
 package test.tests;
 
 import static org.junit.Assert.*;
-import static test.template.Runner.getEnv;
+import static test.template.JUnitRunner.getEnv;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,11 @@ public class ElementTest {
 	@Test
 	public void testOk() {
 		System.out.println(Thread.currentThread());
-		assertTrue(env.getVar("p").equals("1"));
+		try {
+			assertTrue(env.getVar("p").equals("1"));
+		} catch (Exception e) {
+			fail("no p");
+		}
 	}
 
 	@Test

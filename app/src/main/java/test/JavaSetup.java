@@ -15,7 +15,8 @@ public class JavaSetup extends Setup {
 	@Override
 	public Asset[] getAssets() {
 		return new Asset[] { //
-		new Template("Runner", "test.template.Runner") };
+		new Template("JUnitRunner", "test.template.JUnitRunner"), //
+				new Template("TjLayout", "test.template.TjLayout") };
 
 	}
 }

@@ -62,7 +62,11 @@ public abstract class TestRunnerElement extends Element {
 		public void testFailure(Failure failure) throws Exception {
 			// sb.append("failure detected");
 			// sb.append("Failure").append(failure.toString()).append("<br>");
+				
 			lastFailure = failure.getMessage();
+			if(lastFailure==null)
+				lastFailure = "Null pointer";
+			
 			failureCount++;
 			failures.append("<h2>").append(failure.getTestHeader())
 					.append("</h2>");
@@ -129,7 +133,7 @@ public abstract class TestRunnerElement extends Element {
 
 		currEnv.set(e);
 		
-		System.out.println(Thread.currentThread());
+		//System.out.println(Thread.currentThread());
 
 		if (isProduction()) {
 			return "Sorry.";

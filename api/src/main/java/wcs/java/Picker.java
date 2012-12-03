@@ -50,6 +50,7 @@ public class Picker {
 		try {
 			log.debug("parsing " + resource);
 			doc = Jsoup.parse(is, "UTF-8", baseUrl);
+			System.out.println(doc.toString());
 			// stack.push(doc.body());
 		} catch (IOException e) {
 			log.warn("Cannot parse " + resource);
@@ -61,11 +62,11 @@ public class Picker {
 				log.debug("selecting " + cssq);
 				elem = doc.select(cssq).first();
 			} else
-				elem = doc.body();
+				elem = doc;
 		} else {
 			log.debug("creating a void doc");
 			doc = new Document(baseUrl);
-			elem = doc.body();
+			elem = doc;
 		}
 
 		// finally assign....
@@ -193,6 +194,22 @@ public class Picker {
 	 */
 	public Picker prepend(String where, String what) {
 		top.select(where).parents().first().prepend(what);
+		return this;
+	}
+
+	/**
+	 * Set attribute
+	 */
+	public Picker attr(String where, String attr, String what) {
+		top.select(where).attr(attr, what);
+		return this;
+	}
+
+	/**
+	 * Set attribute
+	 */
+	public Picker addClass(String where, String what) {
+		top.select(where).addClass(what);
 		return this;
 	}
 

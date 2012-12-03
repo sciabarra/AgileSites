@@ -77,5 +77,17 @@ class PickerSpec extends Specification with Log {
       </ul> must ==/(prepend)
     }
 
+    "class/attr" in {
+      val title = new Picker("/hello.html", "#title")
+
+      val tit = title.attr("#title", "id", "replaced")
+        .addClass("h1", "demo")
+        .attr("h1", "test", "demo")
+
+      <div id="replaced">
+        <h1 test="demo" class=" demo">Hello</h1>
+      </div> must ==/(title)
+    }
+
   }
 }
