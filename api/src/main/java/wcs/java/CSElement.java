@@ -10,7 +10,7 @@ import com.fatwire.assetapi.data.MutableAssetData;
  * CSElement definition class
  * 
  * @author msciab
- *
+ * 
  */
 public class CSElement extends Asset {
 
@@ -47,12 +47,14 @@ public class CSElement extends Asset {
 		// data.getAttributeData("createdby").setData("agilewcs");
 		// data.getAttributeData("createddate").setData(new Date());
 
+		String elementname = getSite() + "." + getName();
+
 		// element name
-		data.getAttributeData("elementname").setData(element);
+		data.getAttributeData("elementname").setData(elementname);
 		// addAttribute(data, "elementname", element);
 
 		// root element
-		data.getAttributeData("rootelement").setData(element);
+		data.getAttributeData("rootelement").setData(elementname);
 		// addAttribute(data, "rootelement", element);
 
 		data.getAttributeData("resdetails1").setData(
@@ -65,14 +67,12 @@ public class CSElement extends Asset {
 				bytes);
 
 		data.getAttributeData("url").setData(blob);
-
 		// data.getAttributeData("Mapping").setData(new ArrayList());
 		// data.getAttributeData("Mapping").setData(new AttributeMan HashMap());
 	}
-	
-	
+
 	/**
-	 * Fluent description setter 
+	 * Fluent description setter
 	 * 
 	 * @param description
 	 * @return

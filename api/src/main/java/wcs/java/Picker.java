@@ -8,6 +8,7 @@ import java.util.Stack;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /**
  * Build picking
@@ -50,7 +51,7 @@ public class Picker {
 		try {
 			log.debug("parsing " + resource);
 			doc = Jsoup.parse(is, "UTF-8", baseUrl);
-			System.out.println(doc.toString());
+			//System.out.println(doc.toString());
 			// stack.push(doc.body());
 		} catch (IOException e) {
 			log.warn("Cannot parse " + resource);
@@ -81,7 +82,9 @@ public class Picker {
 	 * @return
 	 */
 	public Picker select(String where) {
-		push(top.select(where).first());
+		Elements selected = top.select(where);
+		if (selected != null && selected.size() > 0)
+			push(selected.first());
 		return this;
 	}
 

@@ -29,7 +29,7 @@ public class Util {
 	 * @author msciab
 	 * 
 	 */
-	static class Id {
+	public static class Id {
 		public Id(String type, Long id) {
 			this.type = type;
 			this.id = id;
@@ -49,7 +49,7 @@ public class Util {
 	 * @author msciab
 	 * 
 	 */
-	static class Arg {
+	public static class Arg {
 		public Arg(String name, String value) {
 			this.name = name;
 			this.value = value;
