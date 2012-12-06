@@ -7,22 +7,31 @@ import java.util.List;
 import com.fatwire.assetapi.data.MutableAssetData;
 
 public class SiteEntry extends Asset {
+	
 
-	private String element;
+	//private String element;
 	private String elementname;
 
 	private boolean wrapper;
 
-	public SiteEntry(String name, boolean wrapper,
-			String elementname, String element) {
+	public SiteEntry(String name, boolean wrapper, String elementname
+			, String element) {
 		super("SiteEntry", "", name);
-		this.element = element;
+		
+		
+		System.out.println("SiteEntry name="+name);
+		System.out.println("SiteEntry elementname="+elementname);
+		System.out.println("SiteEntry element="+element);
+		
 		this.elementname = elementname;
+		//this.elementname = getSite() + "." + element;
+		//this.element = element;
+
 		this.wrapper = wrapper;
 	}
 
 	public String getElement() {
-		return element;
+		return null;
 	}
 
 	public boolean isWrapper() {
@@ -41,6 +50,7 @@ public class SiteEntry extends Asset {
 		// root element
 		data.getAttributeData("category").setData("");
 		data.getAttributeData("pagename").setData(elementname);
+		data.getAttributeData("rootelement").setData(getSite()+"."+getName());
 		data.getAttributeData("cs_wrapper").setData(wrapper ? "y" : "n");
 
 		// data.getAttributeData("cselement_id").setData(
@@ -50,9 +60,8 @@ public class SiteEntry extends Asset {
 		data.getAttributeData("cscacheinfo").setData("false");
 		data.getAttributeData("sscacheinfo").setData("false");
 		data.getAttributeData("csstatus").setData("live");
-		data.getAttributeData("rootelement").setData(element);
 		data.getAttributeData("pageletonly").setData("false");
-
+		
 		data.getAttributeData("pagecriteria").setDataAsList(
 				Util.listString("c", "cid", "context", "p", "rendermode",
 						"site", "sitepfx", "ft_ss"));
@@ -64,8 +73,9 @@ public class SiteEntry extends Asset {
 						attrStructKV("rendermode", "live")));
 
 	}
+
 	/**
-	 * Fluent description setter 
+	 * Fluent description setter
 	 * 
 	 * @param description
 	 * @return

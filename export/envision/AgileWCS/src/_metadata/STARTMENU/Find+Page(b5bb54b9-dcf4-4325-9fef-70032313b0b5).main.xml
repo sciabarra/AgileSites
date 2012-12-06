@@ -1,0 +1,102 @@
+<object-stream>
+  <com.fatwire.realtime.ResourceDataImpl>
+    <id class="string">1336168692804</id>
+    <resourceType>STARTMENU</resourceType>
+    <deps class="empty-set"/>
+    <data class="com.openmarket.xcelerate.startmenu.StartMenuItem">
+      <id>1336168692804</id>
+      <uid>b5bb54b9-dcf4-4325-9fef-70032313b0b5</uid>
+      <name>Find Page</name>
+      <description>Find Page</description>
+      <assetType>Page</assetType>
+      <menuType>Search</menuType>
+      <legalSites class="com.openmarket.xcelerate.common.SiteList">
+        <hashtable>
+          <entry>
+            <long>1336168710184</long>
+            <long>1336168710184</long>
+          </entry>
+        </hashtable>
+      </legalSites>
+      <legalRoles class="com.openmarket.xcelerate.common.RoleList">
+        <hashtable>
+          <entry>
+            <string>SitesUser</string>
+            <string>SitesUser</string>
+          </entry>
+        </hashtable>
+      </legalRoles>
+      <processInputForm>0</processInputForm>
+      <participantInputForm>0</participantInputForm>
+      <siteAffinityInputForm>0</siteAffinityInputForm>
+      <legalArguments class="com.openmarket.xcelerate.startmenu.InputArgList">
+        <hashtable>
+          <entry>
+            <string>subtype</string>
+            <com.openmarket.xcelerate.startmenu.InputArgList_-InputArg>
+              <argName>subtype</argName>
+              <isRequired>false</isRequired>
+              <outer-class reference="../../../.."/>
+            </com.openmarket.xcelerate.startmenu.InputArgList_-InputArg>
+          </entry>
+          <entry>
+            <string>Group_%</string>
+            <com.openmarket.xcelerate.startmenu.InputArgList_-InputArg>
+              <argName>Group_%</argName>
+              <isRequired>false</isRequired>
+              <outer-class reference="../../../.."/>
+            </com.openmarket.xcelerate.startmenu.InputArgList_-InputArg>
+          </entry>
+        </hashtable>
+      </legalArguments>
+      <workflowChoices class="com.openmarket.xcelerate.startmenu.ProcessList">
+        <hashtable/>
+      </workflowChoices>
+      <participantChoices class="com.openmarket.xcelerate.startmenu.ParticipantList">
+        <required class="com.openmarket.xcelerate.workflow.Participants">
+          <rolesHash class="java.util.Collections$SynchronizedMap" serialization="custom">
+            <java.util.Collections_-SynchronizedMap>
+              <default>
+                <m class="tree-map"/>
+                <mutex class="java.util.Collections$SynchronizedMap" reference="../../.."/>
+              </default>
+            </java.util.Collections_-SynchronizedMap>
+          </rolesHash>
+          <usersHash/>
+        </required>
+        <optional class="com.openmarket.xcelerate.workflow.Participants">
+          <rolesHash class="java.util.Collections$SynchronizedMap" serialization="custom">
+            <java.util.Collections_-SynchronizedMap>
+              <default>
+                <m class="tree-map"/>
+                <mutex class="java.util.Collections$SynchronizedMap" reference="../../.."/>
+              </default>
+            </java.util.Collections_-SynchronizedMap>
+          </rolesHash>
+          <usersHash/>
+        </optional>
+      </participantChoices>
+      <siteChoices class="com.openmarket.xcelerate.common.SiteList">
+        <hashtable/>
+      </siteChoices>
+      <arguments class="com.openmarket.xcelerate.startmenu.InputArgListMv" serialization="custom">
+        <com.openmarket.xcelerate.common.ArgumentList>
+          <int>1</int>
+          <int>0</int>
+        </com.openmarket.xcelerate.common.ArgumentList>
+      </arguments>
+    </data>
+  </com.fatwire.realtime.ResourceDataImpl>
+</object-stream>
+<!--==================___ METADATA ___================
+<dependencies>
+  <list/>
+</dependencies>
+==================______________________==================
+#
+#Thu Dec 06 13:17:35 CET 2012
+key=@STARTMENU-b5bb54b9-dcf4-4325-9fef-70032313b0b5
+type=STARTMENU
+sites=Test
+
+==================___ END METADATA ___==================-->

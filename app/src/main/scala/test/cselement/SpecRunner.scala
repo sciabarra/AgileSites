@@ -6,7 +6,7 @@ import test.specs.TagSpec
 import test.specs.IListSpec
 import scala.xml.NodeSeq
 
-class Runner extends Element {
+class SpecRunner extends Element {
 
   def apply(e: Env): String = {
 
