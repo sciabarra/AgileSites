@@ -196,7 +196,7 @@ abstract public class Setup implements wcs.core.Setup {
 		// String dump = "\nAsset: " + data.getAssetId() + Util.dump(data);
 		// log.debug(dump);
 		try {
-			adm.update(Util.listData(data), false);
+			adm.update(Util.listData(data));
 		} catch (Exception e) {
 			log.error(e);
 			return "ERROR: " + e;

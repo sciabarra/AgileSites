@@ -14,7 +14,7 @@ public class DJLayout extends Element {
 		p.select("head") //
 				.attr("link", "href", "/cs/css/default.css")//
 				.unselect() //
-				.replace("#footer", call("DJFooter", //
+				.replace("#sidebar", call("DJFooter", //
 						arg("name", env.getVar("name"))));
 		return p.html();
 	}

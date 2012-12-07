@@ -158,7 +158,8 @@ public class Template extends Asset {
 
 		data.getAttributeData("acl").setDataAsList(Util.listString(""));
 
-		data.getAttributeData("applicablesubtypes").setData("*");
+		if (data.getAttributeData("applicablesubtypes") != null)
+			data.getAttributeData("applicablesubtypes").setData("*");
 
 	}
 

@@ -42,7 +42,7 @@ public class AgileWcsDeployer {
 
 	public AgileWcsDeployer() {
 		// simple constructor for test
-		this("http://localhost:8380/cs/", "Demo", "fwadmin", "xceladmin");
+		this("http://localhost:8080/cs/", "AdminSite", "fwadmin", "xceladmin");
 	}
 
 	/**
@@ -52,7 +52,8 @@ public class AgileWcsDeployer {
 	 * @param username
 	 * @param password
 	 */
-	public AgileWcsDeployer(String url, String site, String username, String password) {
+	public AgileWcsDeployer(String url, String site, String username,
+			String password) {
 		this.username = username;
 		this.password = password;
 		this.site = site;
@@ -124,26 +125,6 @@ public class AgileWcsDeployer {
 	}
 
 	/**
-	 * Create a sitecatalog entry
-	 * 
-	 * @param name
-	 * @return
-	 * @throws IOException
-	 */
-	public String createEntry(String name) throws IOException {
-		String url = cm + //
-				"?ftcmd=addrow" + //
-				"&tablename=sitecatalog" + //
-				"&pagename=" + name + //
-				"&rootelement=" + name + // ,
-				"&pageletonly=F" + //
-				"&csstatus=live" + //
-				"&cscacheinfo=false" + //
-				"&sscacheinfo=false";
-		return get(url);
-	}
-
-	/**
 	 * Invoke an element by name passing username and password
 	 * 
 	 * @param name
@@ -196,13 +177,44 @@ public class AgileWcsDeployer {
 
 		PostMethod post = new PostMethod(cm);
 		Part[] parts = { //
-				new StringPart("tablename", "ElementCatalog"),
 				new StringPart("ftcmd", "addrow"),
+				new StringPart("tablename", "ElementCatalog"),
 				new StringPart("elementname", name),
 				new StringPart("url_folder", ""),
 				new FilePart("url", new ByteArrayPartSource(name + ".jsp",
 						body.getBytes("UTF-8")), "application/octet-stream",
 						"UTF-8") };
+
+		post.setRequestEntity(new MultipartRequestEntity(parts, post
+				.getParams()));
+
+		int result = client.executeMethod(post);
+		if (result == 200)
+			return slurp(post.getResponseBodyAsStream());
+		else
+			return "ERROR";
+	}
+
+	/**
+	 * Create an element in the element catalog
+	 * 
+	 * @param name
+	 * @param body
+	 * @return
+	 * @throws IOException
+	 */
+	public String createEntry(String name) throws IOException {
+
+		PostMethod post = new PostMethod(cm);
+		Part[] parts = { //
+		new StringPart("ftcmd", "addrow"),
+				new StringPart("tablename", "SiteCatalog"),
+				new StringPart("pagename", name),
+				new StringPart("rootelement", name),
+				new StringPart("pageletonly", "F"),
+				new StringPart("csstatus", "live"),
+				new StringPart("cscacheinfo", "false"),
+				new StringPart("sscacheinfo", "false") };
 
 		post.setRequestEntity(new MultipartRequestEntity(parts, post
 				.getParams()));

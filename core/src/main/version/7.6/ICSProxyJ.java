@@ -50,14 +50,16 @@ public class ICSProxyJ implements ICS {
 		return ics.AppEvent(arg0, arg1, arg2, arg3);
 	}
 
+
 	public boolean BlobServer(FTValList arg0, IMIMENotifier arg1,
 			OutputStream arg2) {
 		return ics.BlobServer(arg0, arg1, arg2);
 	}
 
+	/*
 	public boolean BlobServer(FTValList arg0, OutputStream arg1) {
 		return ics.BlobServer(arg0, arg1);
-	}
+	}*/
 
 	public boolean CallElement(String arg0, FTValList arg1) {
 		return ics.CallElement(arg0, arg1);
@@ -273,10 +275,12 @@ public class ICSProxyJ implements ICS {
 		return ics.IsTracked(arg0);
 	}
 
+/*
 	public boolean IsTrackedNewFormat(String arg0) {
 		return ics.IsTrackedNewFormat(arg0);
 	}
-
+*/
+	
 	public boolean LoadProperty(String arg0) {
 		return ics.LoadProperty(arg0);
 	}
@@ -650,10 +654,12 @@ public class ICSProxyJ implements ICS {
 		return ics.getCookie(arg0);
 	}
 
+/*
 	public String getElementArgumentValue(String arg0, String arg1) {
 		return ics.getElementArgumentValue(arg0, arg1);
 	}
-
+*/
+	
 	public IProperties getIProperties() {
 		return ics.getIProperties();
 	}

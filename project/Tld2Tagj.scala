@@ -63,7 +63,7 @@ public class %s  {
     val setRequired = reqArgs.map(x => "args.setValString(\"" + x + "\", " + x + ");").mkString("\n")
 
     val setOptional = optArgs map { x =>
-      """ %s %s(String val) { args.setValString("%s", val); return this; } 
+      """ public %s %s(String val) { args.setValString("%s", val); return this; } 
       """.format(cname, x, x)
     } mkString "\n";
 

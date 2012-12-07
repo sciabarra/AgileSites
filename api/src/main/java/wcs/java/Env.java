@@ -6,6 +6,7 @@ import wcs.core.ICSProxyJ;
 import wcs.java.Util.Arg;
 import wcs.java.Util.Id;
 import COM.FutureTense.Interfaces.ICS;
+import wcs.java.tag.RenderTag;
 
 import static wcs.java.Util.id;
 
@@ -75,8 +76,8 @@ public class Env extends ICSProxyJ {
 	 * @param name
 	 * @param args
 	 */
-	public void call(Id id, String name, Arg... args) {
-		// TODO
+	public void call(String name, Id id, Arg... args) {
+		//RenderTag.Calltemplate tag = RenderTag.calltemplate(name);
+		//tag.c(id.type).cid(Long.toString(id.id)).run(ics);
 	}
-
 }
