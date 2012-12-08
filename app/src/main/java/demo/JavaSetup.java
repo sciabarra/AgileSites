@@ -15,13 +15,13 @@ public class JavaSetup extends wcs.java.Setup {
 	@Override
 	public Asset[] getAssets() {
 		return new Asset[] {
-				new Template("DJLayout", "demo.template.DJLayout")//
+				new Template("DJLayout", demo.template.DJLayout.class)//
 						.cache("false", "false") //
 						.description("Demo Layout (Java)"), //
-				new Template("DJHeader", "demo.template.DJHeader")//
+				new Template("DJHeader", demo.template.DJHeader.class)//
 						.cache("false", "false")//
 						.description("Demo Header Java"),
-				new CSElement("DJFooter", "demo.cselement.DJFooter") //
+				new CSElement("DJFooter", demo.cselement.DJFooter.class) //
 		};
 	}
 }

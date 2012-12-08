@@ -10,51 +10,52 @@ public abstract class Asset {
 
 	private static Log log = new Log(Asset.class);
 
+	private String name;
+	private String description;
 	private String type;
 	private String subtype;
-	private String name;
 	private String site;
-	private String description;
 
 	public Asset() {
 	}
 
+	/**
+	 * Create an asset with a given type, subtype and name.
+	 * 
+	 * @param type
+	 * @param subtype
+	 * @param name
+	 */
 	public Asset(String type, String subtype, String name) {
 		this.type = type;
 		this.subtype = subtype;
 		this.name = name;
-		this.description = "";
+		this.description = name;
 	}
 
 	public String getSite() {
 		return site;
 	}
-	
+
 	public void setSite(String site) {
 		this.site = site;
 	}
 
-	/**
-	 * Return the description
-	 */
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		if (description == null)
+			this.description = name;
+		else
+			this.description = description;
 	}
-	
-	/**
-	 * Return this asset type
-	 */
+
 	public String getType() {
 		return type;
 	}
 
-	/**
-	 * Return this asset subtype
-	 */
 	public String getSubtype() {
 		if (subtype == null)
 			return "";
@@ -62,40 +63,25 @@ public abstract class Asset {
 			return subtype;
 	}
 
-	/**
-	 * Return this asset name
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * Return the file field
-	 */
 	public String getFile() {
 		// TODO
 		return null;
 	}
 
-	/**
-	 * Return the path field
-	 */
 	public String getPath() {
 		// TODO
 		return null;
 	}
 
-	/**
-	 * Return the start date field
-	 */
 	public Date getStartDate() {
 		// TODO
 		return null;
 	}
 
-	/**
-	 * Return the end date field
-	 */
 	public Date getEndDate() {
 		// TODO
 		return null;
@@ -124,6 +110,7 @@ public abstract class Asset {
 	}
 
 	/**
+	 * Return an attribute as string
 	 * 
 	 * @param attribute
 	 * @return
@@ -134,6 +121,7 @@ public abstract class Asset {
 	}
 
 	/**
+	 * Return an attribute as a list of strings
 	 * 
 	 * @param attribute
 	 * @return
@@ -144,6 +132,8 @@ public abstract class Asset {
 	}
 
 	/**
+	 * Return an attribute as an int
+	 * 
 	 * 
 	 * @param attribute
 	 * @return
@@ -154,6 +144,7 @@ public abstract class Asset {
 	}
 
 	/**
+	 * Return an attribute as a list of int
 	 * 
 	 * @param attribute
 	 * @return
@@ -164,6 +155,7 @@ public abstract class Asset {
 	}
 
 	/**
+	 * Return an attribute as a date
 	 * 
 	 * @param attribute
 	 * @return
@@ -174,6 +166,8 @@ public abstract class Asset {
 	}
 
 	/**
+	 * Return an attribute as a list of dates
+	 * 
 	 * 
 	 * @param attribute
 	 * @return
@@ -184,6 +178,7 @@ public abstract class Asset {
 
 	/**
 	 * Return a list of expected attributes
+	 * 
 	 */
 	abstract List<String> getAttributes();
 
@@ -205,6 +200,13 @@ public abstract class Asset {
 						+ subtype : "") + ")";
 	}
 
+	/**
+	 * Return the attribute
+	 * 
+	 * @param data
+	 * @param key
+	 * @param value
+	 */
 	void addAttribute(MutableAssetData data, String key, Object value) {
 		log.debug(key + "=" + value);
 		AttributeData attr = data.getAttributeData(key);
@@ -215,5 +217,4 @@ public abstract class Asset {
 		}
 	}
 
-	
 }

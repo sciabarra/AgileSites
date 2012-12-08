@@ -14,15 +14,21 @@ import com.fatwire.assetapi.data.MutableAssetData;
  */
 public class CSElement extends Asset {
 
-	private String element;
+	private Class<?> elementClass;
+	private String elementName;
 
-	public CSElement(String name, String element) {
-		super("CSElement", "", name);
-		this.element = element;
+	public CSElement(String name, Class<?> elementClass) {
+		this(name, elementClass, null);
 	}
 
-	public String getElement() {
-		return element;
+	public CSElement(String name, Class<?> elementClass, String elementName) {
+		super("CSElement", "", name);
+		this.elementClass = elementClass;
+		this.elementName = elementName;
+	}
+
+	public String getElementName() {
+		return elementName;
 	}
 
 	public List<String> getAttributes() {
@@ -30,7 +36,7 @@ public class CSElement extends Asset {
 				"rootelement", "url", "resdetails1", "resdetails2");
 	}
 
-	private String template(String clazz) {
+	private String template(String className) {
 		return "<%@ taglib prefix=\"cs\" uri=\"futuretense_cs/ftcs1_0.tld\"\n"
 				+ "%><%@ taglib prefix=\"asset\" uri=\"futuretense_cs/asset.tld\"\n"
 				+ "%><%@ taglib prefix=\"ics\" uri=\"futuretense_cs/ics.tld\"\n"
@@ -38,7 +44,7 @@ public class CSElement extends Asset {
 				+ "%><%@ page import=\"wcs.core.WCS\"\n"
 				+ "%><cs:ftcs><ics:if condition='<%=ics.GetVar(\"seid\")!=null%>'><ics:then><render:logdep\ncid='<%=ics.GetVar(\"seid\")%>' c=\"SiteEntry\"/></ics:then></ics:if>"
 				+ "<ics:if condition='<%=ics.GetVar(\"eid\")!=null%>'><ics:then><render:logdep\ncid='<%=ics.GetVar(\"eid\")%>' c=\"CSElement\"/></ics:then></ics:if>"
-				+ "<%\nString r = WCS.dispatch(ics, \"" + clazz
+				+ "<%\nString r = WCS.dispatch(ics, \"" + className
 				+ "\");\nif(r!=null) ics.StreamText(r); %></cs:ftcs>";
 	}
 
@@ -47,24 +53,32 @@ public class CSElement extends Asset {
 		// data.getAttributeData("createdby").setData("agilewcs");
 		// data.getAttributeData("createddate").setData(new Date());
 
-		String elementname = getSite() + "." + getName();
-
-		// element name
-		data.getAttributeData("elementname").setData(elementname);
-		// addAttribute(data, "elementname", element);
+		String elementName = null;
+		String elementJsp = null;
+		if (this.elementName == null) {
+			elementName = getSite() + "/" + getName();
+			elementJsp = elementName + ".jsp";
+		} else {
+			elementName = this.elementName;
+			elementJsp = getSite() + "/" + elementName + ".jsp";
+		}
 
 		// root element
-		data.getAttributeData("rootelement").setData(elementname);
+		data.getAttributeData("rootelement").setData(elementName);
 		// addAttribute(data, "rootelement", element);
+
+		// element name
+		data.getAttributeData("elementname").setData(elementName);
+		// addAttribute(data, "elementname", element);
 
 		data.getAttributeData("resdetails1").setData(
 				"eid=" + data.getAssetId().getId());
-		data.getAttributeData("resdetails2").setData("agilewcs=1");
+		data.getAttributeData("resdetails2").setData(
+				"timestamp=" + System.currentTimeMillis());
 
 		// blob
-		byte[] bytes = template(element).getBytes();
-		BlobObject blob = new BlobObjectImpl(element + ".jsp", "AgileWCS",
-				bytes);
+		byte[] bytes = template(elementClass.getCanonicalName()).getBytes();
+		BlobObject blob = new BlobObjectImpl(elementJsp, "AgileWCS", bytes);
 
 		data.getAttributeData("url").setData(blob);
 		// data.getAttributeData("Mapping").setData(new ArrayList());

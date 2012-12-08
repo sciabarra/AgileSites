@@ -246,7 +246,7 @@ public class AgileWcsDeployer {
 		StringBuilder sb = new StringBuilder();
 		try {
 
-			String name = "AAAgileWCS-" + Math.round(Math.random() * 100000);
+			String name = "AAAgileWcsDeployer";
 
 			sb.append("*** Login\n");
 			sb.append(login());

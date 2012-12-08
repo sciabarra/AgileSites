@@ -8,7 +8,9 @@ class Setup extends wcs.scala.Setup {
 
   def assets: List[Asset] =
     CSElement("SpecRunner", classOf[test.cselement.SpecRunner], description = "Spec Runner (Scala)") ::
-      SiteEntry("SpecRunner", true, "SpecRunner", classOf[test.cselement.SpecRunner], description = "Spec Runner (Scala)") ::
+      SiteEntry("SpecRunner", true, description = "Spec Runner (Scala)") ::
+      CSElement("TestEditor", classOf[test.cselement.TestEditor], element = "OpenMarket/Gator/AttributeTypes/TestEditor") ::
+      SiteEntry("TestEditor", element = "OpenMarket/Gator/AttributeTypes/TestEditor") ::
       Nil
 
 }

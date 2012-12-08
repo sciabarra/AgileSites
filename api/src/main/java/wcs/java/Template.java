@@ -28,8 +28,8 @@ public class Template extends Asset {
 	 * Create a typeless template with a given top element
 	 * 
 	 */
-	public Template(String name, String element) {
-		this("", name, element);
+	public Template(String name, Class<?> elementClass) {
+		this("", name, elementClass);
 	}
 
 	/**
@@ -42,9 +42,9 @@ public class Template extends Asset {
 	 * @param description
 	 * @param element
 	 */
-	public Template(String subtype, String name, String element) {
+	public Template(String subtype, String name, Class<?> elementClass) {
 		super("Template", subtype, name);
-		this.element = element;
+		this.element = elementClass.getCanonicalName();
 
 		if (subtype != null && subtype.trim().length() == 0)
 			myname = name;
@@ -124,7 +124,10 @@ public class Template extends Asset {
 		mapElement.put("description", attrString("description", element));
 		mapElement.put("resdetails1",
 				attrString("resdetails1", "tid=" + data.getAssetId().getId()));
-		mapElement.put("resdetails2", attrString("resdetails2", "agilewcs=1"));
+		mapElement.put(
+				"resdetails2",
+				attrString("resdetails2",
+						"agilewcs=" + System.currentTimeMillis()));
 		mapElement.put("csstatus", attrString("csstatus", "live"));
 		mapElement.put("cscacheinfo", attrString("cscacheinfo", "false"));
 		mapElement.put("sscacheinfo", attrString("sscacheinfo", "false"));

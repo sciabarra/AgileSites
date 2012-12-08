@@ -7,26 +7,23 @@ import java.util.List;
 import com.fatwire.assetapi.data.MutableAssetData;
 
 public class SiteEntry extends Asset {
-	
 
-	//private String element;
+	// private String element;
 	private String elementname;
 
 	private boolean wrapper;
 
-	public SiteEntry(String name, boolean wrapper, String elementname
-			, String element) {
-		super("SiteEntry", "", name);
-		
-		
-		System.out.println("SiteEntry name="+name);
-		System.out.println("SiteEntry elementname="+elementname);
-		System.out.println("SiteEntry element="+element);
-		
-		this.elementname = elementname;
-		//this.elementname = getSite() + "." + element;
-		//this.element = element;
+	public SiteEntry(String name) {
+		this(name, true);
+	}
 
+	public SiteEntry(String name, boolean wrapper) {
+		this(name, wrapper, null);
+	}
+
+	public SiteEntry(String name, boolean wrapper, String elementname) {
+		super("SiteEntry", "", name);
+		this.elementname = elementname;
 		this.wrapper = wrapper;
 	}
 
@@ -47,10 +44,16 @@ public class SiteEntry extends Asset {
 
 	@Override
 	void setData(MutableAssetData data) {
+
+		String elementname = //
+		(this.elementname == null) //
+		? (getSite() + "/" + getName()) //
+				: this.elementname;
+
 		// root element
 		data.getAttributeData("category").setData("");
 		data.getAttributeData("pagename").setData(elementname);
-		data.getAttributeData("rootelement").setData(getSite()+"."+getName());
+		data.getAttributeData("rootelement").setData(elementname);
 		data.getAttributeData("cs_wrapper").setData(wrapper ? "y" : "n");
 
 		// data.getAttributeData("cselement_id").setData(
@@ -61,7 +64,7 @@ public class SiteEntry extends Asset {
 		data.getAttributeData("sscacheinfo").setData("false");
 		data.getAttributeData("csstatus").setData("live");
 		data.getAttributeData("pageletonly").setData("false");
-		
+
 		data.getAttributeData("pagecriteria").setDataAsList(
 				Util.listString("c", "cid", "context", "p", "rendermode",
 						"site", "sitepfx", "ft_ss"));
