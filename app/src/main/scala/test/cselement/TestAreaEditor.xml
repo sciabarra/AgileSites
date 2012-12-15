@@ -1,0 +1,284 @@
+<FTCS>
+
+    <IF COND="Variables.MultiValueEntry=no" >
+
+        <THEN>
+
+            <!-- Don't want default display field -->
+
+            <setvar
+                NAME="doDefaultDisplay"
+                VALUE="no" />
+            <!-- Get all parameters from Attribute Editor xml -->
+
+            <presentation.getprimaryattributevalue
+                ATTRIBUTE="FONTSIZE"
+                NAME="Variables.PresInst"
+                VARNAME="FONTSIZE" />
+
+            <if COND="Variables.errno!=0" >
+
+                <then>
+                </then>
+
+                <setvar
+                    NAME="FONTSIZE"
+                    VALUE="2" />
+
+                <then>
+                </then>
+            </if>
+
+            <presentation.getprimaryattributevalue
+                ATTRIBUTE="WRAPSTYLE"
+                NAME="Variables.PresInst"
+                VARNAME="WRAPSTYLE" />
+
+            <if COND="IsVariable.WRAPSTYLE!=true" >
+
+                <then>
+
+                    <setvar
+                        NAME="WRAPSTYLE"
+                        VALUE="OFF" />
+                </then>
+            </if>
+
+            <presentation.getprimaryattributevalue
+                ATTRIBUTE="XSIZE"
+                NAME="Variables.PresInst"
+                VARNAME="XSIZE" />
+
+            <if COND="IsVariable.XSIZE!=true" >
+
+                <then>
+
+                    <setvar
+                        NAME="XSIZE"
+                        VALUE="24" />
+                </then>
+            </if>
+
+            <presentation.getprimaryattributevalue
+                ATTRIBUTE="YSIZE"
+                NAME="Variables.PresInst"
+                VARNAME="YSIZE" />
+
+            <if COND="IsVariable.YSIZE!=true" >
+
+                <then>
+
+                    <setvar
+                        name="YSIZE"
+                        VALUE="20" >
+                    </setvar>
+                </then>
+            </if>
+
+            <setvar
+                name="disableTextArea"
+                value="no" />
+
+            <presentation.getprimaryattributevalue
+                ATTRIBUTE="PERMISSION"
+                NAME="Variables.PresInst"
+                VARNAME="PERMISSION" />
+
+            <if COND="IsVariable.PERMISSION=true" >
+
+                <then>
+
+                    <setvar
+                        NAME="errno"
+                        VALUE="0" />
+
+                    <USERISMEMBER GROUP="Variables.PERMISSION" />
+
+                    <IF COND="Variables.errno=0" >
+
+                        <THEN>
+
+                            <setvar
+                                NAME="disableTextArea"
+                                VALUE="yes" />
+                        </THEN>
+                    </IF>
+                </then>
+            </if>
+
+            <tr>
+
+                <callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/DisplayAttributeName" />
+
+                <td>
+                </td>
+
+                <td>
+
+                    <callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/DisplayAttributeName" />
+
+                    <td>
+                    </td>
+
+                    <td>
+
+                        <!-- Single valued attributes -->
+
+                        <if COND="Variables.EditingStyle=single" >
+
+                            <then> <!-- Special case: TEXTAREA for URL attributes -->
+
+                                <IF COND="Variables.AttrType=url" >
+
+                                    <THEN>
+
+                                        <setvar
+                                            NAME="errno"
+                                            VALUE="0" />
+
+                                        <BEGINS
+                                            STR="AttrValueList.urlvalue"
+                                            WHAT="AttrValueList." />
+
+                                        <IF COND="Variables.errno=1" >
+
+                                            <THEN>
+
+                                                <setvar
+                                                    NAME="filename"
+                                                    VALUE="CS.UniqueID.txt" />
+                                            </THEN>
+
+                                            <ELSE>
+
+                                                <setvar
+                                                    NAME="filename"
+                                                    VALUE="AttrValueList.urlvalue" />
+                                            </ELSE>
+                                        </IF>
+
+                                        <INPUT
+                                            NAME="Variables.AttrName_file"
+                                            REPLACEALL="Variables.AttrName,Variables.filename"
+                                            TYPE="hidden"
+                                            VALUE="Variables.filename" />
+
+                                        <setvar
+                                            NAME="errno"
+                                            VALUE="0" />
+
+                                        <BEGINS
+                                            STR="AttrValueList.@urlvalue"
+                                            WHAT="AttrValueList." />
+
+                                        <IF COND="Variables.errno=1" >
+
+                                            <THEN>
+
+                                                <setvar
+                                                    NAME="MyAttrVal"
+                                                    VALUE="Variables.empty" />
+                                            </THEN>
+
+                                            <ELSE>
+
+                                                <setvar
+                                                    NAME="MyAttrVal"
+                                                    VALUE="AttrValueList.@urlvalue" />
+                                            </ELSE>
+                                        </IF>
+                                    </THEN>
+                                </IF> <!-- Display a TEXTAREA with all parameters from Attribute --Editor xml --> <!-- The NAME of the input must be the attribute name -->
+
+                                <IF COND="Variables.disableTextArea=yes" >
+
+                                    <THEN>
+
+                                        <TEXTAREA
+                                            COLS="Variables.XSIZE"
+                                            DISABLED="yes"
+                                            NAME="Variables.AttrName"
+                                            REPLACEALL="Variables.AttrName,Variables.XSIZE,  Variables.YSIZE,Variables.WRAPSTYLE,Variables.empty"
+                                            ROWS="Variables.YSIZE"
+                                            WRAP="Variables.WRAPSTYLE" >
+
+                                            <!--
+For most single valued attrs, the value is contained
+in MyAttrVal
+                                            -->
+
+                                            <csvar NAME="Variables.MyAttrVal" />
+                                        </TEXTAREA>
+                                    </THEN>
+
+                                    <ELSE>
+
+                                        <TEXTAREA
+                                            COLS="Variables.XSIZE"
+                                            NAME="Variables.AttrName"
+                                            REPLACEALL="Variables.AttrName,Variables.XSIZE,Variables.YSIZE,Variables.WRAPSTYLE,Variables.empty"
+                                            ROWS="Variables.YSIZE"
+                                            WRAP="Variables.WRAPSTYLE" > <!-- For most single valued attrs, the value is contained in MyAttrVal -->
+
+                                            <csvar NAME="Variables.MyAttrVal" />
+                                        </TEXTAREA>
+                                    </ELSE>
+                                </IF>
+                            </then>
+
+                            <else> <!-- Multiple valued attributes --> <!-- For single value attributes we can usually use the default RequireInfo --> <!-- For multiple value attributes we need to append to RequireInfo for each value -->
+
+                                <if COND="Variables.RequiredAttr=true" >
+
+                                    <then>
+
+                                        <setvar
+                                            NAME="RequireInfo"
+                                            VALUE="Variables.RequireInfo*Counters.TCounterVariables.AttrName*ReqTrue*Variables.AttrType!" />
+                                    </then>
+
+                                    <else>
+
+                                        <setvar
+                                            NAME="RequireInfo"
+                                            VALUE="Variables.RequireInfo*Counters.TCounterVariables  .AttrName*ReqFalse*Variables.AttrType!" />
+                                    </else>
+                                </if> <!-- Display a TEXTAREA with all parameters from Attribute Editor xml --> <!-- The NAME of the input must be the attribute name prepended by the TCounter counter -->
+
+                                <IF COND="Variables.disableTextArea=yes">
+
+                                    <THEN>
+
+                                        <TEXTAREA
+                                            COLS="Variables.XSIZE"
+                                            DISABLED="yes"
+                                            NAME="Counters.TCounterVariables.AttrName"
+                                            REPLACEALL="Counters.TCounter,Variables.AttrName,Variables.XSIZE,Variables.YSIZE,Variables.WRAPSTYLE"
+                                            ROWS="Variables.YSIZE"
+                                            WRAP="Variables.WRAPSTYLE" >
+
+                                            <csvar NAME="Variables.tempval" />
+                                        </TEXTAREA>
+                                    </THEN>
+
+                                    <ELSE>
+
+                                        <TEXTAREA
+                                            COLS="Variables.XSIZE"
+                                            NAME="Counters.TCounterVariables.AttrName"
+                                            REPLACEALL="Counters.TCounter,Variables.AttrName,Variables.XSIZE,Variables.YSIZE,Variables.WRAPSTYLE"
+                                            ROWS="Variables.YSIZE"
+                                            WRAP="Variables.WRAPSTYLE">
+                                            <csvar NAME="Variables.tempval" />
+                                        </TEXTAREA>
+                                    </ELSE>
+                                </IF>
+                            </else>
+                        </if>
+                    </td>
+                </td>
+            </tr>
+        </THEN>
+    </IF> <!-- MultiValueEntry -->
+
+</FTCS>

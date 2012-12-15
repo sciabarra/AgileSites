@@ -4,8 +4,8 @@ import java.util.StringTokenizer;
 
 import COM.FutureTense.Interfaces.FTValList;
 import COM.FutureTense.Interfaces.ICS;
-import wcs.java.Util.Arg;
-import wcs.java.Util.Id;
+import wcs.java.util.Util.Arg;
+import wcs.java.util.Util.Id;
 import static java.lang.System.out;
 
 /**

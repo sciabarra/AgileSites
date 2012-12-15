@@ -2,6 +2,8 @@ package wcs.java;
 
 import java.util.List;
 
+import wcs.java.util.Util;
+
 import com.fatwire.assetapi.data.BlobObject;
 import com.fatwire.assetapi.data.BlobObjectImpl;
 import com.fatwire.assetapi.data.MutableAssetData;

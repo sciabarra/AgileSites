@@ -1,4 +1,4 @@
-package tests.scala
+package tests.scala.todo
 
 import org.specs2.mutable._
 

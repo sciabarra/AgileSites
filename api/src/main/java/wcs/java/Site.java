@@ -2,8 +2,12 @@ package wcs.java;
 
 import java.util.List;
 
+import wcs.java.util.Log;
+import wcs.java.util.Util;
+
 import com.fatwire.assetapi.common.SiteAccessException;
 import com.fatwire.assetapi.data.AssetId;
+import com.fatwire.assetapi.data.AttributeData;
 import com.fatwire.assetapi.data.MutableAssetData;
 import com.fatwire.assetapi.site.SiteInfo;
 import com.fatwire.assetapi.site.SiteManager;
@@ -165,7 +169,9 @@ public class Site {
 	// @SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setData(MutableAssetData data) {
 
-		data.getAttributeData("Publist").setDataAsList(Util.listString(name));
+		AttributeData attrs = data.getAttributeData("Publist");
+		if (attrs != null)
+			attrs.setDataAsList(Util.listString(name));
 		/*
 		 * AttributeData attrs = data.getAttributeData("Publist");
 		 * 
@@ -182,7 +188,7 @@ public class Site {
 	public String getName() {
 		return name;
 	}
-	
+
 	public String toString() {
 		return "Site(" + site.getName() + ":" + site.getId() + ")";
 	}

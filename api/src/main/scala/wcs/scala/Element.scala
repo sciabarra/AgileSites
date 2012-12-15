@@ -14,13 +14,14 @@ abstract class Element extends JElement with Log {
 
   implicit def nodeBuffer2String(buf: NodeBuffer): String =
     (for (node <- buf.iterator) yield node.toString).mkString
-
+    
+ 
   /**
    * Execute the element
    *
    */
   override def exec(ics: ICS): String = {
-
+    
     try {
       val env = new Env(ics);
       val res = apply(env);

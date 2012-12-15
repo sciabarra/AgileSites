@@ -45,7 +45,10 @@ trait Log {
    */
 
   def log[T](msg: String, t: T): T = {
-    info(msg + " " + t.toString)
+    if (t != null)
+      info(msg + " " + t.toString)
+    else
+      info(msg + " (null)")
     t
   }
 

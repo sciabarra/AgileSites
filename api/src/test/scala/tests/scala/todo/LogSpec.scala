@@ -1,4 +1,4 @@
-package tests
+package tests.scala.todo
 
 import org.specs2.mutable._
 //import wcs.Log

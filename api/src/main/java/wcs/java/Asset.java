@@ -3,6 +3,8 @@ package wcs.java;
 import java.sql.Date;
 import java.util.List;
 
+import wcs.java.util.Log;
+
 import com.fatwire.assetapi.data.AttributeData;
 import com.fatwire.assetapi.data.MutableAssetData;
 

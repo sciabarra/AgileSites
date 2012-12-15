@@ -3,7 +3,7 @@ package demo.template;
 import wcs.java.Element;
 import wcs.java.Env;
 import wcs.java.Picker;
-import static wcs.java.Util.*;
+import static wcs.java.util.Util.*;
 
 public class DJLayout extends Element {
 

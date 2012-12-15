@@ -1,8 +1,10 @@
 package wcs.java;
 
-import static wcs.java.Util.attrStructKV;
+import static wcs.java.util.Util.attrStructKV;
 
 import java.util.List;
+
+import wcs.java.util.Util;
 
 import com.fatwire.assetapi.data.MutableAssetData;
 

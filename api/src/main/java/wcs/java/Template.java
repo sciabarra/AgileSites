@@ -1,13 +1,15 @@
 package wcs.java;
 
-import static wcs.java.Util.attrArray;
-import static wcs.java.Util.attrBlob;
-import static wcs.java.Util.attrString;
-import static wcs.java.Util.attrStruct;
-import static wcs.java.Util.attrStructKV;
+import static wcs.java.util.Util.attrArray;
+import static wcs.java.util.Util.attrBlob;
+import static wcs.java.util.Util.attrString;
+import static wcs.java.util.Util.attrStruct;
+import static wcs.java.util.Util.attrStructKV;
 
 import java.util.HashMap;
 import java.util.List;
+
+import wcs.java.util.Util;
 
 import com.fatwire.assetapi.data.AttributeData;
 import com.fatwire.assetapi.data.MutableAssetData;

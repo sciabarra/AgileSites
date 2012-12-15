@@ -3,6 +3,9 @@ package wcs.java;
 import java.util.Iterator;
 import java.util.List;
 
+import wcs.java.util.Log;
+import wcs.java.util.Util;
+
 import COM.FutureTense.Interfaces.ICS;
 
 import com.fatwire.assetapi.common.AssetAccessException;
@@ -189,12 +192,16 @@ abstract public class Setup implements wcs.core.Setup {
 	String update(Asset asset, MutableAssetData data)
 			throws AssetAccessException {
 		log.debug("update " + asset);
+		
+		// dump the asset in xml format
+		if (data.getAssetId().getType().equals("AttrTypes")) {
+			String dump = "\nAsset: " + data.getAssetId() + Util.dump(data);
+			log.debug(dump);
+		}
 
 		getSite().setData(data);
 		asset.setData(data);
 
-		// String dump = "\nAsset: " + data.getAssetId() + Util.dump(data);
-		// log.debug(dump);
 		try {
 			adm.update(Util.listData(data));
 		} catch (Exception e) {

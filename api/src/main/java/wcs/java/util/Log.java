@@ -1,4 +1,4 @@
-package wcs.java;
+package wcs.java.util;
 
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
@@ -15,31 +15,31 @@ public class Log {
 		this.className = className;
 	}
 
-	void dump(String message) {
+	public void dump(String message) {
 		System.out.println("[DUMP ](" + className + ") " + message);
 	}
 
-	void trace(String message) {
+	public void trace(String message) {
 		System.out.println("[TRACE](" + className + ") " + message);
 	}
 
-	void debug(String message) {
+	public void debug(String message) {
 		System.out.println("[DEBUG](" + className + ") " + message);
 	}
 
-	void info(String message) {
+	public void info(String message) {
 		System.out.println("[INFO ](" + className + ") " + message);
 	}
 
-	void warn(String message) {
+	public void warn(String message) {
 		System.out.println("[WARN ](" + className + ") " + message);
 	}
 
-	void error(String message) {
+	public void error(String message) {
 		System.out.println("[ERROR](" + className + ") " + message);
 	}
 
-	String error(Exception e) {
+	public String error(Exception e) {
 		CharArrayWriter caw = new CharArrayWriter();
 		e.printStackTrace(new PrintWriter(caw));
 		error("Exception: " + caw.toString());

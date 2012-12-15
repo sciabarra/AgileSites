@@ -1,10 +1,13 @@
-package wcs.java;
+package wcs.java.util;
 
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
+
+import wcs.java.Element;
+import wcs.java.Env;
 
 public abstract class TestRunnerElement extends Element {
 
@@ -139,9 +142,9 @@ public abstract class TestRunnerElement extends Element {
 			return "Sorry.";
 		}
 
-		String test = e.getVar("test");
+		String test = e.getString("test");
 		if (test == null)
-			return testform(e.getVar("pagename"));
+			return testform(e.getString("pagename"));
 
 		JUnitCore core = new JUnitCore();
 		RunListener listener = new TestListener();
@@ -151,7 +154,7 @@ public abstract class TestRunnerElement extends Element {
 		@SuppressWarnings("rawtypes")
 		Class clazz;
 		try {
-			clazz = Class.forName(e.getVar("test"));
+			clazz = Class.forName(e.getString("test"));
 			core.run(clazz);
 			return listener.toString();
 		} catch (ClassNotFoundException ex) {

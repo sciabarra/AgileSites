@@ -4,6 +4,8 @@ import wcs.java.{ Site => JSite }
 import wcs.java.{ CSElement => JCSElement }
 import wcs.java.{ Template => JTemplate }
 import wcs.java.{ SiteEntry => JSiteEntry }
+import wcs.java.{ AttrTypes => JAttrTypes }
+import scala.xml.NodeSeq
 
 /**
  * Setup wrapper in Scala
@@ -23,6 +25,8 @@ abstract class Setup extends JSetup {
 
   case class SiteEntry(name: String, wrapper: Boolean = true, element: String = null, description: String = null) extends Asset
 
+  case class AttrTypes(name: String, xml: NodeSeq) extends Asset
+  
   // abstract functions to be overriden
 
   def site: Site
@@ -42,6 +46,8 @@ abstract class Setup extends JSetup {
           new JTemplate(x.subtype, x.name, x.elementClass).cache(x.cscache, x.sscache).description(x.description)
         case x: SiteEntry =>
           new JSiteEntry(x.name, x.wrapper, x.element)
+        case x: AttrTypes =>
+          new JAttrTypes(x.name, x.xml.toString)
       }
     }: _*)
 

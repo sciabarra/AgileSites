@@ -1,4 +1,4 @@
-package wcs.java;
+package wcs.java.util;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -55,8 +55,8 @@ public class Util {
 			this.value = value;
 		}
 
-		String name;
-		String value;
+		public String name;
+		public String value;
 	}
 
 	/**
@@ -272,4 +272,10 @@ public class Util {
 				new BlobObjectImpl(filename, folder, value.getBytes()));
 
 	}
+
+	public static String tmpVar() {
+		return "_TMP_" + System.currentTimeMillis() + "_VAR_";
+	}
+	
+
 }

@@ -3,7 +3,7 @@ package test.template;
 import test.tests.AllTests;
 import test.tests.ElementTest;
 import test.tests.RunTagTest;
-import wcs.java.TestRunnerElement;
+import wcs.java.util.TestRunnerElement;
 
 public class JUnitRunner extends TestRunnerElement {
 
