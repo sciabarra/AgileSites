@@ -32,6 +32,7 @@ class XmlICS extends ICS {
   var base: File = new File(".")
   var varMap = Map[String, String]()
   var listMap = Map[String, IList]()
+  var errno = 0;
 
   def init(baseDir: String) {
     base = new File(baseDir)
@@ -56,9 +57,11 @@ class XmlICS extends ICS {
 
   def CopyList(arg0: String, arg1: String): Boolean = { false }
 
-  def SetVar(arg0: String, arg1: String): Unit = {}
+  def SetVar(arg0: String, arg1: String): Unit = {
+    varMap += arg0 -> arg1
+  }
 
-  def SetVar(arg0: String, arg1: Int): Unit = {}
+  def SetVar(arg0: String, arg1: Int): Unit = { }
 
   def SetVar(arg0: String, arg1: FTVAL): Unit = {}
 
@@ -124,15 +127,19 @@ class XmlICS extends ICS {
 
   def FlushCatalog(arg0: String): Boolean = { false }
 
-  def GetErrno(): Int = { 0 }
+  def GetErrno(): Int = { errno }
 
   def getComplexError(): ftErrors = { null }
 
   def setComplexError(arg0: ftErrors): Unit = {}
 
-  def SetErrno(arg0: Int): Unit = {}
+  def SetErrno(arg0: Int): Unit = {
+    errno = arg0
+  }
 
-  def ClearErrno(): Unit = {}
+  def ClearErrno(): Unit = {
+    errno = 0
+  }
 
   def ResolveVariables(arg0: String): String = { null }
 

@@ -1,10 +1,10 @@
 package wcs.scala
 
 import scala.collection.immutable
-
 import COM.FutureTense.Interfaces.ICS
 import COM.FutureTense.Interfaces.IList
 import wcs.java.{ Env => JEnv }
+import java.util.Date
 
 /**
  * Scala API on top of ICS
@@ -20,22 +20,29 @@ class Env(_ics: ICS) extends JEnv(_ics) {
   /**
    * the value or an empty string if note string if none
    */
-  def apply(list: String, field: String) = get(list, field).getOrElse("")
+  def apply(list: Symbol, field: String) = get(list, field).getOrElse("")
 
+  
+  /**
+   * apply to a list with default value
+   */
+  def apply(list: Symbol): String = apply(list, "value")
+  
   /**
    * the value or an empty string if none
    */
-  def apply(list: String, field: String, pos: Int) = get(list, field, pos).getOrElse("")
+  def apply(list: Symbol, pos: Int, field: String) = get(list, pos, field).getOrElse("")
 
   /**
    * Check if a variable exists
    */
-  def exist(variable: String) = getString(variable) == null
+  def exist(variable: String) = isVariable(variable)
 
   /**
-   * Check if list field exists
+   * Check if a variable exists
    */
-  def exist(list: String, field: String) = getString(list, field) == null
+  def exist(list: Symbol) = isList(list.name)
+
 
   /**
    * Return the optional value of the variable
@@ -51,8 +58,8 @@ class Env(_ics: ICS) extends JEnv(_ics) {
   /**
    * Return the optional value of the variable
    */
-  def get(list: String, field: String): Option[String] = {
-    val v = getString(list, field)
+  def get(list: Symbol, field: String): Option[String] = {
+    val v = getString(list.name, field)
     if (v == null)
       None
     else
@@ -62,8 +69,19 @@ class Env(_ics: ICS) extends JEnv(_ics) {
   /**
    * Return the optional value of the variable
    */
-  def get(list: String, field: String, pos: Int): Option[String] = {
-    val v = getString(list, field, pos)
+  def get(list: Symbol, pos: Int, field: String): Option[String] = {
+    val v = getString(list.name, pos, field)
+    if (v == null)
+      None
+    else
+      Some(v)
+  }
+  
+  /**
+   * Return the optional value of the variable
+   */
+  def asDate(variable: String): Option[Date] = {
+    val v = getDate(variable)
     if (v == null)
       None
     else
@@ -71,10 +89,68 @@ class Env(_ics: ICS) extends JEnv(_ics) {
   }
 
   /**
+   * Return the optional value of the variable
+   */
+  def asDate(list: Symbol, field: String): Option[Date] = {
+    val v = getDate(list.name, field)
+    if (v == null)
+      None
+    else
+      Some(v)
+  }
+
+  /**
+   * Return the optional value of the variable
+   */
+  def asDate(list: Symbol, pos: Int, field: String): Option[Date] = {
+    val v = getDate(list.name, pos, field)
+    if (v == null)
+      None
+    else
+      Some(v)
+  }
+
+  /**
+   * Return the optional value of the variable
+   */
+  def asLong(variable: String): Option[Long] = {
+    val v = getLong(variable)
+    if (v == null)
+      None
+    else
+      Some(v)
+  }
+
+  /**
+   * Return the optional value of the variable
+   */
+  def asLong(list: Symbol, field: String): Option[Long] = {
+    val v = getLong(list.name, field)
+    if (v == null)
+      None
+    else
+      Some(v)
+  }
+
+  /**
+   * Return the optional value of the variable
+   */
+  def asLong(list: Symbol, pos: Int, field: String): Option[Long] = {
+    val v = getLong(list.name, pos, field)
+    if (v == null)
+      None
+    else
+      Some(v)
+  }
+
+  
+  
+  
+  /**
    * Return Some(object)
    */
-  def get(s: Symbol) = {
-    val o = ics.GetObj(s.toString)
+  def getObject(s: String) = {
+    val o = ics.GetObj(s)
     if (o == null)
       None
     else
@@ -87,16 +163,16 @@ class Env(_ics: ICS) extends JEnv(_ics) {
   def update(s: String, v: String) {
     ics.SetVar(s, v)
   }
-  
+
   /**
    * Range of a list
    */
-  def range(list: String) = {
-    val l = ics.GetList(list)
-    if(l==null)
+  def range(list: Symbol) = {
+    val l = ics.GetList(list.name)
+    if (l == null)
       0 to -1
-     else
-       1 to l.numRows()
+    else
+      1 to l.numRows()
   }
 
   /**

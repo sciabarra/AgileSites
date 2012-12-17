@@ -60,7 +60,7 @@ public class Env extends ICSProxyJ {
 	 * @param var
 	 * @return
 	 */
-	public String getString(String list, String field, int row) {
+	public String getString(String list, int row, String field) {
 		IList ls = ics.GetList(list);
 		if (ls == null)
 			return null;
@@ -166,7 +166,7 @@ public class Env extends ICSProxyJ {
 	 * @param field
 	 * @return
 	 */
-	public long getLong(String ls, String field) {
+	public Long getLong(String ls, String field) {
 		return toLong(getString(ls, field));
 	}
 
@@ -178,8 +178,8 @@ public class Env extends ICSProxyJ {
 	 * @param pos
 	 * @return
 	 */
-	public java.util.Date getDate(String ls, String field, int pos) {
-		return toDate(getString(ls, field, pos));
+	public java.util.Date getDate(String ls, int pos, String field) {
+		return toDate(getString(ls, pos, field));
 	}
 
 	/**
@@ -190,8 +190,8 @@ public class Env extends ICSProxyJ {
 	 * @param pos
 	 * @return
 	 */
-	public long getLong(String ls, String field, int pos) {
-		return toLong(getString(ls, field, pos));
+	public Long getLong(String ls, int pos, String field) {
+		return toLong(getString(ls, pos, field));
 	}
 
 	/**
@@ -218,5 +218,19 @@ public class Env extends ICSProxyJ {
 	 */
 	public boolean isError() {
 		return getError() != 0;
+	}
+	
+	/**
+	 * Check if is a variable
+	 */
+	public boolean isVariable(String variable) {
+		return ics.GetVar(variable) != null;
+	}
+	
+	/**
+	 * Check if it is a list
+	 */
+	public boolean isList(String list) {
+		return ics.GetList(list) != null;
 	}
 }

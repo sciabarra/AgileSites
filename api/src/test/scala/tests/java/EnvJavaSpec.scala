@@ -17,7 +17,7 @@ class EnvJavaSpec extends Specification with Log {
   "Env should" in {
 
     "check var a is xxx" in {
-      log(env.getString("a")) must_== "xxx"
+      nlog(env.getString("a")) must_== "xxx"
     }
 
     "check var d is a date" in {
@@ -34,7 +34,7 @@ class EnvJavaSpec extends Specification with Log {
     }
 
     "check var z is null" in {
-      log(env.getString("z")) must_== null
+      nlog(env.getString("z")) must_== null
     }
 
     "check d is not a long" in {
@@ -47,33 +47,33 @@ class EnvJavaSpec extends Specification with Log {
       env.getDate("n") must_== null
     }
 
-    "check list first field" in {
+    "check list default field" in {
       env.getString("l", "f") must_== "xxx"
     }
 
     "check list first field" in {
       env.getString("l", "f") must_== "xxx"
-      env.getString("l", "f", 1) must_== "xxx"
+      env.getString("l", 1, "f") must_== "xxx"
     }
 
-    "check list first field" in {
-      env.getString("l", "f", 2) must_== "2012-01-02 12:23:34"
-      fmt.format(env.getDate("l", "f", 2)) must_== "2012-01-02 12:23:34"
+    "check list second field" in {
+      env.getString("l", 2, "f") must_== "2012-01-02 12:23:34"
+      fmt.format(env.getDate("l", 2, "f")) must_== "2012-01-02 12:23:34"
     }
 
-    "check list first field" in {
-      env.getString("l", "f", 3) must_== "1234"
-      env.getLong("l", "f", 3) must_== 1234
+    "check list third field" in {
+      env.getString("l", 3, "f") must_== "1234"
+      env.getLong("l", 3, "f") must_== 1234
     }
 
     "check loop" in {
       val l = for (i <- 1 to env.getSize("l")) yield {
-        env.getString("l", "f", i)
+        env.getString("l", i, "f")
       }
       l(0) must_== "xxx"
       l(1) must_== "2012-01-02 12:23:34"
       l(2) must_== "1234"
-        
+
     }
   }
 
