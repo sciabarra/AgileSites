@@ -42,6 +42,12 @@ class Env(_ics: ICS) extends JEnv(_ics) {
    * Check if a variable exists
    */
   def exist(list: Symbol) = isList(list.name)
+  
+  
+  /**
+   * Check if a variable exists
+   */
+  def exist(list: Symbol, field: String) = isField(list.name, field)
 
 
   /**
@@ -141,20 +147,6 @@ class Env(_ics: ICS) extends JEnv(_ics) {
       None
     else
       Some(v)
-  }
-
-  
-  
-  
-  /**
-   * Return Some(object)
-   */
-  def getObject(s: String) = {
-    val o = ics.GetObj(s)
-    if (o == null)
-      None
-    else
-      Some(o)
   }
 
   /**

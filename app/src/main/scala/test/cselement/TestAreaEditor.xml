@@ -226,7 +226,9 @@ in MyAttrVal
                                 </IF>
                             </then>
 
-                            <else> <!-- Multiple valued attributes --> <!-- For single value attributes we can usually use the default RequireInfo --> <!-- For multiple value attributes we need to append to RequireInfo for each value -->
+                            <else> <!-- Multiple valued attributes -->
+                                <!-- For single value attributes we can usually use the default RequireInfo -->
+                                <!-- For multiple value attributes we need to append to RequireInfo for each value -->
 
                                 <if COND="Variables.RequiredAttr=true" >
 
@@ -241,11 +243,11 @@ in MyAttrVal
 
                                         <setvar
                                             NAME="RequireInfo"
-                                            VALUE="Variables.RequireInfo*Counters.TCounterVariables  .AttrName*ReqFalse*Variables.AttrType!" />
+                                            VALUE="Variables.RequireInfo*Counters.TCounterVariables.AttrName*ReqFalse*Variables.AttrType!" />
                                     </else>
                                 </if> <!-- Display a TEXTAREA with all parameters from Attribute Editor xml --> <!-- The NAME of the input must be the attribute name prepended by the TCounter counter -->
 
-                                <IF COND="Variables.disableTextArea=yes">
+                                <IF COND="Variables.disableTextArea=yes" >
 
                                     <THEN>
 
@@ -268,7 +270,8 @@ in MyAttrVal
                                             NAME="Counters.TCounterVariables.AttrName"
                                             REPLACEALL="Counters.TCounter,Variables.AttrName,Variables.XSIZE,Variables.YSIZE,Variables.WRAPSTYLE"
                                             ROWS="Variables.YSIZE"
-                                            WRAP="Variables.WRAPSTYLE">
+                                            WRAP="Variables.WRAPSTYLE" >
+
                                             <csvar NAME="Variables.tempval" />
                                         </TEXTAREA>
                                     </ELSE>

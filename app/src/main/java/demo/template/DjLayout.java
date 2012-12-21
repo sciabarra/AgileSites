@@ -15,7 +15,7 @@ public class DJLayout extends Element {
 				.attr("link", "href", "/cs/css/default.css")//
 				.unselect() //
 				.replace("#sidebar", call("DJFooter", //
-						arg("name", env.getVar("name"))));
+						arg("name", env.getString("name"))));
 		return p.html();
 	}
 }

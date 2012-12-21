@@ -71,8 +71,7 @@ public class Env extends ICSProxyJ {
 			return null;
 		}
 	}
-	
-	
+
 	/**
 	 * Return size of a list
 	 * 
@@ -219,18 +218,45 @@ public class Env extends ICSProxyJ {
 	public boolean isError() {
 		return getError() != 0;
 	}
-	
+
 	/**
 	 * Check if is a variable
 	 */
 	public boolean isVariable(String variable) {
 		return ics.GetVar(variable) != null;
 	}
-	
+
 	/**
 	 * Check if it is a list
 	 */
 	public boolean isList(String list) {
 		return ics.GetList(list) != null;
+	}
+
+	/**
+	 * Check if it is a list
+	 */
+	public boolean isField(String list, String field) {
+		return getString(list, field) != null;
+	}
+
+	/**
+	 * Get an object
+	 */
+	public Object getObject(String object) {
+		return ics.GetObj(object);
+	}
+
+	public int getCounter(String counter) throws Exception {
+		if (counter != null) {
+			System.out.println("counter=" + counter);
+			try {
+				return ics.GetCounter(counter);
+			} catch (NullPointerException ex) {
+				return -1;
+				//throw new Exception("not found counter " + counter);
+			}
+		} else
+			throw new Exception("counter name is null");
 	}
 }

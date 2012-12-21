@@ -21,7 +21,7 @@ public class ElementTest {
 	public void testOk() {
 		System.out.println(Thread.currentThread());
 		try {
-			assertTrue(env.getVar("p").equals("1"));
+			assertTrue(env.getString("p").equals("1"));
 		} catch (Exception e) {
 			fail("no p");
 		}

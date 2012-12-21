@@ -92,21 +92,31 @@ public abstract class Element implements wcs.core.Element {
 	}
 
 	/**
-	 * Call an element element
+	 * Call a generic element
 	 * 
 	 * @param name
 	 * @param args
 	 */
-	public String call(String name, Arg... args) {
+	public String callElement(String name, Arg... args) {
 		StringBuilder sb = new StringBuilder();
 		// elements to call have the site name as a prefix
-		sb.append(sep2).append(site).append(".").append(name).append(sep);
+		sb.append(sep2).append(name).append(sep);
 		for (Arg arg : args) {
 			if (arg.value != null)
 				sb.append(arg.name).append(sep).append(arg.value).append(sep);
 		}
 		sb.append(sep2);
 		return sb.toString();
+	}
+
+	/**
+	 * Call a cs element in the same site
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public String call(String name, Arg... args) {
+		return callElement(site + "/" + name, args);
 	}
 
 	/**

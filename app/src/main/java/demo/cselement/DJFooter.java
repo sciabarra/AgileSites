@@ -7,7 +7,7 @@ public class DJFooter extends Element {
 
 	@Override
 	public String apply(Env env) {
-		String name = env.getVar("name");
+		String name = env.getString("name");
 		return "Hello, " + (name == null ? "World" : name);
 	}
 
