@@ -10,6 +10,7 @@ class ScalaSetup extends wcs.scala.Setup {
     Template("DSLayout", classOf[demo.template.DSLayout], description = "Demo Layout (Scala)") ::
       Template("DSHeader", classOf[demo.template.DSHeader], description = "Demo Header (Scala)") ::
       CSElement("DSFooter", classOf[demo.cselement.DSFooter], description = "Demo Footer (Scala)") ::
+      CSElement("DSWrapper", classOf[demo.cselement.DSWrapper], description = "Demo Wrapper (Scala)") ::
       Nil
 
 }

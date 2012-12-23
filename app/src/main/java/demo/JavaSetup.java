@@ -21,7 +21,8 @@ public class JavaSetup extends wcs.java.Setup {
 				new Template("DJHeader", demo.template.DJHeader.class)//
 						.cache("false", "false")//
 						.description("Demo Header Java"),
-				new CSElement("DJFooter", demo.cselement.DJFooter.class) //
+				new CSElement("DJFooter", demo.cselement.DJFooter.class), //
+				new CSElement("DJWrapper", demo.cselement.DJWrapper.class) //
 		};
 	}
 }
