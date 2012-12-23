@@ -32,24 +32,10 @@ $Modtime: 7/29/04 2:46p $
     * changed locale string used for isclean error alert
     * added & to list of characters checked (jeez, how'd I miss that?)
 -->
-<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
 <CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/ValidateInputForXSS" />
 <SCRIPT LANGUAGE="JavaScript">
 
 <![CDATA[
-
-var obj = document.forms[0];
-
-function getAssetName()
-{
-	return obj.elements['CSElement:name'].value;
-}
-
-function submitForm()
-{
-	return checkfields();
-}
-
 function isblank(s) {
 	for(var i=0;i<s.length;i++){
 		var c = s.charAt(i);
@@ -99,7 +85,14 @@ function checkfields() {
          alert(xlatstr.replace(replacestr,obj.elements['CSElement:rootelement'].value));
 		return false;
 	}
-	if(!checkforfilename()) return false;
+	var urlspec = obj.elements['CSElement:urlspec'];
+	var urlfield = obj.elements['CSElement:url'];
+	if ( isblank(urlspec.value) && !isblank(urlfield.value) ){
+      ]]>
+      alert("<XLAT.STREAM KEY="dvin/AT/Common/SpecifyFilenameForElementLogic" ESCAPE="true" ENCODE="false"/>");
+      <![CDATA[
+			return false;
+	}
 	var TotalElement=obj.elements['CSElement:Mapping:Total'];
 	var i, j;
 	if ( TotalElement != null )
@@ -135,11 +128,9 @@ function checkfields() {
 function SetCancelFlag () {
 	var obj = document.forms[0];
 
-	if(confirm("]]><XLAT.STREAM KEY="dvin/Common/CancelClicked" ESCAPE="true" ENCODE="false"/><![CDATA[")){
-		obj.elements['upcommand'].value="cancel";
-		obj.submit();
-		return false;
-	}
+	obj.elements['upcommand'].value="cancel";
+	obj.submit();
+	return false;
 }
 
 function Fixpagename(ourPage,nextstep)
@@ -229,42 +220,7 @@ function FixpagenameWithCheck(ourPage,nextstep)
 
 	obj.submit();
 	return false;
-}
-
-function checkforfilename()
-{
-	var obj = document.forms[0].elements[0];
-	var url =obj.form.elements['CSElement:url'].value;
-	var urlspec = document.forms[0].elements['CSElement:urlspec'].value;	
-	if(isblank(urlspec)){
-		]]>
-		alert("<XLAT.STREAM KEY="dvin/AT/Common/SpecifyFilenameForElementLogic" ESCAPE="true" ENCODE="false"/>");
-		<![CDATA[
-		return false;
-	}
-	else{
-		if ( urlspec.search(/['"?;:]/) != -1) {
-			var replacestr=/\bVariables.filename\b/ ;
-		  var xlatstr= ']]><XLAT.STREAM KEY="dvin/AT/Template/FilenameContainsIllegalCharacters" ENCODE="false" ESCAPE="true"/><![CDATA[' ;
-		  alert(xlatstr.replace(replacestr,urlspec));
-			return false;
-		}
-		else if ( urlspec.indexOf(".") == -1 ) {
-			var replacestr=/\bVariables.filename\b/ ;
-		  var xlatstr= ']]><XLAT.STREAM KEY="dvin/AT/Template/FilenameHasNoExtension" ENCODE="false" ESCAPE="true"/><![CDATA[' ;
-		  alert(xlatstr.replace(replacestr,urlspec));
-			return false;
-		}
-	}
-	if(isblank(url)){
-		]]>
-		alert( "<XLAT.STREAM KEY="dvin/AT/Template/specifyelementlogic" ESCAPE="true" ENCODE="false"/>" );
-		<![CDATA[
-		return false;
-	}
-	return true;
-}
-]]>
+}]]>
 </SCRIPT>
 
 <INPUT TYPE="HIDDEN" NAME="NextStep" VALUE=""/>
@@ -288,16 +244,9 @@ function checkforfilename()
 			<SETVAR NAME="NextStep" VALUE="ContentFormName"/>
 		</THEN>
 	</IF>
-	
-	<!-- form buttons -->
-	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
-		<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
-	</CALLELEMENT>	
-	<div dojoType="dijit.layout.ContentPane" region="center">
-		<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/CSElement/Variables.NextStep"/>
-	</div>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/CSElement/Variables.NextStep"/>
 </then>
 </if>
-</div>
+
 </FTCS>
 

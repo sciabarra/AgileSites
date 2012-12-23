@@ -2,9 +2,9 @@
 <!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
 <FTCS Version="1.1">
 <!-- 
-$Logfile: /VerticalApps/XcelerateB/install/Gator/Populate/ElementCatalog/OpenMarket/Gator/FlexibleAssets/AssetMaker/FlexAssets/IndexReplace.xml $ 
-$Revision: 1 $ 
-$Modtime: 3/22/02 10:06a $ 
+$Logfile: /VerticalApps/XcelerateA/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Page/IndexReplace.xml $ 
+$Revision: 8 $ 
+$Modtime: 12/12/01 4:24p $ 
 -->
 
 <!--
@@ -36,6 +36,34 @@ $Modtime: 3/22/02 10:06a $
 -->
 
 
-<callelement NAME="OpenMarket/Gator/FlexibleAssets/FlexAssets/IndexReplace"/>
-</FTCS>
+<SETDATE DATE="asset.createddate"/>
+<SETVAR NAME="createddate" VALUE="CS.SQLDate"/>
 
+<SETDATE DATE="asset.updateddate"/>
+<SETVAR NAME="updateddate" VALUE="CS.SQLDate"/>
+
+<!--
+- CUSTOMIZE NOTE: The following INDEXREPLACE can be modified to add EXTN fields
+-->
+
+<SETVAR NAME="errno" VALUE="0"/>
+<INDEXREPLACE
+    ENTRY="asset.id"
+    INDEX="Variables.seindex"
+    DETAIL="Variables.detailArg">
+  <TEXTARGUMENT NAME="id" VALUE="asset.id"/>
+  <TEXTARGUMENT NAME="name" VALUE="asset.name"/>
+  <TEXTARGUMENT NAME="status" VALUE="asset.status"/>
+  <TEXTARGUMENT NAME="createdby" VALUE="asset.createdby"/>
+  <TEXTARGUMENT NAME="updatedby" VALUE="asset.updatedby"/>
+
+  <DATEARGUMENT NAME="createddate" VALUE="Variables.createddate"/>
+  <DATEARGUMENT NAME="updateddate" VALUE="Variables.updateddate"/>
+
+  <TEXTARGUMENT NAME="subtype" VALUE="asset.subtype"/>
+  <TEXTARGUMENT NAME="template" VALUE="asset.template"/>
+  <TEXTARGUMENT NAME="description" VALUE="asset.description"/>
+
+</INDEXREPLACE>
+
+</FTCS>

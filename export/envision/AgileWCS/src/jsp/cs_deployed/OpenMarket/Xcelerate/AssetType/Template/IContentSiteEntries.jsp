@@ -18,7 +18,6 @@
 <%@ page import="com.openmarket.xcelerate.commands.PubTargetManagerDispatcher"%> 
 <%@ page import="COM.FutureTense.Interfaces.FTValList"%>
 <cs:ftcs>
-<ics:callelement element="OpenMarket/Xcelerate/UIFramework/BasicEnvironment"/>
 <html>
 <head>
 <satellite:link assembler="query" pagename="OpenMarket/Xcelerate/AssetType/Template/ContentSiteEntries" outstring="ContentSiteEntriesURL">

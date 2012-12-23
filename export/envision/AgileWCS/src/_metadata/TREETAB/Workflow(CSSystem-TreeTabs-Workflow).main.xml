@@ -1,10 +1,7 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
-    <id class="string">1336168676920</id>
-    <resourceType>TREETAB</resourceType>
-    <deps class="empty-set"/>
     <data class="com.openmarket.xcelerate.treetab.TreeTab">
-      <id>1336168676920</id>
+      <id>1328079447429</id>
       <uid>CSSystem:TreeTabs:Workflow</uid>
       <globalItems class="com.openmarket.xcelerate.treetab.TreeItems">
         <hashtable>
@@ -97,28 +94,20 @@
       <sites class="com.openmarket.xcelerate.common.SiteList">
         <hashtable>
           <entry>
-            <long>1336168713777</long>
-            <long>1336168713777</long>
-          </entry>
-          <entry>
-            <long>1322052581735</long>
-            <long>1322052581735</long>
+            <long>1328079450298</long>
+            <long>1328079450298</long>
           </entry>
           <entry>
             <long>1253041378564</long>
             <long>1253041378564</long>
           </entry>
           <entry>
-            <long>1336168710184</long>
-            <long>1336168710184</long>
-          </entry>
-          <entry>
-            <long>1336168719698</long>
-            <long>1336168719698</long>
-          </entry>
-          <entry>
             <long>1112198287026</long>
             <long>1112198287026</long>
+          </entry>
+          <entry>
+            <long>1328079450463</long>
+            <long>1328079450463</long>
           </entry>
           <entry>
             <long>0</long>
@@ -142,28 +131,20 @@
             <sites class="com.openmarket.xcelerate.common.SiteList">
               <hashtable>
                 <entry>
-                  <long>1336168713777</long>
-                  <long>1336168713777</long>
-                </entry>
-                <entry>
-                  <long>1322052581735</long>
-                  <long>1322052581735</long>
+                  <long>1328079450298</long>
+                  <long>1328079450298</long>
                 </entry>
                 <entry>
                   <long>1253041378564</long>
                   <long>1253041378564</long>
                 </entry>
                 <entry>
-                  <long>1336168710184</long>
-                  <long>1336168710184</long>
-                </entry>
-                <entry>
-                  <long>1336168719698</long>
-                  <long>1336168719698</long>
-                </entry>
-                <entry>
                   <long>1112198287026</long>
                   <long>1112198287026</long>
+                </entry>
+                <entry>
+                  <long>1328079450463</long>
+                  <long>1328079450463</long>
                 </entry>
                 <entry>
                   <long>0</long>
@@ -231,6 +212,9 @@
         </sectionVector>
       </sections>
     </data>
+    <id class="string">Workflow</id>
+    <resourceType>TREETAB</resourceType>
+    <deps class="java.util.Collections$EmptySet"/>
   </com.fatwire.realtime.ResourceDataImpl>
 </object-stream>
 <!--==================___ METADATA ___================
@@ -246,7 +230,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Thu Dec 06 13:17:35 CET 2012
+#Sun Dec 23 13:03:26 CET 2012
 key=@TREETAB-CSSystem-TreeTabs-Workflow
 type=TREETAB
 

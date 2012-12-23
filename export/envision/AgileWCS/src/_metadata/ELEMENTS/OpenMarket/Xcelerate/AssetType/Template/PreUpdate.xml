@@ -40,53 +40,11 @@ $Modtime: 7/23/03 4:14p $
 <if COND="Variables.updatetype=edit">
     <then>
 	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/AssetGather"/>
-	
-	<!-- Empty template not allowed -->
-	<if cond="IsVariable.Template:element:0:url=false" >
-	<then>
-		<XLAT.LOOKUP KEY="dvin/UI/Error/emptyElementStorage" VARNAME="errorMessage" />
-		<setvar name="errno" value="-12037" />
-		<setvar name="errdetail1" value="Variables.errorMessage"/>
-	</then>
-	</if>
-	<if cond="IsVariable.Template:element:0:urlspec=false" >
-	<then>
-		<XLAT.LOOKUP KEY="dvin/UI/Error/emptyElementLogic" VARNAME="errorMessage" />
-		<setvar name="errno" value="-12037" />
-		<setvar name="errdetail1" value="Variables.errorMessage"/>
-	</then>
-	</if>
 </then>
 </if>
 
 <if COND="Variables.updatetype=create">
 <then>
-	<SETVAR NAME="rootElement" VALUE="Variables.Template:rootelement"/>
-	<ASSET.LIST LIST="TemplateEntries" TYPE="Template" FIELD1="rootelement" VALUE1="Variables.Template:rootelement" EXCLUDEVOIDED="true"/>
-    <IF COND="IsError.Variables.errno=false">
-    <THEN>
-   		<setvar NAME="assetName" VALUE="TemplateEntries.name"/>
-    	<SETVAR NAME="assetType" VALUE="Template"/>
-        <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
-			<argument NAME="severity" VALUE="error"/>
-			<argument NAME="elem" VALUE="ElementInUse"/>
-	    </callelement>
-	   <throwexception/>	
-    </THEN>
-    </IF>
-	
-	<ASSET.LIST LIST="CSEntries" TYPE="CSElement" FIELD1="rootelement" VALUE1="Variables.Template:rootelement" EXCLUDEVOIDED="true"/>
-    <IF COND="IsError.Variables.errno=false">
-    <THEN>
-   		<setvar NAME="assetName" VALUE="CSEntries.name"/>
-    	<SETVAR NAME="assetType" VALUE="CSElement"/>
-	    <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
-			<argument NAME="severity" VALUE="error"/>
-			<argument NAME="elem" VALUE="ElementInUse"/>
-	    </callelement>
-	   <throwexception/>	
-    </THEN>
-    </IF>
 
  	 <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/AssetGather"/>
     <ics.literal table="Template" column="name" string="Variables.Template:name"
@@ -106,22 +64,6 @@ $Modtime: 7/23/03 4:14p $
 
     </THEN>
     </IF>
-	
-	<!-- Empty template not allowed -->
-	<if cond="IsVariable.Template:element:0:url=false" >
-	<then>
-		<XLAT.LOOKUP KEY="dvin/UI/Error/emptyElementStorage" VARNAME="errorMessage" />
-		<setvar name="errno" value="-12037" />
-		<setvar name="errdetail1" value="Variables.errorMessage"/>
-	</then>
-	</if>
-	<if cond="IsVariable.Template:element:0:urlspec=false" >
-	<then>
-		<XLAT.LOOKUP KEY="dvin/UI/Error/emptyElementLogic" VARNAME="errorMessage" />
-		<setvar name="errno" value="-12037" />
-		<setvar name="errdetail1" value="Variables.errorMessage"/>
-	</then>
-	</if>
 </then>
 </if>
 

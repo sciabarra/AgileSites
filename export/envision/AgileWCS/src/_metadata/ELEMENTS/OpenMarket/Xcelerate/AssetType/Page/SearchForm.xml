@@ -2,106 +2,306 @@
 <!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
 <FTCS Version="1.1">
 <!-- 
-$Logfile: /VerticalApps/XcelerateB/install/Gator/Populate/ElementCatalog/OpenMarket/Gator/FlexibleAssets/FlexAssets/SearchForm.xml $ 
-$Revision: 27 $ 
-$Modtime: 6/18/02 11:14a $ 
+$Logfile: /VerticalApps/XcelerateD/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Page/SearchForm.xml $ 
+$Revision: 30 $ 
+$Modtime: 5/10/04 1:16p $ 
 -->
 
 <!--
-- Confidential and Proprietary Information of FutureTense Inc.
+- Confidential and Proprietary Information of Open Market, Inc.
 -					All Rights Reserved.
 -
-- SearchForm.xml
--
 - DESCRIPTION
--	Custom Searchform for both Search and Advanced Search 
--
--
-- By:       JAG
-- Reason:   1 - PR#25714 Fixed advanced search on Extensible page assets Used Extensible Page and Page Definition
-            Managers to Collect the List of Page Definitions and Extended attributes
-            to set constraints and field filters.
-            
-            2- PR#25717 Fixed Error in log on searching extensible page asset
-               Utilizing correct Extensible Page and Page Definition Managers 
-               
-            3- PR#25715 Error in log related to - object lookup for myFieldMgr failed!
-               Utilizing correct Extensible Page and Page Definition Managers
+-	Search form
 -->
 
 
-<SCRIPT LANGUAGE="JavaScript">
-function Fixpagename(ourPage, nextstep)
-{
-	var obj = document.forms[0].elements[0];
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Page/ManageSchVars"/>
+<table border="0" cellspacing="0" cellpadding="0">
+
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Namecontains"/>:</td>
+		<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+		<td><![CDATA[<INPUT TYPE="text" NAME="Name" SIZE="24" VALUE="]]><STRING.STREAM VALUE="Variables.Name"/><![CDATA[" MAXLENGTH="128" />]]></td>
+	</tr>
+  	
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/Descriptioncontains"/>:</td>
+        <td></td>
+		<td><![CDATA[<INPUT TYPE="text" NAME="Description" VALUE="]]><STRING.STREAM VALUE="Variables.Description"/><![CDATA[" SIZE="24" MAXLENGTH="32"/>]]>
+		</td>
+	</tr>
+
+	<XLAT.LOOKUP KEY="dvin/Common/Templateis" VARNAME="label"/>
+	<callelement NAME="OpenMarket/Xcelerate/Actions/Util/ShowTemplatesIfAny">
+		<argument NAME="label"  VALUE="Variables.label:"/>
+		<argument NAME="showDummy" VALUE="true"/>
+	</callelement>			
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Statusis"/>:</td>
+		<td></td>
+		<td><callelement NAME="OpenMarket/Xcelerate/Actions/Util/ChooseStatus">
+			<argument NAME="showDummy" VALUE="true"/>
+			</callelement></td>
+	</tr>
+
+  <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+   <ASSET.GETLEGALSUBTYPES TYPE="Variables.AssetType" LIST="subtypes" PUBID="SessionVariables.pubid"/>
+      
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Subtypeis"/>:</td>
+		<td></td>
+		<td>
+			<SELECT Name="Subtype">
+			  <OPTION VALUE=""/>-- <XLAT.STREAM KEY="dvin/Common/anysubtype"/> --
+      	<if COND="Variables.Subtype!=Variables.empty">
+        	<then>
+         	<loop LIST="subtypes">
+         		<if COND="subtypes.subtype!=Variables.empty">
+         		<then>
+	            	<if COND="Variables.Subtype=subtypes.subtype">
+	               <then>
+							<OPTION VALUE="subtypes.subtype" SELECTED="" REPLACEALL="subtypes.subtype"/><STRING.STREAM VALUE="subtypes.subtype"/>
+	               </then>
+	               <else>
+	  					 	<OPTION VALUE="subtypes.subtype" REPLACEALL="subtypes.subtype"/><STRING.STREAM VALUE="subtypes.subtype"/>
+	               </else>
+	               </if>
+	             </then>
+	             </if>
+			  </loop>
+	 		</then>
+         <else>
+				<loop LIST="subtypes">
+					<if COND="subtypes.subtype!=Variables.empty">
+					<then>
+	            	<IF COND="subtypes.subtype!=Variables.Subtype">
+	               <THEN>
+							<OPTION VALUE="subtypes.subtype" REPLACEALL="subtypes.subtype"/><STRING.STREAM VALUE="subtypes.subtype"/>
 	
-	var basePage = "OpenMarket/Xcelerate/Actions/";
-	
- 
-	var	newpage = basePage + ourPage;
-    obj.form.pagename.value = newpage;
-  	obj.form.SearchNextStep.value = nextstep;
+	               </THEN>
+	               </IF>
+					</then>
+					</if>
+				</loop>
+         </else>
+         </if>
+		</SELECT></td>
+		</tr>	
 
-    document.forms[0].submit();
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Util/ChooseCategory"/>
 
-	return false;
-}
-  
-</SCRIPT>
+	<IF COND="Variables.AssetTypeObj:usesearchindex=1">
+	<THEN>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>
+		<tr>
+			<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/DirectCSPropertycssearchengineexpression"/>:</td>
+			<td></td>
+			<td><TEXTAREA NAME="DirectQuery" ROWS="2" COLS="24" WRAP="virtual" VALUE="Variables.DirectQuery"  REPLACEALL="Variables.DirectQuery"></TEXTAREA></td>
+		</tr>
+	</THEN>
+	</IF>
 
-<INPUT TYPE="HIDDEN"  NAME="SearchNextStep"  VALUE=""/>
+<!--Start of the start date/enddate attributes -->
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>			
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/CalendarWidget"/>   
+	<ICS.GETPROPERTY NAME="ft.cgipath" OUTPUT="cgipath"/>									           						
+	<XLAT.LOOKUP KEY="fatwire/Alloy/UI/PickADate" VARNAME="pickADateString" />
+	<XLAT.LOOKUP KEY="fatwire/Alloy/UI/DatePicker" VARNAME="datePickerString" />        
+    <tr>
+        <td></td>
+        <td></td>
+        <td class="small-text"><XLAT.STREAM KEY="dvin/Common/Format"/>: 
+				<if COND="Variables.AssetTypeObj:usesearchindex=1">
+	    		<then>
+						<if COND="Variables.seNickname=AV">
+						<then>
+								<XLAT.STREAM KEY="dvin/UI/Search/ddmmyyyy"/>
+						</then>
+						<else>
+							<if COND="Variables.seNickname=Verity">
+							<then>
+									<XLAT.STREAM KEY="dvin/UI/Search/mmddyyyy"/>
+							</then>
+							<else>
+   								 <XLAT.STREAM KEY="dvin/UI/Search/NoSearchEngineInstalled"/>
+                            </else>
+							</if>
+						</else>
+					</if>
+					</then>
+					<else>
+						<XLAT.STREAM KEY="dvin/UI/Search/yyyymmddhhmi24hourclock"/>
+					</else>
+					</if>
+				</td>
+    </tr>
+    <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>	 
+    <tr>
+        <td class="form-label-text">
+		<if COND="Variables.AssetTypeObj:usesearchindexVariables.seNickname=1AV">
+		<then>
+				<XLAT.STREAM KEY="fatwire/Alloy/UI/StartDateOnOrBefore" />:
+		</then>
+		<else>
+				<XLAT.STREAM KEY="fatwire/Alloy/UI/StartDateBefore" />:
+		</else>
+		</if>
+	</td>
+	<td></td>
+        <td><INPUT TYPE="hidden" NAME="StartDateBefore" VALUE=""/>
+	                <INPUT NAME="StartDateBeforeText" SIZE="18" MAXLENGTH="32"/>&nbsp;
+			<span style="position:relative;top:-1px">
+				<img id="StartDateBeforeText_trig" src='Variables.cs_imagedir/graphics/common/icon/calendar.gif' alt='Variables.pickADateString' ALIGN="ABSBOTTOM" TITLE='Variables.pickADateString'
+					 border="0" onload="showCalendar('StartDateBeforeText','StartDateBeforeText_trig');" onmouseover="this.style.cursor='pointer'" REPLACEALL="Variables.pickADateString,Variables.cs_imagedir"/>
+			</span>
+         </td>
+    </tr>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+    <tr>
+        <td class="form-label-text">
+		<if COND="Variables.AssetTypeObj:usesearchindexVariables.seNickname=1AV">
+		<then>
+				<XLAT.STREAM KEY="fatwire/Alloy/UI/StartDateOnOrAfter" />:
+		</then>
+		<else>
+				<XLAT.STREAM KEY="fatwire/Alloy/UI/StartDateAfter" />:
+		</else>
+		</if>
+	</td>
+	<td></td>
+        <td><INPUT TYPE="hidden" NAME="StartDateAfter" VALUE=""/>
+	                <INPUT NAME="StartDateAfterText" SIZE="18" MAXLENGTH="32" />&nbsp;
+			<span style="position:relative;top:-1px">
+				<img id="StartDateAfterText_trig" src='Variables.cs_imagedir/graphics/common/icon/calendar.gif' alt='Variables.pickADateString' ALIGN="ABSBOTTOM" TITLE='Variables.pickADateString'
+					border="0" onload="showCalendar('StartDateAfterText','StartDateAfterText_trig');" onmouseover="this.style.cursor='pointer'" REPLACEALL="Variables.pickADateString,Variables.cs_imagedir"/>
+			</span>				              				              				                
+         </td>
+    </tr>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+    <tr>
+        <td class="form-label-text">
+		<if COND="Variables.AssetTypeObj:usesearchindexVariables.seNickname=1AV">
+		<then>
+				<XLAT.STREAM KEY="fatwire/Alloy/UI/EndDateOnOrBefore" />:
+		</then>
+		<else>
+				<XLAT.STREAM KEY="fatwire/Alloy/UI/EndDateBefore" />:
+		</else>
+		</if>
+	</td>
+	<td></td>
+        <td><INPUT TYPE="hidden" NAME="EndDateBefore" VALUE=""/>
+	                <INPUT NAME="EndDateBeforeText" SIZE="18" MAXLENGTH="32"/>&nbsp;
+				<span style="position:relative;top:-1px">
+					<img id="EndDateBeforeText_trig" src='Variables.cs_imagedir/graphics/common/icon/calendar.gif' alt='Variables.pickADateString' ALIGN="ABSBOTTOM" TITLE='Variables.pickADateString'
+						border="0" onload="showCalendar('EndDateBeforeText','EndDateBeforeText_trig');" onmouseover="this.style.cursor='pointer'" REPLACEALL="Variables.pickADateString,Variables.cs_imagedir"/>
+				</span>
+         </td>
+    </tr>
+	 <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+    <tr>
+        <td class="form-label-text">
+		<if COND="Variables.AssetTypeObj:usesearchindexVariables.seNickname=1AV">
+		<then>
+				<XLAT.STREAM KEY="fatwire/Alloy/UI/EndDateOnOrAfter" />:
+		</then>
+		<else>
+				<XLAT.STREAM KEY="fatwire/Alloy/UI/EndDateAfter" />:
+		</else>
+		</if>
+	</td>
+	<td></td>
+        <td><INPUT TYPE="hidden" NAME="EndDateAfter" VALUE=""/>
+	                <INPUT NAME="EndDateAfterText" SIZE="18" MAXLENGTH="32" />&nbsp;
+				<span style="position:relative;top:-1px">
+					<img id="EndDateAfterText_trig" src='Variables.cs_imagedir/graphics/common/icon/calendar.gif' alt='Variables.pickADateString' ALIGN="ABSBOTTOM" TITLE='Variables.pickADateString'
+						border="0" onload="showCalendar('EndDateAfterText','EndDateAfterText_trig');" onmouseover="this.style.cursor='pointer'" REPLACEALL="Variables.pickADateString,Variables.cs_imagedir"/>
+				</span>
+         </td>
+    </tr>
 
+<!-- End of the start date/enddate attributes-->
+    <!-- Start of locale search dropdown -->
+         <callelement NAME="OpenMarket/Xcelerate/AssetType/Dimension/ShowDimensionsDropDown"/>
+    <!-- end of locale search dropdown-->
+	<callelement NAME="OpenMarket/Xcelerate/Actions/Search/SearchCommon"/>
+    
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+    <td></td>
+		<td></td><INPUT TYPE="HIDDEN" NAME="OrderByDesc" VALUE="Name"/>
+		<td><XLAT.STREAM KEY="dvin/Common/SortResultsBy"/>&nbsp;
+        <SELECT NAME="OrderBy" onChange="this.form.elements['OrderByDesc'].value=this[this.selectedIndex].text">
+             <IF COND="Variables.OrderBy!=Variables.empty">
+             <THEN>
+                  <IF COND="Variables.OrderBy=Page.name">
+                 <THEN>
+					<OPTION VALUE="Page.name" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/Name"/>
+                 </THEN>
+                 <ELSE>
+  					<OPTION VALUE="Page.name"/><XLAT.STREAM KEY="dvin/Common/Name"/>
+                 </ELSE>
+                 </IF>
+                 <IF COND="Variables.OrderBy=createdby">
+                 <THEN>
+ 					<OPTION VALUE="createdby" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/CreatedBy"/>
+                 </THEN>
+                 <ELSE>
+  					<OPTION VALUE="createdby"/><XLAT.STREAM KEY="dvin/Common/CreatedBy"/>
+                 </ELSE>
+                 </IF>
+                 <IF COND="Variables.OrderBy=createddate DESC">
+                 <THEN>
+ 					<OPTION VALUE="createddate DESC" SELECTED=""/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/>
+                 </THEN>
+                 <ELSE>
+  					<OPTION VALUE="createddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/>
+                 </ELSE>
+                 </IF>
+                 <IF COND="Variables.OrderBy=updatedby">
+                 <THEN>
+ 					<OPTION VALUE="updatedby" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/ModifiedBy"/>
+                 </THEN>
+                 <ELSE>
+  					<OPTION VALUE="updatedby"/><XLAT.STREAM KEY="dvin/Common/ModifiedBy"/>
+                 </ELSE>
+                 </IF>
+                 <IF COND="Variables.OrderBy=updateddate DESC">
+                 <THEN>
+ 					<OPTION VALUE="updateddate DESC" SELECTED=""/><XLAT.STREAM KEY="dvin/UI/Search/ModifiedDate"/>
+                 </THEN>
+                 <ELSE>
+  					<OPTION VALUE="updateddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/ModifiedDate"/>
+                 </ELSE>
+                 </IF>
+             </THEN>
+             <ELSE>
+ 					<OPTION VALUE="Page.name" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/Name"/>
+					<!-- [insert Description] -->
+					<OPTION VALUE="createdby"/><XLAT.STREAM KEY="dvin/Common/CreatedBy"/>
+					<OPTION VALUE="createddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/>
+					<OPTION VALUE="updatedby"/><XLAT.STREAM KEY="dvin/Common/ModifiedBy"/>
+					<OPTION VALUE="updateddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/ModifiedDate"/>
+             </ELSE>
+             </IF>
+	    	</SELECT>
+       </td>
+  </tr>
 
-   
-  
-<IF COND="IsVariable.SelectedAttrs=true">
-<THEN>
-  
-  <STRINGLIST NAME="alist" STR="Variables.SelectedAttrs" DELIM=","/>
-  <if COND="Variables.SearchNextStep!=AttrSearchForm">
-  <then>
-      <loop LIST="alist">
-          <IF  COND="IsVariable.alist.ITEM=true">
-          <THEN>
-            <setvar NAME="tempvar"  VALUE="Variables.alist.ITEM"/>
-            <INPUT TYPE="HIDDEN"  NAME="alist.ITEM"  VALUE="Variables.tempvar" REPLACEALL="Variables.tempvar,alist.ITEM"/>
-          </THEN>
-          </IF>
-      </loop>
-  </then>
-  </if>
-  
-</THEN>
-</IF>
-
-
-                    
-<IF COND="IsVariable.frontpage=true">
-<THEN>
-   <setvar NAME="fpage"  VALUE="Variables.frontpage"/>
-</THEN>
-<ELSE>
-    <setvar NAME="fpage"  VALUE="Variables.ThisPage"/>
-</ELSE>
-</IF>
-
- 
- 
-<if COND="IsVariable.SearchNextStep=true">
-<then>
- 	<callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/Variables.SearchNextStep"/>
-</then>
-<else>
-  <INPUT TYPE="HIDDEN"  NAME="SelectedAttrs"  VALUE="Variables.SelectedAttrs" REPLACEALL="Variables.SelectedAttrs"/>
-  <!-- 
-           Call the Specilized SearchForm Processing to 
-	       Extensible Page and Page Definition
-           Managers to Collect the List of Page Definitions and Extended attributes
-   --> 
-  <callelement NAME="OpenMarket/Xcelerate/AssetType/Page/SearchForm1"/>
-</else>
-</if>
-	
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td></td>
+		<td></td>
+		<td>
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <callelement NAME="OpenMarket/Xcelerate/Actions/Search/SearchFooter"/>
+			</table>
+		</td>
+	</tr>
+</table>
 
 </FTCS>
-

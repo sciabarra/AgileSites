@@ -73,19 +73,6 @@ $Modtime: 7/03/02 6:38p $
  	</THEN>
 </IF>
 
-<IF COND="IsVariable.ttype=true">
-	 <THEN>
-          <if cond="Variables.ttype=u">
-          <then>
-                <SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Template.ttype IS NULL"/>
-          </then>
-          <else>
-                <SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Template.ttype='Variables.ttype'"/>
-          </else>
-          </if>
-     </THEN>
-</IF>
-   
 <IF COND="IsVariable.Rootelement=true">
   <THEN>
 	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">

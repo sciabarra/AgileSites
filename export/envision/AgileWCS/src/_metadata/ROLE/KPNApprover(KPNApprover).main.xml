@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:roleBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <name>KPNApprover</name>
+    <description>KPN Approver</description>
+</ns2:roleBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <list/>
+</dependencies>
+==================______________________==================
+#
+#Sun Dec 23 13:03:26 CET 2012
+key=@ROLE-KPNApprover
+type=ROLE
+
+==================___ END METADATA ___==================-->

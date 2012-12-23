@@ -12,5 +12,19 @@
 
 <SETVAR NAME="candelete" VALUE="true"/>
 
+
+<SELECTTO FROM="SiteCatalog" LIST="sitecatalogentries" WHAT="*" WHERE="rootelement"/>
+<IF COND="IsList.sitecatalogentries=true">
+    <THEN>
+        <if COND="sitecatalogentries.#numRows!=0">
+            <then>
+                <SETVAR NAME="candelete" VALUE="false"/>
+            </then>
+        </if>
+    </THEN>
+</IF>
+
+<SETVAR NAME="errno" VALUE="0"/>
+
 </FTCS> 
 

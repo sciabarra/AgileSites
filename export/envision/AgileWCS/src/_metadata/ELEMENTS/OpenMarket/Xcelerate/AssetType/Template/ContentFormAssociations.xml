@@ -19,28 +19,27 @@
 <tr>
 <td>	
 <table border="0" cellpadding="0" cellspacing="0">
+
 <ASSOCNAMEDMANAGER.LIST  LISTVARNAME="associations" TYPE="Variables.AssetType" SUBTYPE="Variables.ContentDetails:subtype"/>
 <IF COND="associations.#numRows!=0">
 <THEN>
-<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>
 <tr>
-	<td>
-		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormTypeAhead"/>											
-	</td>
+	<td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Related"/>:</td>
+	<td></td>
+	<td><table cellspacing="0" cellpadding="0" border="0"><tr><td><CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenForm"/></td></tr></table></td>
 </tr>
 </THEN>
 </IF>
-<tr>
-	<td class="form-label-text"></td><td></td>
-	<td class="form-inset">
-		<callelement NAME="OpenMarket/Xcelerate/AssetType/CSElement/ContentFormFooter">
-			<argument NAME="ContinueTo" VALUE="Map"/>
-		</callelement>
-	</td>
-</tr>
+
 </table>
 </td>
 </tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Template/ContentFormFooter">
+		<argument NAME="ContinueTo" VALUE="Map"/>
+	</callelement>
 </table>
+
 
 </FTCS>

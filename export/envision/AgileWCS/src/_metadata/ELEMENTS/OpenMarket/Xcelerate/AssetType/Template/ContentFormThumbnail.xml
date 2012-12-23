@@ -11,7 +11,7 @@
 
 
 <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/ContentFormSetVar"/>
-<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+<table border="0" cellpadding="0" cellspacing="0">
 
 <callelement NAME="OpenMarket/Xcelerate/AssetType/Template/ContentFormNavBar">
 	<argument NAME="CurrentCat" VALUE="Thumbnail"/>
@@ -19,7 +19,7 @@
 
 <tr>
 <td>
-<table>
+<table border="0" cellpadding="0" cellspacing="0">
 
     <CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer">
       <ARGUMENT NAME="SpaceAbove" VALUE="No"/>
@@ -37,7 +37,7 @@
 		</IF>
 		</td>
 		<td></td>
-		<td class="form-inset">
+		<td valign="top">
 		</td>
 	</tr>
 
@@ -45,7 +45,7 @@
 	<IF COND="Variables.ContentDetails:element:Total!=0">
 	<THEN>
 		<LOOP COUNT="Variables.ContentDetails:element:Total">
-			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		    <CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>
 	    	<tr>	
 				<setvar NAME="theme" VALUE="Variables.ContentDetails:element:Counters.nthElement:theme"/>
 				<if COND="Variables.theme=Variables.empty">
@@ -58,7 +58,7 @@
 				</else>
 				</if>
 				<td></td>
-				<td class="form-inset">
+				<td valign="top" style="padding-left : 20px">
 					<if COND="IsVariable.Variables.theme-TempObjectId=true">
 					<then>
 						<!-- will change to STRING.STREAMBINARY soon -sjc -->
@@ -74,16 +74,15 @@
 								blobwhere="Variables.tempobjectid"
 								blobcol="urldata"/>
 								<br/>							
-						<INPUT TYPE="CHECKBOX" ID="id-Template:Thumbnail:Counters.nthElement:deletethumb" NAME="Template:Thumbnail:Counters.nthElement:deletethumb" VALUE="true" REPLACEALL="Counters.nthElement"/><label for="id-Template:Thumbnail:Counters.nthElement:deletethumb" REPLACEALL="Counters.nthElement"><XLAT.STREAM KEY="dvin/AT/Template/DeleteThumbnail"/></label>
+								<INPUT TYPE="CHECKBOX" ID="id-Template:Thumbnail:Counters.nthElement:deletethumb" NAME="Template:Thumbnail:Counters.nthElement:deletethumb" VALUE="true" REPLACEALL="Counters.nthElement"/><label for="id-Template:Thumbnail:Counters.nthElement:deletethumb" REPLACEALL="Counters.nthElement"><XLAT.STREAM KEY="dvin/AT/Template/DeleteThumbnail"/></label>
 						<INPUT TYPE="hidden" NAME="Variables.theme-TempObjectId" VALUE="Variables.tempobjectid" REPLACEALL="Variables.theme,Variables.tempobjectid"/>
 					</then>
 					</if>
+					<p/>
 					<INPUT TYPE="hidden" NAME="Template:Thumbnail:Counters.nthElement:theme" VALUE="Variables.theme" REPLACEALL="Variables.theme,Counters.nthElement"/>
-					<callelement NAME="OpenMarket/Gator/AttributeTypes/CommonDojoxUploader">
-						<argument NAME="inputTagName" VALUE="Template:Thumbnail:Counters.nthElement:thumb"/>
-					</callelement>
-		   			<INCCOUNTER NAME="nthElement" VALUE="1"/>
-			   	</td>
+					<INPUT TYPE="FILE" NAME="Template:Thumbnail:Counters.nthElement:thumb" REPLACEALL="Counters.nthElement"/>
+			   	<INCCOUNTER NAME="nthElement" VALUE="1"/><p/>
+				</td>
 			</tr>
 		</LOOP>
 	</THEN>
@@ -91,12 +90,12 @@
 	<!-- if we did not display a place for a no-theme thumbnail, do that -->
 	<if COND="IsVariable.emptytheme=false">
 	<then>
-		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>
 		<tr>	
 			<setvar NAME="theme" VALUE="Variables.empty"/>
 			<td valign="top" class="form-label-text"><STRING.STREAM VARIABLE="ContentDetails:name"/>:</td>
 			<td></td>
-			<td class="form-inset" style="padding-left : 20px">
+			<td valign="top" style="padding-left : 20px">
 				
 				<if COND="IsVariable.-TempObjectId=true">
 				<then>
@@ -119,10 +118,8 @@
 				</if>
 				<p/>
 				<INPUT TYPE="hidden" NAME="Template:Thumbnail:Counters.nthElement:theme" VALUE="" REPLACEALL="Counters.nthElement"/>
-				<callelement NAME="OpenMarket/Gator/AttributeTypes/CommonDojoxUploader">
-					<argument NAME="inputTagName" VALUE="Template:Thumbnail:Counters.nthElement:thumb"/>
-				</callelement>
-		   		<INCCOUNTER NAME="nthElement" VALUE="1"/>
+				<INPUT TYPE="FILE" NAME="Template:Thumbnail:Counters.nthElement:thumb" REPLACEALL="Counters.nthElement"/>
+		   	<INCCOUNTER NAME="nthElement" VALUE="1"/>
 			</td>
 		</tr>
 	</then>
@@ -131,30 +128,24 @@
 	<INPUT TYPE="hidden" NAME="Template:Thumbnail:Total" VALUE="Counters.nthElement" REPLACEALL="Counters.nthElement"/>
  	<INPUT TYPE="hidden" NAME="posting-Template:Thumbnail" VALUE="true"/>
   	<INPUT TYPE="hidden" NAME="tempobjectidlist" VALUE="Variables.tempobjectidlist" REPLACEALL="Variables.tempobjectidlist"/>
-	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
-	<TR>
-		<TD class="form-label-text"></TD><TD></TD><TD class="form-inset">
-			<IF COND="associations.#numRows!=0">
-				<THEN>
-					<callelement NAME="OpenMarket/Xcelerate/AssetType/Template/ContentFormFooter">
-						<argument NAME="ContinueTo" VALUE="Associations"/>
-					</callelement>
-				</THEN>
-				<ELSE>
-					<callelement NAME="OpenMarket/Xcelerate/AssetType/Template/ContentFormFooter">
-						<argument NAME="ContinueTo" VALUE="Map"/>
-					</callelement>
-				</ELSE>
-			</IF>
-		</TD>
-	</TR>
-
-
+  
 </table>
 
 </td>
 </tr>
 
+<IF COND="associations.#numRows!=0">
+<THEN>
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Template/ContentFormFooter">
+		<argument NAME="ContinueTo" VALUE="Associations"/>
+	</callelement>
+</THEN>
+<ELSE>
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Template/ContentFormFooter">
+		<argument NAME="ContinueTo" VALUE="Map"/>
+	</callelement>
+</ELSE>
+</IF>
 </table>
 
 

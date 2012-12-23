@@ -36,17 +36,9 @@ $Modtime: 7/03/02 6:30p $
 
 <if COND="IsVariable.Category=true">
     <then>
-  		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
-			<argument NAME="columnvalue" VALUE="Variables.Category"/>
-			<argument NAME="type" VALUE="Length"/>
-			<argument NAME="wordcounts" VALUE="4"/>
-		</callelement>
-		<if cond="Variables.validatedstatus=true">
-		<then>
-		 <ics.literal  table="Category"   column="category" string="Variables.Category"  output="literal"/>
-		<SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.category=Variables.literal"/>
-		 </then>
-		</if>      
+    
+    <ics.literal  table="Category"   column="category" string="Variables.Category"  output="literal"/>
+	<SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.category=Variables.literal"/>
     </then>
 </if>
 
@@ -63,16 +55,7 @@ $Modtime: 7/03/02 6:30p $
 
 <if COND="IsVariable.Status=true">
     <then>
-		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
-			<argument NAME="columnvalue" VALUE="Variables.Status"/>
-			<argument NAME="type" VALUE="Length"/>
-			<argument NAME="wordcounts" VALUE="2"/>
-		</callelement>
-		<if cond="Variables.validatedstatus=true">
-		<then>
-		<SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.status='Variables.Status'"/>
-		 </then>
-		</if>
+	<SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.status='Variables.Status'"/>
     </then>
 </if>
 
@@ -81,16 +64,8 @@ $Modtime: 7/03/02 6:30p $
 
 <if COND="IsVariable.Subtype=true">
     <then>
-    <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
-			<argument NAME="columnvalue" VALUE="Variables.Subtype"/>
-			<argument NAME="type" VALUE="Nospace"/>
-	</callelement>
-	<if cond="Variables.validatedstatus=true">
-	<then>
     <ics.literal  table="CSElement" column="subtype" string="Variables.Subtype"  output="literal"/>
 	<SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.subtype=Variables.literal"/>
-	 </then>
-	</if> 
      </then>
 </if>
 
@@ -106,15 +81,7 @@ $Modtime: 7/03/02 6:30p $
 
 <if COND="IsVariable.Id=true">
     <then>
-		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
-			<argument NAME="columnvalue" VALUE="Variables.Id"/>
-			<argument NAME="type" VALUE="Long"/>
-		</callelement>
-		<if cond="Variables.validatedstatus=true">
-		<then>
-	    <SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.id = Variables.Id"/>
-		 </then>
-		</if>
+    <SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.id = Variables.Id"/>
      </then>
 </if>
 
@@ -131,16 +98,7 @@ $Modtime: 7/03/02 6:30p $
     <then>
 	<if COND="Variables.UpdatedBefore!=Variables.null">
 		<then>
-		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
-			<argument NAME="columnvalue" VALUE="Variables.UpdatedBefore"/>
-			<argument NAME="type" VALUE="Date"/>
-		</callelement>
-		<if cond="Variables.validatedstatus=true">
-		<then>
 		<SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.updateddate &#060; Variables.UpdatedBefore"/>
-		 </then>
-		</if>
- 
  		</then>
 	</if>	
     </then>
@@ -150,16 +108,7 @@ $Modtime: 7/03/02 6:30p $
     <then>
 	<if COND="Variables.UpdatedAfter!=Variables.null">
 		<then>
-		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
-			<argument NAME="columnvalue" VALUE="Variables.UpdatedAfter"/>
-			<argument NAME="type" VALUE="Date"/>
-		</callelement>
-		<if cond="Variables.validatedstatus=true">
-		<then>
 		<SETVAR NAME="queryend" VALUE="Variables.queryend AND Variables.UpdatedAfter &#060; CSElement.updateddate"/>
-		 </then>
-		</if>
- 
  		</then>
 	</if>	
     </then>
@@ -167,15 +116,7 @@ $Modtime: 7/03/02 6:30p $
 
 <if COND="IsVariable.UpdatedBy=true">
     <then>
-    <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
-			<argument NAME="columnvalue" VALUE="Variables.UpdatedBy"/>
-			<argument NAME="type" VALUE="Nospace"/>
-	</callelement>
-	<if cond="Variables.validatedstatus=true">
-	<then>
 	<SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.updatedby='Variables.UpdatedBy'"/>
-	 </then>
-	</if> 
      </then>
 </if>
 

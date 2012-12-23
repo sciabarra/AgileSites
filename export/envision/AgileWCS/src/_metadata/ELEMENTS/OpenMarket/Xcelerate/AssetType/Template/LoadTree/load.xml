@@ -9,18 +9,6 @@
 -
 -->
 
-<IF cond="Variables.cs_environment=ucform">
-<THEN>
-    <IF cond="Variables.showParents=true">
-    <THEN>				
-	    <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/LoadTree/loadParents"/>		 
-	</THEN>
-	<ELSE>
-	    <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/LoadTree/loadChildren"/>		
-	</ELSE>
-	</IF>			   	
-</THEN>
-<ELSE>
 <if cond="IsVariable.subtype=true">
 <then>
     <setvar name="queryfields" value="Variables.empty"/>
@@ -69,7 +57,7 @@
                 <argument name="OpURL" value="Variables.OpURL"/>
                 <argument name="ExecuteURL" value="Variables.ExecuteURL"/>
                 <argument name="OKActions" value="Status;Inspect;Edit;Delete;refresh"/>
-                <argument name="Image" value="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/Variables.AssetType.png"/>                
+                <argument name="Image" value="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/Variables.AssetType.gif"/>
                 <argument name="RefreshKeys" value="ListofAsset.id"/>
             </callelement>
         </loop>
@@ -114,7 +102,7 @@
 	                <argument name="Label" value="Variables.subtype"/>
 	                <argument name="Description" value="Variables.subtype"/>
 	                <argument name="ID" value="Variables.TreeNodeID"/>
-	                <argument name="Image" value="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/Variables.subtype.png"/>	            
+	                <argument name="Image" value="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/Variables.subtype.gif"/>
 	                <argument name="RefreshKeys" value="Variables.subtype"/>
 	            </callelement>  
 			</then>
@@ -127,7 +115,5 @@
     </loop>
 </else>
 </if>
-</ELSE>
-</IF>
 
 </ftcs>

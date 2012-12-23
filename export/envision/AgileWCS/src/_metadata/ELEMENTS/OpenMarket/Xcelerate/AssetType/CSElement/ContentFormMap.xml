@@ -18,7 +18,7 @@
 </if>
 
 <!-- Template editing form -->
-<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+<table border="0" cellpadding="0" cellspacing="0">
 <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/CSElement/ContentFormSetVar"/>
 
 <callelement NAME="OpenMarket/Xcelerate/AssetType/CSElement/ContentFormNavBar">
@@ -39,10 +39,8 @@
 		<ARGUMENT NAME="total" VALUE="Counters.count"/>
 	</CALLELEMENT>
 </table>
-<XLAT.LOOKUP KEY="dvin/TreeApplet/AddNew" VARNAME="_XLAT_"/>
-<XLAT.LOOKUP KEY="dvin/TreeApplet/AddNew" VARNAME="mouseover" ESCAPE="true"/>
-<A HREF="javascript:void(0)" onclick="return FixpagenameWithCheck('Variables.ThisPage','ContentFormMap');" onmouseover="window.status='Variables.mouseover';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables.mouseover,Variables.ThisPage">
-	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/AddAnother"/></CALLELEMENT>
+<A HREF="javascript:void(0)" onclick="return FixpagenameWithCheck('Variables.ThisPage','ContentFormMap');" onmouseover="window.status='Add New';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables.ThisPage">
+	<IMG src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/administration/images/add_another.gif" ALT="Add New" BORDER="0" VSPACE="10" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale"/>
 </A>
 </td>
 </tr>

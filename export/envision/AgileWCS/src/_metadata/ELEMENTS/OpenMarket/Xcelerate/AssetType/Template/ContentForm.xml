@@ -31,24 +31,10 @@ $Modtime: 9/22/04 3:54p $
     * changed locale string used for isclean error alert
     * added & to list of characters checked (jeez, how'd I miss that?)
 -->
-<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
 <CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/ValidateInputForXSS" />
 <SCRIPT LANGUAGE="JavaScript">
 
 <![CDATA[
-
-var obj = document.forms[0];
-
-function getAssetName()
-{
-	return obj.elements['Template:name'].value;
-}
-
-function submitForm()
-{
-	return checkfields();
-}
-
 function isblank(s) {
 	for(var i=0;i<s.length;i++){
 		var c = s.charAt(i);
@@ -88,18 +74,18 @@ function checkfields() {
 	}
 	*/	
 	var stype = document.forms[0].elements['Template:subtype'];
-	var stypeVal, stypeWidget = dijit.getEnclosingWidget(stype);
-	/* duck typing to identify thts its a filtering select */
-	if (stypeWidget && stypeWidget.hasOwnProperty('hasDownArrow')) {
-		var si = stypeWidget.get("value");
-		if (si == "illegal") {
+	var stypeVal;
+
+	if (stype.type == "select-one") {
+		var si = stype.selectedIndex;
+		if (si == -1 || stype.options[si].value=="illegal") {
 			]]>
 			alert("<XLAT.STREAM KEY="dvin/UI/Error/selectanassettypeforthistemplate" ESCAPE="true" ENCODE="false"/>");
 			<![CDATA[
 			obj.elements['Template:subtype'].focus();
 			return false;
 		}
-		stypeVal = si;
+		stypeVal = stype.options[si].value;
 	} else if (stype.type == "hidden") {
 		stypeVal=stype.value;
 	} else {
@@ -126,7 +112,6 @@ function checkfields() {
 		var elemdescription = obj.elements['Template:element:0:elementdescription'];
 		var elemname = obj.elements['Template:element:0:elementname'];
 		var elemurlspec = obj.elements['Template:element:0:urlspec'];
-		var elemurl = obj.elements['Template:element:0:url'];
 		var elemresdetails1 = obj.elements['Template:element:0:resdetails1'];
 		var elemresdetails2 = obj.elements['Template:element:0:resdetails2'];
 		if ( isblank(elemname.value) || isblank(elemurlspec.value) )
@@ -137,30 +122,6 @@ function checkfields() {
 				<![CDATA[
 				return false;
 			}
-		}
-		if ( isblank(elemurlspec.value) )
-		{ ]]>
-			alert( "<XLAT.STREAM KEY="dvin/AT/Template/specifyelementstorage" ESCAPE="true" ENCODE="false"/>" );
-			<![CDATA[
-			return false;
-		}
-		else if ( elemurlspec.value.search(/['"?;:]/) != -1) {
-		 	var replacestr=/\bVariables.filename\b/ ;
-			var xlatstr= ']]><XLAT.STREAM KEY="dvin/AT/Template/FilenameContainsIllegalCharacters" ENCODE="false" ESCAPE="true"/><![CDATA[' ;
-			alert(xlatstr.replace(replacestr,elemurlspec.value));
-			return false;
-		}
-		else if ( elemurlspec.value.indexOf(".") == -1 ) {
-		 	var replacestr=/\bVariables.filename\b/ ;
-			var xlatstr= ']]><XLAT.STREAM KEY="dvin/AT/Template/FilenameHasNoExtension" ENCODE="false" ESCAPE="true"/><![CDATA[' ;
-			alert(xlatstr.replace(replacestr,elemurlspec.value));
-			return false;
-		}
-		if ( isblank(elemurl.value) )
-		{ ]]>
-			alert( "<XLAT.STREAM KEY="dvin/AT/Template/specifyelementlogic" ESCAPE="true" ENCODE="false"/>" );
-			<![CDATA[
-			return false;
 		}
 	}
 	var TotalElement=obj.elements['Template:Mapping:Total'];
@@ -198,11 +159,9 @@ function checkfields() {
 function SetCancelFlag () {
 	var obj = document.forms[0];
 
-	if(confirm("]]><XLAT.STREAM KEY="dvin/Common/CancelClicked" ESCAPE="true" ENCODE="false"/><![CDATA[")){
-		obj.elements['upcommand'].value="cancel";
-		obj.submit();
-		return false;
-	}
+	obj.elements['upcommand'].value="cancel";
+	obj.submit();
+	return false;
 }
 
 function Fixpagename(ourPage,nextstep)
@@ -244,11 +203,10 @@ function FixpagenameWithCheck(ourPage,nextstep)
 	}
 	
 	var stype = obj.elements['Template:subtype'];
-	var stypeVal, stypeWidget = dijit.getEnclosingWidget(stype);
-	/* duck typing to identify thts its a filtering select */
-	if (stypeWidget && stypeWidget.hasOwnProperty('hasDownArrow')) {
-		var si = stypeWidget.get("value");
-		if (si =="illegal") {
+	var stypeVal;
+	if (stype.type == "select-one") {
+		var si = stype.selectedIndex;
+		if (si == -1 || stype.options[si].value=="illegal") {
 			]]>
 			alert("<XLAT.STREAM KEY="dvin/UI/Error/selectanassettypeforthistemplate" ESCAPE="true" ENCODE="false"/>");
 			<![CDATA[
@@ -295,6 +253,7 @@ function FixpagenameWithCheck(ourPage,nextstep)
 	return false;
 }]]>
 </SCRIPT>
+
 <INPUT TYPE="HIDDEN" NAME="NextStep" VALUE=""/>
 <INPUT TYPE="hidden" NAME="upcommand" VALUE="submit"/>
 
@@ -321,20 +280,13 @@ function FixpagenameWithCheck(ourPage,nextstep)
 <if COND="Variables.doproceed=true">
 <then>
 
-	<IF COND="IsVariable.NextStep!=true">
-		<THEN>
-			<SETVAR NAME="NextStep" VALUE="ContentFormName"/>
-		</THEN>
-	</IF>
+<IF COND="IsVariable.NextStep!=true">
+	<THEN>
+		<SETVAR NAME="NextStep" VALUE="ContentFormName"/>
+	</THEN>
+</IF>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/Variables.NextStep"/>
 
-	<!-- form buttons -->
-	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
-		<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
-	</CALLELEMENT>
-	<div dojoType="dijit.layout.ContentPane" region="center">
-		<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/Variables.NextStep"/>
-	</div>
 </then>
 </if>
-</div>
 </FTCS>

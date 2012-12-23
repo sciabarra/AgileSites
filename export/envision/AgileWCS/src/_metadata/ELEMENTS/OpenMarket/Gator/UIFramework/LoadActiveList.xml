@@ -10,21 +10,13 @@
 - OUTPUT
 -
 -->
-	
 
-<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/GetDefaultNodeBehavior" />
-	
 <CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/BasicEnvironment"/>
-<!-- The _enableForms property enables/disables following assettypes from the advanced ui.
-	�	All Flex assets and their parent assets
-	�	All basic assets
-	�	Engage assets like Recommendation, Segment and Promotion
-	�	Special assets like Query and Collection
-	-->
-<PROPERTY.GET PARAM="advancedUI.enableAssetForms" INIFILE="futuretense_xcel.ini" VARNAME="_enableForms"/>
+
 <!-- the Active List will not add to the Global Popup -->
 
-
+<IF COND="Variables.command!=GetTypes">
+<THEN>
 	<SETVAR NAME="errno" VALUE="0"/>
 	
 	<USERMANAGER.GETLOGINUSER VARNAME="userID"/>
@@ -40,16 +32,6 @@
 				<ACTIVEITEM.GETASSETTYPE NAME="AL:Counters.objCount" VARNAME="AssetType"/>
 				<ACTIVEITEM.GETID NAME="AL:Counters.objCount" VARNAME="ItemId"/>
 				<SETVAR NAME="errno" VALUE="0"/>
-				<if cond="Variables._enableForms!=true">
-				<then>
-					<callelement NAME="OpenMarket/Xcelerate/Util/CheckTypeForGenerateLink">
-						<argument NAME="assettype" VALUE="Variables.AssetType"/>
-					</callelement>
-				</then>
-				</if>
-			
-				<setvar name="OKActions" value="Status;Inspect;Edit;Remove"/>
-				
 				<ASSET.LIST TYPE="Variables.AssetType" LIST="currentAsset" FIELD1="id" VALUE1="Variables.ID"/>
 				<IF COND="Variables.errno=0">
 				<THEN>
@@ -65,21 +47,15 @@
 						<satellite.argument name="AssetType" value="Variables.AssetType"/>
 						<satellite.argument name="ItemId" value="Variables.ItemId"/>
 					</SATELLITE.LINK>
-					<ASSET.GETSUBTYPE TYPE="Variables.AssetType" OBJECTID="Variables.ID" OUTPUT="stype" />
-					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/FindAssetImage">
-						<ARGUMENT NAME="AssetType" VALUE="Variables.AssetType"/>
-						<ARGUMENT NAME="AssetDef" VALUE="Variables.stype"/>
-					</CALLELEMENT>
+
 					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
 						<ARGUMENT NAME="Label" VALUE="currentAsset.name"/>
 						<ARGUMENT NAME="Description" VALUE="currentAsset.description"/>
 						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-						<ARGUMENT NAME="OKActions" VALUE="Variables.OKActions"/>
-						<ARGUMENT NAME="okFunctions" VALUE="edit;delete;treerefresh" />
-						<ARGUMENT NAME="executeFunction" VALUE="Variables.cs_defaultFunctionChild" />								
-						<ARGUMENT NAME="Image" VALUE="Variables.imageUsed"/>
+						<ARGUMENT NAME="OKActions" VALUE="Status;Inspect;Edit;Remove"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/Variables.AssetType.gif"/>
 						<ARGUMENT NAME="RefreshKeys" VALUE="Variables.ID"/>
 					</CALLELEMENT>
 				</THEN>
@@ -90,6 +66,11 @@
 		</IF>
 	</THEN>
 	</IF>
-
+</THEN>
+<ELSE>
+	<SETVAR NAME="Variables.varname" VALUE="ActiveList"/>
+	<SETVAR NAME="Variables.popupVar" VALUE="false"/>
+</ELSE>
+</IF>
 
 </FTCS> 

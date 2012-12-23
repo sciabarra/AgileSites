@@ -1,41 +1,50 @@
 <?xml version="1.0" ?>
 <!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
 <FTCS Version="1.1">
-<!-- 
-$Logfile: /VerticalApps/XcelerateB/install/Gator/Populate/ElementCatalog/OpenMarket/Gator/FlexibleAssets/AssetMaker/FlexAssets/IndexCreateVerity.xml $ 
-$Revision: 1 $ 
-$Modtime: 3/22/02 3:07p $ 
+<!--
+$Logfile: /VerticalApps/XcelerateA/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Page/IndexCreateVerity.xml $ 
+$Revision: 8 $ 
+$Modtime: 1/09/02 10:08a $ 
 -->
 
 <!--
 - Confidential and Proprietary Information of FutureTense Inc.
 -					All Rights Reserved.
 -
-- IndexReplace.xml
+- IndexCreateVerity.xml
 -
 - DESCRIPTION
--    Replace a single category item to the SE index.
+-    Create the search index.
 -
 - ARGUMENTS:
--    asset list
--        Current row of the Article table for the item to be
--        indexed.
 -    seindex
 -        Content category's SE index name.
--    detailArg
--        String to be recorded in the DETAIL attribute of the SE index
--        for this item.
--    sysinfo.defdir
--        Table's default directory for urlbody files.
 -
 - RETURNS
 -    errno
--        Result of executing INDEXREPLACE.
+-        Result of executing INDEXCREATE.
 -
 - HISTORY 
 -->
 
 
-<callelement NAME="OpenMarket/Xcelerate/AssetType/Page/IndexCreateVerity"/>
-</FTCS>
+<!--
+- CUSTOMIZE NOTE: The following INDEXCREATE can be modified to add EXTN fields
+-->
+<INDEXCREATE INDEX="Variables.seindex">
+  <FIELDARGUMENT NAME="id" VALUE="TEXT"/>
+  <FIELDARGUMENT NAME="name" VALUE="TEXT"/>
+  <FIELDARGUMENT NAME="status" VALUE="TEXT"/>
+  <FIELDARGUMENT NAME="createdby" VALUE="TEXT"/>
+  <FIELDARGUMENT NAME="updatedby" VALUE="TEXT"/>
 
+  <FIELDARGUMENT NAME="createddate" VALUE="DATE"/>
+  <FIELDARGUMENT NAME="updateddate" VALUE="DATE"/>
+
+  <FIELDARGUMENT NAME="subtype" VALUE="TEXT"/>
+  <FIELDARGUMENT NAME="template" VALUE="TEXT"/>
+  <FIELDARGUMENT NAME="description" VALUE="TEXT"/>
+
+</INDEXCREATE>
+
+</FTCS>

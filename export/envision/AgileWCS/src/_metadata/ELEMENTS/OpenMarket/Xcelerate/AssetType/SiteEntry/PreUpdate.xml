@@ -69,7 +69,6 @@ $Modtime: 8/04/04 4:44p $
 	</IF>
     
 	<ASSET.GATHER NAME="theCurrentAsset" PREFIX="SiteEntry" FIELDLIST="Variables.FieldsOnForm"/>
-	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
  	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
 		<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
 		<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
@@ -158,7 +157,7 @@ $Modtime: 8/04/04 4:44p $
 	<ELSE>
 		<SETVAR NAME="SiteEntry:cselement_id" VALUE="dummy1.id"/>
 		<ASSET.GATHER NAME="theCurrentAsset" PREFIX="SiteEntry" FIELDLIST="cselement_id"/>
-		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+
 		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
 			<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
 			<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>

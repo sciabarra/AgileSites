@@ -1,0 +1,779 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!--
+$Logfile: /VerticalApps/XcelerateD/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Page/ContentForm.xml $
+$Revision: 83 $
+$Modtime: 7/29/04 9:51a $
+-->
+
+<!--
+- Confidential and Proprietary Information of Open Market, Inc.
+-					All Rights Reserved.
+-
+- DESCRIPTION
+-    Present a form to create or modify an Page.
+
+- HISTORY 
+	5/19/00 - Convert to standard UI layout - Jeff Sokolov
+    [2007-09-10 KG]
+    * added XSS scripting fixes (adapted from 6.3 fixes); search for isCleanString
+    * removed regex search where isCleanString is now used
+    * changed definitions of 'obj' to just forms[0] (not .elements[0])
+    [2007-09-24 KG] (Defect #16000)
+    * Changed a couple of if conditions from checking
+      SessionVariables.cs_environment to Variables.cs_environment, to fix
+      javascript misbehavior when editing from insite popup.
+    * Removed some unused variables in function SB_MultiSelect
+
+	5/16/2008 - Make form repostable, so that multivalued asset associations can work optimally.
+		This work involves using the "Page:" prefix instead of the "ContentDetails:" prefix if the form
+		has been reposted.  I introduced a hidden variable to make the repost situation be obvious,
+		instead of relying on the existence or non-existence of variables, which for blank variables
+		might be application server dependent.
+		
+-->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/FormatDate" />
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewJavascript"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/ValidateInputForXSS" />
+<SCRIPT LANGUAGE="JavaScript">
+
+<![CDATA[
+
+function SB_MultiSelect(where,validTypes)
+{
+	var id,name,newindex,items,assettype;
+
+	if (validTypes==null) { ]]>
+	alert("<XLAT.STREAM KEY="dvin/UI/Error/Thisassethasnorelatedassettypes" ENCODE="false" ESCAPE="true"/>");
+	<![CDATA[ return; }
+
+   var pURL = "ContentServer?pagename=OpenMarket/Xcelerate/Actions/SBMultiSelectSearchFront";
+   pURL = pURL + "&validtypes=" + encodeURIComponent(validTypes);
+   pURL = pURL + "&where=" + encodeURIComponent(where);
+   pURL = pURL + "&cs_environment=popup";
+   return window.open(pURL, "SiteBuilderMultiSelectSearch", "directories=no,scrollbars=yes,resizable=yes,location=no,menubar=no,toolbar=no,top=20,width=650,height=680");
+}
+
+
+function xfer(src,target) {
+    var sc, itemText, i, newIndex, listy;
+    target.selectedIndex = -1;
+    for (i=0; i<src.options.length; i++) {
+        if (src.options[i].selected) {
+            var sc=i;
+            var o=src.options[sc]
+            items=new Option(o.text,o.value);
+            newIndex=target.options.length;
+            target.options[newIndex]=items;
+	      target.options[newIndex].selected=true
+		var typeNid = new String(o.value);
+		var descNname = new String(o.text);
+		var typeNidArray =  typeNid.split(",");
+		var lp = descNname.indexOf("(");
+		var assetName = descNname.slice(0,lp);
+		parent.parent.XcelBanner.addToHistory(typeNidArray[0],typeNidArray[1],assetName);
+        }
+    }
+    i = 0;
+    while (i<src.options.length) {
+        if (src.options[i].selected)
+            src.options[i]=null
+        else
+            i = i + 1;
+    }
+	delNul(src)
+	delNul(target)
+}
+function delNul(lst){
+    i = 0;
+    while (i<lst.options.length) {
+        if (lst.options[i].value==-1)
+            lst.options[i]=null
+        else
+            i = i + 1;
+    }
+}
+function selAll(elementname){
+	var obj = document.forms[0];
+	var lst = obj.elements[elementname];
+   for (i=0; i<lst.options.length; i++)
+        lst.options[i].selected=true
+
+   return false;
+}
+
+function promote(lst) {
+	sel = lst.selectedIndex;
+	if (sel == -1 ) return true;
+	if (sel == 0 ) return true;
+
+	orig = new Option(lst.options[sel].text,lst.options[sel].value);
+	prev = new Option(lst.options[sel-1].text,lst.options[sel-1].value);
+	lst.options[sel]=prev;
+	lst.options[sel-1]=orig;
+	lst.selectedIndex=sel-1;
+}
+function demote(lst) {
+	sel = lst.selectedIndex;
+	if (sel == -1 ) return true;
+	if (sel == lst.options.length-1 ) return true;
+
+	orig = new Option(lst.options[sel].text,lst.options[sel].value);
+	prev = new Option(lst.options[sel+1].text,lst.options[sel+1].value);
+	lst.options[sel]=prev;
+	lst.options[sel+1]=orig;
+	lst.selectedIndex=sel+1;
+}
+
+function checkfields()
+{
+	var obj = document.forms[0];
+	var isclean = isCleanString(obj.elements['Page:name'].value);
+	if (!isclean) {
+		alert("]]><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/ApostropheNotAllowed" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		return false;
+	}
+	if ( (obj.elements['Page:name'].value.length == 0) ||
+			(obj.elements['Page:name'].value.match(/^[\s]/) != null) ) {
+
+	//Here means something is wrong, let us figure out what
+
+			if (obj.elements['Page:name'].value.length == 0) {
+				]]>
+				alert("<XLAT.STREAM KEY="dvin/UI/Error/specifyauniquenameforthisPage" ESCAPE="true" ENCODE="false"/>");
+				<![CDATA[
+
+			}
+
+			if ( obj.elements['Page:name'].value.match(/^[\s]/) != null ) {
+				]]>
+				alert("<XLAT.STREAM KEY="dvin/UI/Error/namePagenotstartwithaspace" ESCAPE="true" ENCODE="false"/>");
+				<![CDATA[
+			}
+			obj.elements['Page:name'].focus();
+			return false;
+	}
+	if (obj.elements['Page:filename'].value!="")
+	{
+		if (obj.elements['Page:filename'].value.indexOf("/")!=-1 ||
+			obj.elements['Page:filename'].value.indexOf("\\")!=-1) {
+			]]>
+			alert("<XLAT.STREAM KEY="dvin/UI/Error/Filenamemustnotcontainslashes" ESCAPE="true" ENCODE="false"/>");
+			<![CDATA[
+			obj.elements['Page:filename'].focus();
+			return false;
+		}
+	}
+	if(!checkStartEndDateValidity()) {return false;}
+	return true;
+}
+
+function validatefilename()
+{
+	var obj = document.forms[0];
+	if (obj.elements['Page:filename'].value!="")
+	{
+		if (obj.elements['Page:filename'].value.indexOf("/")!=-1 ||
+			obj.elements['Page:filename'].value.indexOf("\\")!=-1) {
+			]]>
+			alert("<XLAT.STREAM KEY="dvin/UI/Error/Filenamemustnotcontainslashes" ESCAPE="true" ENCODE="false"/>");
+			<![CDATA[
+			obj.elements['Page:filename'].focus();
+			return false;
+		}
+	}
+}
+
+function RemoveTreeSelection(src) {
+    var i=0;
+    while (i<src.options.length) {
+        if (src.options[i].selected)
+            src.options[i]=null
+        else
+            i = i + 1;
+    }
+	delNul(src)
+}
+
+function repostPageContentForm()
+{
+	relPrepareForSubmit();
+	selAll('pagecontents');
+	if (checkfields())
+		repostContentForm();
+	return false;
+}
+
+function savePageContentForm()
+{
+	relPrepareForSubmit();
+	selAll('pagecontents');
+	if (checkfields())
+		document.forms[0].submit();
+	return false;
+}
+
+function cancelPageContentForm()
+{
+	var obj = document.forms[0];
+	obj.elements['upcommand'].value="cancel";
+	obj.submit();
+	return false;
+}
+
+]]>
+</SCRIPT>
+
+<!-- Track whether asset form has been reposted, and determine the appropriate prefix for filling in form variables -->
+<INPUT TYPE="hidden" NAME="formreposted" VALUE="true"/>
+<SETVAR NAME="currentformprefix" VALUE="ContentDetails"/>
+<IF COND="IsVariable.formreposted=true">
+<THEN>
+	<IF COND="Variables.formreposted=true">
+	<THEN>
+		<SETVAR NAME="currentformprefix" VALUE="Page"/>
+	</THEN>
+	</IF>
+</THEN>
+<ELSE>
+	<SETVAR NAME="formreposted" VALUE="false"/>
+</ELSE>
+</IF>
+
+<!-- Indicate that the form is repostable, according to the rules laid out in Actions/EditFront, so that all downstream
+      widgets know to change their behavior accordingly, provided they obey the convention for reposting. -->
+<SETVAR NAME="isAssetRepostable" VALUE="true"/>
+<SETVAR NAME="repostContentFormJavascript" VALUE="repostPageContentForm();"/>
+
+<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at"/>
+<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description"/>
+<!-- standard fields -->
+<input TYPE="hidden" NAME="FieldsOnForm" VALUE="name,template,filename,path,description,category,subtype,Dimension,Dimension-parent,startdate,enddate"/>
+<INPUT TYPE="hidden" NAME="upcommand" VALUE="submit"/>
+
+<table border="0" cellpadding="0" cellspacing="0">
+
+	<!-- Page page title w/ page  name -->
+	<tr>
+		<td><span class="title-text"><STRING.STREAM VARIABLE="at:description"/>: </span><span class="title-value-text"><STRING.STREAM VARIABLE="Variables.currentformprefix:name"/></span></td>
+	</tr>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+		<argument NAME="SpaceBelow" VALUE="No"/>
+	</callelement>
+
+	<IF COND="Variables.updatetype=setformdefaults">
+	<THEN>
+		<SETVAR NAME="buttonSrc" VALUE="save.gif"/>
+	</THEN>
+	<ELSE>
+		<SETVAR NAME="buttonSrc" VALUE="save_changes.gif"/>
+	</ELSE>
+	</IF>
+
+	<tr>
+		<td align="left">
+		<XLAT.LOOKUP KEY="dvin/Common/CancelChanges" VARNAME="_XLAT_" ESCAPE="true"/>
+		<XLAT.LOOKUP KEY="dvin/UI/Cancel" VARNAME="_Cancel_ALT"/>
+		<A HREF="javascript:void(0)" onclick="return cancelPageContentForm()" onmouseover="window.status='Variables._XLAT_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._XLAT_"><IMG src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/content/images/cancel.gif" TITLE="Variables._Cancel_ALT" ALT="Variables._Cancel_ALT" BORDER="0" VSPACE="10" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale,Variables._Cancel_ALT"/></A>
+		<XLAT.LOOKUP KEY="dvin/Common/SaveChanges" VARNAME="_XLAT_" ESCAPE="true"/>
+		<XLAT.LOOKUP KEY="dvin/UI/Save" VARNAME="_Save_ALT"/>
+		<A HREF="javascript:void(0)" onclick="return savePageContentForm();" onmouseover="window.status='Variables._XLAT_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._XLAT_"><IMG src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/content/images/Variables.buttonSrc" TITLE="Variables._Save_ALT" ALT="Variables._Save_ALT" VSPACE="10" HSPACE="15" BORDER="0" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale,Variables.buttonSrc,Variables._Save_ALT"/></A></td>
+	</tr>
+
+	<!-- Collection editing form -->
+
+	<tr>
+		<td>
+			<table border="0" cellpadding="0" cellspacing="0">
+
+			<!-- Beginning of Group 1 -->
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar">
+				<argument NAME="SpaceAbove" VALUE="No"/>
+			</callelement>
+			<tr>
+				<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/Name"/>:</td>
+				<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+
+
+  			     	<PROPERTY.GET PARAM="xcelerate.asset.sizeofnamefield" INIFILE="futuretense_xcel.ini" VARNAME="sizeofnamefield"/>
+				<td><![CDATA[<INPUT TYPE="text" NAME="Page:name" SIZE="32" MAXLENGTH="]]><STRING.STREAM VARIABLE="sizeofnamefield" /><![CDATA[" VALUE="]]><STRING.STREAM VARIABLE="Variables.currentformprefix:name"/><![CDATA["/>]]> </td>
+			</tr>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Description"/>:</td>
+				<td></td>
+				<td> <![CDATA[<INPUT TYPE="text" NAME="Page:description" SIZE="48" MAXLENGTH="128" VALUE="]]><STRING.STREAM VARIABLE="Variables.currentformprefix:description"/><![CDATA["/>]]>  </td>
+			</tr>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/UI/Subtype"/>:</td>
+				<td></td>
+				<td>
+					<callelement NAME="OpenMarket/Xcelerate/Actions/Util/MakeSubtypeList">
+						<argument NAME="Prefix" VALUE="Variables.AssetType"/>
+						<argument NAME="fieldvalue" VALUE="Variables.Variables.currentformprefix:subtype"/>
+						<argument NAME="AssetType" VALUE="Variables.AssetType"/>
+					</callelement></td>
+			</tr>
+
+			<XLAT.LOOKUP KEY="dvin/UI/Template" VARNAME="label"/>
+			<callelement NAME="OpenMarket/Xcelerate/Actions/Util/ShowTemplatesIfAny">
+				<argument NAME="Prefix" VALUE="Page"/>
+				<argument NAME="label"  VALUE="Variables.label:"/>
+			</callelement>
+
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/CalendarWidget"/>
+			<ICS.GETPROPERTY NAME="ft.cgipath" OUTPUT="cgipath"/>
+			<XLAT.LOOKUP KEY="fatwire/Alloy/UI/PickADate" VARNAME="pickADateString" />
+			<XLAT.LOOKUP KEY="fatwire/Alloy/UI/DatePicker" VARNAME="datePickerString" />
+			<tr>
+		      		<td class="form-label-text"><XLAT.STREAM KEY="fatwire/Alloy/UI/StartDate"/>:</td>
+		      		<td></td>
+		      		<td>
+					<span class="small-text"><XLAT.STREAM KEY="dvin/Common/Formatyyyymmddhhmm" /></span><br/>
+					<IF COND="IsVariable.Variables.currentformprefix:startdate=true">
+					<THEN>
+						<SETVAR NAME="tempvar" VALUE="Variables.Variables.currentformprefix:startdate"/>
+					</THEN>
+					<ELSE>
+						<SETVAR NAME="tempvar" VALUE="Variables.empty"/>
+					</ELSE>
+					</IF>
+		              		<INPUT TYPE="text" ID="startDateFieldId" NAME="Page:startdate" SIZE="32" VALUE="Variables.tempvar" REPLACEALL="Variables.tempvar"/>&nbsp;
+						<span style="position:relative;top:-1px">						  
+					<img id="Page:startdate_trig" src='Variables.cs_imagedir/graphics/common/icon/calendar.gif' title='Variables.pickADateString' alt='Variables.pickADateString' ALIGN="ABSBOTTOM"
+						border="0" onload="showCalendar('Page:startdate','Page:startdate_trig');" onmouseover="this.style.cursor='pointer'" REPLACEALL="Variables.pickADateString,Variables.cs_imagedir"/>
+						</span>
+		      		</td>
+			</tr>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+		      		<td class="form-label-text"><XLAT.STREAM KEY="fatwire/Alloy/UI/EndDate"/>:</td>
+		      		<td></td>
+		      		<td>
+					<span class="small-text"><XLAT.STREAM KEY="dvin/Common/Formatyyyymmddhhmm" /></span><br/>
+					<IF COND="IsVariable.Variables.currentformprefix:enddate=true">
+					<THEN>
+						<SETVAR NAME="tempvar" VALUE="Variables.Variables.currentformprefix:enddate"/>
+					</THEN>
+					<ELSE>
+						<SETVAR NAME="tempvar" VALUE="Variables.empty"/>
+					</ELSE>
+					</IF>
+					<INPUT TYPE="text" ID="endDateFieldId" NAME="Page:enddate" SIZE="32" VALUE="Variables.tempvar" REPLACEALL="Variables.tempvar"/>&nbsp;
+					<span style="position:relative;top:-1px">						  
+						<img id="Page:enddate_trig" src='Variables.cs_imagedir/graphics/common/icon/calendar.gif' title='Variables.pickADateString' alt='Variables.pickADateString' ALIGN="ABSBOTTOM"
+							border="0" onload="showCalendar('Page:enddate','Page:enddate_trig');" onmouseover="this.style.cursor='pointer'" REPLACEALL="Variables.pickADateString,Variables.cs_imagedir"/>
+					</span>
+		      		</td>
+			</tr>
+
+			
+			<callelement NAME="OpenMarket/Xcelerate/AssetType/Dimension/ShowDimensionForm"/>
+			
+			<!-- Beginning of Group 2 -->
+			<IF COND="Variables.updatetype!=setformdefaults">
+			<THEN>			
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/ID"/>:</td>
+					<td></td>
+					<td><STRING.STREAM VARIABLE="id"/></td>
+				</tr>
+			</THEN>
+			</IF>
+
+			<setvar NAME="assettype" VALUE="Page"/>
+			<selectto LIST="Category" FROM="Category" WHERE="assettype"/>
+			<IF COND="Category.#numRows!=0">
+			<THEN>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/UI/Admin/Category"/>:</td>
+					<td></td>
+					<td>
+						<callelement NAME="OpenMarket/Xcelerate/Actions/Util/MakeCategoryList">
+							<argument NAME="Prefix" VALUE="Page"/>
+						</callelement>
+					</td>
+				</tr>
+			</THEN>
+			</IF>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Filename"/>:</td>
+				<td></td>
+				<td>
+					<IF COND="IsVariable.Variables.currentformprefix:filename=true">
+					<THEN>
+						<SETVAR NAME="tempvar" VALUE="Variables.Variables.currentformprefix:filename"/>
+					</THEN>
+					<ELSE>
+						<SETVAR NAME="tempvar" VALUE="Variables.empty"/>
+					</ELSE>
+					</IF>
+					<STRING.ENCODE VARIABLE="tempvar" VARNAME="tempvarEnc"/>
+					<INPUT TYPE="text" NAME="Page:filename" SIZE="32" MAXLENGTH="64" VALUE="Variables.tempvarEnc" REPLACEALL="Variables.tempvarEnc" onChange="validatefilename();"/>
+				</td>
+			</tr>
+
+			
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Path"/>:</td>
+				<td></td>
+				<td>
+					<IF COND="IsVariable.Variables.currentformprefix:path=true">
+					<THEN>
+						<SETVAR NAME="tempvar" VALUE="Variables.Variables.currentformprefix:path"/>
+					</THEN>
+					<ELSE>
+						<SETVAR NAME="tempvar" VALUE="Variables.empty"/>
+					</ELSE>
+					</IF>
+					<STRING.ENCODE VARIABLE="tempvar" VARNAME="tempvarEnc"/>
+					<INPUT TYPE="text" NAME="Page:path" SIZE="40" MAXLENGTH="255" VALUE="Variables.tempvarEnc" REPLACEALL="Variables.tempvarEnc"/>
+				</td>
+			</tr>
+			
+
+			<!-- Beginning of Group 5 -->
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>
+			<tr>
+				<td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/Contains"/>:</td>
+				<td></td>
+				<td>
+				
+					<!-- Get the current unnamed collection child assets -->
+					<!-- Note well: Since this is getting data directly from the current asset, rather than from scatter/gather
+					      fields, we will need to be able to capture any changed data if the asset is reposted.  The data that gets
+					      posted in this case is a multiselect box named "pagecontents", so on repost we have to populate the
+					      ordered list from the posted results of that select box.  Each posted value furthermore has the form:
+					      thePageContents.otype,thePageContents.oid -->
+					<IF COND="Variables.formreposted=true">
+					<THEN>
+						<LISTOBJECT.CREATE NAME="listobj" COLUMNS="otype,oid"/>
+						<IF COND="IsVariable.pagecontents=true">
+						<THEN>
+							<STRINGLIST NAME="postedvarlist" STR="Variables.pagecontents" DELIM=";"/>
+							<IF COND="postedvarlist.#numRows!=0">
+							<THEN>
+								<LOOP LIST="postedvarlist">
+									<INDEXOF STR="postedvarlist.ITEM" WHAT="," OUTSTR="position" INDEX="0"/>
+									<SUBSTRING STR="postedvarlist.ITEM" OUTSTR="otype" ENDINDEX="Variables.position"/>
+									<SUBSTRING STR="postedvarlist.ITEM" OUTSTR="oid" INDEX="Variables.position"/>
+									<SUBSTRING STR="Variables.oid" OUTSTR="oid" INDEX="1"/>
+									<LISTOBJECT.ADDROW NAME="listobj" otype="Variables.otype" oid="Variables.oid"/>
+								</LOOP>
+							</THEN>
+							</IF>
+						</THEN>
+						</IF>
+						<LISTOBJECT.TOLIST NAME="listobj" LISTVARNAME="thePageContents"/>
+					</THEN>
+					<ELSE>
+						<ASSET.CHILDREN NAME="theCurrentAsset" LIST="thePageContents" CODE="-" ORDER="nrank asc"/>
+					</ELSE>
+					</IF>
+					
+					<table border="0" cellpadding="0" cellspacing="0">
+						<!-- Find the cookies for enabled assets that can be childrem -->
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/EnableAssetTypePub">
+							<ARGUMENT NAME="upcommand" VALUE="ListEnabledAssetTypes"/>
+							<ARGUMENT NAME="list" VALUE="EnabledAssetTypes"/>
+							<ARGUMENT NAME="pubid" VALUE="SessionVariables.pubid"/>
+						</CALLELEMENT>
+						<IF COND="IsList.EnabledAssetTypes=false">
+						<THEN>
+							<tr>
+								<td>
+									<XLAT.LOOKUP KEY="dvin/UI/Admin/Noassettypesenabledforthissite" VARNAME="msgtext"/>
+									<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+									    <ARGUMENT NAME="msgtext" VALUE="Variables.msgtext"/>
+									    <ARGUMENT NAME="severity" VALUE="error"/>
+									</CALLELEMENT>
+								</td>
+							</tr>
+						</THEN>
+						</IF>
+						<tr>
+							  
+							
+							<IF COND="Variables.showSiteTree=false">
+							<THEN>
+								<if COND="Variables.cs_environment=popup">
+								<then>
+									<HASH.CREATE NAME="childTypes"/>
+									<IF COND="IsList.EnabledAssetTypes=true">
+									<THEN>
+										<LOOP LIST="EnabledAssetTypes">
+											<IF COND="EnabledAssetTypes.canbechild=T">
+											<THEN>
+												<HASH.ADD NAME="childTypes" VALUE="EnabledAssetTypes.assettype"/>
+											</THEN>
+											</IF>
+										</LOOP>
+										<HASH.TOSTRING NAME="childTypes" VARNAME="validTypes" DELIM=","/>
+									</THEN>
+									</IF>
+                                    
+									<td><XLAT.STREAM KEY="dvin/AT/Common/ClickAddSelectedItemsandSelect" ENCODE="false"/></td>
+								</then>
+								<else>
+
+									<IF COND="IsList.thePageContents=true">
+									<THEN>
+										<HASH.CREATE NAME="selectedContents" LIST="thePageContents" COLUMN="oid"/>
+									</THEN>
+									<ELSE>
+										<HASH.CREATE NAME="selectedContents" />
+									</ELSE>
+									</IF>
+									<td valign="top" align="left">
+										<IF COND="IsList.EnabledAssetTypes=true">
+										<THEN>
+											<span class="table-header-text"><XLAT.STREAM KEY="dvin/Common/AT/Candidates"/>:</span><BR/>
+										
+											<select NAME="candidates" SIZE="10" MULTIPLE="yes" STYLE="width : 200px">
+												<option VALUE="-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+												<!-- get some candidates from Active List -->
+												<USERMANAGER.GETLOGINUSER VARNAME="currentUser"/>
+												<LOOP LIST="EnabledAssetTypes">
+													<IF COND="EnabledAssetTypes.canbechild=T">
+													<THEN>
+														<ACTIVELIST.GETUSERLIST USER="Variables.currentUser" SITE="SessionVariables.pubid" ASSETTYPE="EnabledAssetTypes.assettype" PREFIX="AL:"/>
+														<IF COND="Variables.AL:Total!=0">
+														<THEN>
+															<SETCOUNTER NAME="currentItem" VALUE="0"/>
+															<LOOP COUNT="Variables.AL:Total">
+																<ACTIVEITEM.GETASSETID NAME="AL:Counters.currentItem" VARNAME="currentID"/>
+																<ACTIVEITEM.GETASSETTYPE NAME="AL:Counters.currentItem" VARNAME="currentType"/>
+																<HASH.CONTAINS NAME="selectedContents" VALUE="Variables.currentID" VARNAME="hasit"/>
+																<IF COND="Variables.hasit=false">
+																<THEN>
+																	<ASSET.LIST LIST="currentAsset" TYPE="Variables.currentType" FIELD1="id" VALUE1="Variables.currentID"/> 
+																	<ASSETTYPE.LOAD NAME="assetType" TYPE="Variables.currentType"/>
+																	<ASSETTYPE.GET NAME="assetType" FIELD="description" OUTPUT="atdescription"/>
+																	<OPTION VALUE="Variables.currentType,Variables.currentID" REPLACEALL="Variables.currentType,Variables.currentID">
+																		<STRING.STREAM LIST="currentAsset" COLUMN="name"/> (<STRING.STREAM VARIABLE="atdescription"/>)
+																	</OPTION>
+																</THEN>
+																</IF>
+																<INCCOUNTER NAME="currentItem" VALUE="1"/>
+															</LOOP>
+														</THEN>
+														</IF>
+													</THEN>
+													</IF>
+												</LOOP>
+											</select>
+											<SCRIPT LANGUAGE="JavaScript">
+												var currContentIDs = '';
+												document.forms[0].elements['candidates'].options[0]=null;
+											</SCRIPT>                                    
+										</THEN>
+										</IF>	
+	
+										<IF COND="IsList.thePageContents=true">
+										<THEN>
+											<LOOP LIST="thePageContents">
+	
+												<SCRIPT LANGUAGE="JavaScript">
+													<REPLACEALL LIST="thePageContents.oid">
+														currContentIDs+=thePageContents.oid+",";
+													</REPLACEALL>
+												</SCRIPT>
+
+											</LOOP>
+										</THEN>
+										</IF>
+									</td>
+								</else>
+								</if>
+							</THEN>
+							<ELSE>                                    
+								<HASH.CREATE NAME="childTypes"/>
+								<IF COND="IsList.EnabledAssetTypes=true">
+								<THEN>
+									<LOOP LIST="EnabledAssetTypes">
+										<IF COND="EnabledAssetTypes.canbechild=T">
+										<THEN>
+											<HASH.ADD NAME="childTypes" VALUE="EnabledAssetTypes.assettype"/>
+										</THEN>
+										</IF>
+									</LOOP>
+									<HASH.TOSTRING NAME="childTypes" VARNAME="validTypes" DELIM=","/>
+								</THEN>
+								</IF>
+									
+								<td><XLAT.STREAM KEY="dvin/AT/Common/SelectAssetsFromTreeandClick" ENCODE="false"/></td>
+						
+							</ELSE>
+							</IF>
+							
+							<td>&nbsp;&nbsp;&nbsp;</td>							
+							<td valign="top" align="left">
+								<span class="table-header-text"><XLAT.STREAM KEY="dvin/Common/AT/CurrentContents"/>:</span><BR/>
+
+								<SELECT name="pagecontents" size="10" STYLE="width : 400px" MULTIPLE="yes" onBlur="delNul(this.form.elements['pagecontents'])">
+									<IF COND="IsList.thePageContents=true">
+									<THEN>
+										<LOOP LIST="thePageContents">
+											<ASSET.LOAD NAME="anAsset" TYPE="thePageContents.otype" OBJECTID="thePageContents.oid"/> 
+											<ASSET.GET NAME="anAsset" FIELD="name"/>
+											<ASSETTYPE.LOAD NAME="assetType" TYPE="thePageContents.otype"/>
+											<ASSETTYPE.GET NAME="assetType" FIELD="description" OUTPUT="atdescription"/>
+											<OPTION VALUE="thePageContents.otype,thePageContents.oid" REPLACEALL="thePageContents.oid,thePageContents.otype"/>
+											<STRING.STREAM VARIABLE="name"/> (<STRING.STREAM VARIABLE="atdescription"/>)
+										</LOOP>
+									</THEN>
+									<ELSE>
+										<OPTION VALUE="">*****&nbsp;<XLAT.STREAM KEY="dvin/Common/AT/Pagehasnocontents"/>&nbsp;*****</OPTION>
+									</ELSE>
+									</IF>  
+								</SELECT>
+								<IF COND="IsList.thePageContents=false">
+								<THEN>
+									<SCRIPT LANGUAGE="JavaScript">   
+										document.forms[0].elements['pagecontents'].options.length=0;
+									</SCRIPT>
+								</THEN>
+								</IF>			      	
+							</td>
+							<td>&nbsp;&nbsp;&nbsp;</td>
+							<td align="center" valign="middle">
+								<XLAT.LOOKUP KEY="dvin/UI/MoveSelectedAssetUp" VARNAME="_XLAT_"/>
+								<XLAT.LOOKUP KEY="dvin/UI/MoveSelectedAssetUp" VARNAME="mouseover" ESCAPE="true"/>
+								<A HREF="javascript:void(0)" onClick="promote(document.forms[0].elements['pagecontents']);" onMouseOver="window.status='Variables.mouseover';return true" onMouseOut="window.status='';return true" REPLACEALL="Variables.mouseover"><IMG src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/content/images/moveup.gif" HSPACE="4" VSPACE="4" TITLE="Variables._XLAT_" ALT="Variables._XLAT_" BORDER="0" REPLACEALL="Variables.cs_imagedir,Variables._XLAT_,SessionVariables.locale"/></A><BR/>
+								<XLAT.LOOKUP KEY="dvin/UI/MoveSelectedAssetDown" VARNAME="_XLAT_"/>
+								<XLAT.LOOKUP KEY="dvin/UI/MoveSelectedAssetDown" VARNAME="mouseover" ESCAPE="true"/>
+								<A HREF="javascript:void(0)" onClick="demote(document.forms[0].elements['pagecontents']);" onMouseOver="window.status='Variables.mouseover';return true" onMouseOut="window.status='';return true" REPLACEALL="Variables.mouseover"><IMG src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/content/images/movedn.gif" HSPACE="4" VSPACE="4" BORDER="0" TITLE="Variables._XLAT_" ALT="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,Variables._XLAT_,SessionVariables.locale"/></A>
+							</td>
+						</tr>
+						<tr>
+							<td ALIGN="CENTER">
+								<DIV CLASS="form-inset">
+									<XLAT.LOOKUP KEY="dvin/UI/AddContentAssettoPage" VARNAME="_XLAT_"/>
+									<XLAT.LOOKUP KEY="dvin/UI/AddContentAssettoPage" VARNAME="mouseover" ESCAPE="true"/>
+									<!-- changed from SessionVariables to Variables -->
+									<IF COND="Variables.showSiteTree=false">
+									<THEN>
+										<if COND="Variables.cs_environment=standard">
+										<then>
+											<A HREF="javascript:void(0)" onMouseOver="window.status='Variables.mouseover';return true;" onMouseOut="window.status='';return true;" onClick="xfer(document.forms[0].elements['candidates'], document.forms[0].elements['pagecontents'] )" REPLACEALL="Variables.mouseover">
+												<img  border="0" src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/content/images/add_selected_items.gif" title="Variables._XLAT_" alt="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale,Variables._XLAT_"/>
+											</A>
+										</then>
+										<else>
+											<A HREF="javascript:void(0)" onMouseOver="window.status='Variables.mouseover';return true;" onMouseOut="window.status='';return true;" onClick="SB_MultiSelect('pagecontents','Variables.validTypes','multiple')" REPLACEALL="Variables.mouseover,Variables.validTypes">
+												<img  border="0" src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/content/images/add_selected_items.gif" title="Variables._XLAT_" alt="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale,Variables._XLAT_"/>
+											</A>
+										</else>
+										</if>
+									</THEN>
+									<ELSE>
+										<A HREF="javascript:void(0)" onMouseOver="window.status='Variables.mouseover';return true;" onMouseOut="window.status='';return true;" onClick="SelectFromTreeMultiSelect(document.forms[0].elements['pagecontents'],'Variables.validTypes','multiple')" REPLACEALL="Variables.mouseover,Variables.validTypes">
+											<img  border="0" src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/content/images/add_selected_items.gif" title="Variables._XLAT_" alt="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale,Variables._XLAT_"/>
+										</A>
+									</ELSE>
+									</IF>
+								</DIV>
+							</td>
+							<td></td>
+							<td ALIGN="CENTER">
+								<DIV CLASS="form-inset">
+									<XLAT.LOOKUP KEY="dvin/UI/RemoveContentAssetfromPage" VARNAME="_XLAT_"/>
+									<XLAT.LOOKUP KEY="dvin/UI/RemoveContentAssetfromPage" VARNAME="mouseover" ESCAPE="true"/>
+									<!-- changed from SessionVariables to Variables -->
+									<IF COND="Variables.showSiteTree=false">
+									<THEN>
+										<if COND="Variables.cs_environment=standard">
+										<then>
+											<A HREF="javascript:void(0)" onMouseOver="window.status='Variables.mouseover';return true;" onMouseOut="window.status='';return true;" onClick="xfer(document.forms[0].elements['pagecontents'], document.forms[0].elements['candidates'])" REPLACEALL="Variables.mouseover">
+												<img border="0" src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/content/images/removeblock.gif" title="Variables._XLAT_" alt="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale,Variables._XLAT_"/>
+											</A>
+										</then>
+										<else>
+											<A HREF="javascript:void(0)" onMouseOver="window.status='Variables.mouseover';return true;" onMouseOut="window.status='';return true;"
+												onClick="RemoveTreeSelection(document.forms[0].elements['pagecontents']);" REPLACEALL="Variables.mouseover"><img border="0" src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/content/images/removeblock.gif" title="Variables._XLAT_" alt="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale,Variables._XLAT_"/>
+											</A>
+										</else>
+										</if>
+									</THEN>
+									<ELSE>
+										<A HREF="javascript:void(0)" onMouseOver="window.status='Variables.mouseover';return true;" onMouseOut="window.status='';return true;"
+											onClick="RemoveTreeSelection(document.forms[0].elements['pagecontents']);" REPLACEALL="Variables.mouseover"><img border="0" src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/content/images/removeblock.gif" title="Variables._XLAT_" alt="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale,Variables._XLAT_"/>
+										</A>
+									</ELSE>
+									</IF>
+								</DIV>
+							</td>
+							<td></td><td></td>
+						</tr>
+						
+					</table>
+				</td>
+			</tr>
+
+			<!-- Beginning of Group 4  (unhappily this must go belwo Group 5 because of browser restrictions) -->
+			<ASSOCNAMEDMANAGER.LIST  LISTVARNAME="associations" TYPE="Variables.AssetType" SUBTYPE="Variables.Variables.currentformprefix:subtype"/>
+			<IF COND="associations.#numRows!=0">
+			<THEN>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>
+				<tr>
+					<td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Related"/>:</td>
+					<td></td>
+					<td>
+						<table cellspacing="0" cellpadding="0" border="0">
+						<tr>
+							<td>
+								<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNew"/>
+							</td>
+						</tr>
+						</table>
+					</td>
+				</tr>
+			</THEN>
+			</IF>
+
+			<!-- Beginning of Group 6 -->
+			<IF COND="Variables.updatetype!=setformdefaults">
+			<THEN>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Modified"/>:</td>
+					<td></td>
+					<td>
+						<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:updateddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:updateddate"/>
+						<XLAT.STREAM KEY="dvin/UI/ContentDetailsupdateddatebyupdatedby"/>
+					</td>
+				</tr>
+			</THEN>
+			</IF>
+			
+			</table>
+		</td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+
+	<tr>
+		<td align="left">
+			<XLAT.LOOKUP KEY="dvin/Common/CancelChanges" VARNAME="_XLAT_" ESCAPE="true"/>
+			<XLAT.LOOKUP KEY="dvin/UI/Cancel" VARNAME="_Cancel_ALT"/>
+			<A HREF="javascript:void(0)" onclick="return cancelPageContentForm()" onmouseover="window.status='Variables._XLAT_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._XLAT_"><IMG src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/content/images/cancel.gif" TITLE="Variables._Cancel_ALT" ALT="Variables._Cancel_ALT" BORDER="0" VSPACE="10" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale,Variables._Cancel_ALT"/></A>
+			<XLAT.LOOKUP KEY="dvin/Common/SaveChanges" VARNAME="_XLAT_" ESCAPE="true"/>
+			<XLAT.LOOKUP KEY="dvin/UI/Save" VARNAME="_Save_ALT"/>
+			<A HREF="javascript:void(0)" onclick="return savePageContentForm();" onmouseover="window.status='Variables._XLAT_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._XLAT_">
+				<IMG src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/content/images/Variables.buttonSrc" TITLE="Variables._Save_ALT" ALT="Variables._Save_ALT" VSPACE="10" HSPACE="15" BORDER="0" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale,Variables.buttonSrc,Variables._Save_ALT"/>
+			</A>
+		</td>
+	</tr>
+</table>
+
+</FTCS>

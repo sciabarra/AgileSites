@@ -1,13 +1,10 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
-    <id class="string">OpenMarket/Xcelerate/AssetType/Page/IndexReplace</id>
-    <resourceType>ELEMENTCATALOG</resourceType>
-    <deps class="empty-set"/>
     <data class="com.openmarket.xcelerate.common.ElementCatalogEntry" serialization="custom">
       <com.openmarket.xcelerate.common.ElementCatalogEntry>
         <int>1</int>
         <string>OpenMarket/Xcelerate/AssetType/Page/IndexReplace</string>
-        <string></string>
+        <string>Populate search engine index for one entity</string>
         <string></string>
         <string></string>
         <string>OpenMarket/Xcelerate/AssetType/Page/IndexReplace.xml</string>
@@ -15,6 +12,9 @@
         <string></string>
       </com.openmarket.xcelerate.common.ElementCatalogEntry>
     </data>
+    <id class="string">OpenMarket/Xcelerate/AssetType/Page/IndexReplace</id>
+    <resourceType>ELEMENTCATALOG</resourceType>
+    <deps class="java.util.Collections$EmptySet"/>
   </com.fatwire.realtime.ResourceDataImpl>
 </object-stream>
 <!--==================___ METADATA ___================
@@ -23,7 +23,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Thu Dec 06 13:17:34 CET 2012
+#Sun Dec 23 13:03:28 CET 2012
 storable0=/ELEMENTS/OpenMarket/Xcelerate/AssetType/Page/IndexReplace.xml|null|_storable_type\=%2FELEMENTS%2FOpenMarket%2FXcelerate%2FAssetType%2FPage%2FIndexReplace.xml
 key=@ELEMENTCATALOG-OpenMarket/Xcelerate/AssetType/Page/IndexReplace
 type=ELEMENTCATALOG

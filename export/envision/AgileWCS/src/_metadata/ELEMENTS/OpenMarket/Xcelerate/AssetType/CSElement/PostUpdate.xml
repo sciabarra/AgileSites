@@ -25,7 +25,7 @@ $Modtime: 5/23/02 2:47p $
 <PROPERTY.GET PARAM="analytics.enabled" INIFILE="futuretense_xcel.ini" VARNAME="analyticsEnabled"/>
 <if COND="Variables.analyticsEnabled=true">
 <then>
-    <CALLELEMENT NAME="Analytics/AddAuditIntegrationImgTag"/>
+  <CALLELEMENT NAME="Analytics/AddAuditIntegrationImgTag"/>
 </then>
 </if>
 <if COND="Variables.updatetype=edit">

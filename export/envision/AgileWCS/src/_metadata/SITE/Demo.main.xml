@@ -1,10 +1,10 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
-    <id class="string">Demo</id>
-    <resourceType>SITE</resourceType>
-    <deps class="empty-set"/>
     <data class="com.openmarket.xcelerate.site.Publication">
+      <adminSite>AdminSite</adminSite>
+      <specobjects/>
       <m__oAbstractNode>
+        <m__bParentChange>false</m__bParentChange>
         <m__sListName>PublicationTree</m__sListName>
         <m__aValue serialization="custom">
           <unserializable-parents/>
@@ -40,7 +40,7 @@
             <COM.FutureTense.Interfaces.FTVAL serialization="custom">
               <COM.FutureTense.Interfaces.FTVAL>
                 <int>30</int>
-                <string>1336168713777</string>
+                <string>1328079450298</string>
               </COM.FutureTense.Interfaces.FTVAL>
             </COM.FutureTense.Interfaces.FTVAL>
             <string>oversion</string>
@@ -61,14 +61,15 @@
             <COM.FutureTense.Interfaces.FTVAL serialization="custom">
               <COM.FutureTense.Interfaces.FTVAL>
                 <int>30</int>
-                <string>1336168713778</string>
+                <string>1328079450299</string>
               </COM.FutureTense.Interfaces.FTVAL>
             </COM.FutureTense.Interfaces.FTVAL>
           </hashtable>
         </m__aValue>
-        <m__bParentChange>false</m__bParentChange>
       </m__oAbstractNode>
       <m__oAbstractObject>
+        <m__bNew>false</m__bNew>
+        <m__bAllocated>false</m__bAllocated>
         <m__sListName>Publication</m__sListName>
         <m__aValue serialization="custom">
           <unserializable-parents/>
@@ -78,7 +79,7 @@
               <threshold>24</threshold>
             </default>
             <int>32</int>
-            <int>8</int>
+            <int>7</int>
             <string>pubroot</string>
             <COM.FutureTense.Interfaces.FTVAL serialization="custom">
               <COM.FutureTense.Interfaces.FTVAL>
@@ -90,14 +91,14 @@
             <COM.FutureTense.Interfaces.FTVAL serialization="custom">
               <COM.FutureTense.Interfaces.FTVAL>
                 <int>30</int>
-                <string>AgileWCS Demo Site</string>
+                <string>Demo</string>
               </COM.FutureTense.Interfaces.FTVAL>
             </COM.FutureTense.Interfaces.FTVAL>
             <string>id</string>
             <COM.FutureTense.Interfaces.FTVAL serialization="custom">
               <COM.FutureTense.Interfaces.FTVAL>
                 <int>30</int>
-                <string>1336168713777</string>
+                <string>1328079450298</string>
               </COM.FutureTense.Interfaces.FTVAL>
             </COM.FutureTense.Interfaces.FTVAL>
             <string>cs_preview</string>
@@ -108,13 +109,6 @@
               </COM.FutureTense.Interfaces.FTVAL>
             </COM.FutureTense.Interfaces.FTVAL>
             <string>cs_previewasset</string>
-            <COM.FutureTense.Interfaces.FTVAL serialization="custom">
-              <COM.FutureTense.Interfaces.FTVAL>
-                <int>30</int>
-                <string>null</string>
-              </COM.FutureTense.Interfaces.FTVAL>
-            </COM.FutureTense.Interfaces.FTVAL>
-            <string>cs_wrapperasset</string>
             <COM.FutureTense.Interfaces.FTVAL serialization="custom">
               <COM.FutureTense.Interfaces.FTVAL>
                 <int>30</int>
@@ -137,12 +131,11 @@
             </COM.FutureTense.Interfaces.FTVAL>
           </hashtable>
         </m__aValue>
-        <m__bNew>false</m__bNew>
-        <m__bAllocated>false</m__bAllocated>
       </m__oAbstractObject>
-      <adminSite>AdminSite</adminSite>
-      <specobjects/>
     </data>
+    <id class="string">Demo</id>
+    <resourceType>SITE</resourceType>
+    <deps class="java.util.Collections$EmptySet"/>
   </com.fatwire.realtime.ResourceDataImpl>
 </object-stream>
 <!--==================___ METADATA ___================
@@ -151,7 +144,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Thu Dec 06 13:17:35 CET 2012
+#Sun Dec 23 13:03:26 CET 2012
 key=@SITE-Demo
 type=SITE
 

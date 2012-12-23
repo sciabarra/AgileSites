@@ -61,15 +61,13 @@
 			<satellite.argument name="Depth" value="2"/>
 		</SATELLITE.LINK>
 
-		<XLAT.LOOKUP KEY="dvin/UI/Admin/WorkflowStates" ENCODE="false" VARNAME="statesDesc"/> 
 		<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
 			<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
-			<ARGUMENT NAME="Description" VALUE="Variables.statesDesc"/>
 			<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 			<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 			<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 			<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfstate.png"/>
+			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfstate.gif"/>
 			<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_States"/>
 		</CALLELEMENT>
 		
@@ -97,15 +95,14 @@
 			<satellite.argument name="Node" value="Processes"/>
 			<satellite.argument name="Depth" value="2"/>
 		</SATELLITE.LINK>
-		<XLAT.LOOKUP KEY="dvin/UI/Admin/WorkflowProcesses" ENCODE="false" VARNAME="processDesc"/> 
+
 		<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
 			<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
-			<ARGUMENT NAME="Description" VALUE="Variables.processDesc"/> 
 			<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 			<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 			<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 			<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfprocess.png"/>
+			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfprocess.gif"/>
 			<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_Process"/>
 		</CALLELEMENT>
 		
@@ -142,11 +139,11 @@
 					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.gif"/>
 				</CALLELEMENT>
 				
 				<!-- display the email objects -->
-				<SELECTTO LIST="ActiveWflSubject" FROM="WorkflowSubject" WHAT="*" ORDERBY="name"/> 
+				<SELECTTO LIST="ActiveWflSubject" FROM="WorkflowSubject" WHAT="*" ORDERBY="description"/>
 				<loop LIST="ActiveWflSubject">
 					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
 						<ARGUMENT NAME="AdHoc" VALUE="Email:Existing:ActiveWflSubject.name"/>
@@ -167,12 +164,11 @@
 					</SATELLITE.LINK>
 
 					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
-						<ARGUMENT NAME="Label" VALUE="ActiveWflSubject.name"/>
-						<ARGUMENT NAME="Description" VALUE="ActiveWflSubject.description"/> 
+						<ARGUMENT NAME="Label" VALUE="ActiveWflSubject.description"/>
 						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfemail.png"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfemail.gif"/>
 					</CALLELEMENT>
 				</loop>
 	
@@ -215,7 +211,7 @@
 					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.gif"/>
 					<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_Action_Step"/>
 				</CALLELEMENT>
 	
@@ -252,7 +248,7 @@
 					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.gif"/>
 					<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_Action_Condition"/>
 				</CALLELEMENT>
 			
@@ -289,7 +285,7 @@
 					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.gif"/>
 					<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_Action_Timed"/>
 				</CALLELEMENT>
 	
@@ -326,7 +322,7 @@
 					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.gif"/>
 					<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_Action_Delegate"/>
 				</CALLELEMENT>
 	
@@ -363,7 +359,7 @@
 					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.gif"/>
 					<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_Action_Deadlock"/>
 				</CALLELEMENT>
 	
@@ -400,7 +396,7 @@
 					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.gif"/>
 					<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_Action_Group"/>
 				</CALLELEMENT>
 				<REMOVEVAR NAME="RefreshKeys"/>
@@ -432,7 +428,7 @@
 					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.gif"/>
 				</CALLELEMENT>
 				
 				<!-- display the workflow state codes -->
@@ -458,12 +454,11 @@
 					</SATELLITE.LINK>
 
 					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
-						<ARGUMENT NAME="Label" VALUE="ActiveWflStates.workflowstatuscode"/>
-						<ARGUMENT NAME="Description" VALUE="ActiveWflStates.description"/>
+						<ARGUMENT NAME="Label" VALUE="ActiveWflStates.description"/>
 						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfstate.png"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfstate.gif"/>
 					</CALLELEMENT>
 				</loop>
 			</THEN>
@@ -497,12 +492,12 @@
 					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.gif"/>
 				</CALLELEMENT>
 				-->
 	
 				<!-- display the functions -->
-				<SELECTTO LIST="WfFuncs" FROM="CCFunction" WHAT="*" ORDERBY="ccfunction"/> 
+				<SELECTTO LIST="WfFuncs" FROM="CCFunction" WHAT="*" ORDERBY="description"/>
 				<loop LIST="WfFuncs">
 				<substitute STR="WfFuncs.ccfunction" WHAT="%20" WITH="/XCEL-SEP/" OUTSTR="sanefunction"/>
 					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
@@ -527,12 +522,11 @@
                     <WORKFLOWENGINE.GETFUNCTIONID ID="WfFuncs.id" OBJVARNAME="functionObject" />
                     <WORKFLOWFUNCTION.GETDESCRIPTION NAME="functionObject" VARNAME="funcDesc" />
                     <CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
-                        <ARGUMENT NAME="Label" VALUE="Variables.sanefunction"/> 
-			<ARGUMENT NAME="Description" VALUE="Variables.funcDesc"/> 
+                        <ARGUMENT NAME="Label" VALUE="Variables.funcDesc"/>
                         <ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
                         <ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
                         <ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-                        <ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wffunction.png"/>
+                        <ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wffunction.gif"/>
                     </CALLELEMENT>
                     <!-- end #10517 -->
                 </loop>
@@ -564,7 +558,7 @@
 						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.gif"/>
 					</CALLELEMENT>
 					
 					<!-- display the workflow processes for all sites -->
@@ -577,8 +571,7 @@
 						<loop FROM="0" COUNT="Variables.wfq:Total">
 							<WORKFLOWPROCESS.GETPROCESSNAME NAME="wfq:Counters.NPROCESSES" VARNAME="apname"/>
 							<WORKFLOWPROCESS.GETID NAME="wfq:Counters.NPROCESSES" VARNAME="apid"/>
-                            <WORKFLOWPROCESS.GETPROCESSDESCRIPTION NAME="wfq:Counters.NPROCESSES"  VARNAME="processDescription" />
-							
+                            
 							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
 								<ARGUMENT NAME="AdHoc" VALUE="Processes:Existing:Variables.apid"/>
 								<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
@@ -597,11 +590,10 @@
 
 							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
 								<ARGUMENT NAME="Label" VALUE="Variables.apname"/>
-								<ARGUMENT NAME="Description" VALUE="Variables.processDescription"/>
 								<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 								<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 								<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-								<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfprocess.png"/>
+								<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfprocess.gif"/>
 							</CALLELEMENT>
 							<inccounter NAME="NPROCESSES" VALUE="1"/>
 			  			</loop>
@@ -641,7 +633,7 @@
 						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.gif"/>
 					</CALLELEMENT>
 					
 					<!-- display the step actions -->
@@ -656,9 +648,8 @@
 						<WORKFLOWACTION.GETNAME NAME="wfstp:Counters.NACTIONS" VARNAME="actionname"/>
 						<WORKFLOWACTION.GETID NAME="wfstp:Counters.NACTIONS" VARNAME="actionid"/>
 						<WORKFLOWACTION.GETDESCRIPTION NAME="wfstp:Counters.NACTIONS" VARNAME="actiondescription"/>
-						
 						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
-							<ARGUMENT NAME="AdHoc" VALUE="StepActions:Existing:Variables.actionname"/>
+							<ARGUMENT NAME="AdHoc" VALUE="StepActions:Existing:ActiveWfl.workflow"/>
 							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 						</CALLELEMENT>
 						
@@ -677,12 +668,11 @@
 						</SATELLITE.LINK>
 
 						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
-							<ARGUMENT NAME="Label" VALUE="Variables.saneactionname"/> 
-							<ARGUMENT NAME="Description" VALUE="Variables.actiondescription"/>  
+							<ARGUMENT NAME="Label" VALUE="Variables.actiondescription"/>
 							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 							<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.gif"/>
 						</CALLELEMENT>
 						<inccounter NAME="NACTIONS" VALUE="1"/>
 					</loop>
@@ -719,7 +709,7 @@
 						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.gif"/>
 					</CALLELEMENT>
 					
 					<!-- display the step conditions -->
@@ -734,7 +724,7 @@
 						<WORKFLOWACTION.GETID NAME="wfsc:Counters.NACTIONS" VARNAME="actionid"/>
 						<WORKFLOWACTION.GETDESCRIPTION NAME="wfsc:Counters.NACTIONS" VARNAME="actiondescription"/>
 						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
-							<ARGUMENT NAME="AdHoc" VALUE="StepConditions:Existing:Variables.actionname"/>
+							<ARGUMENT NAME="AdHoc" VALUE="StepConditions:Existing:ActiveWfl.workflow"/>
 							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 						</CALLELEMENT>
 						
@@ -753,12 +743,11 @@
 						</SATELLITE.LINK>
 
 						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
-							<ARGUMENT NAME="Label" VALUE="Variables.saneactionname"/> 
-							<ARGUMENT NAME="Description" VALUE="Variables.actiondescription"/>  
+							<ARGUMENT NAME="Label" VALUE="Variables.actiondescription"/>
 							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 							<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.gif"/>
 						</CALLELEMENT>
 						<inccounter NAME="NACTIONS" VALUE="1"/>
 					</loop>
@@ -798,7 +787,7 @@
 						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.gif"/>
 					</CALLELEMENT>
 					
 					<!-- display the Timed Actions previously named Assignment Actions -->
@@ -812,9 +801,8 @@
 						<WORKFLOWACTION.GETNAME NAME="wfa:Counters.NACTIONS" VARNAME="actionname"/>
 						<WORKFLOWACTION.GETID NAME="wfa:Counters.NACTIONS" VARNAME="actionid"/>
 						<WORKFLOWACTION.GETDESCRIPTION NAME="wfa:Counters.NACTIONS" VARNAME="actiondescription"/>
-						
 						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
-							<ARGUMENT NAME="AdHoc" VALUE="TimedActions:Existing:Variables.actionname"/>
+							<ARGUMENT NAME="AssetType" VALUE="TimedActions:Existing:ActiveWfl.workflow"/>
 							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 						</CALLELEMENT>
 						
@@ -833,12 +821,11 @@
 						</SATELLITE.LINK>
 
 						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
-							<ARGUMENT NAME="Label" VALUE="Variables.saneactionname"/> 
-							<ARGUMENT NAME="Description" VALUE="Variables.actiondescription"/>  
+							<ARGUMENT NAME="Label" VALUE="Variables.actiondescription"/>
 							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 							<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.gif"/>
 						</CALLELEMENT>
 						<inccounter NAME="NACTIONS" VALUE="1"/>
 					</loop>
@@ -876,7 +863,7 @@
 						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.gif"/>
 					</CALLELEMENT>
 					
 					<!-- display the delegate actions -->
@@ -890,9 +877,8 @@
 						<WORKFLOWACTION.GETNAME NAME="wfdlg:Counters.NACTIONS" VARNAME="actionname"/>
 						<WORKFLOWACTION.GETID NAME="wfdlg:Counters.NACTIONS" VARNAME="actionid"/>
 						<WORKFLOWACTION.GETDESCRIPTION NAME="wfdlg:Counters.NACTIONS" VARNAME="actiondescription"/>
-						
 						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
-							<ARGUMENT NAME="AdHoc" VALUE="DelegateActions:Existing:Variables.actionname"/>
+							<ARGUMENT NAME="AdHoc" VALUE="DelegateActions:Existing:ActiveWfl.workflow"/>
 							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 						</CALLELEMENT>
 						
@@ -911,12 +897,11 @@
 						</SATELLITE.LINK>
 
 						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
-							<ARGUMENT NAME="Label" VALUE="Variables.saneactionname"/> 
-							<ARGUMENT NAME="Description" VALUE="Variables.actiondescription"/>  
+							<ARGUMENT NAME="Label" VALUE="Variables.actiondescription"/>
 							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 							<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.gif"/>
 						</CALLELEMENT>
 						<inccounter NAME="NACTIONS" VALUE="1"/>
 					</loop>
@@ -954,7 +939,7 @@
 						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.gif"/>
 					</CALLELEMENT>
 					
 					<!-- display the deadlock actions -->
@@ -968,9 +953,8 @@
 						<WORKFLOWACTION.GETNAME NAME="wfdlk:Counters.NACTIONS" VARNAME="actionname"/>
 						<WORKFLOWACTION.GETID NAME="wfdlk:Counters.NACTIONS" VARNAME="actionid"/>
 						<WORKFLOWACTION.GETDESCRIPTION NAME="wfdlk:Counters.NACTIONS" VARNAME="actiondescription"/>
-						
 						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
-							<ARGUMENT NAME="AdHoc" VALUE="DeadlockActions:Existing:Variables.actionname"/>
+							<ARGUMENT NAME="AdHoc" VALUE="DeadlockActions:Existing:ActiveWfl.workflow"/>
 							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 						</CALLELEMENT>
 						
@@ -989,12 +973,11 @@
 						</SATELLITE.LINK>
 
 						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
-							<ARGUMENT NAME="Label" VALUE="Variables.saneactionname"/> 
-							<ARGUMENT NAME="Description" VALUE="Variables.actiondescription"/>  
+							<ARGUMENT NAME="Label" VALUE="Variables.actiondescription"/>
 							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 							<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.gif"/>
 						</CALLELEMENT>
 						<inccounter NAME="NACTIONS" VALUE="1"/>
 					</loop>
@@ -1032,7 +1015,7 @@
 						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.gif"/>
 					</CALLELEMENT>
 					
 					<!-- display the deadlock actions -->
@@ -1043,13 +1026,11 @@
 					<if COND="Variables.wfgrp:Total!=0">
 					<then>
 					<loop FROM="0" COUNT="Variables.wfgrp:Total">
-					
 						<WORKFLOWACTION.GETNAME NAME="wfgrp:Counters.NACTIONS" VARNAME="actionname"/>
 						<WORKFLOWACTION.GETID NAME="wfgrp:Counters.NACTIONS" VARNAME="actionid"/>
 						<WORKFLOWACTION.GETDESCRIPTION NAME="wfgrp:Counters.NACTIONS" VARNAME="actiondescription"/>
-						
 						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
-							<ARGUMENT NAME="AdHoc" VALUE="GroupActions:Existing:Variables.actionname"/>
+							<ARGUMENT NAME="AdHoc" VALUE="GroupActions:Existing:ActiveWfl.workflow"/>
 							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 						</CALLELEMENT>
 						
@@ -1068,12 +1049,11 @@
 						</SATELLITE.LINK>
 
 						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
-							<ARGUMENT NAME="Label" VALUE="Variables.saneactionname"/> 
-							<ARGUMENT NAME="Description" VALUE="Variables.actiondescription"/> 
+							<ARGUMENT NAME="Label" VALUE="Variables.actiondescription"/>
 							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 							<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.gif"/>
 						</CALLELEMENT>
 						<inccounter NAME="NACTIONS" VALUE="1"/>
 					</loop>

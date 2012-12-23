@@ -76,12 +76,13 @@
 </callelement>
 <IF COND="Variables.ContentDetails:element:Total!=0">
 				<THEN>
-			
+				<TABLE>
 				<if COND="Variables.ContentDetails:element:0:pagename:Total=0">
 				<then>
 					<tr>
 					<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/SiteCatalogPagename"/>:</td>
-					<td class="form-inset">
+					<td></td>
+					<td>
              		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowCellMessage">
 				 			<argument NAME="severity" VALUE="warning"/>
 				 			<argument NAME="elem" VALUE="TemplateSCEntryDoesntExist"/>
@@ -90,6 +91,7 @@
 			      </tr>
 		      </then>
 		      <else>
+	      	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
 				<tr>
 				<XLAT.LOOKUP KEY="dvin/AT/Template/SiteEntries" VARNAME="label"/>
 				<if COND="Variables.ContentDetails:element:Total=1">
@@ -101,8 +103,9 @@
 					</if>
 				</then>
 				</if>
-				<td class="form-label-text" style="width:200px;"><STRING.STREAM VARIABLE="label"/>:</td>
-				<td class="form-inset">
+				<td valign="middle" class="form-label-text"><STRING.STREAM VARIABLE="label"/>:</td>
+				<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+				<td>
 	 				<table BORDER="0" CELLSPACING="0" CELLPADDING="0">
 	     				<tr>
 						<td></td><td class="tile-dark" VALIGN="TOP" HEIGHT="1"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td><td></td>
@@ -128,7 +131,7 @@
 						<IF COND="Variables.separatorLine=1">
 							<THEN>
 								<tr>
-									<!--<td colspan="11" class="light-line-color"><img height="1" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>-->
+									<td colspan="11" class="light-line-color"><img height="1" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
 								</tr>
 							</THEN>
 						</IF>
@@ -203,7 +206,7 @@
 							<argument NAME="param" VALUE="pageNameList.pagename"/>
 						</callelement>
 		                  <td VALIGN="top" ><div class="small-text-inset"><XLAT.LOOKUP KEY="dvin/Common/AT/ContentServerCacheInfo" VARNAME="_XLAT_"/><acronym TITLE="Variables._XLAT_" REPLACEALL="Variables._XLAT_" style="cursor : help"><STRING.STREAM VARIABLE="ContentDetails:element:Variables.currentElementNum:cscacheinfo"/></acronym>
-
+/
 <XLAT.LOOKUP KEY="dvin/Common/AT/SatelliteCacheInfo" VARNAME="_XLAT_"/>
 <acronym TITLE="Variables._XLAT_" REPLACEALL="Variables._XLAT_" style="cursor : help"><STRING.STREAM VARIABLE="ContentDetails:element:Variables.currentElementNum:sscacheinfo"/></acronym></div></td><td><br /></td>
 		                  </tr>
@@ -243,7 +246,7 @@
 				</tr>
 				</else>
 				</if>
-				
+				</TABLE>
 				</THEN>
 				</IF>				
 

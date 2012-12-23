@@ -37,7 +37,17 @@
 <!-- needs to be added to SystemLocaleString -sjc -->
 <STRINGLIST NAME="LocalizedCategories" STR="Variables._localcats_" DELIM=","/>
 
-<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar"/>
+<tr>
+	<td height="2"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="2" REPLACEALL="Variables.cs_imagedir"/></td>
+</tr>
+
+<tr>
+	<td height="2" class="dark-line-color"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="2" REPLACEALL="Variables.cs_imagedir"/></td>
+</tr>
+
+<tr>
+	<td height="2"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="2" REPLACEALL="Variables.cs_imagedir"/></td>
+</tr>
 
 <tr>
 	<td>
@@ -55,7 +65,7 @@
 							<XLAT.LOOKUP KEY="dvin/AT/Template/SpecCategoryforTemplate" VARNAME="_specCat_"/>
 							<td align="left" valign="top">
 								<a href="javascript:void(0)" onclick="return FixpagenameWithCheck('Variables.ThisPage','ContentFormListCategories.ITEM');" title="Variables._specCat_" onmouseover="window.status='Variables._nextCat_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._specCat_,Variables._nextCat_,ListCategories.ITEM,Variables.ThisPage">
-									<IMG src="Variables.cs_imagedir/graphics/common/icon/mArrowOff.gif" vspace="7" hspace="1" HEIGHT="9" WIDTH="9" BORDER="0" REPLACEALL="Variables.cs_imagedir"/>
+									<IMG src="Variables.cs_imagedir/graphics/common/icon/mArrowOff.gif" vspace="2" hspace="1" HEIGHT="9" WIDTH="9" BORDER="0" REPLACEALL="Variables.cs_imagedir"/>
 								</a>
 							</td>
 							<td align="left" valign="top">

@@ -11,14 +11,10 @@
 <tr>
 	<td class="form-label-text"> <XLAT.STREAM KEY="dvin/Common/AT/CreateTemplateElementQ"/> </td>
 	<td></td>
-	<td class="form-inset">
-		<table><tr><td>
-		<a href="javascript:void(0);" onmouseover="window.status='';return true;" onmouseout="window.status='';return true" onClick="setXmlString('Template:element:Variables.currentElement:url','Template:element:Variables.currentElement:theme')" REPLACEALL="Variables.currentElement"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Xml"/></CALLELEMENT></a>
-		</td><td>
-		<a href="javascript:void(0);" onmouseover="window.status='';return true;" onmouseout="window.status='';return true" onClick="setJspString('Template:element:Variables.currentElement:url','Template:element:Variables.currentElement:theme')" REPLACEALL="Variables.currentElement"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Jsp"/></CALLELEMENT></a>
-		</td><td>
-		<a href="javascript:void(0);" onmouseover="window.status='';return true;" onmouseout="window.status='';return true" onClick="setHtmlString('Template:element:Variables.currentElement:url','Template:element:Variables.currentElement:theme')" REPLACEALL="Variables.currentElement"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Html"/></CALLELEMENT></a>
-		</td></tr></table>
+	<td>
+		<a href="javascript:void(0);" onmouseover="window.status='';return true;" onmouseout="window.status='';return true" onClick="setXmlString('Template:element:Variables.currentElement:url','Template:element:Variables.currentElement:theme')" REPLACEALL="Variables.currentElement"><img src="Variables.cs_imagedir/graphics/common/button/content/images/xml.gif" border="0" REPLACEALL="Variables.cs_imagedir"/></a>
+		<a href="javascript:void(0);" onmouseover="window.status='';return true;" onmouseout="window.status='';return true" onClick="setJspString('Template:element:Variables.currentElement:url','Template:element:Variables.currentElement:theme')" REPLACEALL="Variables.currentElement"><img src="Variables.cs_imagedir/graphics/common/button/content/images/jsp.gif" hspace="12" border="0" REPLACEALL="Variables.cs_imagedir"/></a>
+		<a href="javascript:void(0);" onmouseover="window.status='';return true;" onmouseout="window.status='';return true" onClick="setHtmlString('Template:element:Variables.currentElement:url','Template:element:Variables.currentElement:theme')" REPLACEALL="Variables.currentElement"><img src="Variables.cs_imagedir/graphics/common/button/content/images/html.gif" hspace="0" border="0" REPLACEALL="Variables.cs_imagedir"/></a>
 	</td>
 </tr>
 <setvar NAME="varname" VALUE="ContentDetails:element:Variables.currentElement:theme"/> 
@@ -31,8 +27,8 @@
 		<XLAT.STREAM KEY="dvin/Common/Variant"/>:
 	</td>
 	<td></td>
-	<td class="form-inset">
-		<INPUT TYPE="text" SIZE="32" MAXLENGTH="32" NAME="Template:element:Variables.currentElement:theme" VALUE="Variables.value" REPLACEALL="Variables.value,Variables.currentElement"/>
+	<td>
+		<INPUT TYPE="text" SIZE="20" MAXLENGTH="32" NAME="Template:element:Variables.currentElement:theme" VALUE="Variables.value" REPLACEALL="Variables.value,Variables.currentElement"/>
 	</td>
 </tr>
 </THEN>

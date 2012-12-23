@@ -22,7 +22,7 @@ $Modtime: 9/18/03 2:25p $
 
 <!-- Set the table name for SQLEXP use -->
 
-<SETVAR NAME="tablename" VALUE="SiteEntry"/>
+	<SETVAR NAME="tablename" VALUE="SiteEntry"/>
 
 <if COND="IsVariable.Name=true">
 	<then>
@@ -41,17 +41,9 @@ $Modtime: 9/18/03 2:25p $
 
 <if COND="IsVariable.Category=true">
     <then>
-  		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
-			<argument NAME="columnvalue" VALUE="Variables.Category"/>
-			<argument NAME="type" VALUE="Length"/>
-			<argument NAME="wordcounts" VALUE="4"/>
-		</callelement>
-		<if cond="Variables.validatedstatus=true">
-		<then>
-		<ics.literal  table="Category"   column="category" string="Variables.Category"  output="literal"/>
-		<SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.category=Variables.literal"/>
-		 </then>
-		</if>      
+    
+    <ics.literal  table="Category"   column="category" string="Variables.Category"  output="literal"/>
+	<SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.category=Variables.literal"/>
     </then>
 </if>
 
@@ -69,16 +61,7 @@ $Modtime: 9/18/03 2:25p $
 
 <if COND="IsVariable.Status=true">
     <then>
-		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
-			<argument NAME="columnvalue" VALUE="Variables.Status"/>
-			<argument NAME="type" VALUE="Length"/>
-			<argument NAME="wordcounts" VALUE="2"/>
-		</callelement>
-		<if cond="Variables.validatedstatus=true">
-		<then>
-		<SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.status='Variables.Status'"/>
-		 </then>
-		</if>
+	<SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.status='Variables.Status'"/>
 	<SETVAR NAME="statuscode" VALUE="Variables.Status"/>
 	<SETVAR NAME="errno" VALUE="0"/>
 	<SELECTTO LIST="StatusDesc" WHAT="description" FROM="StatusCode" WHERE="statuscode"/>
@@ -101,16 +84,9 @@ $Modtime: 9/18/03 2:25p $
 
 <if COND="IsVariable.Subtype=true">
     <then>
-    <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
-			<argument NAME="columnvalue" VALUE="Variables.Subtype"/>
-			<argument NAME="type" VALUE="Nospace"/>
-	</callelement>
-	<if cond="Variables.validatedstatus=true">
-	<then>
+    
     <ics.literal  table="SiteEntry" column="subtype" string="Variables.Subtype"  output="literal"/>
 	<SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.subtype=Variables.literal"/>
-	 </then>
-	</if>     
 	<ASSETTYPE.LIST LIST="assetlist" FIELD1="assettype" VALUE1="Variables.Subtype"/>
 	<SETVAR NAME="errno" VALUE="0"/>
     
@@ -143,15 +119,7 @@ $Modtime: 9/18/03 2:25p $
 
 <if COND="IsVariable.Id=true">
     <then>
-		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
-			<argument NAME="columnvalue" VALUE="Variables.Id"/>
-			<argument NAME="type" VALUE="Long"/>
-		</callelement>
-		<if cond="Variables.validatedstatus=true">
-		<then>
-		  <SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.id = Variables.Id"/>
-		 </then>
-		</if>
+    <SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.id = Variables.Id"/>
     <XLAT.LOOKUP KEY="dvin/UI/Search/IDis" VARNAME="_XLAT_"/>
     
     <SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.Id'"/>
@@ -171,17 +139,9 @@ $Modtime: 9/18/03 2:25p $
     <then>
 	<if COND="Variables.UpdatedBefore!=Variables.null">
 		<then>
-		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
-			<argument NAME="columnvalue" VALUE="Variables.UpdatedBefore"/>
-			<argument NAME="type" VALUE="Date"/>
-		</callelement>
-		<if cond="Variables.validatedstatus=true">
-		<then>
 		<SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.updateddate &#060; Variables.UpdatedBefore"/>
-		 </then>
-		</if>
-        <XLAT.LOOKUP KEY="dvin/UI/updatedbefore" VARNAME="_XLAT_" ENCODE="false"/>
-       		<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_"/>
+        <XLAT.LOOKUP KEY="dvin/UI/updatedbefore" VARNAME="_XLAT_"/>
+       		<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.UpdatedBefore'"/>
 		</then>
 	</if>	
     </then>
@@ -191,17 +151,9 @@ $Modtime: 9/18/03 2:25p $
     <then>
 	<if COND="Variables.UpdatedAfter!=Variables.null">
 		<then>
-		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
-			<argument NAME="columnvalue" VALUE="Variables.UpdatedAfter"/>
-			<argument NAME="type" VALUE="Date"/>
-		</callelement>
-		<if cond="Variables.validatedstatus=true">
-		<then>
 		<SETVAR NAME="queryend" VALUE="Variables.queryend AND Variables.UpdatedAfter &#060; SiteEntry.updateddate"/>
-		 </then>
-		</if>
-        <XLAT.LOOKUP KEY="dvin/UI/updatedafter" VARNAME="_XLAT_" ENCODE="false"/>
-		<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_"/>
+        <XLAT.LOOKUP KEY="dvin/UI/updatedafter" VARNAME="_XLAT_"/>
+		<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.UpdatedAfter'"/>
 		</then>
 	</if>	
     </then>
@@ -209,18 +161,10 @@ $Modtime: 9/18/03 2:25p $
 
 <if COND="IsVariable.UpdatedBy=true">
     <then>
-    <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
-			<argument NAME="columnvalue" VALUE="Variables.UpdatedBy"/>
-			<argument NAME="type" VALUE="Nospace"/>
-	</callelement>
-	<if cond="Variables.validatedstatus=true">
-	<then>
     <XLAT.LOOKUP KEY="dvin/Common/ModifiedByLC" VARNAME="_XLAT_"/>
     <ics.literal  table="SiteEntry" column="updatedby" string="Variables.UpdatedBy"  output="literal"/>
 	<SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.updatedby=Variables.literal"/>
 	<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.UpdatedBy'"/>
-	 </then>
-	</if> 
     </then>
 </if>
 

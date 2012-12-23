@@ -44,7 +44,6 @@ $Modtime: 9/15/03 1:14p $
             
 
  		<ASSET.GATHER NAME="theCurrentAsset" PREFIX="CSElement" FIELDLIST="Variables.FieldsOnForm"/>
- 		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
     	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
 			<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
 			<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
@@ -54,27 +53,12 @@ $Modtime: 9/15/03 1:14p $
 
 <if COND="Variables.updatetype=create">
 <then>
-	<SETVAR NAME="rootElement" VALUE="Variables.CSElement:rootelement"/>
 	<ASSET.LIST LIST="CSEntries" TYPE="CSElement" FIELD1="rootelement" VALUE1="Variables.CSElement:rootelement" EXCLUDEVOIDED="true"/>
     <IF COND="IsError.Variables.errno=false">
     <THEN>
-   		<setvar NAME="assetName" VALUE="CSEntries.name"/>
-		<SETVAR NAME="assetType" VALUE="CSElement"/>
 	    <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
 		<argument NAME="severity" VALUE="error"/>
-			<argument NAME="elem" VALUE="ElementInUse"/>
-	    </callelement>
-	   <throwexception/>	
-    </THEN>
-    </IF>
-	<ASSET.LIST LIST="TemplateEntries" TYPE="Template" FIELD1="rootelement" VALUE1="Variables.CSElement:rootelement" EXCLUDEVOIDED="true"/>
-    <IF COND="IsError.Variables.errno=false">
-    <THEN>
-   		<setvar NAME="assetName" VALUE="TemplateEntries.name"/>
-		<SETVAR NAME="assetType" VALUE="Template"/>
-	    <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
-			<argument NAME="severity" VALUE="error"/>
-			<argument NAME="elem" VALUE="ElementInUse"/>
+		<argument NAME="elem" VALUE="CSElementInUse"/>
 	    </callelement>
 	   <throwexception/>	
     </THEN>
@@ -84,7 +68,7 @@ $Modtime: 9/15/03 1:14p $
     <ASSET.GATHER NAME="theCurrentAsset" PREFIX="CSElement" FIELDLIST="Variables.FieldsOnForm"/>
     <!-- workaround to fix bug associated with ASSET.GATHER -->    
     <ASSET.SET NAME="theCurrentAsset" FIELD="rootelement" VALUE="Variables.CSElement:rootelement"/>
- 		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+ 
     	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
 			<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
 			<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>

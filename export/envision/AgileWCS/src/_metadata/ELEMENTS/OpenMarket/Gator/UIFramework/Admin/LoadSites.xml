@@ -34,7 +34,7 @@
 		<ELSE>
 			<SETVAR NAME="Depth" VALUE="2"/>
 			<SETVAR NAME="currentPubid" VALUE="SessionVariables.pubid"/>
-
+			
 			<PUBLICATION.LOAD NAME="publication" FIELD="id" VALUE="SessionVariables.pubid"/>
             <!-- pubname is used inside "dvin/TreeApplet/PubnameSite" -->
 			<PUBLICATION.GET NAME="publication" FIELD="name" OUTPUT="pubname"/>
@@ -47,7 +47,7 @@
 
 			<REMOVEVAR NAME="LoadURL"/>
 			  <REMOVEVAR NAME="ExecuteURL"/>
-
+			
             <XLAT.LOOKUP KEY="dvin/TreeApplet/PubnameSite" ENCODE="false" VARNAME="_XLAT_"/>
 			<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
 				<satellite.argument name="AssetType" value="Variables.AssetType"/>
@@ -60,14 +60,14 @@
 				<!-- LoadURL,ExecuteURL implicitly passed in -->
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 				<ARGUMENT NAME="OKActions" VALUE="refresh"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/siteplan.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/siteplan.gif"/>
 			</CALLELEMENT>
 		</ELSE>
 		</IF>
-
+		
 	</THEN>
 	</IF>
-
+	
 	<IF COND="Variables.Depth=1">
 	<THEN>
 		<!-- always display the 'Add New' node as the first child -->
@@ -75,7 +75,7 @@
 			<ARGUMENT NAME="AdHoc" VALUE="Sites:New"/>
 			<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 		</CALLELEMENT>
-
+		
 		<REMOVEVAR NAME="OKActions"/>
 		<REMOVEVAR NAME="LoadURL"/>
 		<PUBLICATION.ALLOWEDTOADD VARNAME="mypermission"/>
@@ -91,14 +91,14 @@
 			<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
 				<satellite.argument name="AssetType" value="Variables.AssetType"/>
 			</SATELLITE.LINK>
-
+     
 			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
 				<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
 				<ARGUMENT NAME="Description" VALUE="Variables._XLAT1_"/>
 				<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 				<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.gif"/>
 			</CALLELEMENT>
 		</THEN>
 		</IF>
@@ -111,7 +111,7 @@
 		<IF COND="Variables.errno=0">
 		<THEN>
 			<!-- Attempt to get a list of all publications -->
-
+		
 			<PUBLICATION.LIST LIST="ActivePub" ORDER="name"/>
 			<IF COND="IsError.Variables.errno=true">
 			<THEN>
@@ -122,9 +122,9 @@
 				</IF>
 			</THEN>
 			</IF>
-
+			
 			<!-- Attempt to get a list of all asset types -->
-
+		
 			<ASSETTYPE.LIST LIST="AssetType" ORDER="description"/>
 			<IF COND="IsError.Variables.errno=true">
 			<THEN>
@@ -135,7 +135,7 @@
 				</IF>
 			</THEN>
 			</IF>
-
+				
 			<!-- If there are some publications... -->
 			<IF COND="IsList.ActivePub=true">
 			<THEN>
@@ -154,7 +154,7 @@
 						</SATELLITE.LINK>
 					</THEN>
 					</IF>
-
+					
 					<IF COND="IsList.AssetType=true">
 					<THEN>
 						<IF COND="AssetType.#numRows!=0">
@@ -169,12 +169,12 @@
 						</IF>
 					</THEN>
 					</IF>
-
+					
 					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
 						<ARGUMENT NAME="SiteID" VALUE="ActivePub.id"/>
 						<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 					</CALLELEMENT>
-
+					
 					<REMOVEVAR NAME="OKActions"/>
 
 					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/SiteFront" outstring="ExecuteURL">
@@ -193,9 +193,9 @@
 						<!-- LoadURL implicitly set -->
 						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Home.png"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Home.gif"/>
 					</CALLELEMENT>
-
+					
 				</LOOP>
 			</THEN>
 			</IF>
@@ -217,7 +217,7 @@
 						<ARGUMENT NAME="AdHoc" VALUE="Users"/>
 						<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 					</CALLELEMENT>
-
+					
 					<REMOVEVAR NAME="OKActions"/>
 					<REMOVEVAR NAME="LoadURL"/>
                     <XLAT.LOOKUP KEY="dvin/TreeApplet/Users" ENCODE="false" VARNAME="_XLAT_"/>
@@ -236,15 +236,15 @@
 						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Personal.png"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Personal.gif"/>
 					</CALLELEMENT>
 				</THEN>
 				</IF>
 			</THEN>
 			</IF>
-
+			
 			<!-- Attempt to get a list of all asset types -->
-
+		
 			<ASSETTYPE.LIST LIST="AssetType" ORDER="description"/>
 			<IF COND="IsError.Variables.errno=true">
 			<THEN>
@@ -255,7 +255,7 @@
 				</IF>
 			</THEN>
 			</IF>
-
+			
 			<IF COND="IsList.AssetType=true">
 			<THEN>
 				<IF COND="AssetType.#numRows!=0">
@@ -274,15 +274,15 @@
 						</IF>
 			</THEN>
 			</IF>
-
+			
 			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
 				<ARGUMENT NAME="AdHoc" VALUE="AssetTypes"/>
 				<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 			</CALLELEMENT>
-
+			
 			<REMOVEVAR NAME="ExecuteURL"/>
 			<REMOVEVAR NAME="OKActions"/>
-
+	       
             <XLAT.LOOKUP KEY="dvin/TreeApplet/AssetTypes" ENCODE="false" VARNAME="_XLAT_"/>
 			<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
 				<satellite.argument name="AssetType" value="Variables.AssetType"/>
@@ -295,17 +295,17 @@
 				<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 				<!-- LoadURL implicitly set -->
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Memo.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Memo.gif"/>
 				<ARGUMENT NAME="RefreshKeys" VALUE="Variables.currentPubid_ATs"/>
 			</CALLELEMENT>
-
+			
 			<!-- display links to WordIntegration Admin Controls   -->
-
+	
 			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
 				<ARGUMENT NAME="AdHoc" VALUE="WordIntegration"/>
 				<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 			</CALLELEMENT>
-
+			
 			<REMOVEVAR NAME="ExecuteURL"/>
 			<REMOVEVAR NAME="OKActions"/>
 			<REMOVEVAR NAME="LoadURL"/>
@@ -317,7 +317,7 @@
 				<satellite.argument name="currentPubid" value="Variables.currentPubid"/>
 				<satellite.argument name="Type" value="MSWord"/>
 			</SATELLITE.LINK>
-
+	
 			<XLAT.LOOKUP KEY="dvin/TreeApplet/CSDesktop" ENCODE="false" VARNAME="_XLAT_"/>
             <XLAT.LOOKUP KEY="dvin/TreeApplet/CSDesktopIntegrationForAssetTypes" ENCODE="false" VARNAME="_XLAT1_"/>
 
@@ -339,14 +339,14 @@
 				<!-- LoadURL implicitly set -->
 				<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Memo.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Memo.gif"/>
 				<ARGUMENT NAME="RefreshKeys" VALUE="Variables.currentPubid_MSWord"/>
 			</CALLELEMENT>
-
+	
 			<REMOVEVAR NAME="RefreshKeys"/>
-
+			
 			<!-- display links to CS DocLink Admin Controls   -->
-
+	
 			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
 				<ARGUMENT NAME="AdHoc" VALUE="DocLink"/>
 				<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
@@ -363,7 +363,7 @@
 				<satellite.argument name="currentPubid" value="Variables.currentPubid"/>
 				<satellite.argument name="Type" value="CSDocLink"/>
 			</SATELLITE.LINK>
-
+			
 			<XLAT.LOOKUP KEY="dvin/TreeApplet/CSDocLink" ENCODE="false" VARNAME="_XLAT_"/>
 			<XLAT.LOOKUP KEY="dvin/TreeApplet/CSDocLinkIntegrationForAssetTypes" ENCODE="false" VARNAME="_XLAT1_"/>
 
@@ -385,18 +385,18 @@
 				<!-- LoadURL implicitly set -->
 				<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/folder.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/folder.gif"/>
 				<ARGUMENT NAME="RefreshKeys" VALUE="Variables.currentPubid_CSDocLink"/>
 			</CALLELEMENT>
-
+	
 			<REMOVEVAR NAME="RefreshKeys"/>
-
+			
 		</THEN> <!-- Done Depth=2 -->
 		<ELSE>
 			<IF COND="Variables.Depth=3">
 			<THEN>
 			<!-- Do this if we are here because of AssetTypes enable/disable  -->
-
+	
 				<IF COND="Variables.Type=Plain">
 				<THEN>
 					<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/EnableAssetTypePub">
@@ -404,12 +404,12 @@
 					<ARGUMENT NAME="list" VALUE="EnabledAssetTypes"/>
 					<ARGUMENT NAME="pubid" VALUE="Variables.currentPubid"/>
 					</CALLELEMENT>
-
+				
 					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
 					<ARGUMENT NAME="AdHoc" VALUE="Enable"/>
 					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 					</CALLELEMENT>
-
+				
 					<REMOVEVAR NAME="OKActions"/>
 					<REMOVEVAR NAME="LoadURL"/>
                     <XLAT.LOOKUP KEY="dvin/TreeApplet/Enable" ENCODE="false" VARNAME="_XLAT_"/>
@@ -422,21 +422,21 @@
 					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
 						<satellite.argument name="AssetType" value="Variables.AssetType"/>
 					</SATELLITE.LINK>
-
+                   
 					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
 					<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
 					<ARGUMENT NAME="Description" VALUE="Variables._XLAT1_"/>
 					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.gif"/>
 					</CALLELEMENT>
-
+				
 					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID">
 					<ARGUMENT NAME="AdHoc" VALUE="Disable"/>
 					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 					</CALLELEMENT>
-
+				
 					<REMOVEVAR NAME="OKActions"/>
 					<REMOVEVAR NAME="LoadURL"/>
                     <XLAT.LOOKUP KEY="dvin/TreeApplet/Disable" ENCODE="false" VARNAME="_XLAT_"/>
@@ -449,16 +449,16 @@
 					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
 						<satellite.argument name="AssetType" value="Variables.AssetType"/>
 					</SATELLITE.LINK>
-
+              
 					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
 					<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
 					<ARGUMENT NAME="Description" VALUE="Variables._XLAT1_"/>
 					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/remove.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/remove.gif"/>
 					</CALLELEMENT>
-
+				
 					<IF COND="IsList.EnabledAssetTypes=true">
 					<THEN>
 						<REMOVEVAR NAME="OKActions"/>
@@ -466,20 +466,20 @@
 						<REMOVEVAR NAME="ExecuteURL"/>
 						<LOOP LIST="EnabledAssetTypes">
 							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
-							<ARGUMENT NAME="AdHoc" VALUE="AssetTypes:Enable:EnabledAssetTypes.assettype"/>
+							<ARGUMENT NAME="AdHoc" VALUE="AssetTypes:EnabledAssetTypes.name"/>
 							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 							</CALLELEMENT>
-
+						
 							<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
 								<satellite.argument name="AssetType" value="Variables.AssetType"/>
 							</SATELLITE.LINK>
 
 							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
-							<ARGUMENT NAME="Label" VALUE="EnabledAssetTypes.assettype"/>
+							<ARGUMENT NAME="Label" VALUE="EnabledAssetTypes.description"/>
 							<ARGUMENT NAME="Description" VALUE="EnabledAssetTypes.description"/>
 							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/EnabledAssetTypes.assettype.png"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/EnabledAssetTypes.assettype.gif"/>
 							</CALLELEMENT>
 						</LOOP>
 					</THEN>  <!-- IsList -->
@@ -492,12 +492,12 @@
 					<ARGUMENT NAME="pubid" VALUE="Variables.currentPubid"/>
 					<ARGUMENT NAME="clientapp" VALUE="Variables.Type"/>
 					</CALLELEMENT>
-
+				
 					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
 					<ARGUMENT NAME="AdHoc" VALUE="Enable:Variables.Type"/>
 					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 					</CALLELEMENT>
-
+				
 					<REMOVEVAR NAME="OKActions"/>
 					<REMOVEVAR NAME="LoadURL"/>
                     <XLAT.LOOKUP KEY="dvin/TreeApplet/EnableVariables.Type" ENCODE="false" VARNAME="_XLAT_"/>
@@ -519,14 +519,14 @@
 					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.gif"/>
 					</CALLELEMENT>
-
+				
 					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
 					<ARGUMENT NAME="AdHoc" VALUE="Disable:Variables.Type"/>
 					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 					</CALLELEMENT>
-
+				
 					<REMOVEVAR NAME="OKActions"/>
 					<REMOVEVAR NAME="LoadURL"/>
                     <XLAT.LOOKUP KEY="dvin/TreeApplet/DisableVariables.Type" ENCODE="false" VARNAME="_XLAT_"/>
@@ -548,9 +548,9 @@
 					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/remove.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/remove.gif"/>
 					</CALLELEMENT>
-
+					
 					<IF COND="IsList.EnabledAssetTypesForWord=true">
 					<THEN>
 						<REMOVEVAR NAME="OKActions"/>
@@ -558,10 +558,10 @@
 						<REMOVEVAR NAME="ExecuteURL"/>
 						<LOOP LIST="EnabledAssetTypesForWord">
 							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
-							<ARGUMENT NAME="AdHoc" VALUE="EnabledAssetTypesForWord.assettype"/>
+							<ARGUMENT NAME="AdHoc" VALUE="Enabled:AssetTypesForWord.assettypeid"/>
 							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 							</CALLELEMENT>
-
+						
 							<!-- if there are any subtypes set the loadurl -->
 							<ASSET.GETLEGALSUBTYPES TYPE="EnabledAssetTypesForWord.assettype" LIST="subList" PUBID="Variables.currentPubid"/>
 							<IF COND="IsList.subList=true">
@@ -590,12 +590,12 @@
 							</SATELLITE.LINK>
 
 							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
-							<ARGUMENT NAME="Label" VALUE="EnabledAssetTypesForWord.assettype"/>
-							<ARGUMENT NAME="Description" VALUE="EnabledAssetTypesForWord.description"/>
+							<ARGUMENT NAME="Label" VALUE="EnabledAssetTypesForWord.description"/>
+							<ARGUMENT NAME="Description" VALUE="EnabledAssetTypesForWord.assettype"/>
 							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 							<!-- ARGUMENT NAME="ExecuteURL" VALUE="ContentServer?pagename=OpenMarket/Xcelerate/Admin/AssetTypeClientConfigFront&#38;action=list&#38;clientid=EnabledAssetTypesForWord.id"/   -->
-							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/EnabledAssetTypesForWord.assettype.png"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/EnabledAssetTypesForWord.assettype.gif"/>
 							</CALLELEMENT>
 						</LOOP>
 					</THEN>  <!-- IsList -->
@@ -605,7 +605,7 @@
 			</THEN>   <!-- if depth==3 -->
 			<ELSE>
 				<IF COND="Variables.Depth=4">
-				<THEN>
+				<THEN>			
 					<ASSET.GETLEGALSUBTYPES TYPE="Variables.assettype" LIST="subList" PUBID="Variables.currentPubid"/>
 					<SETVAR NAME="errno" VALUE="0"/>
 					<IF COND="IsList.subList=true">
@@ -631,7 +631,7 @@
 								</SATELLITE.LINK>
 							</ELSE>
 							</IF>
-
+							
 							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
 							<ARGUMENT NAME="AdHoc" VALUE="subList.subtype"/>
 							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
@@ -654,7 +654,7 @@
 							<ARGUMENT NAME="Description" VALUE="Variables.subtypedescription"/>
 							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/subtype.png"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/subtype.gif"/>
 							</CALLELEMENT>
 						</LOOP>
 						</THEN>
@@ -664,14 +664,14 @@
 				</THEN> <!-- if depth == 4 -->
 				</IF>
 			</ELSE>   <!-- if depth==3 -->
-			</IF>
+			</IF>     		
 		</ELSE>  <!-- if depth==2 -->
 		</IF>
 	</ELSE>  <!-- if depth==1 -->
-	</IF>
+	</IF>  
 </THEN>
 <ELSE>
 	<SETVAR NAME="Variables.popupVar" VALUE="false"/>
 </ELSE>
 </IF>
-</FTCS>
+</FTCS> 

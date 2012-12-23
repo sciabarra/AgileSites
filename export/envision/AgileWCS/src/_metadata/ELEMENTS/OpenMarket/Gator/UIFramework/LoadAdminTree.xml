@@ -10,7 +10,7 @@
 - OUTPUT
 -
 -->
-<SETVAR NAME='_IS_TREE_ELEMENT_' VALUE='true'/>
+
 <CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/BasicEnvironment"/>
 
 <IF COND="Variables.command!=GetTypes">
@@ -127,7 +127,7 @@
 				<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 				<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/siteplan.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/siteplan.gif"/>
 				<ARGUMENT NAME="RefreshKeys" VALUE="Sites"/>
 			</CALLELEMENT>
 			<REMOVEVAR NAME="RefreshKeys"/>
@@ -169,7 +169,7 @@
 				<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 				<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Memo.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Memo.gif"/>
 				<ARGUMENT NAME="RefreshKeys" VALUE="AssetMaker"/>
 			</CALLELEMENT>
 
@@ -207,7 +207,7 @@
 					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Memo.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Memo.gif"/>
 					<ARGUMENT NAME="RefreshKeys" VALUE="FamilyMaker"/>
 				</CALLELEMENT>
 
@@ -285,7 +285,7 @@
 				<!-- LoadURL implicitly passed in -->
             			<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Memo.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Memo.gif"/>
 				<ARGUMENT NAME="RefreshKeys" VALUE="AssetTypes"/>
 			</CALLELEMENT>
 
@@ -315,7 +315,7 @@
 				<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 				<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Delivery.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Delivery.gif"/>
 			</CALLELEMENT>
 			
 			<!-- Security -->
@@ -345,7 +345,7 @@
 					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Security.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Security.gif"/>
 					<ARGUMENT NAME="RefreshKeys" VALUE="Security"/>
 				</CALLELEMENT>
 				<REMOVEVAR NAME="RefreshKeys"/>	
@@ -371,7 +371,7 @@
                 <ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
                 <ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
                 <!--ARGUMENT NAME="ExecuteURL" VALUE="Variables.executeURL"/-->
-                <ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/search.png"/>
+                <ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/search.gif"/>
                 <ARGUMENT NAME="RefreshKeys" VALUE="Search"/>
               </CALLELEMENT>
               <REMOVEVAR NAME="RefreshKeys"/>
@@ -425,7 +425,7 @@
 				<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 				<ARGUMENT NAME="ExecuteURL" VALUE="Variables.executeURL"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/search.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/search.gif"/>
 				<ARGUMENT NAME="RefreshKeys" VALUE="Searching"/>
 			  </CALLELEMENT>
 			</then>
@@ -462,7 +462,7 @@
 				<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 				<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Source.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Source.gif"/>
 				<ARGUMENT NAME="RefreshKeys" VALUE="Sources"/>
 			</CALLELEMENT>
 
@@ -495,7 +495,7 @@
                     			<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 					<!-- LoadURL implicitly passed in -->
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Personal.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Personal.gif"/>
 				</CALLELEMENT>
 
 						<!-- deal with acls -->
@@ -527,7 +527,7 @@
 					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Roles.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Roles.gif"/>
 					<ARGUMENT NAME="RefreshKeys" VALUE="Roles"/>
 				</CALLELEMENT>
 
@@ -560,7 +560,7 @@
 						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 						<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Module.png"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Module.gif"/>
 					</CALLELEMENT>
 				</then>
 				</if>
@@ -594,7 +594,7 @@
 			<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 			<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 			<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.gif"/>
 		</CALLELEMENT>
 
 	<!-- Timed Event -->
@@ -615,14 +615,13 @@
 			<satellite.argument name="AssetType" value="Variables.AssetType"/>
 		</SATELLITE.LINK>
 
-		<XLAT.LOOKUP KEY="dvin/UI/Admin/WorkflowTimedActionEvent" ENCODE="false" VARNAME="desc"/>
 		<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
 			<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
-			<ARGUMENT NAME="Description" VALUE="Variables.desc"/>
+			<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
 			<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 			<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
 			<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
-			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wftimed.png"/>
+			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wftimed.gif"/>
 		</CALLELEMENT>
 
 	<!-- Email Objects -->
@@ -650,15 +649,14 @@
 			<satellite.argument name="AssetType" value="Variables.AssetType"/>
 		</SATELLITE.LINK>
 
-		<XLAT.LOOKUP KEY="dvin/UI/Admin/Publish/TargetSiteEdit-workflowemail" ENCODE="false" VARNAME="emailDesc"/>
 		<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
 			<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
-            		<ARGUMENT NAME="Description" VALUE="Variables.emailDesc"/>
+            <ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
 			<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 			<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 			<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 			<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfemail.png"/>
+			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfemail.gif"/>
 			<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_Email"/>
 		</CALLELEMENT>
 
@@ -696,7 +694,7 @@
 			<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 			<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 			<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wffunction.png"/>
+			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wffunction.gif"/>
 		</CALLELEMENT>
 
 			<!-- Show StartMenu Items Node -->
@@ -729,7 +727,7 @@
 				<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 				<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/startmenu.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/startmenu.gif"/>
 			</CALLELEMENT>
 
 			<!-- Show Tree Tabs Node -->
@@ -756,7 +754,7 @@
 				<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 				<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/TreeTabs.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/TreeTabs.gif"/>
 			</CALLELEMENT>
 
 			<!-- Show Clear Assignments Node -->
@@ -782,7 +780,7 @@
 				<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 				<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/clear.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/clear.gif"/>
 			</CALLELEMENT>
 
 			<!-- Show Clear Check Outs Node -->
@@ -808,7 +806,7 @@
 				<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 				<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/clear.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/clear.gif"/>
 			</CALLELEMENT>
 
 			<IF COND="IsElement.FutureTense/Apps/AdminForms/AdminForm=true">
@@ -838,13 +836,13 @@
 					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
 					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/tools.png"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/tools.gif"/>
 				</CALLELEMENT>
 			</THEN>
 			</IF>
 
 			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
-				<ARGUMENT NAME="AdHoc" VALUE="Locale"/>
+				<ARGUMENT NAME="AdHoc" VALUE="CSAdmin"/>
 				<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
 			</CALLELEMENT>
 
@@ -865,7 +863,7 @@
 				<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 				<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
 				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
-				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/tools.png"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/tools.gif"/>
 			</CALLELEMENT>
 			
 			<CALLELEMENT NAME="OpenMarket/Xcelerate/Admin/CheckIsUserAdmin">
@@ -893,7 +891,7 @@
 							<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
 							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
 							<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
-							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/tools.png"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/tools.gif"/>
 						</CALLELEMENT>
 				</THEN>
 				</IF>
@@ -926,5 +924,5 @@
 
 </THEN>
 </IF>
-<REMOVEVAR NAME='_IS_TREE_ELEMENT_'/>
+
 </FTCS>

@@ -28,12 +28,6 @@ $Modtime: 4/07/03 12:10p $
   <CALLELEMENT NAME="Analytics/AddAuditIntegrationImgTag"/>
 </then>
 </if>
-<PROPERTY.GET PARAM="analytics.enabled" INIFILE="futuretense_xcel.ini" VARNAME="analyticsEnabled"/>
-<if COND="Variables.analyticsEnabled=true">
-<then>
-    <CALLELEMENT NAME="Analytics/AddAuditIntegrationImgTag"/>
-</then>
-</if>    
 <!-- remove the tempobjects used for thumbnail images -->
 <if COND="IsVariable.tempobjectidlist=true">
 <then>

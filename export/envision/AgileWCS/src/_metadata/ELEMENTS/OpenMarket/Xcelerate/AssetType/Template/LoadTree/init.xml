@@ -9,19 +9,6 @@
 -
 -->
 
-<IF cond="Variables.cs_environment=ucform">
-<THEN>
-    <IF cond="Variables.showParents=true">
-    <THEN>				
-	    <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/LoadTree/initParents"/>		  
-	 </THEN>
-	 <ELSE>
-	    <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/LoadTree/initChildren"/>		
-	 </ELSE>
-	 </IF>			   	
-</THEN>
-<ELSE>
-
 <ics.clearerrno/>
 <setvar name="tablename" value="Template"/>
 <execsql list="Testcount" 
@@ -29,9 +16,6 @@
                 WHERE status!='VO'
                     AND Template.id = AssetPublication.assetid 
                     AND (AssetPublication.pubid = SessionVariables.pubid OR AssetPublication.pubid=0)" TABLE="Template,AssetPublication"/>
-                    
-<LOGMSG STR="E_LoadTree / init    TEMPLATE TAB   template count Testcount.mycount    " />
-                    
 <if cond="Testcount.mycount!=0">
 <then>
     <satellite.link assembler="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
@@ -64,11 +48,7 @@
     <!-- LoadURL implicitly passed in -->
     <argument name="OpURL" value="Variables.OpURL"/>
     <argument name="OKActions" value="refresh"/>
-    <argument name="Image" value="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/Variables.AssetType.png"/>
+    <argument name="Image" value="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/Variables.AssetType.gif"/>
     <argument name="RefreshKeys" value="Dummy__Template"/>
 </callelement>
-
-</ELSE>
-</IF>
-
 </ftcs>
