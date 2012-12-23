@@ -22,7 +22,7 @@ public abstract class Element implements wcs.core.Element {
 	private final static String sep2 = sep + sep;
 
 	// current site
-	private String site;
+	protected String site;
 
 	/**
 	 * Execute the element
@@ -36,59 +36,66 @@ public abstract class Element implements wcs.core.Element {
 		try {
 			Env env = new Env(ics);
 			site = ics.GetVar("site");
-
-			String res = apply(env);
-
-			out.println("\n=====\n" + res + "\n======\n");
-
-			int start = res.indexOf(sep2);
-
-			out.println("START=" + start);
-
-			while (start != -1) {
-
-				ics.StreamText(res.substring(0, start));
-
-				int end = res.indexOf(sep2 + sep, start + 2);
-				out.println("END=" + end);
-				if (end == -1)
-					end = res.length();
-
-				String call = res.substring(start, end);
-
-				out.println("ELMENTCALL " + call);
-
-				StringTokenizer st = new StringTokenizer(call, sep);
-
-				String element = st.nextToken();
-				FTValList list = new FTValList();
-
-				out.print("CALL " + element);
-				while (st.hasMoreTokens()) {
-					try {
-						String k = st.nextToken();
-						String v = st.nextToken();
-						out.print(" " + k + "=" + v);
-						list.setValString(k, v);
-					} catch (Exception ex) {
-						out.println("OPS " + ex.getMessage());
-					}
-				}
-				out.println();
-
-				ics.CallElement(element, list);
-
-				res = res.substring(end + 3);
-				start = res.indexOf(sep2);
-				out.println("START=" + start);
-			}
-
-			ics.StreamText(res);
+			stream(ics, apply(env));
 			return null;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return ex.getMessage();
 		}
+	}
+
+	/**
+	 * Stream the result of the apply with embedded calls
+	 * 
+	 * @param ics
+	 * @param res
+	 */
+	protected void stream(ICS ics, String res) {
+		out.println("\n=====\n" + res + "\n======\n");
+
+		int start = res.indexOf(sep2);
+
+		out.println("START=" + start);
+
+		while (start != -1) {
+
+			ics.StreamText(res.substring(0, start));
+
+			int end = res.indexOf(sep2 + sep, start + 2);
+			out.println("END=" + end);
+			if (end == -1)
+				end = res.length();
+
+			String call = res.substring(start, end);
+
+			out.println("ELMENTCALL " + call);
+
+			StringTokenizer st = new StringTokenizer(call, sep);
+
+			String element = st.nextToken();
+			FTValList list = new FTValList();
+
+			out.print("CALL " + element);
+			while (st.hasMoreTokens()) {
+				try {
+					String k = st.nextToken();
+					String v = st.nextToken();
+					out.print(" " + k + "=" + v);
+					list.setValString(k, v);
+				} catch (Exception ex) {
+					out.println("OPS " + ex.getMessage());
+				}
+			}
+			out.println();
+
+			ics.CallElement(element, list);
+
+			res = res.substring(end + 3);
+			start = res.indexOf(sep2);
+			out.println("START=" + start);
+		}
+
+		ics.StreamText(res);
 	}
 
 	/**

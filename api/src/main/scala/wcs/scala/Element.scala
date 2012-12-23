@@ -14,19 +14,16 @@ abstract class Element extends JElement with Log {
 
   implicit def nodeBuffer2String(buf: NodeBuffer): String =
     (for (node <- buf.iterator) yield node.toString).mkString
-    
- 
+
   /**
    * Execute the element
    *
    */
   override def exec(ics: ICS): String = {
-    
     try {
       val env = new Env(ics);
-      val res = apply(env);
-      // TODO split stream
-      ics.StreamText(res);
+      site = ics.GetVar("site")
+      stream(ics, apply(env));
       return null;
     } catch {
       case ex =>
@@ -44,7 +41,9 @@ abstract class Element extends JElement with Log {
    * Call another element
    */
   def call(name: String, args: Tuple2[Symbol, String]*) = {
-    // TODO
+    import wcs.java.util.Util.Arg
+    val seq = for ((k, v) <- args) yield { new Arg(k.name, v) }
+    callElement(site + "/" + name, seq: _*)
   }
 
   /**

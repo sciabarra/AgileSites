@@ -45,6 +45,7 @@ public class Picker {
 	 * @param resource
 	 */
 	public Picker(String resource, String cssq) {
+		
 		InputStream is = Picker.class.getResourceAsStream(resource);
 		Element elem = null;
 		Document doc = null;
