@@ -1,0 +1,95 @@
+<object-stream>
+  <com.fatwire.realtime.ResourceDataImpl>
+    <data class="com.openmarket.xcelerate.treetab.TreeTab">
+      <id>1328079454916</id>
+      <uid>5c789237-6a04-4c06-85c6-202f81510967</uid>
+      <globalItems class="com.openmarket.xcelerate.treetab.TreeItems">
+        <hashtable>
+          <entry>
+            <string>GLOBALITEMS</string>
+            <com.openmarket.xcelerate.treetab.TreeItem>
+              <name>GLOBALITEMS</name>
+              <values>Item:22:Refresh All=refreshAll:</values>
+            </com.openmarket.xcelerate.treetab.TreeItem>
+          </entry>
+          <entry>
+            <string>LOADURI</string>
+            <com.openmarket.xcelerate.treetab.TreeItem>
+              <name>LOADURI</name>
+              <values>ContentServer?pagename=OpenMarket%2FGator%2FUIFramework%2FLoadTab</values>
+            </com.openmarket.xcelerate.treetab.TreeItem>
+          </entry>
+          <entry>
+            <string>NODEITEMS</string>
+            <com.openmarket.xcelerate.treetab.TreeItem>
+              <name>NODEITEMS</name>
+              <values>Item:15:Refresh=refresh:</values>
+            </com.openmarket.xcelerate.treetab.TreeItem>
+          </entry>
+        </hashtable>
+      </globalItems>
+      <lineStyle>Angled</lineStyle>
+      <title>Texts</title>
+      <actionURL>ContentServer?pagename=OpenMarket%2FGator%2FUIFramework%2FTreeOpURL</actionURL>
+      <globalPopupURL>ContentServer?pagename=OpenMarket%2FGator%2FUIFramework%2FLoadGlobalPopup</globalPopupURL>
+      <ordinal>15</ordinal>
+      <paneType>Tree</paneType>
+      <roles class="com.openmarket.xcelerate.common.RoleList"/>
+      <sites class="com.openmarket.xcelerate.common.SiteList">
+        <hashtable>
+          <entry>
+            <long>1328079450298</long>
+            <long>1328079450298</long>
+          </entry>
+        </hashtable>
+      </sites>
+      <nodeOpenedPic>/cs/Xcelerate/OMTree/TreeImages/minus.gif</nodeOpenedPic>
+      <nodeClosedPic>/cs/Xcelerate/OMTree/TreeImages/plus.gif</nodeClosedPic>
+      <sections class="com.openmarket.xcelerate.treetab.SectionList">
+        <sections>
+          <entry>
+            <string>Demo_Text</string>
+            <int>0</int>
+          </entry>
+        </sections>
+        <sectionVector>
+          <com.openmarket.xcelerate.treetab.Section>
+            <name>Demo_Text</name>
+            <populateURL>OpenMarket/Xcelerate/AssetType/Demo_Text/LoadTree</populateURL>
+            <sites class="com.openmarket.xcelerate.common.SiteList">
+              <hashtable>
+                <entry>
+                  <long>1328079450298</long>
+                  <long>1328079450298</long>
+                </entry>
+              </hashtable>
+            </sites>
+            <roles class="com.openmarket.xcelerate.common.RoleList"/>
+          </com.openmarket.xcelerate.treetab.Section>
+        </sectionVector>
+      </sections>
+    </data>
+    <id class="string">Texts</id>
+    <resourceType>TREETAB</resourceType>
+    <deps class="java.util.Collections$EmptySet"/>
+  </com.fatwire.realtime.ResourceDataImpl>
+</object-stream>
+<!--==================___ METADATA ___================
+<dependencies>
+  <list>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ELEMENTCATALOG</resType>
+      <resId>OpenMarket/Xcelerate/AssetType/Demo_Text/LoadTree</resId>
+      <uid>OpenMarket/Xcelerate/AssetType/Demo_Text/LoadTree</uid>
+    </dependency>
+  </list>
+</dependencies>
+==================______________________==================
+#
+#Mon Dec 24 12:39:17 CET 2012
+key=@TREETAB-5c789237-6a04-4c06-85c6-202f81510967
+type=TREETAB
+sites=Demo
+
+==================___ END METADATA ___==================-->

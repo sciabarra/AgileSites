@@ -10,7 +10,7 @@
         <description>CSElement</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Developer/Fatwire/JSK/7.6.2.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp3/dcs8086864045100117097.tmp</urldescriptorspec>
+        <urldescriptorspec>/Developer/Fatwire/JSK/7.6.2.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp4/dcs140086868239426001.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>3cfc2285-c1af-4e76-89dc-ab7231666553</uid>
       </assettypeDescriptor>
@@ -588,7 +588,7 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA0KDQo=</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Sun Dec 23 13:03:27 CET 2012
+#Mon Dec 24 12:39:14 CET 2012
 key=@ASSET_TYPE-3cfc2285-c1af-4e76-89dc-ab7231666553
 type=ASSET_TYPE
 

@@ -10,7 +10,7 @@
         <description>Attribute Editor</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Developer/Fatwire/JSK/7.6.2.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp3/dcs4422265374619983626.tmp</urldescriptorspec>
+        <urldescriptorspec>/Developer/Fatwire/JSK/7.6.2.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp4/dcs2114602120578969606.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>bfe6452c-2ef0-4dec-8085-1eb65e0cb549</uid>
       </assettypeDescriptor>
@@ -493,7 +493,7 @@ cmlhYmxlcy5xdWVyeWVuZA0K</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Sun Dec 23 13:03:28 CET 2012
+#Mon Dec 24 12:39:14 CET 2012
 key=@ASSET_TYPE-bfe6452c-2ef0-4dec-8085-1eb65e0cb549
 type=ASSET_TYPE
 

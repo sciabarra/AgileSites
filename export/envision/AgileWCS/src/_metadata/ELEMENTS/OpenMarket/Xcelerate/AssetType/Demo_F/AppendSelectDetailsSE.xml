@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Gator/FlexibleAssets/AssetMaker/Filters/AppendSelectDetails
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<CALLELEMENT NAME="OpenMarket/Gator/FlexibleAssets/Filters/AppendSelectDetailsSE"/>
+
+
+</FTCS> 

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>Demo_Text:1328079455473</id>
+    <name>TS050_CSDT</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2012-12-24T11:03:46Z</createddate>
+    <description></description>
+    <publist>Demo</publist>
+    <status>PL</status>
+    <subtype>Text</subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2012-12-24T11:03:46Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>b5476d1c-3d19-45d8-9068-c4fe070b8df2</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1328079455473</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>flexgrouptemplateid</name>
+        <data>
+            <stringValue>Demo_PD:1328079455057</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>Relationships</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>ruleset</name>
+        <data>
+            <stringValue>&lt;?XML VERSION="1.0"?&gt;
+&lt;!DOCTYPE RULESET SYSTEM "ruleset.dtd"&gt;
+&lt;RULESET NAME="Rating_$(this?:x)"&gt;&lt;ENCODING&gt;NUMSEGS=0,;&lt;/ENCODING&gt;&lt;IMPORT CLASS="com.openmarket.gator.ruleobjects.*"/&gt;&lt;/RULESET&gt;</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>rulesetmap</name>
+        <data>
+            <structList>
+                <item>
+                    <name>asset</name>
+                    <data>
+                        <stringValue>Demo_Text:1328079455473</stringValue>
+                    </data>
+                </item>
+                <item>
+                    <name>value</name>
+                    <data/>
+                </item>
+                <item>
+                    <name>type</name>
+                    <data>
+                        <stringValue>asset</stringValue>
+                    </data>
+                </item>
+                <item>
+                    <name>key</name>
+                    <data>
+                        <stringValue>this</stringValue>
+                    </data>
+                </item>
+            </structList>
+        </data>
+    </attribute>
+    <attribute>
+        <name>Text</name>
+        <data>
+            <stringValue># CSDT
+
+Content Server Development Tool is integrated in sbt.
+
+Setup will configure csdt to use the folder export/envision inside the project.
+
+The command to use csdt is ``wcs-csdt`` followed by one or more arguments.
+
+- ``wcs-csdt`` returns  a list of assets in the selected site
+- ``wcs-csdt export`` exports all the assets from the current site
+- ``wcs-csdt import`` imports all the assets in the current site
+
+# Other examples
+
+The correct synopsis is ``wcs-csdt command selection``, where:
+
+Command defaults to ``listcs`` but can be
+
+- ``listcs``
+- ``listds``
+- ``export``
+- ``import`` 
+
+Selection defaults to ``@ALL_NONASSETS;@ALL_ASSETS`` but can be any syntax supported by CSDT.
+
+See the WCS Developer Tools documentation for more details.
+</stringValue>
+        </data>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+    <parent>
+        <parentDefName>Text</parentDefName>
+        <asset>Demo_Text:1328079455309</asset>
+    </parent>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <list>
+    <dependency>
+      <depType>E</depType>
+      <resType>Demo_A</resType>
+      <resId>1328079455052</resId>
+      <uid>4a4b3489-76b1-47c8-8e7d-be6eec285a1d</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>Demo_PD</resType>
+      <resId>1328079455057</resId>
+      <uid>1ba30bbd-cb7d-4f94-89f5-f9d03180dac0</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>Demo_Text</resType>
+      <resId>1328079455309</resId>
+      <uid>5762828e-8499-4aad-ba3e-a7bcc50120e7</uid>
+    </dependency>
+    <dependency>
+      <depType>N</depType>
+      <resType>Demo_Text</resType>
+      <resId>1328079455473</resId>
+      <uid>b5476d1c-3d19-45d8-9068-c4fe070b8df2</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ASSET_TYPE</resType>
+      <resId>Demo_Unused</resId>
+      <uid>10abdd8c-5f18-4f95-8e08-e90ed6d3d40d</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ASSET_TYPE</resType>
+      <resId>Demo_Text</resId>
+      <uid>bf5f4f5c-f317-4c15-bcf2-63b8bf20807f</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ASSET_TYPE</resType>
+      <resId>Demo_CD</resId>
+      <uid>c60acd3e-c25e-4585-b054-dfde2bdfb9dd</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ASSET_TYPE</resType>
+      <resId>Demo_PD</resId>
+      <uid>a931ea1b-16bd-42e2-9c31-ae5be2f2fee5</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ASSET_TYPE</resType>
+      <resId>Demo_F</resId>
+      <uid>9b1692ec-8fcc-49b5-9c61-fa9f0a1a0f91</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ASSET_TYPE</resType>
+      <resId>Demo_A</resId>
+      <uid>fb66911e-d023-4562-bcb6-97fcaa4aedd5</uid>
+    </dependency>
+  </list>
+</dependencies>
+==================______________________==================
+#
+#Mon Dec 24 12:39:15 CET 2012
+key=Demo_Text-b5476d1c-3d19-45d8-9068-c4fe070b8df2
+type=ASSETDATA
+sites=Demo
+
+==================___ END METADATA ___==================-->

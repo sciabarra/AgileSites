@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>AttrTypes:1328079454897</id>
+    <name>WysiwygEditor</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2012-12-24T09:58:23Z</createddate>
+    <description>Wysiwyg Editor</description>
+    <publist>Demo</publist>
+    <status>PL</status>
+    <subtype></subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2012-12-24T09:58:23Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>3c2968a2-79a8-475a-959b-ab2086ab2137</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1328079454897</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlxml</name>
+        <data>
+            <blobValue>
+                <filename>WysiwygEditor.urlxml(3c2968a2-79a8-475a-959b-ab2086ab2137).1328079454897.txt</filename>
+                <foldername></foldername>
+                <filedata></filedata>
+            </blobValue>
+        </data>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <list>
+    <dependency>
+      <depType>N</depType>
+      <resType>AttrTypes</resType>
+      <resId>1328079454897</resId>
+      <uid>3c2968a2-79a8-475a-959b-ab2086ab2137</uid>
+    </dependency>
+  </list>
+</dependencies>
+==================______________________==================
+#
+#Mon Dec 24 12:39:17 CET 2012
+storable0=ASSET/AttrTypes/8/3/WysiwygEditor.urlxml(3c2968a2-79a8-475a-959b-ab2086ab2137).1328079454897.txt||_storable_type\=WysiwygEditor.urlxml%283c2968a2-79a8-475a-959b-ab2086ab2137%29.1328079454897.txt&_blob_prop\=urlxml&_value_count\=S
+key=AttrTypes-3c2968a2-79a8-475a-959b-ab2086ab2137
+type=ASSETDATA
+sites=Demo
+
+==================___ END METADATA ___==================-->
