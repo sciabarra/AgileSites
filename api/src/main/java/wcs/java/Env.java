@@ -247,6 +247,7 @@ public class Env extends ICSProxyJ {
 		return ics.GetObj(object);
 	}
 
+	/*
 	public int getCounter(String counter) throws Exception {
 		if (counter != null) {
 			System.out.println("counter=" + counter);
@@ -258,5 +259,5 @@ public class Env extends ICSProxyJ {
 			}
 		} else
 			throw new Exception("counter name is null");
-	}
+	}*/
 }

@@ -27,16 +27,13 @@ import java.io.File
 /**
  * Mock class simulating (part of) ICS behaviour
  */
-class XmlICS extends ICS {
+class XmlICS(val base: File) extends ICS {
 
-  var base: File = new File(".")
+  def this() = this(new File("export"))
+  
   var varMap = Map[String, String]()
   var listMap = Map[String, IList]()
   var errno = 0;
-
-  def init(baseDir: String) {
-    base = new File(baseDir)
-  }
 
   def addMapList(name: String, map: Map[String, List[String]]) = {
     listMap = listMap + (name -> new MapListIList(name, map))
@@ -61,7 +58,7 @@ class XmlICS extends ICS {
     varMap += arg0 -> arg1
   }
 
-  def SetVar(arg0: String, arg1: Int): Unit = { }
+  def SetVar(arg0: String, arg1: Int): Unit = {}
 
   def SetVar(arg0: String, arg1: FTVAL): Unit = {}
 

@@ -10,6 +10,7 @@ class EnvJavaSpec extends Specification with Log {
   val fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
   val ics = new XmlICS()
+  
   ics.addMapVar(Map("a" -> "xxx", "d" -> "2012-01-02 12:23:34", "n" -> "1234"))
   ics.addMapList("l", Map("f" -> List("xxx", "2012-01-02 12:23:34", "1234")))
 

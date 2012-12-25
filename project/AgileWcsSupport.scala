@@ -158,6 +158,7 @@ object AgileWcsSupport {
         */
         config.setProperty("agilewcs.jar", appjar);
         config.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
+        config.setProperty("cs.pgexportfolder", file("export").getAbsolutePath)
         config.store(new java.io.FileWriter(configFile),
           "updated by AgileWCS setup")
 
