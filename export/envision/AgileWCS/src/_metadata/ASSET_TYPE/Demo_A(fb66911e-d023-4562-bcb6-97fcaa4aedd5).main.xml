@@ -10,7 +10,7 @@
         <description>Demo_A</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Developer/Fatwire/JSK/7.6.2.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp4/dcs1536943973385656784.tmp</urldescriptorspec>
+        <urldescriptorspec>/Developer/Fatwire/JSK/7.6.2.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp8/dcs874729915494769337.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>fb66911e-d023-4562-bcb6-97fcaa4aedd5</uid>
       </assettypeDescriptor>
@@ -497,7 +497,7 @@ ICAgVmFyaWFibGVzLnF1ZXJ5ZW5kDQogICAgICAgIA0KDQo=</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Mon Dec 24 12:39:15 CET 2012
+#Tue Dec 25 18:32:24 CET 2012
 key=@ASSET_TYPE-fb66911e-d023-4562-bcb6-97fcaa4aedd5
 type=ASSET_TYPE
 

@@ -4,7 +4,7 @@
       <id>1328079455142</id>
       <uid>360ee0c9-1646-4196-a3c5-503de3834b7f</uid>
       <name>New Category</name>
-      <description>New Category</description>
+      <description>(author) New Category</description>
       <assetType>Demo_Category</assetType>
       <assetSubtype>Category</assetSubtype>
       <menuType>ContentForm</menuType>
@@ -102,7 +102,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Mon Dec 24 12:39:16 CET 2012
+#Tue Dec 25 18:32:34 CET 2012
 key=@STARTMENU-360ee0c9-1646-4196-a3c5-503de3834b7f
 type=STARTMENU
 sites=Demo

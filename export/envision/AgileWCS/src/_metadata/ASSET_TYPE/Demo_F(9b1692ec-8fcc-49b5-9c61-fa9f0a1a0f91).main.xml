@@ -11,7 +11,7 @@
         <description>Demo_F</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Developer/Fatwire/JSK/7.6.2.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp4/dcs2529131349672843230.tmp</urldescriptorspec>
+        <urldescriptorspec>/Developer/Fatwire/JSK/7.6.2.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp8/dcs3971756017154908535.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>9b1692ec-8fcc-49b5-9c61-fa9f0a1a0f91</uid>
       </assettypeDescriptor>
@@ -405,8 +405,8 @@ bGVzLnF1ZXJ5ZW5kICAgICAgICANCg0K</byte-array>
     <dependency>
       <depType>E</depType>
       <resType>@ASSET_TYPE</resType>
-      <resId>Demo_Article</resId>
-      <uid>55278eaa-25ae-471b-b694-fb417777de45</uid>
+      <resId>Demo_Blog</resId>
+      <uid>aa56b3a4-bccc-4017-b554-41c59c776147</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
@@ -520,7 +520,7 @@ bGVzLnF1ZXJ5ZW5kICAgICAgICANCg0K</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Mon Dec 24 12:19:12 CET 2012
+#Tue Dec 25 18:32:24 CET 2012
 key=@ASSET_TYPE-9b1692ec-8fcc-49b5-9c61-fa9f0a1a0f91
 type=ASSET_TYPE
 

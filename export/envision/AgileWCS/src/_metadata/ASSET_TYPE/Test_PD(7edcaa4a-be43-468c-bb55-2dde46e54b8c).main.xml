@@ -12,7 +12,7 @@
         <description>Test_PD</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Developer/Fatwire/JSK/7.6.2.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp7/dcs337019944275769869.tmp</urldescriptorspec>
+        <urldescriptorspec>/Developer/Fatwire/JSK/7.6.2.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp8/dcs2236858212830697409.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>7edcaa4a-be43-468c-bb55-2dde46e54b8c</uid>
       </assettypeDescriptor>
@@ -527,7 +527,7 @@ YWJsZXMucXVlcnllbmQgICAgICAgIA0KDQo=</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Sun Dec 23 12:59:56 CET 2012
+#Tue Dec 25 18:32:23 CET 2012
 key=@ASSET_TYPE-7edcaa4a-be43-468c-bb55-2dde46e54b8c
 type=ASSET_TYPE
 

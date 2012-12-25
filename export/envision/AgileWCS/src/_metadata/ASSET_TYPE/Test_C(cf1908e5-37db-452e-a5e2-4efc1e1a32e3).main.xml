@@ -14,7 +14,7 @@
         <description>Test_C</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Developer/Fatwire/JSK/7.6.2.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp7/dcs5475463579506532500.tmp</urldescriptorspec>
+        <urldescriptorspec>/Developer/Fatwire/JSK/7.6.2.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp8/dcs324136650724302607.tmp</urldescriptorspec>
         <canbechild>T</canbechild>
         <uid>cf1908e5-37db-452e-a5e2-4efc1e1a32e3</uid>
       </assettypeDescriptor>
@@ -531,7 +531,7 @@ ICANCiAgIFZhcmlhYmxlcy5xdWVyeWVuZA0KDQoNCg==</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Sun Dec 23 12:59:57 CET 2012
+#Tue Dec 25 18:32:23 CET 2012
 key=@ASSET_TYPE-cf1908e5-37db-452e-a5e2-4efc1e1a32e3
 type=ASSET_TYPE
 
