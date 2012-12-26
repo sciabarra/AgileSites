@@ -1,7 +1,7 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
     <data class="com.openmarket.xcelerate.startmenu.StartMenuItem">
-      <id>1328079450640</id>
+      <id>1328079460625</id>
       <uid>3e39e7f0-1ace-440c-a0ef-2640d3052da5</uid>
       <name>New CSElement</name>
       <assetType>CSElement</assetType>
@@ -75,7 +75,7 @@
         </com.openmarket.xcelerate.common.ArgumentList>
       </arguments>
     </data>
-    <id class="string">1328079450640</id>
+    <id class="string">1328079460625</id>
     <resourceType>STARTMENU</resourceType>
     <deps class="java.util.Collections$EmptySet"/>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -86,7 +86,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Wed Dec 26 09:34:10 CET 2012
+#Wed Dec 26 10:01:56 CET 2012
 key=@STARTMENU-3e39e7f0-1ace-440c-a0ef-2640d3052da5
 type=STARTMENU
 sites=Demo,Test

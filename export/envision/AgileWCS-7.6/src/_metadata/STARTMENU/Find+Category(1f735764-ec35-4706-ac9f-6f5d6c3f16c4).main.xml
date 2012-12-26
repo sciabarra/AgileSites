@@ -1,12 +1,12 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
     <data class="com.openmarket.xcelerate.startmenu.StartMenuItem">
-      <id>1328079460467</id>
-      <uid>4c2d74dd-0683-4565-89e9-9ac35952838e</uid>
-      <name>Find Blog</name>
-      <description>(author) Find Blog</description>
-      <assetType>Demo_Blog</assetType>
-      <assetSubtype>Blog</assetSubtype>
+      <id>1328079461417</id>
+      <uid>1f735764-ec35-4706-ac9f-6f5d6c3f16c4</uid>
+      <name>Find Category</name>
+      <description>(author) Find Category</description>
+      <assetType>Demo_Category</assetType>
+      <assetSubtype>Category</assetSubtype>
       <menuType>Search</menuType>
       <legalSites class="com.openmarket.xcelerate.common.SiteList">
         <hashtable>
@@ -87,11 +87,11 @@
           <int>1</int>
           <int>1</int>
           <string>subtype</string>
-          <string>Blog</string>
+          <string>Category</string>
         </com.openmarket.xcelerate.common.ArgumentList>
       </arguments>
     </data>
-    <id class="string">1328079460467</id>
+    <id class="string">1328079461417</id>
     <resourceType>STARTMENU</resourceType>
     <deps class="java.util.Collections$EmptySet"/>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -103,7 +103,7 @@
 ==================______________________==================
 #
 #Wed Dec 26 10:01:56 CET 2012
-key=@STARTMENU-4c2d74dd-0683-4565-89e9-9ac35952838e
+key=@STARTMENU-1f735764-ec35-4706-ac9f-6f5d6c3f16c4
 type=STARTMENU
 sites=Demo
 

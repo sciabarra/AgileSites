@@ -1,7 +1,7 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
     <data class="com.openmarket.xcelerate.startmenu.StartMenuItem">
-      <id>1328079455778</id>
+      <id>1328079460794</id>
       <uid>809f20c3-899a-4c61-93cf-fc5463944fc4</uid>
       <name>New Page</name>
       <description>(author) New Page</description>
@@ -78,7 +78,7 @@
         </com.openmarket.xcelerate.common.ArgumentList>
       </arguments>
     </data>
-    <id class="string">1328079455778</id>
+    <id class="string">1328079460794</id>
     <resourceType>STARTMENU</resourceType>
     <deps class="java.util.Collections$EmptySet"/>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -89,7 +89,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Wed Dec 26 09:34:10 CET 2012
+#Wed Dec 26 10:01:56 CET 2012
 key=@STARTMENU-809f20c3-899a-4c61-93cf-fc5463944fc4
 type=STARTMENU
 sites=Demo,Test
