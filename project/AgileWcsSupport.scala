@@ -98,7 +98,7 @@ object AgileWcsSupport {
             "cmd=" + (if (args.size > 0) args(0) else "listcs"),
             "fromSites=" + sites,
             "datastore=AgileWCS-"+version,
-            "resources=" + (if (args.size > 1) args(1) else "@ALL_NONASSETS;@ALL_ASSETS"))
+            "resources=" + (if (args.size > 1) args(1) else "@ALL_ASSETS;@ALL_NONASSETS"))
           //println(cmd.mkString("java -cp "+seljars.mkString(":")+" com.fatwire.csdt.client.main.CSDT ", " ", ""))
           Run.run("com.fatwire.csdt.client.main.CSDT",
             seljars, cmd, s.log)(runner)

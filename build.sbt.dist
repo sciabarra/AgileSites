@@ -1,23 +1,20 @@
-// default are for JumpStart Kit 11g 
-// agilewwcs folder to be placed inside JSK install folder
-
 // versions (currently only valid values are 11g or 7.6)
 wcsVersion in ThisBuild := "11g"
 
 // home directory of WCS
-wcsHome in ThisBuild := "../ContentServer/11.1.1.6.0/"
+wcsHome in ThisBuild := "/Developer/Fatwire/JSK/11.1.1.6.0.app/ContentServer/11.1.1.6.0/"
 
 // webapp directory of WCS
-wcsWebapp in ThisBuild := "../App_Server/apache-tomcat-6.0.32/webapps/cs/"
+wcsWebapp in ThisBuild := "/Developer/Fatwire/JSK/11.1.1.6.0.app/App_Server/apache-tomcat-6.0.32/webapps/cs/"
 
 // location of the csdt-client jar
-wcsCsdtJar in ThisBuild := "../ContentServer/11.1.1.6.0/csdt-client-1.2.jar"
+wcsCsdtJar in ThisBuild := "/Developer/Fatwire/JSK/11.1.1.6.0.app/ContentServer/11.1.1.6.0/csdt-client-1.2.jar"
 
 //url to content server
 wcsUrl in ThisBuild := "http://localhost:8080/cs/"
 
 // site to import/export
-wcsSites in ThisBuild := "Test,Demo"
+wcsSites in ThisBuild := "DemoJava,DemoScala"
 
 // user to import/export
 wcsUser in ThisBuild := "fwadmin"
@@ -27,3 +24,4 @@ wcsPassword in ThisBuild := "xceladmin"
 
 // scalacOptions += "-deprecation"
 
+// javaOptions += "-Dlogback-access.debug=true"

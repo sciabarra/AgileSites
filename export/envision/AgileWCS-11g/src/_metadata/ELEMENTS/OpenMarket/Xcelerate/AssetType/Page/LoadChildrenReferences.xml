@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+
+<!-- OpenMarket/Xcelerate/AssetType/Page/LoadChildrenReferences
+
+ Now that we're allowing Page attributes, we also need to get the 
+ children that are related through attributes of data type defined as 
+ asset references.
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<SETVAR NAME="assetType" VALUE="Variables.AssetType"/>
+		
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/GetChildrenReferences">
+	<ARGUMENT NAME="cid" VALUE="Variables.assetid"/>				
+</CALLELEMENT>
+		
+<IF COND="IsList.ChildrenReferences=true">
+<THEN>
+	<IF COND="ChildrenReferences.#numRows!=0">
+	<THEN>		 						
+     	<LOOP LIST="ChildrenReferences">  
+     	         
+     	       <!--  Any Related childreb assets via associations.. -->			 
+			  <REMOVEVAR NAME="LoadURL"/>
+															  	                  
+         	  <CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+					<ARGUMENT NAME="ID" VALUE="ChildrenReferences.id"/>
+					<ARGUMENT NAME="AssetType" VALUE="ChildrenReferences.type"/>
+					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+			  </CALLELEMENT>
+			  
+			  <SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="ExecuteURL">
+								<satellite.argument name="AssetType" value="ChildrenReferences.type"/>
+								<satellite.argument name="n0_" value="Variables.TreeNodeID"/>
+								<satellite.argument name="op" value="displayNode"/>
+			  </SATELLITE.LINK>
+										 
+			  <CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+				<ARGUMENT NAME="Label" VALUE="ChildrenReferences.name"/>
+				<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/ChildrenReferences.type.png"/>
+				<ARGUMENT NAME="RefreshKeys" VALUE="Variables.assetid"/>
+				<ARGUMENT NAME="OKActions" VALUE="Status;Inspect;Edit;Preview;Delete;refresh"/>
+				<ARGUMENT NAME="okFunctions" VALUE="edit;delete;treerefresh" />					
+				<ARGUMENT NAME="executeFunction" VALUE="Variables.cs_defaultFunctionChild" />
+			 </CALLELEMENT> 
+			
+	 	</LOOP>	  
+	</THEN>
+	</IF>
+</THEN>
+</IF>	
+
+<SETVAR NAME="AssetType" VALUE="Variables.assetType"/>
+
+</FTCS>

@@ -1,0 +1,338 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Gator/FlexibleAssets/FlexAssets/SearchForm1
+-
+- INPUT
+-
+- OUTPUT
+-
+- Modified: April 27, 2011
+- By:       JAG
+- Reason:   1 - PR#25714 Fixed advanced search on Extensible page assets Used Extensible Page and Page Definition
+                Managers to Collect the List of Page Definitions and Extended attributes
+                to set constraints and field filters.
+
+            2- PR#25717 Fixed Error in log on searching extensible page asset
+               Utilizing correct Extensible Page and Page Definition Managers
+
+            3- PR#25715 Error in log related to - object lookup for myFieldMgr failed!
+               Utilizing correct Extensible Page and Page Definition Managers
+-->
+
+<callelement NAME="OpenMarket/Xcelerate/Scripts/FormatDate"/>
+
+<SCRIPT LANGUAGE="JavaScript">
+function Fixpagename1(ourPage, nextstep)
+{
+	if(!validateID())
+		return false;
+	var obj = document.forms[0].elements[0];
+	
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	
+ 
+	var	newpage = basePage + ourPage;
+    obj.form.pagename.value = newpage;
+   	obj.form.SearchNextStep.value = nextstep;   
+    document.forms[0].submit();
+
+	return false;
+}
+  
+/*
+	The function is added to set the value for the OrderByDesc hidden field to propogate the
+	value selected for the sort by drop down insdie various search screens. 
+ */
+function setSortedBy()
+{
+   var doc = document.forms[0];
+   var sortBy = doc.elements['OrderBy'][doc.elements['OrderBy'].selectedIndex].text;
+   document.forms[0].elements['OrderByDesc'].value=sortBy;
+}
+</SCRIPT>
+ 
+<INPUT TYPE="HIDDEN"  NAME="ATTRSEARCH"  VALUE="FALSE"/>
+
+<if COND="IsVariable.ATTRSEARCH!=true">
+<then>
+   <setvar NAME="ATTRSEARCH"  VALUE="false"/>
+</then>
+</if>
+
+ 
+
+<table border="0" cellspacing="0" cellpadding="0">
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/NameContainsNoColon"/>:</td>
+				<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+				<td class="form-inset">
+                    <IF COND="IsVariable.Name=true">
+                    <THEN>
+                        <![CDATA[<INPUT TYPE="text" NAME="Name" SIZE="32" VALUE="]]> <STRING.STREAM VALUE="Variables.Name"/> <![CDATA["/>]]>
+                    </THEN>
+                    <ELSE>
+                        <INPUT TYPE="text" NAME="Name"  SIZE="32"/>
+                    </ELSE>
+                    </IF>
+                </td>
+			</tr>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+            
+			<tr>
+				<setvar NAME="errno" VALUE="0"/>
+        
+                <SETVAR NAME="templatetype" VALUE="PageDefinition" />
+                <ASSETTYPE.LOAD NAME="TemplateTypeMgr" TYPE="Variables.templatetype"/>			
+                <ASSETTYPE.SCATTER NAME="TemplateTypeMgr" PREFIX="AssetTypeObj"/>
+
+                <td class="form-label-text"><STRING.STREAM VARIABLE="AssetTypeObj:description"/>&nbsp;<XLAT.STREAM KEY="dvin/FlexibleAssets/Common/IsCol"/> </td>
+				<td></td>
+
+                <atm.locate TYPE="Variables.templatetype" VARNAME="myFieldMgr"/>
+                <complexassets.getallassets SITE="SessionVariables.pubid" NAME="myFieldMgr" LISTVARNAME="tmpltable"/>
+
+                <COMPLEXASSETS.GETSORTEDLIST NAME="myFieldMgr" LIST="tmpltable" LISTVARNAME="tmpltable"/>
+ 				<!--complexassets.getallassetssorted SITE="SessionVariables.pubid" NAME="myFieldMgr" LISTVARNAME="tmpltable"/-->
+  
+				<if COND="tmpltable.#numRows!=0">
+				<then>  
+					<td class="form-inset">
+                        <IF COND="IsVariable.startmenuarg:subtype=true">
+                       <THEN>
+                           <!-- this is a Spark hack and will change when start menu arguments for search are hooked up in a more generic way -->
+                           <SETVAR NAME="errno" VALUE="0"/>
+                           <ASSET.LIST TYPE="Variables.templatetype" FIELD1="name" VALUE1="Variables.startmenuarg:subtype" LIST="lCurrentSubtype"/>
+                           <IF COND="Variables.errno=0">
+                           <THEN>
+                               <SETVAR NAME="flextemplateid" VALUE="lCurrentSubtype.id"/>
+                           </THEN>
+                           </IF>
+                       </THEN>
+                       </IF>
+                        <if COND="IsVariable.flextemplateid=true">
+                          <then>
+                                <ASSET.LIST LIST="lCurrentSubtype" TYPE="Variables.templatetype" FIELD1="id" VALUE1="Variables.flextemplateid"/>
+
+								<select name="flextemplateid">
+										<loop LIST="tmpltable">
+											<!-- load template to get its name -->
+											<ASSET.LOAD TYPE="Variables.templatetype" NAME="tmpls" OBJECTID="tmpltable.assetid"/>
+											<ASSET.GET NAME="tmpls" FIELD="name" OUTPUT="tmplname"/>
+											<if COND="Variables.flextemplateid=tmpltable.assetid">
+												<then>
+													<option value="tmpltable.assetid" SELECTED="" REPLACEALL="tmpltable.assetid"/>
+													<STRING.STREAM VARIABLE="tmplname"/>
+												</then>
+												<else>
+													<option value="tmpltable.assetid" REPLACEALL="tmpltable.assetid"/>
+													<STRING.STREAM VARIABLE="tmplname"/>
+												</else>
+											</if>
+										</loop>
+								</select>
+							</then>
+                          <else>
+                              <select name="flextemplateid">
+                                <option value=""/><XLAT.STREAM KEY="dvin/FlexibleAssets/Common/AnyDefinition"/> 
+                                <loop LIST="tmpltable">
+                                    <!-- load template to get its name -->
+                                    <ASSET.LOAD TYPE="Variables.templatetype" NAME="tmpls" OBJECTID="tmpltable.assetid"/>
+                                    <ASSET.GET NAME="tmpls" FIELD="name" OUTPUT="tmplname"/>
+                                    <option value="tmpltable.assetid" REPLACEALL="tmpltable.assetid"/><STRING.STREAM VARIABLE="tmplname"/>
+                                </loop>
+                          </select>
+                          </else>
+                          </if>
+                    </td>
+				</then>
+				<else>
+					<td>(<XLAT.STREAM KEY="dvin/FlexibleAssets/FlexAssets/NoPluralDef"/> )</td>
+				</else>
+				</if>
+			</tr>
+            
+            <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+
+            <tr>
+                <td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/DescriptionContains"/>:</td>
+                <td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+                <td class="form-inset">
+                   <IF COND="IsVariable.Description=true">
+                   <THEN>
+                    <![CDATA[<INPUT NAME="Description" SIZE="32" VALUE="]]> <STRING.STREAM VARIABLE="Description"/> <![CDATA["/>]]>
+                   </THEN>
+                   <ELSE>
+                    <INPUT NAME="Description" SIZE="32"/>
+                   </ELSE>
+                   </IF>
+                </td>
+            </tr>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+                <td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/StatusisNoColon"/>:</td>
+                <td></td>
+                <td class="form-inset"><callelement NAME="OpenMarket/Xcelerate/Actions/Util/ChooseStatus">
+                    <argument NAME="showDummy" VALUE="true"/>
+                    </callelement>
+                </td>
+            </tr>
+
+			<IF COND="ContentCat.usesearchindex=1">
+			<THEN>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/FlexAssets/DirectExp"/>:</td>
+					<td></td>
+					<td class="form-inset">
+						<TEXTAREA NAME="DirectQuery" ROWS="2" COLS="24" WRAP="virtual"></TEXTAREA>
+					</td>
+				</tr>
+			</THEN>
+			</IF>
+
+			<!--callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/-->
+       <if COND="Variables.ATTRSEARCH=true">
+			<then>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/FlexAssets/SelectAttr"/> </td>
+					<td></td>
+					<td class="form-inset">
+ 			       <callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/SelectAttributes"/>
+					</td>
+				</tr>
+
+ 			</then>
+			</if>
+			
+
+		<!-- Start and End Date for Site Preview -->
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/SearchStartEndDate"/>
+		<!-- End of Start and End Date for Site Preview -->
+    <!-- Start of locale search dropdown -->
+         <callelement NAME="OpenMarket/Xcelerate/AssetType/Dimension/ShowDimensionsDropDown"/>
+    <!-- end of locale search dropdown-->
+            <callelement NAME="OpenMarket/Xcelerate/Actions/Search/SearchCommon"/>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/SortResultsBy"/>:</td>
+				<td></td>
+				<td class="form-inset">
+					<select NAME="OrderBy">
+        				 <IF  COND="IsVariable.OrderBy=true">
+                         <THEN>
+                        <IF COND="Variables.OrderBy=name">
+                        <THEN>
+                            <OPTION VALUE="name" SELECTED=""/><XLAT.STREAM KEY="dvin/AT/Common/Name"/> 
+                        </THEN>
+                        <ELSE>
+                            <OPTION VALUE="name"/><XLAT.STREAM KEY="dvin/AT/Common/Name"/> 
+                        </ELSE>
+                        </IF>
+                        <IF COND="Variables.OrderBy=Variables.AssetType.description">
+                        <THEN>
+                            <OPTION VALUE="Variables.AssetType.description" REPLACEALL="Variables.AssetType.description" SELECTED=""/><XLAT.STREAM KEY="dvin/AT/Common/Description"/> 
+                        </THEN>
+                        <ELSE>
+                            <OPTION VALUE="Variables.AssetType.description" REPLACEALL="Variables.AssetType.description" /><XLAT.STREAM KEY="dvin/AT/Common/Description"/> 
+                        </ELSE>
+                        </IF>
+        
+                        <IF COND="Variables.OrderBy=createdby">
+                        <THEN>
+                            <OPTION VALUE="createdby" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/CreatedbyLowCase"/> 
+                        </THEN>
+                        <ELSE>
+                            <OPTION VALUE="createdby"/><XLAT.STREAM KEY="dvin/Common/CreatedbyLowCase"/> 
+                        </ELSE>
+                        </IF>
+        
+                        <IF COND="Variables.OrderBy=createddate DESC">
+                        <THEN>
+                            <OPTION VALUE="createddate DESC" SELECTED=""/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/> 
+                        </THEN>
+                        <ELSE>
+                            <OPTION VALUE="createddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/> 
+                        </ELSE>
+                        </IF>
+        
+                        <IF COND="Variables.OrderBy=updatedby">
+                        <THEN>
+                            <OPTION VALUE="updatedby" SELECTED=""/><XLAT.STREAM KEY="dvin/UI/Search/Modifiedby"/> 
+                        </THEN>
+                        <ELSE>
+                            <OPTION VALUE="updatedby"/><XLAT.STREAM KEY="dvin/UI/Search/Modifiedby"/> 
+                        </ELSE>
+                        </IF>
+        
+                        <IF COND="Variables.OrderBy=updateddate DESC">
+                        <THEN>
+                            <OPTION VALUE="updateddate DESC" SELECTED=""/><XLAT.STREAM KEY="dvin/UI/Search/ModifiedDate"/> 
+                        </THEN>
+                        <ELSE>
+                            <OPTION VALUE="updateddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/ModifiedDate"/> 
+                        </ELSE>
+                        </IF>
+                      </THEN>
+                      <ELSE>
+         				<OPTION VALUE="name"/><XLAT.STREAM KEY="dvin/AT/Common/Name"/> 
+        				<OPTION VALUE="Variables.AssetType.description" REPLACEALL="Variables.AssetType"/> <XLAT.STREAM KEY="dvin/AT/Common/Description"/>
+        				<OPTION VALUE="createdby"/><XLAT.STREAM KEY="dvin/Common/CreatedbyLowCase"/> 
+        				<OPTION VALUE="createddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/> 
+        				<OPTION VALUE="updatedby"/><XLAT.STREAM KEY="dvin/Common/UpdatedBy"/> 
+        				<OPTION VALUE="updateddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/UpdatedDate"/> 
+                      </ELSE>
+                      </IF>
+        		  </select>
+				</td>
+			</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr><td></td><td></td>
+		<td class="form-inset">
+			<input name="OrderByDesc" type="hidden" value=""/>
+			<setvar NAME="SNextPage"    VALUE="SelectAttributes"/>
+		
+			<XLAT.LOOKUP KEY="dvin/Util/FlexAssets/ContinueAttrSearch" VARNAME="ContinueAttrSearch" ESCAPE="true"/>
+			<XLAT.LOOKUP KEY="dvin/FlexibleAssets/ATLContinueBaseSearch" VARNAME="ATLContinueBaseSearch"/>
+			<a HREF="javascript:void(0)" onclick="setSortedBy();return Fixpagename('Variables.fpage','Variables.SNextPage')" onmouseover="window.status='Variables.ContinueAttrSearch';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables.fpage,Variables.SNextPage,Variables.ContinueAttrSearch">
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/SelectAttributes"/></CALLELEMENT>
+			</a>
+
+			<XLAT.LOOKUP KEY="dvin/FlexibleAssets/FlexAssets/SimpleSearchButton" VARNAME="SimpleSearchButton" ESCAPE="true"/>
+			<XLAT.LOOKUP KEY="dvin/Common/Search" VARNAME="XLAT_Search"/>
+			<XLAT.LOOKUP KEY="dvin/Common/Search" VARNAME="ESC_Search" ESCAPE="true"/>
+			<A HREF="javascript:void(0)" onclick="formatSetDate(document.getElementById('updatedAfterFieldIdDiv').innerHTML,'UpdatedAfter'); 
+				formatSetDate(document.getElementById('updatedBeforeFieldIdDiv').innerHTML,'UpdatedBefore'); 
+				formatSetDate(document.getElementById('startDateBeforeFieldIdDiv').innerHTML,'StartDateBefore');
+				formatSetDate(document.getElementById('startDateAfterFieldIdDiv').innerHTML,'StartDateAfter');
+				formatSetDate(document.getElementById('endDateAfterFieldIdDiv').innerHTML,'EndDateAfter');
+				formatSetDate(document.getElementById('endDateAfterFieldIdDiv').innerHTML,'EndDateBefore');
+				setSortedBy();
+				return Fixpagename1('SearchPost','SearchForm1');" onmouseover="window.status='Variables.ESC_Search'" onmouseout="window.status=''" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale,Variables.XLAT_Search,Variables.ESC_Search" ><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Search"/></CALLELEMENT></A>
+			<IF COND="Variables.cs_environment!=portal">
+			<THEN>
+			   <IF COND="IsVariable.cs_StartID=false">
+			   <THEN>
+					<SETVAR NAME="cs_StartID" VALUE="Variables.empty" />
+			   </THEN>
+			   </IF>
+				   <SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Actions/SimpleSearchFront" outstring="urlSimpleSearchButton">
+					 <satellite.argument name="cs_environment" value="Variables.cs_environment"/>
+					 <satellite.argument name="cs_formmode" value="Variables.cs_formmode"/>
+					  <satellite.argument name="AssetType" value="Variables.AssetType"/>
+					  <satellite.argument name="cs_StartID" value="Variables.cs_StartID"/>
+				   </SATELLITE.LINK>
+				   <a href="Variables.urlSimpleSearchButton" onmouseover="window.status='Variables.SimpleSearchButton';return true" onmouseout="window.status='';return true" REPLACEALL="Variables.urlSimpleSearchButton,Variables.SimpleSearchButton" target="_self"><span class="small-text"><IMG src="Variables.cs_imagedir/graphics/common/icon/doubleArrow.gif" WIDTH="15" HEIGHT="12" BORDER="0" REPLACEALL="Variables.cs_imagedir"/><XLAT.STREAM KEY="dvin/UI/simplesearch"/></span></a>
+			</THEN>
+			</IF>
+		</td>
+	</tr>
+</table>
+
+</FTCS> 
+

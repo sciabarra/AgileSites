@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- ContentForm.xml
+-
+- DESCRIPTION
+-	Form for creating/editing  PGroupTmpls
+-    Required input variables: ContentDetails
+-
+- HISTORY 
+-->
+<!--PGroupTmpls/ContentForm.xml-->
+
+<!-- 
+    setup all the fields in the PGroupTmpls  table
+    as hidden input fields: this is required
+    for replacerow to work. 
+    
+    Note: you must
+    ensure that there is no more than one
+    occurence of a form field that refers
+    to one of these input fields. Else, browsers
+    will concatenate all values found, surely
+    leading to unexpected results
+
+    Note: dates are dealt with a little differently
+
+-->
+
+<!--  ******************	INPUTS??*******************
+      Things that are hardcoded:
+			TYPE="Attributes"		 --type of attribute
+      TYPE="PGroupTmpls" - of Parent Template
+-->
+
+<INPUT TYPE="HIDDEN" NAME="FlexTmplsNextStep" VALUE=""/>
+
+<!-- determine template type (will set TemplateType) for us -->
+<callelement NAME="OpenMarket/Xcelerate/AssetType/PageDefinition/GetTemplateType"/>
+
+<if COND="IsVariable.FlexTmplsNextStep=true">
+<then>
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/PageDefinition/Variables.FlexTmplsNextStep"/>
+</then>
+<else>
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/PageDefinition/ContentForm1"/>
+</else>
+</if>
+
+</FTCS>
+

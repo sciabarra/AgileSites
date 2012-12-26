@@ -1,0 +1,97 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/CSElement/SetModelStrings
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+<!-- First get xml model string -->
+<SETVAR NAME="errno" VALUE="0"/>
+<SETVAR NAME="tablename" VALUE="ElementCatalog"/>
+<SETVAR NAME="elementname" VALUE="OpenMarket/Xcelerate/AssetType/CSElement/ModelXML"/>
+<SELECTTO LIST="ecentry" FROM="ElementCatalog" WHAT="*" WHERE="elementname"/>
+<IF COND="IsError.Variables.errno=false">
+<THEN> 
+	<!-- for windows machines, cr-lf combination is %0d%0a  -->
+	<SUBSTITUTE STR="ecentry.@url" WHAT="%0d" WITH="Variables.empty" OUTSTR="OurText"/>
+	<!-- use javascript esacpe character for newline -->
+	<SUBSTITUTE STR="Variables.OurText" WHAT="%0a" WITH="\n" OUTSTR="OurText"/>	
+	<SETVAR NAME="ModelXml" VALUE="Variables.OurText"/>
+</THEN>
+<ELSE>
+	<SETVAR NAME="ModelXml" VALUE="Variables.empty"/>
+</ELSE>
+</IF>
+
+<SETVAR NAME="errno" VALUE="0"/>
+<SETVAR NAME="elementname" VALUE="OpenMarket/Xcelerate/AssetType/CSElement/ModelAnalyticsJsp"/>
+<SELECTTO LIST="ecentry" FROM="ElementCatalog" WHAT="*" WHERE="elementname"/>
+<IF COND="IsError.Variables.errno=false">
+<THEN> 
+	<!-- for windows machines, cr-lf combination is %0d%0a  -->
+	<SUBSTITUTE STR="ecentry.@url" WHAT="%0d" WITH="Variables.empty" OUTSTR="OurText"/>
+	<!-- use javascript esacpe character for newline -->
+	<SUBSTITUTE STR="Variables.OurText" WHAT="%0a" WITH="\n" OUTSTR="OurText"/>	
+	<SETVAR NAME="ModelAnalyticsJsp" VALUE="Variables.OurText"/>
+</THEN>
+<ELSE>
+	<SETVAR NAME="ModelAnalyticsJsp" VALUE="Variables.empty"/>
+</ELSE>
+</IF>
+
+<SETVAR NAME="errno" VALUE="0"/>
+<SETVAR NAME="elementname" VALUE="OpenMarket/Xcelerate/AssetType/CSElement/ModelAnalyticsXml"/>
+<SELECTTO LIST="ecentry" FROM="ElementCatalog" WHAT="*" WHERE="elementname"/>
+<IF COND="IsError.Variables.errno=false">
+<THEN> 
+	<!-- for windows machines, cr-lf combination is %0d%0a  -->
+	<SUBSTITUTE STR="ecentry.@url" WHAT="%0d" WITH="Variables.empty" OUTSTR="OurText"/>
+	<!-- use javascript esacpe character for newline -->
+	<SUBSTITUTE STR="Variables.OurText" WHAT="%0a" WITH="\n" OUTSTR="OurText"/>	
+	<SETVAR NAME="ModelAnalyticsXml" VALUE="Variables.OurText"/>
+</THEN>
+<ELSE>
+	<SETVAR NAME="ModelAnalyticsXml" VALUE="Variables.empty"/>
+</ELSE>
+</IF>
+
+
+<SETVAR NAME="errno" VALUE="0"/>
+<SETVAR NAME="elementname" VALUE="OpenMarket/Xcelerate/AssetType/CSElement/ModelJsp"/>
+<SELECTTO LIST="ecentry" FROM="ElementCatalog" WHAT="*" WHERE="elementname"/>
+<IF COND="IsError.Variables.errno=false">
+<THEN> 
+	<!-- for windows machines, cr-lf combination is %0d%0a  -->
+	<SUBSTITUTE STR="ecentry.@url" WHAT="%0d" WITH="Variables.empty" OUTSTR="OurText"/>
+	<!-- use javascript esacpe character for newline -->
+	<SUBSTITUTE STR="Variables.OurText" WHAT="%0a" WITH="\n" OUTSTR="OurText"/>	
+	<SETVAR NAME="ModelJsp" VALUE="Variables.OurText"/>
+</THEN>
+<ELSE>
+	<SETVAR NAME="ModelJsp" VALUE="Variables.empty"/>
+</ELSE>
+</IF>
+
+<SETVAR NAME="errno" VALUE="0"/>
+<SETVAR NAME="tablename" VALUE="ElementCatalog"/>
+<SETVAR NAME="elementname" VALUE="OpenMarket/Xcelerate/AssetType/CSElement/ModelHtml"/>
+<SELECTTO LIST="ecentry" FROM="ElementCatalog" WHAT="*" WHERE="elementname"/>
+<IF COND="IsError.Variables.errno=false">
+<THEN> 
+	<!-- for windows machines, cr-lf combination is %0d%0a; erase %0d  -->
+	<SUBSTITUTE STR="ecentry.@url" WHAT="%0d" WITH="Variables.empty" OUTSTR="OurText"/>
+	<!-- use javascript esacpe character for newline -->
+	<SUBSTITUTE STR="Variables.OurText" WHAT="%0a" WITH="\n" OUTSTR="OurText"/>	
+	<SETVAR NAME="ModelHtml" VALUE="Variables.OurText"/>
+
+</THEN>
+<ELSE>
+	<SETVAR NAME="ModelHtml" VALUE="Variables.empty"/>
+</ELSE>
+</IF>
+
+</FTCS> 
+

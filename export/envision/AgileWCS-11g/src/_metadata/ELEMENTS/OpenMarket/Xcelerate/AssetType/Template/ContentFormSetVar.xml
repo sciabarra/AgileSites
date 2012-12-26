@@ -1,0 +1,107 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/Template/ContentFormSetVar
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+<REPLACEALL LIST="CS.Property.ft.cgipath">
+<SCRIPT type="text/javascript" src="CS.Property.ft.cgipathjs/prototype.js"></SCRIPT>
+<SCRIPT>
+<![CDATA[
+window.onload=function(){
+	$('ajaxLoading').style.display='none';
+}
+]]>
+</SCRIPT>
+</REPLACEALL>
+<div id="ajaxLoading" style="width:200px;height:100px;position:absolute; top: 350px;left: 320px;" bgcolor="white">
+<table width="100%" height="100%" cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" style="border: 1px solid rgb(204,204,204);">
+<tbody>
+<tr>
+<td valign="middle" align="center">
+<img src="Variables.cs_imagedir/graphics/common/icon/wait_ax.gif" REPLACEALL="Variables.cs_imagedir"/>
+<br/>
+<br/>
+<b>
+<span id="loadingMsg"><XLAT.STREAM KEY="dvin/UI/Loading"/></span>
+<img src="Variables.cs_imagedir/graphics/common/icon/short_Progress.gif" REPLACEALL="Variables.cs_imagedir"/>
+</b>
+<a id="hider2" style="cursor: pointer; text-decoration: underline;"/>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- if this is a copy then do something about the file name for the element logic -->
+<!-- and set up so there is one sitecatlog entry per element -->
+<if COND="Variables.EditFlag=copy">
+<then>
+	<if COND="IsVariable.Template:rootelement=false">
+	<then>
+		<if COND="IsVariable.Template:element:Total=true">
+		<then>
+			<if COND="Variables.Template:element:Total!=0">
+			<then>
+				<!-- manufacture a new rootelement-->
+				<if COND="IsVariable.Template:subtype=true">
+				<then>
+					<setvar NAME="rootelement" VALUE="Variables.Template:subtype/Variables.Template:name"/>
+				</then>
+				<else>
+					<setvar NAME="rootelement" VALUE="/Variables.Template:name"/>
+				</else>
+				</if>
+				<SUBSTITUTE STR="Variables.rootelement" WHAT="%20" WITH="_" OUTSTR="rootelement"/>
+				<!-- change the elementcatalog and sitecatalog to use the new rootelement -->
+				<SETCOUNTER NAME="nthElement" VALUE="0"/>
+				<LOOP COUNT="Variables.Template:element:Total">
+					<setvar NAME="value" VALUE="Variables.Template:element:Counters.nthElement:urlspec"/>
+					<INDEXOF STR="Variables.value" WHAT="." OUTSTR="extIndex"/>
+					<SUBSTRING STR="Variables.value" OUTSTR="extension" INDEX="Variables.extIndex"/>
+					<setvar NAME="Template:element:Counters.nthElement:urlspec" VALUE="Variables.rootelementVariables.extension"/>
+					<setvar NAME="value" VALUE="Variables.Template:element:Counters.nthElement:elementname"/>
+					<INDEXOF STR="Variables.value" WHAT=":" OUTSTR="themeIndex"/>
+					<if COND="Variables.errno=1">
+					<then>
+						<SUBSTRING STR="Variables.value" OUTSTR="theme" INDEX="Variables.themeIndex"/>
+						<setvar NAME="Template:element:Counters.nthElement:elementname" VALUE="Variables.rootelementVariables.theme"/>
+					</then>
+					<else>
+						<setvar NAME="Template:element:Counters.nthElement:elementname" VALUE="Variables.rootelement"/>
+					</else>
+					</if>
+				  <ICS.RESOLVEVARIABLES NAME="$(Variables.Template:element:$(Counters.nthElement):siteentry:Total)" OUTPUT="numpagenames" DELIMITED="true"/>
+					<SETCOUNTER NAME="nthPagename" VALUE="0"/>
+					<LOOP COUNT="Variables.numpagenames">
+						<if COND="IsVariable.Template:subtype=true">
+						<then>
+							<setvar NAME="Template:element:Counters.nthElement:siteentry:Counters.nthPagename:pagename" VALUE="SessionVariables.PublicationName/Variables.Template:element:Counters.nthElement:elementname"/>
+						</then>
+						<else>
+							<setvar NAME="Template:element:Counters.nthElement:siteentry:Counters.nthPagename:pagename" VALUE="SessionVariables.PublicationNameVariables.Template:element:Counters.nthElement:elementname"/>
+						</else>
+						</if>
+						<INCCOUNTER NAME="nthPagename" VALUE="1"/>
+					</LOOP>
+					<INCCOUNTER NAME="nthElement" VALUE="1"/>
+				</LOOP>
+			</then>
+			</if>
+		</then>
+		</if>
+	</then>
+	</if>
+</then>
+</if>
+
+<!-- do the Asset.Gather, Asset.Scatter and set all hidden variables -->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/AssetGather"/>
+<ASSET.SCATTER NAME="theCurrentAsset" FIELDLIST="*" PREFIX="ContentDetails"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/ContentFormSaveVar"/>
+
+
+</FTCS>
