@@ -88,8 +88,8 @@ object AgileWcsSupport {
   // interface to csdt from sbt
   val wcsCsdtTask = wcsCsdt <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
-      (argTask, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
-        (args, url, sites, user, password, classpath, s, runner) =>
+      (argTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
+        (args, version, url, sites, user, password, classpath, s, runner) =>
           val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d).*.jar$".r;
           val seljars = classpath.files.filter(f => !re.findAllIn(f.getName).isEmpty)
           val cmd = Array(url + "ContentServer",
@@ -97,7 +97,7 @@ object AgileWcsSupport {
             "password=" + password,
             "cmd=" + (if (args.size > 0) args(0) else "listcs"),
             "fromSites=" + sites,
-            "datastore=AgileWCS",
+            "datastore=AgileWCS-"+version,
             "resources=" + (if (args.size > 1) args(1) else "@ALL_NONASSETS;@ALL_ASSETS"))
           //println(cmd.mkString("java -cp "+seljars.mkString(":")+" com.fatwire.csdt.client.main.CSDT ", " ", ""))
           Run.run("com.fatwire.csdt.client.main.CSDT",
@@ -138,13 +138,13 @@ object AgileWcsSupport {
 
   // configuring everything
   val wcsConfigTask = wcsConfig <<=
-    (wcsPackageJar, wcsHome, wcsWebapp, wcsSites, wcsUser, wcsPassword) map {
-      (appjar, home, webapp, site, username, password) =>
+    (wcsPackageJar, wcsVersion, wcsHome, wcsWebapp, wcsSites, wcsUser, wcsPassword) map {
+      (appjar, version, home, webapp, site, username, password) =>
 
         // create local export dir for csdt
         file("export").mkdir
         (file("export") / "envision").mkdir
-        (file("export") / "envision" / "AgileWCS").mkdir
+        (file("export") / "envision" / ("AgileWCS-"+version)).mkdir
 
         // configure futurentense. init
         val configFile = file(home) / "futuretense.ini"
@@ -208,7 +208,7 @@ object AgileWcsSupport {
               val tgt = destlib / file.getName
               IO.copyFile(file, tgt)
 
-              //println("<<< " + file.getAbsolutePath)
+              println("<<< " + file.getAbsolutePath)
               println("+++ " + tgt.getAbsolutePath)
             }
 

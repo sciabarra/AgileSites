@@ -41,10 +41,11 @@ object AgileWcsBuild extends Build {
   val unmanagedBaseTask = unmanagedBase in Compile <<= wcsWebapp {
     base => file(base) / "WEB-INF" / "lib"
   }
+  
   val unmanagedJarsTask = unmanagedJars in Compile <+= wcsCsdtJar map {
     jar => Attributed.blank(file(jar))
   }
-
+  
   /// COMMONS
   val coreDependencies = Seq(
     "javax.servlet" % "servlet-api" % "2.5",
@@ -69,18 +70,24 @@ object AgileWcsBuild extends Build {
       libraryDependencies ++= coreDependencies,
       publishArtifact in packageDoc := false,
       name := "agilewcs-core",
-      version := "0.4", // if you change this, fix dependencies, too!
+      version <<= (wcsVersion) { v => "0.4_"+ v }, 
+        // if you change this, fix dependencies, too!
       coreGeneratorTask))
 
   /// API 
-  val commonDependencies = coreDependencies ++
-    Seq("org.agilewcs" %% "agilewcs-core" % "0.4")
+  //val commonDependencies = coreDependencies ++
+  //  Seq("org.agilewcs" %% "agilewcs-core" % "0.4_7.6")
+    
 
   lazy val api: Project = Project(
     id = "api",
     base = file("api"),
     settings = commonSettings ++ Seq(
-      libraryDependencies ++= commonDependencies,
+      //libraryDependencies ++= commonDependencies,
+      libraryDependencies <++= (wcsVersion) { 
+          v => val nv = "0.4_"+v 
+          coreDependencies ++ Seq("org.agilewcs" %% "agilewcs-core" % nv)
+      },
       name := "agilewcs-api",
       version := "0.3"))
 
@@ -89,7 +96,11 @@ object AgileWcsBuild extends Build {
     id = "app",
     base = file("app"),
     settings = commonSettings ++ Seq(
-      libraryDependencies ++= commonDependencies,
+      //libraryDependencies ++= commonDependencies,
+      libraryDependencies <++= (wcsVersion) { 
+          v => val nv = "0.4_"+v
+          coreDependencies ++ Seq("org.agilewcs" %% "agilewcs-core" % nv)
+      },
       name := "agilewcs-app",
       version := "0.3")) dependsOn (api)
 
@@ -98,7 +109,11 @@ object AgileWcsBuild extends Build {
     id = "all",
     base = file("."),
     settings = commonSettings ++ assemblySettings ++ Seq(
-      libraryDependencies ++= commonDependencies,
+      //libraryDependencies ++= commonDependencies,
+      libraryDependencies <++= (wcsVersion) { 
+          v => val nv = "0.4_"+v
+          coreDependencies ++ Seq("org.agilewcs" %% "agilewcs-core" % nv)
+      },
       name := "agilewcs-all",
       version := "0.3",
       wcsCsdtTask,

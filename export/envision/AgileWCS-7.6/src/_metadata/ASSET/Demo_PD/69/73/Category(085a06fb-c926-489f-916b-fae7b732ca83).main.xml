@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>Demo_PD:1328079455064</id>
+    <name>Category</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2012-12-24T10:17:00Z</createddate>
+    <description>Category</description>
+    <publist>Demo</publist>
+    <status>PL</status>
+    <subtype></subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2012-12-24T10:17:00Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>085a06fb-c926-489f-916b-fae7b732ca83</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1328079455064</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>style</name>
+        <data>
+            <stringValue>S</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>Attributes</name>
+        <data>
+            <listValue/>
+        </data>
+    </attribute>
+    <attribute>
+        <name>Groups</name>
+        <data>
+            <listValue/>
+        </data>
+    </attribute>
+    <attribute>
+        <name>Filters</name>
+        <data/>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <list>
+    <dependency>
+      <depType>N</depType>
+      <resType>Demo_PD</resType>
+      <resId>1328079455064</resId>
+      <uid>085a06fb-c926-489f-916b-fae7b732ca83</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ASSET_TYPE</resType>
+      <resId>Demo_Blog</resId>
+      <uid>aa56b3a4-bccc-4017-b554-41c59c776147</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ASSET_TYPE</resType>
+      <resId>Demo_Category</resId>
+      <uid>8067ec42-babb-4a48-93e2-2da398c6c54b</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ASSET_TYPE</resType>
+      <resId>Demo_CD</resId>
+      <uid>c60acd3e-c25e-4585-b054-dfde2bdfb9dd</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ASSET_TYPE</resType>
+      <resId>Demo_PD</resId>
+      <uid>a931ea1b-16bd-42e2-9c31-ae5be2f2fee5</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ASSET_TYPE</resType>
+      <resId>Demo_F</resId>
+      <uid>9b1692ec-8fcc-49b5-9c61-fa9f0a1a0f91</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ASSET_TYPE</resType>
+      <resId>Demo_A</resId>
+      <uid>fb66911e-d023-4562-bcb6-97fcaa4aedd5</uid>
+    </dependency>
+  </list>
+</dependencies>
+==================______________________==================
+#
+#Wed Dec 26 01:14:35 CET 2012
+key=Demo_PD-085a06fb-c926-489f-916b-fae7b732ca83
+type=ASSETDATA
+sites=Demo
+
+==================___ END METADATA ___==================-->

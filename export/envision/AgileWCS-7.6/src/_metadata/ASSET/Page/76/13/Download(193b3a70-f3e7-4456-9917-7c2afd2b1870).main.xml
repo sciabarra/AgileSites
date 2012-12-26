@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>Page:1328079454837</id>
+    <name>Download</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2012-12-23T11:39:31Z</createddate>
+    <description>Download</description>
+    <publist>Demo</publist>
+    <status>ED</status>
+    <subtype>Demo_Accordion</subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2012-12-25T17:26:05Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue>/DJLayout</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>193b3a70-f3e7-4456-9917-7c2afd2b1870</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1328079454837</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>category</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SPTParent</name>
+        <data>
+            <stringValue>Page:1328079454668</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SPTRank</name>
+        <data>
+            <integerValue>5</integerValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SPTNCode</name>
+        <data>
+            <stringValue>Placed</stringValue>
+        </data>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+        <association>
+            <href>myPathassociations/-</href>
+            <name>-</name>
+            <associatedAsset>Demo_Article:1328079457147</associatedAsset>
+            <associatedAsset>Demo_Article:1328079457134</associatedAsset>
+        </association>
+    </associations>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <list>
+    <dependency>
+      <depType>E</depType>
+      <resType>Demo_Article</resType>
+      <resId>1328079457134</resId>
+      <uid>9795213c-b3a8-463b-8ba8-88829d38d12c</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>Demo_Article</resType>
+      <resId>1328079457147</resId>
+      <uid>c0f4dd41-21ee-4179-9950-cbed65d35a32</uid>
+    </dependency>
+    <dependency>
+      <depType>N</depType>
+      <resType>Page</resType>
+      <resId>1328079454837</resId>
+      <uid>193b3a70-f3e7-4456-9917-7c2afd2b1870</uid>
+    </dependency>
+    <dependency>
+      <depType>N</depType>
+      <resType>Page</resType>
+      <resId>1328079454668</resId>
+      <uid>da38bf25-2c01-4713-8dd7-03639a44f1cd</uid>
+    </dependency>
+  </list>
+</dependencies>
+==================______________________==================
+#
+#Wed Dec 26 01:14:32 CET 2012
+key=Page-193b3a70-f3e7-4456-9917-7c2afd2b1870
+type=ASSETDATA
+sites=Demo
+
+==================___ END METADATA ___==================-->
