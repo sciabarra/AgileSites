@@ -266,26 +266,24 @@ if (ics.GetVar("GetOrSet").equals("set"))
 %>
 						<flexasset:setattribute name='theCurrentAsset' id='<%=tmplattrlist.getValue("assetid")%>'/>
 <%
-                        //System.out.println("\tAssetGather@ {  Returned ..flexasset:setattribute attributeId= } "+tmplattrlist.getValue("assetid") ) ;
-
-                    }
+					}
 				}
 				ics.SetVar("AttrTypeID","");
 				ics.SetVar("myid", tmplattrlist.getValue("assetid"));
 				ics.SetVar("n", tmplattrlist.getValue("name"));
 				ics.SetVar("type", tmplattrlist.getValue("type"));
 				ics.SetVar("EditingStyle", tmplattrlist.getValue("valuestyle"));
+				// In Falcon we have only one type of multiple value i.e. Multiple ordered.
+				// So setting all the multiple type to multiple ordered. 
+				if ("M".equalsIgnoreCase(ics.GetVar("EditingStyle"))) 
+					ics.SetVar("EditingStyle", "O");
 				ics.SetVar("AttrTypeID", tmplattrlist.getValue("attributetype"));
 				ics.SetVar("UploadDir", tmplattrlist.getValue("upload"));
 				ics.RemoveVar("MyAttributeType");
 
-                //System.out.println("\tAssocAttr@ NOW ..ics.SetVar { attr_assetid=" +tmplattrlist.getValue("assetid")+", EditorAttrTypeID="+tmplattrlist.getValue("attributetype")+" }" );
-
-                if (!ics.GetVar("AttrTypeID").equals(""))
+				if (!ics.GetVar("AttrTypeID").equals(""))
 				{
-                    //System.out.println("\tAssocAttr@ ATM Locate ics.SetVar { attr_assetid=" +tmplattrlist.getValue("assetid")+", EditorAttrTypeID="+tmplattrlist.getValue("attributetype")+" }" );
-
-                    vN = new FTValList();
+					vN = new FTValList();
 					vN.setValString("TYPE", "AttrTypes");
 					vN.setValString("VARNAME", "FAAGatmgr");
 					ics.runTag("atm.locate", vN);
@@ -337,7 +335,6 @@ if (ics.GetVar("GetOrSet").equals("set"))
 					}
 				}
 				// FatWireJP
-                // System.out.println("\tAssocAttr@ NOW 2 ..ics.SetVar { attr_assetid=" +tmplattrlist.getValue("assetid")+", EditorAttrTypeID="+tmplattrlist.getValue("attributetype")+" }" );
 
 				if (!ics.GetVar("EditingStyle").equals("S") && !ics.GetVar("EditingStyle").equals("N"))
 				{
@@ -457,7 +454,7 @@ if (ics.GetVar("GetOrSet").equals("set"))
 					ics.SetCounter("deleteCount", 0);
 					int nCounterValue = Integer.parseInt(ics.GetVar("NCounter"));
 					String vectorName = "v" + tmplattrlist.getValue("assetid");
-
+					boolean newFileUploaded = false;
 					for (int i = 0; i < nCounterValue; i++)
 					{
 %>
@@ -473,12 +470,21 @@ if (ics.GetVar("GetOrSet").equals("set"))
 						{
 							// Call the attribute type's element, if there is one.
 %>
-							<ics:callelement element='<%="OpenMarket/Gator/AttributeTypes/"+ics.GetVar("MyAttributeType")+"FlexAssetGather"%>'/>
+							<ics:callelement element='<%="OpenMarket/Gator/AttributeTypes/"+ics.GetVar("MyAttributeType")+"FlexAssetGather"%>'>
+								<ics:argument name="loopNumber" value='<%= String.valueOf(i) %>'/>
+								<ics:argument name="vectorName" value='<%= vectorName %>'/>
+								<ics:argument name="currAttrID" value='<%= tmplattrlist.getValue("assetid") %>'/>
+							</ics:callelement>
 <%
-						}
-						if (ics.GetVar("type").equals("url"))
-						{
+							ics.SetVar("takeDetour", "true");
+							newFileUploaded = true;
 
+						}
+						else
+							ics.SetVar("takeDetour", "false");
+						
+						if (ics.GetVar("type").equals("url") && "false".equalsIgnoreCase(ics.GetVar("takeDetour")))
+						{							
 							int numValues;
 							if (ics.GetObj(vectorName) != null)
 							{
@@ -772,23 +778,26 @@ if (ics.GetVar("GetOrSet").equals("set"))
 						else
 						{
 							// not url, date, money
-							String tempval = ics.GetVar(ics.GetVar("cs_CurrentInputName"));
-							if (tempval != null && !tempval.equals(""))
-							{
-%>
-								<listobject:addrow name='myList'>
+							if ("false".equalsIgnoreCase(ics.GetVar("takeDetour"))) {
+							
+								String tempval = ics.GetVar(ics.GetVar("cs_CurrentInputName"));
+								if (tempval != null && !tempval.equals(""))
+								{
+	%>
+									<listobject:addrow name='myList'>
 									<listobject:argument name='value' value='<%=tempval%>'/>
-<%
+	<%
 									String sCurrentOrdinal = ics.GetVar("cs_"+ics.GetVar("n")+"_ordinal_"+String.valueOf(ics.GetCounter("TCounter")));
-                                        				if (sCurrentOrdinal != null)
+														if (sCurrentOrdinal != null)
 									{
-%>
+	%>
 										<listobject:argument name='ordinal' value='<%=sCurrentOrdinal%>'/>
-<%
+	<%
 									}
-%>
-								</listobject:addrow>
-<%
+	%>
+									</listobject:addrow>
+	<%
+								}
 							}
 						}
 						ics.SetCounter("TCounter", ics.GetCounter("TCounter")+1);
@@ -807,28 +816,65 @@ if (ics.GetVar("GetOrSet").equals("set"))
 							<listobject:create name='temp' columns='id'/>
 <%
 							java.util.StringTokenizer tempidTokens = new java.util.StringTokenizer(ics.GetVar("tempids"),",");
+							int i = 1;
+							StringBuilder tempIndexForids = new StringBuilder();
 							while (tempidTokens.hasMoreTokens())
 							{
+								String nextToken = tempidTokens.nextToken();
+								if(newFileUploaded)
+								{ 
+									// Prepare a string to preserve the order of iteration by keeping track of i.
+									
+									tempIndexForids.append(tempIndexForids.toString()).
+													append( nextToken).
+													append(":").
+													append(i).
+													append(",");
+									i++;
+								}
 %>
 								<listobject:addrow name='temp'>
-									<listobject:argument name='id' value='<%=tempidTokens.nextToken()%>'/>
+									<listobject:argument name='id' value='<%=nextToken%>'/>
 								</listobject:addrow>
 <%
 							}
 %>
 							<listobject:tolist name='temp' listvarname='tempids'/>
 <%
+							IListBasic tempidsList = (IListBasic) ics.GetList("tempids");
+							if (tempidsList.numRows() > 0) {
+								vN = new FTValList();
+								vN.setValString("LIST", "tempids");
+								vN.setValString("LISTVARNAME", "AttrValueList");
+								vN.setValString("COLUMN", "urlvalue");
+								ics.runTag("tempobjects.getlist", vN);							
 
-							vN = new FTValList();
-							vN.setValString("LIST", "tempids");
-							vN.setValString("LISTVARNAME", "AttrValueList");
-							vN.setValString("COLUMN", "urlvalue");
-							ics.runTag("tempobjects.getlist", vN);
+								IListBasic attrvals = (IListBasic) ics.GetList("AttrValueList");
 %>
-							<ics:callelement element='OpenMarket/Gator/Util/FixBLOBList'>
-                            					<ics:argument name='cs_ListToReplace' value='AttrValueList'/>
-							</ics:callelement>
+								<ics:if condition="<%= null != attrvals && attrvals.numRows() > 0 %>">
+								<ics:then>
+									<ics:callelement element='OpenMarket/Gator/Util/FixBLOBList'>
+										<ics:argument name='cs_ListToReplace' value='AttrValueList'/>
+										<% if(newFileUploaded) {
+											/*
+												We use the string prepared above {tempIndexForids} to track order of iteration ,
+												which is a map from ids to their respective index.
+												This fix is required because the tempobjects.getlist, returns
+												 a list {AttrValueList} which is different from the list { tempids }passed to it.
+												 
+												 eg. if   {101,109,103} is the list passed to tempobjects.getlist, it re-orders
+												 to natural sort order {101,103,109}.
+												 
+												 Check the FixBlobList code to see how this is used.
+											*/
+											%>
+											<ics:argument name='listOrder' value='<%=tempIndexForids.toString()%>'/>
+											<%} %>
+									</ics:callelement>
+								</ics:then>
+								</ics:if>  
 <%
+							}
 						}
 						else
 						{
@@ -849,9 +895,8 @@ if (ics.GetVar("GetOrSet").equals("set"))
 				}
 				else
 				{
-                    // System.out.println("\tAssocAttr@ NOW 3 Single valued attribute..ics.SetVar { attr_assetid=" +tmplattrlist.getValue("assetid")+", EditorAttrTypeID="+tmplattrlist.getValue("attributetype")+" }" );
-
-                    // Single valued attribute!
+					// Single valued attribute!
+					String vectorName = "v"+tmplattrlist.getValue("assetid");
 %>
 					<ics:callelement element='OpenMarket/Gator/FlexibleAssets/Common/GetInputName'>
 						<ics:argument name='cs_AttrName' value='<%=ics.GetVar("n")%>'/>
@@ -859,17 +904,24 @@ if (ics.GetVar("GetOrSet").equals("set"))
 						<ics:argument name='cs_Varname' value='cs_CurrentInputName'/>
 					</ics:callelement>
 <%
-                    // System.out.println("\tAssocAttr@ NOW 4 Single valued attribute..Element ....Lives= "+ics.IsElement("OpenMarket/Gator/AttributeTypes/"+ics.GetVar("MyAttributeType")+"FlexAssetGather"));
+						if (ics.IsElement("OpenMarket/Gator/AttributeTypes/"+ics.GetVar("MyAttributeType")+"FlexAssetGather"))
+						{
+							// Call the attribute type's element, if there is one.
+%>
+							<ics:callelement element='<%="OpenMarket/Gator/AttributeTypes/"+ics.GetVar("MyAttributeType")+"FlexAssetGather"%>'>
+								<ics:argument name="vectorName" value='<%=vectorName%>'/>
+								<ics:argument name="currAttrID" value='<%= tmplattrlist.getValue("assetid") %>'/>
+								<ics:argument name="loadedAsset" value='theCurrentAsset'/>
+								<ics:argument name="loopNumber" value='<%= "0" %>'/>
+							</ics:callelement>
+<%
+							ics.SetVar("takeDetour", "true");
 
-                    if (ics.IsElement("OpenMarket/Gator/AttributeTypes/"+ics.GetVar("MyAttributeType")+"FlexAssetGather"))
-					{
-						// Call gather element for attribute type, for single valued attribute
-						ics.CallElement("OpenMarket/Gator/AttributeTypes/"+ics.GetVar("MyAttributeType")+"FlexAssetGather", null);
-					}
+						}
+						else
+							ics.SetVar("takeDetour", "false");							
 
-					String vectorName = "v"+tmplattrlist.getValue("assetid");
-
-					if (ics.GetVar("type").equals("url"))
+					if (ics.GetVar("type").equals("url") && "false".equalsIgnoreCase(ics.GetVar("takeDetour")))
 					{
 						// Single valued url or blob!
 
@@ -1107,14 +1159,16 @@ if (ics.GetVar("GetOrSet").equals("set"))
 					else
 					{
 						//not url, date, money
-						if (ics.GetVar(ics.GetVar("cs_CurrentInputName"))!=null)
-						{
-							ics.SetVar("attrvalue", ics.GetVar(ics.GetVar("cs_CurrentInputName")));
-						}
-						else
-						{
-							ics.SetVar("attrvalue", "");
-						}
+						if ("false".equalsIgnoreCase(ics.GetVar("takeDetour"))) {
+							if (ics.GetVar(ics.GetVar("cs_CurrentInputName"))!=null)
+							{
+								ics.SetVar("attrvalue", ics.GetVar(ics.GetVar("cs_CurrentInputName")));
+							}
+							else
+							{
+								ics.SetVar("attrvalue", "");
+							}
+						}	
 					}
 					if (ics.GetVar("attrvalue")!=null && !ics.GetVar("attrvalue").equals(""))
 					{
@@ -1123,7 +1177,8 @@ if (ics.GetVar("GetOrSet").equals("set"))
 %>
 						<flexasset:setsingleattribute name='theCurrentAsset' id='<%=tmplattrlist.getValue("assetid")%>' value='<%=ics.GetVar("attrvalue")%>'/>
 <%
-                    }
+						ics.SetVar("attrvalue", "");
+					}
 				} // single or multi valued
 			}
 			while (tmplattrlist.moveToRow(IList.next,0));
@@ -1171,25 +1226,31 @@ if (ics.GetVar("GetOrSet").equals("set"))
 			ics.runTag("vector.tostring", vN);
 
 			java.util.StringTokenizer tempidTokens = new java.util.StringTokenizer(ics.GetVar("currentTempIDs"), ",");
-			while (tempidTokens.hasMoreTokens())
-			{
-				vN = new FTValList();
-				vN.setValString("ID", tempidTokens.nextToken());
-				ics.runTag("tempobjects.delete", vN);
+			if (!"true".equalsIgnoreCase(ics.GetVar("isReposted")) &&
+					!"true".equalsIgnoreCase(ics.GetVar(currentURLAttrID + "_isValueId"))) {
+				while (tempidTokens.hasMoreTokens())
+				{
+					vN = new FTValList();
+					vN.setValString("ID", tempidTokens.nextToken());
+					ics.runTag("tempobjects.delete", vN);
+				}				
 			}
 
-			vN = new FTValList();
-			vN.setValString("LIST", currentURLAttrID);
-			vN.setValString("COLUMN", "urlvalue");
-			vN.setValString("LISTVARNAME", "tempids");
-			ics.runTag("tempobjects.setlist", vN);
-
-			vN = new FTValList();
-			vN.setValString("NAME", vectorName);
-			vN.setValString("LIST", "tempids");
-			vN.setValString("COLUMN", "id");
-			ics.runTag("vector.create", vN);
-
+			if (!"true".equalsIgnoreCase(ics.GetVar("isReposted")) &&
+					!"true".equalsIgnoreCase(ics.GetVar(currentURLAttrID + "_isValueId"))) {
+				vN = new FTValList();
+				vN.setValString("LIST", currentURLAttrID);
+				vN.setValString("COLUMN", "urlvalue");
+				vN.setValString("LISTVARNAME", "tempids");
+				ics.runTag("tempobjects.setlist", vN);
+				
+				vN = new FTValList();
+				vN.setValString("NAME", vectorName);
+				vN.setValString("LIST", "tempids");
+				vN.setValString("COLUMN", "id");
+				ics.runTag("vector.create", vN);	
+			}
+			
 			vN = new FTValList();
 			vN.setValString("NAME", vectorName);
 			vN.setValString("VARNAME", "currentSize");
@@ -1241,4 +1302,3 @@ if (ics.GetVar("GetOrSet").equals("set"))
 }
 %>
 </cs:ftcs>
-

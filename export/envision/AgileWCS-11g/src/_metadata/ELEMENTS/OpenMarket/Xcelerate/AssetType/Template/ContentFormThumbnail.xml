@@ -75,9 +75,11 @@
 								blobcol="urldata"/>
 								<br/>							
 						<INPUT TYPE="CHECKBOX" ID="id-Template:Thumbnail:Counters.nthElement:deletethumb" NAME="Template:Thumbnail:Counters.nthElement:deletethumb" VALUE="true" REPLACEALL="Counters.nthElement"/><label for="id-Template:Thumbnail:Counters.nthElement:deletethumb" REPLACEALL="Counters.nthElement"><XLAT.STREAM KEY="dvin/AT/Template/DeleteThumbnail"/></label>
+						<STRING.ENCODE VARIABLE="tempobjectid" VARNAME="tempobjectid"/>
 						<INPUT TYPE="hidden" NAME="Variables.theme-TempObjectId" VALUE="Variables.tempobjectid" REPLACEALL="Variables.theme,Variables.tempobjectid"/>
 					</then>
 					</if>
+					<STRING.ENCODE VARIABLE="theme" VARNAME="theme"/>
 					<INPUT TYPE="hidden" NAME="Template:Thumbnail:Counters.nthElement:theme" VALUE="Variables.theme" REPLACEALL="Variables.theme,Counters.nthElement"/>
 					<callelement NAME="OpenMarket/Gator/AttributeTypes/CommonDojoxUploader">
 						<argument NAME="inputTagName" VALUE="Template:Thumbnail:Counters.nthElement:thumb"/>
@@ -130,6 +132,7 @@
 	
 	<INPUT TYPE="hidden" NAME="Template:Thumbnail:Total" VALUE="Counters.nthElement" REPLACEALL="Counters.nthElement"/>
  	<INPUT TYPE="hidden" NAME="posting-Template:Thumbnail" VALUE="true"/>
+	<STRING.ENCODE VARNAME="tempobjectidlist" VARIABLE="tempobjectidlist"/>
   	<INPUT TYPE="hidden" NAME="tempobjectidlist" VALUE="Variables.tempobjectidlist" REPLACEALL="Variables.tempobjectidlist"/>
 	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
 	<TR>

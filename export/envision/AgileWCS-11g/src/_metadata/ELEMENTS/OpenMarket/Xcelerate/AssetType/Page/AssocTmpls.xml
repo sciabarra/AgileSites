@@ -35,6 +35,14 @@ function GoToNextScreen(ourPage)
 	}	
 	var basePage = "OpenMarket/Xcelerate/Actions/";
 	var	newpage = basePage + ourPage;
+	
+	if (obj.form.elements['flexassets:name'].value) {
+		var h = document.createElement('input');
+		h.setAttribute('type', 'hidden');
+		h.setAttribute('name', '__name__');
+		h.setAttribute('value', 'true');
+		obj.appendChild(h);
+	}
 
 	obj.form.pagename.value = newpage;
 

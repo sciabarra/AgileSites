@@ -122,6 +122,21 @@ $Modtime: 9/02/04 2:06p $
 		}
 		return true;
 	}
+	function PickAssetCallback_SelectId(id){
+		var values = id.split(":");
+		if(values[0]=='CSElement'){
+			document.forms[0].elements['SiteEntry:cselement_id'].value=values[1];
+			document.forms[0].elements['SiteEntry:rootelement'].value=values[2];
+		} else {
+			//We should never see this..
+			]]>
+	        alert("<XLAT.STREAM KEY="UI/ErrorHTML/Unexpected" ESCAPE="true" ENCODE="false"/>");
+	    	<![CDATA[
+		}
+	}
+	function openPopup(url){
+		window.open(url,'Select CSElement','WIDTH=700,HEIGHT=700,status=0,scrollbars=1,resizable=yes');
+	}
 	</SCRIPT>
 	]]>
 
@@ -134,28 +149,20 @@ $Modtime: 9/02/04 2:06p $
 		var pname = document.forms[0].elements['SiteEntry:name'].value;
 		document.forms[0].elements['SiteEntry:pagename'].value=pname.replace( /\s/g,"_");
 	}
-	function ALPopup (assettype,style,field,idfield) {
-		var i=0, histString='', currentVal;
-		for(i=0;i<parent.parent['XcelBanner'].hist.length;i++)
-		{
-			currentVal = parent.parent['XcelBanner'].hist[i];
-			if (i==0)
-				histString=currentVal.id;
-			else
-				histString=histString+","+currentVal.id;
-		}
-		window.open(urlBase+"&AssetType="+assettype+"&style="+style+"&field="+field+"&idfield="+idfield+"&history="+histString,'Popup','WIDTH=600,HEIGHT=600,status=0,scrollbars=1,resizable=yes');
-	}
+	
 	function clearCSElement()
 	{
 		document.forms[0].elements['SiteEntry:cselement_id'].value="";
 	}
 	]]>
 
-<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Actions/ALPopupFront" outstring="urlalpopfront">
-    <satellite.argument name="cs_environment" value="Variables.cs_environment"/>
-      <satellite.argument name="cs_formmode" value="Variables.cs_formmode"/>
-</SATELLITE.LINK>
+	<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Actions/PickAssetPopupForAssetType" outstring="urlpickassetpopup">
+		<satellite.argument name="cs_SelectionStyle" value="single"/>
+		<satellite.argument name="cs_environment" value="Variables.cs_environment"/>
+		<satellite.argument name="cs_formmode" value="Variables.cs_formmode"/>
+		<satellite.argument name="cs_CallbackSuffix" value='SelectId'/>
+		<satellite.argument name="searchAType" value='CSElement'/>
+	</SATELLITE.LINK>
     <replace STR="Variables.urlalpopfront">
 	var urlBase = "Variables.urlalpopfront";
 	</replace>
@@ -391,9 +398,12 @@ function resetCacheInfoTextFields(prefix,flag)
 				<![CDATA[
 				<script type="text/javascript" language="JavaScript">
 					var selectDnDSiteEntry = function(){
-						var obj=document.forms[0].elements[0], widgetName="typeAheadSiteEntry",
-						nodes=dojo.query('input[name='+widgetName+']'),
-						typeWidgetIns=dijit.getEnclosingWidget(nodes[0]),
+						var obj=document.forms[0].elements[0], widgetName="typeAheadSiteEntry";
+					var nodes= [];
+					nodes = dojo.query('div[name='+widgetName+']');
+					if(nodes.length === 0)
+						nodes = dojo.query('input[name='+widgetName+']');
+					var	typeWidgetIns=dijit.getEnclosingWidget(nodes[0]),
 						valueArray=typeWidgetIns.getAllDnDValues(),
 						obj = document.forms[0].elements[0];
 						
@@ -433,7 +443,7 @@ function resetCacheInfoTextFields(prefix,flag)
 				<IF COND="Variables.showSiteTree=false">
 				<THEN>
 					<!-- draw the recent asset popup -->
-						<A HREF="#" ONCLICK="ALPopup('CSElement','single','SiteEntry:rootelement','SiteEntry:cselement_id');return false;" TARGET="_blank"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Browse"/></CALLELEMENT></A>
+						<A HREF="#" ONCLICK="javascript:openPopup('Variables.urlpickassetpopup');return false;" REPLACEALL="Variables.urlpickassetpopup" TARGET="_blank"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Browse"/></CALLELEMENT></A>
 				</THEN>
 				<ELSE>
 					<A class="inline-right" HREF="javascript:void(0)" onclick="SelectFromTreeTextField('SiteEntry:rootelement','SiteEntry:cselement_id','CSElement','single')" OnMouseOver="window.status='Variables._XLAT_'; return true" OnMouseOut="return window.status='';" REPLACEALL="Variables._XLAT_">
@@ -554,11 +564,13 @@ function resetCacheInfoTextFields(prefix,flag)
 											<img hspace="2" vspace="4" height="14" width="14" src="Variables.cs_imagedir/graphics/common/icon/iconDeleteContentX.gif" border="0" ALT="Variables._XLAT_" title="Variables._XLAT_"  REPLACEALL="Variables.cs_imagedir,Variables._XLAT_"/>
 										</td>
 										<td><STRING.STREAM VARIABLE="value"/>
-										<INPUT TYPE="hidden" NAME="SiteEntry:defaultarguments:Counters.nthArg:name"  VALUE="Variables.value" REPLACEALL="Counters.nthArg,Variables.value"/>
+										<STRING.ENCODE VARNAME="valueEnc" VARIABLE="value"/>
+										<INPUT TYPE="hidden" NAME="SiteEntry:defaultarguments:Counters.nthArg:name"  VALUE="Variables.valueEnc" REPLACEALL="Counters.nthArg,Variables.valueEnc"/>
 										 </td>
 										<setvar NAME="value" VALUE="Variables.ContentDetails:defaultarguments:Counters.nthArg:value"/>
 										<td><STRING.STREAM VARIABLE="value"/>
-										<INPUT TYPE="hidden" NAME="SiteEntry:defaultarguments:Counters.nthArg:value" VALUE="Variables.value" REPLACEALL="Counters.nthArg,Variables.value"/>
+										<STRING.ENCODE VARNAME="valueEnc" VARIABLE="value"/>
+										<INPUT TYPE="hidden" NAME="SiteEntry:defaultarguments:Counters.nthArg:value" VALUE="Variables.valueEnc" REPLACEALL="Counters.nthArg,Variables.valueEnc"/>
 										</td>
 									</ELSE>
 									</IF>

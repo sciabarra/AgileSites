@@ -8,6 +8,8 @@
 <%@ page import="com.openmarket.gator.interfaces.ITemplateAssetManager" %>
 <%@ page import="java.util.Hashtable" %>
 <%@ page import="com.fatwire.assetapi.data.AssetId" %>
+<%@ page import="com.openmarket.gator.attributetypes.PresentationObject" %>
+<%@ page import="COM.FutureTense.Interfaces.Utilities" %>
 <%@ taglib prefix="cs" uri="futuretense_cs/ftcs1_0.tld" %>
 <%@ taglib prefix="ics" uri="futuretense_cs/ics.tld" %>
 <%@ taglib prefix="hash" uri="futuretense_cs/hash.tld" %>
@@ -142,6 +144,19 @@
 				ics.RegisterList("attrassetsubtypes", subtypeMap.get(attrAssetID));
 				ics.SetVar("AttrTypeID", tmplattrlist.getValue("attributetype"));
 				ics.SetVar("EditingStyle", "single");
+				
+				// Initializing the common variables used across attribute editors.
+				ics.SetObj("strAttrValues", null);
+				ics.RemoveVar("imageurl");
+				ics.RemoveVar("tempval");
+				ics.RemoveVar("_tempval_");
+				ics.RemoveVar("renderMultiValWidget");
+				ics.RemoveVar("MAXVALUES");				
+				ics.RemoveVar("editorName");
+				
+				ics.RemoveVar("RequireInfo");
+				ics.RemoveVar("MultiValReqInfo");
+				ics.RemoveVar("MyAttrVal");
 
 				//Sets the display attribute description or name based on element CheckAttributeDisplayStyle
 				ics.SetVar("currentAttrNameorDesc", ics.GetVar("AttrName"));
@@ -209,51 +224,83 @@
                     //System.out.println("\t\t [GOT-IAttributableAssetInstance]ics.SetVar_"+numAttrs+"_@"+tmplattrlist.getValue("name")+"@iaa@"+iaa );
                                                            
                     ics.RegisterList("AttrValueList", iaa.getAttribute(tmplattrlist.getValue("assetid")));
+                    IList attrValueList = ics.GetList("AttrValueList");
+					IPresentationObject presentationObj = null;
+					String XMLParseError = null;
 
 					ics.SetVar("doDefaultDisplay", "yes");
-					if (!(ics.GetVar("AttrTypeID").equals("")))
-					{
+					if (!(ics.GetVar("AttrTypeID").equals(""))) {
 						ics.SetObj("atmgr", atm.locateAssetManager("AttrTypes"));
 						IAttributeTypeManager iam = (IAttributeTypeManager) ics.GetObj("atmgr");
+						
+						presentationObj = iam.getPresentationObject(ics.GetVar("AttrTypeID"));
 
-                        //System.out.println("\tExtensiblePage.AssocAttr@Loaded..{ IAttributeTypeManager="+iam.getClass()+" }" );
+					} else {
+						// Assign default attribute editors 
+						String defaultAttributeEditorName = "";
+						String defaultAttributeEditorXML = "";
+						String attrType = ics.GetVar("type");
+						String eol = System.getProperty("line.separator");
+						
+						if ("date".equalsIgnoreCase(attrType))
+							defaultAttributeEditorName = "DATEPICKER";
+						else if ("asset".equalsIgnoreCase(attrType))
+							defaultAttributeEditorName = "PICKASSET";
+						else if ("url".equalsIgnoreCase(attrType))
+							defaultAttributeEditorName = "UPLOADER";
+						else 
+							defaultAttributeEditorName = "TEXTFIELD";
+						
+						defaultAttributeEditorXML = "<?XML VERSION=\"1.0\"?>" + eol +
+								   					"<!DOCTYPE PRESENTATIONOBJECT SYSTEM \"presentationobject.dtd\">" + eol +
+								   					"<PRESENTATIONOBJECT NAME=\"defaultAttributeEditor\"><" + defaultAttributeEditorName + "></" + defaultAttributeEditorName + "></PRESENTATIONOBJECT>";
+						
 
-                        String XMLParseError = null;
-						try
+						presentationObj = new PresentationObject(ics, defaultAttributeEditorXML);
+						
+					}
+
+                    //System.out.println("\tExtensiblePage.AssocAttr@Loaded..{ IAttributeTypeManager="+iam.getClass()+" }" );
+					try
+					{
+						ics.SetObj("PresObj", presentationObj);
+					}
+					catch (Exception e)
+					{
+						XMLParseError = ics.GetVar("errno");
+					}
+
+					if (XMLParseError == null)
+					{
+						IPresentationObject ipo = (IPresentationObject) ics.GetObj("PresObj");
+						ics.SetVar("MyAttributeType", ipo.getTypeName());
+
+						if (ics.IsElement("OpenMarket/Gator/AttributeTypes/" + ics.GetVar("MyAttributeType")))
 						{
-							ics.SetObj("PresObj", iam.getPresentationObject(ics.GetVar("AttrTypeID")));
-						}
-						catch (Exception e)
-						{
-							XMLParseError = ics.GetVar("errno");
-						}
-
-						if (XMLParseError == null)
-						{
-							IPresentationObject ipo = (IPresentationObject) ics.GetObj("PresObj");
-							ics.SetVar("MyAttributeType", ipo.getTypeName());
-
-							if (ics.IsElement("OpenMarket/Gator/AttributeTypes/" + ics.GetVar("MyAttributeType")))
-							{
-								/* For each Presentation Object you may define an element of the same name in
-								- OpenMarket/Gator/AttributeTypes. That element needs to display an edit mechanism
-								- for attribute data. The name of the INPUT must be the name of the Attribute for single valued
-								- Attributes. For multi valued Attributes it is the name prepended by a counter.
-								- Attribute values are contained in the 'value' column of the global AttrValueList.
-								- TBD: describe javascript error checking
-								-
-								- INPUT:
-								- PresInst - instance of current Presentation Object
-								- AttrName - name of current Attribute
-								- AttrType - type of current Attribute
-								- cs_SingleInputName - name of input for single valued and multiselect widgets
-								- cs_MultipleInputName - name of input for multiple single value widgets
-								- MultiValueEntry - ("yes", "no") whether this call expects you to loop
-								- on all values for multi valued attributes
-								- OUTPUT:
-								- doDefaultDisplay - ("yes, "no") whether to display the default edit mechanism
-								*/
+							/* For each Presentation Object you may define an element of the same name in
+							- OpenMarket/Gator/AttributeTypes. That element needs to display an edit mechanism
+							- for attribute data. The name of the INPUT must be the name of the Attribute for single valued
+							- Attributes. For multi valued Attributes it is the name prepended by a counter.
+							- Attribute values are contained in the 'value' column of the global AttrValueList.
+							- TBD: describe javascript error checking
+							-
+							- INPUT:
+							- PresInst - instance of current Presentation Object
+							- AttrName - name of current Attribute
+							- AttrType - type of current Attribute
+							- cs_SingleInputName - name of input for single valued and multiselect widgets
+							- cs_MultipleInputName - name of input for multiple single value widgets
+							- MultiValueEntry - ("yes", "no") whether this call expects you to loop
+							- on all values for multi valued attributes
+							- OUTPUT:
+							- doDefaultDisplay - ("yes, "no") whether to display the default edit mechanism
+							*/
 %>
+<ics:callelement element='OpenMarket/Gator/FlexibleAssets/Common/GetInputName'>
+	<ics:argument name='cs_AttrName' 	value='<%=ics.GetVar("AttrName")%>' />
+	<ics:argument name='cs_IsMultiple' 	value='false' />
+	<ics:argument name='cs_Varname' 	value='cs_SingleInputName' />
+</ics:callelement>
 <ics:callelement element='OpenMarket/Gator/FlexibleAssets/Common/GetInputName'>
 	<ics:argument name='cs_AttrName' value='<%=ics.GetVar("AttrName")%>' />
 	<ics:argument name='cs_IsMultiple' value='true' />
@@ -261,59 +308,99 @@
 	<ics:argument name='cs_IsMultiSelect' value='false' />
 	<ics:argument name='cs_Varname' value='cs_MultipleInputName' />
 </ics:callelement>
-<ics:callelement element='<%="OpenMarket/Gator/AttributeTypes/"+ics.GetVar("MyAttributeType")%>'>
-	<ics:argument name='PresInst' value='PresObj' />
-	<ics:argument name='AttrID' value='<%=ics.GetVar("AttrID")%>' />
-	<ics:argument name='AttrName' value='<%=ics.GetVar("AttrName")%>' />
-	<ics:argument name='AttrType' value='<%=ics.GetVar("type")%>' />
-	<ics:argument name='AttrNumber' value='<%="A"+String.valueOf(numAttrs)+"_"%>' />
-	<ics:argument name='MultiValueEntry' value='yes' />
-	<ics:argument name='cs_SingleInputName' value='<%=ics.GetVar("cs_CurrentInputName")%>' />
-	<ics:argument name='cs_MultipleInputName' value='<%=ics.GetVar("cs_MultipleInputName")%>' />
-	<ics:argument name='AllowEmbeddedLinks' value='<%=ics.GetVar("AllowEmbeddedLinks")%>' />
-	<ics:argument name='id' value='<%=ics.GetVar("id")%>'/>
-	<ics:argument name='AssetType' value='<%=ics.GetVar("AssetType")%>'/>
-</ics:callelement>
+
+<%
+							if ("url".equalsIgnoreCase(ics.GetVar("type"))) {
+%>
+								<hash:add name='hmyURLAttrs' value='<%=tmplattrlist.getValue("assetid")%>' />
 <%
 							}
-							else
-							{
-								ics.SetVar("XMLparseErrorforEditor", ics.GetVar("errno"));
-								ics.SetVar("ErrorforEditor", "MissingAttributeEditorElement");
-							}
 
+							String multiValueEntry = "";
+							String myAttrVal = "";
+									
+							if ("single".equalsIgnoreCase(ics.GetVar("EditingStyle"))) {
+								multiValueEntry = "no";
+								
+								if (!"url".equalsIgnoreCase(ics.GetVar("type")) && null != ics.GetList("AttrValueList") && ics.GetList("AttrValueList").hasData()) {
+%>
+									<hash:create name='hMyAttrVal' list='AttrValueList' column='value' />
+									<hash:tostring name='hMyAttrVal' varname='MyAttrVal' delim=',' />
+<%
+								}
+								myAttrVal = ics.GetVar("MyAttrVal");
+								
+								if (null == myAttrVal || "Variables.MyAttrVal".equals(myAttrVal)) 
+									ics.SetVar("MyAttrVal", "");
+							} else {
+								multiValueEntry = "yes";
+%>
+								<ics:callelement element='OpenMarket/Gator/AttributeTypes/ProcessValues'>
+									<ics:argument name='AttrType' value='<%=ics.GetVar("type")%>' />
+								</ics:callelement>
+<%									
+							}
+%>
+
+<ics:callelement element='<%="OpenMarket/Gator/AttributeTypes/"+ics.GetVar("MyAttributeType")%>'>
+<ics:argument name='PresInst' value='PresObj' />
+<ics:argument name='AttrID' value='<%=ics.GetVar("AttrID")%>' />
+<ics:argument name='AttrName' value='<%=ics.GetVar("AttrName")%>' />
+<ics:argument name='AttrType' value='<%=ics.GetVar("type")%>' />
+<ics:argument name='AttrNumber' value='<%="A"+String.valueOf(numAttrs)+"_"%>' />
+<ics:argument name='MultiValueEntry' value='<%= multiValueEntry %>' />
+<ics:argument name='cs_SingleInputName' value='<%=ics.GetVar("cs_CurrentInputName")%>' />
+<ics:argument name='cs_MultipleInputName' value='<%=ics.GetVar("cs_MultipleInputName")%>' />
+<ics:argument name='AllowEmbeddedLinks' value='<%=ics.GetVar("AllowEmbeddedLinks")%>' />
+<ics:argument name='id' value='<%=ics.GetVar("id")%>'/>
+<ics:argument name='AssetType' value='<%=ics.GetVar("AssetType")%>'/>
+</ics:callelement>
+
+<%
+							String requireValue = "true".equalsIgnoreCase(ics.GetVar("RequiredAttr")) ? "True" : "False";
+							int attrVCValue = 0 == attrValueList.numRows() ? 1 : attrValueList.numRows();
+							StringBuilder strReqInfo = new StringBuilder("");
+							
+							if (!Utilities.goodString(ics.GetVar("RequireInfo"))) {
+								if ("single".equalsIgnoreCase(ics.GetVar("EditingStyle"))) {
+									strReqInfo.append("*").append(ics.GetVar("cs_SingleInputName"))
+											  .append("*").append(ics.GetVar("currentAttrNameorDesc")) 
+											  .append("*Req").append(requireValue) 
+											  .append("*").append(ics.GetVar("AttrType"))
+											  .append("!");
+								} else {
+									strReqInfo = new StringBuilder(ics.GetVar("MultiValReqInfo"));
+								}
+								
+								ics.SetVar("RequireInfo", strReqInfo.toString());
+							}
+%>
+<% if (!"yes".equalsIgnoreCase(ics.GetVar("doDefaultDisplay"))) {%>
+<INPUT TYPE="hidden" NAME='<%= ics.GetVar("AttrName") %>VC' VALUE="<%= attrVCValue %>" />
+<% }%>
+<%
 						}
 						else
 						{
 							ics.SetVar("XMLparseErrorforEditor", ics.GetVar("errno"));
-							ics.SetVar("ErrorforEditor", "XMLparseErrorforEditor");
+							ics.SetVar("ErrorforEditor", "MissingAttributeEditorElement");
 						}
 
 					}
-
+					else
+					{
+						ics.SetVar("XMLparseErrorforEditor", ics.GetVar("errno"));
+						ics.SetVar("ErrorforEditor", "XMLparseErrorforEditor");
+					}
 
 					if (ics.GetVar("doDefaultDisplay").equals("yes"))
 					{
 						ics.SetVar("MyAttrVal", ics.GetVar("empty"));
-						if (ics.GetVar("type").equals("url"))
-						{
-%>
-<hash:add name='hmyURLAttrs' value='<%=tmplattrlist.getValue("assetid")%>' />
-<%
-						}
 
 						/* Determine if the attribute is single or multiple valued
 							and call the presentation style to present the attributes */
 						if (ics.GetVar("EditingStyle").equals("single"))
 						{
-							if (!ics.GetVar("type").equals("url") && ics.GetList("AttrValueList") != null && ics.GetList("AttrValueList").hasData())
-							{
-%>
-<hash:create name='hMyAttrVal' list='AttrValueList' column='value' />
-<hash:tostring name='hMyAttrVal' varname='MyAttrVal' delim=',' />
-<%
-							}
-
 							if (ics.GetVar("RequiredAttr").equals("true"))
 							{
 								ics.SetVar("RequireInfo", "*" + ics.GetVar("cs_CurrentInputName") + "*" + ics.GetVar("currentAttrNameorDesc") + "*ReqTrue*" + ics.GetVar("type") + "!");
@@ -337,7 +424,6 @@
 								{
 %>
 <INPUT TYPE="hidden" NAME="<%=ics.GetVar("cs_CurrentInputName")%>" VALUE="<%=ics.GetVar("MyAttrVal")%>" />
-<INPUT TYPE="hidden" NAME="A<%=numAttrs%>_RequireInfo" VALUE="<%=ics.GetVar("RequireInfo")%>" />
 <%
 								}
 								else
@@ -368,7 +454,6 @@
 						{
 %>
 <ics:callelement element='OpenMarket/Gator/FlexibleAssets/Common/ValueStyle' />
-<INPUT TYPE="hidden" NAME="A<%=numAttrs%>_RequireInfo" VALUE="<%=ics.GetVar("RequireInfo")%>" />
 <%
 						}
 					}
@@ -377,13 +462,18 @@
 				else
 				{
 					ics.SetVar("isProductSet", "true");
-%>
-<INPUT TYPE="hidden" NAME="A<%=numAttrs%>_RequireInfo" VALUE="*<%=ics.GetVar("cs_CurrentInputName")+"*"+ics.GetVar("currentAttrNameorDesc")%>*ReqFalse*<%=ics.GetVar("type")%>!" />
-<%
-
+					ics.SetVar("RequireInfo", "*" + ics.GetVar("cs_CurrentInputName") + 
+											  "*" + ics.GetVar("currentAttrNameorDesc") +
+											  "*ReqFalse" +
+											  "*" + ics.GetVar("type") +
+											  "!");
 				}
 				// Not ProductSet
+%>
+<INPUT TYPE="hidden" NAME="A<%=numAttrs%>_RequireInfo" VALUE="<%= ics.GetVar("RequireInfo") %>" />
+<%				
 			}
+			ics.RemoveVar("AttrName");
 		}
 %>
 <hash:hasdata name='hmyURLAttrs' varname='hasit' />

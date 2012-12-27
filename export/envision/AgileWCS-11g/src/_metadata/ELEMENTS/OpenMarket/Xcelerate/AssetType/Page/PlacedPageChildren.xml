@@ -14,12 +14,21 @@
 <SETVAR NAME="loadexecuted" VALUE="true"/>
 	
 <SITEPLAN.ROOT LIST="PubRoot" OBJECTID="SessionVariables.pubid"/>
+<LOGMSG  STR="$ PlacedPageChildren  [Entered]" /> 
 				
 <setvar NAME="nodecount" VALUE="0"/>
 <setvar NAME="tablename" VALUE="SitePlanTree"/>
-<execsql LIST="mylist"
-		 SQL="SELECT COUNT(*) as mycount FROM  SitePlanTree
-			 WHERE nparentid = PubRoot.nid AND ncode = 'Placed'"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+	<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+	<ARGUMENT NAME="type" VALUE="Long"/>
+</CALLELEMENT>
+<IF COND="Variables.validatedstatus=true">
+<THEN>
+	<execsql LIST="mylist"
+		SQL="SELECT COUNT(*) as mycount FROM  SitePlanTree
+		WHERE nparentid = PubRoot.nid AND ncode = 'Placed'"/>
+</THEN>
+</IF>
 						
 <IF COND="IsList.mylist=true">
 <THEN>			
@@ -33,6 +42,8 @@
 				
 <SITEPLAN.LOAD NAME="thePubNode" NODEID="PubRoot.nid"/>
 <SITEPLAN.CHILDREN NAME="thePubNode" LIST="children" CODE="Placed" ORDER="nrank"/>
+
+<LOGMSG  STR="$ PlacedPageChildren  [Entered]" /> 
 								
 <IF COND="IsList.children=true">
 <THEN>

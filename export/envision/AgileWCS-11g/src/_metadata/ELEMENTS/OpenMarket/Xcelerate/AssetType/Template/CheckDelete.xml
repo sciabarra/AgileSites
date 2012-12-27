@@ -25,12 +25,19 @@
         STR="Variables.assetName" 
         COLNAME="template" />
 <SETVAR NAME="newWhere" VALUE="Variables.WhereOne AND Variables.WhereTwo"/>
-
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+	<ARGUMENT NAME="columnvalue" VALUE="Variables.assetName"/>
+	<ARGUMENT NAME="type" VALUE="String"/>
+</CALLELEMENT>
 <SETVAR NAME="errno" VALUE="0"/>
 <CATALOGDEF LIST="dummy" FROM="Variables.tablename"/>
 <IF COND="Variables.errno=0">
 <THEN>
-	<EXECSQL SQL="SELECT name from Variables.tablename  WHERE Variables.newWhere" LIST="clientList" />
+	<IF COND="Variables.validatedstatus=true">
+	<THEN>
+		<EXECSQL SQL="SELECT name from Variables.tablename  WHERE Variables.newWhere" LIST="clientList" />
+	</THEN>
+	</IF>
 	<IF COND="IsError.Variables.errno=true">
 	<THEN>
 		<!-- no rows found -->

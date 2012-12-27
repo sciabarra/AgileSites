@@ -32,7 +32,7 @@ $Modtime: 5/31/02 5:12p $
 
 <setvar NAME="errno" VALUE="0"/>
 <setvar NAME="theAssetType"  VALUE="theVariables.AssetType"/>
- <XLAT.STREAM KEY="dvin/FlexibleAssets/FlexTmpls/theAssetType"/> : <csvar NAME="Variables.theAssetType"/><br/>
+ <XLAT.STREAM KEY="dvin/FlexibleAssets/FlexTmpls/theAssetType"/> : <STRING.STREAM VALUE="Variables.theAssetType"/><br/>
  <XLAT.STREAM KEY="dvin/UI/Search/IDis"/>  :<Variables.id"/><br/>
 
 <ASSET.LOAD TYPE="Variables.AssetType" OBJECTID="Variables.id" NAME="theAssetType"/>

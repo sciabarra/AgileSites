@@ -62,7 +62,7 @@ $Modtime: 2/27/04 2:46p $
 	<THEN>
 		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
 		<tr>
-			<td class="form-label-text">Direct <CSVAR NAME="CS.Property.cs.searchengine"/> expression:</td>
+			<td class="form-label-text">Direct <STRING.STREAM VALUE="CS.Property.cs.searchengine"/> expression:</td>
 			<td></td>
 			<td class="form-inset"><![CDATA[<TEXTAREA NAME="DirectQuery" ROWS="2" COLS="24" WRAP="virtual" VALUE="]]><STRING.STREAM VALUE="Variables.DirectQuery"/><![CDATA["></TEXTAREA>]]></td>
 		</tr>

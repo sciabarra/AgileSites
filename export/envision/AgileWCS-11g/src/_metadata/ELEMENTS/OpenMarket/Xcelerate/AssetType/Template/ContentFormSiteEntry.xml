@@ -239,6 +239,7 @@ function resetCacheInfoTextFields(prefix,flag)
 					<td>&nbsp;&nbsp;</td>
 					<td class="subtitle-text">
 					<SETVAR NAME="value" VALUE="Variables.ContentDetails:element:Counters.nthElement:siteentry:Counters.nthPagename:pagename"/>
+					<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
 					<input type="hidden" name="Template:element:Counters.nthElement:siteentry:Counters.nthPagename:pagename" VALUE="Variables.value" REPLACEALL="Variables.value,Counters.nthElement,Counters.nthPagename"/>
 					<STRING.STREAM VARIABLE="value"/>
 				</td>

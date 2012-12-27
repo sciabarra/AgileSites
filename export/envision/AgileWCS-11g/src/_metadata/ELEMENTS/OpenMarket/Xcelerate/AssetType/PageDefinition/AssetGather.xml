@@ -54,7 +54,10 @@ $Modtime: 8/20/02 10:32a $
 <!--have done a gather or scatter, check variables now-->
 	<if COND="Variables.GetOrSet=set">
 	<then>
-	
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+		<ARGUMENT NAME="columnvalue" VALUE="Variables.AssetType"/>
+		<ARGUMENT NAME="type" VALUE="String"/>
+	</CALLELEMENT>
 	<if COND="Variables.TemplateType=asset">
 	<then>
 		<fttm.getattributetype  ASSETTYPE="Variables.AssetType"  VARNAME="attributetype"/>
@@ -62,14 +65,22 @@ $Modtime: 8/20/02 10:32a $
 		<!--fttm.getfiltertype ASSETTYPE="Variables.AssetType" VARNAME="filtertype"/-->
 		<SETVAR NAME="errno" VALUE="0"/>
 		<SETVAR NAME="tablename" VALUE="FlexTmplTypes"/>
-		<EXECSQL SQL="SELECT assetfilter FROM Variables.tablename WHERE assettype='Variables.AssetType'" LIST="flextmpltypes"/>
+		<IF COND="Variables.validatedstatus=true">
+		<THEN>
+			<EXECSQL SQL="SELECT assetfilter FROM Variables.tablename WHERE assettype='Variables.AssetType'" LIST="flextmpltypes"/>
+		</THEN>
+		</IF>
 		<SETVAR NAME="filtertype" VALUE="flextmpltypes.assetfilter"/>
 	</then>
 	<else>
 		<fgttm.getattributetype  ASSETTYPE="Variables.AssetType"  VARNAME="attributetype"/>
 		<SETVAR NAME="errno" VALUE="0"/>
 		<SETVAR NAME="tablename" VALUE="FlexGrpTmplTypes"/>
-		<EXECSQL SQL="SELECT assetfilter FROM Variables.tablename WHERE assettype='Variables.AssetType'" LIST="flextmpltypes"/>
+		<IF COND="Variables.validatedstatus=true">
+		<THEN>
+			<EXECSQL SQL="SELECT assetfilter FROM Variables.tablename WHERE assettype='Variables.AssetType'" LIST="flextmpltypes"/>
+		</THEN>
+		</IF>
 		<SETVAR NAME="filtertype" VALUE="flextmpltypes.assetfilter"/>
 	</else>
 	</if>

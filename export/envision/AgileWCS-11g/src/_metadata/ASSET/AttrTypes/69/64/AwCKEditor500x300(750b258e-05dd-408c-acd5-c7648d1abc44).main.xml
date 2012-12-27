@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>AttrTypes:1351276304395</id>
+    <name>AwCKEditor500x300</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2012-12-27T12:13:37.877Z</createddate>
+    <description></description>
+    <publist>AgileWCS</publist>
+    <publist>ScalaWCS</publist>
+    <status>PL</status>
+    <subtype></subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2012-12-27T12:13:51.662Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>750b258e-05dd-408c-acd5-c7648d1abc44</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1351276304395</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>urlxml</name>
+        <data>
+            <blobValue>
+                <filename>AwCKEditor500x300.urlxml(750b258e-05dd-408c-acd5-c7648d1abc44).1351276304395.txt</filename>
+                <foldername></foldername>
+                <filedata></filedata>
+            </blobValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>valuetype</name>
+        <data>
+            <stringValue>string,text</stringValue>
+        </data>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <list>
+    <dependency>
+      <depType>N</depType>
+      <resType>AttrTypes</resType>
+      <resId>1351276304395</resId>
+      <uid>750b258e-05dd-408c-acd5-c7648d1abc44</uid>
+    </dependency>
+  </list>
+</dependencies>
+==================______________________==================
+#
+#Thu Dec 27 13:19:52 CET 2012
+storable0=ASSET/AttrTypes/69/64/AwCKEditor500x300.urlxml(750b258e-05dd-408c-acd5-c7648d1abc44).1351276304395.txt||_storable_type\=AwCKEditor500x300.urlxml%28750b258e-05dd-408c-acd5-c7648d1abc44%29.1351276304395.txt&_blob_prop\=urlxml&_value_count\=S
+key=AttrTypes-750b258e-05dd-408c-acd5-c7648d1abc44
+type=ASSETDATA
+sites=AgileWCS,ScalaWCS
+
+==================___ END METADATA ___==================-->

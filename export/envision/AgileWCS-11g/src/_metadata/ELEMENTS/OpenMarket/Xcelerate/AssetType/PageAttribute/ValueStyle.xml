@@ -14,13 +14,11 @@
 <LISTOBJECT.ADDROW NAME="lStyles" ITEM="Variables._XLAT1_"/>
 
 <SETVAR NAME="singleunique" VALUE="false"/>
-<if COND="Variables.ContentDetails:type=string">
+<SETVAR NAME="errno" VALUE="0"/>
+<ISINLIST ITEM="Variables.ContentDetails:type" STR="asset,string,int" />
+<if COND="Variables.errno=1">
 <then>
-	<SETVAR NAME="singleunique" VALUE="true"/>
-</then>
-</if>
-<if COND="Variables.ContentDetails:type=int">
-<then>
+	<SETVAR NAME="errno" VALUE="0"/>
 	<SETVAR NAME="singleunique" VALUE="true"/>
 </then>
 </if>

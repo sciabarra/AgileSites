@@ -189,7 +189,7 @@ $Modtime: 8/04/04 4:44p $
             </IF>
 
 	</THEN><ELSE>
-		<CSVAR NAME="Error: Variables.errdetail1"/>
+		<STRING.STREAM VALUE="Error: Variables.errdetail1"/>
 		<THROWEXCEPTION/>
 	</ELSE></IF>
 	

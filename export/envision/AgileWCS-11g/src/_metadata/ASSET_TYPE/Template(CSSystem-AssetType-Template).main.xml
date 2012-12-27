@@ -11,7 +11,7 @@
         <description>Template</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Developer/Fatwire/JSK/11.1.1.6.0.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp76/dcs7014459146757006093.tmp</urldescriptorspec>
+        <urldescriptorspec>/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp8/dcs1825100432510173229.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-Template</uid>
         <useDimension></useDimension>
@@ -65,7 +65,7 @@
             <null/>
             <null/>
             <null/>
-            <string>/Developer/Fatwire/JSK/11.1.1.6.0.app/ContentServer/11.1.1.6.0/Shared/Storage/Template/</string>
+            <string>/Developer/Fatwire/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/Shared/Storage/Template/</string>
             <null/>
             <null/>
             <null/>
@@ -250,7 +250,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/Template/SelectSummary.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/Template/SelectSummary,1.sql</string>
             <null/>
             <null/>
             <null/>
@@ -287,11 +287,11 @@
             <byte-array>U0VMRUNUIERJU1RJTkNUIFRlbXBsYXRlLmlkLCBUZW1wbGF0ZS5uYW1lLCBUZW1wbGF0ZS5kZXNj
 cmlwdGlvbiwgVGVtcGxhdGUuY3JlYXRlZGJ5LCBUZW1wbGF0ZS5jcmVhdGVkZGF0ZSwgVGVtcGxh
 dGUudXBkYXRlZGJ5LCBUZW1wbGF0ZS51cGRhdGVkZGF0ZSwgVGVtcGxhdGUuc3VidHlwZSwgVGVt
-cGxhdGUuc291cmNlLCBUZW1wbGF0ZS5zdGF0dXMgRlJPTSBUZW1wbGF0ZSxBc3NldFB1YmxpY2F0
-aW9uIFdIRVJFIFRlbXBsYXRlLmlkPUFzc2V0UHVibGljYXRpb24uYXNzZXRpZCBBTkQgKEFzc2V0
-UHVibGljYXRpb24ucHViaWQ9U2Vzc2lvblZhcmlhYmxlcy5wdWJpZCBPUiBBc3NldFB1YmxpY2F0
-aW9uLnB1YmlkPTApIEFORCBUZW1wbGF0ZS5zdGF0dXMhPSdWTycgVmFyaWFibGVzLnF1ZXJ5ZW5k
-DQo=</byte-array>
+cGxhdGUuc291cmNlLCBUZW1wbGF0ZS5zdGF0dXMsIFRlbXBsYXRlLmNhdGVnb3J5IEZST00gVGVt
+cGxhdGUsQXNzZXRQdWJsaWNhdGlvbiBXSEVSRSBUZW1wbGF0ZS5pZD1Bc3NldFB1YmxpY2F0aW9u
+LmFzc2V0aWQgQU5EIChBc3NldFB1YmxpY2F0aW9uLnB1YmlkPVNlc3Npb25WYXJpYWJsZXMucHVi
+aWQgT1IgQXNzZXRQdWJsaWNhdGlvbi5wdWJpZD0wKSBBTkQgVGVtcGxhdGUuc3RhdHVzIT0nVk8n
+IFZhcmlhYmxlcy5xdWVyeWVuZA==</byte-array>
             <null/>
             <null/>
             <null/>
@@ -702,10 +702,10 @@ DQo=</byte-array>
       </categoryIList>
       <associations/>
       <siteNames class="list">
+        <string>AgileWCS</string>
         <string>avisports</string>
-        <string>DemoJava</string>
-        <string>DemoScala</string>
         <string>FirstSiteII</string>
+        <string>ScalaWCS</string>
       </siteNames>
     </data>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -987,9 +987,9 @@ DQo=</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Wed Dec 26 22:43:22 CET 2012
+#Thu Dec 27 14:53:38 CET 2012
 key=@ASSET_TYPE-CSSystem-AssetType-Template
 type=ASSET_TYPE
-sites=avisports,DemoJava,DemoScala,FirstSiteII
+sites=AgileWCS,avisports,FirstSiteII,ScalaWCS
 
 ==================___ END METADATA ___==================-->

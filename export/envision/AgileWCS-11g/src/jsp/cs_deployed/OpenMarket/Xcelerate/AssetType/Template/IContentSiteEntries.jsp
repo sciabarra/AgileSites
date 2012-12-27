@@ -43,7 +43,8 @@ function init(){
 
 function updatePanel(divId,url){
 	new Ajax.Request(url,{
-			onComplete: function(transport){
+		method : 'get',
+		onComplete: function(transport){
 			$(divId).update(transport.responseText);
 		}
 	});

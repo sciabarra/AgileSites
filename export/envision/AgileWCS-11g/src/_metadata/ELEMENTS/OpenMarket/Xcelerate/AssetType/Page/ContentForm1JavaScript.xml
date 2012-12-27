@@ -23,6 +23,7 @@
 <CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/FormatDate" />
 
 <CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewJavascript"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/DojoFileCheck" />
 
 <!-- This form is repostable, and we are going to redirect the standard repost to our local javascript function to
        insure that the proper checking gets done when that repost happens. -->
@@ -100,11 +101,36 @@ function submitFlexContentForm()
 	if (('yes' == obj.elements['doSubmit'].value) && (!editorType || editorType!='clarkii')) {
 		if (checkfields())
 		{
+			// Executing PreSave call for customizing attributes values before form submit.
+]]> 
+			var _preSave_ = '<STRING.STREAM VALUE="Variables._preSave_"/>'; 
+<![CDATA[
+			if(_preSave_ === 'true')
+				executePreSave();
 			obj.submit();
 		}
 	}
 	return false;		
 }
+
+function executePreSave()
+{
+	fw.ui.dijit.form.preSave().execute({AssetType: obj.elements['AssetType'].value, PubName: obj.elements['PubName'].value, helper: fw.ui.dijit.form.preSaveFormHelper()});
+}
+
+function executeAfterLoad()
+{
+	fw.ui.dijit.form.afterLoad().execute({AssetType: obj.elements['AssetType'].value, PubName: obj.elements['PubName'].value, helper: fw.ui.dijit.form.afterLoadFormHelper()});
+}
+
+dojo.addOnLoad(function() {
+	//Executing AfterLoad call for customizing attributes values after form load.
+]]> 	
+	var _afterLoad_ = '<STRING.STREAM VALUE="Variables._afterLoad_"/>'; 
+<![CDATA[
+	if(_afterLoad_ === 'true')
+		executeAfterLoad();
+});
 
 function indexOfElement (e_name) {
 
@@ -312,7 +338,10 @@ function SelectFromTreeAndTypeAhead(nextstep,where,widgetName )
 		subtype = subtype.replace(/\+/g," ");
 		type = type.replace(/\+/g," ");	
 		
-		var nodes = dojo.query('input[name='+widgetName+']');
+		var nodes= [];
+		nodes = dojo.query('div[name='+widgetName+']');
+		if(nodes.length === 0)
+			nodes = dojo.query('input[name='+widgetName+']');
 		var typeWidgetIns = dijit.getEnclosingWidget(nodes[0]);
 		
 		selValue = {
@@ -854,6 +883,13 @@ function IsMoney(StrVar)
         var num= obj.elements['numAttrs'].value;
 		obj.elements['doSubmit'].value="yes";
         editorType='';
+        
+        dojo.query('[id^="MultiVal"]', obj).forEach(function(item, index) {
+        	var multiValDijit = dijit.byNode(item);
+        	if (multiValDijit && typeof(multiValDijit.saveAction) === 'function')
+        		multiValDijit.saveAction();
+        });
+        
         if (num!="0") {
             var AttrName;
             var AttrReq;
@@ -871,13 +907,6 @@ function IsMoney(StrVar)
                 } else {
                     AttrType=ValArray[3];
                     AttrInputType=ValArray[4].substr(0,ValArray[4].length);
-                }
-				
-				// This should update the last selected value in MultiValued OOB text editor widgets
-                plainAttrName = AttrName.substring(AttrName.indexOf('_') + 1, AttrName.lastIndexOf('_'));
-                multiValuedWidget = dijit.byId(plainAttrName + '_]]><CSVAR NAME='Variables.id'/><![CDATA[_MVTE');
-                if (multiValuedWidget) {
-	                multiValuedWidget.editorOnValueChange();
                 }
 			} // end for
 			// for CKEditor, update hidden field input with most current value
@@ -922,8 +951,10 @@ function IsMoney(StrVar)
             var realobjects=document.getElementsByTagName("object");
             for(i=0;i<realobjects.length;i++) {            
                 var objId = realobjects[i].id;
-                var realObjectClassId = document.getElementsByTagName("object")[0].getAttribute('classid');
-
+                var realObjectClassId;
+				if (document.getElementsByTagName("object")[0].getAttribute) 
+                	realObjectClassId = document.getElementsByTagName("object")[0].getAttribute('classid');
+					
                 if ((realObjectClassId == CLSID_REALOBJECT) || (realObjectClassId == CLSID_REALOBJECT_FIREFOX)) {
                     var eopbject=document.getElementById(objId);
 			]]><!--start added by pk support for flash attribute editor--><![CDATA[
@@ -1221,10 +1252,15 @@ function checktype()
                             }
                             else
                             {
-                                if (obj.elements[AttrInputName].value!="")
-                                {                               
-                                    actualvalues++;                             
-                                }
+                                var inputNodes = dojo.query('[name=' + AttrInputName + ']'),
+									nodeArray = [];
+								dojo.forEach(inputNodes, function(item){
+									nodeArray.push(item);
+								});	
+								for (var nodeArrIndex = 0; nodeArrIndex < nodeArray.length ; nodeArrIndex++) {	
+								  if (nodeArray[nodeArrIndex].value!="")
+	                                    actualvalues++;                             
+								}
                             }
                       }
                       else
@@ -1296,7 +1332,8 @@ function checktype()
                                       else
                                       {                                      
                                           myindex = indexOfElement('_SHOW_'+AttrInputName);
-                                          obj.elements[myindex].focus();
+										  if ((obj.elements[myindex]) && (obj.elements[myindex].type!='hidden') && (obj.elements[myindex].style.display!='none'))
+											obj.elements[myindex].focus();
                                       }                                  
                                   }
                                   return false;
@@ -1305,8 +1342,16 @@ function checktype()
                           {
                                 if (AttrInputType=="text")
                                 {
-                                  if (!checkinputtype(AttrName,AttrInputName,AttrType,obj.elements[AttrInputName].value))
-                                      return false;
+                               		var node,
+										nodes = dojo.query('[name=' + AttrInputName + ']'),
+										nodeArray = [];
+									dojo.forEach(nodes, function(item){
+										nodeArray.push(item);
+									});	
+									for (var nodeIndex = 0; nodeIndex < nodeArray.length ; nodeIndex++) {	
+									  if (!checkinputtype(AttrName,AttrInputName,AttrType,nodeArray[nodeIndex].value))
+										  return false;
+									}
                                 }
                                 else if (AttrInputType=="treepick")
                                 {
@@ -1505,8 +1550,16 @@ function checktype()
                                 
                               if (AttrInputType=="text")
                               {
-                                  if (!checkinputtype(AttrName,AttrInputName,AttrType,obj.elements[AttrInputName].value))
-                                      return false;
+                                  	var node,
+									nodes = dojo.query('[name=' + AttrInputName + ']'),
+									nodeArray = [];
+									dojo.forEach(nodes, function(item){
+										nodeArray.push(item);
+									});	
+									for (var nodeIndex = 0; nodeIndex < nodeArray.length ; nodeIndex++) {	
+									  if (!checkinputtype(AttrName,AttrInputName,AttrType,nodeArray[nodeIndex].value))
+										  return false;
+									}
                               }
                               else if (AttrInputType=="treepick")
                               {

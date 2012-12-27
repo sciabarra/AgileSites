@@ -259,7 +259,7 @@ function handleNewSubtype( )
 				</IF>
 			</THEN>
 			</IF>
-			<SELECT dojoType="fw.dijit.UISimpleSelect" NAME="Template:subtype" SIZE="1" onChange="refreshAppSubtypeList( document.forms[0].elements['Template:subtype'], document.forms[0].elements['Template:applicablesubtypes']);handleNewSubtype();">
+			<SELECT style="width:20em" dojoType="fw.dijit.UISimpleSelect" NAME="Template:subtype" SIZE="1" onChange="refreshAppSubtypeList( document.forms[0].elements['Template:subtype'], document.forms[0].elements['Template:applicablesubtypes']);handleNewSubtype();">
 			<OPTION VALUE="illegal"/>- <XLAT.STREAM KEY="dvin/Common/AT/chooseassettype"/> -
 			<IF COND="IsList.subtypes=true">
 			<THEN>

@@ -12,7 +12,8 @@
 -->
 <SETVAR NAME='_IS_TREE_ELEMENT_' VALUE='true'/>
 <CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/BasicEnvironment"/>
-
+<STRING.ENCODE VARIABLE="Type" VARNAME="Type"/>
+<STRING.ENCODE VARIABLE="currentType" VARNAME="currentType"/>
 <IF COND="Variables.command!=GetTypes">
 <THEN>
 	<REMOVEVAR NAME="OKActions"/>

@@ -590,6 +590,10 @@ function selAll(lst)
 	delNul(lst);
 }
 
+function checkEmbeddedLinks()
+{
+	repostFlexAttributeForm();
+}
 ]]>
 	
 </SCRIPT>
@@ -795,25 +799,37 @@ function selAll(lst)
 					</tr>
 				</then>
 				</if>
+
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
 				
-				<SETVAR NAME="ifTextBloborURL" VALUE="false"/>
-				<if COND="Variables.ContentDetails:type=blob">
-					<then>
-						<SETVAR NAME="ifTextBloborURL" VALUE="true"/>
-					</then>
-				</if>
-				<if COND="Variables.ContentDetails:type=text">
-					<then>
-						<SETVAR NAME="ifTextBloborURL" VALUE="true"/>
-					</then>
-				</if>
-				<if COND="Variables.ContentDetails:type=url">
-					<then>
-						<SETVAR NAME="ifTextBloborURL" VALUE="true"/>
-					</then>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/NumberofValues"/></td>
+					<td></td>
+					<td class="form-inset"><callelement NAME="OpenMarket/Xcelerate/AssetType/PageAttribute/ValueStyle"/></td>
+				</tr>
+						
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/AttrEditor"/> </td>
+					<td></td>
+					<td class="form-inset"><callelement NAME="OpenMarket/Xcelerate/AssetType/PageAttribute/GetAttrTypes"/></td>
+				</tr>            
+            
+                <callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/GetTagNameByAttributeEditorId">
+					<argument NAME="AttrEditorId" VALUE="Variables.ContentDetails:attributetype"/>
+				</callelement>
+				<SETVAR NAME="errno" VALUE="0"/>
+            	<ISINLIST ITEM="Variables.ContentDetails:type" STR="blob,text,url" />
+          	  	<if COND="Variables.errno=1">
+				<then>
+					<SETVAR NAME="errno" VALUE="0"/>
+	            	<ISINLIST ITEM="Variables.AttrEditorName" STR="CKEDITOR,TEXTAREA" />
+	            	<REMOVEVAR NAME="Variables.AttrEditorName"/>
+				</then>
 				</if>
 				
-				<if COND="Variables.ifTextBloborURL=true">
+          	  	<if COND="Variables.errno=1">
 				<then>
 					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
 					<tr>
@@ -832,25 +848,9 @@ function selAll(lst)
 							</if>
 						</td>
 					</tr>
+					<SETVAR NAME="errno" VALUE="0"/>
 				</then>
 				</if>
-				<REMOVEVAR NAME="ifTextBloborURL"/>                  
-
-				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
-				
-				<tr>
-					<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/NumberofValues"/></td>
-					<td></td>
-					<td class="form-inset"><callelement NAME="OpenMarket/Xcelerate/AssetType/PageAttribute/ValueStyle"/></td>
-				</tr>
-						
-				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
-				
-				<tr>
-					<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/AttrEditor"/> </td>
-					<td></td>
-					<td class="form-inset"><callelement NAME="OpenMarket/Xcelerate/AssetType/PageAttribute/GetAttrTypes"/></td>
-				</tr>            
             
 					<!-- property dictates we can not display external option, so set storage and editing to local -->
                 <input TYPE="hidden" NAME="Attributes:storage" VALUE="L"/>

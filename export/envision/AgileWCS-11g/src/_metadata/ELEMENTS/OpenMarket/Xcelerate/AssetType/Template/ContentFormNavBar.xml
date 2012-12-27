@@ -8,6 +8,8 @@
 - OUTPUT
 -
 -->
+<STRING.ENCODE VARIABLE="cs_imagedir" VARNAME="cs_imagedir"/>
+<STRING.ENCODE VARIABLE="ThisPage" VARNAME="ThisPage"/>
 <ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at"/>
 <ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description"/>
 <tr>
@@ -46,7 +48,7 @@
 				<LOOP LIST="ListCategories">
 					<IF COND="ListCategories.ITEM=Variables.CurrentCat">
 						<THEN>
-							<td align="left" valign="top"><span class="navigation-bar-on"><CSVAR NAME="LocalizedCategories.ITEM"/></span></td>
+							<td align="left" valign="top"><span class="navigation-bar-on"><STRING.STREAM VALUE="LocalizedCategories.ITEM"/></span></td>
 						</THEN>
 						<ELSE>
 							<GOTOROW LIST="LocalizedCategories" ROWNUM="ListCategories.#curRow"/>
@@ -60,7 +62,7 @@
 							</td>
 							<td align="left" valign="top">
 								<a href="javascript:void(0)" onclick="return FixpagenameWithCheck('Variables.ThisPage','ContentFormListCategories.ITEM');" title="Variables._specCat_" onmouseover="window.status='Variables._nextCat_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._specCat_,Variables._nextCat_,ListCategories.ITEM,Variables.ThisPage">
-									<span class="navigation-bar"><CSVAR NAME="LocalizedCategories.ITEM"/></span>
+									<span class="navigation-bar"><STRING.STREAM VALUE="LocalizedCategories.ITEM"/></span>
 								</a>
 							</td>
 						</ELSE>

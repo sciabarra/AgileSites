@@ -121,9 +121,12 @@ to select from tree --%>
 <ics:if condition='<%="ucform".equals(ics.GetVar("cs_environment"))%>'><ics:then>
 <script type="text/javascript">
 var SelectFromTreeTypedTextField = function(where, idwhere, typewhere, validTypes, taWidgetName){
-	var obj=document.forms[0].elements[0],
-		nodes=dojo.query('input[name='+taWidgetName+']'),
-		typeWidgetIns=dijit.getEnclosingWidget(nodes[0]),
+	var obj=document.forms[0].elements[0];
+	var nodes= [];
+	nodes = dojo.query('div[name='+taWidgetName+']');
+	if(nodes.length === 0)
+		nodes = dojo.query('input[name='+taWidgetName+']');
+	var	typeWidgetIns=dijit.getEnclosingWidget(nodes[0]),
 		valueArray=typeWidgetIns.getAllDnDValues(),
 		obj = document.forms[0].elements[0];
 	var assettype=validTypes;
@@ -216,8 +219,11 @@ var removeIllegalAssets =function(typeAheadWidget){
 	<script type="text/javascript">
 		function resetValueField(counter)
 		{
-			var nodes = dojo.query('input[name=_typeAheadElementMapping_'+counter+']'),
-				typeWidgetIns = dijit.getEnclosingWidget(nodes[0]),
+			var nodes= [];
+			nodes = dojo.query('div[name=_typeAheadElementMapping_'+counter+']');
+			if(nodes.length === 0)
+				nodes = dojo.query('input[name=_typeAheadElementMapping_'+counter+']');
+			var	typeWidgetIns = dijit.getEnclosingWidget(nodes[0]),
 				dndSource = typeWidgetIns._source,
 				dndNodes = dndSource.getAllNodes();
 			dojo.forEach(dndNodes, function(dndNode){

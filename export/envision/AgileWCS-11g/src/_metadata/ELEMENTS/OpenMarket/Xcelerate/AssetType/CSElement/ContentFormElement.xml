@@ -197,12 +197,14 @@ function setDefaultPath(ext) {
 	<td></td>
 	<td class="form-inset">
 	<IF COND="Variables.updatetype!=setformdefaults">
-	<THEN>			
-		<input type="hidden" name="CSElement:rootelement" value="Variables.ContentDetails:rootelement" REPLACEALL="Variables.ContentDetails:rootelement"/>
+	<THEN>	
+		<STRING.ENCODE VARIABLE="ContentDetails:rootelement" VARNAME="ContentDetails:rootelementEnc"/>
+		<input type="hidden" name="CSElement:rootelement" value="Variables.ContentDetails:rootelementEnc" REPLACEALL="Variables.ContentDetails:rootelementEnc"/>
 		<STRING.STREAM VARIABLE="ContentDetails:rootelement"/>
 	</THEN>
 	<ELSE>
-		<input type="text" SIZE="32" maxlength="255" name="CSElement:rootelement" value="Variables.ContentDetails:rootelement" REPLACEALL="Variables.ContentDetails:rootelement"/>
+		<STRING.ENCODE VARIABLE="ContentDetails:rootelement" VARNAME="ContentDetails:rootelementEnc"/>
+		<input type="text" SIZE="32" maxlength="255" name="CSElement:rootelement" value="Variables.ContentDetails:rootelementEnc" REPLACEALL="Variables.ContentDetails:rootelementEnc"/>
 	</ELSE>
 	</IF>
 	</td>
@@ -262,7 +264,7 @@ function setDefaultPath(ext) {
 					<IF COND="Variables.analyticsIndex=-1">
 						<THEN>
 							<!-- Show the add tag -->
-							<td class="form-label-text" style="display:block" id="analytics1"> <XLAT.STREAM KEY="dvin/AT/Common/AddAnalyticsTagQ"/> </td>
+							<td class="form-label-text" id="analytics1"> <XLAT.STREAM KEY="dvin/AT/Common/AddAnalyticsTagQ"/>: </td>
 							<td></td>	
 							<td class="form-inset" id="analytics2">
 							<a href="javascript:void(0);" onClick="addAnalyticsTag()">
@@ -272,7 +274,7 @@ function setDefaultPath(ext) {
 						</THEN>
 						<ELSE>
 							<!-- Leave the add tag hidden -->
-							<td class="form-label-text" style="display:none" id="analytics1"> <XLAT.STREAM KEY="dvin/AT/Common/AddAnalyticsTagQ"/> </td>
+							<td class="form-label-text" style="display:none" id="analytics1"> <XLAT.STREAM KEY="dvin/AT/Common/AddAnalyticsTagQ"/>: </td>
 							<td></td>	
 							<td class="form-inset" style="display:none">
 							<a href="javascript:void(0);" onClick="addAnalyticsTag()">
@@ -284,10 +286,12 @@ function setDefaultPath(ext) {
 				</THEN>
 				<ELSE>
 					<!-- html file. generate code for add tag but leave it hidden. -->
-					<td class="form-label-text" style="display:none" id="analytics1"> <XLAT.STREAM KEY="dvin/Common/AT/AddAnalyticsTagQ"/> </td>
+					<td class="form-label-text" style="display:none" id="analytics1"> <XLAT.STREAM KEY="dvin/AT/Common/AddAnalyticsTagQ"/>: </td>
 					<td></td>	
-					<td class="form-inset">
-					<a href="javascript:void(0);" onClick="addAnalyticsTag()"><img id="analytics2" style="display:none" src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/content/images/add.gif" border="0" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale"/></a>
+					<td class="form-inset" id="analytics2" style="display:none">
+					<a href="javascript:void(0);" onClick="addAnalyticsTag()">
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Add"/></CALLELEMENT>
+					</a>
 					</td>
 				</ELSE>
 			</IF>	

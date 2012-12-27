@@ -11,7 +11,7 @@
         <description>Attribute Editor</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Developer/Fatwire/JSK/11.1.1.6.0.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp76/dcs6896865052092462967.tmp</urldescriptorspec>
+        <urldescriptorspec>/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp8/dcs937766654620156472.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-AttrTypes</uid>
         <useDimension></useDimension>
@@ -65,7 +65,7 @@
             <null/>
             <null/>
             <null/>
-            <string>/Developer/Fatwire/JSK/11.1.1.6.0.app/ContentServer/11.1.1.6.0/Shared/Storage/AttrTypes/</string>
+            <string>/Developer/Fatwire/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/Shared/Storage/AttrTypes/</string>
             <null/>
             <null/>
             <null/>
@@ -250,10 +250,10 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/AttrTypes/SelectAtttTypes.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/AttrTypes/SelectAtttTypes,1.sql</string>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/AttrTypes/SelectSummary.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/AttrTypes/SelectSummary,1.sql</string>
             <null/>
             <null/>
             <null/>
@@ -402,9 +402,9 @@ dFB1YmxpY2F0aW9uLnB1YmlkPTApDQoJCVZhcmlhYmxlcy5xdWVyeWVuZA0K</byte-array>
       <subtypes/>
       <associations/>
       <siteNames class="list">
-        <string>DemoJava</string>
-        <string>DemoScala</string>
+        <string>AgileWCS</string>
         <string>FirstSiteII</string>
+        <string>ScalaWCS</string>
       </siteNames>
     </data>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -506,9 +506,9 @@ dFB1YmxpY2F0aW9uLnB1YmlkPTApDQoJCVZhcmlhYmxlcy5xdWVyeWVuZA0K</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Wed Dec 26 22:43:23 CET 2012
+#Thu Dec 27 14:53:39 CET 2012
 key=@ASSET_TYPE-CSSystem-AssetType-AttrTypes
 type=ASSET_TYPE
-sites=DemoJava,DemoScala,FirstSiteII
+sites=AgileWCS,FirstSiteII,ScalaWCS
 
 ==================___ END METADATA ___==================-->

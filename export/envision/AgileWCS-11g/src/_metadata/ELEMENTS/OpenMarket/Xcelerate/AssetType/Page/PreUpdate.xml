@@ -25,9 +25,12 @@ $Modtime: 11/16/01 5:56p $
 
 <if COND="Variables.updatetype=create">
 <then> 
-   
+  <!--
+	isPreUpdate is added to consume in OpenMarket/Gator/FlexibleAssets/Common/AGHandleTempObjects
+-->
   	<callelement NAME="OpenMarket/Xcelerate/AssetType/Page/AssetGather">
 		<argument NAME="GetOrSet" VALUE="set"/>
+		<argument NAME="isPreUpdate" VALUE="true"/>
 		<argument NAME="flextype" VALUE="asset"/>
 	</callelement>
 

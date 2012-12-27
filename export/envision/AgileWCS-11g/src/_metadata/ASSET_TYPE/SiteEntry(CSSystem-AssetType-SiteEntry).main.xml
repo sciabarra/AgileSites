@@ -11,7 +11,7 @@
         <description>SiteEntry</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Developer/Fatwire/JSK/11.1.1.6.0.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp76/dcs2123309866364444313.tmp</urldescriptorspec>
+        <urldescriptorspec>/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp8/dcs4111460067708651427.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-SiteEntry</uid>
         <useDimension></useDimension>
@@ -65,7 +65,7 @@
             <null/>
             <null/>
             <null/>
-            <string>/Developer/Fatwire/JSK/11.1.1.6.0.app/ContentServer/11.1.1.6.0/Shared/Storage/SiteEntry/</string>
+            <string>/Developer/Fatwire/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/Shared/Storage/SiteEntry/</string>
             <null/>
             <null/>
             <null/>
@@ -250,7 +250,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/SiteEntry/SelectSummary.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/SiteEntry/SelectSummary,1.sql</string>
             <null/>
             <null/>
             <null/>
@@ -396,9 +396,9 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA0KDQoNCg==</byte-array>
       <subtypes/>
       <associations/>
       <siteNames class="list">
-        <string>DemoJava</string>
-        <string>DemoScala</string>
+        <string>AgileWCS</string>
         <string>FirstSiteII</string>
+        <string>ScalaWCS</string>
       </siteNames>
     </data>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -518,9 +518,9 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA0KDQoNCg==</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Wed Dec 26 22:43:22 CET 2012
+#Thu Dec 27 14:53:38 CET 2012
 key=@ASSET_TYPE-CSSystem-AssetType-SiteEntry
 type=ASSET_TYPE
-sites=DemoJava,DemoScala,FirstSiteII
+sites=AgileWCS,FirstSiteII,ScalaWCS
 
 ==================___ END METADATA ___==================-->

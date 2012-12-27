@@ -54,7 +54,7 @@ function openSiteEntryPreview(purl)
 </CALLELEMENT>-->
 <CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
 <TR>
-<TD class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Name"/>:</TD>
+<TD class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/Name"/>:</TD>
 <TD><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></TD>
 <TD class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:name"/></TD>
 </TR>
@@ -70,7 +70,7 @@ function openSiteEntryPreview(purl)
 <TR>
 <TD class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/ID"/>:</TD>
 <TD></TD>
-<TD class="form-inset"><CSVAR NAME="Variables.ContentDetails:id"/></TD>
+<TD class="form-inset"><STRING.STREAM VALUE="Variables.ContentDetails:id"/></TD>
 </TR>
 <CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
 <TR>

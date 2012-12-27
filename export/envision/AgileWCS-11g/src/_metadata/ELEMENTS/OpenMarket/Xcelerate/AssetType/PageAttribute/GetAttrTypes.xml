@@ -19,7 +19,7 @@
 	<then>
 		<if COND="IsVariable.DoingASearch=true">
 			<then>
-				<select name="AttrTypes" size="1">
+				<select name="AttrTypes" size="1" onchange="checkEmbeddedLinks();">
                    <if COND="IsVariable.AttrTypes=true">
                    <then>
 					 	<loop LIST="AttrTypesList">
@@ -54,7 +54,7 @@
 			</then>
 			<else>
 				<input type="hidden" name="Attributes:editorid" />
-				<select name="Attributes:attributetype" size="1" >
+				<select name="Attributes:attributetype" size="1" onchange="checkEmbeddedLinks();">
 					<option value=""/><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/SelectAttrEditor"/>
 					<loop LIST="AttrTypesList">
 						<if COND="AttrTypesList.status!=VO">
@@ -105,7 +105,6 @@
 							</then>
 						</if>
 					</loop>
-					<callelement NAME="OpenMarket/Gator/FlexibleAssets/Attributes/AttributeEditors"/>
 				</select>
 				<setvar NAME="AttributeEditor" VALUE="Attributes:attributetype"/>
 			</else>

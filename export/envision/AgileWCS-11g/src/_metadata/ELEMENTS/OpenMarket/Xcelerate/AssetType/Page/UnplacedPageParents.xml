@@ -18,17 +18,26 @@
 	
 <!-- No special criteria; just grab all the nodes -->
 <setvar  NAME="tablename" VALUE="SitePlanTree"/>
-<execsql LIST="children" TABLE="SitePlanTree,Page" 
-    	 SQL="select siteplantree.nid,siteplantree.otype,siteplantree.oid from siteplantree,Page 
-	          where siteplantree.nparentid = PubRoot.nid and
-	          siteplantree.otype='Page' and siteplantree.ncode='UnPlaced'  and 
-	          siteplantree.oid=Page.id and Page.status !='VO' order by Page.name" />
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+	<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+	<ARGUMENT NAME="type" VALUE="Long"/>
+</CALLELEMENT>
+<IF COND="Variables.validatedstatus=true">
+<THEN>
+	<execsql LIST="children" TABLE="SitePlanTree,Page" 
+    	SQL="select siteplantree.nid,siteplantree.otype,siteplantree.oid from siteplantree,Page 
+	    where siteplantree.nparentid = PubRoot.nid and
+	    siteplantree.otype='Page' and siteplantree.ncode='UnPlaced'  and 
+	    siteplantree.oid=Page.id and Page.status !='VO' order by Page.name" />
+</THEN>
+</IF>
 	
 <IF COND="IsList.children=true">
 <THEN>	
 	<IF COND="children.#numRows!=0">
 	<THEN>
-		<LOOP LIST="children">
+	
+		<LOOP LIST="children" FROM="Variables.FROM"  COUNT="Variables.FETCH">
 				
 			<SITEPLAN.LOAD NAME="thePage" NODEID="children.nid"/>
 			<ASSET.LOAD NAME="currentChild" TYPE="children.otype" OBJECTID="children.oid"/>

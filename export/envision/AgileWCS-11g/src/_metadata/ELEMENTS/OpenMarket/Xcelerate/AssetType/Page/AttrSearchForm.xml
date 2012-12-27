@@ -55,7 +55,7 @@ $Modtime: 4/03/03 3:44p $
 			<ATTRIBUTE.GETASSETTYPE NAME="attrinst" VARNAME="attrassettype"/>
 			
 			<TR>
-				<TD class="form-label-text"><csvar NAME="Variables.attrname"/> is: </TD>
+				<TD class="form-label-text"><STRING.STREAM VALUE="Variables.attrname"/> is: </TD>
 				<TD></TD>
 				<IF COND="Variables.attrassettype!=Variables.empty">
 				<THEN>
@@ -63,16 +63,16 @@ $Modtime: 4/03/03 3:44p $
 					<EXECSQL SQL="SELECT Variables.tablename.id AS assetid FROM Variables.tablename,AssetPublication WHERE Variables.tablename.status &#60;&#62; 'VO' AND (AssetPublication.pubid=SessionVariables.pubid OR AssetPublication.pubid=0) AND AssetPublication.assetid=Variables.tablename.id" LIST="assettypelist"/>
 					<TD class="form-inset">
 						<SELECT NAME="attrlist.assetid" REPLACEALL="attrlist.assetid">
-							<OPTION VALUE="Variables.empty"  REPLACEALL="Variables.empty"/><csvar NAME="Variables.empty"/>
+							<OPTION VALUE="Variables.empty"  REPLACEALL="Variables.empty"/><STRING.STREAM VALUE="Variables.empty"/>
 							<LOOP LIST="assettypelist">
 								<ASSET.LIST TYPE="Variables.attrassettype" LIST="aList" FIELD1="id" VALUE1="assettypelist.assetid"/>
-								<OPTION VALUE="assettypelist.assetid"  REPLACEALL="assettypelist.assetid"/><csvar NAME="aList.name"/>
+								<OPTION VALUE="assettypelist.assetid"  REPLACEALL="assettypelist.assetid"/><STRING.STREAM VALUE="aList.name"/>
 							</LOOP>   
 						</SELECT>
 					</TD>
 				</THEN>
 				<ELSE>
-					<TD><INPUT SIZE="32" NAME="attrlist.assetid" REPLACEALL="attrlist.assetid"/> <IF COND="Variables.searchengine!=Variables.empty"><THEN>(<CSVAR NAME="Variables.searchengine indexed"/>)</THEN></IF></TD>
+					<TD><INPUT SIZE="32" NAME="attrlist.assetid" REPLACEALL="attrlist.assetid"/> <IF COND="Variables.searchengine!=Variables.empty"><THEN>(<STRING.STREAM VALUE="Variables.searchengine indexed"/>)</THEN></IF></TD>
 				</ELSE>
 				</IF>
  			</TR> 

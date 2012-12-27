@@ -105,7 +105,8 @@ $Modtime: 2/27/04 2:46p $
 			<tr> 
             <IF COND="IsVariable.OrderByDesc=true">
             <THEN>
- 			    <INPUT TYPE="HIDDEN" NAME="OrderByDesc" VALUE="Variables.OrderByDesc" REPLACEALL="Variables.OrderByDesc"/>
+			    <STRING.ENCODE VARIABLE="OrderByDesc" VARNAME="OrderByDescEnc"/>
+ 			    <INPUT TYPE="HIDDEN" NAME="OrderByDesc" VALUE="Variables.OrderByDescEnc" REPLACEALL="Variables.OrderByDescEnc"/>
             </THEN>
             <ELSE>
 			    <INPUT TYPE="HIDDEN" NAME="OrderByDesc" VALUE=""/>

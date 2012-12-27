@@ -8,6 +8,7 @@
 - OUTPUT
 -
 -->
+<STRING.ENCODE VARIABLE="cs_imagedir" VARNAME="cs_imagedir"/>
 <SETVAR NAME="errno" VALUE="0"/>
 <USERISMEMBER GROUP="xceleditor"/>
 <if COND="Variables.errno=0">

@@ -60,7 +60,7 @@ $Modtime: 5/31/02 5:10p $ -->
 	 
 	 <IF COND="IsVariable.OrderedAttrList=true">
 	 <THEN>
-		 <XLAT.STREAM KEY="dvin/FlexibleAssets/FlexTmpls/ParentDefs"/>OrderedAttrList: <csvar NAME="Variables.OrderedAttrList"/> <br/>
+		 <XLAT.STREAM KEY="dvin/FlexibleAssets/FlexTmpls/ParentDefs"/>OrderedAttrList: <STRING.STREAM VALUE="Variables.OrderedAttrList"/> <br/>
 		 <setvar NAME="firsttime"  VALUE="true"/>
 		 <STRINGLIST NAME="Ordattrlist" STR="Variables.OrderedAttrList" DELIM=";"/>
 		 <LOOP LIST="Ordattrlist">
@@ -84,20 +84,20 @@ $Modtime: 5/31/02 5:10p $ -->
 		 </LOOP>
 	 </THEN>
 	 <ELSE>  
-		 <XLAT.STREAM KEY="dvin/FlexibleAssets/FlexTmpls/RequiredAttrList"/> : <csvar NAME="Variables.RequiredAttrList"/> <br/>
+		 <XLAT.STREAM KEY="dvin/FlexibleAssets/FlexTmpls/RequiredAttrList"/> : <STRING.STREAM VALUE="Variables.RequiredAttrList"/> <br/>
 		 <setvar NAME="firsttime"  VALUE="true"/>
 		 <if COND="IsVariable.RequiredAttrList=true">
 				<then>
 					<STRINGLIST NAME="Reqattrlist" STR="Variables.RequiredAttrList" DELIM=";"/>
 					<loop  LIST="Reqattrlist">
 							<setvar NAME="attrname"  VALUE="Reqattrlist.ITEM"/>
-							<XLAT.STREAM KEY="dvin/FlexibleAssets/FlexTmpls/myattributetype"/> :  <csvar NAME="Variables.myattributetype"/><br/>
+							<XLAT.STREAM KEY="dvin/FlexibleAssets/FlexTmpls/myattributetype"/> :  <STRING.STREAM VALUE="Variables.myattributetype"/><br/>
 							<setvar NAME="errno" VALUE="0"/>
 							<ASSET.LIST TYPE="Variables.myattributetype" LIST="currentAttr"  FIELD1="name"  VALUE1="Variables.attrname"/>
 							<if COND="Variables.errno=0">
 							<then>
 								 <setvar NAME="myattrid" VALUE="currentAttr.id"/>
-								 <XLAT.STREAM KEY="dvin/FlexibleAssets/FlexTmpls/myattrid"/> :  <csvar NAME="Variables.myattrid"/><br/>
+								 <XLAT.STREAM KEY="dvin/FlexibleAssets/FlexTmpls/myattrid"/> :  <STRING.STREAM VALUE="Variables.myattrid"/><br/>
 								 <if COND="Variables.firsttime=true">
 								 <then>
 									 <setvar NAME="firsttime"  VALUE="false"/>

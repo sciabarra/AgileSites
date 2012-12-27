@@ -231,10 +231,9 @@ try
 				<td valign="top" class="form-label-text"><span class="alert-color"></span><xlat:stream key="dvin/AT/Common/Description"/>:</td>
 				<td></td>
 				<td class="form-inset">
-					<string:encode variable="ContentDetails:description" varname="OutputQString"/> 
 					<ics:callelement element="OpenMarket/Gator/AttributeTypes/TextBox">
 						<ics:argument name="inputName" value="flexassets:description"/>
-						<ics:argument name="inputValue" value='<%=ics.GetVar("OutputQString")%>'/>
+						<ics:argument name="inputValue" value='<%=ics.GetVar("ContentDetails:description")%>'/>
 						<ics:argument name="inputSize" value='32'/>
 						<ics:argument name="inputMaxlength" value='128'/>
 						<ics:argument name="applyDefaultFormStyle" value='<%=ics.GetVar("defaultFormStyle")%>' />
@@ -262,10 +261,9 @@ try
 					<td class="form-label-text"><xlat:stream key="dvin/Common/Filename"/>:</td>
 					<td></td>
 					<td class="form-inset">
-						<string:encode variable="ContentDetails:filename" varname="OutputQString"/>
 						<ics:callelement element="OpenMarket/Gator/AttributeTypes/TextBox">
 							<ics:argument name="inputName" value="flexassets:filename"/>
-							<ics:argument name="inputValue" value='<%=ics.GetVar("OutputQString")%>'/>
+							<ics:argument name="inputValue" value='<%=ics.GetVar("ContentDetails:filename")%>'/>
 							<ics:argument name="inputSize" value='32'/>
 							<ics:argument name="inputMaxlength" value='64'/>
 							<ics:argument name="applyDefaultFormStyle" value='<%=ics.GetVar("defaultFormStyle")%>' />
@@ -280,10 +278,9 @@ try
 					<td class="form-label-text"><xlat:stream key="dvin/Common/Path"/>:</td>
 					<td></td>
 					<td class="form-inset">
-						<string:encode variable="ContentDetails:path" varname="OutputQString"/>
 						<ics:callelement element="OpenMarket/Gator/AttributeTypes/TextBox">
 							<ics:argument name="inputName" value="flexassets:path"/>
-							<ics:argument name="inputValue" value='<%=ics.GetVar("OutputQString")%>'/>
+							<ics:argument name="inputValue" value='<%=ics.GetVar("ContentDetails:path")%>'/>
 							<ics:argument name="inputSize" value='32'/>
 							<ics:argument name="inputMaxlength" value='255'/>
 							<ics:argument name="applyDefaultFormStyle" value='<%=ics.GetVar("defaultFormStyle")%>' />
@@ -327,16 +324,14 @@ try
 					<td class="form-label-text"><string:stream variable="DefTypeObj:description"/>:</td>
 					<td></td>
 					<td class="form-inset"><xlat:lookup key="dvin/Common/InspectThisItem" varname="InspectThisItem" escape="true"/>
-						<satellite:link assembler="query" pagename="OpenMarket/Xcelerate/Actions/ContentDetailsFront" outstring="mylink">
-							<satellite:argument name='AssetType' value='<%=ics.GetVar("templatetype")%>'/>
-							<satellite:argument name='id' value='<%=ics.GetVar("TemplateChosen")%>'/>
-							<satellite:argument name='cs_environment' value='<%=ics.GetVar("cs_environment")%>'/>
-							<satellite:argument name='cs_formmode' value='<%=ics.GetVar("cs_formmode")%>'/>
-						</satellite:link>
-						<a href="<%=ics.GetVar("mylink")%>" onmouseover="window.status='<%=ics.GetVar("InspectThisItem")%>';return true;" onmouseout="window.status='';return true" >
-						<span class="disabledEditText"><string:stream variable="TypeName"/></span>
-						</a>
-						<input type="hidden" name="flexassets:subtype" value="<%=ics.GetVar("TypeName")%>" />
+						<ics:callelement element="OpenMarket/Xcelerate/Util/GenerateLink">
+							<ics:argument name="assettype" value='<%=ics.GetVar("templatetype")%>'/>
+							<ics:argument name="assetid" value='<%=ics.GetVar("TemplateChosen")%>'/>
+							<ics:argument name="varname" value="urlInspectItem"/>
+							<ics:argument name="function" value="inspect"/>
+						</ics:callelement>
+						<a href="<%=ics.GetVar("urlInspectItem")%>" onmouseover="window.status='<%=ics.GetVar("InspectThisItem")%>';return true;" onmouseout="window.status='';return true" ><span class="disabledEditText"><string:stream variable="TypeName"/></span></a>
+						<input type="hidden" name="flexassets:subtype" value='<string:stream variable="TypeName"/>' />
 					</td>
 				</tr><%
 			}%>

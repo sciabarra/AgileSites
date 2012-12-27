@@ -14,7 +14,15 @@
 <!-- populate engines for text/html and text/plain mimetypes if they exist-->
 <SETVAR NAME="tablename" VALUE="MimeType"/>
 <SETVAR NAME="errno" VALUE="0"/>
-<EXECSQL SQL="SELECT * FROM Variables.tablename WHERE mimetype='Variables.currentType'" LIST="lmimetype"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+	<ARGUMENT NAME="columnvalue" VALUE="Variables.currentType"/>
+	<ARGUMENT NAME="type" VALUE="String"/>
+</CALLELEMENT>
+<IF COND="Variables.validatedstatus=true">
+<THEN>
+	<EXECSQL SQL="SELECT * FROM Variables.tablename WHERE mimetype='Variables.currentType'" LIST="lmimetype"/>
+</THEN>
+</IF>
 <IF COND="Variables.errno=0">
 <THEN>
 	<TRANSFORMERMANAGER.FIND TYPE="Variables.currentType" LISTVARNAME="lCurrentEngines"/>

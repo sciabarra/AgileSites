@@ -23,6 +23,7 @@
 		<SETCOUNTER NAME="nthSubtype" VALUE="0"/>
 		<LOOP COUNT="Variables.ContentDetails:applicablesubtypes:Total">
 			<setvar NAME="value" VALUE="Variables.ContentDetails:applicablesubtypes:Counters.nthSubtype"/>
+			<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
 			<INPUT TYPE="HIDDEN" NAME="Template:applicablesubtypes:Counters.nthSubtype" VALUE="Variables.value" REPLACEALL="Counters.nthSubtype,Variables.value"/>
 			<INCCOUNTER NAME="nthSubtype" VALUE="1"/>
 		</LOOP>
@@ -146,8 +147,10 @@
 		</LOOP>
 	</then>
 	</if>
+	<STRING.ENCODE VARIABLE="ContentDetails:element:Total" VARNAME="ContentDetails:element:Total"/>
 	<INPUT TYPE="HIDDEN" NAME="Template:element:Total" VALUE="Variables.ContentDetails:element:Total" REPLACEALL="Variables.ContentDetails:element:Total"/>
 
+	<STRING.ENCODE VARIABLE="ContentDetails:ttype" VARNAME="ContentDetails:ttype"/>
 	<INPUT TYPE="HIDDEN" NAME="Template:ttype" VALUE="Variables.ContentDetails:ttype" REPLACEALL="Variables.ContentDetails:ttype"/>
 
 	<SETCOUNTER NAME="numCalled" VALUE="Variables.ContentDetails:Called:Total"/>
@@ -156,11 +159,13 @@
 		<SETCOUNTER NAME="nth" VALUE="0"/>
 		<LOOP COUNT="Counters.numCalled">
 			<setvar NAME="value" VALUE="Variables.ContentDetails:Called:Counters.nth"/>
+			<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
 			<INPUT TYPE="HIDDEN" NAME="Template:Called:Counters.nth" VALUE="Variables.value" REPLACEALL="Counters.nth,Variables.value"/>
 			<INCCOUNTER NAME="nth" VALUE="1"/>
 		</LOOP>
 	</then>
 	</if>
+	<STRING.ENCODE VARIABLE="ContentDetails:Called:Total" VARNAME="ContentDetails:Called:Total"/>
 	<INPUT TYPE="HIDDEN" NAME="Template:Called:Total" VALUE="Variables.ContentDetails:Called:Total" REPLACEALL="Variables.ContentDetails:Called:Total"/>
 </THEN>
 <ELSE>
@@ -195,16 +200,22 @@
 			<if COND="Variables.currentElement!=Counters.nthElement">
 			<then>
 				<setvar NAME="value" VALUE="Variables.ContentDetails:element:Counters.nthElement:elementname"/>
+				<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
 				<INPUT TYPE="HIDDEN" NAME="Template:element:Counters.nthElement:elementname" VALUE="Variables.value" REPLACEALL="Counters.nthElement,Variables.value"/>
 				<setvar NAME="value" VALUE="Variables.ContentDetails:element:Counters.nthElement:theme"/>
+				<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
 				<INPUT TYPE="HIDDEN" NAME="Template:element:Counters.nthElement:theme" VALUE="Variables.value" REPLACEALL="Counters.nthElement,Variables.value"/>
 				<setvar NAME="value" VALUE="Variables.ContentDetails:element:Counters.nthElement:elementdescription"/>
+				<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
 				<INPUT TYPE="HIDDEN" NAME="Template:element:Counters.nthElement:elementdescription" VALUE="Variables.value" REPLACEALL="Counters.nthElement,Variables.value"/>
 				<setvar NAME="value" VALUE="Variables.ContentDetails:element:Counters.nthElement:urlspec"/>
+				<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
 				<INPUT TYPE="HIDDEN" NAME="Template:element:Counters.nthElement:urlspec" VALUE="Variables.value" REPLACEALL="Counters.nthElement,Variables.value"/>
 				<setvar NAME="value" VALUE="Variables.ContentDetails:element:Counters.nthElement:resdetails1"/>
+				<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
 				<INPUT TYPE="HIDDEN" NAME="Template:element:Counters.nthElement:resdetails1" VALUE="Variables.value" REPLACEALL="Counters.nthElement,Variables.value"/>
 				<setvar NAME="value" VALUE="Variables.ContentDetails:element:Counters.nthElement:resdetails2"/>
+				<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
 				<INPUT TYPE="HIDDEN" NAME="Template:element:Counters.nthElement:resdetails2" VALUE="Variables.value" REPLACEALL="Counters.nthElement,Variables.value"/>
 
 				<setvar NAME="value" VALUE="Variables.ContentDetails:element:Counters.nthElement:url"/>
@@ -229,7 +240,9 @@
 
 <IF COND="Variables.NextStep!=ContentFormSiteEntry">
 <THEN>
+	<STRING.ENCODE VARIABLE="ContentDetails:acl" VARNAME="ContentDetails:acl"/>
 	<input type="hidden" name="Template:acl" VALUE="Variables.ContentDetails:acl" REPLACEALL="Variables.ContentDetails:acl"/>
+	<STRING.ENCODE VARIABLE="ContentDetails:pagecriteria:Total" VARNAME="ContentDetails:pagecriteria:Total"/>
 	<input type="hidden" name="Template:pagecriteria:Total" VALUE="Variables.ContentDetails:pagecriteria:Total" REPLACEALL="Variables.ContentDetails:pagecriteria:Total"/>
 	<IF COND="Variables.ContentDetails:pagecriteria:Total!=0">
 	<THEN>
@@ -248,12 +261,14 @@
 		<SETCOUNTER NAME="nthElement" VALUE="0"/>
 		<LOOP COUNT="Variables.ContentDetails:element:Total">
 			<ICS.RESOLVEVARIABLES NAME="$(Variables.ContentDetails:element:$(Counters.nthElement):siteentry:Total)" OUTPUT="numPagenames" DELIMITED="true"/>
+			<STRING.ENCODE VARNAME="numPagenames" VARIABLE="numPagenames"/>
 			<input type="hidden" name="Template:element:Counters.nthElement:siteentry:Total" VALUE="Variables.numPagenames" REPLACEALL="Variables.numPagenames,Counters.nthElement"/>
 			<IF COND="Variables.numPagenames!=0">
 			<THEN>
 				<SETCOUNTER NAME="nthPagename" VALUE="0"/>
 				<LOOP COUNT="Variables.numPagenames">
 					<SETVAR NAME="value" VALUE="Variables.ContentDetails:element:Counters.nthElement:siteentry:Counters.nthPagename:pagename"/>
+					<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
 					<input type="hidden" name="Template:element:Counters.nthElement:siteentry:Counters.nthPagename:pagename" VALUE="Variables.value" REPLACEALL="Variables.value,Counters.nthElement,Counters.nthPagename"/>
 					<ICS.RESOLVEVARIABLES NAME="$(Variables.ContentDetails:element:$(Counters.nthElement):siteentry:$(Counters.nthPagename):defaultarguments:Total)" OUTPUT="numDefaultArgs" DELIMITED="true"/>
 					<SETCOUNTER NAME="argn" VALUE="0"/>
@@ -266,6 +281,7 @@
 						<input type="hidden" name="Template:element:Counters.nthElement:siteentry:Counters.nthPagename:defaultarguments:Counters.argn:value" VALUE="Variables.valueEnc" REPLACEALL="Variables.valueEnc,Counters.nthElement,Counters.nthPagename,Counters.argn"/>
 						<INCCOUNTER NAME="argn" VALUE="1"/>
 					</LOOP>
+					<STRING.ENCODE VARNAME="numDefaultArgs" VARIABLE="numDefaultArgs"/>
 					<input type="hidden" name="Template:element:Counters.nthElement:siteentry:Counters.nthPagename:defaultarguments:Total" VALUE="Variables.numDefaultArgs" REPLACEALL="Counters.nthElement,Counters.nthPagename,Variables.numDefaultArgs"/>
 					<INCCOUNTER NAME="nthPagename" VALUE="1"/>
 				</LOOP>
@@ -289,15 +305,19 @@
 
 <IF COND="Variables.NextStep!=ContentFormThumbnail">
 <THEN>
+	<STRING.ENCODE VARNAME="tempobjectidlist" VARIABLE="tempobjectidlist"/>
 	<INPUT TYPE="hidden" NAME="tempobjectidlist" VALUE="Variables.tempobjectidlist" REPLACEALL="Variables.tempobjectidlist"/>
+	<STRING.ENCODE VARNAME="ContentDetails:Thumbnail:Total" VARIABLE="ContentDetails:Thumbnail:Total"/>
 	<INPUT TYPE="hidden" NAME="Template:Thumbnail:Total" VALUE="Variables.ContentDetails:Thumbnail:Total" REPLACEALL="Variables.ContentDetails:Thumbnail:Total"/>
 	<if COND="Variables.ContentDetails:Thumbnail:Total!=0">
 	<then>
 		<SETCOUNTER NAME="nthThumbnail" VALUE="0"/>
 		<LOOP COUNT="Variables.ContentDetails:Thumbnail:Total">
 			<setvar NAME="theme" VALUE="Variables.ContentDetails:Thumbnail:Counters.nthThumbnail:theme"/>
+			<STRING.ENCODE VARNAME="theme" VARIABLE="theme"/>
 			<INPUT TYPE="hidden" NAME="Template:Thumbnail:Counters.nthThumbnail:theme" VALUE="Variables.theme" REPLACEALL="Variables.theme,Counters.nthThumbnail"/>
 			<setvar NAME="tempobjectid" VALUE="Variables.Variables.theme-TempObjectId"/>
+			<STRING.ENCODE VARNAME="tempobjectid" VARIABLE="tempobjectid"/>
 			<INPUT TYPE="hidden" NAME="Variables.theme-TempObjectId" VALUE="Variables.tempobjectid" REPLACEALL="Variables.tempobjectid,Variables.theme"/>
 			<INCCOUNTER NAME="nthThumbnail" VALUE="1"/>
 		</LOOP>
@@ -366,8 +386,10 @@
 	<THEN>
 		<LOOP LIST="associations">
 			<setvar NAME="value" VALUE="Variables.ContentDetails:Association-named:associations.name"/>
+			<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
 			<INPUT TYPE="hidden" NAME="Template:Association-named:associations.name" VALUE="Variables.value" REPLACEALL="associations.name,Variables.value"/>
 			<setvar NAME="value" VALUE="Variables.ContentDetails:Association-named:associations.name_type"/>
+			<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
 	      <INPUT TYPE="hidden" NAME="Template:Association-named:associations.name_type" VALUE="Variables.value" REPLACEALL="associations.name,Variables.value"/>
 		</LOOP>
 	</THEN>

@@ -143,7 +143,7 @@
 						<THEN>
 							<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
 							<tr>
-								<td class="form-label-text">
+								<td class="form-label-text"><span class="alert-color">*</span>
 									<XLAT.STREAM KEY="dvin/AT/Common/Name"/>:
 								</td>
 								<td>
@@ -461,13 +461,15 @@
 									<THEN>
 										<STRING.STREAM VARIABLE="TypeName"/>
 									</THEN>
-									<ELSE>
-										<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Actions/ContentDetailsFront" outstring="urlInspectThisItem">
-											<SATELLITE.ARGUMENT name="cs_environment" value="Variables.cs_environment"/>
-											<SATELLITE.ARGUMENT name="cs_formmode" value="Variables.cs_formmode"/>
-											<SATELLITE.ARGUMENT name="AssetType" value="Variables.templatetype"/>
-											<SATELLITE.ARGUMENT name="id" value="Variables.ContentDetails:flextemplateid"/>
-										</SATELLITE.LINK>
+									<ELSE>										
+										<XLAT.LOOKUP KEY="dvin/Common/InspectThisItem" VARNAME="_XLAT_"/>
+										<XLAT.LOOKUP KEY="dvin/Common/InspectThisItem" VARNAME="mouseover" ESCAPE="true"/>
+										<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateLink">
+											<ARGUMENT NAME="assettype" VALUE="Variables.templatetype"/>
+											<ARGUMENT NAME="assetid" VALUE="Variables.ContentDetails:flextemplateid"/>
+											<ARGUMENT NAME="varname" VALUE="urlInspectThisItem"/>
+											<ARGUMENT NAME="function" VALUE="inspect"/>
+										</CALLELEMENT>
 										<a href="Variables.urlInspectThisItem" onmouseover="window.status='Variables.InspectThisItem';return true;" onmouseout="window.status='';return true" REPLACEALL="Variables.urlInspectThisItem,Variables.InspectThisItem"><STRING.STREAM VARIABLE="TypeName"/></a>
 									</ELSE>
 									</IF>

@@ -69,11 +69,19 @@
 		<SITEPLAN.ROOT LIST="PubRoot" OBJECTID="SessionVariables.pubid"/>
 	
 		<setvar NAME="tablename" VALUE="SitePlanTree"/>
-		<execsql LIST="mylist"
-			SQL="SELECT COUNT(*) as mycount
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+			<ARGUMENT NAME="type" VALUE="Long"/>
+		</CALLELEMENT>
+		<IF COND="Variables.validatedstatus=true">
+		<THEN>
+			<execsql LIST="mylist"
+				SQL="SELECT COUNT(*) as mycount
 				FROM  SitePlanTree
 				WHERE nparentid = PubRoot.nid 
 				AND ncode = 'Placed'"/>
+		</THEN>
+		</IF>
 		<REMOVEVAR NAME="LoadURL"/>
 		<REMOVEVAR NAME="ExecuteURL"/>
 		<IF COND="IsList.mylist=true">
@@ -114,11 +122,19 @@
 		</CALLELEMENT>
 		
 		<setvar NAME="tablename" VALUE="SitePlanTree"/>
-		<execsql LIST="mylist"
-			SQL="SELECT COUNT(*) as mycount
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+			<ARGUMENT NAME="type" VALUE="Long"/>
+		</CALLELEMENT>
+		<IF COND="Variables.validatedstatus=true">
+		<THEN>
+			<execsql LIST="mylist"
+				SQL="SELECT COUNT(*) as mycount
 				FROM  SitePlanTree
 				WHERE nparentid = PubRoot.nid 
 				AND ncode = 'UnPlaced'"/>
+		</THEN>
+		</IF>
 		<REMOVEVAR NAME="LoadURL"/>
 		<REMOVEVAR NAME="ExecuteURL"/>
 		<IF COND="IsList.mylist=true">
@@ -181,11 +197,19 @@
 			<then>
 				<setvar NAME="nodecount" VALUE="0"/>
 				<setvar NAME="tablename" VALUE="SitePlanTree"/>
-				<execsql LIST="mylist"
-					SQL="SELECT COUNT(*) as mycount
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+					<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+					<ARGUMENT NAME="type" VALUE="Long"/>
+				</CALLELEMENT>
+				<IF COND="Variables.validatedstatus=true">
+				<THEN>
+					<execsql LIST="mylist"
+						SQL="SELECT COUNT(*) as mycount
 						FROM  SitePlanTree
 						WHERE nparentid = PubRoot.nid 
 						AND ncode = 'Placed'"/>
+				</THEN>
+				</IF>
 				<IF COND="IsList.mylist=true">
 				<THEN>
 					<IF COND="mylist.mycount!=0">
@@ -252,11 +276,19 @@
 					<then>
 						<setvar NAME="nodecount" VALUE="0"/>
 						<setvar NAME="tablename" VALUE="SitePlanTree"/>
-						<execsql LIST="mylist"
-							SQL="SELECT COUNT(*) as mycount
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+							<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+							<ARGUMENT NAME="type" VALUE="Long"/>
+						</CALLELEMENT>
+						<IF COND="Variables.validatedstatus=true">
+						<THEN>
+							<execsql LIST="mylist"
+								SQL="SELECT COUNT(*) as mycount
 								FROM  SitePlanTree
 								WHERE nparentid = PubRoot.nid 
 								AND ncode = 'Placed'"/>
+						</THEN>
+						</IF>
 						<IF COND="IsList.mylist=true">
 						<THEN>
 							<IF COND="mylist.mycount!=0">
@@ -267,7 +299,7 @@
 						</THEN>
 						</IF>
 						<STRING.LENGTH VALUE="Variables.nodecount" VARNAME="length"/>
-						Status:12:tooManyItems:Count:<CSVAR NAME="Variables.length:Variables.nodecount:"/>END:3:END:
+						Status:12:tooManyItems:Count:<STRING.STREAM VALUE="Variables.length:Variables.nodecount:"/>END:3:END:
 						<throwexception/>
 					</then>
 					</if>
@@ -293,16 +325,32 @@
 
 					<!-- Grab only the matching nodes -->
 					<setvar NAME="tablename" VALUE="SitePlanTree"/>
-					<execsql LIST="children"
-						TABLE="SitePlanTree,Page"
-						SQL="SELECT t0.*
-							FROM  SitePlanTree t0, Page t1
-							WHERE t0.otype='Page'
-							AND t0.oid=t1.id
-							AND t0.nparentid = PubRoot.nid
-							AND t0.ncode = 'Placed'
-							AND t1.name LIKE 'Variables.namematch'
-							ORDER BY t0.nrank ASC"/>
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+						<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+						<ARGUMENT NAME="type" VALUE="Long"/>
+					</CALLELEMENT>
+					<IF COND="Variables.validatedstatus=true">
+					<THEN>
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+							<ARGUMENT NAME="columnvalue" VALUE="Variables.namematch"/>
+							<ARGUMENT NAME="type" VALUE="String"/>
+						</CALLELEMENT>
+						<IF COND="Variables.validatedstatus=true">
+						<THEN>
+							<execsql LIST="children"
+								TABLE="SitePlanTree,Page"
+								SQL="SELECT t0.*
+								FROM  SitePlanTree t0, Page t1
+								WHERE t0.otype='Page'
+								AND t0.oid=t1.id
+								AND t0.nparentid = PubRoot.nid
+								AND t0.ncode = 'Placed'
+								AND t1.name LIKE 'Variables.namematch'
+								ORDER BY t0.nrank ASC"/>
+						</THEN>
+						</IF>
+					</THEN>
+					</IF>
 				</then>
 				<else>
 					<!-- No special criteria; just grab all the nodes -->
@@ -457,11 +505,19 @@
 			<then>
 				<setvar NAME="nodecount" VALUE="0"/>
 				<setvar NAME="tablename" VALUE="SitePlanTree"/>
-				<execsql LIST="mylist"
-					SQL="SELECT COUNT(*) as mycount
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+					<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+					<ARGUMENT NAME="type" VALUE="Long"/>
+				</CALLELEMENT>
+				<IF COND="Variables.validatedstatus=true">
+				<THEN>
+					<execsql LIST="mylist"
+						SQL="SELECT COUNT(*) as mycount
 						FROM  SitePlanTree
 						WHERE nparentid = PubRoot.nid 
 						AND ncode = 'UnPlaced'"/>
+				</THEN>
+				</IF>
 				<IF COND="IsList.mylist=true">
 				<THEN>
 					<IF COND="mylist.mycount!=0">
@@ -529,11 +585,19 @@
 					<then>
 						<setvar NAME="nodecount" VALUE="0"/>
 						<setvar NAME="tablename" VALUE="SitePlanTree"/>
-						<execsql LIST="mylist"
-							SQL="SELECT COUNT(*) as mycount
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+							<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+							<ARGUMENT NAME="type" VALUE="Long"/>
+						</CALLELEMENT>
+						<IF COND="Variables.validatedstatus=true">
+						<THEN>
+							<execsql LIST="mylist"
+								SQL="SELECT COUNT(*) as mycount
 								FROM  SitePlanTree
 								WHERE nparentid = PubRoot.nid 
 								AND ncode = 'UnPlaced'"/>
+						</THEN>
+						</IF>
 						<IF COND="IsList.mylist=true">
 						<THEN>
 							<IF COND="mylist.mycount!=0">
@@ -544,7 +608,7 @@
 						</THEN>
 						</IF>
 						<STRING.LENGTH VALUE="Variables.nodecount" VARNAME="length"/>
-						Status:12:tooManyItems:Count:<CSVAR NAME="Variables.length:Variables.nodecount:"/>END:3:END:
+						Status:12:tooManyItems:Count:<STRING.STREAM VALUE="Variables.length:Variables.nodecount:"/>END:3:END:
 						<throwexception/>
 					</then>
 					</if>
@@ -570,25 +634,49 @@
 
 					<!-- Grab only the matching nodes -->
 					<setvar NAME="tablename" VALUE="SitePlanTree"/>
-					<execsql LIST="children"
-						TABLE="SitePlanTree,Page"
-						SQL="SELECT t0.*
-							FROM  SitePlanTree t0, Page t1
-							WHERE t0.otype='Page'
-							AND t0.oid=t1.id
-							AND t0.nparentid = PubRoot.nid
-							AND t0.ncode = 'UnPlaced'
-							AND t1.name LIKE 'Variables.namematch'
-							ORDER BY t1.name"/>
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+						<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+						<ARGUMENT NAME="type" VALUE="Long"/>
+					</CALLELEMENT>
+					<IF COND="Variables.validatedstatus=true">
+					<THEN>
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+							<ARGUMENT NAME="columnvalue" VALUE="Variables.namematch"/>
+							<ARGUMENT NAME="type" VALUE="String"/>
+						</CALLELEMENT>
+						<IF COND="Variables.validatedstatus=true">
+						<THEN>
+							<execsql LIST="children"
+								TABLE="SitePlanTree,Page"
+								SQL="SELECT t0.*
+								FROM  SitePlanTree t0, Page t1
+								WHERE t0.otype='Page'
+								AND t0.oid=t1.id
+								AND t0.nparentid = PubRoot.nid
+								AND t0.ncode = 'UnPlaced'
+								AND t1.name LIKE 'Variables.namematch'
+								ORDER BY t1.name"/>
+						</THEN>
+						</IF>
+					</THEN>
+					</IF>
 				</then>
 				<else>
 					<!-- No special criteria; just grab all the nodes -->
                     <!--SITEPLAN.CHILDREN NAME="thePubNode" LIST="children" CODE="UnPlaced" ORDER="nrank"/-->
                     <setvar NAME="tablename" VALUE="SitePlanTree"/>
-                    <execsql LIST="children" TABLE="SitePlanTree,Page" SQL="select siteplantree.nid,siteplantree.otype,siteplantree.oid from siteplantree,Page 
-	                    where siteplantree.nparentid = PubRoot.nid and
-	                     siteplantree.otype='Page' and siteplantree.ncode='UnPlaced'  and 
-	                     siteplantree.oid=Page.id and Page.status !='VO' order by Page.name" />
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+						<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+						<ARGUMENT NAME="type" VALUE="Long"/>
+					</CALLELEMENT>
+					<IF COND="Variables.validatedstatus=true">
+					<THEN>
+						<execsql LIST="children" TABLE="SitePlanTree,Page" SQL="select siteplantree.nid,siteplantree.otype,siteplantree.oid from siteplantree,Page 
+							where siteplantree.nparentid = PubRoot.nid and
+							siteplantree.otype='Page' and siteplantree.ncode='UnPlaced'  and 
+							siteplantree.oid=Page.id and Page.status !='VO' order by Page.name" />
+					</THEN>
+					</IF>
 				</else>
 				</if>
 				
@@ -695,6 +783,7 @@
 								<setvar name="OKActions" value="Status;Inspect;Edit;Preview;Delete;refresh"/>
 							</else>
 							</if>
+							<STRING.ENCODE VARIABLE="currentName" VARNAME="currentName"/>
 							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
 								<ARGUMENT NAME="Label" VALUE="Variables.currentName"/>
 								<ARGUMENT NAME="Description" VALUE="Variables.currentDesc"/>

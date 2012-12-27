@@ -35,9 +35,17 @@
 <SITEPLAN.ROOT LIST="PubRoot" OBJECTID="SessionVariables.pubid"/>
 	
 <setvar NAME="tablename" VALUE="SitePlanTree"/>
-<execsql LIST="mylist"
-		 SQL="SELECT COUNT(*) as mycount FROM  SitePlanTree
-			  WHERE nparentid = PubRoot.nid AND ncode = 'Placed'"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+	<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+	<ARGUMENT NAME="type" VALUE="Long"/>
+</CALLELEMENT>
+<IF COND="Variables.validatedstatus=true">
+<THEN>
+	<execsql LIST="mylist"
+		SQL="SELECT COUNT(*) as mycount FROM  SitePlanTree
+		WHERE nparentid = PubRoot.nid AND ncode = 'Placed'"/>
+</THEN>
+</IF>
 	
 <IF COND="IsList.mylist=true">
 <THEN>
@@ -72,9 +80,17 @@
 </CALLELEMENT>
 		
 <setvar NAME="tablename" VALUE="SitePlanTree"/>
-<execsql LIST="mylist"
-		 SQL="SELECT COUNT(*) as mycount FROM  SitePlanTree
-			  WHERE nparentid = PubRoot.nid AND ncode = 'UnPlaced'"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+	<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+	<ARGUMENT NAME="type" VALUE="Long"/>
+</CALLELEMENT>
+<IF COND="Variables.validatedstatus=true">
+<THEN>
+	<execsql LIST="mylist"
+		SQL="SELECT COUNT(*) as mycount FROM  SitePlanTree
+		WHERE nparentid = PubRoot.nid AND ncode = 'UnPlaced'"/>
+</THEN>
+</IF>
 
 <REMOVEVAR NAME="LoadURL"/>
 <REMOVEVAR NAME="ExecuteURL"/>

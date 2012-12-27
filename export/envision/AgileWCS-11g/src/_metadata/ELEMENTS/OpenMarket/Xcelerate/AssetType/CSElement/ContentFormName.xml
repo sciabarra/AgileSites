@@ -38,7 +38,8 @@
 		<td class="form-inset">
 		<IF COND="Variables.updatetype!=setformdefaults">
 		<THEN>
-			<INPUT TYPE="HIDDEN" NAME="CSElement:name" VALUE="Variables.ContentDetails:name" REPLACEALL="Variables.ContentDetails:name"/>
+		    <STRING.ENCODE VARIABLE="ContentDetails:name" VARNAME="ContentDetails:nameEnc"/>
+			<INPUT TYPE="HIDDEN" NAME="CSElement:name" VALUE="Variables.ContentDetails:nameEnc" REPLACEALL="Variables.ContentDetails:nameEnc"/>
 			<STRING.STREAM VARIABLE="ContentDetails:name"/>
 		</THEN>
 		<ELSE>

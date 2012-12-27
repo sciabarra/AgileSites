@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>PageDefinition:1351276305243</id>
+    <name>Blog</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2012-12-27T13:15:07.944Z</createddate>
+    <description>Blog</description>
+    <publist>AgileWCS</publist>
+    <publist>ScalaWCS</publist>
+    <status>PL</status>
+    <subtype></subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2012-12-27T13:16:24.808Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>db5fe309-bb14-435f-816d-80a15ab0e6c6</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1351276305243</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Attributes</name>
+        <data>
+            <listValue>
+                <item>
+                    <item>
+                        <name>ordinal</name>
+                        <data>
+                            <integerValue>1</integerValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>required</name>
+                        <data>
+                            <stringValue>true</stringValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>assetid</name>
+                        <data>
+                            <stringValue>PageAttribute:1351276304810</stringValue>
+                        </data>
+                    </item>
+                </item>
+            </listValue>
+        </data>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <list>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351276304810</resId>
+      <uid>d5016fe6-f402-44c3-9c78-ed14e569261f</uid>
+    </dependency>
+    <dependency>
+      <depType>N</depType>
+      <resType>PageDefinition</resType>
+      <resId>1351276305243</resId>
+      <uid>db5fe309-bb14-435f-816d-80a15ab0e6c6</uid>
+    </dependency>
+  </list>
+</dependencies>
+==================______________________==================
+#
+#Thu Dec 27 14:19:14 CET 2012
+key=PageDefinition-db5fe309-bb14-435f-816d-80a15ab0e6c6
+type=ASSETDATA
+sites=AgileWCS,ScalaWCS
+
+==================___ END METADATA ___==================-->

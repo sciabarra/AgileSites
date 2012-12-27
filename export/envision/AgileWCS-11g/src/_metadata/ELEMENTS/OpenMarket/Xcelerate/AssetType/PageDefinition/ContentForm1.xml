@@ -572,93 +572,10 @@ function SetCancelFlag () {
 		</THEN>
 		</IF>
 	<!-- form buttons -->
-
-	<IF COND="Variables.updatetype=setformdefaults">
-	<THEN>
-		<SETVAR NAME="buttonSrc" VALUE="btnSave.png"/>
-	</THEN>
-	<ELSE>
-		<SETVAR NAME="buttonSrc" VALUE="btnSave.png"/>
-	</ELSE>
-	</IF>
-	<IF COND="Variables.cs_environment!=ucform">
-	<THEN>
-		<div dojoType="dijit.layout.ContentPane" region="top">
-		<div class='toolbarContent'>
-		<table>
-		<tr>
-			<td align="left">				
-				<XLAT.LOOKUP KEY="dvin/Common/SaveChanges" VARNAME="_XLAT_" ESCAPE="true"/>
-				<XLAT.LOOKUP KEY="dvin/UI/Save" VARNAME="_Save_ALT"/>
-				<A HREF="javascript:void(0)" onclick="selAllAll(); return checkfields('Variables.TemplateType',document.forms[0].elements['sMyTmplAttributes']);" onmouseover="window.status='Variables._XLAT_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._XLAT_">
-					<IMG onclick="this.src='Variables.cs_imagedir/../wemresources/images/ui/ui/toolbar/btnSaveClick.png';return true;" onmouseover="this.src='Variables.cs_imagedir/../wemresources/images/ui/ui/toolbar/btnSaveHover.png';return true;" onmouseout="this.src='Variables.cs_imagedir/../wemresources/images/ui/ui/toolbar/Variables.buttonSrc'" src="Variables.cs_imagedir/../wemresources/images/ui/ui/toolbar/Variables.buttonSrc" ALT="Variables._Save_ALT" ALIGN="absmiddle" BORDER="0"  REPLACEALL="Variables.cs_imagedir,SessionVariables.locale,Variables.buttonSrc,Variables._Save_ALT"/>
-				</A>
-				<if cond="Variables.ThisPage=EditFront">
-				<then>
-					<XLAT.LOOKUP KEY="dvin/UI/Inspect" VARNAME="_XLAT_" ESCAPE="true"/>
-					<XLAT.LOOKUP KEY="dvin/UI/Admin/InspectThisDescription" VARNAME="_INSPECT_ALT"/>
-					<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateLink">
-						<ARGUMENT NAME="assettype" VALUE="Variables.AssetType"/>
-						<ARGUMENT NAME="assetid" VALUE="Variables.id"/>
-						<ARGUMENT NAME="varname" VALUE="urlInspectThisItem"/>
-						<ARGUMENT NAME="function" VALUE="inspect"/>
-					</CALLELEMENT>
-					<A HREF="Variables.urlInspectThisItem" onclick="return true" onmouseover="window.status='Variables._XLAT_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._XLAT_, Variables.urlInspectThisItem">
-						<IMG onclick="this.src='Variables.cs_imagedir/../wemresources/images/ui/ui/toolbarButton/previewClick.png';return true;" onmouseover="this.src='Variables.cs_imagedir/../wemresources/images/ui/ui/toolbarButton/previewHover.png';return true;" onmouseout="this.src='Variables.cs_imagedir/../wemresources/images/ui/ui/toolbarButton/preview.png'" src="Variables.cs_imagedir/../wemresources/images/ui/ui/toolbarButton/preview.png" ALT="Variables._INSPECT_ALT" ALIGN="absmiddle" BORDER="0"  REPLACEALL="Variables.cs_imagedir,SessionVariables.locale,Variables._INSPECT_ALT"/>
-					</A>
-					<XLAT.LOOKUP KEY="UI/Forms/Refresh" ESCAPE="true" VARNAME="_XLAT_"/>
-					<XLAT.LOOKUP KEY="UI/Forms/RefreshThisDescription" VARNAME="_ALT_"/>
-					<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateLink">
-						<ARGUMENT NAME="assettype" VALUE="Variables.AssetType"/>
-						<ARGUMENT NAME="assetid" VALUE="Variables.id"/>
-						<ARGUMENT NAME="varname" VALUE="urlInspectThisItem"/>
-						<ARGUMENT NAME="function" VALUE="edit"/>
-					</CALLELEMENT>
-					<SETVAR NAME="editCheck" VALUE="true"/>
-					<IF COND="Variables.AssetType=Template">
-					<THEN>
-						<!-- check whther user is allowed to edit SiteCatalog or ElementCatalog -->
-						<USERISMEMBER GROUP="PageEditor"/>
-						<if COND="Variables.errno=0">
-						<then>
-							<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at"/>
-							<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description"/>
-							<setvar NAME="editCheck" VALUE="WrongACLToEditAsset"/>
-						</then>
-						<else>
-							<USERISMEMBER GROUP="ElementEditor"/>
-							<if COND="Variables.errno=0">
-							<then>
-								<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at"/>
-								<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description"/>
-								<setvar NAME="editCheck" VALUE="WrongACLToEditAsset"/>
-							</then>
-							</if>
-						</else>
-						</if>                                                    
-					</THEN>
-					</IF>
-					<IF COND="Variables.editCheck=true">
-					<THEN>
-					<A HREF="Variables.urlInspectThisItem" 
-						onclick="document.getElementById('btn_edit').src='Variables.cs_imagedir/../wemresources/images/ui/ui/toolbarButton/refreshClick.png';return true;"
-						onmouseover="window.status='Variables._XLAT_';document.getElementById('btn_edit').src='Variables.cs_imagedir/../wemresources/images/ui/ui/toolbarButton/refreshHover.png';return true;"
-						onmouseout="window.status='';document.getElementById('btn_edit').src='Variables.cs_imagedir/../wemresources/images/ui/ui/toolbarButton/refresh.png';return true;"
-						REPLACEALL="Variables.urlInspectThisItem,Variables._XLAT_">
-						<IMG class="actionBarBtn" id="btn_edit" src="Variables.cs_imagedir/../wemresources/images/ui/ui/toolbarButton/refresh.png" border="0" align="absmiddle" title="Variables._ALT_" alt="Variables._ALT_" REPLACEALL="Variables.cs_imagedir,Variables._ALT_"/>
-					</A>
-					</THEN>
-					</IF>
-				</then>
-				</if>
-			</td>
-		</tr>
-		</table>
-		</div>
-		<div id="msgArea"></div>
-		<div class="toolbarBorder"></div></div>
-	</THEN>
-	</IF>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+		<ARGUMENT NAME="customToolBar" VALUE="FlexTmpls"/>
+		<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
+	</CALLELEMENT>
 <div dojoType="dijit.layout.ContentPane" region="center">
  <table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
 

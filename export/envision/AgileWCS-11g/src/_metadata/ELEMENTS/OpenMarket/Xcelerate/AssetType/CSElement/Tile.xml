@@ -267,7 +267,8 @@ $Modtime: 7/21/04 11:35a $
 					<ELSE>
 						<SETVAR NAME="shortName" VALUE="Variables.name" />
 					</ELSE>
-					</IF>					
+					</IF>
+					<STRING.ENCODE VARIABLE="name" VARNAME="name"/>					
 					<A HREF="Variables.urlInspectItem" title="Variables.name" OnMouseOver="window.status='Variables.mouseover'; return true" OnMouseOut="return window.status='';" REPLACEALL="Variables.name,Variables.urlInspectItem,Variables._XLAT_,Variables.mouseover">
 					<STRING.STREAM VARIABLE="shortName"/>
 					</A><BR />
@@ -288,7 +289,7 @@ $Modtime: 7/21/04 11:35a $
 				</THEN>
 				<ELSE>
 					<STRING.ENCODE VARIABLE="description" VARNAME="description"/>
-					<CSVAR NAME="Variables.description" />
+					<STRING.STREAM VALUE="Variables.description" />
 				</ELSE>
 				</IF>
 			</DIV>
@@ -353,7 +354,7 @@ $Modtime: 7/21/04 11:35a $
 					<DIV class="small-text-inset">
 					<IF COND="IsColumn.Content.updateddate=true">
 					<THEN>
-                        <DATEFORMAT.CREATE NAME="dObject" DATESTYLE="SHORT" TIMESTYLE="SHORT" LOCALE="LocaleName"/>
+                        <DATEFORMAT.CREATE NAME="dObject" DATESTYLE="SHORT" TIMESTYLE="SHORT" LOCALE="LocaleName" TIMEZONEID="SessionVariables.time.zone" />
                         <DATEFORMAT.GETDATETIME NAME="dObject" VALUE="Content.updateddate" VALUETYPE="jdbcdate" VARNAME="updateddate" />
                         <DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Content.updateddate" VALUETYPE="jdbcdate"  VARNAME="updateddateFullVersion"/>
 						<SPAN ID="modifiedSpanId" TITLE="Variables.updateddateFullVersion" REPLACEALL="Variables.updateddateFullVersion">
