@@ -14,7 +14,7 @@ wcsCsdtJar in ThisBuild := "/Developer/Fatwire/JSK/11.1.1.6.0.app/ContentServer/
 wcsUrl in ThisBuild := "http://localhost:8080/cs/"
 
 // site to import/export
-wcsSites in ThisBuild := "DemoJava,DemoScala"
+wcsSites in ThisBuild := "Demo"
 
 // user to import/export
 wcsUser in ThisBuild := "fwadmin"
@@ -24,4 +24,3 @@ wcsPassword in ThisBuild := "xceladmin"
 
 // scalacOptions += "-deprecation"
 
-// javaOptions += "-Dlogback-access.debug=true"

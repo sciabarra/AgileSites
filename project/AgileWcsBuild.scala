@@ -32,7 +32,7 @@ object AgileWcsBuild extends Build {
   val removeFilterSetup = addFilterSetup
 
   // configuring WCS jars as unmanaged lib
-  val unmanagedFilter = "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
+  val unmanagedFilter = "spring-*" || "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
     "wem-sso-api-*" || "rest-api-*" || "cas-client-*" || "assetapi*" || "xstream*" ||
     "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar"
 
