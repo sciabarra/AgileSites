@@ -8,7 +8,7 @@ class SwLayout extends Element with PickerDSL {
     select("head") {
       "link" -> "href" %= "/cs/css/default.css"
     }
-    "#sidebar" %= call("DJFooter", 'name -> "Mike")
+    "#sidebar" %= call("SwFooter", 'name -> "Mike")
   }
 
 }

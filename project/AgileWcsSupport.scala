@@ -132,14 +132,14 @@ object AgileWcsSupport {
             val url = httpUrl + "CatalogManager"
             
             val cp = classpath.files.mkString(java.io.File.pathSeparator)
-            val dir = file("export") / ("AgileWCS-" + version) / "Populate"
+            val dir = file("export") / "envision" / ("AgileWCS-" + version) / "Populate"
             val cmd = Seq("-cp", cp, "COM.FutureTense.Apps.CatalogMover")
               
             val opts = Seq("-u", user, "-p", password, "-b", url, "-d", dir.toString, "-x")
             val all = cmd ++ opts ++ args
             
-            for(file <- classpath.files) println(file)
-            println(opts++args)
+            //for(file <- classpath.files) println(file)
+            //println(opts++args)
 
             Fork.java(None, all, Some(new java.io.File(".")), s.log)
 

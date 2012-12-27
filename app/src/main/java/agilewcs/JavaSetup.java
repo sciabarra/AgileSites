@@ -9,7 +9,7 @@ public class JavaSetup extends wcs.java.Setup {
 
 	@Override
 	public Site getSite() {
-		return new Site("Demo");
+		return new Site("AgileWCS");
 	}
 
 	@Override

@@ -14,7 +14,7 @@ public class AwLayout extends Element {
 		p.select("head") //
 				.attr("link", "href", "/cs/css/default.css")//
 				.unselect() //
-				.replace("#sidebar", call("DJFooter", //
+				.replace("#sidebar", call("AwFooter", //
 						arg("name", env.getString("name"))));
 		return p.html();
 	}

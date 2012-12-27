@@ -21,18 +21,10 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
  */
 public class AgileWcsDeployer {
 
-	String invoker = "<%@ taglib prefix=\"cs\" uri=\"futuretense_cs/ftcs1_0.tld\"\n"
-			+ "%><cs:ftcs><% String result =\"\"; try { result = wcs.core.WCS.deploy(ics, "
-			+ "ics.GetVar(\"site\"), "
-			+ "ics.GetVar(\"username\"),"
-			+ "ics.GetVar(\"password\")); } catch(Exception ex) { ex.printStackTrace(); }"
-			+ " %><%= result %></cs:ftcs>";
-
 	String site;
 	String url;
 	String username;
 	String password;
-	String cm;
 	String cs;
 
 	String status = "OK";
@@ -60,7 +52,6 @@ public class AgileWcsDeployer {
 		this.url = url;
 		if (!url.endsWith("/"))
 			url = url + "/";
-		cm = url + "CatalogManager";
 		cs = url + "ContentServer";
 		client.setState(state);
 	}
@@ -88,40 +79,10 @@ public class AgileWcsDeployer {
 
 	private String get(String url) throws HttpException, IOException {
 		GetMethod get = new GetMethod(url);
-		System.out.println("\n>>> GET " + url);
+		//System.out.println("\n>>> GET " + url);
 		client.executeMethod(get);
 		// dumpCookie();
 		return slurp(get.getResponseBodyAsStream());
-	}
-
-	/**
-	 * Login to cs
-	 * 
-	 * @return
-	 * @throws HttpException
-	 * @throws IOException
-	 */
-	public String login() throws HttpException, IOException {
-		String url = cm + //
-				"?ftcmd=login" + //
-				"&password=" + password + //
-				"&username=" + username;
-		return get(url);
-	}
-
-	/**
-	 * Logout from cs
-	 * 
-	 * @return
-	 * @throws HttpException
-	 * @throws IOException
-	 */
-	public String logout() throws HttpException, IOException {
-		String url = cm + //
-				"?ftcmd=logout" + //
-				"&killsession=true" + //
-				"&username=" + username;
-		return get(url);
 	}
 
 	/**
@@ -146,87 +107,6 @@ public class AgileWcsDeployer {
 	}
 
 	/**
-	 * Delete an entry from a table
-	 * 
-	 * @param table
-	 * @param key
-	 * @param value
-	 * @return
-	 * @throws IOException
-	 */
-	public String delete(String table, String key, String value)
-			throws IOException {
-		String url = cm + //
-				"?ftcmd=deleterow" + //
-				"&tablename=" + table + //
-				"&tablekey=" + key + //
-				"&tablekeyvalue=" + value + //
-				"&Delete+uploaded+file(s)=yes"; //
-		return get(url);
-	}
-
-	/**
-	 * Create an element in the element catalog
-	 * 
-	 * @param name
-	 * @param body
-	 * @return
-	 * @throws IOException
-	 */
-	public String createElement(String name, String body) throws IOException {
-
-		PostMethod post = new PostMethod(cm);
-		Part[] parts = { //
-				new StringPart("ftcmd", "addrow"),
-				new StringPart("tablename", "ElementCatalog"),
-				new StringPart("elementname", name),
-				new StringPart("url_folder", ""),
-				new FilePart("url", new ByteArrayPartSource(name + ".jsp",
-						body.getBytes("UTF-8")), "application/octet-stream",
-						"UTF-8") };
-
-		post.setRequestEntity(new MultipartRequestEntity(parts, post
-				.getParams()));
-
-		int result = client.executeMethod(post);
-		if (result == 200)
-			return slurp(post.getResponseBodyAsStream());
-		else
-			return "ERROR";
-	}
-
-	/**
-	 * Create an element in the element catalog
-	 * 
-	 * @param name
-	 * @param body
-	 * @return
-	 * @throws IOException
-	 */
-	public String createEntry(String name) throws IOException {
-
-		PostMethod post = new PostMethod(cm);
-		Part[] parts = { //
-		new StringPart("ftcmd", "addrow"),
-				new StringPart("tablename", "SiteCatalog"),
-				new StringPart("pagename", name),
-				new StringPart("rootelement", name),
-				new StringPart("pageletonly", "F"),
-				new StringPart("csstatus", "live"),
-				new StringPart("cscacheinfo", "false"),
-				new StringPart("sscacheinfo", "false") };
-
-		post.setRequestEntity(new MultipartRequestEntity(parts, post
-				.getParams()));
-
-		int result = client.executeMethod(post);
-		if (result == 200)
-			return slurp(post.getResponseBodyAsStream());
-		else
-			return "ERROR";
-	}
-
-	/**
 	 * Return the status
 	 * 
 	 * @return
@@ -246,26 +126,11 @@ public class AgileWcsDeployer {
 		StringBuilder sb = new StringBuilder();
 		try {
 
-			String name = "AAAgileWcsDeployer";
-
-			sb.append("*** Login\n");
-			sb.append(login());
-
-			sb.append("*** Create Element\n");
-			sb.append(createElement(name, invoker));
-
-			sb.append("*** Create Entry\n");
-			sb.append(createEntry(name));
+			String name = "AAAgileWCSInstaller";
 
 			sb.append("*** Deploy\n");
 			sb.append(invoke(name));
 
-			sb.append("*** Remove Element and Entry\n");
-			sb.append(delete("elementcatalog", "elementname", name));
-			sb.append(delete("sitecatalog", "pagename", name));
-
-			sb.append("*** Logout\n");
-			sb.append(logout());
 		} catch (Exception ex) {
 			status = "EXCEPTION: " + ex.getMessage();
 			ex.printStackTrace();
