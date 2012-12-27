@@ -26,7 +26,7 @@ abstract class Setup extends JSetup {
   case class SiteEntry(name: String, wrapper: Boolean = true, element: String = null, description: String = null) extends Asset
 
   case class AttrTypes(name: String, xml: NodeSeq) extends Asset
-  
+
   // abstract functions to be overriden
 
   def site: Site

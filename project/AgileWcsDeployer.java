@@ -88,7 +88,7 @@ public class AgileWcsDeployer {
 
 	private String get(String url) throws HttpException, IOException {
 		GetMethod get = new GetMethod(url);
-		// System.out.println("\n>>> GET " + url);
+		System.out.println("\n>>> GET " + url);
 		client.executeMethod(get);
 		// dumpCookie();
 		return slurp(get.getResponseBodyAsStream());

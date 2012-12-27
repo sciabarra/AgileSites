@@ -11,12 +11,12 @@ target/
 tags/
 project/boot/
 project/plugins/project/
+attic/
 cs
 sites
 misc
 build.sbt
 appo
-attic
 wiki
 *Old.scala
 *Old.java

@@ -22,6 +22,7 @@ object AgileWcsBuild extends Build {
   lazy val wcsSetupTask = AgileWcsSupport.wcsSetupTask
   lazy val wcsDeployTask = AgileWcsSupport.wcsDeployTask
   lazy val wcsCsdtTask = AgileWcsSupport.wcsCsdtTask
+  lazy val wcsCmTask = AgileWcsSupport.wcsCmTask
   lazy val wcsCopyStaticTask = AgileWcsSupport.wcsCopyStaticTask
   lazy val wcsPackageJarTask = AgileWcsSupport.wcsPackageJarTask
   lazy val wcsUpdateModelTask = AgileWcsSupport.wcsUpdateModelTask
@@ -34,7 +35,7 @@ object AgileWcsBuild extends Build {
   // configuring WCS jars as unmanaged lib
   val unmanagedFilter = "spring-*" || "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
     "wem-sso-api-*" || "rest-api-*" || "cas-client-*" || "assetapi*" || "xstream*" ||
-    "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar"
+    "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar" || "ehcache-*" || "slf4j*"
 
   val includeFilterUnmanagedJars = includeFilter in unmanagedJars := unmanagedFilter
 
@@ -51,6 +52,10 @@ object AgileWcsBuild extends Build {
     "javax.servlet" % "servlet-api" % "2.5",
     "commons-logging" % "commons-logging" % "1.1.1",
     "org.specs2" %% "specs2" % "1.12.1",
+    "org.apache.httpcomponents" % "httpclient" % "4.1.2",
+    "org.apache.httpcomponents" % "httpcore" % "4.1.2",
+    "org.apache.httpcomponents" % "httpmime" % "4.1.2",
+    "org.apache.james" % "apache-mime4j" % "0.5",
     "junit" % "junit" % "4.8.2",
     "com.novocode" % "junit-interface" % "0.8" % "test")
 
@@ -117,6 +122,7 @@ object AgileWcsBuild extends Build {
       name := "agilewcs-all",
       version := "0.3",
       wcsCsdtTask,
+      wcsCmTask,
       wcsConfigTask,
       wcsSetupTask,
       wcsDeployTask,

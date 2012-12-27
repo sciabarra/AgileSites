@@ -23,7 +23,8 @@ object AgileWcsSupport {
   lazy val wcsUpdateModel = TaskKey[String]("wcs-update-model", "WCS update content model")
 
   lazy val wcsCsdtJar = SettingKey[String]("wcs-csdt-jar", "WCS CSDT Jar")
-  lazy val wcsCsdt = InputKey[Unit]("wcs-csdt", "WCS CSDT")
+  lazy val wcsCsdt = InputKey[Unit]("wcs-dt", "WCS Development Tool")
+  lazy val wcsCm = InputKey[Unit]("wcs-cm", "WCS Catalog Mover")
 
   // generate tag access classes from tld files
   val coreGeneratorTask = (sourceGenerators in Compile) <+=
@@ -97,12 +98,54 @@ object AgileWcsSupport {
             "password=" + password,
             "cmd=" + (if (args.size > 0) args(0) else "listcs"),
             "fromSites=" + sites,
-            "datastore=AgileWCS-"+version,
+            "datastore=AgileWCS-" + version,
             "resources=" + (if (args.size > 1) args(1) else "@ALL_ASSETS;@ALL_NONASSETS"))
           //println(cmd.mkString("java -cp "+seljars.mkString(":")+" com.fatwire.csdt.client.main.CSDT ", " ", ""))
           Run.run("com.fatwire.csdt.client.main.CSDT",
             seljars, cmd, s.log)(runner)
       }
+  }
+
+  // interface to catalogmover from sbt
+  val wcsCmTask = wcsCm <<= inputTask {
+    (argTask: TaskKey[Seq[String]]) =>
+      (argTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
+        (args, version, httpUrl, sites, user, password, classpath, s, runner) =>
+          val seljars = classpath.files
+
+          //val cmd = args
+          //Run.run("COM.FutureTense.Apps.CatalogMover", seljars, cmd, s.log)(runner)
+
+          def help = println("""Usage: wcs-cm <function> [<options>]
+ <function> to perform (import, import_all, export, export_all) 
+ <options>::  -f <file to import>
+  -t <catalog name> (can be repeated, export only)
+                """)
+
+          if (args.size == 0) {
+            help
+          } else {
+
+            //val url = new java.net.URL(httpUrl)
+            //val host = url.getProtocol + "://" + url.getHost+":"+url.getPort
+            //val path = url.getPath+ "CatalogManager"
+            val url = httpUrl + "CatalogManager"
+            
+            val cp = classpath.files.mkString(java.io.File.pathSeparator)
+            val dir = file("export") / ("AgileWCS-" + version) / "Populate"
+            val cmd = Seq("-cp", cp, "COM.FutureTense.Apps.CatalogMover")
+              
+            val opts = Seq("-u", user, "-p", password, "-b", url, "-d", dir.toString, "-x")
+            val all = cmd ++ opts ++ args
+            
+            for(file <- classpath.files) println(file)
+            println(opts++args)
+
+            Fork.java(None, all, Some(new java.io.File(".")), s.log)
+
+          }
+      }
+
   }
 
   // package jar task - build the jar and copy it  to destination 
@@ -144,7 +187,8 @@ object AgileWcsSupport {
         // create local export dir for csdt
         file("export").mkdir
         (file("export") / "envision").mkdir
-        (file("export") / "envision" / ("AgileWCS-"+version)).mkdir
+        (file("export") / "envision" / ("AgileWCS-" + version)).mkdir
+        (file("export") / "envision" / ("AgileWCS-" + version) / "Populate").mkdir
 
         // configure futurentense. init
         val configFile = file(home) / "futuretense.ini"
