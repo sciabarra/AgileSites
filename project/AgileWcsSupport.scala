@@ -105,10 +105,13 @@ object AgileWcsSupport {
               case "listcs" => "@ALL_ASSETS;@ALL_NONASSETS"
               case "listds" => "@ALL_ASSETS;@ALL_NONASSETS"
               case "import" =>
-                println("importing only site configuration - import manually assets and non-assets")
-                "@SITE;@ASSET_TYPE"
+                println("""importing only sites - you need to run after:
+> wcs-dt import @ASSET_TYPE
+> wcs-dt import @ALL_ASSETS
+> wcs-dt import @ALL_NONASSETS""")
+                "@SITE"
               case "export" =>
-                println("importing only site configuration - import manually assets and non-assets")
+                println("exporting only sites & assets types - you need to export manually assets and non-assets")
                 "@SITE;@ASSET_TYPE"
             }))
 
