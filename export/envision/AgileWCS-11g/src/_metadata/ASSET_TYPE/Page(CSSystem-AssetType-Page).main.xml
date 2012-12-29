@@ -11,7 +11,7 @@
         <description>Page</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp8/dcs3736678362686363266.tmp</urldescriptorspec>
+        <urldescriptorspec>/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp459/dcs1800133764884556430.tmp</urldescriptorspec>
         <canbechild>T</canbechild>
         <uid>CSSystem-AssetType-Page</uid>
         <useDimension></useDimension>
@@ -250,10 +250,10 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/Page/SelectSummary,2.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/Page/SelectSummary.sql</string>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/Page/UnplacedPages,2.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/Page/UnplacedPages.sql</string>
             <null/>
             <null/>
             <null/>
@@ -872,7 +872,7 @@ Lm9pZCBBTkQgU2l0ZVBsYW5UcmVlLm5jb2RlPSdVblBsYWNlZCcNCg==</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Thu Dec 27 14:53:39 CET 2012
+#Sat Dec 29 12:52:42 CET 2012
 key=@ASSET_TYPE-CSSystem-AssetType-Page
 type=ASSET_TYPE
 sites=AgileWCS,avisports,FirstSiteII,ScalaWCS

@@ -99,7 +99,19 @@ object AgileWcsSupport {
             "cmd=" + (if (args.size > 0) args(0) else "listcs"),
             "fromSites=" + sites,
             "datastore=AgileWCS-" + version,
-            "resources=" + (if (args.size > 1) args(1) else "@ALL_ASSETS;@ALL_NONASSETS"))
+            "resources=" + (if (args.size > 1) args(1)
+            else if (args.size == 0) "@ALL_ASSETS"
+            else if (args.size >= 1) args(0) match {
+              case "listcs" => "@ALL_ASSETS;@ALL_NONASSETS"
+              case "listds" => "@ALL_ASSETS;@ALL_NONASSETS"
+              case "import" =>
+                println("importing only site configuration - import manually assets and non-assets")
+                "@SITE;@ASSET_TYPE"
+              case "export" =>
+                println("importing only site configuration - import manually assets and non-assets")
+                "@SITE;@ASSET_TYPE"
+            }))
+
           //println(cmd.mkString("java -cp "+seljars.mkString(":")+" com.fatwire.csdt.client.main.CSDT ", " ", ""))
           Run.run("com.fatwire.csdt.client.main.CSDT",
             seljars, cmd, s.log)(runner)
@@ -130,14 +142,14 @@ object AgileWcsSupport {
             //val host = url.getProtocol + "://" + url.getHost+":"+url.getPort
             //val path = url.getPath+ "CatalogManager"
             val url = httpUrl + "CatalogManager"
-            
+
             val cp = classpath.files.mkString(java.io.File.pathSeparator)
             val dir = file("export") / "envision" / ("AgileWCS-" + version) / "Populate"
             val cmd = Seq("-cp", cp, "COM.FutureTense.Apps.CatalogMover")
-              
+
             val opts = Seq("-u", user, "-p", password, "-b", url, "-d", dir.toString, "-x")
             val all = cmd ++ opts ++ args
-            
+
             //for(file <- classpath.files) println(file)
             //println(opts++args)
 

@@ -11,7 +11,7 @@
         <description>Category</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp8/dcs5173922752962973149.tmp</urldescriptorspec>
+        <urldescriptorspec>/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp459/dcs6719069667824227374.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>03efbdc2-5bd2-4bc9-89b8-c0982bbb6357</uid>
         <useDimension></useDimension>
@@ -253,7 +253,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/Agile_Category/SelectSummary.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/Agile_Category/SelectSummary,0.sql</string>
             <null/>
             <null/>
             <null/>
@@ -529,7 +529,7 @@ IT0nUFInICANCiAgIFZhcmlhYmxlcy5xdWVyeWVuZA0KDQo=</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Thu Dec 27 14:53:40 CET 2012
+#Sat Dec 29 12:52:42 CET 2012
 key=@ASSET_TYPE-03efbdc2-5bd2-4bc9-89b8-c0982bbb6357
 type=ASSET_TYPE
 sites=AgileWCS,ScalaWCS

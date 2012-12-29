@@ -11,10 +11,10 @@
         <description>Blog</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp8/dcs5790144416977639496.tmp</urldescriptorspec>
-        <canbechild>F</canbechild>
+        <urldescriptorspec>/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp459/dcs4941548250769825601.tmp</urldescriptorspec>
+        <canbechild>T</canbechild>
         <uid>d361b94f-99db-41a8-a074-933af334fc0c</uid>
-        <useDimension></useDimension>
+        <useDimension>T</useDimension>
         <complexAssetClass>com.openmarket.gator.flexassets.FlexAssetManager</complexAssetClass>
         <assetCategory>Administration</assetCategory>
         <group>Agile_Category</group>
@@ -254,7 +254,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/Agile_Blog/SelectSummary.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/Agile_Blog/SelectSummary,0.sql</string>
             <null/>
             <null/>
             <null/>
@@ -536,7 +536,7 @@ ICANCiAgIFZhcmlhYmxlcy5xdWVyeWVuZA0KDQoNCg==</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Thu Dec 27 14:53:40 CET 2012
+#Sat Dec 29 12:52:42 CET 2012
 key=@ASSET_TYPE-d361b94f-99db-41a8-a074-933af334fc0c
 type=ASSET_TYPE
 sites=AgileWCS,ScalaWCS

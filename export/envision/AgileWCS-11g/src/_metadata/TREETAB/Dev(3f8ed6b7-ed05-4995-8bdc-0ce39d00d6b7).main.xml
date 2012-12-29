@@ -53,10 +53,6 @@
             <long>1351276303970</long>
           </entry>
           <entry>
-            <long>1322052581735</long>
-            <long>1322052581735</long>
-          </entry>
-          <entry>
             <long>1351276303801</long>
             <long>1351276303801</long>
           </entry>
@@ -67,36 +63,48 @@
       <sections class="com.openmarket.xcelerate.treetab.SectionList">
         <sections>
           <entry>
-            <string>CSElement</string>
-            <int>7</int>
+            <string>PageAttribute</string>
+            <int>4</int>
           </entry>
           <entry>
-            <string>PageDefinition</string>
-            <int>5</int>
+            <string>ContentDef</string>
+            <int>2</int>
           </entry>
           <entry>
             <string>ContentAttribute</string>
             <int>0</int>
           </entry>
           <entry>
+            <string>AttrTypes</string>
+            <int>1</int>
+          </entry>
+          <entry>
+            <string>Agile_PD</string>
+            <int>10</int>
+          </entry>
+          <entry>
             <string>ContentParentDef</string>
             <int>3</int>
           </entry>
           <entry>
-            <string>PageAttribute</string>
-            <int>4</int>
-          </entry>
-          <entry>
-            <string>AttrTypes</string>
-            <int>1</int>
+            <string>PageDefinition</string>
+            <int>5</int>
           </entry>
           <entry>
             <string>Template</string>
             <int>6</int>
           </entry>
           <entry>
-            <string>ContentDef</string>
-            <int>2</int>
+            <string>Agile_A</string>
+            <int>8</int>
+          </entry>
+          <entry>
+            <string>CSElement</string>
+            <int>7</int>
+          </entry>
+          <entry>
+            <string>Agile_CD</string>
+            <int>9</int>
           </entry>
         </sections>
         <sectionVector>
@@ -108,10 +116,6 @@
                 <entry>
                   <long>1351276303970</long>
                   <long>1351276303970</long>
-                </entry>
-                <entry>
-                  <long>1322052581735</long>
-                  <long>1322052581735</long>
                 </entry>
                 <entry>
                   <long>1351276303801</long>
@@ -138,10 +142,6 @@
                   <long>1351276303970</long>
                 </entry>
                 <entry>
-                  <long>1322052581735</long>
-                  <long>1322052581735</long>
-                </entry>
-                <entry>
                   <long>1351276303801</long>
                   <long>1351276303801</long>
                 </entry>
@@ -164,10 +164,6 @@
                 <entry>
                   <long>1351276303970</long>
                   <long>1351276303970</long>
-                </entry>
-                <entry>
-                  <long>1322052581735</long>
-                  <long>1322052581735</long>
                 </entry>
                 <entry>
                   <long>1351276303801</long>
@@ -194,10 +190,6 @@
                   <long>1351276303970</long>
                 </entry>
                 <entry>
-                  <long>1322052581735</long>
-                  <long>1322052581735</long>
-                </entry>
-                <entry>
                   <long>1351276303801</long>
                   <long>1351276303801</long>
                 </entry>
@@ -220,10 +212,6 @@
                 <entry>
                   <long>1351276303970</long>
                   <long>1351276303970</long>
-                </entry>
-                <entry>
-                  <long>1322052581735</long>
-                  <long>1322052581735</long>
                 </entry>
                 <entry>
                   <long>1351276303801</long>
@@ -250,10 +238,6 @@
                   <long>1351276303970</long>
                 </entry>
                 <entry>
-                  <long>1322052581735</long>
-                  <long>1322052581735</long>
-                </entry>
-                <entry>
                   <long>1351276303801</long>
                   <long>1351276303801</long>
                 </entry>
@@ -276,10 +260,6 @@
                 <entry>
                   <long>1351276303970</long>
                   <long>1351276303970</long>
-                </entry>
-                <entry>
-                  <long>1322052581735</long>
-                  <long>1322052581735</long>
                 </entry>
                 <entry>
                   <long>1351276303801</long>
@@ -306,8 +286,76 @@
                   <long>1351276303970</long>
                 </entry>
                 <entry>
-                  <long>1322052581735</long>
-                  <long>1322052581735</long>
+                  <long>1351276303801</long>
+                  <long>1351276303801</long>
+                </entry>
+              </hashtable>
+            </sites>
+            <roles class="com.openmarket.xcelerate.common.RoleList">
+              <hashtable>
+                <entry>
+                  <string>GeneralAdmin</string>
+                  <string>GeneralAdmin</string>
+                </entry>
+              </hashtable>
+            </roles>
+          </com.openmarket.xcelerate.treetab.Section>
+          <com.openmarket.xcelerate.treetab.Section>
+            <name>Agile_A</name>
+            <populateURL>OpenMarket/Xcelerate/AssetType/Agile_A/LoadTree</populateURL>
+            <sites class="com.openmarket.xcelerate.common.SiteList">
+              <hashtable>
+                <entry>
+                  <long>1351276303970</long>
+                  <long>1351276303970</long>
+                </entry>
+                <entry>
+                  <long>1351276303801</long>
+                  <long>1351276303801</long>
+                </entry>
+              </hashtable>
+            </sites>
+            <roles class="com.openmarket.xcelerate.common.RoleList">
+              <hashtable>
+                <entry>
+                  <string>GeneralAdmin</string>
+                  <string>GeneralAdmin</string>
+                </entry>
+              </hashtable>
+            </roles>
+          </com.openmarket.xcelerate.treetab.Section>
+          <com.openmarket.xcelerate.treetab.Section>
+            <name>Agile_CD</name>
+            <populateURL>OpenMarket/Xcelerate/AssetType/Agile_CD/LoadTree</populateURL>
+            <sites class="com.openmarket.xcelerate.common.SiteList">
+              <hashtable>
+                <entry>
+                  <long>1351276303970</long>
+                  <long>1351276303970</long>
+                </entry>
+                <entry>
+                  <long>1351276303801</long>
+                  <long>1351276303801</long>
+                </entry>
+              </hashtable>
+            </sites>
+            <roles class="com.openmarket.xcelerate.common.RoleList">
+              <hashtable>
+                <entry>
+                  <string>GeneralAdmin</string>
+                  <string>GeneralAdmin</string>
+                </entry>
+              </hashtable>
+            </roles>
+          </com.openmarket.xcelerate.treetab.Section>
+          <com.openmarket.xcelerate.treetab.Section>
+            <name>Agile_PD</name>
+            <populateURL>OpenMarket/Xcelerate/AssetType/Agile_PD/LoadTree</populateURL>
+            <sites class="com.openmarket.xcelerate.common.SiteList">
+              <hashtable>
+                <entry>
+                  <long>1351276303970</long>
+                  <long>1351276303970</long>
                 </entry>
                 <entry>
                   <long>1351276303801</long>
@@ -380,13 +428,31 @@
       <resId>OpenMarket/Xcelerate/AssetType/CSElement/LoadTree</resId>
       <uid>OpenMarket/Xcelerate/AssetType/CSElement/LoadTree</uid>
     </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ELEMENTCATALOG</resType>
+      <resId>OpenMarket/Xcelerate/AssetType/Agile_A/LoadTree</resId>
+      <uid>OpenMarket/Xcelerate/AssetType/Agile_A/LoadTree</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ELEMENTCATALOG</resType>
+      <resId>OpenMarket/Xcelerate/AssetType/Agile_CD/LoadTree</resId>
+      <uid>OpenMarket/Xcelerate/AssetType/Agile_CD/LoadTree</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ELEMENTCATALOG</resType>
+      <resId>OpenMarket/Xcelerate/AssetType/Agile_PD/LoadTree</resId>
+      <uid>OpenMarket/Xcelerate/AssetType/Agile_PD/LoadTree</uid>
+    </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Thu Dec 27 13:20:17 CET 2012
+#Sat Dec 29 12:46:38 CET 2012
 key=@TREETAB-3f8ed6b7-ed05-4995-8bdc-0ce39d00d6b7
 type=TREETAB
-sites=ScalaWCS,avisports,AgileWCS
+sites=ScalaWCS,AgileWCS
 
 ==================___ END METADATA ___==================-->
