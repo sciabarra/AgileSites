@@ -8,6 +8,6 @@ However sample sites can be imported  *ONLY* in WCS 11gR1
 (mostly because of bugs in previous versions of CSDT).
 
 See 
-- [INSTALL](INSTALL.md) for installation instructions.
-- [DEVELOPMENT](DEVELOPMENT.md) for development procedure.
-- [CSDT](CSDT.md) for CSDT integration
+- [INSTALL](/sciabarra/AgileWCS/INSTALL.md) for installation instructions.
+- [DEVELOPMENT](/sciabarra/AgileWCS/DEVELOPMENT.md) for development procedure.
+- [CSDT](/sciabarra/AgileWCS/CSDT.md) for CSDT integration
