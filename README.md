@@ -1,17 +1,12 @@
 # AgileWCS 0.3
 
-(this is the development branch - DO NOT use this until released
-documentation WON'T be pushed until the branch is stable and merged with the master)
+This is an Agile Development framework for Oracle WebCenter Sites.
 
-Agile Development framework for Oracle WebCenter Sites.
+The framework works with Fatwire 7.6, WCS 11g and 11gR1
 
+However sample sites can be imported  *ONLY* in WCS 11gR1  
+(mostly because of bugs in previous versions of CSDT).
 
-The framework works with Fatwire 7.6,  WCS 11g and 11gR1
-
-Demos require WCS 11gR1 
-
-You need JSK 11gR1
-
-To start, copy build.sbt.dist in build.sbt and adapt to your path
-
-
+See INSTALL.md for installation instructions.
+See DEVELOPMENT.md for development procedure.
+See CSDT.md for CSDT integration
