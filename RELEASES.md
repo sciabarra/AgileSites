@@ -1,7 +1,8 @@
-# AgileWCS 0.2
+# AgileWCS
 
 Agile development framework for Oracle WebCenter Sites.
 
+Release history.
 
 # Versions
 
