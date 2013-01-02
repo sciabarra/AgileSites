@@ -1,6 +1,7 @@
 package wcs.java.util;
 
 import java.io.FileWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -273,9 +274,58 @@ public class Util {
 
 	}
 
-	public static String tmpVar() {
-		return "_TMP_" + System.currentTimeMillis() + "_VAR_";
+	private static long tmpVarCounter = System.currentTimeMillis();
+
+	public synchronized static String tmpVar() {
+		++tmpVarCounter;
+		return "_TMP_" + tmpVarCounter + "_TMP_";
 	}
-	
+
+	/**
+	 * Get as a date
+	 */
+	private static SimpleDateFormat fmt = new SimpleDateFormat(
+			"yyyy-MM-dd HH:mm:ss");
+
+	public static java.util.Date toDate(String s) {
+		if (s != null) {
+			try {
+				return fmt.parse(s);
+			} catch (Exception e) {
+				return null;
+			}
+		}
+		return null;
+	}
+
+	public static Long toLong(String l) {
+		if (l == null)
+			return null;
+		try {
+			long ll = Long.parseLong(l);
+			return new Long(ll);
+		} catch (NumberFormatException ex) {
+			return null;
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			return null;
+		}
+
+	}
+
+	public static Integer toInt(String l) {
+		if (l == null)
+			return null;
+		try {
+			int ll = Integer.parseInt(l);
+			return new Integer(ll);
+		} catch (NumberFormatException ex) {
+			return null;
+		} catch (Exception ex) {
+			// ex.printStackTrace();
+			return null;
+		}
+
+	}
 
 }

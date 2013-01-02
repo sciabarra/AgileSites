@@ -15,6 +15,9 @@ abstract class Element extends JElement with Log {
   implicit def nodeBuffer2String(buf: NodeBuffer): String =
     (for (node <- buf.iterator) yield node.toString).mkString
 
+  var c = ""
+  var cid = 0L
+
   /**
    * Execute the element
    *
@@ -22,7 +25,11 @@ abstract class Element extends JElement with Log {
   override def exec(ics: ICS): String = {
     try {
       val env = new Env(ics);
+
+      c = ics.GetVar("c")
+      cid = try { ics.GetVar("cid").toLong } catch { case _ => 0l }
       site = ics.GetVar("site")
+
       stream(ics, apply(env));
       return null;
     } catch {
@@ -31,11 +38,6 @@ abstract class Element extends JElement with Log {
         ex.getMessage();
     }
   }
-
-  /**
-   * This method must not be implemented - the apply(e: wcs.scala.Env) should instead
-   */
-  def apply(e: wcs.java.Env): String = null
 
   /**
    * Call another element
@@ -56,7 +58,13 @@ abstract class Element extends JElement with Log {
   }
 
   /**
-   * Apply the element
+   * Apply the element - actual implementation required
    */
   def apply(e: wcs.scala.Env): String
+
+  /**
+   * This method must not be implemented - the apply(e: wcs.scala.Env) should instead
+   */
+  def apply(e: wcs.java.Env): String = null
+
 }

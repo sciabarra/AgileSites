@@ -1,6 +1,6 @@
 package wcs.java;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import wcs.java.util.Log;
@@ -17,6 +17,10 @@ public abstract class Asset {
 	private String type;
 	private String subtype;
 	private String site;
+	private String file;
+	private String path;
+	private Date startDate;
+	private Date endDate;
 
 	public Asset() {
 	}
@@ -29,20 +33,79 @@ public abstract class Asset {
 	 * @param name
 	 */
 	public Asset(String type, String subtype, String name) {
-		this.type = type;
-		this.subtype = subtype;
 		this.name = name;
 		this.description = name;
+		setTypeSubtype(type, subtype);
 	}
 
+	protected void setTypeSubtype(String type, String subtype) {
+		this.type = type;
+		this.subtype = subtype;
+	}
+
+	/**
+	 * Return the current site name
+	 * 
+	 * @return
+	 */
 	public String getSite() {
 		return site;
 	}
 
-	public void setSite(String site) {
+	/**
+	 * Set the current site
+	 * 
+	 * @param site
+	 */
+	void setSite(String site) {
 		this.site = site;
 	}
 
+	/**
+	 * The current asset type
+	 * 
+	 * @return
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * The current id, or null if undefined
+	 * 
+	 * @return
+	 */
+	public Long getId() {
+		return null;
+	}
+
+	/**
+	 * The current asset subtype, or the void string if no subtype
+	 * 
+	 * @return
+	 */
+	public String getSubtype() {
+		if (subtype == null)
+			return "";
+		else
+			return subtype;
+	}
+
+	/**
+	 * The current asset name
+	 * 
+	 * @return
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * The current asset description, or the name if the description is
+	 * undefined
+	 * 
+	 * @return
+	 */
 	public String getDescription() {
 		return description;
 	}
@@ -54,127 +117,137 @@ public abstract class Asset {
 			this.description = description;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public String getSubtype() {
-		if (subtype == null)
-			return "";
-		else
-			return subtype;
-	}
-
-	public String getName() {
-		return name;
-	}
-
+	/**
+	 * Current asset file
+	 * 
+	 * @return
+	 */
 	public String getFile() {
-		// TODO
-		return null;
+		return file;
 	}
 
+	/**
+	 * Current asset path
+	 * 
+	 * @return
+	 */
 	public String getPath() {
-		// TODO
-		return null;
+		return path;
 	}
 
+	/**
+	 * Current asset start date or null if undefined
+	 * 
+	 * @return
+	 */
 	public Date getStartDate() {
-		// TODO
-		return null;
+		return startDate;
 	}
 
+	/**
+	 * Current asset end date or null if undefined
+	 * 
+	 * @return
+	 */
 	public Date getEndDate() {
-		// TODO
-		return null;
+		return endDate;
 	}
 
 	/**
-	 * Read an attribute asset and return an asset id
-	 * 
-	 * @param asset
-	 * @return
-	 */
-	public String getAssetId(String asset) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Read an attribute asset multivalued and a list of asset id
-	 * 
-	 * @param asset
-	 * @return
-	 */
-	public List<String> getAssetIds(String asset) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Return an attribute as string
+	 * Return the number of elements in the attribute
 	 * 
 	 * @param attribute
+	 * @return
+	 */
+	public int getSize(String attribute) {
+		return 0;
+	}
+
+	/**
+	 * Return the first attribute of the attribute list as an id (long), or null
+	 * if not found
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public Long getId(String attribute) {
+		return null;
+	}
+
+	/**
+	 * Return the nth attribute of the attribute list as an id (long), or null
+	 * if not found
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public Long getId(String attribute, int n) {
+		return null;
+	}
+
+	/**
+	 * Return the first attribute of the the attribute rib as a string, or null
+	 * if not found
+	 * 
+	 * @param asset
 	 * @return
 	 */
 	public String getString(String attribute) {
-		// TODO
 		return null;
 	}
 
 	/**
-	 * Return an attribute as a list of strings
+	 * Return the nth attribute of the the attribute rib as a string, or null if
+	 * not found
 	 * 
-	 * @param attribute
+	 * @param asset
 	 * @return
 	 */
-	public List<String> getStrings(String attribute) {
-		// TODO
+	public String getString(String attribute, int n) {
 		return null;
 	}
 
 	/**
-	 * Return an attribute as an int
+	 * Return the first attribute of the the attribute list as an int, or null
+	 * if not found
 	 * 
-	 * 
-	 * @param attribute
+	 * @param asset
 	 * @return
 	 */
 	public Integer getInt(String attribute) {
-		// TODO
 		return null;
 	}
 
 	/**
-	 * Return an attribute as a list of int
+	 * Return the nth attribute of the the attribute list as an int, or null if
+	 * not found
 	 * 
-	 * @param attribute
+	 * @param asset
 	 * @return
 	 */
-	public List<Integer> getInts(String attribute) {
-		// TODO
+	public Integer getInt(String attribute, int n) {
 		return null;
 	}
 
 	/**
-	 * Return an attribute as a date
+	 * Return the first attribute of the the attribute list as an int, or null
+	 * if not found
 	 * 
-	 * @param attribute
+	 * @param asset
 	 * @return
 	 */
 	public Date getDate(String attribute) {
-		// TODO
 		return null;
 	}
 
 	/**
-	 * Return an attribute as a list of dates
+	 * Return the nth attribute of the the attribute list as an int, or null if
+	 * not found
 	 * 
-	 * 
-	 * @param attribute
+	 * @param asset
 	 * @return
 	 */
-	public List<Date> getDates(String attribute) {
+	public Date getDate(String attribute, int n) {
 		return null;
 	}
 

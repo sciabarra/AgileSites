@@ -1,4 +1,4 @@
-import scala.xml._
+	import scala.xml._
 import java.io.File
 
 object Tld2Tagj {
@@ -60,11 +60,11 @@ public class %s  {
 
     val parnameList = reqArgs.map(_.toString) mkString ","
 
-    val setRequired = reqArgs.map(x => "args.setValString(\"" + x + "\", " + x + ");").mkString("\n")
+    val setRequired = reqArgs.map(x => "args.setValString(\"" + x.toUpperCase + "\", " + x + ");").mkString("\n")
 
     val setOptional = optArgs map { x =>
       """ public %s %s(String val) { args.setValString("%s", val); return this; } 
-      """.format(cname, x, x)
+      """.format(cname, x, x.toUpperCase)
     } mkString "\n";
 
     """
@@ -87,6 +87,16 @@ public static class %s {
       }
       return ics.GetErrno(); 
   }
+  
+  private java.util.Random rnd = new java.util.Random();
+  public String run(ICS ics, String output) {
+	  String tmp = "_OUT_"+(rnd.nextInt());
+	  args.setValString(output, tmp);
+	  run(ics);
+	  String res = ics.GetVar(tmp);
+	  ics.RemoveVar(tmp);
+	  return res;		
+  }	
 }
 """.format(tname, cname, cname) +
       """

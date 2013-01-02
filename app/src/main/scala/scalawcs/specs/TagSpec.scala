@@ -17,6 +17,7 @@ class TagSpec(e: Env) extends Specification {
     tolist("l", "l")
     ics.GetList("l").numColumns() must_== 2
     ics.GetList("l").numRows() must_== 3
+    
   }
 
 }

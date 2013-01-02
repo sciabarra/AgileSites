@@ -1,14 +1,14 @@
 package wcs.java;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-
+import static wcs.java.util.Util.toDate;
+import static wcs.java.util.Util.toInt;
+import static wcs.java.util.Util.toLong;
 import wcs.core.ICSProxyJ;
+import wcs.java.util.Range;
 import wcs.java.util.Util.Arg;
 import wcs.java.util.Util.Id;
 import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
-import COM.FutureTense.Util.IterableIListWrapper;
 
 /**
  * Env
@@ -87,46 +87,27 @@ public class Env extends ICSProxyJ {
 
 	/**
 	 * IList iterator
+	 * 
+	 * public Iterable<IList> iterator(String list) { IList ls =
+	 * ics.GetList(list); if (ls == null) return new ArrayList<IList>(); return
+	 * new IterableIListWrapper(ls); }
 	 */
-	public Iterable<IList> iterator(String list) {
-		IList ls = ics.GetList(list);
-		if (ls == null)
-			return new ArrayList<IList>();
-		return new IterableIListWrapper(ls);
-	}
 
 	/**
-	 * Get as a date
+	 * Return an iterable sequence of integers to loop a list
+	 * 
+	 * @param list
+	 * @return
 	 */
-	private static SimpleDateFormat fmt = new SimpleDateFormat(
-			"yyyy-MM-dd HH:mm:ss");
 
-	private java.util.Date toDate(String s) {
-		if (s != null) {
-			try {
-				return fmt.parse(s);
-			} catch (Exception e) {
-				return null;
-			}
-		}
-		return null;
+	public Iterable<Integer> range(String list) {
+		IList ls = ics.GetList(list);
+		if (ls == null)
+			return new Range(0);
+		return new Range(ls.numRows());
 	}
-
-	private Long toLong(String l) {
-		if (l == null)
-			return null;
-		try {
-			long ll = Long.parseLong(l);
-			return new Long(ll);
-		} catch (NumberFormatException ex) {
-			return null;
-		} catch (Exception ex) {
-			// ex.printStackTrace();
-			return null;
-		}
-
-	}
-
+	
+	
 	/**
 	 * Get variable as a date (or null)
 	 * 
@@ -135,6 +116,16 @@ public class Env extends ICSProxyJ {
 	 */
 	public java.util.Date getDate(String var) {
 		return toDate(getString(var));
+	}
+
+	/**
+	 * Get variable as Long or null
+	 * 
+	 * @param var
+	 * @return
+	 */
+	public Integer getInt(String var) {
+		return toInt(getString(var));
 	}
 
 	/**
@@ -156,6 +147,17 @@ public class Env extends ICSProxyJ {
 	 */
 	public java.util.Date getDate(String ls, String field) {
 		return toDate(getString(ls, field));
+	}
+
+	/**
+	 * Get field as long or null
+	 * 
+	 * @param ls
+	 * @param field
+	 * @return
+	 */
+	public Integer getInt(String ls, String field) {
+		return toInt(getString(ls, field));
 	}
 
 	/**
@@ -191,6 +193,18 @@ public class Env extends ICSProxyJ {
 	 */
 	public Long getLong(String ls, int pos, String field) {
 		return toLong(getString(ls, pos, field));
+	}
+
+	/**
+	 * Get field at given position as a long, or null
+	 * 
+	 * @param ls
+	 * @param field
+	 * @param pos
+	 * @return
+	 */
+	public Integer getInt(String ls, int pos, String field) {
+		return toInt(getString(ls, pos, field));
 	}
 
 	/**
@@ -247,17 +261,35 @@ public class Env extends ICSProxyJ {
 		return ics.GetObj(object);
 	}
 
-	/*
-	public int getCounter(String counter) throws Exception {
-		if (counter != null) {
-			System.out.println("counter=" + counter);
-			try {
-				return ics.GetCounter(counter);
-			} catch (NullPointerException ex) {
-				return -1;
-				//throw new Exception("not found counter " + counter);
-			}
-		} else
-			throw new Exception("counter name is null");
-	}*/
+	/**
+	 * Get the current asset (using current c/cid values)
+	 * 
+	 * @return
+	 */
+	public Asset getAsset() {
+		return getAsset(getC(), getCid());
+	}
+
+	/**
+	 * Return the asset identified by c/cid
+	 */
+	public Asset getAsset(String c, Long cid) {
+		return new AssetImpl(this, c, cid);
+	}
+
+	/**
+	 * Return current "c" (content type)
+	 * 
+	 * @return
+	 */
+	public String getC() {
+		return getString("c");
+	}
+
+	/**
+	 * Return current "cid" (content id)
+	 */
+	public Long getCid() {
+		return getLong("cid");
+	}
 }

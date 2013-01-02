@@ -22,16 +22,20 @@ class Env(_ics: ICS) extends JEnv(_ics) {
    */
   def apply(list: Symbol, field: String) = get(list, field).getOrElse("")
 
-  
   /**
    * apply to a list with default value
    */
   def apply(list: Symbol): String = apply(list, "value")
-  
+
   /**
    * the value or an empty string if none
    */
   def apply(list: Symbol, pos: Int, field: String) = get(list, pos, field).getOrElse("")
+
+  /**
+   * Get the asset, identified by a tuple c -> cid
+   */
+  def apply(aid: Tuple2[String, Long]) = new AssetImpl(super.getAsset(aid._1, aid._2))
 
   /**
    * Check if a variable exists
@@ -42,13 +46,11 @@ class Env(_ics: ICS) extends JEnv(_ics) {
    * Check if a variable exists
    */
   def exist(list: Symbol) = isList(list.name)
-  
-  
+
   /**
    * Check if a variable exists
    */
   def exist(list: Symbol, field: String) = isField(list.name, field)
-
 
   /**
    * Return the optional value of the variable
@@ -82,7 +84,7 @@ class Env(_ics: ICS) extends JEnv(_ics) {
     else
       Some(v)
   }
-  
+
   /**
    * Return the optional value of the variable
    */
@@ -150,10 +152,44 @@ class Env(_ics: ICS) extends JEnv(_ics) {
   }
 
   /**
+   * Current c (asset type)
+   */
+  def c = get("c").getOrElse("")
+
+  /**
+   * Current cid (asset id)
+   */
+  def cid = asLong("cid").getOrElse(0)
+
+  /**
    * set a variable
    */
   def update(s: String, v: String) {
     ics.SetVar(s, v)
+  }
+
+  /**
+   * assign a list from a list of maps
+   */
+  def update(l: Symbol, lm: List[Map[Symbol, String]]) {
+
+    import wcs.scala.tag.ListobjectTag._
+    implicit val ics = _ics
+
+    // create list
+    val keys = if (lm.size == 0) ""
+    else lm(0).keys.map { _.name }.mkString(",")
+
+    create(l.name, keys)
+
+    // add rows
+    for (map <- lm) {
+      addrow(l.name, map.toSeq: _*)
+    }
+
+    // get the actual list
+    tolist(l.name, l.name)
+
   }
 
   /**

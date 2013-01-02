@@ -4,11 +4,12 @@ import wcs.scala._
 
 class SwLayout extends Element with PickerDSL {
 
-  def apply(e: Env) = pick("/index.html") {
-    select("head") {
-      "link" -> "href" %= "/cs/css/default.css"
+  def apply(e: Env) =
+    pick("/index.html") {
+      select("head") {
+        "link" -> "href" %= "/cs/css/default.css"
+      }
+      "#sidebar" %= call("SwFooter", 'name -> "Mike")
     }
-    "#sidebar" %= call("SwFooter", 'name -> "Mike")
-  }
 
 }

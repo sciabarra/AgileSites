@@ -12,10 +12,10 @@ import scala.xml.NodeSeq
  */
 abstract class Setup extends JSetup {
 
-  class Asset
-
   // future use
   //case class Site(id: Long, name: String, description: String, types: Array[String], users: Array[String], roles: Array[String]) extends Asset
+
+  class Asset
 
   case class Site(name: String)
 
