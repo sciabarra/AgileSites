@@ -7,6 +7,7 @@ import java.util.List;
 
 import wcs.java.tag.AssetTag;
 import wcs.java.tag.AssetsetTag;
+import wcs.java.tag.RenderTag;
 import wcs.java.util.Util;
 import COM.FutureTense.Interfaces.ICS;
 
@@ -16,8 +17,11 @@ class AssetImpl extends wcs.java.Asset {
 
 	// the name of the asset
 	private String a = Util.tmpVar();
-	// name of the assetset (and the list prefix) initially null - set on request
+	// name of the assetset (and the list prefix) initially null - set on
+
+	// request
 	private String as = null;
+
 	// the env
 	private Env e;
 	// the ICS from the env
@@ -30,7 +34,7 @@ class AssetImpl extends wcs.java.Asset {
 		this.i = e.ics;
 		this.id = cid;
 		AssetTag.load(a, c).objectid(cid.toString()).run(i);
-		String subtype = AssetTag.getsubtype().name(a).run(i, "output");
+		String subtype = AssetTag.getsubtype().name(a).run(i, "OUTPUT");
 		setTypeSubtype(c, subtype);
 	}
 
@@ -44,9 +48,40 @@ class AssetImpl extends wcs.java.Asset {
 		if (as == null) {
 			as = Util.tmpVar();
 			AssetsetTag.setasset(as, getType(), id.toString()).run(i);
-			AssetsetTag.getmultiplevalues(as, as).run(i);
+			// System.out.println("*** assetset " + i.GetObj(as));
 		}
 		return as;
+	}
+
+	/**
+	 * Lazily load in a list the attribute
+	 * 
+	 * @param attribute
+	 * @return
+	 */
+	private String at(String attribute) {
+		String attrList = as() + attribute.toUpperCase();
+		if (i.GetList(attrList) == null) {
+			String attrType = e.getConfig().getAttributeType(getType());
+			AssetsetTag.getattributevalues(as, attribute, attrList)
+					.typename(attrType).run(i);
+		}
+		return attrList;
+	}
+
+	/**
+	 * Return the association lazily loading all the attributes on the first
+	 * request request
+	 * 
+	 * @return
+	 */
+	private String ass(String assoc) {
+		String assocList = as() + "_ASS_" + assoc.toUpperCase();
+		if (i.GetList(assocList) == null) {
+			AssetTag.children(assocList).objecttype(getType())
+					.objectid(id.toString()).run(i);
+		}
+		return assocList;
 	}
 
 	/**
@@ -77,8 +112,8 @@ class AssetImpl extends wcs.java.Asset {
 	 * Return the file field of the asset
 	 */
 	@Override
-	public String getFile() {
-		return AssetTag.get(a, "file").run(i, "output");
+	public String getFilename() {
+		return AssetTag.get(a, "filename").run(i, "output");
 	}
 
 	/**
@@ -111,8 +146,8 @@ class AssetImpl extends wcs.java.Asset {
 	 * @param attribute
 	 * @return
 	 */
-	public Iterable<Integer> range(String attribute) {
-		return e.range(as() + ":" + attribute);
+	public Iterable<Integer> getRange(String attribute) {
+		return e.getRange(at(attribute));
 	}
 
 	/**
@@ -122,7 +157,7 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 */
 	public int getSize(String attribute) {
-		return e.getSize(as() + ":" + attribute);
+		return e.getSize(at(attribute));
 	}
 
 	/**
@@ -134,7 +169,7 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public Long getId(String attribute) {
-		return e.getLong(as() + ":" + attribute, "value");
+		return e.getLong(at(attribute), "value");
 	}
 
 	/**
@@ -146,7 +181,7 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public Long getId(String attribute, int n) {
-		return e.getLong(as() + ":" + attribute, n, "value");
+		return e.getLong(at(attribute), n, "value");
 	}
 
 	/**
@@ -158,7 +193,7 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public String getString(String attribute) {
-		return e.getString(as() + ":" + attribute, "value");
+		return e.getString(at(attribute), "value");
 	}
 
 	/**
@@ -170,8 +205,7 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public String getString(String attribute, int n) {
-		return e.getString(as() + ":" + attribute, n, "value");
-
+		return e.getString(at(attribute), n, "value");
 	}
 
 	/**
@@ -183,7 +217,7 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public Integer getInt(String attribute) {
-		return e.getInt(as() + ":" + attribute, "value");
+		return e.getInt(at(attribute), "value");
 	}
 
 	/**
@@ -195,7 +229,7 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public Integer getInt(String attribute, int n) {
-		return e.getInt(as() + ":" + attribute, n, "value");
+		return e.getInt(at(attribute), n, "value");
 	}
 
 	/**
@@ -207,7 +241,42 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public Date getDate(String attribute) {
-		return e.getDate(as() + ":" + attribute, "value");
+		return e.getDate(at(attribute), "value");
+	}
+
+	/**
+	 * Range of an asset association
+	 */
+	public Iterable<Integer> getAssocRange(String assoc) {
+		return e.getRange(ass(assoc));
+	}
+
+	/**
+	 * Id of the first associated asset
+	 */
+	public Long getAssocId(String assoc) {
+		return e.getLong(ass(assoc), "OID");
+	}
+
+	/**
+	 * Id of the nth associated asset
+	 */
+	public Long getAssocId(String assoc, int pos) {
+		return e.getLong(ass(assoc), pos, "OID");
+	}
+
+	/**
+	 * Type of the first associated asset
+	 */
+	public String getAssocType(String assoc) {
+		return e.getString(ass(assoc), "OTYPE");
+	}
+
+	/**
+	 * Type of the nth associated asset
+	 */
+	public String getAssocType(String assoc, int pos) {
+		return e.getString(ass(assoc), pos, "OTYPE");
 	}
 
 	/**
@@ -219,7 +288,7 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public Date getDate(String attribute, int n) {
-		return e.getDate(as() + ":" + attribute, n, "value");
+		return e.getDate(at(attribute), n, "value");
 	}
 
 	@Override
@@ -232,6 +301,28 @@ class AssetImpl extends wcs.java.Asset {
 	void setData(MutableAssetData data) {
 		throw new RuntimeException(
 				"should not be called here - reserved for setup");
+	}
+
+	/**
+	 * String get blob url of the first attribute
+	 */
+	public String getBlobUrl(String attribute) {
+		return getBlobUrl(attribute, 1);
+	}
+
+	/**
+	 * String get blob url of the nth attribute
+	 */
+	public String getBlobUrl(String attribute, int pos) {
+		String tmp = Util.tmpVar();
+		Config cfg = e.getConfig();
+		Long blobWhere = this.getId(attribute, pos);
+		RenderTag.getbloburl(tmp).blobtable(cfg.getBlobTable())
+				.blobcol(cfg.getBlobUrl()).blobkey(cfg.getBlobId())
+				.blobwhere(blobWhere.toString()).run(i);
+		String res = i.GetVar("tmp");
+		i.RemoveVar(tmp);
+		return res;
 	}
 
 }

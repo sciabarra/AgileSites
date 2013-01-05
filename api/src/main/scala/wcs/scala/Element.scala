@@ -24,11 +24,14 @@ abstract class Element extends JElement with Log {
    */
   override def exec(ics: ICS): String = {
     try {
-      val env = new Env(ics);
 
       c = ics.GetVar("c")
       cid = try { ics.GetVar("cid").toLong } catch { case _ => 0l }
       site = ics.GetVar("site")
+      
+      val config = wcs.java.Config.getConfigBySite(site)
+
+      val env = new Env(ics);
 
       stream(ics, apply(env));
       return null;
@@ -45,7 +48,7 @@ abstract class Element extends JElement with Log {
   def call(name: String, args: Tuple2[Symbol, String]*) = {
     import wcs.java.util.Util.Arg
     val seq = for ((k, v) <- args) yield { new Arg(k.name, v) }
-    callElement(site + "/" + name, seq: _*)
+    wcs.java.Element.scheduleCall(site + "/" + name, seq: _*)
   }
 
   /**

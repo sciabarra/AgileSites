@@ -8,7 +8,7 @@ class AssetImpl(val a: wcs.java.Asset) extends wcs.java.Asset {
   def cid = a.getId()
   def name = a.getName()
   def description = a.getDescription()
-  def file = a.getFile()
+  def filename = a.getFilename()
   def path = a.getPath()
 
   def apply(list: String): String = a.getString(list)

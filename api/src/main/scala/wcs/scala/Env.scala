@@ -35,7 +35,7 @@ class Env(_ics: ICS) extends JEnv(_ics) {
   /**
    * Get the asset, identified by a tuple c -> cid
    */
-  def apply(aid: Tuple2[String, Long]) = new AssetImpl(super.getAsset(aid._1, aid._2))
+  def apply(aid: Tuple2[String, Long]) = new AssetImpl(super.getAsset(aid._1,  aid._2))
 
   /**
    * Check if a variable exists

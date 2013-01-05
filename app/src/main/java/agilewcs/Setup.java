@@ -5,7 +5,7 @@ import wcs.java.CSElement;
 import wcs.java.Site;
 import wcs.java.Template;
 
-public class JavaSetup extends wcs.java.Setup {
+public class Setup extends wcs.java.Setup {
 
 	@Override
 	public Site getSite() {

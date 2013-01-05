@@ -4,6 +4,7 @@ import wcs.implx.XmlICS
 import wcs.scala.Env
 import java.text.SimpleDateFormat
 import wcs.scala.Log
+import wcs.java.Config
 
 class EnvScalaTest extends Specification with Log {
 
@@ -62,7 +63,7 @@ class EnvScalaTest extends Specification with Log {
 
     "iterate " in {
 
-      val l = for (i <- e.range('l)) yield {  log(i) ; log(e('l, i, "f")) }
+      val l = for (i <- e.range('l)) yield { log(i); log(e('l, i, "f")) }
       l(0) must_== "yyy"
       l(1) must_== "2012-02-03 12:23:34"
       l(2) must_== "1234"

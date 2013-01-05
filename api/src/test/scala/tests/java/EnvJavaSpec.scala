@@ -4,6 +4,7 @@ import wcs.scala.Log
 import wcs.implx.XmlICS
 import wcs.java.Env
 import java.text.SimpleDateFormat
+import wcs.java.Config
 
 class EnvJavaSpec extends Specification with Log {
 

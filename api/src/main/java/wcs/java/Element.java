@@ -34,8 +34,8 @@ public abstract class Element implements wcs.core.Element {
 	@Override
 	public String exec(ICS ics) {
 		try {
-			Env env = new Env(ics);
 			site = ics.GetVar("site");
+			Env env = new Env(ics);
 			stream(ics, apply(env));
 			return null;
 		} catch (Exception ex) {
@@ -68,7 +68,7 @@ public abstract class Element implements wcs.core.Element {
 
 			String call = res.substring(start, end);
 
-			out.println("ELMENTCALL " + call);
+			out.println("ELEMENTCALL " + call);
 
 			StringTokenizer st = new StringTokenizer(call, sep);
 
@@ -88,7 +88,12 @@ public abstract class Element implements wcs.core.Element {
 			}
 			out.println();
 
-			ics.CallElement(element, list);
+			if (element.equals("!RCT"))
+				ics.runTag("RENDER.CALLTEMPLATE", list);
+			else if (element.equals("!ICT"))
+				ics.runTag("INSITE.CALLTEMPLATE", list);
+			else
+				ics.CallElement(element, list);
 
 			res = res.substring(end + 3);
 			start = res.indexOf(sep2);
@@ -99,12 +104,17 @@ public abstract class Element implements wcs.core.Element {
 	}
 
 	/**
-	 * Call a generic element
+	 * Schedule the call to a specific element. Elements starting with "!" have
+	 * special meaning
+	 * 
+	 * - !RCT will invoke a render:calltemplate
+	 * 
+	 * - !ICT will invoke a insite:calltemplate
 	 * 
 	 * @param name
 	 * @param args
 	 */
-	public String callElement(String name, Arg... args) {
+	public static String scheduleCall(String name, Arg... args) {
 		StringBuilder sb = new StringBuilder();
 		// elements to call have the site name as a prefix
 		sb.append(sep2).append(name).append(sep);
@@ -123,7 +133,7 @@ public abstract class Element implements wcs.core.Element {
 	 * @return
 	 */
 	public String call(String name, Arg... args) {
-		return callElement(site + "/" + name, args);
+		return scheduleCall(site + "/" + name, args);
 	}
 
 	/**

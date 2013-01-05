@@ -14,6 +14,7 @@ class SpecRunner extends Element {
     warn("WARN Hello, world!!!")*/
 
     try {
+
       <h1>Tests</h1>
       /*
       <h2>RunTagSpec</h2>
@@ -25,9 +26,9 @@ class SpecRunner extends Element {
       */
       <h2>EnvSpec</h2>
       <pre>{ new EnvSpec(e) }</pre>
-      
+
     } catch {
-      case e => <h1>Exception: { e.getMessage } </h1>
+      case e => <h1>Exception: { e.getMessage }</h1>
     }
   }
 }

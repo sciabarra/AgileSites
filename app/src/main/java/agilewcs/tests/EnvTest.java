@@ -25,6 +25,7 @@ public class EnvTest {
 		out.println("EnvTest");
 		e = getEnv();
 		i = e.ics;
+		
 	}
 
 	@Test
@@ -98,7 +99,7 @@ public class EnvTest {
 		ListobjectTag.addrow("ll").set("a", "11").set("b", "22").run(i);
 		ListobjectTag.tolist("ll", "ll").run(i);
 
-		for (Integer i : e.range("ll")) {
+		for (Integer i : e.getRange("ll")) {
 
 			out.println("loop " + i);
 

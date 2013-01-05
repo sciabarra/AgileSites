@@ -3,6 +3,7 @@ package wcs.java;
 import java.util.Date;
 import java.util.List;
 
+import wcs.java.tag.RenderTag;
 import wcs.java.util.Log;
 
 import com.fatwire.assetapi.data.AttributeData;
@@ -17,7 +18,7 @@ public abstract class Asset {
 	private String type;
 	private String subtype;
 	private String site;
-	private String file;
+	private String filename;
 	private String path;
 	private Date startDate;
 	private Date endDate;
@@ -80,6 +81,41 @@ public abstract class Asset {
 	}
 
 	/**
+	 * Range of an asset association
+	 */
+	public Iterable<Integer> getAssocRange(String assoc) {
+		return new wcs.java.util.Range(0);
+	}
+
+	/**
+	 * Id of the first associated asset
+	 */
+	public Long getAssocId(String assoc) {
+		return null;
+	}
+
+	/**
+	 * Id of the nth associated asset
+	 */
+	public Long getAssocId(String assoc, int pos) {
+		return null;
+	}
+
+	/**
+	 * Type of the first associated asset
+	 */
+	public String getAssocType(String assoc) {
+		return null;
+	}
+
+	/**
+	 * Type of the nth associated asset
+	 */
+	public String getAssocType(String assoc, int pos) {
+		return null;
+	}
+
+	/**
 	 * The current asset subtype, or the void string if no subtype
 	 * 
 	 * @return
@@ -122,8 +158,8 @@ public abstract class Asset {
 	 * 
 	 * @return
 	 */
-	public String getFile() {
-		return file;
+	public String getFilename() {
+		return filename;
 	}
 
 	/**
@@ -172,6 +208,21 @@ public abstract class Asset {
 	 */
 	public Long getId(String attribute) {
 		return null;
+	}
+	
+	/**
+	 * String get blob url of the first attribute
+	 */
+	public String getBlobUrl(String attribute) {
+		return null;		
+	}
+	
+	
+	/**
+	 * String get blob url of the nth attribute
+	 */
+	public String getBlobUrl(String attribute, int pos) {
+		return null;		
 	}
 
 	/**
@@ -249,6 +300,16 @@ public abstract class Asset {
 	 */
 	public Date getDate(String attribute, int n) {
 		return null;
+	}
+
+	/**
+	 * Return an iterable of the attribute list
+	 * 
+	 * @param attribute
+	 * @return
+	 */
+	public Iterable<Integer> getRange(String attribute) {
+		return new wcs.java.util.Range(0);
 	}
 
 	/**

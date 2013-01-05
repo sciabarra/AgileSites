@@ -1,12 +1,19 @@
 package wcs.java;
 
+import static wcs.java.Element.scheduleCall;
+import static wcs.java.util.Util.arg;
 import static wcs.java.util.Util.toDate;
 import static wcs.java.util.Util.toInt;
 import static wcs.java.util.Util.toLong;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import wcs.core.ICSProxyJ;
+import wcs.java.tag.RenderTag;
 import wcs.java.util.Range;
+import wcs.java.util.Util;
 import wcs.java.util.Util.Arg;
-import wcs.java.util.Util.Id;
 import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
 
@@ -18,6 +25,9 @@ import COM.FutureTense.Interfaces.IList;
  */
 public class Env extends ICSProxyJ {
 
+	private Config config;
+	private String site;
+
 	/**
 	 * Build the env from the ICS
 	 * 
@@ -25,6 +35,8 @@ public class Env extends ICSProxyJ {
 	 */
 	public Env(ICS ics) {
 		init(ics);
+		site = ics.GetVar("site");
+		this.config = Config.getConfigBySite(site);
 	}
 
 	/**
@@ -86,28 +98,18 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
-	 * IList iterator
-	 * 
-	 * public Iterable<IList> iterator(String list) { IList ls =
-	 * ics.GetList(list); if (ls == null) return new ArrayList<IList>(); return
-	 * new IterableIListWrapper(ls); }
-	 */
-
-	/**
 	 * Return an iterable sequence of integers to loop a list
 	 * 
 	 * @param list
 	 * @return
 	 */
-
-	public Iterable<Integer> range(String list) {
+	public Iterable<Integer> getRange(String list) {
 		IList ls = ics.GetList(list);
 		if (ls == null)
 			return new Range(0);
 		return new Range(ls.numRows());
 	}
-	
-	
+
 	/**
 	 * Get variable as a date (or null)
 	 * 
@@ -208,15 +210,30 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
-	 * Call a template
+	 * Call a template by name with a specific c/cid and extra args
 	 * 
-	 * @param id
-	 * @param name
-	 * @param args
 	 */
-	public void call(String name, Id id, Arg... args) {
-		// RenderTag.Calltemplate tag = RenderTag.calltemplate(name);
-		// tag.c(id.type).cid(Long.toString(id.id)).run(ics);
+	public String callTemplate(String c, Long cid, String name, Arg... args) {
+		List<Arg> list = new ArrayList<Arg>();
+		list.add(arg("SITE", site));
+		list.add(arg("C", c));
+		list.add(arg("CID", cid.toString()));
+		list.add(arg("TNAME", name));
+
+		list.add(arg("TTYPE", ics.GetVar("tid") != null //
+		? "Template"
+				: "CSElement"));
+		list.add(arg("TID", ics.GetVar("tid") != null //
+		? ics.GetVar("tid")
+				: ics.GetVar("eid")));
+
+		// TODO: use the slot properly
+		list.add(arg("SLOTNAME", name.replace('/', '_')));
+
+		// copy additional args
+		for (Arg arg : args)
+			list.add(arg);
+		return scheduleCall("!RCT", list.toArray(new Arg[0]));
 	}
 
 	/**
@@ -262,19 +279,38 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
-	 * Get the current asset (using current c/cid values)
-	 * 
-	 * @return
-	 */
-	public Asset getAsset() {
-		return getAsset(getC(), getCid());
-	}
-
-	/**
 	 * Return the asset identified by c/cid
 	 */
 	public Asset getAsset(String c, Long cid) {
 		return new AssetImpl(this, c, cid);
+	}
+
+	/**
+	 * Return the URL to render this asset using the configured default template
+	 */
+	public String getAssetUrl(String c, Long cid) {
+		return getAssetUrl(c, cid, config.getDefaultTemplate(c));
+	}
+
+	/**
+	 * Return the URL to render this asset using a specified template
+	 */
+	public String getAssetUrl(String c, Long cid, String template) {
+		
+		String outstr = Util.tmpVar();
+		String tid = ics.GetVar("tid");
+		String ttype = "Template";
+		if (tid == null) {
+			tid = ics.GetVar("eid");
+			ttype = "CSElement";
+		}
+
+		RenderTag.gettemplateurl(outstr, template).c(c).cid(cid.toString())
+				.site(site).tid(tid).ttype(ttype).run(ics);
+
+		String res = getString(outstr);
+		ics.RemoveVar(outstr);
+		return res;
 	}
 
 	/**
@@ -291,5 +327,12 @@ public class Env extends ICSProxyJ {
 	 */
 	public Long getCid() {
 		return getLong("cid");
+	}
+
+	/**
+	 * Return the current config
+	 */
+	public Config getConfig() {
+		return config;
 	}
 }

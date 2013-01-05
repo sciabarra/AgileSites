@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>Page:1351276304585</id>
-    <name>Home</name>
+    <id>Agile_Article:1351276305500</id>
+    <name>Authors</name>
     <createdby>fwadmin</createdby>
-    <createddate>2012-12-29T12:40:54.207Z</createddate>
-    <description>Home Page</description>
+    <createddate>2013-01-02T17:53:32.962Z</createddate>
+    <description></description>
     <publist>AgileWCS</publist>
-    <status>ED</status>
-    <subtype>Blog</subtype>
+    <status>PL</status>
+    <subtype>Article</subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-01-02T18:32:51.109Z</updateddate>
+    <updateddate>2013-01-02T17:53:32.962Z</updateddate>
     <attribute>
         <name>startdate</name>
-        <data>
-            <dateValue>2012-12-31T23:00:00.016Z</dateValue>
-        </data>
+        <data/>
     </attribute>
     <attribute>
         <name>enddate</name>
@@ -23,13 +21,13 @@
     <attribute>
         <name>filename</name>
         <data>
-            <stringValue>home.html</stringValue>
+            <stringValue></stringValue>
         </data>
     </attribute>
     <attribute>
         <name>path</name>
         <data>
-            <stringValue>/home</stringValue>
+            <stringValue></stringValue>
         </data>
     </attribute>
     <attribute>
@@ -55,13 +53,13 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>f33c659a-e7d5-45b0-a648-e7cd27b8b821</stringValue>
+            <stringValue>56c40e87-b24c-4edc-9288-4bbc96e01259</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351276304585</longValue>
+            <longValue>1351276305500</longValue>
         </data>
     </attribute>
     <attribute>
@@ -73,48 +71,48 @@
         <data/>
     </attribute>
     <attribute>
-        <name>category</name>
+        <name>flextemplateid</name>
         <data>
-            <stringValue>a</stringValue>
+            <stringValue>Agile_CD:1351276304507</stringValue>
         </data>
     </attribute>
     <attribute>
-        <name>SPTParent</name>
+        <name>Relationships</name>
         <data/>
     </attribute>
     <attribute>
-        <name>SPTRank</name>
+        <name>Author</name>
         <data>
-            <integerValue>1</integerValue>
+            <stringValue>Michele Sciabarra</stringValue>
         </data>
     </attribute>
     <attribute>
-        <name>SPTNCode</name>
+        <name>Body</name>
         <data>
-            <stringValue>Placed</stringValue>
+            <stringValue>&lt;div&gt;
+	Michele Sciabarr&amp;agrave; is the author of the site and of the framework.&lt;/div&gt;
+</stringValue>
         </data>
     </attribute>
     <attribute>
-        <name>flextemplateid</name>
+        <name>Summary</name>
         <data>
-            <stringValue>PageDefinition:1351276304576</stringValue>
+            <stringValue>&lt;div&gt;
+	Michele Sciabarra is the author of this blog.&lt;/div&gt;
+</stringValue>
         </data>
     </attribute>
     <attribute>
-        <name>SideBlocks</name>
-        <data>
-            <stringList>Agile_Article:1351276304506</stringList>
-            <stringList>Agile_Article:1351276305500</stringList>
-        </data>
+        <name>renderid</name>
+        <data/>
     </attribute>
     <associations>
         <href>myPathassociations</href>
-        <association>
-            <href>myPathassociations/AssociatedItems</href>
-            <name>AssociatedItems</name>
-            <associatedAsset>Agile_Blog:1351276304546</associatedAsset>
-        </association>
     </associations>
+    <parent>
+        <parentDefName>Section</parentDefName>
+        <asset>Agile_Section:1351276304525</asset>
+    </parent>
 </ns2:assetBean>
 
 <!--==================___ METADATA ___================
@@ -122,46 +120,52 @@
   <list>
     <dependency>
       <depType>E</depType>
-      <resType>Agile_Article</resType>
-      <resId>1351276304506</resId>
-      <uid>443dd833-bcaf-42c9-99a8-ac4dcf8b57cd</uid>
+      <resType>Agile_A</resType>
+      <resId>1351276304459</resId>
+      <uid>2af213f4-28ee-4acf-8e98-18d64fec3ac0</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
+      <resType>Agile_A</resType>
+      <resId>1351276304467</resId>
+      <uid>d602a847-e602-451b-9c78-648e0d877725</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>Agile_A</resType>
+      <resId>1351276304480</resId>
+      <uid>811d9e37-063a-4657-a91f-e49edffef03c</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>Agile_CD</resType>
+      <resId>1351276304507</resId>
+      <uid>46f3dd88-cb67-4bc9-b1a9-e80a60972ce4</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>Agile_Section</resType>
+      <resId>1351276304525</resId>
+      <uid>75a1125c-9b93-46d7-b819-20fd2e5a5f96</uid>
+    </dependency>
+    <dependency>
+      <depType>N</depType>
       <resType>Agile_Article</resType>
       <resId>1351276305500</resId>
       <uid>56c40e87-b24c-4edc-9288-4bbc96e01259</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
-      <resType>Agile_Blog</resType>
-      <resId>1351276304546</resId>
-      <uid>e9fca052-d0b2-4deb-b9ed-4ee190222d96</uid>
-    </dependency>
-    <dependency>
-      <depType>E</depType>
-      <resType>PageAttribute</resType>
-      <resId>1351276304568</resId>
-      <uid>7c71c48d-d882-488f-826c-5cce2c433b47</uid>
-    </dependency>
-    <dependency>
-      <depType>E</depType>
-      <resType>PageDefinition</resType>
-      <resId>1351276304576</resId>
-      <uid>db5fe309-bb14-435f-816d-80a15ab0e6c6</uid>
-    </dependency>
-    <dependency>
-      <depType>N</depType>
-      <resType>Page</resType>
-      <resId>1351276304585</resId>
-      <uid>f33c659a-e7d5-45b0-a648-e7cd27b8b821</uid>
+      <resType>@ASSET_TYPE</resType>
+      <resId>Agile_Article</resId>
+      <uid>9e13d0c2-fdae-4f3b-8c5c-3220c53b0d51</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
 #Wed Jan 02 19:33:50 CET 2013
-key=Page-f33c659a-e7d5-45b0-a648-e7cd27b8b821
+key=Agile_Article-56c40e87-b24c-4edc-9288-4bbc96e01259
 type=ASSETDATA
 sites=AgileWCS
 
