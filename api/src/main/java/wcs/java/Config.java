@@ -1,46 +1,66 @@
 package wcs.java;
 
-import java.util.HashMap;
-
+import wcs.java.util.Log;
+import wcs.java.tag.BlobserviceTag;
 import COM.FutureTense.Interfaces.ICS;
 
-import wcs.java.tag.BlobserviceTag;
-
 /**
- * Configuration class.
+ * Base class for configuration, to be extended site by site
  * 
  * @author msciab
  * 
  */
-public class Config {
+public class Config implements wcs.core.Config {
+
+	private static Log log = new Log(Config.class);
 
 	private String blobId;
 	private String blobUrl;
 	private String blobTable;
 
+	/**
+	 * Create an unitialized config - init must be called afterwards to complete
+	 * initalization
+	 */
+	public Config() {
+	}
+
+	/**
+	 * Create and initalize a config
+	 * 
+	 * @param ics
+	 */
 	public Config(ICS ics) {
-		if (ics != null) {
-			String tmp = wcs.java.util.Util.tmpVar();
-			BlobserviceTag.getidcolumn(tmp + "id").run(ics);
-			BlobserviceTag.geturlcolumn(tmp + "url").run(ics);
-			BlobserviceTag.gettablename(tmp + "tbl").run(ics);
-			blobId = ics.GetVar(tmp + "id");
-			blobUrl = ics.GetVar(tmp + "url");
-			blobTable = ics.GetVar(tmp + "tbl");
-			ics.RemoveVar(tmp + "id");
-			ics.RemoveVar(tmp + "url");
-			ics.RemoveVar(tmp + "tbl");
-		}
+		init(ics);
+	}
+
+	/**
+	 * INitialize a config
+	 * 
+	 * @param ics
+	 */
+	public void init(ICS ics) {
+		String tmp = "_TMP_" + System.currentTimeMillis();
+		BlobserviceTag.getidcolumn(tmp + "id").run(ics);
+		BlobserviceTag.geturlcolumn(tmp + "url").run(ics);
+		BlobserviceTag.gettablename(tmp + "tbl").run(ics);
+		blobId = ics.GetVar(tmp + "id");
+		blobUrl = ics.GetVar(tmp + "url");
+		blobTable = ics.GetVar(tmp + "tbl");
+		ics.RemoveVar(tmp + "id");
+		ics.RemoveVar(tmp + "url");
+		ics.RemoveVar(tmp + "tbl");
 	}
 
 	/**
 	 * Return blob id field
+	 * 
 	 * @return
 	 */
 	public String getBlobId() {
 		return blobId;
 	}
-	
+
 	/**
 	 * Return blob id field
 	 * 
@@ -58,9 +78,6 @@ public class Config {
 	public String getBlobTable() {
 		return blobTable;
 	}
-
-	// single default instance that throws exceptions when used
-	private static Config bomb = new Config(null);
 
 	/**
 	 * Return the attribute type for a given type.
@@ -81,35 +98,4 @@ public class Config {
 				"Invoking default config - you need to define a Config class for your site");
 	}
 
-	private static HashMap<String, Config> configCache = new HashMap<String, Config>();
-
-	/**
-	 * Return the config for a specific site
-	 * 
-	 * @param site
-	 * @return
-	 * @throws Exception
-	 */
-	public static Config getConfigBySite(String site) {
-
-		// no site... using a default config that will throw exception when
-		// invoked
-		if (site == null)
-			return bomb;
-
-		Config config = configCache.get(site);
-		if (config != null)
-			return config;
-
-		try {
-			config = (Config) Class.forName(site.toLowerCase() + ".Config")
-					.newInstance();
-			configCache.put(site, config);
-			return config;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return config;
-
-	}
 }

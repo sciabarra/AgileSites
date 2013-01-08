@@ -16,14 +16,13 @@ class SpecRunner extends Element {
     try {
 
       <h1>Tests</h1>
-      /*
+      
       <h2>RunTagSpec</h2>
       <pre>{ new RunTagSpec(e.ics) }</pre>
       <h2>TagSpec</h2>
       <pre>{ new TagSpec(e) }</pre>
       <h2>IListSpec</h2>
       <pre>{ new IListSpec(e) }</pre>
-      */
       <h2>EnvSpec</h2>
       <pre>{ new EnvSpec(e) }</pre>
 

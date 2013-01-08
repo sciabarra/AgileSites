@@ -8,12 +8,15 @@ import java.util.List;
 import wcs.java.tag.AssetTag;
 import wcs.java.tag.AssetsetTag;
 import wcs.java.tag.RenderTag;
+import wcs.java.util.Log;
 import wcs.java.util.Util;
 import COM.FutureTense.Interfaces.ICS;
 
 import com.fatwire.assetapi.data.MutableAssetData;
 
 class AssetImpl extends wcs.java.Asset {
+
+	private static Log log = new Log(Env.class);
 
 	// the name of the asset
 	private String a = Util.tmpVar();
@@ -60,6 +63,7 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 */
 	private String at(String attribute) {
+		log.debug("extracting attribute "+attribute);
 		String attrList = as() + attribute.toUpperCase();
 		if (i.GetList(attrList) == null) {
 			String attrType = e.getConfig().getAttributeType(getType());

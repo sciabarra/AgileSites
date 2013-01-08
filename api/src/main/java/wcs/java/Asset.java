@@ -3,7 +3,6 @@ package wcs.java;
 import java.util.Date;
 import java.util.List;
 
-import wcs.java.tag.RenderTag;
 import wcs.java.util.Log;
 
 import com.fatwire.assetapi.data.AttributeData;

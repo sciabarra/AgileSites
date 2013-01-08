@@ -155,4 +155,35 @@ public class Dispatcher {
 		}
 		return msg.toString();
 	}
+
+	/**
+	 * Return the config for a specific site
+	 * 
+	 * @param site
+	 * @return
+	 * @throws Exception
+	 */
+	public Config config(String site, ICS ics) {
+
+		// no site... using a default config that will throw exception when
+		// invoked
+		if (site == null)
+			return null;
+
+		String configClass = site.toLowerCase() + ".Config";
+
+		WCS.debug(">>> config: configClass=" + configClass);
+
+		Config config = null;
+		try {
+			ClassLoader cl = loader.loadJar();
+			config = (Config) Class.forName(configClass, true, cl)
+					.newInstance();
+			config.init(ics);
+		} catch (Exception e) {
+			e.printStackTrace();
+			WCS.debug(">>> config: EXCEPTION " + e.getMessage());
+		}
+		return config;
+	}
 }

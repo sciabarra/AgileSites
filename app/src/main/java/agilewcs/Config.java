@@ -1,5 +1,6 @@
 package agilewcs;
 
+
 public class Config extends wcs.java.Config {
 
 	@Override

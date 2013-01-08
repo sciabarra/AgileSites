@@ -1,7 +1,7 @@
 package wcs.core;
 
-import COM.FutureTense.Interfaces.ICS;
 import java.util.logging.Logger;
+import COM.FutureTense.Interfaces.ICS;
 
 public class WCS {
 
@@ -19,7 +19,6 @@ public class WCS {
 	 * 
 	 * @param msg
 	 */
-
 	public static String debug(String msg) {
 		if (debug) {
 			System.err.println(">>> " + msg);
@@ -28,6 +27,32 @@ public class WCS {
 		return msg;
 	}
 
+	/**
+	 * Return the config loading from the jar
+	 * 
+	 * @param site
+	 * @param ics
+	 * @return
+	 */
+	public static Config config(String site, ICS ics) {
+		Dispatcher dispatcher = null;
+		try {
+			WCS.debug("[WCS.config] getting dispatcher");
+			dispatcher = Dispatcher.getDispatcher(ics);
+			return dispatcher.config(site, ics);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Return the config dispatching 
+	 * 
+	 * @param ics
+	 * @param clazz
+	 * @return
+	 */
 	public static String dispatch(ICS ics, String clazz) {
 		Dispatcher dispatcher = null;
 		try {
@@ -74,5 +99,7 @@ public class WCS {
 			return WCS.debug("[WCS.deploy] Error invoking deploy:"
 					+ ex.getMessage());
 		}
+
 	}
+
 }

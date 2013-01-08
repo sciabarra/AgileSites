@@ -10,4 +10,6 @@ class Config extends wcs.scala.Config {
     case Page(x) => "PageAttribute"
     case _ => throw new Exception("Unknowkn type")
   }
+
+  def defaultTemplate(s: String) = "ScalaWCS/SwLayout"
 }

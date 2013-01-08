@@ -6,6 +6,9 @@ import scala.xml.NodeSeq
 import COM.FutureTense.Interfaces.ICS
 import scala.xml.NodeBuffer
 
+/**
+ * The element implementation
+ */
 abstract class Element extends JElement with Log {
 
   // convert a NodeSeq in a string
@@ -19,23 +22,26 @@ abstract class Element extends JElement with Log {
   var cid = 0L
 
   /**
-   * Execute the element
+   * Execute the element - return null if all ok (nothing to be steamed)
+   * Otherwise return the error message to be streamed in the output
    *
    */
   override def exec(ics: ICS): String = {
     try {
-
+      
+      // initialize the element
       c = ics.GetVar("c")
       cid = try { ics.GetVar("cid").toLong } catch { case _ => 0l }
       site = ics.GetVar("site")
+
+      // the most important line of code of the whole framework
+      stream(ics, apply(new Env(ics)));
       
-      val config = wcs.java.Config.getConfigBySite(site)
-
-      val env = new Env(ics);
-
-      stream(ics, apply(env));
+      // nulls mean all ok
       return null;
+      
     } catch {
+      // return the exception
       case ex =>
         ex.printStackTrace();
         ex.getMessage();

@@ -274,11 +274,11 @@ public class Util {
 
 	}
 
-	private static long tmpVarCounter = System.currentTimeMillis();
+	private static long tmpVarCounter = 1;
 
 	public synchronized static String tmpVar() {
 		++tmpVarCounter;
-		return "_TMP_" + tmpVarCounter + "_TMP_";
+		return "_" + tmpVarCounter ;
 	}
 
 	/**
@@ -313,6 +313,7 @@ public class Util {
 
 	}
 
+	
 	public static Integer toInt(String l) {
 		if (l == null)
 			return null;

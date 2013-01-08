@@ -7,10 +7,12 @@ import static wcs.java.util.Util.toInt;
 import static wcs.java.util.Util.toLong;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import wcs.core.ICSProxyJ;
 import wcs.java.tag.RenderTag;
+import wcs.java.util.Log;
 import wcs.java.util.Range;
 import wcs.java.util.Util;
 import wcs.java.util.Util.Arg;
@@ -25,6 +27,8 @@ import COM.FutureTense.Interfaces.IList;
  */
 public class Env extends ICSProxyJ {
 
+	private static Log log = new Log(Env.class);
+
 	private Config config;
 	private String site;
 
@@ -36,7 +40,20 @@ public class Env extends ICSProxyJ {
 	public Env(ICS ics) {
 		init(ics);
 		site = ics.GetVar("site");
-		this.config = Config.getConfigBySite(site);
+		log.debug("Loading Config Class");
+		this.config = getConfig(site, ics);
+	}
+
+	// keep a cache of config by site
+	private static HashMap<String, wcs.java.Config> configCache = new HashMap<String, wcs.java.Config>();
+
+	private wcs.java.Config getConfig(String site, ICS ics) {
+		wcs.java.Config config = configCache.get(site);
+		if (config != null)
+			return config;
+		config = (wcs.java.Config) wcs.core.WCS.config(site, ics);
+		configCache.put(site, config);
+		return config;
 	}
 
 	/**
@@ -296,7 +313,7 @@ public class Env extends ICSProxyJ {
 	 * Return the URL to render this asset using a specified template
 	 */
 	public String getAssetUrl(String c, Long cid, String template) {
-		
+
 		String outstr = Util.tmpVar();
 		String tid = ics.GetVar("tid");
 		String ttype = "Template";
