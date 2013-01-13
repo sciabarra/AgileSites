@@ -52,7 +52,7 @@ abstract class Element extends JElement with Log {
    * Call another element
    */
   def call(name: String, args: Tuple2[Symbol, String]*) = {
-    import wcs.java.util.Util.Arg
+    import wcs.java.util.Arg
     val seq = for ((k, v) <- args) yield { new Arg(k.name, v) }
     wcs.java.Element.scheduleCall(site + "/" + name, seq: _*)
   }

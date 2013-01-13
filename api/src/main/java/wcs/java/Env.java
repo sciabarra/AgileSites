@@ -1,23 +1,17 @@
 package wcs.java;
 
-import static wcs.java.Element.scheduleCall;
-import static wcs.java.util.Util.arg;
+import COM.FutureTense.Interfaces.ICS;
+import COM.FutureTense.Interfaces.IList;
+
 import static wcs.java.util.Util.toDate;
 import static wcs.java.util.Util.toInt;
 import static wcs.java.util.Util.toLong;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import wcs.core.ICSProxyJ;
-import wcs.java.tag.RenderTag;
 import wcs.java.util.Log;
 import wcs.java.util.Range;
-import wcs.java.util.Util;
-import wcs.java.util.Util.Arg;
-import COM.FutureTense.Interfaces.ICS;
-import COM.FutureTense.Interfaces.IList;
+
+import java.util.HashMap;
 
 /**
  * Env
@@ -226,33 +220,7 @@ public class Env extends ICSProxyJ {
 		return toInt(getString(ls, pos, field));
 	}
 
-	/**
-	 * Call a template by name with a specific c/cid and extra args
-	 * 
-	 */
-	public String callTemplate(String c, Long cid, String name, Arg... args) {
-		List<Arg> list = new ArrayList<Arg>();
-		list.add(arg("SITE", site));
-		list.add(arg("C", c));
-		list.add(arg("CID", cid.toString()));
-		list.add(arg("TNAME", name));
-
-		list.add(arg("TTYPE", ics.GetVar("tid") != null //
-		? "Template"
-				: "CSElement"));
-		list.add(arg("TID", ics.GetVar("tid") != null //
-		? ics.GetVar("tid")
-				: ics.GetVar("eid")));
-
-		// TODO: use the slot properly
-		list.add(arg("SLOTNAME", name.replace('/', '_')));
-
-		// copy additional args
-		for (Arg arg : args)
-			list.add(arg);
-		return scheduleCall("!RCT", list.toArray(new Arg[0]));
-	}
-
+	
 	/**
 	 * Get Error nummber
 	 */
@@ -302,33 +270,6 @@ public class Env extends ICSProxyJ {
 		return new AssetImpl(this, c, cid);
 	}
 
-	/**
-	 * Return the URL to render this asset using the configured default template
-	 */
-	public String getAssetUrl(String c, Long cid) {
-		return getAssetUrl(c, cid, config.getDefaultTemplate(c));
-	}
-
-	/**
-	 * Return the URL to render this asset using a specified template
-	 */
-	public String getAssetUrl(String c, Long cid, String template) {
-
-		String outstr = Util.tmpVar();
-		String tid = ics.GetVar("tid");
-		String ttype = "Template";
-		if (tid == null) {
-			tid = ics.GetVar("eid");
-			ttype = "CSElement";
-		}
-
-		RenderTag.gettemplateurl(outstr, template).c(c).cid(cid.toString())
-				.site(site).tid(tid).ttype(ttype).run(ics);
-
-		String res = getString(outstr);
-		ics.RemoveVar(outstr);
-		return res;
-	}
 
 	/**
 	 * Return current "c" (content type)

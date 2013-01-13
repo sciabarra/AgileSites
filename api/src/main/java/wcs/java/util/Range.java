@@ -37,4 +37,7 @@ public class Range implements Iterable<Integer> {
 		};
 	}
 
+	public String toString() {
+		return "1 .. "+stop;
+	}
 }

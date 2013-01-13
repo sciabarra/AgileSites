@@ -1,11 +1,9 @@
 package agilewcs.tests;
 
 import static java.lang.System.out;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static wcs.java.util.TestRunnerElement.getEnv;
-
-import COM.FutureTense.Interfaces.ICS;
-
-import static org.junit.Assert.*;
 
 import org.jsoup.Jsoup;
 import org.junit.Before;
@@ -14,6 +12,7 @@ import org.junit.Test;
 import wcs.java.Asset;
 import wcs.java.Env;
 import wcs.java.util.Util;
+import COM.FutureTense.Interfaces.ICS;
 
 public class AssetTest {
 
@@ -54,6 +53,19 @@ public class AssetTest {
 			if (i == 2)
 				assertTrue(id == 1351276305500L);
 		}
+
+		// out.println("*** Range(AssociatedItems):"+a.getAssocRange("AssociatedItems"));
+		for (int i : a.getAssocRange("AssociatedItems")) {
+			String s = a.getAssocType("AssociatedItems", i) + ":"
+					+ a.getAssocId("AssociatedItems", i);
+			if (i == 1)
+				assertEquals(s, "Agile_Blog:1351276304546");
+			if (i == 2)
+				assertEquals(s, "Agile_Article:1351276304506");
+			// out.println(s);
+		}
+
+		// out.println()
 	}
 
 	@Test
@@ -68,6 +80,19 @@ public class AssetTest {
 
 		// out.println("*** Summary=" + a.getString("Summary"));
 		assertTrue(a.getString("Summary").indexOf("Welcome") != -1);
+	}
+
+	@Test
+	public void testBlobUrl() {
+		a = e.getAsset("Agile_Image", 1351276306919L);
+		out.println(a.getId("Blob"));
+		String url = a.getBlobUrl("Blob", "image/jpeg");
+		assertTrue(url.startsWith("/cs/BlobServer"));
+		assertTrue(url.indexOf("blobtable=MungoBlobs") != -1);
+		assertTrue(url.indexOf("blobcol=urldata") != -1);
+		assertTrue(url.indexOf("blobkey=id") != -1);
+		assertTrue(url.indexOf("blobwhere=") != -1);
+		assertTrue(url.indexOf("blobheader=image%2Fjpeg") != -1);
 	}
 
 }

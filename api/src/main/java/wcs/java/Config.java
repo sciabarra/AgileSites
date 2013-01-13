@@ -1,6 +1,5 @@
 package wcs.java;
 
-import wcs.java.util.Log;
 import wcs.java.tag.BlobserviceTag;
 import COM.FutureTense.Interfaces.ICS;
 
@@ -12,7 +11,7 @@ import COM.FutureTense.Interfaces.ICS;
  */
 public class Config implements wcs.core.Config {
 
-	private static Log log = new Log(Config.class);
+	//private static Log log = new Log(Config.class);
 
 	private String blobId;
 	private String blobUrl;

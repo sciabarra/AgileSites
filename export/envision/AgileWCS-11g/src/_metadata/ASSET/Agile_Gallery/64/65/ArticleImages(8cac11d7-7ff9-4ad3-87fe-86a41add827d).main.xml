@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>Agile_Gallery:1351276306911</id>
+    <name>ArticleImages</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2013-01-12T15:19:11.633Z</createddate>
+    <description></description>
+    <publist>AgileWCS</publist>
+    <status>PL</status>
+    <subtype>Gallery</subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2013-01-12T15:19:11.633Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>8cac11d7-7ff9-4ad3-87fe-86a41add827d</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1351276306911</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SegRating</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>flexgrouptemplateid</name>
+        <data>
+            <stringValue>Agile_PD:1351276306712</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>Relationships</name>
+        <data/>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <list>
+    <dependency>
+      <depType>E</depType>
+      <resType>Agile_PD</resType>
+      <resId>1351276306712</resId>
+      <uid>b37aeb89-f0e9-491e-a336-ff48d0f12135</uid>
+    </dependency>
+    <dependency>
+      <depType>N</depType>
+      <resType>Agile_Gallery</resType>
+      <resId>1351276306911</resId>
+      <uid>8cac11d7-7ff9-4ad3-87fe-86a41add827d</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ASSET_TYPE</resType>
+      <resId>Agile_Gallery</resId>
+      <uid>05954eca-61d9-47a0-83f1-57857797897f</uid>
+    </dependency>
+  </list>
+</dependencies>
+==================______________________==================
+#
+#Sun Jan 13 12:36:50 CET 2013
+key=Agile_Gallery-8cac11d7-7ff9-4ad3-87fe-86a41add827d
+type=ASSETDATA
+sites=AgileWCS
+
+==================___ END METADATA ___==================-->

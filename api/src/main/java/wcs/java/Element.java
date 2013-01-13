@@ -1,11 +1,9 @@
 package wcs.java;
 
 import java.util.StringTokenizer;
-
+import wcs.java.util.Arg;
 import COM.FutureTense.Interfaces.FTValList;
 import COM.FutureTense.Interfaces.ICS;
-import wcs.java.util.Util.Arg;
-import wcs.java.util.Util.Id;
 import static java.lang.System.out;
 
 /**
@@ -16,6 +14,20 @@ import static java.lang.System.out;
  * 
  */
 public abstract class Element implements wcs.core.Element {
+	
+	
+	
+	/**
+	 * Shortcut to create an arg, to be used with a static import
+	 * 
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	public static Arg arg(String name, String value) {
+		return new Arg(name, value);
+	}
+
 
 	// separators
 	private final static String sep = "\0";
@@ -111,6 +123,8 @@ public abstract class Element implements wcs.core.Element {
 	 * 
 	 * - !ICT will invoke a insite:calltemplate
 	 * 
+	 * otherwise it will invoke a ics.Callelement
+	 * 
 	 * @param name
 	 * @param args
 	 */
@@ -136,16 +150,7 @@ public abstract class Element implements wcs.core.Element {
 		return scheduleCall(site + "/" + name, args);
 	}
 
-	/**
-	 * Generate the url to a given asset.
-	 * 
-	 * @param id
-	 * @return
-	 */
-	public String url(Id id) {
-		// TODO
-		return null;
-	}
+	
 
 	/**
 	 * The method to be overriden by an implementing template

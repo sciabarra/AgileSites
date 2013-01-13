@@ -24,63 +24,6 @@ public class Util {
 
 	// private static Log log = new Log(Util.class);
 
-	/**
-	 * Qualified Id class
-	 * 
-	 * @author msciab
-	 * 
-	 */
-	public static class Id {
-		public Id(String type, Long id) {
-			this.type = type;
-			this.id = id;
-		}
-
-		public Long id;
-		public String type;
-
-		public String toString() {
-			return type + ":" + id;
-		}
-	}
-
-	/**
-	 * Arg class
-	 * 
-	 * @author msciab
-	 * 
-	 */
-	public static class Arg {
-		public Arg(String name, String value) {
-			this.name = name;
-			this.value = value;
-		}
-
-		public String name;
-		public String value;
-	}
-
-	/**
-	 * Shortcut to create an id, to be used with a static import
-	 * 
-	 * @param type
-	 * @param id
-	 * @return
-	 */
-	public static Id id(String type, long id) {
-		return new Id(type, id);
-	}
-
-	/**
-	 * Shortcut to create an arg, to be used with a static import
-	 * 
-	 * @param name
-	 * @param value
-	 * @return
-	 */
-	public static Arg arg(String name, String value) {
-		return new Arg(name, value);
-	}
 
 	/**
 	 * Create a list from multiple arguments

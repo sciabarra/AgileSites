@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>Agile_Image:1351276306919</id>
+    <name>Leopard</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2013-01-12T15:19:42.489Z</createddate>
+    <description></description>
+    <publist>AgileWCS</publist>
+    <status>ED</status>
+    <subtype>Image</subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2013-01-12T15:21:11.586Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>8f75c2f1-b372-4183-9a63-2bca356f3b75</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1351276306919</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SegRating</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>flextemplateid</name>
+        <data>
+            <stringValue>Agile_CD:1351276306733</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>Relationships</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Blob</name>
+        <data>
+            <blobValue>
+                <filename>Leopard.Blob(8f75c2f1-b372-4183-9a63-2bca356f3b75).leopard.jpg</filename>
+                <foldername></foldername>
+                <filedata></filedata>
+            </blobValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>MimeType</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>renderid</name>
+        <data/>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+    <parent>
+        <parentDefName>Gallery</parentDefName>
+        <asset>Agile_Gallery:1351276306911</asset>
+    </parent>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <list>
+    <dependency>
+      <depType>E</depType>
+      <resType>Agile_A</resType>
+      <resId>1351276306816</resId>
+      <uid>8c802d92-fdc3-460a-9873-e8144ed178a1</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>Agile_CD</resType>
+      <resId>1351276306733</resId>
+      <uid>91b909c7-252c-44d0-8845-4dd70353a0bb</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>Agile_Gallery</resType>
+      <resId>1351276306911</resId>
+      <uid>8cac11d7-7ff9-4ad3-87fe-86a41add827d</uid>
+    </dependency>
+    <dependency>
+      <depType>N</depType>
+      <resType>Agile_Image</resType>
+      <resId>1351276306919</resId>
+      <uid>8f75c2f1-b372-4183-9a63-2bca356f3b75</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ASSET_TYPE</resType>
+      <resId>Agile_Image</resId>
+      <uid>d4f74b18-d4b2-4c16-bfc7-df20faa175d6</uid>
+    </dependency>
+  </list>
+</dependencies>
+==================______________________==================
+#
+#Sun Jan 13 12:36:51 CET 2013
+storable0=ASSET/Agile_Image/74/14/Leopard.Blob(8f75c2f1-b372-4183-9a63-2bca356f3b75).leopard.jpg||_storable_type\=Leopard.Blob%288f75c2f1-b372-4183-9a63-2bca356f3b75%29.leopard.jpg&_blob_prop\=Blob&_value_count\=S
+key=Agile_Image-8f75c2f1-b372-4183-9a63-2bca356f3b75
+type=ASSETDATA
+sites=AgileWCS
+
+==================___ END METADATA ___==================-->

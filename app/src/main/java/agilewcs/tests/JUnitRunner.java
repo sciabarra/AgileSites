@@ -11,7 +11,8 @@ public class JUnitRunner extends TestRunnerElement {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Class[] tests() {
-		return new Class[] { AllTests.class, EnvTest.class, AssetTest.class };
+		return new Class[] { AllTests.class, EnvTest.class, AssetTest.class,
+				UrlTest.class };
 	}
 
 }

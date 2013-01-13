@@ -5,6 +5,6 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ EnvTest.class, AssetTest.class })
+@SuiteClasses({ EnvTest.class, AssetTest.class, UrlTest.class })
 public class AllTests {
 }

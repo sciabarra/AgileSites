@@ -3,6 +3,7 @@ package wcs.java;
 import java.util.Date;
 import java.util.List;
 
+import wcs.java.util.Arg;
 import wcs.java.util.Log;
 
 import com.fatwire.assetapi.data.AttributeData;
@@ -208,20 +209,21 @@ public abstract class Asset {
 	public Long getId(String attribute) {
 		return null;
 	}
-	
+
 	/**
-	 * String get blob url of the first attribute
+	 * String get blob url of the first attribute, with optional args
+	 * 
 	 */
-	public String getBlobUrl(String attribute) {
-		return null;		
+	public String getBlobUrl(String attribute, String mimeType, Arg... args) {
+		return null;
 	}
-	
-	
+
 	/**
-	 * String get blob url of the nth attribute
+	 * String get blob url of the nth attribute, with optional args
 	 */
-	public String getBlobUrl(String attribute, int pos) {
-		return null;		
+	public String getBlobUrl(String attribute, int pos, String mimeType,
+			Arg... args) {
+		return null;
 	}
 
 	/**
@@ -309,6 +311,28 @@ public abstract class Asset {
 	 */
 	public Iterable<Integer> getRange(String attribute) {
 		return new wcs.java.util.Range(0);
+	}
+
+	/**
+	 * Call the template by name with current c/cid and extra some optional args
+	 * 
+	 */
+	public String call(String name, Arg... args) {
+		return "";
+	}
+
+	/**
+	 * Return the URL to render this asset using the configured default template
+	 */
+	public String getUrl(Arg... args) {
+		return null;
+	}
+
+	/**
+	 * Return the URL to render this asset using a specified template
+	 */
+	public String getUrl(String template, Arg... args) {
+		return null;
 	}
 
 	/**
