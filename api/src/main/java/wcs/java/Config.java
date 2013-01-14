@@ -11,11 +11,12 @@ import COM.FutureTense.Interfaces.ICS;
  */
 public class Config implements wcs.core.Config {
 
-	//private static Log log = new Log(Config.class);
+	// private static Log log = new Log(Config.class);
 
 	private String blobId;
 	private String blobUrl;
 	private String blobTable;
+	private ICS ics;
 
 	/**
 	 * Create an unitialized config - init must be called afterwards to complete
@@ -34,12 +35,14 @@ public class Config implements wcs.core.Config {
 	}
 
 	/**
-	 * INitialize a config
+	 * Initialize a config
 	 * 
 	 * @param ics
 	 */
+	@Override
 	public void init(ICS ics) {
-		String tmp = "_TMP_" + System.currentTimeMillis();
+		this.ics = ics;
+		String tmp = "_" + System.currentTimeMillis();
 		BlobserviceTag.getidcolumn(tmp + "id").run(ics);
 		BlobserviceTag.geturlcolumn(tmp + "url").run(ics);
 		BlobserviceTag.gettablename(tmp + "tbl").run(ics);
@@ -49,6 +52,17 @@ public class Config implements wcs.core.Config {
 		ics.RemoveVar(tmp + "id");
 		ics.RemoveVar(tmp + "url");
 		ics.RemoveVar(tmp + "tbl");
+	}
+
+	/**
+	 * Get property from agilewcs config or from the system.ini
+	 * 
+	 */
+	public String getProperty(String name) {
+		String val = wcs.core.WCS.getProperty(name);
+		if (val != null)
+			return val;
+		return ics.GetProperty(name);
 	}
 
 	/**
@@ -96,5 +110,4 @@ public class Config implements wcs.core.Config {
 		throw new RuntimeException(
 				"Invoking default config - you need to define a Config class for your site");
 	}
-
 }

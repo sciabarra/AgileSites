@@ -33,4 +33,10 @@ public interface Config {
 	 */
 	public String getDefaultTemplate(String type);
 
+	/**
+	 * Get property
+	 * 
+	 */
+	public String getProperty(String name);
+
 }

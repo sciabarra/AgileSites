@@ -1,6 +1,5 @@
 package agilewcs;
 
-
 public class Config extends wcs.java.Config {
 
 	@Override
@@ -19,7 +18,7 @@ public class Config extends wcs.java.Config {
 
 	@Override
 	public String getDefaultTemplate(String type) {
-		return "AgileWCS/AwLayout";
+		return "Router";
 	}
 
 }

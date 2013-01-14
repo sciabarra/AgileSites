@@ -19,10 +19,20 @@ public class CSElement extends Asset {
 	private Class<?> elementClass;
 	private String elementName;
 
+	/**
+	 * Create a CSElement invoking the given elementClass
+	 * 
+	 * @param name
+	 * @param elementClass
+	 */
 	public CSElement(String name, Class<?> elementClass) {
 		this(name, elementClass, null);
 	}
 
+	/**
+	 * Create invoking the given elementClass with a specifice elementName
+	 * (useful for fixed elements like attribute editors)
+	 */
 	public CSElement(String name, Class<?> elementClass, String elementName) {
 		super("CSElement", "", name);
 		this.elementClass = elementClass;

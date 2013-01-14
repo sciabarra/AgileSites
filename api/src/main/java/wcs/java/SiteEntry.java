@@ -15,14 +15,24 @@ public class SiteEntry extends Asset {
 
 	private boolean wrapper;
 
-	public SiteEntry(String name) {
-		this(name, true);
-	}
-
+	/**
+	 * Create a site entry, specifying if it is a wrapper or not
+	 * 
+	 * @param name
+	 * @param wrapper
+	 */
 	public SiteEntry(String name, boolean wrapper) {
 		this(name, wrapper, null);
 	}
 
+	/**
+	 * Create a site entry, specifying if it is a wrapper and the element it
+	 * actually calls (otherwise it is automatically calculated from the name)
+	 * 
+	 * @param name
+	 * @param wrapper
+	 * @param elementname
+	 */
 	public SiteEntry(String name, boolean wrapper, String elementname) {
 		super("SiteEntry", "", name);
 		this.elementname = elementname;

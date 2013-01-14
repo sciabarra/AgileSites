@@ -1,10 +1,10 @@
-package agilewcs.template;
+package agilewcs.page;
 
 import wcs.java.Element;
 import wcs.java.Env;
 import wcs.java.Picker;
 
-public class AwHeader extends Element {
+public class HomeLayout extends Element {
 
 	@Override
 	public String apply(Env env) {
@@ -13,7 +13,7 @@ public class AwHeader extends Element {
 		p.select("head") //
 				.attr("link", "href", "/cs/css/default.css")//
 				.unselect() //
-				.replace("#footer", call("DJFooter", //
+				.replace("#sidebar", call("AwFooter", //
 						arg("name", env.getString("name"))));
 		return p.html();
 	}

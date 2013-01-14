@@ -15,6 +15,12 @@ import com.fatwire.assetapi.data.AttributeData;
 import com.fatwire.assetapi.data.MutableAssetData;
 
 public class Template extends Asset {
+	
+	public final static char UNSPECIFIED = '\0';
+	public final static char INTERNAL = 'b';
+	public final static char STREAMED = 'r';
+	public final static char EXTERNAL = 'x';
+	public final static char LAYOUT = 'l';
 
 	// private final static Log log = new Log(Template.class);
 
@@ -26,13 +32,7 @@ public class Template extends Asset {
 
 	private String myname;
 
-	/**
-	 * Create a typeless template with a given top element
-	 * 
-	 */
-	public Template(String name, Class<?> elementClass) {
-		this("", name, elementClass);
-	}
+	private char ttype;
 
 	/**
 	 * Create a template with given subtype, name, and top element
@@ -44,15 +44,17 @@ public class Template extends Asset {
 	 * @param description
 	 * @param element
 	 */
-	public Template(String subtype, String name, Class<?> elementClass) {
+	public Template(String subtype, String name, char ttype,
+			Class<?> elementClass) {
 		super("Template", subtype, name);
 		this.element = elementClass.getCanonicalName();
-
+		this.ttype = ttype;
 		if (subtype != null && subtype.trim().length() == 0)
 			myname = name;
 		else
 			myname = subtype + "/" + name;
 
+		this.ttype=ttype;
 		cache("false", "flase");
 	}
 
@@ -155,7 +157,7 @@ public class Template extends Asset {
 		data.getAttributeData("element").setData(
 				Util.list(attrStruct("Structure Element", mapElement)));
 
-		data.getAttributeData("ttype").setData("x");
+		data.getAttributeData("ttype").setData(ttype == UNSPECIFIED ? null : ""+ttype);
 
 		data.getAttributeData("pagecriteria").setDataAsList(
 				Util.listString("c", "cid", "context", "p", "rendermode",

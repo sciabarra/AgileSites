@@ -4,12 +4,14 @@ import scalawcs.template._
 
 class ScalaSetup extends wcs.scala.Setup {
 
+  import TemplateType._
+
   def site = Site("ScalaWCS")
 
+  // template & cselement
   def assets: List[Asset] =
-    // template & cselement
-    Template("SwLayout", classOf[scalawcs.template.SwLayout], description = "ScalaWCS Layout (Scala)") ::
-      Template("SwHeader", classOf[scalawcs.template.SwHeader], description = "ScalaWCS Header (Scala)") ::
+    Template("", "SwLayout", LAYOUT, classOf[scalawcs.template.SwLayout], description = "ScalaWCS Layout (Scala)") ::
+      Template("", "SwHeader", INTERNAL, classOf[scalawcs.template.SwHeader], description = "ScalaWCS Header (Scala)") ::
       CSElement("SwFooter", classOf[scalawcs.cselement.SwFooter], description = "ScalaWCS Footer (Scala)") ::
       // test runner
       CSElement("SpecRunner", classOf[scalawcs.specs.SpecRunner], description = "Spec Runner (Scala)") ::
@@ -22,7 +24,6 @@ class ScalaSetup extends wcs.scala.Setup {
         <PRESENTATIONOBJECT NAME="TESTAREA">
           <TESTAREA XSIZE="40" YSIZE="10" WRAPSTYLE="SOFT" PERMISSION="Administrators"></TESTAREA>
         </PRESENTATIONOBJECT>) ::
-        */
-
+      */
 }
 

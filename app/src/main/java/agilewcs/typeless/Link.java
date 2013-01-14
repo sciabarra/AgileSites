@@ -1,9 +1,9 @@
-package agilewcs.cselement;
+package agilewcs.typeless;
 
 import wcs.java.Element;
 import wcs.java.Env;
 
-public class AwFooter extends Element {
+public class Link extends Element {
 
 	@Override
 	public String apply(Env env) {

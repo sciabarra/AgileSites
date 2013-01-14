@@ -414,6 +414,7 @@ class AssetImpl extends wcs.java.Asset {
 				.site(i.GetVar("site")).tid(tid).ttype(ttype).run(i);
 
 		String res = getString(outstr);
+		log.debug("getUrl: outstr="+res);
 		i.RemoveVar(outstr);
 		return res;
 	}

@@ -17,10 +17,9 @@ public class Dispatcher {
 	 * @param ics
 	 * @return
 	 */
-	static Dispatcher getDispatcher(ICS ics) {
+	static Dispatcher getDispatcher(String jarPath) {
 		if (dispatcher == null) {
-			File jar = new File(ics.GetProperty("agilewcs.jar"));
-
+			File jar = new File(jarPath);
 			if (jar.exists()) {
 				WCS.debug("[Dispatcher.getDispatcher] from " + jar);
 				dispatcher = new Dispatcher(jar);
