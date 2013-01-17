@@ -15,7 +15,7 @@ import com.fatwire.assetapi.data.AttributeData;
 import com.fatwire.assetapi.data.MutableAssetData;
 
 public class Template extends Asset {
-	
+
 	public final static char UNSPECIFIED = '\0';
 	public final static char INTERNAL = 'b';
 	public final static char STREAMED = 'r';
@@ -24,13 +24,15 @@ public class Template extends Asset {
 
 	// private final static Log log = new Log(Template.class);
 
-	private String element;
+	private String rootelement;
+	private String fileelement;
+	private String folderelement;
+
+	private String clazz;
 
 	private String cscache;
 
 	private String sscache;
-
-	private String myname;
 
 	private char ttype;
 
@@ -46,16 +48,24 @@ public class Template extends Asset {
 	 */
 	public Template(String subtype, String name, char ttype,
 			Class<?> elementClass) {
-		super("Template", subtype, name);
-		this.element = elementClass.getCanonicalName();
-		this.ttype = ttype;
-		if (subtype != null && subtype.trim().length() == 0)
-			myname = name;
-		else
-			myname = subtype + "/" + name;
+		super("Template", subtype, //
+				subtype == null || subtype.trim().length() == 0 //
+				? name : subtype + "/" + name //
+		);
+		this.clazz = elementClass.getCanonicalName();
+		if (subtype == null || subtype.trim().length() == 0) {
+			subtype = "";
+			rootelement = "/" + name;
+			folderelement = "Typeless";
+		} else {
+			subtype = subtype.trim();
+			rootelement = subtype + "/" + name;
+			folderelement = subtype;
+		}
+		fileelement = name + "_" + clazz + ".jsp";
 
-		this.ttype=ttype;
-		cache("false", "flase");
+		this.ttype = ttype;
+		cache("false", "false");
 	}
 
 	/**
@@ -72,13 +82,8 @@ public class Template extends Asset {
 		return this;
 	}
 
-	@Override
-	public String getName() {
-		return myname;
-	}
-
 	public String getElement() {
-		return element;
+		return rootelement;
 	}
 
 	public String getCscache() {
@@ -115,17 +120,15 @@ public class Template extends Asset {
 
 		// String rootelement = getSubtype() + "/" + getName();
 
-		final String folder = getSubtype().equals("") ? "Typeless"
-				: getSubtype();
-		final String file = element + ".jsp";
-		final String body = template(element);
+		final String body = template(clazz);
 
-		final AttributeData blob = attrBlob("url", folder, file, body);
+		final AttributeData blob = attrBlob("url", folderelement, fileelement,
+				body);
 
 		HashMap mapElement = new HashMap<String, Object>();
 
-		mapElement.put("elementname", attrString("elementname", element));
-		mapElement.put("description", attrString("description", element));
+		mapElement.put("elementname", attrString("elementname", rootelement));
+		mapElement.put("description", attrString("description", rootelement));
 		mapElement.put("resdetails1",
 				attrString("resdetails1", "tid=" + data.getAssetId().getId()));
 		mapElement.put(
@@ -138,7 +141,7 @@ public class Template extends Asset {
 		mapElement.put("url", blob);
 
 		HashMap mapSiteEntry = new HashMap<String, Object>();
-		mapSiteEntry.put("pagename", attrString("pagename", element));
+		mapSiteEntry.put("pagename", attrString("pagename", rootelement));
 		mapSiteEntry.put(
 				"defaultarguments", //
 				attrArray(
@@ -152,16 +155,18 @@ public class Template extends Asset {
 
 		data.getAttributeData("category").setData("banr");
 
-		data.getAttributeData("rootelement").setData(element);
+		data.getAttributeData("rootelement").setData(rootelement);
 
 		data.getAttributeData("element").setData(
 				Util.list(attrStruct("Structure Element", mapElement)));
 
-		data.getAttributeData("ttype").setData(ttype == UNSPECIFIED ? null : ""+ttype);
+		data.getAttributeData("ttype").setData(
+				ttype == UNSPECIFIED ? null : "" + ttype);
 
+		// default page criteria
 		data.getAttributeData("pagecriteria").setDataAsList(
-				Util.listString("c", "cid", "context", "p", "rendermode",
-						"site", "sitepfx", "ft_ss"));
+				Util.listString("c", "cid", "context", /* "p", */"rendermode",
+						"site", /* "sitepfx", */"ft_ss"));
 
 		data.getAttributeData("acl").setDataAsList(Util.listString(""));
 

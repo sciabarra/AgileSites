@@ -213,7 +213,7 @@ public class Util {
 			String filename, String value) {
 		AttributeTypeEnum type = AttributeTypeEnum.URL;
 		return new AttributeDataImpl(def(name, type), name, type,
-				new BlobObjectImpl(filename, folder, value.getBytes()));
+				new BlobObjectImpl(folder+"/"+filename, folder, value.getBytes()));
 
 	}
 

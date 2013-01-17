@@ -3,8 +3,8 @@ package wcs.scala
 import wcs.scala._
 import wcs.java.{ Element => JElement }
 import scala.xml.NodeSeq
-import COM.FutureTense.Interfaces.ICS
 import scala.xml.NodeBuffer
+import COM.FutureTense.Interfaces.ICS
 
 /**
  * The element implementation
@@ -42,7 +42,7 @@ abstract class Element extends JElement with Log {
       
     } catch {
       // return the exception
-      case ex =>
+      case ex: Throwable =>
         ex.printStackTrace();
         ex.getMessage();
     }

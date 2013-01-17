@@ -16,7 +16,7 @@ trait Specification {
         f
         //println("e qua")
       } catch {
-        case e => println("??? Unexpected Exception: " + e)
+        case e: Throwable => println("??? Unexpected Exception: " + e)
       }
       level = level - 1
     }
@@ -27,7 +27,7 @@ trait Specification {
     val (a, ae) = try {
       (_a, null)
     } catch {
-      case e => (null, e)
+      case e: Throwable => (null, e)
     }
 
     def must_==(b: Any) {
@@ -49,7 +49,7 @@ trait Specification {
     }
 
     def must(b: Throwable) {
-     
+
       if (ae == null) {
         println("!!! Expected Exception " + b.getClass)
         println("??? no exception thrown")

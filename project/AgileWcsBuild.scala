@@ -6,6 +6,8 @@ import AssemblyKeys._
 import com.typesafe.sbteclipse.plugin.EclipsePlugin.EclipseKeys
 
 object AgileWcsBuild extends Build {
+  
+  val agileVersion = "0.3"
 
   // settings
   lazy val wcsHome = AgileWcsSupport.wcsHome
@@ -75,26 +77,22 @@ object AgileWcsBuild extends Build {
       libraryDependencies ++= coreDependencies,
       publishArtifact in packageDoc := false,
       name := "agilewcs-core",
-      version <<= (wcsVersion) { v => "0.4_"+ v }, 
+      version <<= (wcsVersion) { v => agileVersion+"_"+ v }, 
         // if you change this, fix dependencies, too!
       coreGeneratorTask))
 
-  /// API 
-  //val commonDependencies = coreDependencies ++
-  //  Seq("org.agilewcs" %% "agilewcs-core" % "0.4_7.6")
-    
-
+     
   lazy val api: Project = Project(
     id = "api",
     base = file("api"),
     settings = commonSettings ++ Seq(
       //libraryDependencies ++= commonDependencies,
       libraryDependencies <++= (wcsVersion) { 
-          v => val nv = "0.4_"+v 
+          v => val nv = agileVersion+"_"+v 
           coreDependencies ++ Seq("org.agilewcs" %% "agilewcs-core" % nv)
       },
       name := "agilewcs-api",
-      version := "0.3"))
+      version := agileVersion))
 
   /// APP 
   lazy val app: Project = Project(
@@ -103,11 +101,11 @@ object AgileWcsBuild extends Build {
     settings = commonSettings ++ Seq(
       //libraryDependencies ++= commonDependencies,
       libraryDependencies <++= (wcsVersion) { 
-          v => val nv = "0.4_"+v
+          v => val nv = agileVersion+"_"+v
           coreDependencies ++ Seq("org.agilewcs" %% "agilewcs-core" % nv)
       },
       name := "agilewcs-app",
-      version := "0.3")) dependsOn (api)
+      version := agileVersion)) dependsOn (api)
 
   /// ALL
   lazy val all: Project = Project(
@@ -116,11 +114,11 @@ object AgileWcsBuild extends Build {
     settings = commonSettings ++ assemblySettings ++ Seq(
       //libraryDependencies ++= commonDependencies,
       libraryDependencies <++= (wcsVersion) { 
-          v => val nv = "0.4_"+v
+          v => val nv = agileVersion+"_"+v
           coreDependencies ++ Seq("org.agilewcs" %% "agilewcs-core" % nv)
       },
       name := "agilewcs-all",
-      version := "0.3",
+      version := agileVersion,
       wcsCsdtTask,
       wcsCmTask,
       wcsConfigTask,
@@ -132,5 +130,4 @@ object AgileWcsBuild extends Build {
       EclipseKeys.skipProject := true,
       assembleArtifact in packageScala := false,
       excludedJars in assembly <<= (fullClasspath in assembly))) dependsOn (app) aggregate (app, api)
-
 }
