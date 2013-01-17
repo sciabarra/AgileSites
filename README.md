@@ -1,4 +1,6 @@
-# AgileWCS 0.3
+# AgileWCS 0.3 (Rick)
+
+(Status: Development Branch - almost stable)
 
 This project is an Agile Development framework for Oracle WebCenter Sites.
 
