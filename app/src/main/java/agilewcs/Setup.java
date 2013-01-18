@@ -19,12 +19,12 @@ public class Setup extends wcs.java.Setup {
 
 				// layout & cselements
 
-				
-				new Template("", "AwLayout", Template.EXTERNAL,
-						agilewcs.typeless.Layout.class)//
-						.description("Header (Java)"),
-			
 				/*
+				 * new Template("", "AwLayout", Template.EXTERNAL,
+				 * agilewcs.typeless.Layout.class)//
+				 * .description("Header (Java)"),
+				 */
+
 				new Template("", "AwHeader", Template.INTERNAL,
 						agilewcs.typeless.Header.class)//
 						.description("Header (Java)"),
@@ -32,13 +32,12 @@ public class Setup extends wcs.java.Setup {
 				new Template("", "AwLink", Template.INTERNAL,
 						agilewcs.typeless.Link.class)//
 						.description("Link (Java)"),
-				*/
-						
+
 				new Template("Page", "AwLayout", Template.LAYOUT,
 						agilewcs.page.Layout.class)//
 						.cache("false", "false") //
-						.description("Default Page Layout (Java)"), //
-				/*
+						.description("Page Layout (Java)"), //
+
 				new Template("Page", "AwLayout/Home", Template.LAYOUT,
 						agilewcs.page.LayoutHome.class)//
 						.cache("false", "false") //
@@ -71,9 +70,9 @@ public class Setup extends wcs.java.Setup {
 						agilewcs.article.Detail.class)//
 						.cache("false", "false") //
 						.description("Article Detail (Java)"), //
-				*/
+
 				// test runner
 				new CSElement("JUnitRunner", agilewcs.tests.JUnitRunner.class), //
-				new SiteEntry("JUnitRunner", true) };
+				new SiteEntry("JUnitRunner", false) };
 	}
 }
