@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>Agile_Image:1351276306919</id>
-    <name>Leopard</name>
+    <id>Page:1351276311075</id>
+    <name>Home</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-01-12T15:19:42.489Z</createddate>
+    <createddate>2013-01-17T22:59:22.337Z</createddate>
     <description></description>
     <publist>AgileWCS</publist>
-    <status>ED</status>
-    <subtype>Image</subtype>
+    <status>PL</status>
+    <subtype>Blog</subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-01-12T15:21:11.586Z</updateddate>
+    <updateddate>2013-01-17T23:00:30.927Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -33,7 +33,7 @@
     <attribute>
         <name>template</name>
         <data>
-            <stringValue></stringValue>
+            <stringValue>Page/AwLayout</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -53,13 +53,13 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>8f75c2f1-b372-4183-9a63-2bca356f3b75</stringValue>
+            <stringValue>f3e94ed2-5770-4f75-99b3-4d95fa16198b</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351276306919</longValue>
+            <longValue>1351276311075</longValue>
         </data>
     </attribute>
     <attribute>
@@ -71,40 +71,48 @@
         <data/>
     </attribute>
     <attribute>
+        <name>category</name>
+        <data>
+            <stringValue>acct</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SPTParent</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>SPTRank</name>
+        <data>
+            <integerValue>1</integerValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SPTNCode</name>
+        <data>
+            <stringValue>Placed</stringValue>
+        </data>
+    </attribute>
+    <attribute>
         <name>flextemplateid</name>
         <data>
-            <stringValue>Agile_CD:1351276306733</stringValue>
+            <stringValue>PageDefinition:1351276304576</stringValue>
         </data>
     </attribute>
     <attribute>
-        <name>Relationships</name>
-        <data/>
-    </attribute>
-    <attribute>
-        <name>Blob</name>
+        <name>SideBlocks</name>
         <data>
-            <blobValue>
-                <filename>Leopard.Blob(8f75c2f1-b372-4183-9a63-2bca356f3b75).leopard.jpg</filename>
-                <foldername></foldername>
-                <filedata></filedata>
-            </blobValue>
+            <stringList>Agile_Article:1351276305500</stringList>
         </data>
-    </attribute>
-    <attribute>
-        <name>MimeType</name>
-        <data/>
-    </attribute>
-    <attribute>
-        <name>renderid</name>
-        <data/>
     </attribute>
     <associations>
         <href>myPathassociations</href>
+        <association>
+            <href>myPathassociations/AssociatedItems</href>
+            <name>AssociatedItems</name>
+            <associatedAsset>Agile_Article:1351276304506</associatedAsset>
+            <associatedAsset>Agile_Blog:1351276304546</associatedAsset>
+        </association>
     </associations>
-    <parent>
-        <parentDefName>Gallery</parentDefName>
-        <asset>Agile_Gallery:1351276306911</asset>
-    </parent>
 </ns2:assetBean>
 
 <!--==================___ METADATA ___================
@@ -112,41 +120,46 @@
   <list>
     <dependency>
       <depType>E</depType>
-      <resType>Agile_A</resType>
-      <resId>1351276306816</resId>
-      <uid>8c802d92-fdc3-460a-9873-e8144ed178a1</uid>
+      <resType>Agile_Article</resType>
+      <resId>1351276304506</resId>
+      <uid>443dd833-bcaf-42c9-99a8-ac4dcf8b57cd</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
-      <resType>Agile_CD</resType>
-      <resId>1351276306733</resId>
-      <uid>91b909c7-252c-44d0-8845-4dd70353a0bb</uid>
+      <resType>Agile_Article</resType>
+      <resId>1351276305500</resId>
+      <uid>56c40e87-b24c-4edc-9288-4bbc96e01259</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
-      <resType>Agile_Gallery</resType>
-      <resId>1351276306911</resId>
-      <uid>8cac11d7-7ff9-4ad3-87fe-86a41add827d</uid>
+      <resType>Agile_Blog</resType>
+      <resId>1351276304546</resId>
+      <uid>e9fca052-d0b2-4deb-b9ed-4ee190222d96</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351276304568</resId>
+      <uid>7c71c48d-d882-488f-826c-5cce2c433b47</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageDefinition</resType>
+      <resId>1351276304576</resId>
+      <uid>db5fe309-bb14-435f-816d-80a15ab0e6c6</uid>
     </dependency>
     <dependency>
       <depType>N</depType>
-      <resType>Agile_Image</resType>
-      <resId>1351276306919</resId>
-      <uid>8f75c2f1-b372-4183-9a63-2bca356f3b75</uid>
-    </dependency>
-    <dependency>
-      <depType>E</depType>
-      <resType>@ASSET_TYPE</resType>
-      <resId>Agile_Image</resId>
-      <uid>d4f74b18-d4b2-4c16-bfc7-df20faa175d6</uid>
+      <resType>Page</resType>
+      <resId>1351276311075</resId>
+      <uid>f3e94ed2-5770-4f75-99b3-4d95fa16198b</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Fri Jan 18 18:18:07 CET 2013
-storable0=ASSET/Agile_Image/74/14/Leopard.Blob(8f75c2f1-b372-4183-9a63-2bca356f3b75).leopard.jpg||_storable_type\=Leopard.Blob%288f75c2f1-b372-4183-9a63-2bca356f3b75%29.leopard.jpg&_blob_prop\=Blob&_value_count\=S
-key=Agile_Image-8f75c2f1-b372-4183-9a63-2bca356f3b75
+#Fri Jan 18 08:53:21 CET 2013
+key=Page-f3e94ed2-5770-4f75-99b3-4d95fa16198b
 type=ASSETDATA
 sites=AgileWCS
 

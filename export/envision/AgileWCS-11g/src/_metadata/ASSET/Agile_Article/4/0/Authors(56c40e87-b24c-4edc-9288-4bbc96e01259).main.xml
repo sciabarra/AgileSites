@@ -103,6 +103,10 @@
         </data>
     </attribute>
     <attribute>
+        <name>Image</name>
+        <data/>
+    </attribute>
+    <attribute>
         <name>renderid</name>
         <data/>
     </attribute>
@@ -164,7 +168,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Wed Jan 02 19:33:50 CET 2013
+#Fri Jan 18 18:18:07 CET 2013
 key=Agile_Article-56c40e87-b24c-4edc-9288-4bbc96e01259
 type=ASSETDATA
 sites=AgileWCS
