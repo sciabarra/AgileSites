@@ -19,11 +19,9 @@ public class Setup extends wcs.java.Setup {
 
 				// layout & cselements
 
-				/*
-				 * new Template("", "AwLayout", Template.EXTERNAL,
-				 * agilewcs.typeless.Layout.class)//
-				 * .description("Header (Java)"),
-				 */
+				new Template("", "AwLayout", Template.EXTERNAL,
+						agilewcs.typeless.Layout.class)//
+						.description("Header (Java)"),
 
 				new Template("", "AwHeader", Template.INTERNAL,
 						agilewcs.typeless.Header.class)//
