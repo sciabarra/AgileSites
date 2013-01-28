@@ -8,7 +8,7 @@ public class Footer extends Element {
 	@Override
 	public String apply(Env env) {
 		String name = env.getString("name");
-		return "Hello, " + (name == null ? "World" : name);
+		return "Ciao, " + (name == null ? "World" : name);
 	}
 
 }
