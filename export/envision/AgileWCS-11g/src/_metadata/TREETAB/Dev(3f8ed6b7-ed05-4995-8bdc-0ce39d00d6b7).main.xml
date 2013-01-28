@@ -46,18 +46,7 @@
           </entry>
         </hashtable>
       </roles>
-      <sites class="com.openmarket.xcelerate.common.SiteList">
-        <hashtable>
-          <entry>
-            <long>1351276303970</long>
-            <long>1351276303970</long>
-          </entry>
-          <entry>
-            <long>1351276303801</long>
-            <long>1351276303801</long>
-          </entry>
-        </hashtable>
-      </sites>
+      <sites class="com.openmarket.xcelerate.common.SiteList"/>
       <nodeOpenedPic>/cs/Xcelerate/OMTree/TreeImages/minus.gif</nodeOpenedPic>
       <nodeClosedPic>/cs/Xcelerate/OMTree/TreeImages/plus.gif</nodeClosedPic>
       <sections class="com.openmarket.xcelerate.treetab.SectionList">
@@ -111,18 +100,7 @@
           <com.openmarket.xcelerate.treetab.Section>
             <name>ContentAttribute</name>
             <populateURL>OpenMarket/Xcelerate/AssetType/ContentAttribute/LoadTree</populateURL>
-            <sites class="com.openmarket.xcelerate.common.SiteList">
-              <hashtable>
-                <entry>
-                  <long>1351276303970</long>
-                  <long>1351276303970</long>
-                </entry>
-                <entry>
-                  <long>1351276303801</long>
-                  <long>1351276303801</long>
-                </entry>
-              </hashtable>
-            </sites>
+            <sites class="com.openmarket.xcelerate.common.SiteList"/>
             <roles class="com.openmarket.xcelerate.common.RoleList">
               <hashtable>
                 <entry>
@@ -135,18 +113,7 @@
           <com.openmarket.xcelerate.treetab.Section>
             <name>AttrTypes</name>
             <populateURL>OpenMarket/Xcelerate/AssetType/AttrTypes/LoadTree</populateURL>
-            <sites class="com.openmarket.xcelerate.common.SiteList">
-              <hashtable>
-                <entry>
-                  <long>1351276303970</long>
-                  <long>1351276303970</long>
-                </entry>
-                <entry>
-                  <long>1351276303801</long>
-                  <long>1351276303801</long>
-                </entry>
-              </hashtable>
-            </sites>
+            <sites class="com.openmarket.xcelerate.common.SiteList"/>
             <roles class="com.openmarket.xcelerate.common.RoleList">
               <hashtable>
                 <entry>
@@ -159,18 +126,7 @@
           <com.openmarket.xcelerate.treetab.Section>
             <name>ContentDef</name>
             <populateURL>OpenMarket/Xcelerate/AssetType/ContentDef/LoadTree</populateURL>
-            <sites class="com.openmarket.xcelerate.common.SiteList">
-              <hashtable>
-                <entry>
-                  <long>1351276303970</long>
-                  <long>1351276303970</long>
-                </entry>
-                <entry>
-                  <long>1351276303801</long>
-                  <long>1351276303801</long>
-                </entry>
-              </hashtable>
-            </sites>
+            <sites class="com.openmarket.xcelerate.common.SiteList"/>
             <roles class="com.openmarket.xcelerate.common.RoleList">
               <hashtable>
                 <entry>
@@ -183,18 +139,7 @@
           <com.openmarket.xcelerate.treetab.Section>
             <name>ContentParentDef</name>
             <populateURL>OpenMarket/Xcelerate/AssetType/ContentParentDef/LoadTree</populateURL>
-            <sites class="com.openmarket.xcelerate.common.SiteList">
-              <hashtable>
-                <entry>
-                  <long>1351276303970</long>
-                  <long>1351276303970</long>
-                </entry>
-                <entry>
-                  <long>1351276303801</long>
-                  <long>1351276303801</long>
-                </entry>
-              </hashtable>
-            </sites>
+            <sites class="com.openmarket.xcelerate.common.SiteList"/>
             <roles class="com.openmarket.xcelerate.common.RoleList">
               <hashtable>
                 <entry>
@@ -207,18 +152,7 @@
           <com.openmarket.xcelerate.treetab.Section>
             <name>PageAttribute</name>
             <populateURL>OpenMarket/Xcelerate/AssetType/PageAttribute/LoadTree</populateURL>
-            <sites class="com.openmarket.xcelerate.common.SiteList">
-              <hashtable>
-                <entry>
-                  <long>1351276303970</long>
-                  <long>1351276303970</long>
-                </entry>
-                <entry>
-                  <long>1351276303801</long>
-                  <long>1351276303801</long>
-                </entry>
-              </hashtable>
-            </sites>
+            <sites class="com.openmarket.xcelerate.common.SiteList"/>
             <roles class="com.openmarket.xcelerate.common.RoleList">
               <hashtable>
                 <entry>
@@ -231,18 +165,7 @@
           <com.openmarket.xcelerate.treetab.Section>
             <name>PageDefinition</name>
             <populateURL>OpenMarket/Xcelerate/AssetType/PageDefinition/LoadTree</populateURL>
-            <sites class="com.openmarket.xcelerate.common.SiteList">
-              <hashtable>
-                <entry>
-                  <long>1351276303970</long>
-                  <long>1351276303970</long>
-                </entry>
-                <entry>
-                  <long>1351276303801</long>
-                  <long>1351276303801</long>
-                </entry>
-              </hashtable>
-            </sites>
+            <sites class="com.openmarket.xcelerate.common.SiteList"/>
             <roles class="com.openmarket.xcelerate.common.RoleList">
               <hashtable>
                 <entry>
@@ -255,18 +178,7 @@
           <com.openmarket.xcelerate.treetab.Section>
             <name>Template</name>
             <populateURL>OpenMarket/Xcelerate/AssetType/Template/LoadTree</populateURL>
-            <sites class="com.openmarket.xcelerate.common.SiteList">
-              <hashtable>
-                <entry>
-                  <long>1351276303970</long>
-                  <long>1351276303970</long>
-                </entry>
-                <entry>
-                  <long>1351276303801</long>
-                  <long>1351276303801</long>
-                </entry>
-              </hashtable>
-            </sites>
+            <sites class="com.openmarket.xcelerate.common.SiteList"/>
             <roles class="com.openmarket.xcelerate.common.RoleList">
               <hashtable>
                 <entry>
@@ -279,18 +191,7 @@
           <com.openmarket.xcelerate.treetab.Section>
             <name>CSElement</name>
             <populateURL>OpenMarket/Xcelerate/AssetType/CSElement/LoadTree</populateURL>
-            <sites class="com.openmarket.xcelerate.common.SiteList">
-              <hashtable>
-                <entry>
-                  <long>1351276303970</long>
-                  <long>1351276303970</long>
-                </entry>
-                <entry>
-                  <long>1351276303801</long>
-                  <long>1351276303801</long>
-                </entry>
-              </hashtable>
-            </sites>
+            <sites class="com.openmarket.xcelerate.common.SiteList"/>
             <roles class="com.openmarket.xcelerate.common.RoleList">
               <hashtable>
                 <entry>
@@ -303,18 +204,7 @@
           <com.openmarket.xcelerate.treetab.Section>
             <name>Agile_A</name>
             <populateURL>OpenMarket/Xcelerate/AssetType/Agile_A/LoadTree</populateURL>
-            <sites class="com.openmarket.xcelerate.common.SiteList">
-              <hashtable>
-                <entry>
-                  <long>1351276303970</long>
-                  <long>1351276303970</long>
-                </entry>
-                <entry>
-                  <long>1351276303801</long>
-                  <long>1351276303801</long>
-                </entry>
-              </hashtable>
-            </sites>
+            <sites class="com.openmarket.xcelerate.common.SiteList"/>
             <roles class="com.openmarket.xcelerate.common.RoleList">
               <hashtable>
                 <entry>
@@ -327,18 +217,7 @@
           <com.openmarket.xcelerate.treetab.Section>
             <name>Agile_CD</name>
             <populateURL>OpenMarket/Xcelerate/AssetType/Agile_CD/LoadTree</populateURL>
-            <sites class="com.openmarket.xcelerate.common.SiteList">
-              <hashtable>
-                <entry>
-                  <long>1351276303970</long>
-                  <long>1351276303970</long>
-                </entry>
-                <entry>
-                  <long>1351276303801</long>
-                  <long>1351276303801</long>
-                </entry>
-              </hashtable>
-            </sites>
+            <sites class="com.openmarket.xcelerate.common.SiteList"/>
             <roles class="com.openmarket.xcelerate.common.RoleList">
               <hashtable>
                 <entry>
@@ -351,18 +230,7 @@
           <com.openmarket.xcelerate.treetab.Section>
             <name>Agile_PD</name>
             <populateURL>OpenMarket/Xcelerate/AssetType/Agile_PD/LoadTree</populateURL>
-            <sites class="com.openmarket.xcelerate.common.SiteList">
-              <hashtable>
-                <entry>
-                  <long>1351276303970</long>
-                  <long>1351276303970</long>
-                </entry>
-                <entry>
-                  <long>1351276303801</long>
-                  <long>1351276303801</long>
-                </entry>
-              </hashtable>
-            </sites>
+            <sites class="com.openmarket.xcelerate.common.SiteList"/>
             <roles class="com.openmarket.xcelerate.common.RoleList">
               <hashtable>
                 <entry>
@@ -450,9 +318,8 @@
 </dependencies>
 ==================______________________==================
 #
-#Sat Dec 29 12:46:38 CET 2012
+#Mon Jan 28 06:28:37 CET 2013
 key=@TREETAB-3f8ed6b7-ed05-4995-8bdc-0ce39d00d6b7
 type=TREETAB
-sites=ScalaWCS,AgileWCS
 
 ==================___ END METADATA ___==================-->
