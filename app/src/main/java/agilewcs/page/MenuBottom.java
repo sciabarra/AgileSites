@@ -1,14 +1,14 @@
-package agilewcs.blog;
+package agilewcs.page;
 
 import wcs.java.Element;
 import wcs.java.Env;
 
-public class Detail extends Element {
+public class MenuBottom extends Element {
 
 	@Override
 	public String apply(Env env) {
 		String name = env.getString("name");
-		return "Hello, " + (name == null ? "World" : name);
+		return "Ciao, " + (name == null ? "World" : name);
 	}
 
 }

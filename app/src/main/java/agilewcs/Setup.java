@@ -21,38 +21,34 @@ public class Setup extends wcs.java.Setup {
 
 				new Template("", "AwLayout", Template.EXTERNAL,
 						agilewcs.typeless.Layout.class)//
-						.description("Header (Java)"),
+						.description("Typeless Layout (Java)"),
 
-				new Template("", "AwHeader", Template.INTERNAL,
-						agilewcs.typeless.Header.class)//
-						.description("Header (Java)"),
+				new CSElement("AwHeader", agilewcs.typeless.Header.class)
+						.description("Header (Java)"), //
 
-				new Template("", "AwLink", Template.INTERNAL,
-						agilewcs.typeless.Link.class)//
-						.description("Link (Java)"),
+				new Template("", "AwMenuTop", Template.INTERNAL,
+						agilewcs.typeless.MenuTop.class)//
+						.cache("false", "false") //
+						.description("Top Menu (Java)"), //
+
+				new CSElement("AwFooter", agilewcs.typeless.Footer.class)
+						.description("Footer (Java)"), //
+
+				new Template("", "AwMenuBottom", Template.INTERNAL,
+						agilewcs.page.MenuBottom.class)//
+						.cache("false", "false") //
+						.description("Menu Bottom (Java)"), //
+
 
 				new Template("Page", "AwLayout", Template.LAYOUT,
 						agilewcs.page.Layout.class)//
 						.cache("false", "false") //
 						.description("Page Layout (Java)"), //
 
-				new Template("Page", "AwLayout/Home", Template.LAYOUT,
-						agilewcs.page.LayoutHome.class)//
+				new Template("", "AwMenuTop", Template.INTERNAL,
+						agilewcs.typeless.MenuTop.class)//
 						.cache("false", "false") //
-						.description("Home Page Layout (Java)"), //
-
-				new Template("Page", "AwLayout/Accordion", Template.LAYOUT,
-						agilewcs.page.LayoutAccordion.class)//
-						.cache("false", "false") //
-						.description("Accordion Page Layout (Java)"), //
-
-				new Template("Page", "AwSummary", Template.INTERNAL,
-						agilewcs.page.Summary.class)//
-						.cache("false", "false") //
-						.description("Article Summary (Java)"), //
-
-				new CSElement("AwFooter", agilewcs.typeless.Footer.class)
-						.description("Footer (Java)"), //
+						.description("Menu Top (Java)"), //
 
 				new Template("Agile_Article", "AwLayout", Template.LAYOUT,
 						agilewcs.article.Layout.class)//
@@ -63,11 +59,6 @@ public class Setup extends wcs.java.Setup {
 						agilewcs.article.Summary.class)//
 						.cache("false", "false") //
 						.description("Article Summary (Java)"), //
-
-				new Template("Agile_Article", "AwDetail", Template.INTERNAL,
-						agilewcs.article.Detail.class)//
-						.cache("false", "false") //
-						.description("Article Detail (Java)"), //
 
 				// test runner
 				new CSElement("JUnitRunner", agilewcs.tests.JUnitRunner.class), //
