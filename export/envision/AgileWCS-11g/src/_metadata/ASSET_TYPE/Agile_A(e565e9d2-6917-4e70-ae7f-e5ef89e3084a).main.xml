@@ -11,7 +11,7 @@
         <description>Agile_A</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp8/dcs1472189696306392327.tmp</urldescriptorspec>
+        <urldescriptorspec>/Developer/Fatwire/Oracle/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp296/dcs6154610913286632647.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>e565e9d2-6917-4e70-ae7f-e5ef89e3084a</uid>
         <useDimension></useDimension>
@@ -65,7 +65,7 @@
             <null/>
             <null/>
             <null/>
-            <string>/Developer/Fatwire/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/Shared/Storage/Agile_A/</string>
+            <string>/Developer/Fatwire/Oracle/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/Shared/Storage/Agile_A/</string>
             <null/>
             <null/>
             <null/>
@@ -502,7 +502,7 @@ ICAgVmFyaWFibGVzLnF1ZXJ5ZW5kDQogICAgICAgIA0KDQo=</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Thu Dec 27 14:47:41 CET 2012
+#Tue Jan 29 21:26:17 CET 2013
 key=@ASSET_TYPE-e565e9d2-6917-4e70-ae7f-e5ef89e3084a
 type=ASSET_TYPE
 sites=AgileWCS,ScalaWCS

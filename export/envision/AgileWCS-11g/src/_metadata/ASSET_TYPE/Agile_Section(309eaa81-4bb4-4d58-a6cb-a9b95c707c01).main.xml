@@ -11,7 +11,7 @@
         <description>Section</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp459/dcs5427996607262204806.tmp</urldescriptorspec>
+        <urldescriptorspec>/Developer/Fatwire/Oracle/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp296/dcs1004041245593782869.tmp</urldescriptorspec>
         <canbechild>T</canbechild>
         <uid>309eaa81-4bb4-4d58-a6cb-a9b95c707c01</uid>
         <useDimension></useDimension>
@@ -68,7 +68,7 @@
             <null/>
             <null/>
             <null/>
-            <string>/Developer/Fatwire/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/Shared/Storage/Agile_Section/</string>
+            <string>/Developer/Fatwire/Oracle/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/Shared/Storage/Agile_Section/</string>
             <null/>
             <null/>
             <null/>
@@ -253,7 +253,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/Agile_Section/SelectSummary,0.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/Agile_Section/SelectSummary.sql</string>
             <null/>
             <null/>
             <null/>
@@ -529,7 +529,7 @@ IT0nUFInICANCiAgIFZhcmlhYmxlcy5xdWVyeWVuZA0KDQo=</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Sat Dec 29 12:52:42 CET 2012
+#Tue Jan 29 21:26:19 CET 2013
 key=@ASSET_TYPE-309eaa81-4bb4-4d58-a6cb-a9b95c707c01
 type=ASSET_TYPE
 sites=AgileWCS,ScalaWCS

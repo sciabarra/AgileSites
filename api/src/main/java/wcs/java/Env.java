@@ -220,7 +220,6 @@ public class Env extends ICSProxyJ {
 		return toInt(getString(ls, pos, field));
 	}
 
-	
 	/**
 	 * Get Error nummber
 	 */
@@ -270,6 +269,12 @@ public class Env extends ICSProxyJ {
 		return new AssetImpl(this, c, cid);
 	}
 
+	/**
+	 * Return the asset identified by the current c/cid
+	 */
+	public Asset getAsset() {
+		return getAsset(getC(), getCid());
+	}
 
 	/**
 	 * Return current "c" (content type)

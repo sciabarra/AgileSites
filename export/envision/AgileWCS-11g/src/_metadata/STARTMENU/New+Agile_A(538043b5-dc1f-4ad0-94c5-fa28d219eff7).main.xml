@@ -1,10 +1,10 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
-    <id class="string">1351276306178</id>
+    <id class="string">1351276311192</id>
     <resourceType>STARTMENU</resourceType>
     <deps class="empty-set"/>
     <data class="com.openmarket.xcelerate.startmenu.StartMenuItem">
-      <id>1351276306178</id>
+      <id>1351276311192</id>
       <uid>538043b5-dc1f-4ad0-94c5-fa28d219eff7</uid>
       <name>New Agile_A</name>
       <description>New Agile_Attribute</description>
@@ -81,7 +81,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Sat Dec 29 12:46:44 CET 2012
+#Tue Jan 29 21:27:56 CET 2013
 key=@STARTMENU-538043b5-dc1f-4ad0-94c5-fa28d219eff7
 type=STARTMENU
 sites=ScalaWCS,AgileWCS

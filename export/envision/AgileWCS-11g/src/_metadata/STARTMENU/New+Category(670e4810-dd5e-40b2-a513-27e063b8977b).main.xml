@@ -1,10 +1,10 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
-    <id class="string">1351276306353</id>
+    <id class="string">1351276311204</id>
     <resourceType>STARTMENU</resourceType>
     <deps class="empty-set"/>
     <data class="com.openmarket.xcelerate.startmenu.StartMenuItem">
-      <id>1351276306353</id>
+      <id>1351276311204</id>
       <uid>670e4810-dd5e-40b2-a513-27e063b8977b</uid>
       <name>New Category</name>
       <description>New Category</description>
@@ -102,7 +102,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Sat Dec 29 12:46:44 CET 2012
+#Tue Jan 29 21:27:56 CET 2013
 key=@STARTMENU-670e4810-dd5e-40b2-a513-27e063b8977b
 type=STARTMENU
 sites=ScalaWCS,AgileWCS

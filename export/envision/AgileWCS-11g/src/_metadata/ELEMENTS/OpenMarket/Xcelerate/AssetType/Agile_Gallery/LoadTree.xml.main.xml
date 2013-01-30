@@ -10,7 +10,7 @@
         <string>LoadTree</string>
         <string></string>
         <string></string>
-        <string>OpenMarket/Xcelerate/AssetType/Agile_Gallery/LoadTree,1.xml</string>
+        <string>OpenMarket/Xcelerate/AssetType/Agile_Gallery/LoadTree.xml</string>
         <string></string>
         <string></string>
       </com.openmarket.xcelerate.common.ElementCatalogEntry>
@@ -23,7 +23,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Sat Jan 12 08:22:51 CET 2013
+#Tue Jan 29 21:26:18 CET 2013
 storable0=/ELEMENTS/OpenMarket/Xcelerate/AssetType/Agile_Gallery/LoadTree.xml|null|_storable_type\=%2FELEMENTS%2FOpenMarket%2FXcelerate%2FAssetType%2FAgile_Gallery%2FLoadTree.xml
 @hashval=155205247
 key=@ELEMENTCATALOG-OpenMarket/Xcelerate/AssetType/Agile_Gallery/LoadTree

@@ -11,7 +11,7 @@
         <description>SiteEntry</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp459/dcs8376894841807728147.tmp</urldescriptorspec>
+        <urldescriptorspec>/Developer/Fatwire/Oracle/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp296/dcs4552323459828570124.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-SiteEntry</uid>
         <useDimension></useDimension>
@@ -65,7 +65,7 @@
             <null/>
             <null/>
             <null/>
-            <string>/Developer/Fatwire/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/Shared/Storage/SiteEntry/</string>
+            <string>/Developer/Fatwire/Oracle/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/Shared/Storage/SiteEntry/</string>
             <null/>
             <null/>
             <null/>
@@ -397,6 +397,7 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA0KDQoNCg==</byte-array>
       <associations/>
       <siteNames class="list">
         <string>AgileWCS</string>
+        <string>beeproto</string>
         <string>FirstSiteII</string>
         <string>ScalaWCS</string>
       </siteNames>
@@ -518,9 +519,9 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA0KDQoNCg==</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Sat Dec 29 12:52:41 CET 2012
+#Tue Jan 29 21:26:15 CET 2013
 key=@ASSET_TYPE-CSSystem-AssetType-SiteEntry
 type=ASSET_TYPE
-sites=AgileWCS,FirstSiteII,ScalaWCS
+sites=AgileWCS,beeproto,FirstSiteII,ScalaWCS
 
 ==================___ END METADATA ___==================-->

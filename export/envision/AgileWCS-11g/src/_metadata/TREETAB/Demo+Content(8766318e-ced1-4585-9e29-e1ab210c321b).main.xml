@@ -1,0 +1,163 @@
+<object-stream>
+  <com.fatwire.realtime.ResourceDataImpl>
+    <id class="string">1351276311884</id>
+    <resourceType>TREETAB</resourceType>
+    <deps class="empty-set"/>
+    <data class="com.openmarket.xcelerate.treetab.TreeTab">
+      <id>1351276311884</id>
+      <uid>8766318e-ced1-4585-9e29-e1ab210c321b</uid>
+      <globalItems class="com.openmarket.xcelerate.treetab.TreeItems">
+        <hashtable>
+          <entry>
+            <string>GLOBALITEMS</string>
+            <com.openmarket.xcelerate.treetab.TreeItem>
+              <name>GLOBALITEMS</name>
+              <values>Item:22:Refresh All=refreshAll:</values>
+            </com.openmarket.xcelerate.treetab.TreeItem>
+          </entry>
+          <entry>
+            <string>LOADURI</string>
+            <com.openmarket.xcelerate.treetab.TreeItem>
+              <name>LOADURI</name>
+              <values>ContentServer?pagename=OpenMarket%2FGator%2FUIFramework%2FLoadTab</values>
+            </com.openmarket.xcelerate.treetab.TreeItem>
+          </entry>
+          <entry>
+            <string>NODEITEMS</string>
+            <com.openmarket.xcelerate.treetab.TreeItem>
+              <name>NODEITEMS</name>
+              <values>Item:15:Refresh=refresh:</values>
+            </com.openmarket.xcelerate.treetab.TreeItem>
+          </entry>
+        </hashtable>
+      </globalItems>
+      <lineStyle>Angled</lineStyle>
+      <title>Demo Content</title>
+      <actionURL>ContentServer?pagename=OpenMarket%2FGator%2FUIFramework%2FTreeOpURL</actionURL>
+      <globalPopupURL>ContentServer?pagename=OpenMarket%2FGator%2FUIFramework%2FLoadGlobalPopup</globalPopupURL>
+      <ordinal>18</ordinal>
+      <paneType>Tree</paneType>
+      <roles class="com.openmarket.xcelerate.common.RoleList">
+        <hashtable>
+          <entry>
+            <string>SiteAdmin</string>
+            <string>SiteAdmin</string>
+          </entry>
+          <entry>
+            <string>SitesUser</string>
+            <string>SitesUser</string>
+          </entry>
+          <entry>
+            <string>GeneralAdmin</string>
+            <string>GeneralAdmin</string>
+          </entry>
+        </hashtable>
+      </roles>
+      <sites class="com.openmarket.xcelerate.common.SiteList">
+        <hashtable>
+          <entry>
+            <long>1351276303801</long>
+            <long>1351276303801</long>
+          </entry>
+        </hashtable>
+      </sites>
+      <nodeOpenedPic>/cs/Xcelerate/OMTree/TreeImages/minus.png</nodeOpenedPic>
+      <nodeClosedPic>/cs/Xcelerate/OMTree/TreeImages/plus.png</nodeClosedPic>
+      <sections class="com.openmarket.xcelerate.treetab.SectionList">
+        <sections>
+          <entry>
+            <string>Agile_P</string>
+            <int>1</int>
+          </entry>
+          <entry>
+            <string>Agile_C</string>
+            <int>0</int>
+          </entry>
+        </sections>
+        <sectionVector>
+          <com.openmarket.xcelerate.treetab.Section>
+            <name>Agile_C</name>
+            <populateURL>OpenMarket/Xcelerate/AssetType/Agile_C/LoadTree</populateURL>
+            <sites class="com.openmarket.xcelerate.common.SiteList">
+              <hashtable>
+                <entry>
+                  <long>1351276303801</long>
+                  <long>1351276303801</long>
+                </entry>
+              </hashtable>
+            </sites>
+            <roles class="com.openmarket.xcelerate.common.RoleList">
+              <hashtable>
+                <entry>
+                  <string>SiteAdmin</string>
+                  <string>SiteAdmin</string>
+                </entry>
+                <entry>
+                  <string>SitesUser</string>
+                  <string>SitesUser</string>
+                </entry>
+                <entry>
+                  <string>GeneralAdmin</string>
+                  <string>GeneralAdmin</string>
+                </entry>
+              </hashtable>
+            </roles>
+          </com.openmarket.xcelerate.treetab.Section>
+          <com.openmarket.xcelerate.treetab.Section>
+            <name>Agile_P</name>
+            <populateURL>OpenMarket/Xcelerate/AssetType/Agile_P/LoadTree</populateURL>
+            <sites class="com.openmarket.xcelerate.common.SiteList">
+              <hashtable>
+                <entry>
+                  <long>1351276303801</long>
+                  <long>1351276303801</long>
+                </entry>
+              </hashtable>
+            </sites>
+            <roles class="com.openmarket.xcelerate.common.RoleList">
+              <hashtable>
+                <entry>
+                  <string>SiteAdmin</string>
+                  <string>SiteAdmin</string>
+                </entry>
+                <entry>
+                  <string>SitesUser</string>
+                  <string>SitesUser</string>
+                </entry>
+                <entry>
+                  <string>GeneralAdmin</string>
+                  <string>GeneralAdmin</string>
+                </entry>
+              </hashtable>
+            </roles>
+          </com.openmarket.xcelerate.treetab.Section>
+        </sectionVector>
+      </sections>
+    </data>
+  </com.fatwire.realtime.ResourceDataImpl>
+</object-stream>
+<!--==================___ METADATA ___================
+<dependencies>
+  <list>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ELEMENTCATALOG</resType>
+      <resId>OpenMarket/Xcelerate/AssetType/Agile_C/LoadTree</resId>
+      <uid>OpenMarket/Xcelerate/AssetType/Agile_C/LoadTree</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ELEMENTCATALOG</resType>
+      <resId>OpenMarket/Xcelerate/AssetType/Agile_P/LoadTree</resId>
+      <uid>OpenMarket/Xcelerate/AssetType/Agile_P/LoadTree</uid>
+    </dependency>
+  </list>
+</dependencies>
+==================______________________==================
+#
+#Tue Jan 29 21:29:58 CET 2013
+key=@TREETAB-8766318e-ced1-4585-9e29-e1ab210c321b
+type=TREETAB
+sites=AgileWCS
+
+==================___ END METADATA ___==================-->
