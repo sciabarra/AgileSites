@@ -98,7 +98,7 @@ object AgileWcsSupport {
             "password=" + password,
             "cmd=" + (if (args.size > 0) args(0) else "listcs"),
             "fromSites=" + sites,
-            "datastore=AgileWCS-" + version,
+            "datastore="+sites  + "-" + version,
             "resources=" + (if (args.size > 1) args(1)
             else if (args.size == 0) "@ALL_ASSETS"
             else if (args.size >= 1) args(0) match {
@@ -147,7 +147,7 @@ object AgileWcsSupport {
             val url = httpUrl + "CatalogManager"
 
             val cp = classpath.files.mkString(java.io.File.pathSeparator)
-            val dir = file("export") / "envision" / ("AgileWCS-" + version) / "Populate"
+	    val dir = file("export") / "Populate-" + version
             val cmd = Seq("-cp", cp, "COM.FutureTense.Apps.CatalogMover")
 
             val opts = Seq("-u", user, "-p", password, "-b", url, "-d", dir.toString, "-x")
@@ -197,13 +197,13 @@ object AgileWcsSupport {
   // configuring everything
   val wcsConfigTask = wcsConfig <<=
     (wcsPackageJar, wcsVersion, wcsHome, wcsWebapp, wcsSites, wcsUser, wcsPassword) map {
-      (appjar, version, home, webapp, site, username, password) =>
+      (appjar, version, home, webapp, sites, username, password) =>
 
         // create local export dir for csdt
         file("export").mkdir
         (file("export") / "envision").mkdir
-        (file("export") / "envision" / ("AgileWCS-" + version)).mkdir
-        (file("export") / "envision" / ("AgileWCS-" + version) / "Populate").mkdir
+        (file("export") / "envision" / (sites + "-" + version)).mkdir
+        (file("export") / ("Populate-" + version)).mkdir
 
         // configure futurentense. init
         val configFile = file(home) / "futuretense.ini"
@@ -211,7 +211,7 @@ object AgileWcsSupport {
         config.load(new java.io.FileReader(configFile))
 
         /*
-        config.setProperty("agilewcs.site", site);
+        config.setProperty("agilewcs.sites", sites);
         config.setProperty("agilewcs.user", username);
         config.setProperty("agilewcs.password", password);
         */
@@ -225,7 +225,7 @@ object AgileWcsSupport {
         // NOTE this config file is currently unused
         val otherConfigFile = file(webapp) / "WEB-INF" / "classes" / "agilewcs.prp"
         val otherConfig = new java.util.Properties
-        otherConfig.setProperty("agilewcs.site", site);
+        otherConfig.setProperty("agilewcs.sites", sites);
         otherConfig.setProperty("agilewcs.user", username);
         otherConfig.setProperty("agilewcs.password", password);
         otherConfig.setProperty("agilewcs.jar", appjar);
