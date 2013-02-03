@@ -41,7 +41,7 @@ object AgileWcsSupport {
           val cls = Tld2Tag.tld2class(src)
           val dst = file(dstDir / cls + ".scala")
           val dstj = file(dstDir / cls + ".java")
-          //if tld.getName.equalsIgnoreCase("csmac.tld") // select only one for debug generator
+          //if tld.getName.equalsIgnoreCase("asset.tld") // select only one for debug generator
         } yield {
           if (!dst.exists) {
             val body = Tld2Tag(src)

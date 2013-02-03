@@ -1,5 +1,6 @@
 package wcs.java.util;
 
+import wcs.core.WCS;
 import COM.FutureTense.Interfaces.FTValList;
 import COM.FutureTense.Interfaces.ICS;
 
@@ -18,7 +19,7 @@ public class Presentation {
 	}
 
 	public String get(String presInst, String attribute) {
-		String tmp = Util.tmpVar();
+		String tmp = WCS.tmpVar();
 		args.removeAll();
 		args.setValString("NAME", presInst);
 		args.setValString("ATTRIBUTE", attribute);

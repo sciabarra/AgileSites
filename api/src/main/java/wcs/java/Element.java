@@ -1,7 +1,8 @@
 package wcs.java;
 
 import java.util.StringTokenizer;
-import wcs.java.util.Arg;
+
+import wcs.core.Arg;
 import COM.FutureTense.Interfaces.FTValList;
 import COM.FutureTense.Interfaces.ICS;
 import static java.lang.System.out;

@@ -42,16 +42,9 @@ public class Config implements wcs.core.Config {
 	@Override
 	public void init(ICS ics) {
 		this.ics = ics;
-		String tmp = "_" + System.currentTimeMillis();
-		BlobserviceTag.getidcolumn(tmp + "id").run(ics);
-		BlobserviceTag.geturlcolumn(tmp + "url").run(ics);
-		BlobserviceTag.gettablename(tmp + "tbl").run(ics);
-		blobId = ics.GetVar(tmp + "id");
-		blobUrl = ics.GetVar(tmp + "url");
-		blobTable = ics.GetVar(tmp + "tbl");
-		ics.RemoveVar(tmp + "id");
-		ics.RemoveVar(tmp + "url");
-		ics.RemoveVar(tmp + "tbl");
+		blobId = BlobserviceTag.getidcolumn().eval(ics, "varname");
+		blobUrl = BlobserviceTag.geturlcolumn().eval(ics, "varname");
+		blobTable = BlobserviceTag.gettablename().eval(ics, "varname");
 	}
 
 	/**

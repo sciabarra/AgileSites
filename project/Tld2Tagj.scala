@@ -28,6 +28,8 @@ object Tld2Tagj {
 import COM.FutureTense.Interfaces.*;
 import java.util.logging.*;
 import java.lang.String;
+import wcs.core.WCS;
+import wcs.core.Arg;
     
 public class %s  {    
   private static boolean debug = java.lang.System.getProperty("wcs.tag.debug") != null;
@@ -49,36 +51,25 @@ public class %s  {
  """.format(cl, cl)
   }
 
-  def body(lib: String, name: String, reqArgs: List[String], optArgs: List[String]): String = {
+  def body(lib: String, name: String,  parArgs: List[String]): String = {
 
     val uname = if (javaKeywords.contains(name)) name + "_" else name
     val cname = uname(0).toUpperCase + uname.substring(1)
     val lname = uname.toLowerCase;
     val tname = lib.toUpperCase + "." + uname.toUpperCase
 
-    val parList = reqArgs.map("String " + _.toString) mkString ","
-
-    val parnameList = reqArgs.map(_.toString) mkString ","
-
-    val setRequired = reqArgs.map(x => "args.setValString(\"" + x.toUpperCase + "\", " + x + ");").mkString("\n")
-
-    val setOptional = optArgs map { x =>
+    val setParams = parArgs map { x =>
       """ public %s %s(String val) { args.setValString("%s", val); return this; } 
       """.format(cname, x, x.toUpperCase)
     } mkString "\n";
 
-    """
-public static class %s {
+"""
+  public static class %s {
   private FTValList args = new FTValList();
+  private String output;
   public %s set(String name, String value) { args.setValString(name,value); return this; }
 %s
-""".format(cname, cname, setOptional) +
-      """
-  public %s(%s) {
-%s
-  }
-""".format(cname, parList, setRequired) +
-      """
+  public %s() { }""".format(cname, cname, setParams, cname)+ """
   public int run(ICS ics) { 
       ics.runTag("%s", args); 
       if(debug) {
@@ -87,23 +78,26 @@ public static class %s {
       }
       return ics.GetErrno(); 
   }
-  
-  private java.util.Random rnd = new java.util.Random();
-  public String run(ICS ics, String output) {
-	  String tmp = "_OUT_"+(rnd.nextInt());
+  public String eval(ICS ics, String output) {
+	  String tmp = WCS.tmpVar();
 	  args.setValString(output, tmp);
 	  run(ics);
 	  String res = ics.GetVar(tmp);
 	  ics.RemoveVar(tmp);
 	  return res;		
-  }	
+  } 
+  public %s set(Arg ... _args) {
+	  for(Arg arg: _args) {
+		  args.setValString(arg.name, arg.value);
+	  }
+	  return this;
+  }
 }
-""".format(tname, cname, cname) +
-      """
-public static %s %s(%s) {
-  return new %s(%s);
+""".format(tname, cname, cname, cname) + """
+public static %s %s() {
+  return new %s();
 }
-""".format(cname, lname, parList, cname, parnameList)
+""".format(cname, lname, cname)
 
   }
 
@@ -129,8 +123,10 @@ public static %s %s(%s) {
 
       val reqList = required.map { _ \\ "name" text }.toList
       val optList = optional.map { _ \\ "name" text }.toList
+      
+      val parList = reqList ::: optList
 
-      body(libname, tagname, reqList, optList)
+      body(libname, tagname, parList)
 
     }
 

@@ -217,13 +217,6 @@ public class Util {
 
 	}
 
-	private static long tmpVarCounter = 1;
-
-	public synchronized static String tmpVar() {
-		++tmpVarCounter;
-		return "_" + tmpVarCounter ;
-	}
-
 	/**
 	 * Get as a date
 	 */

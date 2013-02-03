@@ -116,4 +116,15 @@ public class WCS {
 
 	}
 
+	private static long tmpVarCounter = System.currentTimeMillis();
+	
+	/**
+	 * Generate a temporary var
+	 * @return
+	 */
+	public synchronized static String tmpVar() {
+		++tmpVarCounter;
+		return "_" +  Long.toHexString(tmpVarCounter)  ;
+	}
+
 }

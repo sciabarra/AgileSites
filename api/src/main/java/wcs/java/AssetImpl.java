@@ -1,23 +1,20 @@
 package wcs.java;
 
-import COM.FutureTense.Interfaces.ICS;
-
-import static wcs.java.Element.scheduleCall;
 import static wcs.java.Element.arg;
-
+import static wcs.java.Element.scheduleCall;
 import static wcs.java.util.Util.toDate;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import wcs.java.util.Arg;
-import wcs.java.util.Log;
-import wcs.java.util.Util;
-
+import wcs.core.Arg;
+import wcs.core.WCS;
 import wcs.java.tag.AssetTag;
 import wcs.java.tag.AssetsetTag;
 import wcs.java.tag.RenderTag;
+import wcs.java.util.Log;
+import COM.FutureTense.Interfaces.ICS;
 
 import com.fatwire.assetapi.data.MutableAssetData;
 
@@ -26,7 +23,7 @@ class AssetImpl extends wcs.java.Asset {
 	private static Log log = new Log(Env.class);
 
 	// the name of the asset
-	private String a = Util.tmpVar();
+	private String a = WCS.tmpVar();
 	// name of the assetset (and the list prefix) initially null - set on
 
 	// request
@@ -45,8 +42,8 @@ class AssetImpl extends wcs.java.Asset {
 		this.i = e.ics;
 		this.c = c;
 		this.cid = cid;
-		AssetTag.load(a, c).objectid(cid.toString()).run(i);
-		String subtype = AssetTag.getsubtype().name(a).run(i, "OUTPUT");
+		AssetTag.load().name(a).type(c).objectid(cid.toString()).run(i);
+		String subtype = AssetTag.getsubtype().name(a).eval(i, "OUTPUT");
 		setTypeSubtype(c, subtype);
 	}
 
@@ -58,9 +55,9 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	private String as() {
 		if (as == null) {
-			as = Util.tmpVar();
-			AssetsetTag.setasset(as, getType(), cid.toString()).run(i);
-			// System.out.println("*** assetset " + i.GetObj(as));
+			as = WCS.tmpVar();
+			AssetsetTag.setasset().name(as).type(getType()).id(cid.toString())
+					.run(i);
 		}
 		return as;
 	}
@@ -76,8 +73,8 @@ class AssetImpl extends wcs.java.Asset {
 		String attrList = as() + attribute.toUpperCase();
 		if (i.GetList(attrList) == null) {
 			String attrType = e.getConfig().getAttributeType(getType());
-			AssetsetTag.getattributevalues(as, attribute, attrList)
-					.typename(attrType).run(i);
+			AssetsetTag.getattributevalues().name(as).attribute(attribute)
+					.listvarname(attrList).typename(attrType).run(i);
 		}
 		return attrList;
 	}
@@ -91,7 +88,7 @@ class AssetImpl extends wcs.java.Asset {
 	private String ass(String assoc) {
 		String assocList = as() + "_ASS_" + assoc.toUpperCase();
 		if (i.GetList(assocList) == null) {
-			AssetTag.children(assocList).type(getType())
+			AssetTag.children().code(assocList).type(getType())
 					.assetid(cid.toString()).code(assoc).order("nrank").run(i);
 		}
 		return assocList;
@@ -110,7 +107,7 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public String getName() {
-		return AssetTag.get(a, "name").run(i, "output");
+		return AssetTag.get().name(a).field("name").eval(i, "output");
 	}
 
 	/**
@@ -118,7 +115,7 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public String getDescription() {
-		return AssetTag.get(a, "description").run(i, "output");
+		return AssetTag.get().name(a).field("description").eval(i, "output");
 	}
 
 	/**
@@ -126,7 +123,7 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public String getFilename() {
-		return AssetTag.get(a, "filename").run(i, "output");
+		return AssetTag.get().name(a).field("filename").eval(i, "output");
 	}
 
 	/**
@@ -134,7 +131,7 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public String getPath() {
-		return AssetTag.get(a, "path").run(i, "output");
+		return AssetTag.get().name(a).field("path").eval(i, "output");
 	}
 
 	/**
@@ -142,7 +139,8 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public Date getStartDate() {
-		return toDate(AssetTag.get(a, "startdate").run(i, "output"));
+		return toDate(AssetTag.get().name(a).field("startdate")
+				.eval(i, "output"));
 	}
 
 	/**
@@ -150,7 +148,7 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public Date getEndDate() {
-		return toDate(AssetTag.get(a, "enddate").run(i, "output"));
+		return toDate(AssetTag.get().name(a).field("enddate").eval(i, "output"));
 	}
 
 	/**
@@ -336,28 +334,27 @@ class AssetImpl extends wcs.java.Asset {
 	 * String get blob url of the nth attribute
 	 */
 	@Override
-	public String getBlobUrl(String attribute, int pos, String mimeType, Arg... args) {
-		String tmp = Util.tmpVar();
+	public String getBlobUrl(String attribute, int pos, String mimeType,
+			Arg... args) {
+
 		Config cfg = e.getConfig();
 		Long blobWhere = this.getId(attribute, pos);
+
 		// invoke tag
-		RenderTag.Getbloburl tag = RenderTag.getbloburl(tmp)
+		RenderTag.Getbloburl tag = RenderTag.getbloburl()
 				.blobtable(cfg.getBlobTable()).blobcol(cfg.getBlobUrl())
 				.blobkey(cfg.getBlobId()).blobwhere(blobWhere.toString());
 		// set mime type
-		if(mimeType!=null & mimeType.trim().length()>0)
+		if (mimeType != null & mimeType.trim().length() > 0)
 			tag.blobheader(mimeType);
-			
+
 		// pass parameters
-		for(Arg arg: args)  {
+		for (Arg arg : args) {
 			tag.set(arg.name.toUpperCase(), arg.value);
 		}
-		// run the tag
-		tag.run(i);
-		String res = i.GetVar(tmp);
-		i.RemoveVar(tmp);
 
-		return res;
+		// run the tag
+		return tag.eval(i, "outstr");
 	}
 
 	/**
@@ -402,7 +399,6 @@ class AssetImpl extends wcs.java.Asset {
 	@Override
 	public String getUrl(String template, Arg... args) {
 
-		String outstr = Util.tmpVar();
 		String tid = i.GetVar("tid");
 		String ttype = "Template";
 		if (tid == null) {
@@ -410,12 +406,11 @@ class AssetImpl extends wcs.java.Asset {
 			ttype = "CSElement";
 		}
 
-		RenderTag.gettemplateurl(outstr, template).c(c).cid(cid.toString())
-				.site(i.GetVar("site")).tid(tid).ttype(ttype).run(i);
+		String res = RenderTag.gettemplateurl().tname(template).c(c)
+				.cid(cid.toString()).site(i.GetVar("site")).tid(tid)
+				.ttype(ttype).eval(i, "outstr");
 
-		String res = getString(outstr);
-		log.debug("getUrl: outstr="+res);
-		i.RemoveVar(outstr);
+		log.debug("getUrl: outstr=" + res);
 		return res;
 	}
 }
