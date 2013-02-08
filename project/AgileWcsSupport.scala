@@ -19,8 +19,10 @@ object AgileWcsSupport {
 
   lazy val wcsDeploy = TaskKey[Unit]("wcs-deploy", "WCS Deploy")
   lazy val wcsCopyStatic = TaskKey[Unit]("wcs-copy-static", "WCS copy resources")
+  lazy val wcsCopyHtml = TaskKey[Unit]("wcs-copy-static", "WCS copy html static into resources")
+
   lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
-  lazy val wcsUpdateModel = TaskKey[String]("wcs-update-model", "WCS update content model")
+  lazy val wcsUpdateAssets = TaskKey[String]("wcs-update-assets", "WCS update assets")
 
   lazy val wcsCsdtJar = SettingKey[String]("wcs-csdt-jar", "WCS CSDT Jar")
   lazy val wcsCsdt = InputKey[Unit]("wcs-dt", "WCS Development Tool")
@@ -31,7 +33,6 @@ object AgileWcsSupport {
     (sourceManaged in Compile, wcsWebapp, baseDirectory, wcsVersion) map {
       (dstDir, srcDir, base, version) =>
         //println(dstDir)
-
         // generate tags
         val tlds = file(srcDir) / "WEB-INF" / "futuretense_cs"
         val l = for {
@@ -73,17 +74,17 @@ object AgileWcsSupport {
         l.toSeq.flatten ++ ll.toSeq
     }
 
-  // copy files from a src dir to a taget dir recursively - not used for now
-  def recursiveCopy(src: File, tgt: File) = {
+  // copy files from a src dir to a target dir recursively 
+  // filter files to copy
+  def recursiveCopy(src: File, tgt: File)(sel: File => Boolean) = {
     val nsrc = src.getPath.length
-    val cplist = (src ** "*").get.filterNot(_.isDirectory) map {
+    val cplist = (src ** "*").get.filterNot(_.isDirectory).filter(sel) map {
       x =>
         val dest = tgt / x.getPath.substring(nsrc)
         println("+++ " + dest)
         (x, dest)
     }
-    IO.copy(cplist)
-    cplist.size
+    IO.copy(cplist).toSeq
   }
 
   // interface to csdt from sbt
@@ -98,7 +99,7 @@ object AgileWcsSupport {
             "password=" + password,
             "cmd=" + (if (args.size > 0) args(0) else "listcs"),
             "fromSites=" + sites,
-            "datastore="+sites  + "-" + version,
+            "datastore=" + sites + "-" + version,
             "resources=" + (if (args.size > 1) args(1)
             else if (args.size == 0) "@ALL_ASSETS"
             else if (args.size >= 1) args(0) match {
@@ -147,7 +148,7 @@ object AgileWcsSupport {
             val url = httpUrl + "CatalogManager"
 
             val cp = classpath.files.mkString(java.io.File.pathSeparator)
-	    val dir = file("export") / "Populate-" + version
+            val dir = file("export") / "Populate-" + version
             val cmd = Seq("-cp", cp, "COM.FutureTense.Apps.CatalogMover")
 
             val opts = Seq("-u", user, "-p", password, "-b", url, "-d", dir.toString, "-x")
@@ -173,13 +174,24 @@ object AgileWcsSupport {
         destjar.getAbsolutePath.toString
     }
 
+  def isHtml(f: File) = !("\\.html?$".r findFirstIn f.getName.toLowerCase isEmpty)
+
   // copy resources from the app to the webapp task
   val wcsCopyStaticTask = wcsCopyStatic <<=
     (baseDirectory, wcsWebapp) map {
       (base, tgt) =>
         val src = base / "app" / "src" / "main" / "static"
-        recursiveCopy(src, file(tgt))
+        recursiveCopy(src, file(tgt))(!isHtml(_))
     }
+
+  val wcsCopyHtmlTask =
+    (resourceGenerators in Compile) <+=
+      (baseDirectory, resourceManaged in Compile) map {
+        (base, dstDir) =>
+          val srcDir = base / "src" / "main" / "static"
+          println("*** " + srcDir)
+          recursiveCopy(srcDir, dstDir)(isHtml)
+      }
 
   // copy resources to the webapp task
   val wcsUpdateModelTask = wcsUpdateModel <<=
@@ -210,11 +222,6 @@ object AgileWcsSupport {
         val config = new java.util.Properties
         config.load(new java.io.FileReader(configFile))
 
-        /*
-        config.setProperty("agilewcs.sites", sites);
-        config.setProperty("agilewcs.user", username);
-        config.setProperty("agilewcs.password", password);
-        */
         config.setProperty("agilewcs.jar", appjar);
         config.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
         config.setProperty("cs.pgexportfolder", file("export").getAbsolutePath)

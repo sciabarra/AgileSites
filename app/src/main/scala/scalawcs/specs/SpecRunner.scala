@@ -16,7 +16,6 @@ class SpecRunner extends Element {
     try {
 
       <h1>Tests</h1>
-      
       <h2>RunTagSpec</h2>
       <pre>{ new RunTagSpec(e.ics) }</pre>
       <h2>TagSpec</h2>
@@ -27,7 +26,7 @@ class SpecRunner extends Element {
       <pre>{ new EnvSpec(e) }</pre>
 
     } catch {
-      case e => <h1>Exception: { e.getMessage }</h1>
+      case e: Throwable => <h1>Exception: { e.getMessage }</h1>
     }
   }
 }

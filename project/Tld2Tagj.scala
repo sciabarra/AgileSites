@@ -1,4 +1,4 @@
-	import scala.xml._
+import scala.xml._
 import java.io.File
 
 object Tld2Tagj {

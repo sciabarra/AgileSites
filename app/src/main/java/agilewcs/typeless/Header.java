@@ -9,11 +9,11 @@ public class Header extends Element {
 	@Override
 	public String apply(Env env) {
 
-		Picker p = new Picker("/index.html");
+		Picker p = new Picker("/agilewcs/index.html");
 		p.select("head") //
-				.attr("link", "href", "/cs/css/default.css")//
+				.attr("link", "href", "/agilewcs/cs/css/default.css")//
 				.unselect() //
-				.replace("#footer", call("DJFooter", //
+				.replace("#footer", call("AwFooter", //
 						arg("name", env.getString("name"))));
 		return p.html();
 	}

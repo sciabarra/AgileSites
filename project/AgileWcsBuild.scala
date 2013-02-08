@@ -6,7 +6,7 @@ import AssemblyKeys._
 import com.typesafe.sbteclipse.plugin.EclipsePlugin.EclipseKeys
 
 object AgileWcsBuild extends Build {
-  
+
   val agileVersion = "0.3"
 
   // settings
@@ -26,6 +26,7 @@ object AgileWcsBuild extends Build {
   lazy val wcsCsdtTask = AgileWcsSupport.wcsCsdtTask
   lazy val wcsCmTask = AgileWcsSupport.wcsCmTask
   lazy val wcsCopyStaticTask = AgileWcsSupport.wcsCopyStaticTask
+  lazy val wcsCopyHtmlTask = AgileWcsSupport.wcsCopyHtmlTask
   lazy val wcsPackageJarTask = AgileWcsSupport.wcsPackageJarTask
   lazy val wcsUpdateModelTask = AgileWcsSupport.wcsUpdateModelTask
   lazy val coreGeneratorTask = AgileWcsSupport.coreGeneratorTask
@@ -44,16 +45,16 @@ object AgileWcsBuild extends Build {
   val unmanagedBaseTask = unmanagedBase in Compile <<= wcsWebapp {
     base => file(base) / "WEB-INF" / "lib"
   }
-  
+
   val unmanagedJarsTask = unmanagedJars in Compile <+= wcsCsdtJar map {
     jar => Attributed.blank(file(jar))
   }
-  
+
   /// COMMONS
   val coreDependencies = Seq(
     "javax.servlet" % "servlet-api" % "2.5",
     "commons-logging" % "commons-logging" % "1.1.1",
-    "org.specs2" %% "specs2" % "1.12.1",
+    "org.specs2" %% "specs2" % "1.13",
     "org.apache.httpcomponents" % "httpclient" % "4.1.2",
     "org.apache.httpcomponents" % "httpcore" % "4.1.2",
     "org.apache.httpcomponents" % "httpmime" % "4.1.2",
@@ -62,8 +63,8 @@ object AgileWcsBuild extends Build {
     "com.novocode" % "junit-interface" % "0.8" % "test")
 
   val commonSettings = Defaults.defaultSettings ++ Seq(
-    scalaVersion := "2.9.2",
-    organization := "org.agilewcs", // collect jars from WCS
+    scalaVersion := "2.10.0",
+    organization := "com.sciabarra", // collect jars from WCS
     compileOrder := CompileOrder.Mixed,
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
@@ -77,19 +78,19 @@ object AgileWcsBuild extends Build {
       libraryDependencies ++= coreDependencies,
       publishArtifact in packageDoc := false,
       name := "agilewcs-core",
-      version <<= (wcsVersion) { v => agileVersion+"_"+ v }, 
-        // if you change this, fix dependencies, too!
+      version <<= (wcsVersion) { v => agileVersion + "_" + v },
+      // if you change this, fix dependencies, too!
       coreGeneratorTask))
 
-     
   lazy val api: Project = Project(
     id = "api",
     base = file("api"),
     settings = commonSettings ++ Seq(
       //libraryDependencies ++= commonDependencies,
-      libraryDependencies <++= (wcsVersion) { 
-          v => val nv = agileVersion+"_"+v 
-          coreDependencies ++ Seq("org.agilewcs" %% "agilewcs-core" % nv)
+      libraryDependencies <++= (wcsVersion) {
+        v =>
+          val nv = agileVersion + "_" + v
+          coreDependencies ++ Seq("com.sciabarra" %% "agilewcs-core" % nv)
       },
       name := "agilewcs-api",
       version := agileVersion))
@@ -100,10 +101,12 @@ object AgileWcsBuild extends Build {
     base = file("app"),
     settings = commonSettings ++ Seq(
       //libraryDependencies ++= commonDependencies,
-      libraryDependencies <++= (wcsVersion) { 
-          v => val nv = agileVersion+"_"+v
-          coreDependencies ++ Seq("org.agilewcs" %% "agilewcs-core" % nv)
+      libraryDependencies <++= (wcsVersion) {
+        v =>
+          val nv = agileVersion + "_" + v
+          coreDependencies ++ Seq("com.sciabarra" %% "agilewcs-core" % nv)
       },
+      wcsCopyHtmlTask,
       name := "agilewcs-app",
       version := agileVersion)) dependsOn (api)
 
@@ -113,9 +116,10 @@ object AgileWcsBuild extends Build {
     base = file("."),
     settings = commonSettings ++ assemblySettings ++ Seq(
       //libraryDependencies ++= commonDependencies,
-      libraryDependencies <++= (wcsVersion) { 
-          v => val nv = agileVersion+"_"+v
-          coreDependencies ++ Seq("org.agilewcs" %% "agilewcs-core" % nv)
+      libraryDependencies <++= (wcsVersion) {
+        v =>
+          val nv = agileVersion + "_" + v
+          coreDependencies ++ Seq("com.sciabarra" %% "agilewcs-core" % nv)
       },
       name := "agilewcs-all",
       version := agileVersion,
