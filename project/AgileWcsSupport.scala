@@ -194,7 +194,7 @@ object AgileWcsSupport {
       }
 
   // copy resources to the webapp task
-  val wcsUpdateModelTask = wcsUpdateModel <<=
+  val wcsUpdateAssetsTask = wcsUpdateAssets <<=
     (wcsUrl, wcsSites, wcsUser, wcsPassword, wcsPackageJar) map {
       (url, sites, user, pass, _) =>
         val deployer = new AgileWcsDeployer(url, sites, user, pass)
@@ -204,7 +204,7 @@ object AgileWcsSupport {
 
   // deploy task  
   val wcsDeployTask = wcsDeploy <<=
-    (wcsCopyStatic, wcsUpdateModel) map { (count, update) => () }
+    (wcsCopyStatic, wcsUpdateAssets) map { (count, update) => () }
 
   // configuring everything
   val wcsConfigTask = wcsConfig <<=

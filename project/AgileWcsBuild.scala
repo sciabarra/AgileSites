@@ -28,7 +28,7 @@ object AgileWcsBuild extends Build {
   lazy val wcsCopyStaticTask = AgileWcsSupport.wcsCopyStaticTask
   lazy val wcsCopyHtmlTask = AgileWcsSupport.wcsCopyHtmlTask
   lazy val wcsPackageJarTask = AgileWcsSupport.wcsPackageJarTask
-  lazy val wcsUpdateModelTask = AgileWcsSupport.wcsUpdateModelTask
+  lazy val wcsUpdateAssetsTask = AgileWcsSupport.wcsUpdateAssetsTask
   lazy val coreGeneratorTask = AgileWcsSupport.coreGeneratorTask
 
   // remove then add those jars in setup
@@ -130,7 +130,7 @@ object AgileWcsBuild extends Build {
       wcsDeployTask,
       wcsCopyStaticTask,
       wcsPackageJarTask,
-      wcsUpdateModelTask,
+      wcsUpdateAssetsTask,
       EclipseKeys.skipProject := true,
       assembleArtifact in packageScala := false,
       excludedJars in assembly <<= (fullClasspath in assembly))) dependsOn (app) aggregate (app, api)
