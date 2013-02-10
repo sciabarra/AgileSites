@@ -1,0 +1,324 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/CSElement/ContentFormElement
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<!-- 
+	This iframe is required for IE to properly maximize the textarea over form components.
+	Its properties are modified by javascript in TextAreaExpand.xml
+  (This is actually mostly harmless to other browsers; however it appears to cause a
+  disappearing-cursor bug in Firefox 2, hence the if IE tags being used.)
+-->
+<!--[if IE]>
+<iframe name="tempIFrame" id="tempIFrame" src="about:blank" style="display:none">
+</iframe>
+<![endif]-->
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/CSElement/ContentFormSetVar"/>
+<PROPERTY.GET INIFILE="futuretense_xcel.ini" PARAM="analytics.enabled" VARNAME="AnalyticsInst"/>
+	
+<!--
+Set up variables ModelXml, ModelHtml, ModelHtml variables that contain 
+standard CS preamble-postamble needed when creating a new CSElement element.
+This also does the setup for the Analytics tag models. 
+-->
+<callelement NAME="OpenMarket/Xcelerate/AssetType/CSElement/SetModelString"/> 
+<SCRIPT LANGUAGE="JavaScript">
+<REPLACEALL LIST="Variables.ModelXml,Variables.ModelHtml,Variables.ModelJsp,Variables.ModelAnalyticsJsp,Variables.ModelAnalyticsXml,Variables.AnalyticsInst,Variables.cs_imagedir,SessionVariables.locale">
+<![CDATA[
+function getRootElement()
+{
+	return document.forms[0].elements['CSElement:rootelement'].value ;
+}
+// Generate the Analytics tag at the end of the element logic. If there is already a tag in place
+// then just ignore the request. A tag is generated for XML or JSP template logic, not HTML
+function addAnalyticsTag() {
+	
+	var filestring = document.forms[0].elements['CSElement:urlspec'].value; 
+	var offset     = filestring.lastIndexOf('.');
+	if ( offset == -1 ) 
+		return;
+		
+	// Get the file extension so we know what file is needed. 				
+	var ext = filestring.substring(offset+1); 	
+	var analyticsXml = new String('Variables.ModelAnalyticsXml');
+	var analyticsJsp = new String('Variables.ModelAnalyticsJsp');
+	var analyticsTag = null; 
+	if ( ext == 'xml' ) analyticsTag = analyticsXml;
+	if ( ext == 'jsp' ) analyticsTag = analyticsJsp; 
+	
+	// If there is no model for this type then just return. 
+	if ( analyticsTag == null ) {
+		// Remove the title and button. 
+		hideAnalyticsButton(); 
+		return;
+	}
+
+	// Get the current content of the element logic. 
+	var logicelement = document.forms[0].elements['CSElement:url'].value;
+	
+	// Does it already contain a tag ?
+	if ( logicelement.lastIndexOf('AddAnalyticsImgTag') == -1 ) {
+				
+		// No, look for the of element logic			
+		offset = logicelement.lastIndexOf('</');
+		if ( offset != -1 ) {
+		
+			// Warn the user that the element must be non-cached
+			alert( ]]>"<XLAT.STREAM KEY="dvin/AT/Common/AddAnalyticsTagW"/>"<![CDATA[); 
+	
+			// Tack the model code onto the end of the element. 
+			var front = logicelement.substring(0,offset); 
+			var trail = logicelement.substring(offset); 
+			var combo = front + analyticsTag + trail; 
+			document.forms[0].elements['CSElement:url'].value = combo;
+		}
+	}	
+	hideAnalyticsButton(); 
+}	
+
+// Hide the analytics title and button
+function hideAnalyticsButton() {	
+	if(Variables.AnalyticsInst!=true)
+		return;
+	var analytics1 = document.getElementById('analytics1'); 
+	analytics1.style.display = 'none';
+	var analytics2 = document.getElementById('analytics2'); 
+	analytics2.style.display = 'none';
+}
+
+// Show the analytics title and button
+function showAnalyticsButton() {
+	if(Variables.AnalyticsInst!=true)
+		return;
+	var analytics1 = document.getElementById('analytics1'); 
+	analytics1.style.display = 'block';
+	var analytics2 = document.getElementById('analytics2'); 
+	analytics2.style.display = 'block';
+}
+	
+function setXmlString() {
+	var modelXml = new String('Variables.ModelXml');
+	var newString = modelXml.replace(/XXXX/,getRootElement);
+	if (isblank(document.forms[0].elements['CSElement:url'].value) == true){
+		document.forms[0].elements['CSElement:url'].value =newString;
+		setDefaultPath(".xml");
+		showAnalyticsButton(); 
+	} else 
+	{
+		if ( confirm( ]]>"<XLAT.STREAM KEY="dvin/AT/CSElement/ConfirmReplaceModelXML" ESCAPE="true" ENCODE="false"/>"<![CDATA[) ) 
+		{
+			document.forms[0].elements['CSElement:url'].value =newString;
+			setDefaultPath(".xml");
+			showAnalyticsButton(); 
+		}
+	}
+}
+
+function setHtmlString() {
+	var modelXml = new String('Variables.ModelHtml');
+	var newString = modelXml.replace(/XXXX/,getRootElement);
+	if (isblank(document.forms[0].elements['CSElement:url'].value) == true){
+		document.forms[0].elements['CSElement:url'].value =newString;
+		setDefaultPath(".html");
+		hideAnalyticsButton(); 
+	} else 
+	{
+		if ( confirm( ]]>"<XLAT.STREAM KEY="dvin/AT/CSElement/ConfirmReplaceModelHTML" ESCAPE="true" ENCODE="false"/>"<![CDATA[) ) 
+		{
+			document.forms[0].elements['CSElement:url'].value =newString;
+			setDefaultPath(".html");
+			hideAnalyticsButton(); 
+		}
+	}
+}
+function setJspString() {
+	var modelXml = new String('Variables.ModelJsp');
+	var newString = modelXml.replace(/XXXX/,getRootElement);
+	if (isblank(document.forms[0].elements['CSElement:url'].value) == true){
+		document.forms[0].elements['CSElement:url'].value =newString;
+		setDefaultPath(".jsp");
+		showAnalyticsButton(); 
+	} else 
+	{
+		if ( confirm( ]]>"<XLAT.STREAM KEY="dvin/AT/CSElement/ConfirmReplaceModelJSP" ESCAPE="true" ENCODE="false"/>"<![CDATA[) ) 
+		{
+			document.forms[0].elements['CSElement:url'].value =newString;
+			setDefaultPath(".jsp");
+			showAnalyticsButton(); 
+		}
+	}
+}
+	
+]]>
+</REPLACEALL>
+
+<![CDATA[
+
+
+function setDefaultPath(ext) {
+	
+	if ( ! isblank( document.forms[0].elements['CSElement:rootelement'].value)) {
+		var rootelement = document.forms[0].elements['CSElement:rootelement'].value;	
+		document.forms[0].elements['CSElement:urlspec'].value = rootelement + ext;
+	}	
+}
+]]>
+
+</SCRIPT>
+
+<!-- ahowes: added include of JS calls to expand/restore textarea -->
+<callelement NAME="OpenMarket/Xcelerate/Scripts/TextAreaExpand"/>
+
+<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+
+<callelement NAME="OpenMarket/Xcelerate/AssetType/CSElement/ContentFormNavBar">
+	<argument NAME="CurrentCat" VALUE="Element"/>
+</callelement>
+
+<tr>
+<td>	
+<table border="0" cellpadding="0" cellspacing="0">
+<!-- Beginning of Group 4 - element catalog info -->
+   <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/CSElement/ShowElementButtons"/>
+
+
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<tr>
+	<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/AT/Rootelement"/>:</td>
+	<td></td>
+	<td class="form-inset">
+	<IF COND="Variables.updatetype!=setformdefaults">
+	<THEN>	
+		<STRING.ENCODE VARIABLE="ContentDetails:rootelement" VARNAME="ContentDetails:rootelementEnc"/>
+		<input type="hidden" name="CSElement:rootelement" value="Variables.ContentDetails:rootelementEnc" REPLACEALL="Variables.ContentDetails:rootelementEnc"/>
+		<STRING.STREAM VARIABLE="ContentDetails:rootelement"/>
+	</THEN>
+	<ELSE>
+		<STRING.ENCODE VARIABLE="ContentDetails:rootelement" VARNAME="ContentDetails:rootelementEnc"/>
+		<input type="text" SIZE="32" maxlength="255" name="CSElement:rootelement" value="Variables.ContentDetails:rootelementEnc" REPLACEALL="Variables.ContentDetails:rootelementEnc"/>
+	</ELSE>
+	</IF>
+	</td>
+</tr>
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<tr>
+	<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/ElementCatalogDescription"/>:</td>
+	<td></td>
+       <SETVAR NAME="OutputQString"  VALUE="Variables.empty"/>
+       <STRING.ENCODE VARIABLE="ContentDetails:elementdescription" VARNAME="OutputQString"/>
+	<td class="form-inset"> <input type="text" SIZE="32" maxlength="255" name="CSElement:elementdescription" value="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/></td>
+</tr>
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<tr>
+	<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/AT/ElementCatalogEntryStorPathFn"/>:</td>
+	<td></td>
+	<td class="form-inset"> <![CDATA[<input type="text" SIZE="32" maxlength="255" name="CSElement:urlspec" onchange="checkforfilename();" value="]]><STRING.STREAM VALUE="Variables.ContentDetails:urlspec"/><![CDATA[" />]]></td>
+</tr>
+
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<tr>
+	<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/AT/ElementLogic"/>:</td>
+	<td></td>	
+       	<td class="form-inset"> 
+	 <!-- ahowes: added div to surround textarea for use with expanding the textare to full screen. span elements provide the links to go full screen and restore -->
+	  <div id="codearea" name="codearea" style="background-color: white; font-size:11px;">
+	  <div id="embiggen" onclick="embiggen('CSElement:url');" style="cursor:pointer; height:20px;"><img src="Variables.cs_imagedir/graphics/common/icon/enlarge.png" border="0" style="vertical-align: middle;float: right;" replaceall="Variables.cs_imagedir"/></div>
+	  <div id="emsmallen" style="display:none;margin:10px;cursor:pointer;height:20px;" onclick="emsmallen('CSElement:url');"><img src="Variables.cs_imagedir/graphics/common/icon/restore.png" border="0" style="vertical-align: middle;float: right;" replaceall="Variables.cs_imagedir"/></div>                 	
+      <div><textarea id="CSElement:url" name="CSElement:url" ROWS="25" COLS="75"  WRAP="off" style="margin-top:10px;" onchange="checkforfilename();">	
+	   <STRING.STREAM VARIABLE="ContentDetails:url"/>
+	  </textarea></div>
+         </div>	  
+	</td>
+</tr>
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<tr>
+	<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/ElementParameters"/>:<br>(<XLAT.STREAM KEY="dvin/Common/AT/namevaluepairsdelimitedbyamp" ENCODE="false"/>)</br></td>
+	<td></td>
+	<td class="form-inset"> <![CDATA[<input type="text" SIZE="32" maxlength="255" name="CSElement:resdetails1" value="]]><STRING.STREAM VALUE="Variables.ContentDetails:resdetails1"/><![CDATA["/>]]></td>
+</tr>
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<tr>
+	<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/AdditionalElementParameters"/>:<br>(<XLAT.STREAM KEY="dvin/Common/AT/namevaluepairsdelimitedbyamp" ENCODE="false"/>)</br></td>
+	<td></td>
+	<td class="form-inset"> <![CDATA[<input type="text" SIZE="32" maxlength="255" name="CSElement:resdetails2" value="]]><STRING.STREAM VALUE="Variables.ContentDetails:resdetails2"/><![CDATA["/>]]></td>
+</tr>
+	<!-- Conditionally show Add analytics tag prompt -->
+	<INDEXOF STR="Variables.CSElement:url" WHAT="AddAnalyticsImgTag" OUTSTR="analyticsIndex"/>
+	<INDEXOF STR="Variables.CSElement:urlspec" WHAT=".html" OUTSTR="analyticsHtmlIndex"/>
+	<IF COND="Variables.AnalyticsInst=true">
+		<THEN>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+			<IF COND="Variables.analyticsHtmlIndex=-1">
+				<THEN>
+					<!-- Not html file, so it must be xml or jsp. See if tag is already present. if the tag is present leave hidden. -->
+					<IF COND="Variables.analyticsIndex=-1">
+						<THEN>
+							<!-- Show the add tag -->
+							<td class="form-label-text" id="analytics1"> <XLAT.STREAM KEY="dvin/AT/Common/AddAnalyticsTagQ"/>: </td>
+							<td></td>	
+							<td class="form-inset" id="analytics2">
+							<a href="javascript:void(0);" onClick="addAnalyticsTag()">
+								<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Add"/></CALLELEMENT>
+							</a>
+							</td>
+						</THEN>
+						<ELSE>
+							<!-- Leave the add tag hidden -->
+							<td class="form-label-text" style="display:none" id="analytics1"> <XLAT.STREAM KEY="dvin/AT/Common/AddAnalyticsTagQ"/>: </td>
+							<td></td>	
+							<td class="form-inset" style="display:none">
+							<a href="javascript:void(0);" onClick="addAnalyticsTag()">
+								<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Add"/></CALLELEMENT>
+							</a>
+							</td>	
+						</ELSE>					
+					</IF>	
+				</THEN>
+				<ELSE>
+					<!-- html file. generate code for add tag but leave it hidden. -->
+					<td class="form-label-text" style="display:none" id="analytics1"> <XLAT.STREAM KEY="dvin/AT/Common/AddAnalyticsTagQ"/>: </td>
+					<td></td>	
+					<td class="form-inset" id="analytics2" style="display:none">
+					<a href="javascript:void(0);" onClick="addAnalyticsTag()">
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Add"/></CALLELEMENT>
+					</a>
+					</td>
+				</ELSE>
+			</IF>	
+			</tr>
+		</THEN>
+	</IF>		
+	<!-- end of Add Analytics Tag generation -->
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+		<TR>
+			<TD class="form-label-text"></TD><TD></TD><TD class="form-inset">
+			<IF COND="associations.#numRows!=0">
+				<THEN>
+					<callelement NAME="OpenMarket/Xcelerate/AssetType/CSElement/ContentFormFooter">
+						<argument NAME="ContinueTo" VALUE="Associations"/>
+					</callelement>
+				</THEN>
+				<ELSE>
+					<callelement NAME="OpenMarket/Xcelerate/AssetType/CSElement/ContentFormFooter">
+						<argument NAME="ContinueTo" VALUE="Map"/>
+					</callelement>
+				</ELSE>
+			</IF>
+			</TD>
+		</TR>			
+</table>
+</td>
+</tr>
+
+</table>
+</FTCS>

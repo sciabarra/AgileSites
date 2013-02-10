@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ftcs SYSTEM "futuretense_cs.dtd">
+<ftcs version="1.2">
+<!-- OpenMarket/Gator/FlexibleAssets/AssetMaker/FlexGroups/SearchWithSubtype
+-
+- Used by SearchPost and SimpleSearchFront to append subtype information to search. 
+-
+- INPUT
+-
+-	Agile_P - current asset type
+-	Variables.cs_assetsubtype - subtype as stored in start menu item
+- 	Variables.simplesearch - is this simple search or advanced search? advanced search already contains input for flexgrouptemplateid
+-
+- OUTPUT
+-
+-->
+
+<fgtm.gettemplatetype ASSETTYPE="Agile_P" VARNAME="templatetype"/>
+<ASSET.LIST TYPE="Variables.templatetype" FIELD1="name" VALUE1="Variables.cs_assetsubtype" LIST="result"/>
+<IF COND="Variables.simplesearch=true"><THEN>
+<INPUT TYPE="hidden" NAME="flexgrouptemplateid" VALUE="result.id" REPLACEALL="result.id"/>
+</THEN></IF>
+<SETVAR NAME="appendCountQuery" VALUE="Agile_P.flexgrouptemplateid=result.id"/>
+</ftcs>

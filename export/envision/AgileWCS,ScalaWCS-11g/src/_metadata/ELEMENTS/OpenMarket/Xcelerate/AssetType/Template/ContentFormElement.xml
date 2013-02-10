@@ -1,0 +1,609 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/Template/ContentFormElement
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<!-- 
+	This iframe is required for IE to properly maximize the textarea over form components.
+	Its properties are modified by javascript in TextAreaExpand.xml
+  (This is actually mostly harmless to other browsers; however it appears to cause a
+  disappearing-cursor bug in Firefox 2, hence the if IE tags being used.)
+-->
+<!--[if IE]>
+<iframe name="tempIFrame" id="tempIFrame" src="about:blank" style="display:none">
+</iframe>
+<![endif]-->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/ContentFormSetVar"/>
+<PROPERTY.GET INIFILE="futuretense_xcel.ini" PARAM="analytics.enabled" VARNAME="AnalyticsInst"/>
+<setvar NAME="varname" VALUE="ContentDetails:element:Variables.currentElement:elementname"/>
+<if COND="IsVariable.Variables.varname=false">
+<then>
+	<setvar NAME="ContentDetails:element:Variables.currentElement:elementname" VALUE="Variables.ContentDetails:rootelement"/>
+	<setvar NAME="ContentDetails:element:Variables.currentElement:theme" VALUE="Variables.empty"/>
+	<setvar NAME="ContentDetails:element:Variables.currentElement:elementdescription" VALUE="Variables.empty"/>
+	<setvar NAME="ContentDetails:element:Variables.currentElement:urlspec" VALUE="Variables.empty"/>
+	<setvar NAME="ContentDetails:element:Variables.currentElement:resdetails1" VALUE="Variables.empty"/>
+	<setvar NAME="ContentDetails:element:Variables.currentElement:resdetails2" VALUE="Variables.empty"/>
+</then>
+</if>
+
+<!--
+Set up variables ModelXml, ModelHtml, ModelHtml variables that contain 
+standard CS preamble-postamble needed when creating a new Template element.
+This also does the setup for the Analytics tag models. 
+-->
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Template/SetModelString"/> 
+<SCRIPT LANGUAGE="JavaScript">
+<REPLACEALL LIST="Variables.ModelXml,Variables.ModelHtml,Variables.ModelJsp,Variables.ModelAnalyticsJsp,Variables.ModelAnalyticsXml,Variables.AnalyticsInst,Variables.cs_imagedir,SessionVariables.locale">
+<![CDATA[
+function getRootElement()
+{
+	return document.forms[0].elements['Template:rootelement'].value ;
+}
+// Generate the Analytics tag at the end of the element logic. If there is already a tag in place
+// then just ignore the request. A tag is generated for XML or JSP template logic, not HTML
+function addAnalyticsTag(urlfield, themefield) {
+	
+	var objname = urlfield+'spec';
+	var filestring = document.forms[0].elements[objname].value;
+	var offset     = filestring.lastIndexOf('.');
+	if ( offset == -1 ) 
+		return;
+		
+	// Get the file extension so we know what file is needed. 				
+	var ext = filestring.substring(offset+1); 	
+	var analyticsXml = new String('Variables.ModelAnalyticsXml');
+	var analyticsJsp = new String('Variables.ModelAnalyticsJsp');
+	var analyticsTag = null; 
+	if ( ext == 'xml' ) analyticsTag = analyticsXml;
+	if ( ext == 'jsp' ) analyticsTag = analyticsJsp; 
+	
+	// If there is no model for this type then just return. 
+	if ( analyticsTag == null ) {
+		// Remove the title and button. 
+		hideAnalyticsButton(); 
+		return;
+	}
+
+	// Get the current content of the element logic. 
+	var logicelement = document.forms[0].elements[urlfield].value;
+	
+	// Does it already contain a tag ?
+	if ( logicelement.lastIndexOf('AddAnalyticsImgTag') == -1 ) {
+				
+		// No, look for the of element logic			
+		offset = logicelement.lastIndexOf('</');
+		if ( offset != -1 ) {
+		
+			// Warn the user that the element must be non-cached
+			alert( ]]>"<XLAT.STREAM KEY="dvin/AT/Common/AddAnalyticsTagW"/>"<![CDATA[); 
+	
+			// Tack the model code onto the end of the element. 
+			var front = logicelement.substring(0,offset); 
+			var trail = logicelement.substring(offset); 
+			var combo = front + analyticsTag + trail; 
+			document.forms[0].elements[urlfield].value = combo;
+		}
+	}	
+	hideAnalyticsButton(); 
+}	
+
+// Hide the analytics title and button
+function hideAnalyticsButton() {	
+	if(Variables.AnalyticsInst!=true)
+		return;
+	var analytics1 = document.getElementById('analytics1'); 
+	analytics1.style.display = 'none';
+	var analytics2 = document.getElementById('analytics2'); 
+	analytics2.style.display = 'none';
+}
+
+// Show the analytics title and button
+function showAnalyticsButton() {
+	if(Variables.AnalyticsInst!=true)
+		return;
+	var analytics1 = document.getElementById('analytics1'); 
+	analytics1.style.display = 'block';
+	var analytics2 = document.getElementById('analytics2'); 
+	analytics2.style.display = 'block';
+}
+
+function setXmlString(urlfield, themefield) {
+	var modelXml = new String('Variables.ModelXml');
+	var newString = modelXml.replace(/XXXX/,getRootElement);
+	var obj = document.forms[0].elements[urlfield];
+	if (isblank(obj.value) == true){
+		obj.value =newString;
+		setDefaultPath(urlfield+"spec",".xml",themefield);
+		showAnalyticsButton();
+	} else 
+	{
+		if ( confirm( ]]>"<XLAT.STREAM KEY="dvin/AT/Template/ConfirmReplaceModelXML" ESCAPE="true" ENCODE="false"/>"<![CDATA[) ) 
+		{
+			obj.value =newString;
+			setDefaultPath(urlfield+"spec",".xml", themefield);
+			showAnalyticsButton();
+		}
+	}
+}
+
+function setHtmlString(urlfield, themefield) {
+	var modelXml = new String('Variables.ModelHtml');
+	var newString = modelXml.replace(/XXXX/,getRootElement);
+	var obj = document.forms[0].elements[urlfield];
+	if (isblank(obj.value) == true){
+		obj.value =newString;
+		setDefaultPath(urlfield+"spec",".html",themefield);
+		hideAnalyticsButton(); 
+	} else 
+	{
+		if ( confirm( ]]>"<XLAT.STREAM KEY="dvin/AT/Template/ConfirmReplaceModelHTML" ESCAPE="true" ENCODE="false"/>"<![CDATA[) ) 
+		{
+			obj.value =newString;
+			setDefaultPath(urlfield+"spec",".html",themefield);
+			hideAnalyticsButton(); 
+		}
+	}
+}
+function setJspString(urlfield, themefield) {
+	var modelXml = new String('Variables.ModelJsp');
+	var newString = modelXml.replace(/XXXX/,getRootElement);
+	var obj = document.forms[0].elements[urlfield];
+	if (isblank(obj.value) == true){
+		obj.value =newString;
+		setDefaultPath(urlfield+"spec",".jsp",themefield);
+		showAnalyticsButton();
+	} else 
+	{
+		if ( confirm( ]]>"<XLAT.STREAM KEY="dvin/AT/Template/ConfirmReplaceModelJSP" ESCAPE="true" ENCODE="false"/>"<![CDATA[) ) 
+		{
+			obj.value =newString;
+			setDefaultPath(urlfield+"spec",".jsp",themefield);
+			showAnalyticsButton();
+		}
+	}
+}
+
+
+]]>
+</REPLACEALL>
+
+<![CDATA[
+
+function setDefaultPath(objname,ext,themefield) {
+	var urlspecfield = document.forms[0].elements[objname];
+	var rootelement = document.forms[0].elements['Template:rootelement'].value;	
+	var basefilename = rootelement.replace( /([^a-zA-Z0-9\/_])/g, "-");
+	if (basefilename.substring(0,1) == "/")
+		basefilename = "Typeless" + basefilename;
+	var theme = document.forms[0].elements[themefield].value;
+	if (!isblank(theme)) {
+  		urlspecfield.value =
+  			basefilename + '_' + theme + ext;
+  	}
+  	else {
+  		urlspecfield.value =
+  			basefilename + ext;
+  	}
+}
+
+function checkfilename(urlfieldname,urlspecfieldname)
+{
+	var urlspecfield = document.forms[0].elements[urlfieldname];
+	if (!isblank(urlspecfield.value))
+	{
+		var urlspec = document.forms[0].elements[urlspecfieldname].value;
+		if ( isblank(urlspec) ) {
+	      ]]>
+	      alert("<XLAT.STREAM KEY="dvin/AT/Template/SpecifyFilename" ESCAPE="true" ENCODE="false"/>");
+	      <![CDATA[
+			return false;
+		}
+		else if ( urlspec.search(/['"?;:]/) != -1) {
+		 	var replacestr=/\bVariables.filename\b/ ;
+         var xlatstr= ']]><XLAT.STREAM KEY="dvin/AT/Template/FilenameContainsIllegalCharacters" ENCODE="false" ESCAPE="true"/><![CDATA[' ;
+         alert(xlatstr.replace(replacestr,urlspec));
+			return false;
+		}
+		else if ( urlspec.indexOf(".") == -1 ) {
+		 	var replacestr=/\bVariables.filename\b/ ;
+         var xlatstr= ']]><XLAT.STREAM KEY="dvin/AT/Template/FilenameHasNoExtension" ENCODE="false" ESCAPE="true"/><![CDATA[' ;
+         alert(xlatstr.replace(replacestr,urlspec));
+			return false;
+		}
+	}
+}
+
+function AddVariant(ourPage,nextstep,themefield,elementnamefield)
+{
+	var theme = document.forms[0].elements[themefield].value;
+	if ( isblank( theme )) {
+	      ]]>
+	      alert("<XLAT.STREAM KEY="dvin/AT/Template/ProvideVariantName" ESCAPE="true" ENCODE="false"/>");
+	      <![CDATA[
+	      return false;
+	}
+
+	var total = parseInt(document.forms[0].elements['Template:element:Total'].value);
+	total++;
+	document.forms[0].elements['Template:element:Total'].value = total;
+		
+	document.forms[0].elements['currentElementName'].value = 
+		document.forms[0].elements['Template:rootelement'].value + ":" + theme;
+	document.forms[0].elements[elementnamefield].value = 
+		document.forms[0].elements['Template:rootelement'].value + ":" + theme;
+
+	return Fixpagename( ourPage, nextstep );
+}
+function editElement( ourPage,nextstep, elementname )
+{
+	document.forms[0].elements['currentElementName'].value = elementname;
+	return Fixpagename( ourPage, nextstep );
+}
+	
+function deleteElement( ourPage,nextstep, elementnamefield )
+{
+	document.forms[0].elements[elementnamefield].value = "";
+	return Fixpagename( ourPage, nextstep );
+}
+
+function changeRootelement()
+{
+	var theme = document.forms[0].elements['Template:element:0:theme'];
+	if (!isblank(theme.value))
+	{
+		document.forms[0].elements['Template:element:0:elementname'].value = 
+			document.forms[0].elements['Template:rootelement'].value + ":" + theme.value;
+	}
+	else {
+		document.forms[0].elements['Template:element:0:elementname'].value = 
+			document.forms[0].elements['Template:rootelement'].value;
+	}
+}
+]]>
+</SCRIPT>
+
+<!-- ahowes: added include of JS calls to expand/restore textarea -->
+<callelement NAME="OpenMarket/Xcelerate/Scripts/TextAreaExpand"/>
+
+<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Template/ContentFormNavBar">
+	<argument NAME="CurrentCat" VALUE="Element"/>
+</callelement>
+
+<tr>
+<td>	
+<table>
+
+<!-- ttype -->
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<tr>
+	<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/ElementUsage"/>:</td>
+	<td></td>
+	<td class="form-inset">
+		<!-- by default, the ttype=b -->
+		<IF COND="Variables.updatetype=setformdefaults">
+		<THEN>			
+			<IF COND="Variables.ContentDetails:ttype=Variables.empty">
+			<THEN>
+				<IF COND="Variables.EditFlag!=copy">
+				<THEN>
+					<SETVAR NAME="ContentDetails:ttype" VALUE="b"/>
+				</THEN>
+				</IF>
+			</THEN>
+			</IF>
+		</THEN>
+		</IF>
+		<SELECT NAME="Template:ttype">
+			<OPTION VALUE=""/><XLAT.STREAM KEY="dvin/Common/AT/ElementUsageUnspecified"/>
+			<if COND="Variables.ContentDetails:ttype=b">
+			<then>
+				<OPTION VALUE="b" SELECTED="true"/><XLAT.STREAM KEY="dvin/Common/AT/ElementCalledWithinHTML"/>
+			</then>
+			<else>
+				<OPTION VALUE="b"/><XLAT.STREAM KEY="dvin/Common/AT/ElementCalledWithinHTML"/>
+			</else>
+			</if>
+			<if COND="Variables.ContentDetails:ttype=l">
+			<then>
+				<OPTION VALUE="l" SELECTED="true"/><XLAT.STREAM KEY="dvin/Common/AT/ElementUsedAsLayout"/>
+			</then>
+			<else>
+				<OPTION VALUE="l"/><XLAT.STREAM KEY="dvin/Common/AT/ElementUsedAsLayout"/>
+			</else>
+			</if>				
+			<if COND="Variables.ContentDetails:ttype=x">
+			<then>
+				<OPTION VALUE="x" SELECTED="true"/><XLAT.STREAM KEY="dvin/Common/AT/ElementCanbecalledExternally"/>
+			</then>
+			<else>
+				<OPTION VALUE="x"/><XLAT.STREAM KEY="dvin/Common/AT/ElementCanbecalledExternally"/>
+			</else>
+			</if>			
+			<if COND="Variables.ContentDetails:ttype=r">
+			<then>
+				<OPTION VALUE="r" SELECTED="true"/><XLAT.STREAM KEY="dvin/Common/AT/ElementStreamedAsRawData"/>
+			</then>
+			<else>
+				<OPTION VALUE="r"/><XLAT.STREAM KEY="dvin/Common/AT/ElementStreamedAsRawData"/>
+			</else>
+			</if>				
+		</SELECT>		
+	</td>
+</tr>
+
+<!-- if it is a typeless template ask for called templates -->
+<if COND="Variables.ContentDetails:subtype=Variables.empty">
+<then>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Template/CalledTemplates"/>:</td>
+		<td></td>
+		<td class="form-inset">
+			<!-- set up the Called templates so these can be selected in the UI -->
+			<SETCOUNTER NAME="nth" VALUE="0"/>
+			<if COND="Variables.ContentDetails:Called:Total!=0">
+			<then>
+				<LOOP COUNT="Variables.ContentDetails:Called:Total">
+					<setvar NAME="varname" VALUE="isCalledVariables.ContentDetails:Called:Counters.nth"/>
+					<setvar NAME="Variables.varname" VALUE="true"/>
+					<INCCOUNTER NAME="nth" VALUE="1"/>
+				</LOOP>
+			</then>
+			</if>			
+			<TEMPLATEMANAGER.GetTemplateNames PUBID="SessionVariables.pubid" LISTVARNAME="allTemplates"/>
+			<SELECT NAME="Template:Called" SIZE="5" MULTIPLE="yes">
+				<OPTION VALUE=""/>-<XLAT.STREAM KEY="dvin/AT/Template/ChooseCalledTemplates"/>-
+				<LOOP LIST="allTemplates">
+					<setvar NAME="selected" VALUE="Variables.isCalledallTemplates.tname"/>
+					<if COND="Variables.selected=true">
+					<then>
+						<OPTION VALUE="allTemplates.tname" SELECTED="true" REPLACEALL="allTemplates.tname"/><STRING.STREAM LIST="allTemplates" COLUMN="name"/>
+					</then>
+					<else>
+						<OPTION VALUE="allTemplates.tname" REPLACEALL="allTemplates.tname"/><STRING.STREAM LIST="allTemplates" COLUMN="name"/>
+					</else>
+					</if>
+				</LOOP>
+			</SELECT>
+		</td>
+	</tr>
+</then>
+</if>
+
+
+<!-- Beginning of Group 4 - element catalog info -->
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Template/ShowElementButtons">
+		<argument NAME="currentElement" VALUE="Variables.currentElement"/>
+	</callelement>
+<!-- rootelement -->
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<tr>
+	<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/Rootelement"/>:</td>
+	<td></td>
+	<td class="form-inset">
+		<IF COND="Variables.updatetype!=setformdefaults">
+		<THEN>			
+			<![CDATA[<input type="hidden" name="Template:rootelement" value="]]><STRING.STREAM VALUE="Variables.ContentDetails:rootelement"/><![CDATA["/>]]>
+			<STRING.STREAM VARIABLE="ContentDetails:element:Variables.currentElement:elementname"/>
+		</THEN>
+		<ELSE>
+			<![CDATA[<input type="text" SIZE="32" maxlength="255" name="Template:rootelement" value="]]><STRING.STREAM VALUE="Variables.ContentDetails:rootelement"/><![CDATA[" onchange="changeRootelement()" />]]>		
+		</ELSE>
+		</IF>
+		<setvar NAME="value" VALUE="Variables.ContentDetails:element:Variables.currentElement:elementname"/>
+		<STRING.ENCODE VARIABLE="value" VARNAME="valueEnc"/>
+		<INPUT TYPE="hidden" NAME="Template:element:Variables.currentElement:elementname" VALUE="Variables.valueEnc" REPLACEALL="Variables.currentElement,Variables.valueEnc"/>
+	</td>
+</tr>
+
+<INPUT TYPE="hidden" NAME="currentElementName" VALUE=""/>
+<if COND="Variables.ContentDetails:element:Total=0">
+<then>
+	<setvar NAME="ContentDetails:element:Total" VALUE="1"/>
+</then>
+</if>
+<INPUT TYPE="hidden" NAME="Template:element:Total" VALUE="Variables.ContentDetails:element:Total" REPLACEALL="Variables.ContentDetails:element:Total"/>
+
+<!-- elementdescription -->
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<tr>
+	<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/ElementCatalogDescription"/>:</td>
+	<td></td>
+       <setvar NAME="OutputQString"  VALUE="Variables.empty"/>
+		<setvar NAME="value" VALUE="Variables.ContentDetails:element:Variables.currentElement:elementdescription"/>
+       <STRING.ENCODE VARIABLE="value" VARNAME="OutputQString"/>
+
+	<td class="form-inset"> <input type="text" SIZE="32" maxlength="255" name="Template:element:Variables.currentElement:elementdescription"  value="Variables.OutputQString" REPLACEALL="Variables.OutputQString,Variables.currentElement"/></td>
+</tr>
+
+<!-- urlspec - element storage -->
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<tr>
+	<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/AT/ElementCatalogEntryStorPathFn"/>:</td>
+	<td></td>
+	<td class="form-inset"> 
+		<setvar NAME="value" VALUE="Variables.ContentDetails:element:Variables.currentElement:urlspec"/>
+		<!-- Save filespec value for analytics check below -->
+		<STRING.ENCODE VARIABLE="value" VARNAME="valueEncSpec"/>
+		<input type="text" SIZE="32" maxlength="255" name="Template:element:Variables.currentElement:urlspec" value="Variables.value" REPLACEALL="Variables.value,Variables.currentElement" onchange="checkfilename('Template:element:Variables.currentElement:url', 'Template:element:Variables.currentElement:urlspec')"/></td>
+</tr>
+
+<!-- url - element logic -->
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<tr>
+	<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/AT/ElementLogic"/>:</td>
+	<td></td>
+	<td class="form-inset">
+	 <!-- ahowes: added div to surround textarea for use with expanding the textare to full screen. span elements provide the links to go full screen and restore -->
+	 <div id="codearea" style="background-color: white; font-size:11px;">
+          <div id="embiggen" onclick="embiggen('Template:element:Variables.currentElement:url');" style="height:20px;cursor:pointer;" REPLACEALL="Variables.currentElement"><img src="Variables.cs_imagedir/graphics/common/icon/enlarge.png" style="vertical-align: middle;float: right;" border="0" replaceall="Variables.cs_imagedir"/></div>
+		  <div id="emsmallen" style="display:none; margin:10px; cursor:pointer; height:20px;" onclick="emsmallen('Template:element:Variables.currentElement:url');" REPLACEALL="Variables.currentElement"><img src="Variables.cs_imagedir/graphics/common/icon/restore.png" style="vertical-align: middle;float: right;" border="0" replaceall="Variables.cs_imagedir"/></div>
+          <div><textarea id="Template:element:Variables.currentElement:url" name="Template:element:Variables.currentElement:url" ROWS="25" COLS="75"  style="margin-top:10px;" WRAP="off" REPLACEALL="Variables.currentElement" onchange="checkfilename('Template:element:Variables.currentElement:url', 'Template:element:Variables.currentElement:urlspec')">
+	   <STRING.STREAM VARIABLE="ContentDetails:element:Variables.currentElement:url"/>
+	  </textarea></div>
+
+	 </div>
+	</td>
+</tr>
+
+<!-- resdetails1 -->
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<tr>
+	<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/ElementParameters"/>:<br>(<XLAT.STREAM KEY="dvin/Common/AT/namevaluepairsdelimitedbyamp" ENCODE="false"/>)</br></td>
+	<td></td>
+	<td class="form-inset">
+		<setvar NAME="value" VALUE="Variables.ContentDetails:element:Variables.currentElement:resdetails1"/>
+	 <STRING.ENCODE VARIABLE="value" VARNAME="valueEnc"/>
+	 <input type="text" SIZE="32" maxlength="255" name="Template:element:Variables.currentElement:resdetails1" value="Variables.valueEnc" REPLACEALL="Variables.valueEnc,Variables.currentElement"/></td>
+</tr>
+<!-- resdetails2 -->
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<tr>
+	<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/AdditionalElementParameters"/>:<br>(<XLAT.STREAM KEY="dvin/Common/AT/namevaluepairsdelimitedbyamp" ENCODE="false"/>)</br></td>
+	<td></td>
+	<td class="form-inset">
+		<setvar NAME="value" VALUE="Variables.ContentDetails:element:Variables.currentElement:resdetails2"/>
+		<STRING.ENCODE VARIABLE="value" VARNAME="valueEnc"/>
+	 <input type="text" SIZE="32" maxlength="255" name="Template:element:Variables.currentElement:resdetails2" value="Variables.valueEnc" REPLACEALL="Variables.valueEnc,Variables.currentElement"/></td>
+</tr>
+	<!-- Conditionally show Add analytics tag prompt -->
+	<SETVAR NAME="logicvalue" VALUE="Variables.ContentDetails:element:Variables.currentElement:url"/>
+	<INDEXOF STR="Variables.logicvalue" WHAT="AddAnalyticsImgTag" OUTSTR="analyticsIndex"/>
+	<INDEXOF STR="Variables.valueEncSpec" WHAT=".html" OUTSTR="analyticsHtmlIndex"/>
+	<IF COND="Variables.AnalyticsInst=true">
+		<THEN>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+			<IF COND="Variables.analyticsHtmlIndex=-1">
+				<THEN>
+					<!-- Not html file, so it must be xml or jsp. See if tag is already present. if the tag is present leave hidden. -->
+					<IF COND="Variables.analyticsIndex=-1">
+						<THEN>
+							<!-- Show the add tag -->
+							<td class="form-label-text" id="analytics1"> <XLAT.STREAM KEY="dvin/AT/Common/AddAnalyticsTagQ"/>: </td>
+							<td></td>	
+							<td class="form-inset" id="analytics2">
+							<a href="javascript:void(0);" onClick="addAnalyticsTag('Template:element:Variables.currentElement:url','Template:element:Variables.currentElement:theme')" REPLACEALL="Variables.currentElement">
+								<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Add"/></CALLELEMENT>
+							</a>
+							</td>
+						</THEN>
+						<ELSE>
+							<!-- Leave the add tag hidden -->
+							<td class="form-label-text" style="display:none" id="analytics1"> <XLAT.STREAM KEY="dvin/AT/Common/AddAnalyticsTagQ"/>: </td>
+							<td></td>	
+							<td class="form-inset" style="display:none">
+							<a href="javascript:void(0);" onClick="addAnalyticsTag('Template:element:Variables.currentElement:url','Template:element:Variables.currentElement:theme')" REPLACEALL="Variables.currentElement">
+								<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Add"/></CALLELEMENT>
+							</a>
+							</td>	
+						</ELSE>					
+					</IF>	
+				</THEN>
+				<ELSE>
+					<!-- html file. generate code for add tag but leave it hidden. -->
+					<td class="form-label-text" style="display:none" id="analytics1"> <XLAT.STREAM KEY="dvin/AT/Common/AddAnalyticsTagQ"/>: </td>
+					<td></td>	
+					<td class="form-inset" id="analytics2" style="display:none">
+					<a href="javascript:void(0);" onClick="addAnalyticsTag('Template:element:Variables.currentElement:url','Template:element:Variables.currentElement:theme')" REPLACEALL="Variables.currentElement">
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Add"/></CALLELEMENT>
+					</a>
+					</td>
+				</ELSE>
+			</IF>	
+			</tr>
+		</THEN>
+	</IF>		
+	<!-- end of Add Analytics Tag generation -->
+
+<!-- variants, a.k.a, styles -->
+
+<SETCOUNTER NAME="nthElement" VALUE="0"/>
+<SETVAR NAME="errno" VALUE="0"/>
+<CALCULATOR.GO VALUE="Variables.ContentDetails:element:Total 1 GT" VARNAME="hasStyles"/>
+<IF COND="Variables.hasStyles=1">
+<THEN>
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<tr>
+	<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Variant"/>:</td>
+	<td></td>
+	<td class="form-inset">
+		<if COND="Variables.ContentDetails:element:Total!=0">
+		<then>
+ 			<table>
+			<LOOP COUNT="Variables.ContentDetails:element:Total">
+				<if COND="Counters.nthElement!=Variables.currentElement">
+				<then>
+					<setvar NAME="value" VALUE="Variables.ContentDetails:element:Counters.nthElement:elementname"/>
+					<XLAT.LOOKUP KEY="dvin/Common/EditThisItem" VARNAME="_XLAT_"/>
+					<XLAT.LOOKUP KEY="dvin/Common/EditThisItem"  VARNAME="mouseover" ESCAPE="true"/>
+					<tr>
+					<td>
+               <A HREF="javascript:editElement('Variables.ThisPage', 'ContentFormElement', 'Variables.value')" OnMouseOver="window.status='Variables.mouseover'; return true" OnMouseOut="return window.status='';" REPLACEALL="Variables.value,Variables.ThisPage,Variables.mouseover">
+						<img src="Variables.cs_imagedir/graphics/common/icon/iconEditContent.gif" border="0" hspace="2" vspace="4" ALT="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,Variables._XLAT_"/>
+					</A>
+					</td>
+					<td>
+                <A HREF="javascript:editElement('Variables.ThisPage', 'ContentFormElement', 'Variables.value')" OnMouseOver="window.status='Variables.mouseover'; return true" OnMouseOut="return window.status='';" REPLACEALL="Variables.value,Variables.ThisPage,Variables.mouseover">
+						<STRING.STREAM VARIABLE="ContentDetails:element:Counters.nthElement:elementname"/>
+					</A>
+					</td>
+					<td>
+ 					<XLAT.LOOKUP KEY="dvin/UI/Deletethisitem" VARNAME="_XLAT_"/>
+					<XLAT.LOOKUP KEY="dvin/UI/Deletethisitem" VARNAME="mouseover" ESCAPE="true"/>
+					<A HREF="javascript:deleteElement('Variables.ThisPage', 'ContentFormElement','Template:element:Counters.nthElement:elementname' )" onmouseover="window.status='Variables.mouseover';return true;" onmouseout="window.status='';return true" REPLACEALL="Variables.ThisPage,Variables.value,Counters.nthElement,Variables.mouseover">
+					<img hspace="2" vspace="4" src="Variables.cs_imagedir/graphics/common/icon/iconDeleteContent.gif" border="0" ALT="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,Variables._XLAT_"/>
+					</A>
+					</td>
+					</tr>
+				</then>
+				</if>
+				<INCCOUNTER NAME="nthElement" VALUE="1"/>
+			</LOOP>
+			</table>
+		</then>
+		<else>
+				<INCCOUNTER NAME="nthElement" VALUE="1"/>
+		</else>
+		</if>
+		<XLAT.LOOKUP KEY="dvin/AT/Template/AddVariant" VARNAME="addNewVariant"/>
+		<!--<input type="text" SIZE="32" MAXLENGTH="32" NAME="Template:element:Counters.nthElement:theme" VALUE="" REPLACEALL="Counters.nthElement"/>-->
+		<setvar NAME="value" VALUE="Variables.ContentDetails:rootelement"/>
+		<STRING.ENCODE VARIABLE="value" VARNAME="valueEnc"/>
+		<input type="hidden" name="Template:element:Counters.nthElement:elementname" value="valueEnc" REPLACEALL="Counters.nthElement,valueEnc"/>
+		<input type="hidden" NAME="Template:element:Counters.nthElement:elementdescription" VALUE="" REPLACEALL="Counters.nthElement"/>
+		<input type="hidden" NAME="Template:element:Counters.nthElement:url" VALUE="" REPLACEALL="Counters.nthElement"/>
+		<input type="hidden" NAME="Template:element:Counters.nthElement:urlspec" VALUE="" REPLACEALL="Counters.nthElement"/>
+		<input type="hidden" NAME="Template:element:Counters.nthElement:resdetails1" VALUE="" REPLACEALL="Counters.nthElement"/>
+		<input type="hidden" NAME="Template:element:Counters.nthElementt:resdetails2" VALUE="" REPLACEALL="Counters.nthElement"/>
+		<!--&nbsp;<INPUT TYPE="button" NAME="addNewVariant" VALUE="Variables.addNewVariant" onClick="AddVariant('Variables.ThisPage', 'ContentFormElement','Template:element:Counters.nthElement:theme','Template:element:Counters.nthElement:elementname' )" REPLACEALL="Variables.ThisPage,Counters.nthElement,Variables.addNewVariant"/>-->
+	</td>
+</tr>
+</THEN>
+</IF>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+	<TR>
+		<TD class="form-label-text"></TD><TD></TD><TD class="form-inset">
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Template/ContentFormFooter">
+			<argument NAME="ContinueTo" VALUE="SiteEntry"/>
+		</callelement>
+		</TD>
+	</TR>
+
+</table>
+</td>
+</tr>
+</table>
+
+
+</FTCS>

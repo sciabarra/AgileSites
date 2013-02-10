@@ -1,0 +1,221 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateB/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/PageAttribute/AppendSelectDetailsSE.xml $ 
+$Revision: 18 $ 
+$Modtime: 11/11/02 2:44p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- AppendSelectDetailsSE.xml
+-
+- DESCRIPTION
+-	Add to search engine query for Article-specific search parameters 
+-	(as defined by Article/SearchForm.xml).
+-
+- ARGUMENTS
+-   seQuery
+-       SEARCH WHAT query string.  Append to this.
+-   seType
+-       SEARCH TYPE value.  Change it or leave it alone.
+-   seRelevance
+-       SEARCH RELEVANCE value.  Change it or leave it alone.
+-   sqlQueryend
+-       Tail end of WHERE expression for secondary SQL query.
+-   (FORM fields)
+-       All form fields defined by SearchForm.xml
+-   seLeft, seRight
+-       Left and right strings.  Used as 
+-		fieldname Variables.seLeft fieldvalue Variables.seRight
+-
+- HISTORY 
+-->
+
+ 
+<callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/AppendSelectDetailsSE"/>
+
+
+<!-- These are the additional fields specific to AttrTypes
+
+Type
+AssetTypes
+ValueStyle
+AttrTypes
+Editing
+Storage
+ExternalId
+ExternalColumn
+DirectQuery
+
+-->
+
+<IF COND="IsVariable.AttrTypes=true">
+<THEN>
+<!--
+AV does not find substrings, but words.  ID does not contain words.
+so a LIKE substring search is more useful for AV.
+TBD...WHAT ABOUT VERITY? IS THIS TRUE FOR ALL SEARCH ENGINES?
+-->
+   <SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Variables.AssetType.attributetype = Variables.AttrTypes"/>
+
+<!-- append to the Filterstrings -->
+   <XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/AttrEditis" VARNAME="_XLAT_"/>
+    <SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.AttrTypes'"/>
+
+</THEN>
+</IF>
+
+ 
+<IF COND="IsVariable.Type=true">
+<THEN>
+<!--
+AV does not find substrings, but words.  ID does not contain words.
+so a LIKE substring search is more useful for AV.
+TBD...WHAT ABOUT VERITY? IS THIS TRUE FOR ALL SEARCH ENGINES?
+-->
+   <SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Variables.AssetType_Extension.type  LIKE  'Variables.Type'"/>
+
+   <!-- append to the Filterstrings -->
+   <XLAT.LOOKUP KEY="dvin/FlexibleAssets/FlexAssets/Typeis" VARNAME="_XLAT_"/>
+    <SETVAR NAME="filterstring" VALUE="Variables.filterstring  Variables._XLAT_ 'Variables.Type'"/>
+
+
+</THEN>
+</IF>
+
+
+ 
+
+
+<IF COND="IsVariable.DirectQuery=true">
+<THEN>
+<!--
+AV does not find substrings, but words.  ID does not contain words.
+so a LIKE substring search is more useful for AV.
+TBD...WHAT ABOUT VERITY? IS THIS TRUE FOR ALL SEARCH ENGINES?
+-->
+   <SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Variables.AssetType.directquery = Variables.DirectQuery"/>
+
+</THEN>
+</IF>
+
+<!-- append to the Filterstrings -->
+
+<if COND="IsVariable.DirectQuery=true">
+   <then>    
+       <XLAT.LOOKUP KEY="dvin/Common/AT/SQLquery" VARNAME="_XLAT_"/>
+       <SETVAR NAME="filterstring" VALUE="Variables.filterstring Variables._XLAT_ 'Variables.DirectQuery'"/>
+   </then>
+</if>
+
+
+
+<IF COND="IsVariable.ExternalColumn=true">
+<THEN>
+<!--
+AV does not find substrings, but words.  ID does not contain words.
+so a LIKE substring search is more useful for AV.
+TBD...WHAT ABOUT VERITY? IS THIS TRUE FOR ALL SEARCH ENGINES?
+-->
+   <SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Variables.AssetType_Extension.externalcolumn LIKE 'Variables.ExternalColumn'"/>
+
+   <!-- append to the Filterstrings -->
+   <XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/ExternalColumnnocolon" VARNAME="_XLAT_"/>
+    <SETVAR NAME="filterstring" VALUE="Variables.filterstring  Variables._XLAT_ 'Variables.ExternalColumn'"/>
+
+
+</THEN>
+</IF>
+
+ 
+
+<IF COND="IsVariable.ExternalId=true">
+<THEN>
+<!--
+AV does not find substrings, but words.  ID does not contain words.
+so a LIKE substring search is more useful for AV.
+TBD...WHAT ABOUT VERITY? IS THIS TRUE FOR ALL SEARCH ENGINES?
+-->
+   <SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Variables.AssetType_Extension.externalid = Variables.ExternalId"/>
+
+<!-- append to the Filterstrings -->
+   <XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/ExternalIDnocolon" VARNAME="_XLAT_"/>
+   <SETVAR NAME="filterstring" VALUE="Variables.filterstring  Variables._XLAT_ 'Variables.ExternalId'"/>
+
+
+</THEN>
+</IF>
+
+
+ 
+<IF COND="IsVariable.Storage=true">
+<THEN>
+<!--
+AV does not find substrings, but words.  ID does not contain words.
+so a LIKE substring search is more useful for AV.
+TBD...WHAT ABOUT VERITY? IS THIS TRUE FOR ALL SEARCH ENGINES?
+-->
+   <SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Variables.AssetType_Extension.storage LIKE 'Variables.Storage'"/>
+
+<!-- append to the Filterstrings -->
+   <XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/StorageStylenocolon" VARNAME="_XLAT_"/>
+   <SETVAR NAME="filterstring" VALUE="Variables.filterstring  Variables._XLAT_ 'Variables.Storage'"/>
+ 
+</THEN>
+</IF>
+
+ 
+<IF COND="IsVariable.Editing=true">
+<THEN>
+<!--
+AV does not find substrings, but words.  ID does not contain words.
+so a LIKE substring search is more useful for AV.
+TBD...WHAT ABOUT VERITY? IS THIS TRUE FOR ALL SEARCH ENGINES?
+-->
+   <SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Variables.AssetType_Extension.editing LIKE  'Variables.Editing'"/>
+ <!-- append to the Filterstrings -->
+   <XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/EditingStyleNocolon" VARNAME="_XLAT_"/>
+      <SETVAR NAME="filterstring" VALUE="Variables.filterstring  Variables._XLAT_ 'Variables.Editing'"/>
+ </THEN>
+</IF>
+
+  
+<IF COND="IsVariable.ValueStyle=true">
+<THEN>
+<!--
+AV does not find substrings, but words.  ID does not contain words.
+so a LIKE substring search is more useful for AV.
+TBD...WHAT ABOUT VERITY? IS THIS TRUE FOR ALL SEARCH ENGINES?
+-->
+    <SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Variables.AssetType_Extension.valuestyle LIKE  'Variables.ValueStyle'"/>
+ <!-- append to the Filterstrings -->
+    <XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/NumberValueis" VARNAME="_XLAT_"/>
+    <SETVAR NAME="filterstring" VALUE="Variables.filterstring Variables._XLAT_ 'Variables.ValueStyle'"/>
+  
+</THEN>
+</IF>
+
+
+<IF COND="IsVariable.AssetTypes=true">
+<THEN>
+<!--
+AV does not find substrings, but words.  ID does not contain words.
+so a LIKE substring search is more useful for AV.
+TBD...WHAT ABOUT VERITY? IS THIS TRUE FOR ALL SEARCH ENGINES?
+-->
+    <SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Variables.AssetType_Extension.assettypename LIKE  'Variables.AssetTypes'"/>
+ <!-- append to the Filterstrings -->
+    <XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/AssetTypeis" VARNAME="_XLAT_"/>
+      <SETVAR NAME="filterstring" VALUE="Variables.filterstring  Variables._XLAT_ 'Variables.AssetTypes'"/>
+
+</THEN>
+</IF>
+
+  
+</FTCS>
+

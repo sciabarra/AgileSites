@@ -1,0 +1,113 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateB/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/PageAttribute/GetOrSetVars.xml $ 
+$Revision: 32 $ 
+$Modtime: 11/04/02 1:50p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- ContentDetails.xml
+-
+- DESCRIPTION
+-	
+-
+- HISTORY 
+
+- INPUT
+		Variables.SetOrGet (defaults to get)
+		Variables.Attributes:xxxx (the Prefix is Attributes)
+		
+- OUTPUT
+		All variables loaded in Attributes: variables.
+
+-->
+
+<if COND="Variables.GetOrSet=set">
+<then>
+	<!--Convert multiple arguments into list-->
+	<if COND="IsVariable.AttrArgument=true">
+	<then>
+		<stringlist NAME="ArgList" STR="Variables.AttrArgument" DELIM=";"/>
+		<stringlist NAME="ValList" STR="Variables.AttrArgumentValue" DELIM=";"/>
+		<listobject.create  NAME="AttrArgs" COLUMNS="name,value"/>
+		<loop LIST="ArgList">
+			<listobject.addrow  NAME="AttrArgs" name="ArgList.ITEM" value="ValList.ITEM"/> 
+			<setrow LIST="ValList" ACTION="NEXT"/>
+		</loop>
+		<listobject.tolist  NAME="AttrArgs" LISTVARNAME="Attributes:Arguments"/>
+	</then>
+	</if>
+		
+	<!--Now Gather the variables from ContentForm
+		Note-FieldList contains fields from ContentForm which should be cleared in
+		database if not defined-->
+ 
+	<IF COND="Variables.Attributes:type!=asset">
+	<THEN>
+		<SETVAR NAME="Attributes:assettypename" VALUE="Variables.empty"/>
+		<SETVAR NAME="Attributes:assetsubtypename:Total" VALUE="0"/>
+	</THEN>
+	<ELSE>
+		<!-- Gather the subtype field specially -->
+		<IF COND="IsVariable.AttrAssetSubtypes=true">
+		<THEN>
+			<STRINGLIST STR="Variables.AttrAssetSubtypes" DELIM=";" NAME="mylist"/>
+		</THEN>
+		<ELSE>
+			<LISTOBJECT.CREATE NAME="mylistobj" COLUMNS="ITEM"/>
+			<LISTOBJECT.TOLIST NAME="mylistobj" LISTVARNAME="mylist"/>
+		</ELSE>
+		</IF>
+		<IF COND="mylist.#numRows=0">
+		<THEN>
+			<SETVAR NAME="Attributes:assetsubtypename:Total" VALUE="0"/>
+		</THEN>
+		<ELSE>
+			<SETVAR NAME="isAny" VALUE="false"/>
+			<SETCOUNTER NAME="mycounter" VALUE="0"/>
+			<LOOP LIST="mylist">
+				<IF COND="mylist.ITEM=Variables.empty">
+				<THEN>
+					<SETVAR NAME="isAny" VALUE="true"/>
+					<SETCOUNTER NAME="mycounter" VALUE="0"/>
+				</THEN>
+				<ELSE>
+					<IF COND="Variables.isAny=false">
+					<THEN>
+						<SETVAR NAME="Attributes:assetsubtypename:Counters.mycounter" VALUE="mylist.ITEM"/>
+						<INCCOUNTER NAME="mycounter" VALUE="1"/>
+					</THEN>
+					</IF>
+				</ELSE>
+				</IF>
+			</LOOP>
+			<SETVAR NAME="Attributes:assetsubtypename:Total" VALUE="Counters.mycounter"/>
+		</ELSE>
+		</IF>
+	</ELSE>
+	</IF>
+ 
+	<ASSET.GATHER
+		NAME="theCurrentAsset"
+		PREFIX="Attributes"
+		FIELDLIST="name,description,status,workflowid,valuestyle,type,assettypename,assetsubtypename,upload,attributetype,editorid,editing,storage,externalid,externalcolumn,externaltable,enginename,charsetname,contenttype,diffconv,searchconv,diffpres,embedtype,Arguments,deptype"
+		/>
+		
+	<if COND="Variables.errno!=0">
+	<then>
+		<br/>
+		<XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/AssetGatherFail"/> <STRING.STREAM VARIABLE="errno"/>
+		<throwexception/>
+	</then>
+	</if>
+</then>
+</if>
+</FTCS>
+
+

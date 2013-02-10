@@ -1,0 +1,251 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ftcs SYSTEM "futuretense_cs.dtd">
+<ftcs version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/Template/ContentSiteEntries
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+<STRING.ENCODE VARIABLE="cs_imagedir" VARNAME="cs_imagedir"/>
+<SETVAR NAME="errno" VALUE="0"/>
+<USERISMEMBER GROUP="xceleditor"/>
+<if COND="Variables.errno=0">
+	<!-- user is not logged in. Display logout screen -->
+	<then> 
+		<SATELLITE.LINK ASSEMBLER="query" PAGENAME="OpenMarket/Xcelerate/Actions/Security/TimeoutError" OUTSTRING="urlTimeoutError"/>
+			<script LANGUAGE="JavaScript">
+				parent.parent.location="<ics.resolvevariables NAME="Variables.urlTimeoutError"/>";
+			</script>
+		<throwexception/>
+	</then>
+</if>
+<IF COND="IsVariable.rowsPerPage=false">
+	<THEN>
+		<SETVAR NAME="rowsPerPage" VALUE="10"/>
+	</THEN>
+</IF>
+<IF COND="IsVariable.displayPage=false">
+	<THEN>
+		<SETVAR NAME="displayPage" VALUE="1"/>
+	</THEN>
+</IF>
+<ASSET.LOAD TYPE="Variables.AssetType" OBJECTID="Variables.id" NAME="Variables.assetname"/>
+<callelement NAME="OpenMarket/Xcelerate/Actions/AssetMgt/GetContentDetails">
+	<argument NAME="qryprefix" VALUE="ContentDetails"/>
+	<argument NAME="assetname" VALUE="Variables.assetname"/>
+</callelement>
+<SETVAR NAME="siteEntriesStr" VALUE=""/>
+<SETCOUNTER NAME="totalRows" VALUE="0"/>
+<IF COND="Variables.ContentDetails:element:Total!=0">
+<THEN>
+<LISTOBJECT.CREATE NAME="pageNameListObj" COLUMNS="pagename"/>
+<SETCOUNTER NAME="nthElement" VALUE="0"/>
+<LOOP COUNT="Variables.ContentDetails:element:Total">
+<SETCOUNTER NAME="nthPagename" VALUE="0"/>
+<ICS.RESOLVEVARIABLES NAME="$(Variables.ContentDetails:element:$(Counters.nthElement):siteentry:Total)" OUTPUT="numpagenames" DELIMITED="true"/>
+<IF COND="Variables.numpagenames!=0">
+<THEN>
+	<LOOP COUNT="Variables.numpagenames">
+	<LISTOBJECT.ADDROW NAME="pageNameListObj" pagename="ContentDetails:element:Counters.nthElement:siteentry:Counters.nthPagename"/>
+	<INCCOUNTER NAME="totalRows" VALUE="1"/>
+	<INCCOUNTER NAME="nthPagename" VALUE="1"/>
+	</LOOP>
+</THEN>
+</IF>
+<INCCOUNTER NAME="nthElement" VALUE="1"/>
+</LOOP>
+</THEN>
+</IF>
+<LISTOBJECT.TOLIST NAME="pageNameListObj" LISTVARNAME="pageNameList"/>
+<SETVAR NAME="totalRows" VALUE="Counters.totalRows"/>
+<CALCULATOR.GO VALUE="Counters.totalRows Variables.rowsPerPage /" VARNAME="totalPages"/>
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Template/ContentDetailsHelper">
+	<argument NAME="cdAction" VALUE="ceil"/>
+	<argument NAME="paramName" VALUE="totalPages"/>
+	<argument NAME="paramValue" VALUE="Variables.totalPages"/>
+</callelement>
+<CALCULATOR.GO VALUE="Variables.displayPage 1 +" VARNAME="next"/>
+<CALCULATOR.GO VALUE="Variables.displayPage 1 -" VARNAME="prev"/>
+<CALCULATOR.GO VALUE="Variables.totalPages 1 -" VARNAME="pageBeforeLast"/>
+<CALCULATOR.GO VALUE="Variables.displayPage Variables.totalPages LT" VARNAME="shownext"/>
+<CALCULATOR.GO VALUE="Variables.displayPage 1 GT" VARNAME="showprev"/>
+<CALCULATOR.GO VALUE="Variables.totalPages 1 GT" VARNAME="showPagination"/>
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Template/ContentDetailsHelper">
+	<argument NAME="cdAction" VALUE="calculateFromToIndex"/>
+</callelement>
+<IF COND="Variables.ContentDetails:element:Total!=0">
+				<THEN>
+			
+				<if COND="Variables.ContentDetails:element:0:pagename:Total=0">
+				<then>
+					<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/SiteCatalogPagename"/>:</td>
+					<td class="form-inset">
+             		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowCellMessage">
+				 			<argument NAME="severity" VALUE="warning"/>
+				 			<argument NAME="elem" VALUE="TemplateSCEntryDoesntExist"/>
+			      	</callelement>
+			      </td>
+			      </tr>
+		      </then>
+		      <else>
+				<tr>
+				<XLAT.LOOKUP KEY="dvin/AT/Template/SiteEntries" VARNAME="label"/>
+				<if COND="Variables.ContentDetails:element:Total=1">
+				<then>
+					<if COND="Variables.ContentDetails:element:0:pagename:Total=1">
+					<then>
+						<XLAT.LOOKUP KEY="dvin/AT/Template/SiteEntry" VARNAME="label"/>
+					</then>
+					</if>
+				</then>
+				</if>
+				<td class="form-label-text" style="width:200px;"><STRING.STREAM VARIABLE="label"/>:</td>
+				<td class="form-inset">
+	 				<table BORDER="0" CELLSPACING="0" CELLPADDING="0">
+	     				<tr>
+						<td></td><td class="tile-dark" VALIGN="TOP" HEIGHT="1"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td><td></td>
+						</tr>
+						<tr>
+						<td class="tile-dark" VALIGN="top" WIDTH="1"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+						<td >
+						<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff">
+							<tr><td colspan="11" class="tile-highlight"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td></tr>
+							<tr><td class="tile-a" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td>
+							<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/Common/AT/SiteCatalogPagename"/><BR /></DIV></td>
+		            	<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/Common/AT/Pagelevelparameters"/></DIV></td>
+		               <td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/Common/AT/PageletCacheCriteria"/></DIV></td>
+		            	<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/AT/Template/ACL"/></DIV></td>
+		            	<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/Common/AT/CacheRules"/></DIV></td>
+							<td class="tile-c" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td>
+							</tr>
+						<SETCOUNTER NAME="rowNum" VALUE="0"/>
+						<!-- one row for each sitecatalog entry -->
+						<SETVAR NAME="rowStyle" VALUE="tile-row-normal"/>
+   						<SETVAR NAME="separatorLine" VALUE="0"/>
+						<LOOP LIST="pageNameList" FROM="Variables.startIndex" UNTIL="Variables.rowsPerPage=Counters.rowNum">
+						<IF COND="Variables.separatorLine=1">
+							<THEN>
+								<tr>
+									<!--<td colspan="11" class="light-line-color"><img height="1" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>-->
+								</tr>
+							</THEN>
+						</IF>
+						<SETVAR NAME="separatorLine" VALUE="1"/>
+
+								<tr class="Variables.rowStyle"  REPLACEALL="Variables.rowStyle">
+								<INCCOUNTER NAME="rowNum" VALUE="1"/>
+								<td></td>
+								<td VALIGN="top">
+									<!-- pagename -->
+									<DIV class="small-text-inset">
+									<STRING.STREAM VARIABLE="pageNameList.pagename:pagename"/></DIV>
+						      </td>
+								<td></td>
+		                  <td VALIGN="top">
+		                  	<!-- default arguments -->
+					          	<ICS.RESOLVEVARIABLES NAME="$(Variables.$(pageNameList.pagename):defaultarguments:Total)" OUTPUT="numArgs" DELIMITED="true"/>
+		                  	<IF COND="Variables.numArgs!=0">
+		                  	<THEN>
+			                  	<SETCOUNTER NAME="nthArg" VALUE="0"/>
+			                  	<table>
+			                  	<LOOP COUNT="Variables.numArgs">
+		                  			<ICS.RESOLVEVARIABLES NAME="$(Variables.$(pageNameList.pagename):defaultarguments:$(Counters.nthArg):name)" OUTPUT="argname" DELIMITED="true"/>
+		                  			<ICS.RESOLVEVARIABLES NAME="$(Variables.$(pageNameList.pagename):defaultarguments:$(Counters.nthArg):value)" OUTPUT="argvalue" DELIMITED="true"/>
+
+			                  		<tr><td><STRING.STREAM VARIABLE="argname"/>&nbsp;:&nbsp;<STRING.STREAM VARIABLE="argvalue"/></td></tr>
+											<INCCOUNTER NAME="nthArg" VALUE="1"/>
+										</LOOP>
+										</table>
+									</THEN>
+									</IF>
+								</td>
+					     		<td></td>
+		                  <td VALIGN="top">
+		                  <div class="small-text-inset">
+		                  	<!-- page criteria -->
+		                  	<SETVAR NAME="numCrit" VALUE="Variables.ContentDetails:pagecriteria:Total"/>
+		                  	<IF COND="Variables.numCrit!=0">
+		                  	<THEN>
+			                  	<SETCOUNTER NAME="nthCrit" VALUE="0"/>
+			                  	<LOOP COUNT="Variables.numCrit">
+			                  		<IF COND="Counters.nthCrit=0">
+			                  		<THEN>
+				                  		<SETVAR NAME="pagecriteria" VALUE="Variables.ContentDetails:pagecriteria:Counters.nthCrit"/>
+				                  	</THEN>
+				                  	<ELSE>
+				                  		<SETVAR NAME="pagecriteria" VALUE="Variables.pagecriteria, Variables.ContentDetails:pagecriteria:Counters.nthCrit"/>
+			                  		</ELSE>
+			                  		</IF>
+											<INCCOUNTER NAME="nthCrit" VALUE="1"/>
+										</LOOP>
+										<STRING.STREAM VARIABLE="pagecriteria"/>
+									</THEN>
+									</IF>
+								</div>
+								</td>
+								<td></td>
+									<!-- acl -->
+		                  <td valign="top"><div class="small-text-inset">
+		                  <SETVAR NAME="SEacls" VALUE="Variables.ContentDetails:acl"/>
+		                  <IF COND="Variables.SEacls=Variables.empty">
+		                  <THEN>
+		                  <em><XLAT.STREAM KEY="dvin/Common/Any"/></em>
+		                  </THEN>
+		                  <ELSE>
+		                  <SUBSTITUTE STR="Variables.SEacls" WHAT="," WITH=",%20" OUTSTR="spacedACLs"/>
+		                  <STRING.STREAM VARIABLE="spacedACLs"/></ELSE></IF></div></td>
+								<td></td>
+									<!-- cscacheinfo -->
+						 <callelement NAME="OpenMarket/Xcelerate/AssetType/Template/ContentDetailsHelper">
+							<argument NAME="cdAction" VALUE="getElementIndex"/>
+							<argument NAME="param" VALUE="pageNameList.pagename"/>
+						</callelement>
+		                  <td VALIGN="top" ><div class="small-text-inset"><XLAT.LOOKUP KEY="dvin/Common/AT/ContentServerCacheInfo" VARNAME="_XLAT_"/><acronym TITLE="Variables._XLAT_" REPLACEALL="Variables._XLAT_" style="cursor : help"><STRING.STREAM VARIABLE="ContentDetails:element:Variables.currentElementNum:cscacheinfo"/></acronym>
+
+<XLAT.LOOKUP KEY="dvin/Common/AT/SatelliteCacheInfo" VARNAME="_XLAT_"/>
+<acronym TITLE="Variables._XLAT_" REPLACEALL="Variables._XLAT_" style="cursor : help"><STRING.STREAM VARIABLE="ContentDetails:element:Variables.currentElementNum:sscacheinfo"/></acronym></div></td><td><br /></td>
+		                  </tr>
+								<IF COND="Variables.rowStyle=tile-row-normal">
+								<THEN>
+									<SETVAR NAME="rowStyle" VALUE="tile-row-highlight"/>
+								</THEN>
+								<ELSE>
+									<SETVAR NAME="rowStyle" VALUE="tile-row-normal"/>
+								</ELSE>
+								</IF>
+						</LOOP>
+						</table>
+						</td>
+					<td class="tile-dark" VALIGN="top" WIDTH="1"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td></tr>
+					<tr>
+					<td colspan="3" class="tile-dark" VALIGN="TOP" HEIGHT="1"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+					</tr>
+					<tr>
+					<td></td><td background="Variables.cs_imagedir/graphics/common/screen/shadow.gif" REPLACEALL="Variables.cs_imagedir"><IMG WIDTH="1" HEIGHT="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td><td></td>
+					</tr>
+					<IF COND="Variables.showPagination=1">
+<THEN>
+<tr><td/>
+	<td><SETVAR NAME="pagename" VALUE="OpenMarket/Xcelerate/AssetType/Template/ContentSiteEntries"/><span style="float: right;"><IF COND="Variables.displayPage!=1"><THEN><A REPLACEALL="Variables.cs_environment,Variables.cs_formmode,Variables.id,Variables.assetname,Variables.AssetType,Variables.rowsPerPage,Variables.pagename,Variables.prev,Variables.cs_imagedir,Variables.divContainerId" href="#" ONCLICK="updatePanel('Variables.divContainerId','ContentServer?pagename=Variables.pagename&#38;cs_environment=Variables.cs_environment&#38;cs_formmode=Variables.cs_formmode&#38;cs_imagedir=Variables.cs_imagedir&#38;id=Variables.id&#38;assetname=Variables.assetname&#38;AssetType=Variables.AssetType&#38;rowsPerPage=Variables.rowsPerPage&#38;displayPage=1&#38;divContainerId=Variables.divContainerId');return false"><IMG BORDER="0" HEIGHT="12" WIDTH="15" src="Variables.cs_imagedir/graphics/common/icon/doubleArrowLeft.gif" REPLACEALL="Variables.cs_imagedir"/><XLAT.STREAM KEY="dvin/UI/First"/></A>
+     </THEN></IF>&nbsp;<IF COND="Variables.showprev=1"><THEN><IF COND="Variables.displayPage!=2"><THEN><A REPLACEALL="Variables.cs_environment,Variables.cs_formmode,Variables.id,Variables.assetname,Variables.AssetType,Variables.rowsPerPage,Variables.pagename,Variables.prev,Variables.cs_imagedir,Variables.divContainerId" href="#" ONCLICK="updatePanel('Variables.divContainerId','ContentServer?pagename=Variables.pagename&#38;cs_environment=Variables.cs_environment&#38;cs_formmode=Variables.cs_formmode&#38;cs_imagedir=Variables.cs_imagedir&#38;id=Variables.id&#38;assetname=Variables.assetname&#38;AssetType=Variables.AssetType&#38;rowsPerPage=Variables.rowsPerPage&#38;displayPage=Variables.prev&#38;divContainerId=Variables.divContainerId');return false"><IMG BORDER="0" HEIGHT="12" WIDTH="15" src="Variables.cs_imagedir/graphics/common/icon/leftArrow.gif" REPLACEALL="Variables.cs_imagedir"/><XLAT.STREAM KEY="dvin/UI/Previous"/></A>
+     </THEN></IF></THEN></IF><SPAN REPLACEALL="Variables.displayPage,Variables.totalPages">&nbsp;<XLAT.STREAM KEY="dvin/UI/PageOf"/>&nbsp;</SPAN><IF COND="Variables.shownext=1"><THEN><IF COND="Variables.displayPage!=Variables.pageBeforeLast"><THEN>
+     <a REPLACEALL="Variables.cs_environment,Variables.cs_formmode,Variables.id,Variables.assetname,Variables.AssetType,Variables.rowsPerPage,Variables.pagename,Variables.next,Variables.displayPage,Variables.cs_imagedir,Variables.divContainerId" href="#" ONCLICK="updatePanel('Variables.divContainerId','ContentServer?pagename=Variables.pagename&#38;cs_environment=Variables.cs_environment&#38;cs_formmode=Variables.cs_formmode&#38;cs_imagedir=Variables.cs_imagedir&#38;id=Variables.id&#38;assetname=Variables.assetname&#38;AssetType=Variables.AssetType&#38;rowsPerPage=Variables.rowsPerPage&#38;displayPage=Variables.next&#38;divContainerId=Variables.divContainerId');return false"><XLAT.STREAM KEY="dvin/Common/Next"/><IMG BORDER="0" HEIGHT="12" WIDTH="15" src="Variables.cs_imagedir/graphics/common/icon/rightArrow.gif" REPLACEALL="Variables.cs_imagedir"/></a>
+     </THEN></IF></THEN></IF>&nbsp;<IF COND="Variables.displayPage!=Variables.totalPages"><THEN>
+     <a REPLACEALL="Variables.cs_environment,Variables.cs_formmode,Variables.id,Variables.assetname,Variables.AssetType,Variables.rowsPerPage,Variables.pagename,Variables.next,Variables.displayPage,Variables.totalPages,Variables.cs_imagedir,Variables.divContainerId" href="#" ONCLICK="updatePanel('Variables.divContainerId','ContentServer?pagename=Variables.pagename&#38;cs_environment=Variables.cs_environment&#38;cs_formmode=Variables.cs_formmode&#38;cs_imagedir=Variables.cs_imagedir&#38;id=Variables.id&#38;assetname=Variables.assetname&#38;AssetType=Variables.AssetType&#38;rowsPerPage=Variables.rowsPerPage&#38;displayPage=Variables.totalPages&#38;divContainerId=Variables.divContainerId');return false"><XLAT.STREAM KEY="dvin/UI/Last"/><IMG BORDER="0" HEIGHT="12" WIDTH="15" src="Variables.cs_imagedir/graphics/common/icon/doubleArrow.gif" REPLACEALL="Variables.cs_imagedir"/></a>
+     </THEN></IF></span></td>
+<td/></tr>
+</THEN>
+</IF>
+					</table>
+				</td>
+				</tr>
+				</else>
+				</if>
+				
+				</THEN>
+				</IF>				
+
+</ftcs>

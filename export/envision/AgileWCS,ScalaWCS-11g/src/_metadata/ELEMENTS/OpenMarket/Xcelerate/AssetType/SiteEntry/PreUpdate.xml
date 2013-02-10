@@ -1,0 +1,225 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!--
+$Logfile: /VerticalApps/XcelerateD/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/SiteEntry/PreUpdate.xml $ 
+$Revision: 18 $ 
+$Modtime: 8/04/04 4:44p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- PreUpdate.xml
+-
+- DESCRIPTION
+-
+-    When a content category is created, edited, or copied,
+-    this element is called before the database update
+-    function is invoked.
+-
+-    This element is passed in an argument: 'updatetype'
+-    whose value can drive special processing based
+-    on the type of update
+-
+-    Documents expect to see the blob field which require
+-    special handling
+-->
+
+<IF COND="Variables.updatetype=setformdefaults">
+<THEN>
+
+</THEN>
+</IF>
+
+<IF COND="Variables.updatetype=editfront">
+<THEN>
+</THEN>
+</IF>
+
+<IF COND="Variables.updatetype=edit">
+<THEN>
+    
+    <!-- in case, someone edited the rootelement field -->
+     <IF COND="IsVariable.SiteEntry:rootelement=false">
+    <THEN>
+      <SETVAR NAME="SiteEntry:rootelement" VALUE="Variables.SiteEntry:pagename"/>
+    </THEN>
+    </IF>
+
+	<!-- convert pagecriteria from comma-separated list to asset.gather format -->
+	<IF COND="IsVariable.SiteEntry:pagecriteria=true">
+	<THEN>
+		<SETCOUNTER NAME="nthCrit" VALUE="0"/>
+		<STRINGLIST NAME="pcriteria" STR="Variables.SiteEntry:pagecriteria" DELIM=","/>
+		<LOOP LIST="pcriteria">
+			<SETVAR NAME="SiteEntry:pagecriteria:Counters.nthCrit" VALUE="pcriteria.ITEM"/>
+			<INCCOUNTER NAME="nthCrit" VALUE="1"/>
+		</LOOP>
+		<SETVAR NAME="SiteEntry:pagecriteria:Total" VALUE="Counters.nthCrit"/>
+	</THEN>
+	</IF>
+	<!-- convert acl list from HTML form to comma separated form -->
+	<ICS.RESOLVEVARIABLES NAME="$(Variables.SiteEntry:acl)" OUTPUT="acl" DELIMITED="true"/>
+	<IF COND="IsError.Variables.errno=false">
+	<THEN>
+		<SUBSTITUTE STR="Variables.acl" OUTSTR="SiteEntry:acl" WHAT=";" WITH=","/>
+	</THEN>
+	</IF>
+    
+	<ASSET.GATHER NAME="theCurrentAsset" PREFIX="SiteEntry" FIELDLIST="Variables.FieldsOnForm"/>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+ 	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+		<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+		<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+ 	</CALLELEMENT>
+    
+    <ASSET.GET NAME="theCurrentAsset" FIELD="rootelement"/>
+    <!-- find out if there is a CSElement asset for this rootelement; if not set error -->
+    <ASSET.LIST TYPE="CSElement" FIELD1="rootelement" VALUE1="Variables.rootelement" LIST="dummy1"/>
+    <IF COND="IsError.Variables.errno=true"><THEN>
+    <CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+        <ARGUMENT NAME="severity" VALUE="error"/>
+        <ARGUMENT NAME="elem" VALUE="NoCSElementExists"/>
+        <ARGUMENT NAME="rootelement" VALUE="Variables.rootelement"/>
+        </CALLELEMENT>
+        <THROWEXCEPTION/>	
+    </THEN></IF>
+</THEN>
+</IF>
+
+
+<IF COND="Variables.updatetype=create">
+<THEN>
+    <!-- if the rootelement field was blank, then we should look up the rootelement and CSEntry -->
+    <IF COND="Variables.SiteEntry:useExistingSiteCatalog=true">
+    <THEN>
+    	<SETVAR NAME="errno" VALUE="0"/>
+    	<SETVAR NAME="orig_pagename" VALUE="Variables.pagename"/>
+    	<SETVAR NAME="pagename" VALUE="Variables.SiteEntry:pagename"/>
+		<SELECTTO LIST="existingSC" FROM="SiteCatalog" WHAT="*" WHERE="pagename"/>
+		<IF COND="IsError.Variables.errno=true">
+		<THEN>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+				<ARGUMENT NAME="severity" VALUE="error"/>
+				<ARGUMENT NAME="elem" VALUE="NoSCEntryExists"/>
+	    	</CALLELEMENT>
+			<THROWEXCEPTION/>	
+		</THEN>
+		<ELSE>
+ 			<SETVAR NAME="SiteEntry:rootelement" VALUE="existingSC.rootelement"/>
+     </ELSE>
+      </IF>   	
+ 		<SETVAR NAME="pagename" VALUE="Variables.orig_pagename"/>
+   </THEN>
+   </IF>
+ 
+ 	<!-- convert pagecriteria from comma-separated list to asset.gather format -->
+	<IF COND="IsVariable.SiteEntry:pagecriteria=true">
+	<THEN>
+		<SETCOUNTER NAME="nthCrit" VALUE="0"/>
+		<STRINGLIST NAME="pcriteria" STR="Variables.SiteEntry:pagecriteria" DELIM=","/>
+		<LOOP LIST="pcriteria">
+			<SETVAR NAME="SiteEntry:pagecriteria:Counters.nthCrit" VALUE="pcriteria.ITEM"/>
+			<INCCOUNTER NAME="nthCrit" VALUE="1"/>
+		</LOOP>
+		<SETVAR NAME="SiteEntry:pagecriteria:Total" VALUE="Counters.nthCrit"/>
+	</THEN>
+	</IF>
+   
+    <ASSET.GATHER NAME="theCurrentAsset" PREFIX="SiteEntry" FIELDLIST="Variables.FieldsOnForm"/>
+ 	 <ASSET.GET NAME="theCurrentAsset" FIELD="pagename" OUTPUT="thepagename"/>
+
+     <!-- make sure that a SiteEntry entry by this name does not already exist -->
+ 	<ASSET.LIST LIST="SiteEntries" TYPE="SiteEntry" FIELD1="pagename" VALUE1="Variables.thepagename" EXCLUDEVOIDED="true"/>
+    <IF COND="SiteEntries.#numRows!=0">
+    <THEN>
+	    <CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+		<ARGUMENT NAME="severity" VALUE="error"/>
+		<ARGUMENT NAME="elem" VALUE="SiteEntryInUse"/>
+	    </CALLELEMENT>
+		<THROWEXCEPTION/>	
+    </THEN>
+    </IF>
+
+   <ASSET.GET NAME="theCurrentAsset" FIELD="rootelement"/>
+   <!-- find out if there is a CSElement asset for this rootelement; if not set error -->
+    <ASSET.LIST TYPE="CSElement" FIELD1="rootelement" VALUE1="Variables.rootelement" LIST="dummy1"/>
+	<IF COND="IsError.Variables.errno=true">
+	<THEN>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+		  <ARGUMENT NAME="severity" VALUE="error"/>
+		  <ARGUMENT NAME="elem" VALUE="NoCSElementExists"/>
+		  <ARGUMENT NAME="rootelement" VALUE="Variables.rootelement"/>
+		</CALLELEMENT>
+		<THROWEXCEPTION/>	
+	</THEN>
+	<ELSE>
+		<SETVAR NAME="SiteEntry:cselement_id" VALUE="dummy1.id"/>
+		<ASSET.GATHER NAME="theCurrentAsset" PREFIX="SiteEntry" FIELDLIST="cselement_id"/>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+			<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+			<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+	 	</CALLELEMENT>
+	</ELSE>
+	</IF>
+
+</THEN>
+</IF>
+
+<IF COND="Variables.updatetype=delete">
+    <THEN>
+    </THEN>
+</IF>
+
+<IF COND="Variables.updatetype=remotepost">  <THEN>
+	<SETVAR NAME="errdetail1" VALUE="Variables.empty"/>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/SiteEntry/XMLPostPreUpdate"/>
+	<IF COND="IsError.Variables.errno!=true"><THEN>
+            <IF COND="Variables.Action=update">
+            <THEN>
+                 <CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Util/MakeFieldListforRemotePost"/>
+                 <ASSET.GATHER NAME="theCurrentAsset" PREFIX="SiteEntry" FIELDLIST="Variables.updateFieldList"/>
+            </THEN>
+            <ELSE>
+                <ASSET.GATHER NAME="theCurrentAsset" PREFIX="SiteEntry"/>
+            </ELSE>
+            </IF>
+
+	</THEN><ELSE>
+		<STRING.STREAM VALUE="Error: Variables.errdetail1"/>
+		<THROWEXCEPTION/>
+	</ELSE></IF>
+	
+</THEN></IF>
+
+<IF COND="Variables.updatetype=updatefrom">
+    <THEN>
+    </THEN>
+</IF>
+
+<!-- If the asset is updated from dah -->
+<if COND="Variables.dashUpdate=dashUpdate">
+<then>
+	<if COND="Variables.dashUpdateType=create">
+    <then>
+		<!--if the operation is create-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=edit">
+    <then>
+		<!--if the operation is edit-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=delete">
+    <then>
+		<!--if the operation is delete-->
+    </then>
+    </if>
+</then>
+</if>
+
+</FTCS>
+

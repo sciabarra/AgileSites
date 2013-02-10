@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/AttrTypes/PostUpdate
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<!--  PR OMIma26860 -->
+<callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/PostUpdate"/>
+<!--  PR OMIma26860 -->
+
+</FTCS> 

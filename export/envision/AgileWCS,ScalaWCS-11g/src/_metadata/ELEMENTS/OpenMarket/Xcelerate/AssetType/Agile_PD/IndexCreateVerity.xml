@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateB/install/Gator/Populate/ElementCatalog/OpenMarket/Gator/FlexibleAssets/AssetMaker/FlexTmpls/IndexCreateVerity.xml $ 
+$Revision: 1 $ 
+$Modtime: 3/22/02 3:28p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- IndexReplace.xml
+-
+- DESCRIPTION
+-    Replace a single category item to the SE index.
+-
+- ARGUMENTS:
+-    asset list
+-        Current row of the Article table for the item to be
+-        indexed.
+-    seindex
+-        Content category's SE index name.
+-    detailArg
+-        String to be recorded in the DETAIL attribute of the SE index
+-        for this item.
+-    sysinfo.defdir
+-        Table's default directory for urlbody files.
+-
+- RETURNS
+-    errno
+-        Result of executing INDEXREPLACE.
+-
+- HISTORY 
+-->
+
+
+<callelement NAME="OpenMarket/Gator/FlexibleAssets/FlexTmpls/IndexCreateVerity"/>
+</FTCS>

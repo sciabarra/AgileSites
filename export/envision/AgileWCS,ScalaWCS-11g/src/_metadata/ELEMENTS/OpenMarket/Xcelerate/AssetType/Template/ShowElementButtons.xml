@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Template/ShowElementButtons
+-
+- INPUT
+-	currentElement - integer indication which element variant is in use
+- OUTPUT
+-
+-->
+<tr>
+	<td class="form-label-text"> <XLAT.STREAM KEY="dvin/Common/AT/CreateTemplateElementQ"/> </td>
+	<td></td>
+	<td class="form-inset">
+		<table><tr><td>
+		<a href="javascript:void(0);" onmouseover="window.status='';return true;" onmouseout="window.status='';return true" onClick="setXmlString('Template:element:Variables.currentElement:url','Template:element:Variables.currentElement:theme')" REPLACEALL="Variables.currentElement"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Xml"/></CALLELEMENT></a>
+		</td><td>
+		<a href="javascript:void(0);" onmouseover="window.status='';return true;" onmouseout="window.status='';return true" onClick="setJspString('Template:element:Variables.currentElement:url','Template:element:Variables.currentElement:theme')" REPLACEALL="Variables.currentElement"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Jsp"/></CALLELEMENT></a>
+		</td><td>
+		<a href="javascript:void(0);" onmouseover="window.status='';return true;" onmouseout="window.status='';return true" onClick="setHtmlString('Template:element:Variables.currentElement:url','Template:element:Variables.currentElement:theme')" REPLACEALL="Variables.currentElement"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Html"/></CALLELEMENT></a>
+		</td></tr></table>
+	</td>
+</tr>
+<setvar NAME="varname" VALUE="ContentDetails:element:Variables.currentElement:theme"/> 
+<setvar NAME="value" VALUE="Variables.Variables.varname"/>
+<CALCULATOR.GO VALUE="Variables.ContentDetails:element:Total 1 GT" VARNAME="hasStyles"/>
+<IF COND="Variables.hasStyles=1">
+<THEN>
+<tr>
+	<td class="form-label-text">
+		<XLAT.STREAM KEY="dvin/Common/Variant"/>:
+	</td>
+	<td></td>
+	<td class="form-inset">
+		<INPUT TYPE="text" SIZE="32" MAXLENGTH="32" NAME="Template:element:Variables.currentElement:theme" VALUE="Variables.value" REPLACEALL="Variables.value,Variables.currentElement"/>
+	</td>
+</tr>
+</THEN>
+<ELSE>
+	<INPUT TYPE="hidden" NAME="Template:element:Variables.currentElement:theme" VALUE="Variables.value" REPLACEALL="Variables.value,Variables.currentElement"/>
+</ELSE>
+</IF>
+</FTCS> 
