@@ -1,0 +1,33 @@
+// versions (currently only valid values are 11g or 7.6)
+wcsVersion in ThisBuild := "11g"
+
+// home directory of WCS
+wcsHome in ThisBuild := "/Developer/Fatwire/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/"
+
+// webapp directory of WCS
+wcsWebapp in ThisBuild := "/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/webapps/cs/"
+
+// static content folder
+wcsStatic in ThisBuild := "/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/webapps/ROOT/"
+
+// location of the csdt-client jar
+wcsCsdtJar in ThisBuild := "/Developer/Fatwire/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/csdt-client-1.2.2.jar"
+
+// internal url to content server - put a slash at the end
+wcsUrl in ThisBuild := "http://localhost:8080/cs/"
+
+// user to import/export
+wcsUser in ThisBuild := "fwadmin"
+
+// password to import/export
+wcsPassword in ThisBuild := "xceladmin"
+
+// site to import/export
+wcsSites in ThisBuild := "AgileWCS,ScalaWCS"
+
+// url to access static content
+wcsStaticUrl in ThisBuild := Map("AgileWCS" -> "http://localhost:8080/agilewcs/",  "ScalaWCS" -> "http://localhost:8080/scalawcs/")
+
+// site prefix
+wcsPrefixUrl in ThisBuild := Map("AgileWCS" -> "http://localhost:8080/cs/Satellite/AgileWCS/", "ScalaWCS" -> "http://localhost:8080/cs/Satellite/ScalaWCS/"
+
