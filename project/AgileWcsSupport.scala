@@ -1,9 +1,11 @@
+package wcs.build
+
 import sbt._
 import Keys._
 import sbtassembly.Plugin._
 import AssemblyKeys._
 
-object AgileWcsSupport {
+trait AgileWcsSupport {
 
   // new settings
   lazy val wcsHome = SettingKey[String]("wcs-home", "WCS Home Directory")
@@ -19,8 +21,6 @@ object AgileWcsSupport {
 
   lazy val wcsDeploy = TaskKey[Unit]("wcs-deploy", "WCS Deploy")
   lazy val wcsCopyStatic = TaskKey[Unit]("wcs-copy-static", "WCS copy resources")
-  lazy val wcsCopyHtml = TaskKey[Unit]("wcs-copy-static", "WCS copy html static into resources")
-
   lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
   lazy val wcsUpdateAssets = TaskKey[String]("wcs-update-assets", "WCS update assets")
 
@@ -32,7 +32,8 @@ object AgileWcsSupport {
   val coreGeneratorTask = (sourceGenerators in Compile) <+=
     (sourceManaged in Compile, wcsWebapp, baseDirectory, wcsVersion) map {
       (dstDir, srcDir, base, version) =>
-        //println(dstDir)
+        println("*** Generating tags from %s\n".format(srcDir))
+
         // generate tags
         val tlds = file(srcDir) / "WEB-INF" / "futuretense_cs"
         val l = for {
@@ -222,6 +223,11 @@ object AgileWcsSupport {
         val config = new java.util.Properties
         config.load(new java.io.FileReader(configFile))
 
+        /*
+        config.setProperty("agilewcs.site", site);
+        config.setProperty("agilewcs.user", username);
+        config.setProperty("agilewcs.password", password);
+        */
         config.setProperty("agilewcs.jar", appjar);
         config.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
         config.setProperty("cs.pgexportfolder", file("export").getAbsolutePath)

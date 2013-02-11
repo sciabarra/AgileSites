@@ -1,3 +1,5 @@
+package wcs.build
+
 import scala.xml._
 import java.io.File
 
