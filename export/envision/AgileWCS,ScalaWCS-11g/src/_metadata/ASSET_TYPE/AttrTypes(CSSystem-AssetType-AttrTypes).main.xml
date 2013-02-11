@@ -11,7 +11,7 @@
         <description>Attribute Editor</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Users/msciab/agilewcs/0.3/jsk.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp34/dcs8027547023585102121.tmp</urldescriptorspec>
+        <urldescriptorspec>/Users/msciab/agilewcs/0.3/jsk.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp19/dcs4140021401587408970.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-AttrTypes</uid>
         <useDimension></useDimension>
@@ -504,7 +504,7 @@ dFB1YmxpY2F0aW9uLnB1YmlkPTApDQoJCVZhcmlhYmxlcy5xdWVyeWVuZA0K</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Sun Feb 10 13:30:09 UTC 2013
+#Mon Feb 11 09:51:18 UTC 2013
 key=@ASSET_TYPE-CSSystem-AssetType-AttrTypes
 type=ASSET_TYPE
 sites=AgileWCS

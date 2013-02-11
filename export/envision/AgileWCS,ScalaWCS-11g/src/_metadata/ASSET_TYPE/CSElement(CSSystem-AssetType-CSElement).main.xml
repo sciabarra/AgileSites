@@ -11,7 +11,7 @@
         <description>CSElement</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Users/msciab/agilewcs/0.3/jsk.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp34/dcs633462938083999942.tmp</urldescriptorspec>
+        <urldescriptorspec>/Users/msciab/agilewcs/0.3/jsk.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp19/dcs3592137109043596014.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-CSElement</uid>
         <useDimension></useDimension>
@@ -605,7 +605,7 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA0KDQo=</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Sun Feb 10 13:30:04 UTC 2013
+#Mon Feb 11 09:51:17 UTC 2013
 key=@ASSET_TYPE-CSSystem-AssetType-CSElement
 type=ASSET_TYPE
 sites=AgileWCS,ScalaWCS

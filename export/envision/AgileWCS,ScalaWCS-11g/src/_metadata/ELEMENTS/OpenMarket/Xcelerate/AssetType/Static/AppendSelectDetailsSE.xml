@@ -1,0 +1,203 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+$Revision: 22 $ 
+$Modtime: 9/03/04 4:47p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of divine Inc.
+-					All Rights Reserved.
+-
+- AppendSelectDetailsSE.xml
+-
+- DESCRIPTION
+-	Add to search engine query for Asset Specific search parameters 
+-	(as defined by XXX/SearchForm.xml).
+-
+- ARGUMENTS
+-   seQuery
+-       SEARCH WHAT query string.  Append to this.
+-   seType
+-       SEARCH TYPE value.  Change it or leave it alone.
+-   seRelevance
+-       SEARCH RELEVANCE value.  Change it or leave it alone.
+-   sqlQueryend
+-       Tail end of WHERE expression for secondary SQL query.
+-   (FORM fields)
+-       All form fields defined by SearchForm.xml
+-   seLeft, seRight
+-       Left and right strings.  Used as 
+-		fieldname Variables.seLeft fieldvalue Variables.seRight
+-
+- HISTORY 
+-->
+
+<!-- Note well: The search data fed into this element comes from the post of SearchCustomProperties.xml.  Unfortunately, this
+	can easily lead to variable name collisions.  It would be best if all the form elements had some kind of prefix; however
+	that would be a pretty big change, and would probably mean saved searches would fail.  So I've reworked this element
+	instead to be ultracautious about collisions with incoming variables
+-->
+
+<SETVAR NAME="errno" VALUE="0"/>
+<CALLJAVA CLASS="com.openmarket.assetmaker.asset.AssetMaker" TYPE="1">
+	<ARGUMENT NAME="command" VALUE="parseproperties"/>
+	<ARGUMENT NAME="propertytags" VALUE="storage,searchform,searchresult"/>
+	<ARGUMENT NAME="assettype" VALUE="Variables.AssetType"/>
+</CALLJAVA>
+<if COND="IsVariable.assetmaker/propertylist=true">
+<then>
+	<stringlist NAME="Proplist" STR="Variables.assetmaker/propertylist" DELIM=","/>
+</then>
+</if>
+
+<SETVAR NAME="queryfields" VALUE="Variables.empty"/>
+
+<IF COND="IsVariable.Name=true">
+<THEN>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+		<ARGUMENT NAME="seFieldname" VALUE="name"/>
+		<ARGUMENT NAME="seValue" VALUE="Variables.Name"/>
+	</CALLELEMENT>
+</THEN>
+</IF>
+
+<!-- note that template is a lowercase variable name -->
+<if COND="IsVariable.template=true">
+<then>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+		<ARGUMENT NAME="seFieldname" VALUE="template"/>
+		<ARGUMENT NAME="seValue" VALUE="Variables.template"/>
+	</CALLELEMENT>
+	<SETVAR NAME="errno" VALUE="0"/>
+</then>
+</if>
+
+<if COND="IsVariable.Status=true">
+<then>
+	<SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Variables.AssetType.status='Variables.Status'"/>
+</then>
+</if>
+
+<IF COND="IsVariable.Subtype=true">
+<THEN>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+		<ARGUMENT NAME="seFieldname" VALUE="subtype"/>
+		<ARGUMENT NAME="seValue" VALUE="Variables.Subtype"/>
+	</CALLELEMENT>
+</THEN>
+</IF>
+
+<IF COND="IsVariable.Category=true">
+<THEN>
+	<SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Variables.AssetType.category='Variables.Category'"/>
+</THEN>
+</IF>
+
+<IF COND="IsVariable.Description=true">
+<THEN>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+		<ARGUMENT NAME="seFieldname" VALUE="description"/>
+		<ARGUMENT NAME="seValue" VALUE="Variables.Description"/>
+	</CALLELEMENT>
+</THEN>
+</IF>
+
+<!-- Build the Filter String for the above Form Variables -->
+
+
+<callelement NAME="OpenMarket/Xcelerate/Actions/Search/BuildFilterString"/>
+
+<!--	
+	loop through the property list, looking
+	for the properties that are to appear
+	on the search form. For each, check
+	to see if there is a value specified
+-->
+
+<setvar NAME="cs_standardqryFields" VALUE="id,name,description,updateddate,updatedby,createddate,createdby,status"/>
+<if COND="IsList.Proplist=true">
+<then>
+	<loop LIST="Proplist">
+		<if COND="IsVariable.assetmaker/property/Proplist.ITEM/searchform/description=true">
+		<then>
+			<if COND="IsVariable.Proplist.ITEM=true">
+			<then>
+				<if COND="IsVariable.cs_qryverb=false">
+				<then>
+					<SETVAR NAME="cs_qryverb" VALUE="Variables.assetmaker/property/Proplist.ITEM/searchform/verb"/>
+				</then>
+				</if>
+				<SETVAR NAME="cs_matchagainst" VALUE="Variables.Proplist.ITEM"/>
+				<SETVAR NAME="cs_datatype" VALUE="Variables.assetmaker/property/Proplist.ITEM/storage/type"/>
+				<SETVAR NAME="errno" VALUE="0"/>
+				<ISINLIST ITEM="Variables.cs_datatype" STR="VARCHAR,LONGVARCHAR,CHAR"/>
+				<if COND="Variables.errno=1">
+				<then>
+					<SQLEXP OUTSTR="cs_subquery" TYPE="OR" VERB="LIKE" STR="Variables.cs_matchagainst" COLNAME="Variables.AssetType.Proplist.ITEM"/>
+					<SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND (Variables.cs_subquery)"/>
+					<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Proplist.ITEM Variables.cs_qryverb 'Variables.cs_matchagainst'"/>
+				</then>
+				<else>
+					<SETVAR NAME="cs_qryverb" VALUE="Variables.assetmaker/property/Proplist.ITEM/searchform/verb"/>
+					<if COND="Variables.cs_datatype=TIMESTAMP">
+					<then>
+						<if COND="Variables.cs_qryverb=LIKE">
+						<then>
+							<B><XLAT.STREAM KEY="dvin/Util/FlexAssets/InvalidSearchVerb"/> </B><br/>
+						</then>
+						<else>
+							<SETVAR NAME="cs_subquery" VALUE="Variables.AssetType.Proplist.ITEM Variables.cs_qryverb Variables.cs_matchagainst"/>
+						</else>
+						</if>
+					</then>
+					<else>
+						<SQLEXP OUTSTR="cs_tmpquery" TYPE="OR" VERB="Variables.cs_qryverb" STR="Variables.cs_matchagainst" COLNAME="Variables.AssetType.Proplist.ITEM"/>
+						<SUBSTITUTE STR="Variables.cs_tmpquery" WHAT="'" WITH="" OUTSTR="cs_subquery"/>
+					</else>
+					</if>
+					<SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND (Variables.cs_subquery)"/>
+					<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Proplist.ITEM Variables.cs_qryverb 'Variables.cs_matchagainst'"/>
+				</else>
+				</if>
+			</then>
+			</if>
+
+			<SETVAR NAME="cs_resultfield" VALUE="Proplist.ITEM"/>
+			<!-- add it to the queryfields only if it isn't one of the standard ones alread there -->
+			<SETVAR NAME="errno" VALUE="0"/>
+			<ISINLIST STR="Variables.cs_standardqryFields" ITEM="Variables.cs_resultfield"/>
+			<IF COND="Variables.errno=0">
+			<THEN>
+				<SETVAR NAME="queryfields" VALUE="Variables.queryfields, Variables.AssetType.Variables.cs_resultfield"/>
+			</THEN>
+			</IF>
+		</then>
+		<else>
+			<if COND="IsVariable.assetmaker/property/Proplist.ITEM/searchresult/include=true">
+			<then>
+				<SETVAR NAME="cs_includesr" VALUE="Variables.assetmaker/property/Proplist.ITEM/searchresult/include"/>
+				<if COND="Variables.cs_includesr=TRUE">
+				<then>
+					<SETVAR NAME="cs_resultfield" VALUE="Proplist.ITEM"/>
+					<!-- add it to the queryfields only if it isn't one of the standard ones alread there -->
+					<SETVAR NAME="errno" VALUE="0"/>
+					<ISINLIST STR="Variables.cs_standardqryFields" ITEM="Variables.cs_resultfield"/>
+					<IF COND="Variables.errno=0">
+					<THEN>
+						<SETVAR NAME="queryfields" VALUE="Variables.queryfields, Variables.AssetType.Variables.cs_resultfield"/>
+					</THEN>
+					</IF>
+				</then>
+				</if>
+			</then>
+			</if>
+		</else>
+		</if>
+	</loop>
+</then>
+</if>
+
+</FTCS>

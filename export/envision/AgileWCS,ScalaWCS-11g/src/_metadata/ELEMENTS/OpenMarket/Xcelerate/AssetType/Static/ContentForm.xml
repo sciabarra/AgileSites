@@ -1,0 +1,150 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Xcelerate/AssetMaker/Populate/AssetStubElementCatalog/OpenMarket/AssetMaker/AssetStubFiles/StandardElements/ContentForm.xml $
+$Revision: 31 $ 
+$Modtime: 2/27/04 2:46p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of divine Inc.
+-					All Rights Reserved.
+-
+- ContentForm.xml
+-
+- DESCRIPTION
+- Edit form of the asset
+- INPUT: Asset is loaded and fields have been scattered using ContentDetails as prefix
+-->
+<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
+<INPUT TYPE="hidden" NAME="upcommand" VALUE="submit"/>
+<INPUT TYPE="hidden" NAME="Prefix" VALUE="Variables.AssetType" REPLACEALL="Variables.AssetType"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewJavascript"/>
+
+<!-- site specific fields -->
+
+
+<!-- Indicate that the form is repostable, according to the rules laid out in Actions/EditFront, so that all downstream
+      widgets know to change their behavior accordingly, provided they obey the convention for reposting. -->
+<SETVAR NAME="isAssetRepostable" VALUE="true"/>
+<SETVAR NAME="repostContentFormJavascript" VALUE="repostAssetMakerContentForm();"/>
+
+<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at"/>
+<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description"/>
+<!-- figure out whether this is
+for initial creation or subsequent editing
+-->
+<setvar NAME="formfunction" VALUE="Variables.updatetype"/>
+
+<callelement NAME="OpenMarket/AssetMaker/BuildCheckRequiredProperties"/>
+
+<SCRIPT LANGUAGE="JavaScript">
+
+<![CDATA[
+
+function repostAssetMakerContentForm()
+{
+	relPrepareForSubmit();
+	if (checkfieldsnosubmit())
+		repostContentForm();
+	return false;
+}
+
+function saveAssetMakerContentForm()
+{
+	relPrepareForSubmit();
+	if (checkfieldsnosubmit())
+		document.forms[0].submit();
+	return false;
+}
+
+function cancelAssetMakerContentForm()
+{
+	var obj = document.forms[0];
+	if(confirm("]]><XLAT.STREAM KEY="dvin/Common/CancelClicked" ESCAPE="true" ENCODE="false"/><![CDATA[")){
+	obj.elements['upcommand'].value="cancel";
+	obj.submit();
+	return false;
+}
+}
+
+]]>
+</SCRIPT>
+<!-- form buttons -->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+	<ARGUMENT NAME="cancelScript" VALUE="cancelAssetMakerContentForm"/>
+	<ARGUMENT NAME="submitScript" VALUE="saveAssetMakerContentForm"/>
+	<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
+</CALLELEMENT>
+<xlat.lookup KEY="UI/Forms/Content" VARNAME="tabContent"/>
+<xlat.lookup KEY="UI/Forms/Metadata" VARNAME="tabMetadata"/>
+<div dojoType="dijit.layout.ContentPane" region="center">
+<div dojoType="dijit.layout.TabContainer" class="formstabs formsTabContainer" style="width:100%;height:100%">
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/RetainSelectedTab">
+	<ARGUMENT NAME="tabContent" VALUE="Variables.tabContent"/>
+	<ARGUMENT NAME="elementType" VALUE="XML"/>
+</CALLELEMENT>
+<div dojoType="dijit.layout.ContentPane" title='Variables.tabContent' style="height: 100%;" selected="true" replaceall="Variables.tabContent">
+<table border="0" cellpadding="0" cellspacing="0" class="width70BottomExMargin">
+	<tr>
+		<td><span class="title-text"><STRING.STREAM VALUE="Variables.at:description"/>: </span><span class="title-value-text"><STRING.STREAM VALUE="Variables.ContentDetails:name"/></span></td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+		<argument NAME="SpaceBelow" VALUE="No"/>
+	</callelement>
+	<!-- Asset Editing form Body -->
+	<tr>
+		<td>
+		<table border="0" cellpadding="0" cellspacing="0">
+			<callelement NAME="OpenMarket/AssetMaker/BuildEditForm">
+				<argument NAME="formfunction" VALUE="Variables.formfunction"/>
+				<argument NAME="formfieldlist" VALUE="Variables.formfieldlist"/>
+			</callelement>
+
+			<if COND="Variables.assetmaker/assettags/unnamedassociations=YES">
+			<then>
+				<callelement NAME="OpenMarket/AssetMaker/BuildUnnamedAssociations"/>
+			</then>
+			</if>
+
+			<ASSOCNAMEDMANAGER.LIST  LISTVARNAME="associations" TYPE="Variables.AssetType" SUBTYPE="Variables.ContentDetails:subtype"/>
+			<IF COND="associations.#numRows!=0">
+			<THEN>
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormTypeAhead"/>											
+			</THEN>
+			</IF>
+		</table>
+		</td>
+		</tr>
+		</table>
+	</div>
+		<div dojoType="dijit.layout.ContentPane" title='Variables.tabMetadata' style="height: 100%;" selected="true" replaceall="Variables.tabMetadata">
+		<table border="0" cellpadding="0" cellspacing="0" class="width70BottomExMargin">
+	<tr>
+		<td><span class="title-text"><STRING.STREAM VALUE="Variables.at:description"/>: </span><span class="title-value-text"><STRING.STREAM VALUE="Variables.ContentDetails:name"/></span></td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+		<argument NAME="SpaceBelow" VALUE="No"/>
+	</callelement>
+	<!-- Asset Editing form Body -->
+	<tr>
+		<td><table border="0" cellpadding="0" cellspacing="0">
+			<callelement NAME="OpenMarket/AssetMaker/BuildEditFormStandardProperties">
+				<argument NAME="formfunction" VALUE="Variables.formfunction"/>
+				<argument NAME="formfieldlist" VALUE="Variables.formfieldlist"/>
+			</callelement>
+		</table>
+		<REMOVEVAR NAME="pubid"/> <!-- end of body -->
+		</td>
+		</tr>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Workflow/ShowAssignees"/>
+		</table></div>
+		</div>
+		</div>
+	<INPUT TYPE="hidden" NAME="FieldsOnForm" VALUE="Variables.formfieldlist" REPLACEALL="Variables.formfieldlist"/>
+</div>
+</FTCS>

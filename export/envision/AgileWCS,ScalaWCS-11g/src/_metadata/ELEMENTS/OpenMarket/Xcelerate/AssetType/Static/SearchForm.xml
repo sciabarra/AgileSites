@@ -1,0 +1,348 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateD/install/Xcelerate/AssetMaker/Populate/AssetStubElementCatalog/OpenMarket/AssetMaker/AssetStubFiles/StandardElements/SearchForm.xml $ 
+$Revision: 35 $ 
+$Modtime: 7/22/04 4:19p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of divine Inc.
+-					All Rights Reserved.
+-
+- SearchForm.xml
+-
+- DESCRIPTION
+-	Search form
+-
+-->
+ 
+<setvar NAME="errno" VALUE="0"/>
+<CALLJAVA CLASS="com.openmarket.assetmaker.asset.AssetMaker" TYPE="1">
+    <ARGUMENT NAME="command" VALUE="parseproperties"/>
+    <ARGUMENT NAME="propertytags" VALUE="storage,searchform"/>
+    <ARGUMENT NAME="assettype" VALUE="Variables.AssetType"/>
+</CALLJAVA>
+<ASSET.GETASSETTYPEPROPERTIES TYPE="Variables.AssetType"/>
+
+<table border="0" cellspacing="0" cellpadding="0">
+
+<!-- if there is no name field in the asset descriptor file, put it out here -->
+<IF COND="IsVariable.assetmaker/property/name/storage/type!=true">
+<THEN>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/NameContainsNoColon"/>:</td>
+		<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+    	<td class="form-inset">
+          <IF COND="IsVariable.Name=true">
+          <THEN>
+            <INPUT TYPE="text" NAME="Name" VALUE="Variables.Name"  REPLACEALL="Variables.Name" SIZE="32" MAXLENGTH="64" />
+          </THEN>
+          <ELSE>
+             <INPUT TYPE="text" NAME="Name" SIZE="32" MAXLENGTH="64" />
+          </ELSE>
+          </IF>
+        </td>
+ 	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+</THEN>
+</IF>
+
+<!-- if there is no description field in the asset descriptor file, put it out here -->
+<IF COND="IsVariable.assetmaker/property/description/storage/type!=true">
+<THEN>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/DescriptionContains"/>:</td>
+        <td></td>
+		<td class="form-inset">
+          <IF COND="IsVariable.Description=true">
+          <THEN>
+            <INPUT TYPE="text" NAME="Description" VALUE="Variables.Description"  REPLACEALL="Variables.Description" SIZE="32" MAXLENGTH="128" />
+          </THEN>
+          <ELSE>
+            <INPUT TYPE="text" NAME="Description" SIZE="32" MAXLENGTH="128"/>
+          </ELSE>
+          </IF>
+ 		</td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+</THEN>
+</IF>
+
+<if COND="Variables.RenderUsingTemplate=true">
+<then>
+	<!-- if there is no template field in the asset descriptor file, put it out here -->
+	<IF COND="IsVariable.assetmaker/property/template/storage/type!=true">
+	<THEN>
+		<XLAT.LOOKUP KEY="dvin/Common/Templateis" VARNAME="label"/>
+		<callelement NAME="OpenMarket/Xcelerate/Actions/Util/ShowTemplatesIfAny">
+			<argument NAME="label"  VALUE="Variables.label:"/>
+			<argument NAME="showDummy" VALUE="true"/>
+		</callelement>			
+		<IF COND="templates.#numRows!=0">
+		<THEN>		
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		</THEN>
+		</IF>
+	</THEN>
+	</IF>
+</then>
+</if>
+
+<!-- if there is no status field in the asset descriptor file, put it out here -->
+<IF COND="IsVariable.assetmaker/property/status/storage/type!=true">
+<THEN>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/StatusisNoColon"/>:</td>
+		<td></td>
+		<td class="form-inset"><callelement NAME="OpenMarket/Xcelerate/Actions/Util/ChooseStatus">
+			<argument NAME="showDummy" VALUE="true"/>
+			</callelement></td>
+	</tr>
+</THEN>
+</IF>
+
+<!--Start of the start date/enddate attributes -->
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/SearchStartEndDate"/>
+<!-- End of the start date/enddate attributes-->
+	
+<if COND="Variables.RenderUsingTemplate=true">
+<then>
+	<!-- if there is no subtype field in the asset descriptor file, put it out here -->
+	<IF COND="IsVariable.assetmaker/property/subtype/storage/type!=true">
+	<THEN>
+	
+		<ASSET.GetLegalSubtypes TYPE="Variables.AssetType" LIST="subtypes" PUBID="SessionVariables.pubid"/>
+		<IF COND="subtypes.subtype!=Variables.empty">
+		<THEN>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Subtypeis"/>:</td>
+				<td></td>
+				<td class="form-inset">
+					<SELECT Name="Subtype">
+					<OPTION VALUE=""/>-- <XLAT.STREAM KEY="dvin/Common/anysubtype"/>  --
+	          	<if COND="Variables.Subtype!=Variables.empty">
+	           	<then>
+	            	<loop LIST="subtypes">
+	               	<if COND="Variables.Subtype=subtypes.subtype">
+	                  <then>
+								<OPTION VALUE="subtypes.subtype" SELECTED="" REPLACEALL="subtypes.subtype"/><STRING.STREAM VALUE="subtypes.subtype"/>
+	                  </then>
+	                  <else>
+	     					 	<OPTION VALUE="subtypes.subtype" REPLACEALL="subtypes.subtype"/><STRING.STREAM VALUE="subtypes.subtype"/>
+	                  </else>
+	                  </if>
+					  </loop>
+			 		</then>
+	            <else>
+	 					<loop LIST="subtypes">
+	               	<IF COND="subtypes.subtype!=Variables.Subtype">
+	                  <THEN>
+	 							<OPTION VALUE="subtypes.subtype" REPLACEALL="subtypes.subtype"/><STRING.STREAM VALUE="subtypes.subtype"/>
+	                  </THEN>
+	                  </IF>
+						</loop>
+	            </else>
+	            </if>
+	 			</SELECT></td>
+			</tr>	
+		</THEN>
+		</IF>
+	</THEN>
+	</IF>
+</then>
+</if>
+
+<!-- if there is no category field in the asset descriptor file, put it out here -->
+<IF COND="IsVariable.assetmaker/property/category/storage/type!=true">
+<THEN>
+	<setvar NAME="errno" VALUE="0"/>
+	<SETVAR NAME="assettype" VALUE="Variables.AssetType"/>
+	<SELECTTO LIST="Category" WHAT="*" FROM="Category" WHERE="assettype" ORDERBY="lower(Category.description)"/>
+
+	<if COND="IsError.Variables.errno!=true">
+	<then>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		<tr>
+			<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Categoryis"/>:</td>
+			<td></td>
+			<td class="form-inset"><SELECT Name="Category">
+                    <if COND="IsVariable.Category=true">
+                    <then>
+                          <!-- Get the description for the Category -->
+                          <loop LIST="Category">
+                            <if COND="Variables.Category=Category.category">
+                            <then>
+         						<OPTION VALUE="Category.category" SELECTED="" REPLACEALL="Category.category"/><STRING.STREAM VALUE="Category.description"/>
+                             </then>
+                             <else>
+              					 <OPTION VALUE="Category.category" REPLACEALL="Category.category"/><STRING.STREAM VALUE="Category.description"/>
+                             </else>
+                             </if>
+       					  </loop>
+       					  <OPTION VALUE=""/>--<XLAT.STREAM KEY="dvin/Common/anycategory"/>  --
+    				 </then>
+                     <else>
+                        <OPTION VALUE=""/>--<XLAT.STREAM KEY="dvin/Common/anycategory"/>  --
+						<loop LIST="Category">
+                            <IF COND="Category.category!=Variables.Category">
+                            <THEN>
+ 							    <OPTION VALUE="Category.category" REPLACEALL="Category.category"/><STRING.STREAM VALUE="Category.description"/>
+                            </THEN>
+                            </IF>
+						</loop>
+                     </else>
+                     </if>
+ 			    </SELECT></td>
+		</tr>
+	</then>
+	</if>
+</THEN>
+</IF>
+
+	<IF COND="Variables.AssetTypeObj:usesearchindex=1">
+	<THEN>
+		<tr>
+			<td class="form-label-text"><INPUT NAME="SelectDirectQuery" TYPE="CHECKBOX"/><XLAT.STREAM KEY="dvin/Common/AT/DirectCSPropertycssearchengineexpression"/>:</td>
+			<td></td>
+			<td class="form-inset"><TEXTAREA NAME="DirectQuery" ROWS="2" COLS="24" WRAP="virtual"></TEXTAREA></td>
+		</tr>
+	</THEN>
+	</IF>
+
+    <callelement NAME="OpenMarket/AssetMaker/SearchCustomProperties"/>
+    <!-- Start of locale search dropdown -->
+         <callelement NAME="OpenMarket/Xcelerate/AssetType/Dimension/ShowDimensionsDropDown"/>
+    <!-- end of locale search dropdown-->
+    <callelement NAME="OpenMarket/Xcelerate/Actions/Search/SearchCommon"/>
+
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+
+	<!-- get the property description from the asset descriptor file, if they are defined there-->	
+	<XLAT.LOOKUP KEY="dvin/AT/Common/Name" 		VARNAME="name"/>
+	<XLAT.LOOKUP KEY="dvin/UI/Admin/Category" 	VARNAME="category"/>
+	<XLAT.LOOKUP KEY="dvin/UI/Search/Modifiedby" 	VARNAME="updatedby"/>
+	<XLAT.LOOKUP KEY="dvin/UI/Search/CreatedDate" VARNAME="createddate"/>
+	<XLAT.LOOKUP KEY="dvin/Common/CreatedBy" 		VARNAME="createdby"/>
+	<XLAT.LOOKUP KEY="dvin/UI/Search/ModifiedDate" VARNAME="updateddate"/>
+
+	<if COND="IsVariable.assetmaker/property/name/description=true">
+	<then>
+		<setvar NAME="name" VALUE="Variables.assetmaker/property/name/description"/>
+	</then>
+	</if>
+	<if COND="IsVariable.assetmaker/property/category/description=true">
+	<then>
+		<setvar NAME="category" VALUE="Variables.assetmaker/property/category/description"/>
+	</then>
+	</if>
+	<if COND="IsVariable.assetmaker/property/updatedby/description=true">
+	<then>
+		<setvar NAME="updatedby" VALUE="Variables.assetmaker/property/updatedby/description"/>
+	</then>
+	</if>
+	<if COND="IsVariable.assetmaker/property/createddate/description=true">
+	<then>
+		<setvar NAME="createddate" VALUE="Variables.assetmaker/property/createddate/description"/>
+	</then>
+	</if>
+	<if COND="IsVariable.assetmaker/property/createdby/description=true">
+	<then>
+		<setvar NAME="createdby" VALUE="Variables.assetmaker/property/createdby/description"/>
+	</then>
+	</if>
+	<if COND="IsVariable.assetmaker/property/updateddate/description=true">
+	<then>
+		<setvar NAME="updateddate" VALUE="Variables.assetmaker/property/updateddate/description"/>
+	</then>
+	</if>
+	
+	<tr>
+		<td></td>
+		<td></td>
+		<td><XLAT.STREAM KEY="dvin/Common/SortResultsBy"/>&nbsp; 
+			<SELECT NAME="OrderBy">
+            <IF  COND="IsVariable.OrderBy=true">
+            <THEN>
+                <IF COND="Variables.OrderBy=Variables.AssetType.name">
+                <THEN>
+                    <OPTION VALUE="Variables.AssetType.name" SELECTED="" REPLACEALL="Variables.AssetType"/><STRING.STREAM VALUE="Variables.name"/>
+                </THEN>
+                <ELSE>
+                    <OPTION VALUE="Variables.AssetType.name" REPLACEALL="Variables.AssetType"/><STRING.STREAM VALUE="Variables.name"/>
+                </ELSE>
+                </IF>
+                <IF COND="Variables.OrderBy=Variables.AssetType.category">
+                <THEN>
+                    <OPTION VALUE="Variables.AssetType.category" SELECTED="" REPLACEALL="Variables.AssetType"/><STRING.STREAM VALUE="Variables.category"/>
+                </THEN>
+                <ELSE>
+                    <OPTION VALUE="Variables.AssetType.category" REPLACEALL="Variables.AssetType"/><STRING.STREAM VALUE="Variables.category"/>
+                </ELSE>
+                </IF>
+                
+                <IF COND="Variables.OrderBy=Variables.AssetType.updatedby">
+                <THEN>
+                    <OPTION VALUE="Variables.AssetType.updatedby" SELECTED="" REPLACEALL="Variables.AssetType"/><STRING.STREAM VALUE="Variables.updatedby"/>
+                </THEN>
+                <ELSE>
+                    <OPTION VALUE="Variables.AssetType.updatedby" REPLACEALL="Variables.AssetType"/><STRING.STREAM VALUE="Variables.updatedby"/>
+                </ELSE>
+                </IF>
+                <IF COND="Variables.OrderBy=Variables.AssetType.createddate DESC">
+                <THEN>
+                    <OPTION VALUE="Variables.AssetType.createddate DESC" SELECTED="" REPLACEALL="Variables.AssetType"/><CSVAR NAME="Variables.createddate"/>
+                </THEN>
+                <ELSE>
+                    <OPTION VALUE="Variables.AssetType.createddate DESC" REPLACEALL="Variables.AssetType"/><CSVAR NAME="Variables.createddate"/>
+                </ELSE>
+                </IF>
+                <IF COND="Variables.OrderBy=Variables.AssetType.createdby">
+                <THEN>
+                    <OPTION VALUE="Variables.AssetType.createdby" SELECTED="" REPLACEALL="Variables.AssetType"/><STRING.STREAM VALUE="Variables.createdby"/>
+                </THEN>
+                <ELSE>
+                    <OPTION VALUE="Variables.AssetType.createdby" REPLACEALL="Variables.AssetType"/><STRING.STREAM VALUE="Variables.createdby"/>
+                </ELSE>
+                </IF>
+                <IF COND="Variables.OrderBy=Variables.AssetType.updateddate DESC">
+                <THEN>
+                    <OPTION VALUE="Variables.AssetType.updateddate DESC" SELECTED="" REPLACEALL="Variables.AssetType"/><CSVAR NAME="Variables.updateddate"/>
+                </THEN>
+                <ELSE>
+                    <OPTION VALUE="Variables.AssetType.updateddate DESC" REPLACEALL="Variables.AssetType"/><CSVAR NAME="Variables.updateddate"/>
+                </ELSE>
+                </IF>
+             </THEN>
+             <ELSE>
+ 				<!-- Note: These choices should be in the same order as the columns in the search results. -->
+				<OPTION VALUE="Variables.AssetType.name" SELECTED="" REPLACEALL="Variables.AssetType"/><STRING.STREAM VALUE="Variables.name"/>
+				<OPTION VALUE="Variables.AssetType.updateddate DESC" REPLACEALL="Variables.AssetType"/><CSVAR NAME="Variables.updateddate"/>
+				<!--  The remaining attributes do not appear in the list of search results. -->
+				<OPTION VALUE="Variables.AssetType.createdby" REPLACEALL="Variables.AssetType"/><STRING.STREAM VALUE="Variables.createdby"/>
+				<OPTION VALUE="Variables.AssetType.createddate DESC" REPLACEALL="Variables.AssetType"/><CSVAR NAME="Variables.createddate"/>
+				<OPTION VALUE="Variables.AssetType.updatedby" REPLACEALL="Variables.AssetType"/><STRING.STREAM VALUE="Variables.updatedby"/>
+ 				<OPTION VALUE="Variables.AssetType.category" REPLACEALL="Variables.AssetType"/><STRING.STREAM VALUE="Variables.category"/>
+            </ELSE>
+             </IF>
+			</SELECT></td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td></td>
+		<td></td>
+		<td>
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <callelement NAME="OpenMarket/Xcelerate/Actions/Search/SearchFooter"/>
+ 			</table>
+		</td>
+	</tr>
+</table>
+
+</FTCS>

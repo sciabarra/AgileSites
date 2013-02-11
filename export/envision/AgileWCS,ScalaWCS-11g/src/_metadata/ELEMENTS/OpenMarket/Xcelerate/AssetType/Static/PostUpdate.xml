@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Revision: 6 $ 
+$Modtime: 12/26/01 2:54p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of divine Inc.
+-					All Rights Reserved.
+-
+- PostUpdate.xml
+-
+- DESCRIPTION
+-	When an asset is created, edited, deleted or copied,
+-    this element is called after a successful database update
+-    function is invoked.
+-
+-    This element is passed in an argument: 'updatetype'
+-    whose value can drive special processing based
+-    on the type of update
+-
+- INPUT: the asset is an object loaded and called 'theCurrentAsset'
+-  	Variables.prefix - scattered asset field prefix + ':' fieldname = fiel'd value
+-     Variables.updatetype - can be setformdefaults,editfront,edit,create,remotepost,delete, updatefrom
+-->
+<PROPERTY.GET PARAM="analytics.enabled" INIFILE="futuretense_xcel.ini" VARNAME="analyticsEnabled"/>
+<if COND="Variables.analyticsEnabled=true">
+<then>
+  <CALLELEMENT NAME="Analytics/AddAuditIntegrationImgTag"/>
+</then>
+</if>
+
+<if COND="Variables.updatetype=edit">
+  <then>
+  </then>
+
+
+<else><if COND="Variables.updatetype=create">
+  <then>
+  </then>
+
+
+<else><if COND="Variables.updatetype=delete">
+  <then>
+  </then>
+
+<else><if COND="Variables.updatetype=remotepost">
+  <then>
+  </then>
+
+<else><if COND="Variables.updatetype=updatefrom">
+  <then>
+  </then>
+
+    <!-- If the asset is updated from dash -->
+<else><if COND="Variables.dashUpdate=dashUpdate">
+<then>
+	<if COND="Variables.dashUpdateType=create">
+    <then>
+		<!--if the operation is create-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=edit">
+    <then>
+		<!--if the operation is edit-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=delete">
+    <then>
+		<!--if the operation is delete-->
+    </then>
+    </if>
+	<!--
+		Uncomment this code for refreshing dash tree for any asset creation/updation/deletion operation
+		<callelement NAME="OpenMarket/Xcelerate/Actions/RefreshDashTree"/>
+	-->
+</then>
+  
+<else>
+  <!--ignore illegal updatetype values-->
+</else></if>
+</else></if>
+</else></if>
+</else></if>
+</else></if>
+</else></if>
+
+</FTCS>
