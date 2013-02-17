@@ -9,29 +9,36 @@ trait AgileWcsSupport {
 
   // new settings
   lazy val wcsHome = SettingKey[String]("wcs-home", "WCS Home Directory")
-  lazy val wcsWebapp = SettingKey[String]("wcs-webapp", "WCS Webapp CS Directory")
-  lazy val wcsUser = SettingKey[String]("wcs-user", "WCS Site for user")
-  lazy val wcsPassword = SettingKey[String]("wcs-password", "WCS Site password")
-  lazy val wcsUrl = SettingKey[String]("wcs-url", "WCS URL")
   lazy val wcsSites = SettingKey[String]("wcs-sites", "WCS Sites to configure")
+  lazy val wcsShared = SettingKey[String]("wcs-shared", "WCS Shared Directory")
+  lazy val wcsWebapp = SettingKey[String]("wcs-webapp", "WCS ContentServer Webapp CS Directory")
   lazy val wcsVersion = SettingKey[String]("wcs-version", "WCS or Fatwire Version")
 
-  lazy val wcsSetup = InputKey[Unit]("wcs-setup", "WCS Setup")
-  lazy val wcsConfig = TaskKey[String]("wcs-config", "WCS Write configurations")
+  lazy val wcsUrl = SettingKey[String]("wcs-url", "WCS URL")
+  lazy val wcsUser = SettingKey[String]("wcs-user", "WCS Site for user")
+  lazy val wcsPassword = SettingKey[String]("wcs-password", "WCS Site password")
 
+  lazy val wcsSetup = InputKey[Unit]("wcs-setup", "WCS Setup")
   lazy val wcsDeploy = TaskKey[Unit]("wcs-deploy", "WCS Deploy")
-  lazy val wcsCopyStatic = TaskKey[Unit]("wcs-copy-static", "WCS copy resources")
-  lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
-  lazy val wcsUpdateAssets = TaskKey[String]("wcs-update-assets", "WCS update assets")
+
+  lazy val wcsFlexBlobs = SettingKey[String]("wcs-flex-blobs", "WCS Flex Blobs Regexp")
+  lazy val wcsStaticBlobs = SettingKey[String]("wcs-static-blobs", "WCS Static Blobs Regexp")
+  lazy val wcsVirtualHosts = SettingKey[Seq[Tuple2[String, String]]]("wcs-virtual-hosts", "WCS Virtual Host mapping")
+  lazy val wcsWebappSatellite = SettingKey[String]("wcs-webapp-satellite", "WCS SatelliteServer Webapp CS Directory")
 
   lazy val wcsCsdtJar = SettingKey[String]("wcs-csdt-jar", "WCS CSDT Jar")
   lazy val wcsCsdt = InputKey[Unit]("wcs-dt", "WCS Development Tool")
   lazy val wcsCm = InputKey[Unit]("wcs-cm", "WCS Catalog Mover")
 
+  lazy val wcsCopyStatic = TaskKey[Unit]("wcs-copy-static", "WCS copy resources")
+  lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
+  lazy val wcsUpdateAssets = TaskKey[String]("wcs-update-assets", "WCS update assets")
+
   // generate tag access classes from tld files
   val coreGeneratorTask = (sourceGenerators in Compile) <+=
     (sourceManaged in Compile, wcsWebapp, baseDirectory, wcsVersion) map {
       (dstDir, srcDir, base, version) =>
+
         println("*** Generating tags from %s\n".format(srcDir))
 
         // generate tags
@@ -56,7 +63,6 @@ trait AgileWcsSupport {
             IO.write(dstj, bodyj)
             println("+++ " + dstj)
           }
-
           dst :: dstj :: Nil
         }
 
@@ -162,14 +168,17 @@ trait AgileWcsSupport {
 
           }
       }
-
   }
 
   // package jar task - build the jar and copy it  to destination 
   val wcsPackageJarTask = wcsPackageJar <<=
-    (assembly, wcsHome) map {
-      (jar, home) =>
-        val destjar = file(home) / jar.getName
+    (assembly, wcsShared) map {
+      (jar, shared) =>
+
+        val destdir = file(shared) / "agilewcs"
+        val destjar = file(shared) / "agilewcs" / jar.getName
+
+        destdir.mkdir
         IO.copyFile(jar, destjar)
         println("+++ " + destjar.getAbsolutePath)
         destjar.getAbsolutePath.toString
@@ -203,88 +212,188 @@ trait AgileWcsSupport {
         deployer.getStatus
     }
 
+  def normalizeSiteName(s: String) = s.toLowerCase.replaceAll("""[^a-z0-9]+""", "-").replaceAll("^-", "").replaceAll("-$", "")
+
   // deploy task  
   val wcsDeployTask = wcsDeploy <<=
     (wcsCopyStatic, wcsUpdateAssets) map { (count, update) => () }
 
-  // configuring everything
-  val wcsConfigTask = wcsConfig <<=
-    (wcsPackageJar, wcsVersion, wcsHome, wcsWebapp, wcsSites, wcsUser, wcsPassword) map {
-      (appjar, version, home, webapp, sites, username, password) =>
+  // configure satellite
 
-        // create local export dir for csdt
-        file("export").mkdir
-        (file("export") / "envision").mkdir
-        (file("export") / "envision" / (sites + "-" + version)).mkdir
-        (file("export") / ("Populate-" + version)).mkdir
+  def setupServletRequest(webapp: String, sites: String, sitesSeq: Seq[Tuple2[String, String]], flexBlobs: String, staticBlobs: String) {
 
-        // configure futurentense. init
-        val configFile = file(home) / "futuretense.ini"
-        val config = new java.util.Properties
-        config.load(new java.io.FileReader(configFile))
+    val prpFile = file(webapp) / "WEB-INF" / "classes" / "ServletRequest.properties"
 
-        /*
-        config.setProperty("agilewcs.site", site);
-        config.setProperty("agilewcs.user", username);
-        config.setProperty("agilewcs.password", password);
-        */
-        config.setProperty("agilewcs.jar", appjar);
-        config.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
-        config.setProperty("cs.pgexportfolder", file("export").getAbsolutePath)
-        config.store(new java.io.FileWriter(configFile),
-          "updated by AgileWCS setup")
+    val prp = new java.util.Properties
+    prp.load(new java.io.FileReader(prpFile))
 
-        // same properties also for core in the classpath
-        // NOTE this config file is currently unused
-        val otherConfigFile = file(webapp) / "WEB-INF" / "classes" / "agilewcs.prp"
-        val otherConfig = new java.util.Properties
-        otherConfig.setProperty("agilewcs.sites", sites);
-        otherConfig.setProperty("agilewcs.user", username);
-        otherConfig.setProperty("agilewcs.password", password);
-        otherConfig.setProperty("agilewcs.jar", appjar);
-        otherConfig.store(new java.io.FileWriter(otherConfigFile),
-          "created by AgileWCS setup")
+    // shift the url assembler to add agilewcs as the first
+    if (prp.getProperty("uri.assembler.1.shortform") != "agilewcs") {
 
-        // configure
+      val p1s = prp.getProperty("uri.assembler.1.shortform")
+      val p1c = prp.getProperty("uri.assembler.1.classname")
+      val p2s = prp.getProperty("uri.assembler.2.shortform")
+      val p2c = prp.getProperty("uri.assembler.2.classname")
 
-        configFile.getAbsolutePath
+      prp.setProperty("uri.assembler.3.shortform", p2s)
+      prp.setProperty("uri.assembler.3.classname", p2c)
+      prp.setProperty("uri.assembler.2.shortform", p1s)
+      prp.setProperty("uri.assembler.2.classname", p1c)
+      prp.setProperty("uri.assembler.1.shortform", "agilewcs")
+      prp.setProperty("uri.assembler.1.classname", "wcs.core.Assembler")
     }
+
+    prp.setProperty("agilewcs.sites", sites)
+    for ((k, v) <- sitesSeq) {
+      prp.setProperty("agilewcs." + normalizeSiteName(k), v)
+    }
+
+    prp.setProperty("agilewcs.blob.flex", flexBlobs)
+    prp.setProperty("agilewcs.blob.static", staticBlobs)
+
+    // store
+    println("~ " + prpFile)
+    prp.store(new java.io.FileWriter(prpFile),
+      "updated by AgileWCS setup")
+  }
+
+  // configure futurentense.ini
+  def setupFutureTenseIni(home: String, static: String, appjar: String, sites: String, version: String) {
+
+    val prpFile = file(home) / "futuretense.ini"
+    val prp = new java.util.Properties
+    prp.load(new java.io.FileReader(prpFile))
+
+    prp.setProperty("agilewcs.sites", sites);
+    prp.setProperty("agilewcs.jar", appjar);
+    prp.setProperty("agilewcs.static", file(static).getAbsolutePath);
+
+    prp.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
+    prp.setProperty("cs.pgexportfolder", (file("export") / "xmlpub" / (sites + "-" + version)).getAbsolutePath)
+
+    println("~ " + prpFile)
+    prp.store(new java.io.FileWriter(prpFile),
+      "updated by AgileWCS setup")
+
+  }
+
+  def setupAgileWcsPrp(dir: String, sites: String, static: String, appjar: String, flexBlobs: String, staticBlobs: String) {
+    val prpFile = file(dir) / "WEB-INF" / "classes" / "agilewcs.properties"
+    val prp = new java.util.Properties
+   
+    if(prpFile.exists)
+      prpFile.delete
+    prp.setProperty("agilewcs.sites", sites);
+    prp.setProperty("agilewcs.jar", appjar);
+    prp.setProperty("agilewcs.static", file(static).getAbsolutePath);
+    prp.setProperty("agilewcs.blob.flex", flexBlobs)
+    prp.setProperty("agilewcs.blob.static", staticBlobs)
+
+    println("~ " + prpFile)
+    prp.store(new java.io.FileWriter(prpFile),
+      "created by AgileWCS setup")
+
+    //otherConfig.setProperty("agilewcs.user", username);
+    //otherConfig.setProperty("agilewcs.password", password);
+    //otherConfig.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
+    //otherConfig.setProperty("cs.pgexportfolder", file("export").getAbsolutePath)
+  }
+
+  def setupMkdirs(shared: String, version: String, sites: String) {
+    // create local export dir for csdt
+    (file("export")).mkdir
+    (file("export") / "xmlpub").mkdir
+    (file("export") / "xmlpub" / (sites + "-" + version)).mkdir
+    (file("export") / "envision").mkdir
+    (file("export") / "envision" / (sites + "-" + version)).mkdir
+    (file("export") / ("Populate-" + version)).mkdir
+    (file(shared) / "Storage").mkdir
+    (file(shared) / "Storage" / "Static").mkdir
+  }
+
+  // classpath.files
+  // destlib.listFiles
+  def setupCopyJars(webapp: String, classpathFiles: Seq[File]) {
+
+    val destlib = file(webapp) / "WEB-INF" / "lib"
+
+    // jars to include when performing a setup
+
+    val addJars = classpathFiles filter
+      (AgileWcsBuild.addFilterSetup accept _)
+
+    // jars to remove when performing a setup
+
+    val removeJars = destlib.listFiles filter
+      (AgileWcsBuild.removeFilterSetup accept _)
+
+    // remove jars
+    println("** removing old version of files");
+    for (file <- removeJars) {
+      val tgt = destlib / file.getName
+      tgt.delete
+      println("- " + tgt.getAbsolutePath)
+    }
+
+    // add jars
+    println("** installing new version of files");
+    for (file <- addJars) yield {
+      val tgt = destlib / file.getName
+      IO.copyFile(file, tgt)
+      //println("=== " + file.getAbsolutePath)
+      println("+ " + tgt.getAbsolutePath)
+    }
+
+  }
 
   // setup task
   val wcsSetupTask = wcsSetup <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
-      (argTask, wcsConfig, Keys.`package` in Compile in AgileWcsBuild.core,
-        managedClasspath in Runtime, classDirectory in Compile, wcsWebapp) map {
-          (args, _, corejar, classpath, classes, webapp) =>
+      (argTask,
+        wcsPackageJar, managedClasspath in Runtime, classDirectory in Compile,
+        wcsSites, wcsVersion, wcsHome, wcsShared, wcsWebapp, wcsUrl,
+        wcsWebappSatellite, wcsFlexBlobs, wcsStaticBlobs, wcsVirtualHosts) map {
+          (args,
+          appjar, classpath, classes,
+          sites, version, home, shared, webapp, url,
+          satelliteWebapp, flexBlobs, staticBlobs, virtualHosts) =>
 
-            // jars to include when performing a setup
-            val destlib = file(webapp) / "WEB-INF" / "lib"
+            val static = (file(shared) / "Storage" / "Static") getAbsolutePath
 
-            val addJars = classpath.files filter
-              (AgileWcsBuild.addFilterSetup accept _)
+            if (args.length == 1 && args(0) == "satellite") {
 
-            val removeJars = destlib.listFiles filter
-              (AgileWcsBuild.removeFilterSetup accept _)
+              println("*** Installing AgileWCS for Satellite Server. ***");
 
-            // create csdt export file
+              setupCopyJars(satelliteWebapp, classpath.files)
 
-            // remove jars
-            for (file <- removeJars) {
-              val tgt = destlib / file.getName
-              tgt.delete
-              println("--- " + tgt.getAbsolutePath)
+              setupServletRequest(satelliteWebapp, sites, virtualHosts, flexBlobs, staticBlobs)
+
+              setupAgileWcsPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs)
+
+              println("*** Installed AgileWCS for Satellite. You need to restart the application server or (if weblogic) redeploy the webapp Satellite. ***")
+
+            } else {
+
+              println("*** Installing AgileWCS ***");
+
+              val vhosts = (sites split ",") map { site =>
+                (site, url + "/Satellite/" + normalizeSiteName(site))
+              } toSeq
+
+              setupMkdirs(shared, version, sites)
+
+              setupCopyJars(webapp, classpath.files)
+
+              setupServletRequest(webapp, sites, vhosts, flexBlobs, staticBlobs)
+
+              setupAgileWcsPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs)
+
+              setupFutureTenseIni(home, static, appjar, sites, version)
+
+              println("*** Installed AgileWCS. You need to restart the application server or (if weblogic) redeploy the webapp ContentServer,  then execute \"wcs-deploy\" ***")
+
             }
 
-            // add jars
-            for (file <- addJars) yield {
-              val tgt = destlib / file.getName
-              IO.copyFile(file, tgt)
-
-              println("<<< " + file.getAbsolutePath)
-              println("+++ " + tgt.getAbsolutePath)
-            }
-
-            println("*** You need to restart WCS and then execute \"wcs-deploy\" ***")
         }
   }
 

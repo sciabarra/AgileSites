@@ -1,24 +1,51 @@
+// site to import/export
+wcsSites in ThisBuild := "AgileWCS,ScalaWCS"
+
 // versions (currently only valid values are 11g or 7.6)
 wcsVersion in ThisBuild := "11g"
 
-// home directory of WCS
-wcsHome in ThisBuild := "/Developer/Oracle/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/"
+// home directory of WCS - leave it to
+wcsHome in ThisBuild := "/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/"
 
-// webapp directory of WCS
-wcsWebapp in ThisBuild := "/Developer/Oracle/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/webapps/cs/"
+// shared folder
+wcsShared in ThisBuild := "/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/Shared"
+
+// webapp directory of WebCenter Sites 
+wcsWebapp in ThisBuild := "/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/webapps/cs/"
 
 // location of the csdt-client jar
-wcsCsdtJar in ThisBuild := "/Developer/Oracle/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/csdt-client-1.2.2.jar"
+wcsCsdtJar in ThisBuild := "/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/csdt-client-1.2.2.jar"
 
-//url to content server
-wcsUrl in ThisBuild := "http://localhost:8080/cs/"
-
-// site to import/export
-wcsSites in ThisBuild := "AgileWCS,ScalaWCS"
+// url to content server - NO slashes at the end please 
+// must allow access to ContentServer, CatalogManager and Satellite
+wcsUrl in ThisBuild := "http://localhost:8080/cs"
 
 // user to import/export
 wcsUser in ThisBuild := "fwadmin"
 
 // password to import/export
 wcsPassword in ThisBuild := "xceladmin"
+
+// this regexp must mach the numeric id of the flex blob 
+// the first group must be the numeric id of the flex blob
+wcsFlexBlobs in ThisBuild := """^/(\d+)\.(jpg|png|gif)$"""
+
+// this regexp must mach the name of the static resource
+// the first group must be the name of the static resource 
+wcsStaticBlobs in ThisBuild := """^(.*\.(css|js|jpg|png|gif))$"""
+
+/// configurations for front-end Satellite and proxy
+/// "wcs-setup satellite" must be run in the separate satellite host
+
+// webapp directory of Satellite Server 
+wcsWebappSatellite in ThisBuild := "/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/webapps/ss/"
+
+/// front end url - NO slashes at the end please
+// sample with satellite and an apache proxy 
+// VirtualHost agilewcs.local: ProxyPass / http://sshost/ss/Satellite/agilewcs
+// VirtualHost scalawcs.local: ProxyPass / http://sshost/ss/Satellite/agilewcs
+wcsVirtualHosts in ThisBuild := Seq( 
+    "AgileWCS" -> "http://agilewcs.loc", 
+    "ScalaWCS" -> "http://scalawcs.loc" 
+)
 

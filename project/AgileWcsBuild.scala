@@ -13,7 +13,8 @@ object AgileWcsBuild extends Build with AgileWcsSupport {
   val v = "0.3"
 
   // remove then add those jars in setup
-  val addFilterSetup = "scala-library*" || "agilewcs-core*" || "junit*" || "specs2*"
+  val addFilterSetup = "scala-library*" || "agilewcs-core*" || "junit*" //|| "specs2*"
+  
   val removeFilterSetup = addFilterSetup
 
   // configuring WCS jars as unmanaged lib
@@ -45,18 +46,16 @@ object AgileWcsBuild extends Build with AgileWcsSupport {
 
   val coreSettings = Defaults.defaultSettings ++ Seq(
     scalaVersion := "2.10.0",
-    organization := "com.sciabarra", 
+    organization := "com.sciabarra",
     version <<= (wcsVersion) { x => v + "_" + x },
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
     unmanagedJarsTask,
-
     // ugly stuff to rename the generated project name adding the version number
     EclipseKeys.projectTransformerFactories := Seq(new EclipseTransformerFactory[RewriteRule] {
       import scala.xml.Node
       import com.typesafe.sbteclipse.core.Validation
       import scalaz.Scalaz._
-
       override def createTransformer(ref: ProjectRef, state: State): Validation[RewriteRule] = {
         val rule = new RewriteRule {
           override def transform(n: Node): Seq[Node] =
@@ -96,8 +95,7 @@ object AgileWcsBuild extends Build with AgileWcsSupport {
     id = "app",
     base = file("app"),
     settings = commonSettings ++ Seq(
-      name := "agilewcs-app")
-      ) dependsOn (api)
+      name := "agilewcs-app")) dependsOn (api)
 
   /// ALL
   lazy val all: Project = Project(
@@ -107,14 +105,14 @@ object AgileWcsBuild extends Build with AgileWcsSupport {
       name := "agilewcs-all",
       wcsCsdtTask,
       wcsCmTask,
-      wcsConfigTask,
       wcsSetupTask,
       wcsDeployTask,
       wcsCopyStaticTask,
       wcsPackageJarTask,
       wcsUpdateAssetsTask,
+      excludedJars in assembly <<= (fullClasspath in assembly),
       EclipseKeys.skipProject := true,
-      assembleArtifact in packageScala := false,
-      excludedJars in assembly <<= (fullClasspath in assembly)) //
-      ) dependsOn (app) aggregate (app, api)
+      assembleArtifact in packageScala := false)) dependsOn (app) aggregate (app, api)
+
 }
+

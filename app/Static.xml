@@ -2,7 +2,7 @@
  NAME="Static" 
  DESCRIPTION="Static" 
  PROCESSOR="4.0" 
- DEFDIR="Storage\Static">
+ DEFDIR="$(CS.Property.agilewcs.static)">
 <PROPERTIES>
 <PROPERTY 
  NAME="url" 

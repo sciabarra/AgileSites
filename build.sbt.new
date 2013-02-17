@@ -9,7 +9,6 @@ wcsWebapp in ThisBuild := "/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apac
 
 // static content folder
 wcsStatic in ThisBuild := "/Developer/Fatwire/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/webapps/ROOT/"
-
 // location of the csdt-client jar
 wcsCsdtJar in ThisBuild := "/Developer/Fatwire/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/csdt-client-1.2.2.jar"
 
