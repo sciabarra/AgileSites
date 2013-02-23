@@ -101,7 +101,7 @@ trait AgileWcsSupport {
         (args, version, url, sites, user, password, classpath, s, runner) =>
           val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d|spring-\\d|commons-logging-|servlet-api).*.jar$".r;
           val seljars = classpath.files.filter(f => !re.findAllIn(f.getName).isEmpty)
-          val cmd = Array(url + "ContentServer",
+          val cmd = Array(url + "/ContentServer",
             "username=" + user,
             "password=" + password,
             "cmd=" + (if (args.size > 0) args(0) else "listcs"),
@@ -116,7 +116,8 @@ trait AgileWcsSupport {
                 println("""importing only sites - you need to run after:
 > wcs-dt import @ASSET_TYPE
 > wcs-dt import @ALL_ASSETS
-> wcs-dt import @ALL_NONASSETS""")
+> wcs-dt import @STARTMENU
+> wcs-dt import @TREETAB""")
                 "@SITE"
               case "export" =>
                 println("exporting only sites & assets types - you need to export manually assets and non-assets")
@@ -155,7 +156,7 @@ trait AgileWcsSupport {
             
             val url = httpUrl + "/CatalogManager"
 
-            println(url)
+            //println(url)
             
             val cp = classpath.files.mkString(java.io.File.pathSeparator)
             val dir = file("export") / "Populate-" + version
@@ -164,7 +165,7 @@ trait AgileWcsSupport {
             val opts = Seq("-u", user, "-p", password, "-b", url, "-d", dir.toString, "-x")
             val all = cmd ++ opts ++ args
 
-            println(all)
+            //println(all)
             //for(file <- classpath.files) println(file)
             //println(opts++args)
 

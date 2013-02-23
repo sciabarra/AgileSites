@@ -69,7 +69,7 @@ UlRJRVM+CjwvQVNTRVQ+Cg==</urldescriptordata>
             <null/>
             <null/>
             <null/>
-            <string>/Developer/Oracle/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/Shared/Storage/Static/</string>
+            <string>$(CS.Property.agilewcs.static)</string>
             <null/>
             <null/>
             <null/>

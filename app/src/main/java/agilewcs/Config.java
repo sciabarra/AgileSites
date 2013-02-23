@@ -10,9 +10,7 @@ public class Config extends wcs.java.Config {
 		if (type.equals("Page"))
 			return "PageAttribute";
 
-		if (type.startsWith("Agile_"))
-			return "Agile_A";
-
+		
 		return null;
 	}
 
