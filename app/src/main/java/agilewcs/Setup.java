@@ -50,17 +50,6 @@ public class Setup extends wcs.java.Setup {
 						.cache("false", "false") //
 						.description("Menu Top (Java)"), //
 
-						/*
-				new Template("Agile_Article", "AwLayout", Template.LAYOUT,
-						agilewcs.article.Layout.class)//
-						.cache("false", "false") //
-						.description("Article Layout (Java)"), //
-
-				new Template("Agile_Article", "AwSummary", Template.INTERNAL,
-						agilewcs.article.Summary.class)//
-						.cache("false", "false") //
-						.description("Article Summary (Java)"), //
-*/
 						
 				// test runner
 				new CSElement("JUnitRunner", agilewcs.tests.JUnitRunner.class), //
