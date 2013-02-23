@@ -7,11 +7,17 @@ package wcs.core;
  * 
  */
 public class Arg {
+
+	public String name;
+	public String value;
+	
 	public Arg(String name, String value) {
 		this.name = name;
 		this.value = value;
 	}
 
-	public String name;
-	public String value;
+	public static Arg arg(String name, String value) {
+		return new Arg(name, value);
+	}
+
 }

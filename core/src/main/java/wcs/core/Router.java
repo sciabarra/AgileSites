@@ -1,21 +1,16 @@
 package wcs.core;
 
-import java.util.Map;
+import COM.FutureTense.Interfaces.ICS;
 
 /**
- * Interface for the Router (assemble/disassemble) and post (actions)
- * 
- * TODO
+ * Interface for the Router
  * 
  * @author msciab
- *
+ * 
  */
 
 public interface Router {
-	
-	public void decode(String url);
-	
-	public void encode(Map<String, String[]> map);
-	
-	public void post(Map<String, String[]> map);
+
+	public String route(ICS ics, String path, String query);
+
 }

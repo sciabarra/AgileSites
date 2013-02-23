@@ -212,7 +212,7 @@ trait AgileWcsSupport {
         deployer.getStatus
     }
 
-  def normalizeSiteName(s: String) = s.toLowerCase.replaceAll("""[^a-z0-9]+""", "-").replaceAll("^-", "").replaceAll("-$", "")
+  def normalizeSiteName(s: String) = s.toLowerCase.replaceAll("""[^a-z0-9]+""", "")
 
   // deploy task  
   val wcsDeployTask = wcsDeploy <<=

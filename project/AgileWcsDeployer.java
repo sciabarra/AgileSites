@@ -128,7 +128,7 @@ public class AgileWcsDeployer {
 		StringBuilder sb = new StringBuilder();
 		try {
 
-			String name = "AAAgileWCSInstaller";
+			String name = "AAAgileSetup";
 
 			sb.append("*** Deploy\n");
 			sb.append(invoke(name));

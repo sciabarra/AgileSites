@@ -1,7 +1,5 @@
 package agilewcs.article;
 
-import java.util.Date;
-
 import wcs.java.Asset;
 import wcs.java.Element;
 import wcs.java.Env;
@@ -14,6 +12,7 @@ public class Layout extends Element {
 		Asset a = e.getAsset();
 		// return a.getName();
 
+		/*
 		Long id = a.getId();
 		String name = a.getName();
 		String desc = a.getDescription();
@@ -22,6 +21,7 @@ public class Layout extends Element {
 		String author = a.getString("Author");
 		Date today = a.getDate("Birthday");
 		Integer amount = a.getInt("Count");
+		*/
 
 		// return id+name+desc+date;
 

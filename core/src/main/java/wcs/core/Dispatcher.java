@@ -77,6 +77,40 @@ public class Dispatcher {
 	}
 
 	/**
+	 * Route a call from the url assembler
+	 * 
+	 * @param ics
+	 * @return
+	 */
+	public String route(ICS ics, String site, String path, String query) {
+		String className = WCS.normalizeSiteName(site) + ".Router";
+		try {
+			// jar & classname
+			ClassLoader cl = loader.loadJar();
+
+			// instantiate
+			@SuppressWarnings("rawtypes")
+			Class clazz = Class.forName(className, true, cl);
+			Object obj = clazz.newInstance();
+
+			// cast and execute
+			if (obj instanceof Router) {
+				Router router = (Router) obj;
+				return router.route(ics, path, query);
+
+			} else {
+				return "<h1>Not found</h1>";
+			}
+		} catch (Exception e) {
+			WCS.debug("[Dispacher.dispach] exception " + e.getMessage()
+					+ " loading " + className);
+			e.printStackTrace();
+			return "<h1>Exception</h1><p>" + e.getMessage() + "</p>\n";
+		}
+
+	}
+
+	/**
 	 * Deploy will invoke the <site>.Model class passing username and password.
 	 * 
 	 * Note that <site> is the site name lower case, with spaces replaced with
@@ -98,11 +132,11 @@ public class Dispatcher {
 			cl = loader.loadJar();
 			WCS.debug("[Dispatcher.deploy] loaded classloader " + cl);
 		} catch (Exception ex) {
-			WCS.debug("[Dispacher.deploy] exception loading jar"
+			WCS.debug("[Dispacher.deploy] exception loading jar: "
 					+ ex.getMessage());
 			ex.printStackTrace();
-			return "<h1>Exception</h1><p>Loading Jar: " + "</p>\n<p>Message: "
-					+ ex.getMessage() + "</p>\n";
+			return "<h1>Exception</h1><p>Loading Jar: " //
+					+ "</p>\n<p>Message: " + ex.getMessage() + "</p>\n";
 
 		}
 
@@ -118,9 +152,7 @@ public class Dispatcher {
 
 			for (String setupClass : setupClasses) {
 
-				String className = site.toLowerCase().replace(" ", "_")
-						.replaceAll("[^a-zA-Z_\\.]", "")
-						+ setupClass;
+				String className = WCS.normalizeSiteName(site) + setupClass;
 				try {
 					// instantiate
 					@SuppressWarnings("rawtypes")
@@ -180,8 +212,8 @@ public class Dispatcher {
 					.newInstance();
 			config.init(ics);
 		} catch (Exception e) {
-			e.printStackTrace();
 			WCS.debug(">>> config: EXCEPTION " + e.getMessage());
+			e.printStackTrace();
 		}
 		return config;
 	}

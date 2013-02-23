@@ -91,6 +91,27 @@ public class WCS {
 	}
 
 	/**
+	 * Dispatch requests
+	 * 
+	 * @param ics
+	 * @param clazz
+	 * @return
+	 */
+	public static String route(ICS ics, String site, String path, String query) {
+		WCS.debug("[WCS.dispatch] Dispatching...");
+		try {
+			Dispatcher dispatcher = Dispatcher.getDispatcher(jarPath);
+			if (dispatcher != null)
+				return dispatcher.route(ics, site, path, query);
+			else
+				return WCS.debug("[WCS.router] Not found jar.");
+		} catch (Exception ex) {
+			return WCS
+					.debug("[WCS.route] !!! Cannot route: " + ex.getMessage());
+		}
+	}
+
+	/**
 	 * Deploy
 	 * 
 	 * @param ics
@@ -117,14 +138,21 @@ public class WCS {
 	}
 
 	private static long tmpVarCounter = System.currentTimeMillis();
-	
+
 	/**
 	 * Generate a temporary var
+	 * 
 	 * @return
 	 */
 	public synchronized static String tmpVar() {
 		++tmpVarCounter;
-		return "_" +  Long.toHexString(tmpVarCounter)  ;
+		return "_" + Long.toHexString(tmpVarCounter);
 	}
 
+	/**
+	 * Normalize Site name
+	 */
+	public static String normalizeSiteName(String site) {
+		return site.toLowerCase().replaceAll("[^a-z0-9]+", "");
+	}
 }
