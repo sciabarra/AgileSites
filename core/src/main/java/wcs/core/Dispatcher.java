@@ -84,6 +84,7 @@ public class Dispatcher {
 	 */
 	public String route(ICS ics, String site, String path, String query) {
 		String className = WCS.normalizeSiteName(site) + ".Router";
+		WCS.debug("[WCS.route] className="+className);
 		try {
 			// jar & classname
 			ClassLoader cl = loader.loadJar();

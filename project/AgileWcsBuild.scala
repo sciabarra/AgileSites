@@ -50,9 +50,10 @@ object AgileWcsBuild extends Build with AgileWcsSupport {
     version <<= (wcsVersion) { x => v + "_" + x },
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
-    unmanagedJarsTask,
+    unmanagedJarsTask
+    /*
     // ugly stuff to rename the generated project name adding the version number
-    EclipseKeys.projectTransformerFactories := Seq(new EclipseTransformerFactory[RewriteRule] {
+    ,EclipseKeys.projectTransformerFactories := Seq(new EclipseTransformerFactory[RewriteRule] {
       import scala.xml.Node
       import com.typesafe.sbteclipse.core.Validation
       import scalaz.Scalaz._
@@ -65,7 +66,7 @@ object AgileWcsBuild extends Build with AgileWcsSupport {
         }
         rule.success
       }
-    }))
+    })*/)
 
   val commonSettings = coreSettings ++ Seq(
     libraryDependencies <++= (version) {

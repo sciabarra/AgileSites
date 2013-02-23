@@ -152,8 +152,11 @@ trait AgileWcsSupport {
             //val url = new java.net.URL(httpUrl)
             //val host = url.getProtocol + "://" + url.getHost+":"+url.getPort
             //val path = url.getPath+ "CatalogManager"
-            val url = httpUrl + "CatalogManager"
+            
+            val url = httpUrl + "/CatalogManager"
 
+            println(url)
+            
             val cp = classpath.files.mkString(java.io.File.pathSeparator)
             val dir = file("export") / "Populate-" + version
             val cmd = Seq("-cp", cp, "COM.FutureTense.Apps.CatalogMover")
@@ -161,6 +164,7 @@ trait AgileWcsSupport {
             val opts = Seq("-u", user, "-p", password, "-b", url, "-d", dir.toString, "-x")
             val all = cmd ++ opts ++ args
 
+            println(all)
             //for(file <- classpath.files) println(file)
             //println(opts++args)
 

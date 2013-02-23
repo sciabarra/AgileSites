@@ -20,24 +20,49 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 
 	private QueryAssembler qa = new QueryAssembler();
 	private Map<String, String> sitePrefix = new HashMap<String, String>();
-	private Pattern sitePattern = Pattern.compile("^/([a-z0-9-]+)(/(.*))?$");
+	private Pattern sitePattern = Pattern
+			.compile("^.*?/(ContentServer|BlobServer|Satellite)/([a-z0-9]+)(/(.*))?$");
 	private Pattern staticBlobs = null;
 	private Pattern flexBlobs = null;
 
 	@Override
 	public void setProperties(Properties prp) {
-		qa.setProperties(prp);
-		staticBlobs = Pattern.compile(prp.getProperty("agilewcs.blob.static"));
-		flexBlobs = Pattern.compile(prp.getProperty("agilewcs.blob.flex"));
-		StringTokenizer st = new StringTokenizer(
-				prp.getProperty("agilewcs.sites"), ",");
-		while (st.hasMoreTokens()) {
-			String site = WCS.normalizeSiteName(st.nextToken());
-			sitePrefix.put(site, prp.getProperty("agilewcs." + site));
+		// WCS.debug("Satellite.setProperties=" + prp);
+		try {
+			staticBlobs = Pattern.compile(prp
+					.getProperty("agilewcs.blob.static"));
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		WCS.debug("staticBlobs=" + staticBlobs);
+		try {
+			flexBlobs = Pattern.compile(prp.getProperty("agilewcs.blob.flex"));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		WCS.debug("flexBlobs=" + flexBlobs);
+		try {
+			StringTokenizer st = new StringTokenizer(
+					prp.getProperty("agilewcs.sites"), ",");
+			while (st.hasMoreTokens()) {
+				String site = WCS.normalizeSiteName(st.nextToken());
+				String prefix = prp.getProperty("agilewcs." + site);
+				if (prefix != null)
+					sitePrefix.put(site, prefix);
+				else
+					WCS.debug("no site prefix for " + site);
+
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		WCS.debug("sitePrefixes=" + sitePrefix);
+
+		try {
+			qa.setProperties(prp);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	// create an asset definition that will bring into the path
@@ -54,6 +79,10 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		def.setQueryStringParameter("cid", path);
 		def.setQueryStringParameter("pagename", "AAAgileRouter");
 
+		WCS.debug("c=" + site);
+		WCS.debug("cid=" + path);
+		WCS.debug("pagename=" + "AAAgileRouter");
+
 		return def;
 
 	}
@@ -67,12 +96,14 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 					if (pos == -1) {
 						String k = URLDecoder.decode(pair, "UTF-8");
 						def.setQueryStringParameter(k, "");
+						WCS.debug("qs: " + k);
 					} else {
 						String k = URLDecoder.decode(pair.substring(0, pos),
 								"UTF-8");
 						String v = URLDecoder.decode(pair.substring(pos + 1),
 								"UTF-8");
 						def.setQueryStringParameter(k, v);
+						WCS.debug("qs: " + k + "=" + v);
 					}
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
@@ -92,10 +123,21 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 				Definition.AppType.BLOB_SERVER, //
 				uri.getFragment());
 
-		def.setQueryStringParameter("blobcol", isSt ? "urldata" : "url");
-		def.setQueryStringParameter("blobkey", isSt ? "name" : "id");
-		def.setQueryStringParameter("blobwhere", subpath);
-		def.setQueryStringParameter("blobtable", isSt ? "MungoBlobs" : "Static");
+		String blobcol = isSt ? "urldata" : "url";
+		String blobkey = isSt ? "name" : "id";
+		String blobwhere = subpath;
+		String blobtable = isSt ? "MungoBlobs" : "Static";
+
+		def.setQueryStringParameter("blobcol", blobcol);
+		def.setQueryStringParameter("blobkey", blobkey);
+		def.setQueryStringParameter("blobwhere", blobwhere);
+		def.setQueryStringParameter("blobtable", blobtable);
+
+		WCS.debug("blobcol=" + blobcol);
+		WCS.debug("blobkey=" + blobkey);
+		WCS.debug("blobwhere=" + blobwhere);
+		WCS.debug("blobtable=" + blobtable);
+
 		addQueryString(def, uri.getQuery());
 		return def;
 	}
@@ -109,13 +151,19 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 	 * @return
 	 */
 	private Definition disassembleBlob(URI uri, String site, String subpath) {
-		Matcher mFlex = flexBlobs.matcher(subpath);
-		if (mFlex.find()) {
-			return blobDef(uri, subpath, false);
+		if (flexBlobs != null) {
+			Matcher mFlex = flexBlobs.matcher(subpath);
+			if (mFlex.find()) {
+				WCS.debug("flexBlob subpath=" + subpath);
+				return blobDef(uri, subpath, false);
+			}
 		}
-		Matcher mStatic = staticBlobs.matcher(subpath);
-		if (mStatic.find()) {
-			return blobDef(uri, subpath, false);
+		if (staticBlobs != null) {
+			Matcher mStatic = staticBlobs.matcher(subpath);
+			if (mStatic.find()) {
+				WCS.debug("staticBlob subpath=" + subpath);
+				return blobDef(uri, subpath, true);
+			}
 		}
 		return null;
 	}
@@ -123,6 +171,10 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 	@Override
 	public Definition disassemble(URI uri, ContainerType type)
 			throws URISyntaxException {
+
+		WCS.debug("dissassembling " + uri);
+		WCS.debug("query:  ?" + uri.getQuery());
+		// WCS.debug("fragment: #" + uri.getFragment());
 
 		Definition result = null;
 
@@ -132,14 +184,26 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 
 		// search if it is one of the sites
 		if (match.find()) {
-			String site = match.group(1);
-			String subpath = match.group(3);
+			String site = match.group(2);
+			String subpath = match.group(4);
+			WCS.debug("site=" + site + " subpath=" + subpath);
 			if (sitePrefix.containsKey(site)) {
 				// check if it is one of the blobs
 				result = disassembleBlob(uri, site, subpath);
-				if (result == null)
-					result = assetDef(uri, site, subpath);
+
+				if (result == null) {
+					WCS.debug("*** asset found");
+					return assetDef(uri, site, subpath);
+				} else {
+					WCS.debug("*** blob found");
+					return result;
+				}
+
+			} else {
+				WCS.debug("no known site " + site);
 			}
+		} else {
+			WCS.debug("no site ");
 		}
 		return result;
 	}

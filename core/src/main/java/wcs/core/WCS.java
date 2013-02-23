@@ -16,11 +16,10 @@ public class WCS {
 	static String jarPath;
 
 	static {
-		System.out.println("OUT wcs.core.debug=" + debug);
-		System.err.println("ERR wcs.core.debug=" + debug);
-
+		WCS.debug("wcs.core.debug=" + debug);
 		try {
-			properties.load(WCS.class.getResourceAsStream("/agilewcs.prp"));
+			properties.load(WCS.class
+					.getResourceAsStream("/agilewcs.properties"));
 			System.out.println(properties.toString());
 			jarPath = properties.getProperty("agilewcs.jar");
 		} catch (IOException e) {
@@ -101,8 +100,9 @@ public class WCS {
 		WCS.debug("[WCS.dispatch] Dispatching...");
 		try {
 			Dispatcher dispatcher = Dispatcher.getDispatcher(jarPath);
-			if (dispatcher != null)
+			if (dispatcher != null) {
 				return dispatcher.route(ics, site, path, query);
+			}
 			else
 				return WCS.debug("[WCS.router] Not found jar.");
 		} catch (Exception ex) {
