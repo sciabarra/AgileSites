@@ -30,7 +30,7 @@ trait AgileWcsSupport {
   lazy val wcsCsdt = InputKey[Unit]("wcs-dt", "WCS Development Tool")
   lazy val wcsCm = InputKey[Unit]("wcs-cm", "WCS Catalog Mover")
 
-  lazy val wcsCopyStatic = TaskKey[Unit]("wcs-copy-static", "WCS copy resources")
+  lazy val wcsCopyStatic = TaskKey[Unit]("wcs-copy-static", "WCS copy static resources")
   lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
   lazy val wcsUpdateAssets = TaskKey[String]("wcs-update-assets", "WCS update assets")
 
@@ -153,11 +153,11 @@ trait AgileWcsSupport {
             //val url = new java.net.URL(httpUrl)
             //val host = url.getProtocol + "://" + url.getHost+":"+url.getPort
             //val path = url.getPath+ "CatalogManager"
-            
+
             val url = httpUrl + "/CatalogManager"
 
             //println(url)
-            
+
             val cp = classpath.files.mkString(java.io.File.pathSeparator)
             val dir = file("export") / "Populate-" + version
             val cmd = Seq("-cp", cp, "COM.FutureTense.Apps.CatalogMover")
@@ -285,8 +285,8 @@ trait AgileWcsSupport {
   def setupAgileWcsPrp(dir: String, sites: String, static: String, appjar: String, flexBlobs: String, staticBlobs: String) {
     val prpFile = file(dir) / "WEB-INF" / "classes" / "agilewcs.properties"
     val prp = new java.util.Properties
-   
-    if(prpFile.exists)
+
+    if (prpFile.exists)
       prpFile.delete
     prp.setProperty("agilewcs.sites", sites);
     prp.setProperty("agilewcs.jar", appjar);

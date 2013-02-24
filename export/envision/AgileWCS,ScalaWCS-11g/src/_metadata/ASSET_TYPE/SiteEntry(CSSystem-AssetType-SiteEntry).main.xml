@@ -11,7 +11,7 @@
         <description>SiteEntry</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Users/msciab/agilewcs/0.3/jsk.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp19/dcs7682768719003964437.tmp</urldescriptorspec>
+        <urldescriptorspec>/Users/msciab/agilewcs/0.3/jsk.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp13/dcs8257176818105777916.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-SiteEntry</uid>
         <useDimension></useDimension>
@@ -517,7 +517,7 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA0KDQoNCg==</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Mon Feb 11 09:51:17 UTC 2013
+#Sat Feb 23 23:54:49 UTC 2013
 key=@ASSET_TYPE-CSSystem-AssetType-SiteEntry
 type=ASSET_TYPE
 sites=AgileWCS,ScalaWCS

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>CSElement:1351275792798</id>
+    <id>CSElement:1351275792804</id>
     <name>AwHeader</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-02-10T13:34:59.746Z</createddate>
+    <createddate>2013-02-23T12:35:43.541Z</createddate>
     <description>Header (Java)</description>
     <publist>AgileWCS</publist>
-    <status>ED</status>
+    <status>VO</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-02-11T09:50:36.044Z</updateddate>
+    <updateddate>2013-02-11T09:50:36.000Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275792798</longValue>
+            <longValue>1351275792804</longValue>
         </data>
     </attribute>
     <attribute>
@@ -99,7 +99,7 @@
     <attribute>
         <name>resdetails1</name>
         <data>
-            <stringValue>eid=1351275792798</stringValue>
+            <stringValue>eid=1351275792804</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -112,7 +112,7 @@
         <name>url</name>
         <data>
             <blobValue>
-                <filename>AgileWCS/AwHeader,0.jsp</filename>
+                <filename>AgileWCS/AwHeader.jsp</filename>
                 <foldername></foldername>
                 <filedata></filedata>
             </blobValue>
@@ -123,21 +123,23 @@
     </associations>
 </ns2:assetBean>
 
+
 <!--==================___ METADATA ___================
+
 <dependencies>
   <list>
     <dependency>
       <depType>N</depType>
       <resType>CSElement</resType>
-      <resId>1351275792798</resId>
+      <resId>1351275792804</resId>
       <uid>c93c401a-620c-436c-9a90-3c4763889b8e</uid>
     </dependency>
   </list>
 </dependencies>
+
 ==================______________________==================
 #
-#Mon Feb 11 09:51:08 UTC 2013
-storable0=/ELEMENTS/JSP/AgileWCS/AwHeader.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FAgileWCS%2FAwHeader.jsp
+#Sat Feb 23 23:50:37 UTC 2013
 @hashval=188105614
 key=CSElement-c93c401a-620c-436c-9a90-3c4763889b8e
 type=ASSETDATA

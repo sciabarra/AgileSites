@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>Template:1351275792846</id>
+    <id>Template:1351275792821</id>
     <name>SwHeader</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-02-10T13:35:02.857Z</createddate>
+    <createddate>2013-02-23T12:35:44.310Z</createddate>
     <description>ScalaWCS Header (Scala)</description>
     <publist>ScalaWCS</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-02-11T09:50:37.512Z</updateddate>
+    <updateddate>2013-02-23T18:02:09.247Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275792846</longValue>
+            <longValue>1351275792821</longValue>
         </data>
     </attribute>
     <attribute>
@@ -142,7 +142,7 @@
                 <item>
                     <name>resdetails2</name>
                     <data>
-                        <stringValue>agilewcs=1360576237501</stringValue>
+                        <stringValue>agilewcs=1361642529232</stringValue>
                     </data>
                 </item>
                 <item>
@@ -218,7 +218,7 @@
                 <item>
                     <name>resdetails1</name>
                     <data>
-                        <stringValue>tid=1351275792846</stringValue>
+                        <stringValue>tid=1351275792821</stringValue>
                     </data>
                 </item>
                 <item>
@@ -257,14 +257,14 @@
     <dependency>
       <depType>N</depType>
       <resType>Template</resType>
-      <resId>1351275792846</resId>
+      <resId>1351275792821</resId>
       <uid>04f5002e-7147-460a-9be6-02fd024dd6dd</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Mon Feb 11 09:51:08 UTC 2013
+#Sat Feb 23 23:54:33 UTC 2013
 storable0=/ELEMENTS/JSP//SwHeader.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2F%2FSwHeader.jsp
 @hashval=1855216884
 key=Template-04f5002e-7147-460a-9be6-02fd024dd6dd

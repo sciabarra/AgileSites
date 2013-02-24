@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>AttrTypes:1351275793123</id>
+    <name>CkEditor400x200</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2013-02-23T15:50:37.148Z</createddate>
+    <description>CkEditor400x200</description>
+    <publist>ScalaWCS</publist>
+    <publist>AgileWCS</publist>
+    <status>ED</status>
+    <subtype></subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2013-02-23T15:51:01.868Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>87eaf114-d4cc-461f-a12f-cc40217dba96</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1351275793123</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>urlxml</name>
+        <data>
+            <blobValue>
+                <filename>CkEditor400x200.urlxml(87eaf114-d4cc-461f-a12f-cc40217dba96).1351275793123.txt</filename>
+                <foldername></foldername>
+                <filedata></filedata>
+            </blobValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>valuetype</name>
+        <data>
+            <stringValue>text</stringValue>
+        </data>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <list>
+    <dependency>
+      <depType>N</depType>
+      <resType>AttrTypes</resType>
+      <resId>1351275793123</resId>
+      <uid>87eaf114-d4cc-461f-a12f-cc40217dba96</uid>
+    </dependency>
+  </list>
+</dependencies>
+==================______________________==================
+#
+#Sat Feb 23 23:54:33 UTC 2013
+storable0=ASSET/AttrTypes/64/14/CkEditor400x200.urlxml(87eaf114-d4cc-461f-a12f-cc40217dba96).1351275793123.txt||_storable_type\=CkEditor400x200.urlxml%2887eaf114-d4cc-461f-a12f-cc40217dba96%29.1351275793123.txt&_blob_prop\=urlxml&_value_count\=S
+key=AttrTypes-87eaf114-d4cc-461f-a12f-cc40217dba96
+type=ASSETDATA
+sites=ScalaWCS,AgileWCS
+
+==================___ END METADATA ___==================-->

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>CSElement:1351275792807</id>
+    <id>CSElement:1351275793270</id>
     <name>AwFooter</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-02-10T13:34:59.974Z</createddate>
+    <createddate>2013-02-23T18:02:08.106Z</createddate>
     <description>Footer (Java)</description>
     <publist>AgileWCS</publist>
-    <status>ED</status>
+    <status>PL</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-02-11T09:50:36.316Z</updateddate>
+    <updateddate>2013-02-23T18:02:08.106Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -53,13 +53,13 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>7188adcd-46c1-4499-80f6-0fcad9ad8f04</stringValue>
+            <stringValue>48a0dd14-6684-48cd-8a3f-4a567cfc6270</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275792807</longValue>
+            <longValue>1351275793270</longValue>
         </data>
     </attribute>
     <attribute>
@@ -99,20 +99,20 @@
     <attribute>
         <name>resdetails1</name>
         <data>
-            <stringValue>eid=1351275792807</stringValue>
+            <stringValue>eid=1351275793270</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>resdetails2</name>
         <data>
-            <stringValue>timestamp=1360576236302</stringValue>
+            <stringValue>timestamp=1361642528103</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>url</name>
         <data>
             <blobValue>
-                <filename>AgileWCS/AwFooter,0.jsp</filename>
+                <filename>AgileWCS/AwFooter.jsp</filename>
                 <foldername></foldername>
                 <filedata></filedata>
             </blobValue>
@@ -129,17 +129,17 @@
     <dependency>
       <depType>N</depType>
       <resType>CSElement</resType>
-      <resId>1351275792807</resId>
-      <uid>7188adcd-46c1-4499-80f6-0fcad9ad8f04</uid>
+      <resId>1351275793270</resId>
+      <uid>48a0dd14-6684-48cd-8a3f-4a567cfc6270</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Mon Feb 11 09:51:08 UTC 2013
+#Sat Feb 23 23:54:35 UTC 2013
 storable0=/ELEMENTS/JSP/AgileWCS/AwFooter.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FAgileWCS%2FAwFooter.jsp
 @hashval=-2022905152
-key=CSElement-7188adcd-46c1-4499-80f6-0fcad9ad8f04
+key=CSElement-48a0dd14-6684-48cd-8a3f-4a567cfc6270
 type=ASSETDATA
 sites=AgileWCS
 

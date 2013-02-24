@@ -14,9 +14,4 @@ public class Config extends wcs.java.Config {
 		return null;
 	}
 
-	@Override
-	public String getDefaultTemplate(String type) {
-		return "Router";
-	}
-
 }

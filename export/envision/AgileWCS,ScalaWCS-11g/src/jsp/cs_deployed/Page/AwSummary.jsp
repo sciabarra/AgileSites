@@ -5,5 +5,5 @@
 %><%@ page import="wcs.core.WCS"
 %><cs:ftcs><ics:if condition='<%=ics.GetVar("tid")!=null%>'><ics:then><render:logdep
 cid='<%=ics.GetVar("tid")%>' c="Template"/></ics:then></ics:if><%
-String r = WCS.dispatch(ics, "agilewcs.typeless.MenuTop");
+String r = WCS.dispatch(ics, "agilewcs.page.Summary");
 if(r!=null) ics.StreamText(r); %></cs:ftcs>

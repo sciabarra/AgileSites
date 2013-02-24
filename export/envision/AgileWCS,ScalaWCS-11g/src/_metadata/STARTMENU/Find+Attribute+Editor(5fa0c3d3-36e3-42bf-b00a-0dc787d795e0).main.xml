@@ -1,10 +1,10 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
-    <id class="string">1351275792505</id>
+    <id class="string">1351275792950</id>
     <resourceType>STARTMENU</resourceType>
     <deps class="empty-set"/>
     <data class="com.openmarket.xcelerate.startmenu.StartMenuItem">
-      <id>1351275792505</id>
+      <id>1351275792950</id>
       <uid>5fa0c3d3-36e3-42bf-b00a-0dc787d795e0</uid>
       <name>Find Attribute Editor</name>
       <assetType>AttrTypes</assetType>
@@ -14,6 +14,10 @@
           <entry>
             <long>1351275792441</long>
             <long>1351275792441</long>
+          </entry>
+          <entry>
+            <long>1351275792641</long>
+            <long>1351275792641</long>
           </entry>
         </hashtable>
       </legalSites>
@@ -57,6 +61,10 @@
             <long>1351275792441</long>
             <long>1351275792441</long>
           </entry>
+          <entry>
+            <long>1351275792641</long>
+            <long>1351275792641</long>
+          </entry>
         </hashtable>
       </siteChoices>
       <arguments class="com.openmarket.xcelerate.startmenu.InputArgListMv" serialization="custom">
@@ -74,9 +82,9 @@
 </dependencies>
 ==================______________________==================
 #
-#Mon Feb 11 09:51:16 UTC 2013
+#Sat Feb 23 23:54:47 UTC 2013
 key=@STARTMENU-5fa0c3d3-36e3-42bf-b00a-0dc787d795e0
 type=STARTMENU
-sites=AgileWCS
+sites=AgileWCS,ScalaWCS
 
 ==================___ END METADATA ___==================-->

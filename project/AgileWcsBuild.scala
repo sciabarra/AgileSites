@@ -14,7 +14,7 @@ object AgileWcsBuild extends Build with AgileWcsSupport {
 
   // remove then add those jars in setup
   val addFilterSetup = "scala-library*" || "agilewcs-core*" || "junit*" //|| "specs2*"
-  
+
   val removeFilterSetup = addFilterSetup
 
   // configuring WCS jars as unmanaged lib
@@ -50,8 +50,7 @@ object AgileWcsBuild extends Build with AgileWcsSupport {
     version <<= (wcsVersion) { x => v + "_" + x },
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
-    unmanagedJarsTask
-    /*
+    unmanagedJarsTask /*
     // ugly stuff to rename the generated project name adding the version number
     ,EclipseKeys.projectTransformerFactories := Seq(new EclipseTransformerFactory[RewriteRule] {
       import scala.xml.Node
@@ -66,7 +65,7 @@ object AgileWcsBuild extends Build with AgileWcsSupport {
         }
         rule.success
       }
-    })*/)
+    })*/ )
 
   val commonSettings = coreSettings ++ Seq(
     libraryDependencies <++= (version) {
@@ -96,7 +95,8 @@ object AgileWcsBuild extends Build with AgileWcsSupport {
     id = "app",
     base = file("app"),
     settings = commonSettings ++ Seq(
-      name := "agilewcs-app")) dependsOn (api)
+      name := "agilewcs-app",  
+      wcsCopyHtmlTask)) dependsOn (api)
 
   /// ALL
   lazy val all: Project = Project(

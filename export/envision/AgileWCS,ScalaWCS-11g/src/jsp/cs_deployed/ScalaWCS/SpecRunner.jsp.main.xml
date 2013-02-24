@@ -3,13 +3,13 @@
     <id>CSElement:1351275792855</id>
     <name>SpecRunner</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-02-10T13:35:03.057Z</createddate>
+    <createddate>2013-02-23T12:35:45.460Z</createddate>
     <description>Spec Runner (Scala)</description>
     <publist>ScalaWCS</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-02-11T09:50:37.643Z</updateddate>
+    <updateddate>2013-02-23T18:02:09.365Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -105,7 +105,7 @@
     <attribute>
         <name>resdetails2</name>
         <data>
-            <stringValue>timestamp=1360576237629</stringValue>
+            <stringValue>timestamp=1361642529353</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -136,7 +136,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Mon Feb 11 09:51:08 UTC 2013
+#Sat Feb 23 23:54:35 UTC 2013
 storable0=/ELEMENTS/JSP/ScalaWCS/SpecRunner.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FScalaWCS%2FSpecRunner.jsp
 @hashval=-1440137831
 key=CSElement-b0ede85e-ed7b-40a2-ba67-fbe883391be5

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>Template:1351275792793</id>
+    <id>Template:1351275792845</id>
     <name>AwLayout</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-02-10T13:34:59.436Z</createddate>
+    <createddate>2013-02-23T12:35:45.275Z</createddate>
     <description>Typeless Layout (Java)</description>
     <publist>AgileWCS</publist>
-    <status>ED</status>
+    <status>VO</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-02-11T09:50:35.940Z</updateddate>
+    <updateddate>2013-02-11T09:50:35.000Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275792793</longValue>
+            <longValue>1351275792845</longValue>
         </data>
     </attribute>
     <attribute>
@@ -218,7 +218,7 @@
                 <item>
                     <name>resdetails1</name>
                     <data>
-                        <stringValue>tid=1351275792793</stringValue>
+                        <stringValue>tid=1351275792845</stringValue>
                     </data>
                 </item>
                 <item>
@@ -231,7 +231,7 @@
                     <name>url</name>
                     <data>
                         <blobValue>
-                            <filename>Typeless/AwLayout_agilewcs.typeless.Layout,0.jsp</filename>
+                            <filename>Typeless/AwLayout_agilewcs.typeless.Layout.jsp</filename>
                             <foldername></foldername>
                             <filedata></filedata>
                         </blobValue>
@@ -251,21 +251,23 @@
     </associations>
 </ns2:assetBean>
 
+
 <!--==================___ METADATA ___================
+
 <dependencies>
   <list>
     <dependency>
       <depType>N</depType>
       <resType>Template</resType>
-      <resId>1351275792793</resId>
+      <resId>1351275792845</resId>
       <uid>d96b3891-e9b1-4bea-9971-374766a087d4</uid>
     </dependency>
   </list>
 </dependencies>
+
 ==================______________________==================
 #
-#Mon Feb 11 09:51:07 UTC 2013
-storable0=/ELEMENTS/JSP//AwLayout.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2F%2FAwLayout.jsp
+#Sat Feb 23 23:50:34 UTC 2013
 @hashval=1728288330
 key=Template-d96b3891-e9b1-4bea-9971-374766a087d4
 type=ASSETDATA

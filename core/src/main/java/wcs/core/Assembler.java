@@ -172,17 +172,14 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 	public Definition disassemble(URI uri, ContainerType type)
 			throws URISyntaxException {
 
-		WCS.debug("dissassembling " + uri);
-		WCS.debug("query:  ?" + uri.getQuery());
-		// WCS.debug("fragment: #" + uri.getFragment());
-
-		Definition result = null;
+		WCS.debug("dissassembling " + uri + "?" + uri.getQuery());
 
 		// get path
+		Definition result = null;
 		String path = uri.getPath();
 		Matcher match = sitePattern.matcher(path);
 
-		// search if it is one of the sites
+		// search if it is one of the configured sites
 		if (match.find()) {
 			String site = match.group(2);
 			String subpath = match.group(4);
@@ -190,7 +187,6 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 			if (sitePrefix.containsKey(site)) {
 				// check if it is one of the blobs
 				result = disassembleBlob(uri, site, subpath);
-
 				if (result == null) {
 					WCS.debug("*** asset found");
 					return assetDef(uri, site, subpath);
@@ -198,14 +194,11 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 					WCS.debug("*** blob found");
 					return result;
 				}
-
 			} else {
 				WCS.debug("no known site " + site);
 			}
-		} else {
-			WCS.debug("no site ");
 		}
-		return result;
+		return qa.disassemble(uri, type);
 	}
 
 	@Override

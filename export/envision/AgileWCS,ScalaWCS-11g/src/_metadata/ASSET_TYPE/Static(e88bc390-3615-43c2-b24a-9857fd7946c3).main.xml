@@ -69,7 +69,7 @@ UlRJRVM+CjwvQVNTRVQ+Cg==</urldescriptordata>
             <null/>
             <null/>
             <null/>
-            <string>$(CS.Property.agilewcs.static)</string>
+            <string>/Developer/Oracle/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/Shared/Storage/Static/</string>
             <null/>
             <null/>
             <null/>
@@ -254,7 +254,7 @@ UlRJRVM+CjwvQVNTRVQ+Cg==</urldescriptordata>
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/Static/SelectSummary_NoCat.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/Static/SelectSummary_NoCat,0.sql</string>
             <null/>
             <null/>
             <null/>
@@ -683,7 +683,7 @@ Ymxlcy5Bc3NldFR5cGUuc3RhdHVzIT0nVk8nIFZhcmlhYmxlcy5xdWVyeWVuZA==</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Mon Feb 11 09:51:18 UTC 2013
+#Sat Feb 23 23:54:50 UTC 2013
 key=@ASSET_TYPE-e88bc390-3615-43c2-b24a-9857fd7946c3
 type=ASSET_TYPE
 sites=AgileWCS,ScalaWCS

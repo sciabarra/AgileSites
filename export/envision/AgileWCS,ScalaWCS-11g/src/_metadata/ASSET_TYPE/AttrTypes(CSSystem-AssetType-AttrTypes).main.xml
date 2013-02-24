@@ -11,7 +11,7 @@
         <description>Attribute Editor</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>/Users/msciab/agilewcs/0.3/jsk.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp19/dcs4140021401587408970.tmp</urldescriptorspec>
+        <urldescriptorspec>/Users/msciab/agilewcs/0.3/jsk.app/App_Server/apache-tomcat-6.0.32/temp/fwcs-tmp/temp13/dcs5380649052508025382.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-AttrTypes</uid>
         <useDimension></useDimension>
@@ -403,6 +403,7 @@ dFB1YmxpY2F0aW9uLnB1YmlkPTApDQoJCVZhcmlhYmxlcy5xdWVyeWVuZA0K</byte-array>
       <associations/>
       <siteNames class="list">
         <string>AgileWCS</string>
+        <string>ScalaWCS</string>
       </siteNames>
     </data>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -504,9 +505,9 @@ dFB1YmxpY2F0aW9uLnB1YmlkPTApDQoJCVZhcmlhYmxlcy5xdWVyeWVuZA0K</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Mon Feb 11 09:51:18 UTC 2013
+#Sat Feb 23 23:54:50 UTC 2013
 key=@ASSET_TYPE-CSSystem-AssetType-AttrTypes
 type=ASSET_TYPE
-sites=AgileWCS
+sites=AgileWCS,ScalaWCS
 
 ==================___ END METADATA ___==================-->
