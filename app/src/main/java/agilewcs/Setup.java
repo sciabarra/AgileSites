@@ -17,6 +17,10 @@ public class Setup extends wcs.java.Setup {
 	public Asset[] getAssets() {
 		return new Asset[] {
 
+				new CSElement("AwWrapper", agilewcs.typeless.Wrapper.class), //
+
+				new CSElement("AwError", agilewcs.typeless.Error.class), //
+
 				// typeless
 				new Template("", "AwHeader", Template.INTERNAL,
 						agilewcs.typeless.Header.class)

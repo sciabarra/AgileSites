@@ -95,20 +95,15 @@ public class WCS {
 	 * @param ics
 	 * @param clazz
 	 * @return
+	 * @throws Exception
 	 */
-	public static String route(ICS ics, String site, String path, String query) {
+	public static void route(ICS ics, String site, String path, String query) throws Exception {
 		WCS.debug("[WCS.dispatch] Dispatching...");
-		try {
-			Dispatcher dispatcher = Dispatcher.getDispatcher(jarPath);
-			if (dispatcher != null) {
-				return dispatcher.route(ics, site, path, query);
-			}
-			else
-				return WCS.debug("[WCS.router] Not found jar.");
-		} catch (Exception ex) {
-			return WCS
-					.debug("[WCS.route] !!! Cannot route: " + ex.getMessage());
-		}
+		Dispatcher dispatcher = Dispatcher.getDispatcher(jarPath);
+		if (dispatcher != null) {
+			dispatcher.route(ics, site, path, query);
+		} else
+			WCS.debug("[WCS.router] Not found jar.");
 	}
 
 	/**
@@ -137,18 +132,7 @@ public class WCS {
 
 	}
 
-	private static long tmpVarCounter = System.currentTimeMillis();
-
-	/**
-	 * Generate a temporary var
-	 * 
-	 * @return
-	 */
-	public synchronized static String tmpVar() {
-		++tmpVarCounter;
-		return "_" + Long.toHexString(tmpVarCounter);
-	}
-
+	
 	/**
 	 * Normalize Site name
 	 */

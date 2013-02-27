@@ -75,13 +75,17 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 				Definition.AppType.CONTENT_SERVER,//
 				uri.getFragment());
 
-		def.setQueryStringParameter("c", site);
-		def.setQueryStringParameter("cid", path);
 		def.setQueryStringParameter("pagename", "AAAgileRouter");
+		if (path != null)
+			def.setQueryStringParameter("cid", path);
+		def.setQueryStringParameter("c", site);
+		String q = uri.getRawQuery();
+		if (q != null)
+			def.setQueryStringParameter("q", q);
 
 		WCS.debug("c=" + site);
 		WCS.debug("cid=" + path);
-		WCS.debug("pagename=" + "AAAgileRouter");
+		WCS.debug("q=" + q);
 
 		return def;
 
@@ -143,7 +147,7 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 	}
 
 	/**
-	 * Disassemble blob
+	 * Disassemble blob - null if it is not possible
 	 * 
 	 * @param uri
 	 * @param site
@@ -151,6 +155,8 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 	 * @return
 	 */
 	private Definition disassembleBlob(URI uri, String site, String subpath) {
+		if (subpath == null)
+			return null;
 		if (flexBlobs != null) {
 			Matcher mFlex = flexBlobs.matcher(subpath);
 			if (mFlex.find()) {
@@ -172,14 +178,13 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 	public Definition disassemble(URI uri, ContainerType type)
 			throws URISyntaxException {
 
-		WCS.debug("dissassembling " + uri + "?" + uri.getQuery());
-
 		// get path
 		Definition result = null;
 		String path = uri.getPath();
-		Matcher match = sitePattern.matcher(path);
+		WCS.debug("dissassembling " + path);
 
 		// search if it is one of the configured sites
+		Matcher match = sitePattern.matcher(path);
 		if (match.find()) {
 			String site = match.group(2);
 			String subpath = match.group(4);

@@ -1,6 +1,7 @@
 package agilewcs;
 
 public class Config extends wcs.java.Config {
+	
 
 	@Override
 	public String getAttributeType(String type) {
@@ -9,7 +10,6 @@ public class Config extends wcs.java.Config {
 
 		if (type.equals("Page"))
 			return "PageAttribute";
-
 		
 		return null;
 	}

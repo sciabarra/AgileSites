@@ -15,9 +15,4 @@ public class Arg {
 		this.name = name;
 		this.value = value;
 	}
-
-	public static Arg arg(String name, String value) {
-		return new Arg(name, value);
-	}
-
 }

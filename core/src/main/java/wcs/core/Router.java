@@ -11,6 +11,6 @@ import COM.FutureTense.Interfaces.ICS;
 
 public interface Router {
 
-	public String route(ICS ics, String path, String query);
+	public void route(ICS ics, String path, String query);
 
 }
