@@ -1,6 +1,7 @@
 package wcs.java;
 
-import static wcs.java.Element.arg;
+import static wcs.core.Common.arg;
+import static wcs.core.Common.tmp;
 import static wcs.java.Element.scheduleCall;
 import static wcs.java.util.Util.toDate;
 
@@ -9,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 
 import wcs.core.Arg;
-import wcs.core.WCS;
 import wcs.java.tag.AssetTag;
 import wcs.java.tag.AssetsetTag;
 import wcs.java.tag.RenderTag;
@@ -23,7 +23,7 @@ class AssetImpl extends wcs.java.Asset {
 	private static Log log = new Log(Env.class);
 
 	// the name of the asset
-	private String a = WCS.tmpVar();
+	private String a = tmp();
 	// name of the assetset (and the list prefix) initially null - set on
 
 	// request
@@ -55,7 +55,7 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	private String as() {
 		if (as == null) {
-			as = WCS.tmpVar();
+			as = tmp();
 			AssetsetTag.setasset().name(as).type(getType()).id(cid.toString())
 					.run(i);
 		}
@@ -116,6 +116,14 @@ class AssetImpl extends wcs.java.Asset {
 	@Override
 	public String getDescription() {
 		return AssetTag.get().name(a).field("description").eval(i, "output");
+	}
+
+	/**
+	 * Return the description field of the asset
+	 */
+	@Override
+	public String getTemplate() {
+		return AssetTag.get().name(a).field("template").eval(i, "output");
 	}
 
 	/**

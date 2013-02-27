@@ -22,7 +22,8 @@ public abstract class Asset {
 	private String path;
 	private Date startDate;
 	private Date endDate;
-
+	private String template;
+	
 	public Asset() {
 	}
 
@@ -78,6 +79,15 @@ public abstract class Asset {
 	 */
 	public Long getId() {
 		return null;
+	}
+	
+	/**
+	 * The current template or null if undefined
+	 * 
+	 * @return
+	 */
+	public String getTemplate() {
+		return template;
 	}
 
 	/**

@@ -1,17 +1,22 @@
 package wcs.java;
 
-import COM.FutureTense.Interfaces.ICS;
-import COM.FutureTense.Interfaces.IList;
-
+import static wcs.core.Common.tmp;
 import static wcs.java.util.Util.toDate;
 import static wcs.java.util.Util.toInt;
 import static wcs.java.util.Util.toLong;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import wcs.core.Arg;
 import wcs.core.ICSProxyJ;
+import wcs.core.Id;
+import wcs.java.tag.AssetTag;
 import wcs.java.util.Log;
 import wcs.java.util.Range;
-
-import java.util.HashMap;
+import COM.FutureTense.Interfaces.ICS;
+import COM.FutureTense.Interfaces.IList;
 
 /**
  * Env
@@ -249,7 +254,7 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
-	 * Check if it is a list
+	 * Check if it is a field
 	 */
 	public boolean isField(String list, String field) {
 		return getString(list, field) != null;
@@ -298,4 +303,49 @@ public class Env extends ICSProxyJ {
 	public Config getConfig() {
 		return config;
 	}
+
+	/**
+	 * Find assets
+	 */
+	public List<Id> find(String type, Arg... args) {
+		// load all the pages with a given name
+		AssetTag.List list = AssetTag.list();
+		String ls = tmp();
+		list.type(type).list(ls);
+		int n = 1;
+		for (Arg arg : args) {
+			switch (n) {
+			case 1:
+				list.field1(arg.name);
+				list.value1(arg.value);
+				break;
+			case 2:
+				list.field2(arg.name);
+				list.value2(arg.value);
+				break;
+			case 3:
+				list.field3(arg.name);
+				list.value3(arg.value);
+				break;
+			case 4:
+				list.field4(arg.name);
+				list.value4(arg.value);
+				break;
+			case 5:
+				list.field5(arg.name);
+				list.value5(arg.value);
+				break;
+			default:
+				log.warn("too many arguments for find, argument >5 ignored");
+			}
+			n++;
+		}
+		list.run(ics);
+		List<Id> result = new ArrayList<Id>();
+		for (Integer pos : getRange(ls)) {
+			result.add(new Id(type, getLong(ls, pos, "id")));
+		}
+		return result;
+	}
+
 }

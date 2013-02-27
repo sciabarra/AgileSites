@@ -35,7 +35,7 @@ abstract class Element extends JElement with Log {
       site = ics.GetVar("site")
 
       // the most important line of code of the whole framework
-      stream(ics, apply(new Env(ics)));
+      stream(apply(new Env(ics)), ics);
       
       // nulls mean all ok
       return null;

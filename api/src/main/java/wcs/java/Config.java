@@ -42,9 +42,9 @@ public class Config implements wcs.core.Config {
 	@Override
 	public void init(ICS ics) {
 		this.ics = ics;
-		blobId = BlobserviceTag.getidcolumn().eval(ics, "varname");
-		blobUrl = BlobserviceTag.geturlcolumn().eval(ics, "varname");
-		blobTable = BlobserviceTag.gettablename().eval(ics, "varname");
+		blobId = BlobserviceTag.getidcolumn().eval(ics, "VARNAME");
+		blobUrl = BlobserviceTag.geturlcolumn().eval(ics, "VARNAME");
+		blobTable = BlobserviceTag.gettablename().eval(ics, "VARNAME");
 	}
 
 	/**

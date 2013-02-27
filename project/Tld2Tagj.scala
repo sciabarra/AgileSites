@@ -1,4 +1,4 @@
-package wcs.build
+	package wcs.build
 
 import scala.xml._
 import java.io.File
@@ -30,7 +30,7 @@ object Tld2Tagj {
 import COM.FutureTense.Interfaces.*;
 import java.util.logging.*;
 import java.lang.String;
-import wcs.core.WCS;
+import wcs.core.Common;
 import wcs.core.Arg;
     
 public class %s  {    
@@ -81,8 +81,8 @@ public class %s  {
       return ics.GetErrno(); 
   }
   public String eval(ICS ics, String output) {
-	  String tmp = WCS.tmpVar();
-	  args.setValString(output, tmp);
+	  String tmp = Common.tmp();
+	  args.setValString(output.toUpperCase(), tmp);
 	  run(ics);
 	  String res = ics.GetVar(tmp);
 	  ics.RemoveVar(tmp);

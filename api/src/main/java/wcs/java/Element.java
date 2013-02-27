@@ -15,20 +15,8 @@ import static java.lang.System.out;
  * 
  */
 public abstract class Element implements wcs.core.Element {
-	
-	
-	
-	/**
-	 * Shortcut to create an arg, to be used with a static import
-	 * 
-	 * @param name
-	 * @param value
-	 * @return
-	 */
-	public static Arg arg(String name, String value) {
-		return new Arg(name, value);
-	}
 
+	
 
 	// separators
 	private final static String sep = "\0";
@@ -57,14 +45,20 @@ public abstract class Element implements wcs.core.Element {
 		}
 	}
 
+	// quick hack to strea from scala
+	protected void stream(String res, ICS ics) {
+		stream(ics, res);
+	}
+
 	/**
 	 * Stream the result of the apply with embedded calls
 	 * 
 	 * @param ics
 	 * @param res
 	 */
-	protected void stream(ICS ics, String res) {
-		out.println("\n=====\n" + res + "\n======\n");
+	static public void stream(ICS ics, String res) {
+		out.println("\n======================\n" + res
+				+ "\n======================\n");
 
 		int start = res.indexOf(sep2);
 
@@ -81,14 +75,13 @@ public abstract class Element implements wcs.core.Element {
 
 			String call = res.substring(start, end);
 
-			out.println("ELEMENTCALL " + call);
+			// out.println("ELEMENTCALL " + call);
 
 			StringTokenizer st = new StringTokenizer(call, sep);
 
 			String element = st.nextToken();
 			FTValList list = new FTValList();
 
-			out.print("CALL " + element);
 			while (st.hasMoreTokens()) {
 				try {
 					String k = st.nextToken();
@@ -100,13 +93,17 @@ public abstract class Element implements wcs.core.Element {
 				}
 			}
 			out.println();
-
-			if (element.equals("!RCT"))
+			
+			if (element.equals("!RCT")) {
+				out.print("%%% RENDER.CALLTEMPLATE " + element);
 				ics.runTag("RENDER.CALLTEMPLATE", list);
-			else if (element.equals("!ICT"))
+			} else if (element.equals("!ICT")) {
+				out.print("%%% INSITE.CALLTEMPLATE " + element);
 				ics.runTag("INSITE.CALLTEMPLATE", list);
-			else
+			} else {
+				out.print("%%% CALLELEMENT " + element);
 				ics.CallElement(element, list);
+			}
 
 			res = res.substring(end + 3);
 			start = res.indexOf(sep2);
@@ -129,7 +126,7 @@ public abstract class Element implements wcs.core.Element {
 	 * @param name
 	 * @param args
 	 */
-	public static String scheduleCall(String name, Arg... args) {
+	static public String scheduleCall(String name, Arg... args) {
 		StringBuilder sb = new StringBuilder();
 		// elements to call have the site name as a prefix
 		sb.append(sep2).append(name).append(sep);
@@ -150,8 +147,6 @@ public abstract class Element implements wcs.core.Element {
 	public String call(String name, Arg... args) {
 		return scheduleCall(site + "/" + name, args);
 	}
-
-	
 
 	/**
 	 * The method to be overriden by an implementing template
