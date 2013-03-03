@@ -29,16 +29,14 @@ public class Env extends ICSProxyJ {
 	private static Log log = new Log(Env.class);
 
 	private Config config;
-	private String site;
 
 	/**
 	 * Build the env from the ICS
 	 * 
 	 * @param ics
 	 */
-	public Env(ICS ics) {
+	public Env(ICS ics, String site) {
 		init(ics);
-		site = ics.GetVar("site");
 		log.debug("Loading Config Class");
 		this.config = getConfig(site, ics);
 	}

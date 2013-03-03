@@ -1,11 +1,8 @@
 package wcs.java;
 
-import java.util.StringTokenizer;
-
 import wcs.core.Arg;
-import COM.FutureTense.Interfaces.FTValList;
+import wcs.core.Common;
 import COM.FutureTense.Interfaces.ICS;
-import static java.lang.System.out;
 
 /**
  * 
@@ -15,12 +12,6 @@ import static java.lang.System.out;
  * 
  */
 public abstract class Element implements wcs.core.Element {
-
-	
-
-	// separators
-	private final static String sep = "\0";
-	private final static String sep2 = sep + sep;
 
 	// current site
 	protected String site;
@@ -36,106 +27,12 @@ public abstract class Element implements wcs.core.Element {
 	public String exec(ICS ics) {
 		try {
 			site = ics.GetVar("site");
-			Env env = new Env(ics);
-			stream(ics, apply(env));
-			return null;
+			Env env = new Env(ics, site);
+			return apply(env);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return ex.getMessage();
 		}
-	}
-
-	// quick hack to strea from scala
-	protected void stream(String res, ICS ics) {
-		stream(ics, res);
-	}
-
-	/**
-	 * Stream the result of the apply with embedded calls
-	 * 
-	 * @param ics
-	 * @param res
-	 */
-	static public void stream(ICS ics, String res) {
-		out.println("\n======================\n" + res
-				+ "\n======================\n");
-
-		int start = res.indexOf(sep2);
-
-		out.println("START=" + start);
-
-		while (start != -1) {
-
-			ics.StreamText(res.substring(0, start));
-
-			int end = res.indexOf(sep2 + sep, start + 2);
-			out.println("END=" + end);
-			if (end == -1)
-				end = res.length();
-
-			String call = res.substring(start, end);
-
-			// out.println("ELEMENTCALL " + call);
-
-			StringTokenizer st = new StringTokenizer(call, sep);
-
-			String element = st.nextToken();
-			FTValList list = new FTValList();
-
-			while (st.hasMoreTokens()) {
-				try {
-					String k = st.nextToken();
-					String v = st.nextToken();
-					out.print(" " + k + "=" + v);
-					list.setValString(k, v);
-				} catch (Exception ex) {
-					out.println("OPS " + ex.getMessage());
-				}
-			}
-			out.println();
-			
-			if (element.equals("!RCT")) {
-				out.print("%%% RENDER.CALLTEMPLATE " + element);
-				ics.runTag("RENDER.CALLTEMPLATE", list);
-			} else if (element.equals("!ICT")) {
-				out.print("%%% INSITE.CALLTEMPLATE " + element);
-				ics.runTag("INSITE.CALLTEMPLATE", list);
-			} else {
-				out.print("%%% CALLELEMENT " + element);
-				ics.CallElement(element, list);
-			}
-
-			res = res.substring(end + 3);
-			start = res.indexOf(sep2);
-			out.println("START=" + start);
-		}
-
-		ics.StreamText(res);
-	}
-
-	/**
-	 * Schedule the call to a specific element. Elements starting with "!" have
-	 * special meaning
-	 * 
-	 * - !RCT will invoke a render:calltemplate
-	 * 
-	 * - !ICT will invoke a insite:calltemplate
-	 * 
-	 * otherwise it will invoke a ics.Callelement
-	 * 
-	 * @param name
-	 * @param args
-	 */
-	static public String scheduleCall(String name, Arg... args) {
-		StringBuilder sb = new StringBuilder();
-		// elements to call have the site name as a prefix
-		sb.append(sep2).append(name).append(sep);
-		for (Arg arg : args) {
-			if (arg.value != null)
-				sb.append(arg.name).append(sep).append(arg.value).append(sep);
-		}
-		sb.append(sep2);
-		return sb.toString();
 	}
 
 	/**
@@ -145,7 +42,7 @@ public abstract class Element implements wcs.core.Element {
 	 * @return
 	 */
 	public String call(String name, Arg... args) {
-		return scheduleCall(site + "/" + name, args);
+		return Common.call(site + "/" + name, args);
 	}
 
 	/**

@@ -2,7 +2,6 @@ package wcs.java;
 
 import static wcs.core.Common.arg;
 import static wcs.core.Common.tmp;
-import static wcs.java.Element.scheduleCall;
 import static wcs.java.util.Util.toDate;
 
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import wcs.core.Arg;
+import wcs.core.Common;
 import wcs.java.tag.AssetTag;
 import wcs.java.tag.AssetsetTag;
 import wcs.java.tag.RenderTag;
@@ -390,7 +390,7 @@ class AssetImpl extends wcs.java.Asset {
 		// copy additional args
 		for (Arg arg : args)
 			list.add(arg);
-		return scheduleCall("!RCT", list.toArray(new Arg[0]));
+		return Common.call("RENDER:CALLTEMPLATE", list.toArray(new Arg[0]));
 	}
 
 	/**

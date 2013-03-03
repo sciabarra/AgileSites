@@ -81,9 +81,10 @@ public class Dispatcher {
 	 * 
 	 * @param ics
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public void route(ICS ics, String site, String path, String query) throws Exception {
+	public Call route(ICS ics, String site, String path, String query)
+			throws Exception {
 		String className = WCS.normalizeSiteName(site) + ".Router";
 		WCS.debug("[WCS.route] className=" + className);
 		try {
@@ -98,7 +99,7 @@ public class Dispatcher {
 			// cast and execute
 			if (obj instanceof Router) {
 				Router router = (Router) obj;
-				router.route(ics, path, query);
+				return router.route(ics, path, query);
 			} else {
 				throw new Exception("Router not found");
 			}
@@ -108,7 +109,6 @@ public class Dispatcher {
 			e.printStackTrace();
 			throw e;
 		}
-
 	}
 
 	/**

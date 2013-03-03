@@ -97,13 +97,15 @@ public class WCS {
 	 * @return
 	 * @throws Exception
 	 */
-	public static void route(ICS ics, String site, String path, String query) throws Exception {
+	public static Call route(ICS ics, String site, String path, String query) throws Exception {
 		WCS.debug("[WCS.dispatch] Dispatching...");
 		Dispatcher dispatcher = Dispatcher.getDispatcher(jarPath);
 		if (dispatcher != null) {
-			dispatcher.route(ics, site, path, query);
-		} else
+			return dispatcher.route(ics, site, path, query);
+		} else {
 			WCS.debug("[WCS.router] Not found jar.");
+		}
+		return null;
 	}
 
 	/**

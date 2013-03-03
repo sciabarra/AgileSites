@@ -10,7 +10,7 @@ import java.util.Date
  * Scala API on top of ICS
  */
 
-class Env(_ics: ICS) extends JEnv(_ics) {
+class Env(_ics: ICS, _site: String) extends JEnv(_ics, _site) {
 
   /**
    * the value or a empty string if none

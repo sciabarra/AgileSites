@@ -48,16 +48,10 @@ public class CSElement extends Asset {
 				"rootelement", "url", "resdetails1", "resdetails2");
 	}
 
-	private String template(String className) {
-		return "<%@ taglib prefix=\"cs\" uri=\"futuretense_cs/ftcs1_0.tld\"\n"
-				+ "%><%@ taglib prefix=\"asset\" uri=\"futuretense_cs/asset.tld\"\n"
-				+ "%><%@ taglib prefix=\"ics\" uri=\"futuretense_cs/ics.tld\"\n"
-				+ "%><%@ taglib prefix=\"render\" uri=\"futuretense_cs/render.tld\"\n"
-				+ "%><%@ page import=\"wcs.core.WCS\"\n"
-				+ "%><cs:ftcs><ics:if condition='<%=ics.GetVar(\"seid\")!=null%>'><ics:then><render:logdep\ncid='<%=ics.GetVar(\"seid\")%>' c=\"SiteEntry\"/></ics:then></ics:if>"
-				+ "<ics:if condition='<%=ics.GetVar(\"eid\")!=null%>'><ics:then><render:logdep\ncid='<%=ics.GetVar(\"eid\")%>' c=\"CSElement\"/></ics:then></ics:if>"
-				+ "<%\nString r = WCS.dispatch(ics, \"" + className
-				+ "\");\nif(r!=null) ics.StreamText(r); %></cs:ftcs>";
+	private String template(String clazz) {
+		String template = new java.util.Scanner(getClass().getResourceAsStream(
+				"/Streamer.jsp")).useDelimiter("\\A").next();
+		return template.replaceAll("%CLASS%", clazz);
 	}
 
 	void setData(MutableAssetData data) {
@@ -67,12 +61,14 @@ public class CSElement extends Asset {
 
 		String elementName = null;
 		String elementJsp = null;
+		String className = elementClass.getCanonicalName();
 		if (this.elementName == null) {
 			elementName = getSite() + "/" + getName();
-			elementJsp = elementName + ".jsp";
+			elementJsp = elementName + "_" + className + ".jsp";
 		} else {
 			elementName = this.elementName;
-			elementJsp = getSite() + "/" + elementName + ".jsp";
+			elementJsp = getSite() + "/" + elementName + "_" + className
+					+ ".jsp";
 		}
 
 		// root element

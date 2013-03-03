@@ -1,7 +1,7 @@
 package wcs.core;
 
 public class Common {
-	
+
 	private static long tmpVarCounter = System.currentTimeMillis();
 
 	/**
@@ -26,17 +26,6 @@ public class Common {
 	}
 
 	/**
-	 * Create a call
-	 * 
-	 * @param name
-	 * @param value
-	 * @return
-	 */
-	public static Call call(String target, Arg... args) {
-		return new Call(target, args);
-	}
-	
-	/**
 	 * Create an id
 	 * 
 	 * @param name
@@ -44,7 +33,14 @@ public class Common {
 	 * @return
 	 */
 	public static Id id(String c, Long cid) {
-		return new Id(c,cid);
+		return new Id(c, cid);
+	}
+
+	/**
+	 * Create an encoded call
+	 */
+	public static String call(String name, Arg... args) {
+		return Call.encode(name, args);
 	}
 
 }

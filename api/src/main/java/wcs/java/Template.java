@@ -102,14 +102,9 @@ public class Template extends Asset {
 	}
 
 	private String template(String clazz) {
-		return "<%@ taglib prefix=\"cs\" uri=\"futuretense_cs/ftcs1_0.tld\"\n"
-				+ "%><%@ taglib prefix=\"asset\" uri=\"futuretense_cs/asset.tld\"\n"
-				+ "%><%@ taglib prefix=\"ics\" uri=\"futuretense_cs/ics.tld\"\n"
-				+ "%><%@ taglib prefix=\"render\" uri=\"futuretense_cs/render.tld\"\n"
-				+ "%><%@ page import=\"wcs.core.WCS\"\n"
-				+ "%><cs:ftcs><ics:if condition='<%=ics.GetVar(\"tid\")!=null%>'><ics:then><render:logdep\ncid='<%=ics.GetVar(\"tid\")%>' c=\"Template\"/></ics:then></ics:if>"
-				+ "<%\nString r = WCS.dispatch(ics, \"" + clazz
-				+ "\");\nif(r!=null) ics.StreamText(r); %></cs:ftcs>";
+		String template = new java.util.Scanner(getClass().getResourceAsStream(
+				"/Streamer.jsp")).useDelimiter("\\A").next();
+		return template.replaceAll("%CLASS%", clazz);
 	}
 
 	@Override
