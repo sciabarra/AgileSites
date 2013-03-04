@@ -346,12 +346,13 @@ class AssetImpl extends wcs.java.Asset {
 			Arg... args) {
 
 		Config cfg = e.getConfig();
+		Config.BlobConfig bcfg = cfg.getBlobConfig(e.ics);
 		Long blobWhere = this.getId(attribute, pos);
 
 		// invoke tag
 		RenderTag.Getbloburl tag = RenderTag.getbloburl()
-				.blobtable(cfg.getBlobTable()).blobcol(cfg.getBlobUrl())
-				.blobkey(cfg.getBlobId()).blobwhere(blobWhere.toString());
+				.blobtable(bcfg.getBlobTable()).blobcol(bcfg.getBlobUrl())
+				.blobkey(bcfg.getBlobId()).blobwhere(blobWhere.toString());
 		// set mime type
 		if (mimeType != null & mimeType.trim().length() > 0)
 			tag.blobheader(mimeType);
@@ -398,7 +399,8 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public String getUrl(Arg... args) {
-		return getUrl(e.getConfig().getDefaultTemplate(c), args);
+		return "TODO";
+		// return getUrl(e.getConfig().getDefaultTemplate(c), args);
 	}
 
 	/**

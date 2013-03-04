@@ -25,11 +25,16 @@ abstract public class Setup implements wcs.core.Setup {
 
 	private static Log log = new Log(Setup.class);
 
+	private Site _site = null;
+	
 	/**
-	 * Return the site
+	 * Return the current site - this is set by exec
+	 * @return
 	 */
-	public abstract Site getSite();
-
+	public Site getSite() {
+		return _site;
+	}
+	
 	/**
 	 * Return assets to create
 	 * 
@@ -51,11 +56,12 @@ abstract public class Setup implements wcs.core.Setup {
 	 * @param username
 	 * @param password
 	 */
-	public String exec(ICS ics, String username, String password) {
+	public String exec(ICS ics, String site, String username, String password) {
 
 		session = SessionFactory.newSession(username, password);
 		adm = (AssetDataManager) session.getManager(AssetDataManager.class
 				.getName());
+		this._site = new Site(site);
 
 		// future use
 		// sim = (SiteManager) session.getManager(SiteManager.class.getName());
@@ -71,7 +77,7 @@ abstract public class Setup implements wcs.core.Setup {
 			// sb.append("\nSite: " + getSite().createOrUpdate(sim));
 
 			for (Asset asset : getAssets()) {
-				asset.setSite(this.getSite().getName());
+				asset.setSite(site);
 				sb.append("\n" + insertOrUpdate(ics, asset));
 			}
 
@@ -176,7 +182,7 @@ abstract public class Setup implements wcs.core.Setup {
 
 		data.setAssetId(aid);
 
-		getSite().setData(data);
+		_site.setData(data);
 		data.getAttributeData("name").setData(asset.getName());
 		data.getAttributeData("description").setData(asset.getDescription());
 		asset.setData(data);
@@ -199,7 +205,7 @@ abstract public class Setup implements wcs.core.Setup {
 			log.debug(dump);
 		}
 
-		getSite().setData(data);
+		_site.setData(data);
 		asset.setData(data);
 
 		try {

@@ -1,5 +1,10 @@
 package wcs.java;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Properties;
+
+import wcs.core.WCS;
 import wcs.java.tag.BlobserviceTag;
 import COM.FutureTense.Interfaces.ICS;
 
@@ -9,81 +14,119 @@ import COM.FutureTense.Interfaces.ICS;
  * @author msciab
  * 
  */
-public class Config implements wcs.core.Config {
+abstract public class Config {
 
-	// private static Log log = new Log(Config.class);
+	static class BlobConfig {
 
-	private String blobId;
-	private String blobUrl;
-	private String blobTable;
-	private ICS ics;
+		private String blobId;
+		private String blobUrl;
+		private String blobTable;
 
-	/**
-	 * Create an unitialized config - init must be called afterwards to complete
-	 * initalization
-	 */
-	public Config() {
+		/**
+		 * Initialize a config
+		 * 
+		 * @param ics
+		 */
+		BlobConfig(ICS ics) {
+			blobId = BlobserviceTag.getidcolumn().eval(ics, "VARNAME");
+			blobUrl = BlobserviceTag.geturlcolumn().eval(ics, "VARNAME");
+			blobTable = BlobserviceTag.gettablename().eval(ics, "VARNAME");
+		}
+
+		/**
+		 * Return blob id field
+		 * 
+		 * @return
+		 */
+		public String getBlobId() {
+			return blobId;
+		}
+
+		/**
+		 * Return blob id field
+		 * 
+		 * @return
+		 */
+		public String getBlobUrl() {
+			return blobUrl;
+		}
+
+		/**
+		 * Return blob table
+		 * 
+		 * @return
+		 */
+		public String getBlobTable() {
+			return blobTable;
+		}
 	}
 
+	private BlobConfig blobConfig;
+
 	/**
-	 * Create and initalize a config
+	 * Return the blob config - ICS needed to get this properly
 	 * 
-	 * @param ics
+	 * @param type
+	 * @return
 	 */
-	public Config(ICS ics) {
-		init(ics);
+	public BlobConfig getBlobConfig(ICS ics) {
+		if (blobConfig == null)
+			blobConfig = new BlobConfig(ics);
+		return blobConfig;
 	}
 
-	/**
-	 * Initialize a config
-	 * 
-	 * @param ics
-	 */
-	@Override
-	public void init(ICS ics) {
-		this.ics = ics;
-		blobId = BlobserviceTag.getidcolumn().eval(ics, "VARNAME");
-		blobUrl = BlobserviceTag.geturlcolumn().eval(ics, "VARNAME");
-		blobTable = BlobserviceTag.gettablename().eval(ics, "VARNAME");
-	}
+	private Properties properties = null;
 
 	/**
-	 * Get property from agilewcs config or from the system.ini
+	 * Get property from AgileWCS config
 	 * 
 	 */
 	public String getProperty(String name) {
-		String val = wcs.core.WCS.getProperty(name);
-		if (val != null)
-			return val;
-		return ics.GetProperty(name);
+		if (properties == null) {
+			properties = new Properties();
+			try {
+				properties.load(Config.class
+						.getResourceAsStream("/agilewcs.properties"));
+				System.out.println(properties.toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+
+			}
+		}
+		return properties.getProperty(name);
 	}
 
-	/**
-	 * Return blob id field
-	 * 
-	 * @return
-	 */
-	public String getBlobId() {
-		return blobId;
-	}
+	// // STATIC PART ////
+
+	// keep a cache of config by site
+	private static HashMap<String, wcs.java.Config> configCache = new HashMap<String, wcs.java.Config>();
 
 	/**
-	 * Return blob id field
+	 * Return a config, eventually cached You can use both the site name or his
+	 * normalized for to get the config
 	 * 
+	 * 
+	 * @param site
 	 * @return
 	 */
-	public String getBlobUrl() {
-		return blobUrl;
+	public static Config getConfig(String site) {
+		String normSite = WCS.normalizeSiteName(site);
+
+		Config config = configCache.get(normSite);
+		if (config != null)
+			return config;
+
+		try {
+			config = (Config) Class.forName(normSite + ".Config").newInstance();
+			configCache.put(site, config);
+		} catch (Exception ex) {
+			//ex.printStackTrace();
+		}
+
+		return config;
 	}
 
-	/**
-	 * Return blob table
-	 * 
-	 * @return
-	 */
-	public String getBlobTable() {
-		return blobTable;
-	}
+	// // ABSTRACT PART ////
 
 	/**
 	 * Return the attribute type for a given type.
@@ -91,16 +134,14 @@ public class Config implements wcs.core.Config {
 	 * @param type
 	 * @return
 	 */
-	public String getAttributeType(String type) {
-		throw new RuntimeException(
-				"Invoking default config - you need to define a Config class for your site");
-	}
+	abstract public String getAttributeType(String type);
 
 	/**
-	 * Return the default template to be used when rendering a site URL
+	 * Return the full site name
+	 * 
+	 * @param type
+	 * @return
 	 */
-	public String getDefaultTemplate(String type) {
-		throw new RuntimeException(
-				"Invoking default config - you need to define a Config class for your site");
-	}
+	abstract public String getSite();
+
 }

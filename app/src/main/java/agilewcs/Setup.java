@@ -2,16 +2,10 @@ package agilewcs;
 
 import wcs.java.Asset;
 import wcs.java.CSElement;
-import wcs.java.Site;
 import wcs.java.SiteEntry;
 import wcs.java.Template;
 
 public class Setup extends wcs.java.Setup {
-
-	@Override
-	public Site getSite() {
-		return new Site("AgileWCS");
-	}
 
 	@Override
 	public Asset[] getAssets() {

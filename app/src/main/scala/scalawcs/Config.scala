@@ -12,4 +12,6 @@ class Config extends wcs.scala.Config {
   }
 
   def defaultTemplate(s: String) = "ScalaWCS/SwLayout"
+
+  def site = "ScalaWCS";
 }

@@ -6,7 +6,6 @@ import static wcs.java.util.Util.toInt;
 import static wcs.java.util.Util.toLong;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import wcs.core.Arg;
@@ -37,20 +36,8 @@ public class Env extends ICSProxyJ {
 	 */
 	public Env(ICS ics, String site) {
 		init(ics);
+		config = Config.getConfig(site);
 		log.debug("Loading Config Class");
-		this.config = getConfig(site, ics);
-	}
-
-	// keep a cache of config by site
-	private static HashMap<String, wcs.java.Config> configCache = new HashMap<String, wcs.java.Config>();
-
-	private wcs.java.Config getConfig(String site, ICS ics) {
-		wcs.java.Config config = configCache.get(site);
-		if (config != null)
-			return config;
-		config = (wcs.java.Config) wcs.core.WCS.config(site, ics);
-		configCache.put(site, config);
-		return config;
 	}
 
 	/**

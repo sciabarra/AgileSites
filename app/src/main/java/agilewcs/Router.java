@@ -12,11 +12,7 @@ public class Router extends wcs.java.Router {
 
 	// private static Log log = new Log(Router.class);
 
-	@Override
-	public String site() {
-		return "AgileWCS";
-	}
-
+	
 	@Override
 	public Call route(Env e, String path, QueryString qs) {
 

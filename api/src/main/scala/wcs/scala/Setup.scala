@@ -42,10 +42,6 @@ abstract class Setup extends JSetup {
 
   def assets: List[Asset]
 
-  // future use
-  //override def getSite = new JSite(site.id, site.name, site.description, site.types, site.users, site.roles)
-  override def getSite = new JSite(site.name)
-
   override def getAssets = Array[wcs.java.Asset](
     assets map { a =>
       a match {

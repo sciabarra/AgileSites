@@ -16,7 +16,7 @@ class EnvScalaTest extends Specification with Log {
   val d1 = fmt.parse("2012-01-02 12:23:34")
   val d2 = fmt.parse("2012-02-03 12:23:34")
 
-  val e = new Env(ics, "site")
+  val e = new Env(ics, "agilewcs")
   "Env should" in {
 
     " var a is xxx" in {

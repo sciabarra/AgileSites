@@ -114,8 +114,7 @@ public class Dispatcher {
 	/**
 	 * Deploy will invoke the <site>.Model class passing username and password.
 	 * 
-	 * Note that <site> is the site name lower case, with spaces replaced with
-	 * "_" and other characters stripped down
+	 * Note that <site> is the normalised site name
 	 * 
 	 * @param ics
 	 * @return
@@ -167,7 +166,7 @@ public class Dispatcher {
 					if (obj instanceof wcs.core.Setup) {
 						WCS.debug("[Dispatcher.deploy] obj is a wcs.core.Setup");
 						Setup setup = (wcs.core.Setup) obj;
-						msg.append(setup.exec(ics, user, pass));
+						msg.append(setup.exec(ics, site, user, pass));
 					} else {
 						WCS.debug("[Dispatcher.deploy] obj is NOT a wcs.core.Setup");
 						msg.append("<h1>Not Found Setup for " + site + "<h1>");
@@ -188,34 +187,4 @@ public class Dispatcher {
 		return msg.toString();
 	}
 
-	/**
-	 * Return the config for a specific site
-	 * 
-	 * @param site
-	 * @return
-	 * @throws Exception
-	 */
-	public Config config(String site, ICS ics) {
-
-		// no site... using a default config that will throw exception when
-		// invoked
-		if (site == null)
-			return null;
-
-		String configClass = site.toLowerCase() + ".Config";
-
-		WCS.debug(">>> config: configClass=" + configClass);
-
-		Config config = null;
-		try {
-			ClassLoader cl = loader.loadJar();
-			config = (Config) Class.forName(configClass, true, cl)
-					.newInstance();
-			config.init(ics);
-		} catch (Exception e) {
-			WCS.debug(">>> config: EXCEPTION " + e.getMessage());
-			e.printStackTrace();
-		}
-		return config;
-	}
 }

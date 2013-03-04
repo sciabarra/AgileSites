@@ -9,5 +9,5 @@ import COM.FutureTense.Interfaces.ICS;
  * 
  */
 public interface Setup {
-	public String exec(ICS ics, String username, String password);
+	public String exec(ICS ics, String site, String username, String password);
 }

@@ -5,10 +5,10 @@ abstract class Config extends wcs.java.Config {
 
   override def getAttributeType(typ: String) = attributeType(typ)
 
+  override def getSite() = site()
+
   def attributeType(s: String): String
 
-  override def getDefaultTemplate(typ: String) = defaultTemplate(typ)
-
-  def defaultTemplate(typ: String): String
+  def site(): String
 
 }

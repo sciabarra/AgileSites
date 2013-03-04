@@ -15,16 +15,12 @@ public class WCS {
 
 	static String jarPath;
 
-	static {
-		WCS.debug("wcs.core.debug=" + debug);
-		try {
-			properties.load(WCS.class
-					.getResourceAsStream("/agilewcs.properties"));
-			System.out.println(properties.toString());
-			jarPath = properties.getProperty("agilewcs.jar");
-		} catch (IOException e) {
-			WCS.debug("[WCS] !!! Cannot load properties:" + e.getMessage());
-		}
+	
+	/**
+	 * Normalize Site name
+	 */
+	public static String normalizeSiteName(String site) {
+		return site.toLowerCase().replaceAll("[^a-z0-9]+", "");
 	}
 
 	/**
@@ -51,24 +47,6 @@ public class WCS {
 	}
 
 	/**
-	 * Return the config loading from the jar
-	 * 
-	 * @param site
-	 * @param ics
-	 * @return
-	 */
-	public static Config config(String site, ICS ics) {
-		WCS.debug("[WCS.config] getting config");
-		try {
-			return Dispatcher.getDispatcher(jarPath).config(site, ics);
-		} catch (Exception ex) {
-			WCS.debug("[WCS.config] !!! Cannot get config: " + ex.getMessage());
-			ex.printStackTrace();
-			return null;
-		}
-	}
-
-	/**
 	 * Dispatch requests
 	 * 
 	 * @param ics
@@ -87,25 +65,6 @@ public class WCS {
 			return WCS.debug("[WCS.dispatch] !!! Cannot dispatch: "
 					+ ex.getMessage());
 		}
-	}
-
-	/**
-	 * Dispatch requests
-	 * 
-	 * @param ics
-	 * @param clazz
-	 * @return
-	 * @throws Exception
-	 */
-	public static Call route(ICS ics, String site, String path, String query) throws Exception {
-		WCS.debug("[WCS.dispatch] Dispatching...");
-		Dispatcher dispatcher = Dispatcher.getDispatcher(jarPath);
-		if (dispatcher != null) {
-			return dispatcher.route(ics, site, path, query);
-		} else {
-			WCS.debug("[WCS.router] Not found jar.");
-		}
-		return null;
 	}
 
 	/**
@@ -134,11 +93,24 @@ public class WCS {
 
 	}
 
-	
 	/**
-	 * Normalize Site name
+	 * Dispatch requests
+	 * 
+	 * @param ics
+	 * @param clazz
+	 * @return
+	 * @throws Exception
 	 */
-	public static String normalizeSiteName(String site) {
-		return site.toLowerCase().replaceAll("[^a-z0-9]+", "");
+	public static Call route(ICS ics, String site, String path, String query)
+			throws Exception {
+		WCS.debug("[WCS.dispatch] Dispatching...");
+		Dispatcher dispatcher = Dispatcher.getDispatcher(jarPath);
+		if (dispatcher != null) {
+			return dispatcher.route(ics, site, path, query);
+		} else {
+			WCS.debug("[WCS.router] Not found jar.");
+		}
+		return null;
 	}
+
 }

@@ -4,7 +4,6 @@ import wcs.scala.Log
 import wcs.implx.XmlICS
 import wcs.java.Env
 import java.text.SimpleDateFormat
-import wcs.java.Config
 
 class EnvJavaSpec extends Specification with Log {
 
@@ -15,7 +14,7 @@ class EnvJavaSpec extends Specification with Log {
   ics.addMapVar(Map("a" -> "xxx", "d" -> "2012-01-02 12:23:34", "n" -> "1234"))
   ics.addMapList("l", Map("f" -> List("xxx", "2012-01-02 12:23:34", "1234")))
 
-  val env = new Env(ics, "site")
+  val env = new Env(ics, "agilewcs")
   "Env should" in {
 
     "check var a is xxx" in {
