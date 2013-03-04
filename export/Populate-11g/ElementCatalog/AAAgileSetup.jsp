@@ -2,7 +2,7 @@
 %><cs:ftcs><% String result =""; 
 try { 
  result = wcs.core.WCS.deploy(ics, 
-  ics.GetVar("site"), 
+  ics.GetVar("sites"), 
   ics.GetVar("username"),
   ics.GetVar("password")); 
 } catch(Exception ex) { 

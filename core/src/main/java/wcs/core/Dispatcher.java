@@ -17,8 +17,9 @@ public class Dispatcher {
 	 * @param ics
 	 * @return
 	 */
-	static Dispatcher getDispatcher(String jarPath) {
+	static Dispatcher getDispatcher(ICS ics) {
 		if (dispatcher == null) {
+			String jarPath = ics.GetProperty("agilewcs.jar");
 			File jar = new File(jarPath);
 			if (jar.exists()) {
 				WCS.debug("[Dispatcher.getDispatcher] from " + jar);
@@ -99,7 +100,7 @@ public class Dispatcher {
 			// cast and execute
 			if (obj instanceof Router) {
 				Router router = (Router) obj;
-				return router.route(ics, path, query);
+				return router.route(ics, site, path, query);
 			} else {
 				throw new Exception("Router not found");
 			}
@@ -122,13 +123,14 @@ public class Dispatcher {
 	public String deploy(ICS ics, String sites, String user, String pass) {
 
 		if (sites == null) {
-			WCS.debug("site is null!!!");
+			WCS.debug("site is null !!!");
 			return "Cannot Setup, no sites specified!";
 		}
 
 		ClassLoader cl = null;
 		try {
 			// jar & classname
+			WCS.debug("[Dispatcher.deploy] loading jar");
 			cl = loader.loadJar();
 			WCS.debug("[Dispatcher.deploy] loaded classloader " + cl);
 		} catch (Exception ex) {
@@ -137,54 +139,46 @@ public class Dispatcher {
 			ex.printStackTrace();
 			return "<h1>Exception</h1><p>Loading Jar: " //
 					+ "</p>\n<p>Message: " + ex.getMessage() + "</p>\n";
-
 		}
 
 		StringTokenizer st = new StringTokenizer(sites, ",");
 		StringBuilder msg = new StringBuilder();
 
-		String[] setupClasses = { ".Setup", ".JavaSetup", ".ScalaSetup" };
-
 		while (st.hasMoreTokens()) {
 
 			// next setup to run...
 			String site = st.nextToken().trim();
+			String className = WCS.normalizeSiteName(site) + ".Setup";
+			try {
+				// instantiate
 
-			for (String setupClass : setupClasses) {
+				WCS.debug("[Dispatcher.deploy] loading class " + className);
+				Class<?> clazz = Class.forName(className, true, cl);
+				WCS.debug("[Dispatcher.deploy] loaded class " + clazz);
+				Object obj = clazz.newInstance();
+				WCS.debug("[Dispatcher.deploy] loaded instance " + obj);
 
-				String className = WCS.normalizeSiteName(site) + setupClass;
-				try {
-					// instantiate
-					@SuppressWarnings("rawtypes")
-					Class clazz = Class.forName(className, true, cl);
-					WCS.debug("[Dispatcher.deploy] loaded class " + clazz);
-
-					Object obj = clazz.newInstance();
-					WCS.debug("[Dispatcher.deploy] loaded instance " + obj);
-
-					// cast to Setup and execute
-					if (obj instanceof wcs.core.Setup) {
-						WCS.debug("[Dispatcher.deploy] obj is a wcs.core.Setup");
-						Setup setup = (wcs.core.Setup) obj;
-						msg.append(setup.exec(ics, site, user, pass));
-					} else {
-						WCS.debug("[Dispatcher.deploy] obj is NOT a wcs.core.Setup");
-						msg.append("<h1>Not Found Setup for " + site + "<h1>");
-					}
-				} catch (ClassNotFoundException cnfe) {
-					WCS.debug("[Dispacher.deploy] not found " + className);
-				} catch (Exception e) {
-					// logging errors and returning the message
-					WCS.debug("[Dispacher.deploy] exception loading "
-							+ className + " : " + e.getMessage());
-					e.printStackTrace();
-					msg.append("<h1>Exception</h1><p>Class: " + className
-							+ "</p>\n<p>Message: " + e.getMessage() + "</p>\n");
-
+				// cast to Setup and execute
+				if (obj instanceof wcs.core.Setup) {
+					WCS.debug("[Dispatcher.deploy] obj is a wcs.core.Setup");
+					Setup setup = (wcs.core.Setup) obj;
+					msg.append(setup.exec(ics, site, user, pass));
+				} else {
+					WCS.debug("[Dispatcher.deploy] obj is NOT a wcs.core.Setup");
+					msg.append("<h1>Not Found Setup for " + site + "<h1>");
 				}
+			} catch (ClassNotFoundException cnfe) {
+				WCS.debug("[Dispacher.deploy] not found " + className);
+			} catch (Exception e) {
+				// logging errors and returning the message
+				WCS.debug("[Dispacher.deploy] exception loading " + className
+						+ " : " + e.getMessage());
+				e.printStackTrace();
+				msg.append("<h1>Exception</h1><p>Class: " + className
+						+ "</p>\n<p>Message: " + e.getMessage() + "</p>\n");
 			}
 		}
+
 		return msg.toString();
 	}
-
 }

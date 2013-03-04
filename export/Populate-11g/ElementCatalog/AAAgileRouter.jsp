@@ -3,6 +3,7 @@
 %><%@ taglib prefix="ics" uri="futuretense_cs/ics.tld"
 %><%@ page import="wcs.core.*"
 %><cs:ftcs><%
+ System.out.println("%%%");
  Call c = WCS.route(ics, 
    ics.GetVar("c"), 
    ics.GetVar("cid"),

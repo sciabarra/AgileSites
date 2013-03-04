@@ -23,7 +23,7 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
  */
 public class AgileWcsDeployer {
 
-	String site;
+	String sites;
 	String url;
 	String username;
 	String password;
@@ -46,11 +46,11 @@ public class AgileWcsDeployer {
 	 * @param username
 	 * @param password
 	 */
-	public AgileWcsDeployer(String url, String site, String username,
+	public AgileWcsDeployer(String url, String sites, String username,
 			String password) {
 		this.username = username;
 		this.password = password;
-		this.site = site;
+		this.sites = sites;
 		this.url = url;
 		if (!url.endsWith("/"))
 			url = url + "/";
@@ -97,13 +97,9 @@ public class AgileWcsDeployer {
 	public String invoke(String name) throws IOException {
 		String url = cs + //
 				"?pagename=" + name + //
-				"&site=" + site + //
+				"&sites=" + sites + //
 				"&username=" + username + //
 				"&password=" + password;
-
-		// StringTokenizer st = new StringTokenizer(get(url), "\r\n");
-		// StringBuilder sb = new StringBuilder();
-		// while()
 
 		return get(url).replace('\r', '\n');
 	}

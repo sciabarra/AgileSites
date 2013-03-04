@@ -14,20 +14,20 @@ abstract public class Router implements wcs.core.Router {
 	private String site;
 
 	@Override
-	public Call route(ICS ics, String path, String query) {
-		log.debug("path=" + path + " query=" + query);
-		site = e.getConfig().getSite();
+	public Call route(ICS ics, String site, String path, String query) {
+		log.debug("site=" + site + " path=" + path + " query=" + query);
 		this.i = ics;
 		this.e = new Env(i, site);
+		this.site = Config.getConfig(site).getSite();
 		return route(e, path, QueryString.parse(query));
 	}
 
 	public Call call(String name, Arg... args) {
-		Call call = new Call(site+"/"+name,  args);
+		Call call = new Call(site + "/" + name, args);
 		call.addArg("site", site);
-		return  call;
+		return call;
 	}
 
 	abstract public Call route(Env env, String path, QueryString qs);
-	
+
 }

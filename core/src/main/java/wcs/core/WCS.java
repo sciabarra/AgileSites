@@ -1,8 +1,8 @@
 package wcs.core;
 
-import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Logger;
+
 import COM.FutureTense.Interfaces.ICS;
 
 public class WCS {
@@ -13,9 +13,7 @@ public class WCS {
 
 	final static Properties properties = new Properties();
 
-	static String jarPath;
 
-	
 	/**
 	 * Normalize Site name
 	 */
@@ -56,7 +54,7 @@ public class WCS {
 	public static String dispatch(ICS ics, String clazz) {
 		WCS.debug("[WCS.dispatch] Dispatching...");
 		try {
-			Dispatcher dispatcher = Dispatcher.getDispatcher(jarPath);
+			Dispatcher dispatcher = Dispatcher.getDispatcher(ics);
 			if (dispatcher != null)
 				return dispatcher.dispatch(ics, clazz);
 			else
@@ -77,10 +75,13 @@ public class WCS {
 	 * @return
 	 */
 	public static String deploy(ICS ics, String site, String user, String pass) {
-		WCS.debug("[WCS.deploy] Deploying...");
+		WCS.debug("[WCS.deploy] Deploying sites=" + site + " user=" + user
+				+ " pass=" + pass);
 		try {
-			Dispatcher dispatcher = Dispatcher.getDispatcher(jarPath);
+			WCS.debug("[WCS.deploy] Getting dispatcher.");
+			Dispatcher dispatcher = Dispatcher.getDispatcher(ics);
 			if (dispatcher != null) {
+				WCS.debug("[WCS.deploy] Deploying...");
 				String result = dispatcher.deploy(ics, site, user, pass);
 				WCS.debug("[WCS.deploy] Deployed.");
 				return result;
@@ -104,7 +105,7 @@ public class WCS {
 	public static Call route(ICS ics, String site, String path, String query)
 			throws Exception {
 		WCS.debug("[WCS.dispatch] Dispatching...");
-		Dispatcher dispatcher = Dispatcher.getDispatcher(jarPath);
+		Dispatcher dispatcher = Dispatcher.getDispatcher(ics);
 		if (dispatcher != null) {
 			return dispatcher.route(ics, site, path, query);
 		} else {
