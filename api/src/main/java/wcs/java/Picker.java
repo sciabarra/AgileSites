@@ -164,13 +164,24 @@ public class Picker {
 	}
 
 	/**
-	 * Keep only one instance of the node specified
+	 * Empty the specified note
 	 * 
 	 * @param where
 	 * @return
 	 */
 	public Picker empty(String where) {
 		top.select(where).empty();
+		return this;
+	}
+
+	/**
+	 * Empty the current node
+	 * 
+	 * @param where
+	 * @return
+	 */
+	public Picker empty() {
+		top.empty();
 		return this;
 	}
 
@@ -223,7 +234,7 @@ public class Picker {
 	}
 
 	/**
-	 * Append the node as a children
+	 * Append the node as a children to the selected node.
 	 * 
 	 * @param where
 	 * @param what
@@ -231,6 +242,18 @@ public class Picker {
 	 */
 	public Picker append(String where, String what) {
 		top.select(where).append(what);
+		return this;
+	}
+
+	/**
+	 * Append the node as a children to the current node
+	 * 
+	 * @param where
+	 * @param what
+	 * @return
+	 */
+	public Picker append(String what) {
+		top.append(what);
 		return this;
 	}
 
