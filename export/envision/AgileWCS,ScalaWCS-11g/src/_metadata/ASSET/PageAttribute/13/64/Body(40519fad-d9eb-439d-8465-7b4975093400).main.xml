@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>PageAttribute:1351275793137</id>
+    <id>PageAttribute:1351275792837</id>
     <name>Body</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-02-23T15:55:43.549Z</createddate>
+    <createddate>2013-03-03T22:59:03.435Z</createddate>
     <description>Body</description>
     <publist>AgileWCS</publist>
     <status>PL</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-02-23T15:55:43.549Z</updateddate>
+    <updateddate>2013-02-23T15:55:43.000Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275793137</longValue>
+            <longValue>1351275792837</longValue>
         </data>
     </attribute>
     <attribute>
@@ -177,7 +177,7 @@
     <attribute>
         <name>attributetype</name>
         <data>
-            <stringValue>AttrTypes:1351275793123</stringValue>
+            <stringValue>AttrTypes:1351275792838</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -197,20 +197,20 @@
     <dependency>
       <depType>E</depType>
       <resType>AttrTypes</resType>
-      <resId>1351275793123</resId>
+      <resId>1351275792838</resId>
       <uid>87eaf114-d4cc-461f-a12f-cc40217dba96</uid>
     </dependency>
     <dependency>
       <depType>N</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275793137</resId>
+      <resId>1351275792837</resId>
       <uid>40519fad-d9eb-439d-8465-7b4975093400</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Sat Feb 23 23:54:33 UTC 2013
+#Tue Mar 05 23:07:10 UTC 2013
 key=PageAttribute-40519fad-d9eb-439d-8465-7b4975093400
 type=ASSETDATA
 sites=AgileWCS

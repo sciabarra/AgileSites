@@ -34,6 +34,11 @@ public class Setup extends wcs.java.Setup {
 						.cache("false", "false") //
 						.description("Page Link (Java)"),
 
+				new Template("Page", "AwImage", Template.INTERNAL,
+						agilewcs.page.Image.class) //
+						.cache("false", "false") //
+						.description("Page Image (Java)"),
+
 				new Template("Page", "AwDetail", Template.INTERNAL,
 						agilewcs.page.Detail.class)//
 						.cache("false", "false") //

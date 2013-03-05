@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>Template:1351275792799</id>
+    <id>Template:1351275792802</id>
     <name>SwLayout</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-02-23T12:35:43.281Z</createddate>
+    <createddate>2013-03-03T22:59:00.746Z</createddate>
     <description>ScalaWCS Layout (Scala)</description>
     <publist>ScalaWCS</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-02-23T18:02:09.185Z</updateddate>
+    <updateddate>2013-03-04T13:40:03.206Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275792799</longValue>
+            <longValue>1351275792802</longValue>
         </data>
     </attribute>
     <attribute>
@@ -142,7 +142,7 @@
                 <item>
                     <name>resdetails2</name>
                     <data>
-                        <stringValue>agilewcs=1361642529169</stringValue>
+                        <stringValue>agilewcs=1362404403185</stringValue>
                     </data>
                 </item>
                 <item>
@@ -218,7 +218,7 @@
                 <item>
                     <name>resdetails1</name>
                     <data>
-                        <stringValue>tid=1351275792799</stringValue>
+                        <stringValue>tid=1351275792802</stringValue>
                     </data>
                 </item>
                 <item>
@@ -231,7 +231,7 @@
                     <name>url</name>
                     <data>
                         <blobValue>
-                            <filename>Typeless/SwLayout_scalawcs.template.SwLayout,0.jsp</filename>
+                            <filename>Typeless/SwLayout_scalawcs.template.SwLayout.jsp</filename>
                             <foldername></foldername>
                             <filedata></filedata>
                         </blobValue>
@@ -257,16 +257,16 @@
     <dependency>
       <depType>N</depType>
       <resType>Template</resType>
-      <resId>1351275792799</resId>
+      <resId>1351275792802</resId>
       <uid>6b6a6056-677d-42d5-81fd-7727130dbb7e</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Sat Feb 23 23:54:33 UTC 2013
+#Tue Mar 05 23:07:09 UTC 2013
 storable0=/ELEMENTS/JSP//SwLayout.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2F%2FSwLayout.jsp
-@hashval=262179511
+@hashval=1289121277
 key=Template-6b6a6056-677d-42d5-81fd-7727130dbb7e
 type=ASSETDATA
 sites=ScalaWCS

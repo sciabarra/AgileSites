@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>SiteEntry:1351275793300</id>
+    <id>SiteEntry:1351275792812</id>
     <name>JUnitRunner</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-02-23T18:02:08.612Z</createddate>
+    <createddate>2013-03-03T22:59:01.440Z</createddate>
     <description>JUnitRunner</description>
     <publist>AgileWCS</publist>
-    <status>PL</status>
+    <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-02-23T18:02:08.612Z</updateddate>
+    <updateddate>2013-03-05T23:02:39.356Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275793300</longValue>
+            <longValue>1351275792812</longValue>
         </data>
     </attribute>
     <attribute>
@@ -133,7 +133,7 @@
                 <item>
                     <name>value</name>
                     <data>
-                        <stringValue>1351275793300</stringValue>
+                        <stringValue>1351275792812</stringValue>
                     </data>
                 </item>
             </structList>
@@ -195,14 +195,14 @@
     <dependency>
       <depType>N</depType>
       <resType>SiteEntry</resType>
-      <resId>1351275793300</resId>
+      <resId>1351275792812</resId>
       <uid>ac4aa820-60f2-44e8-a443-13fc385e00a2</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Sat Feb 23 23:54:35 UTC 2013
+#Tue Mar 05 23:07:11 UTC 2013
 key=SiteEntry-ac4aa820-60f2-44e8-a443-13fc385e00a2
 type=ASSETDATA
 sites=AgileWCS

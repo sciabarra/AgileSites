@@ -12,9 +12,10 @@ public class Detail extends Element {
 		Asset a = e.getAsset();
 		Picker p = new Picker("/agilewcs/index.html", "#latest-post");
 		p.replace("h1.title", a.getString("Title"));
-		p.select("p.meta small").empty().append("by " + a.getString("Author"));
-		//p.select("div.entry");//.empty();
-		//.replace("div.entry", a.getString("Body"));
+		p.select("p.meta small").empty() //
+				.append("by " + a.getString("Author")).up();
+		p.select("div.entry").empty()//
+				.append(a.call("AwImage")).append(a.getString("Body")).up();
 		return p.html();
 	}
 }

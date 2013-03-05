@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>Template:1351275793276</id>
+    <id>Template:1351275792807</id>
     <name>Page/AwLink</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-02-23T18:02:08.323Z</createddate>
+    <createddate>2013-03-03T22:59:01.144Z</createddate>
     <description>Page Link (Java)</description>
     <publist>AgileWCS</publist>
-    <status>PL</status>
+    <status>ED</status>
     <subtype>Page</subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-02-23T18:02:08.323Z</updateddate>
+    <updateddate>2013-03-05T23:02:38.840Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275793276</longValue>
+            <longValue>1351275792807</longValue>
         </data>
     </attribute>
     <attribute>
@@ -142,7 +142,7 @@
                 <item>
                     <name>resdetails2</name>
                     <data>
-                        <stringValue>agilewcs=1361642528320</stringValue>
+                        <stringValue>agilewcs=1362524558823</stringValue>
                     </data>
                 </item>
                 <item>
@@ -287,7 +287,7 @@
                 <item>
                     <name>resdetails1</name>
                     <data>
-                        <stringValue>tid=1351275793276</stringValue>
+                        <stringValue>tid=1351275792807</stringValue>
                     </data>
                 </item>
                 <item>
@@ -300,7 +300,7 @@
                     <name>url</name>
                     <data>
                         <blobValue>
-                            <filename>Page/AwLink_agilewcs.page.Link.jsp</filename>
+                            <filename>Page/AwLink_agilewcs.page.Link,0.jsp</filename>
                             <foldername></foldername>
                             <filedata></filedata>
                         </blobValue>
@@ -326,16 +326,16 @@
     <dependency>
       <depType>N</depType>
       <resType>Template</resType>
-      <resId>1351275793276</resId>
+      <resId>1351275792807</resId>
       <uid>a9f13cd8-1802-445e-893d-6b55c4f77ab8</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Sat Feb 23 23:54:33 UTC 2013
+#Tue Mar 05 23:07:09 UTC 2013
 storable0=/ELEMENTS/JSP/Page/AwLink.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FPage%2FAwLink.jsp
-@hashval=475369206
+@hashval=-1544858330
 key=Template-a9f13cd8-1802-445e-893d-6b55c4f77ab8
 type=ASSETDATA
 sites=AgileWCS

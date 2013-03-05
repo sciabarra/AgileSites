@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>CSElement:1351275792855</id>
+    <id>CSElement:1351275792949</id>
     <name>SpecRunner</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-02-23T12:35:45.460Z</createddate>
+    <createddate>2013-03-03T22:59:06.278Z</createddate>
     <description>Spec Runner (Scala)</description>
     <publist>ScalaWCS</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-02-23T18:02:09.365Z</updateddate>
+    <updateddate>2013-03-04T13:40:03.499Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275792855</longValue>
+            <longValue>1351275792949</longValue>
         </data>
     </attribute>
     <attribute>
@@ -99,20 +99,20 @@
     <attribute>
         <name>resdetails1</name>
         <data>
-            <stringValue>eid=1351275792855</stringValue>
+            <stringValue>eid=1351275792949</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>resdetails2</name>
         <data>
-            <stringValue>timestamp=1361642529353</stringValue>
+            <stringValue>timestamp=1362404403473</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>url</name>
         <data>
             <blobValue>
-                <filename>ScalaWCS/SpecRunner,0.jsp</filename>
+                <filename>ScalaWCS/SpecRunner_scalawcs.specs.SpecRunner,0.jsp</filename>
                 <foldername></foldername>
                 <filedata></filedata>
             </blobValue>
@@ -129,16 +129,16 @@
     <dependency>
       <depType>N</depType>
       <resType>CSElement</resType>
-      <resId>1351275792855</resId>
+      <resId>1351275792949</resId>
       <uid>b0ede85e-ed7b-40a2-ba67-fbe883391be5</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Sat Feb 23 23:54:35 UTC 2013
+#Tue Mar 05 23:07:12 UTC 2013
 storable0=/ELEMENTS/JSP/ScalaWCS/SpecRunner.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FScalaWCS%2FSpecRunner.jsp
-@hashval=-1440137831
+@hashval=1233726264
 key=CSElement-b0ede85e-ed7b-40a2-ba67-fbe883391be5
 type=ASSETDATA
 sites=ScalaWCS

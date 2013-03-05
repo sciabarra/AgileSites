@@ -7,6 +7,8 @@ import wcs.java.Picker;
 
 public class Layout extends Element {
 
+	// private static Log log = new Log(Layout.class);
+
 	@Override
 	public String apply(Env e) {
 		Asset a = e.getAsset();
@@ -23,7 +25,13 @@ public class Layout extends Element {
 
 		// replace multiple posts
 		p.empty("#recent-posts");
-		p.append("#recent-posts", a.call("AwSummary"));
+		p.append("#recent-posts",
+				e.getAsset("Page", a.getId("Related1")).call("AwSummary"));
+		p.append("#recent-posts",
+				e.getAsset("Page", a.getId("Related2")).call("AwSummary"));
+		p.append("#recent-posts",
+				e.getAsset("Page", a.getId("Related3")).call("AwSummary"));
+
 		p.append("#recent-posts", a.call("AwSummary"));
 
 		// return the html including the selected node

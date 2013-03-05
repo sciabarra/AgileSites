@@ -220,6 +220,15 @@ public abstract class Asset {
 		return null;
 	}
 
+	
+	/**
+	 * String get blob url of the first attribute, with optional args
+	 * 
+	 */
+	public String getBlobUrl(String attribute, Arg... args) {
+		return null;
+	}
+	
 	/**
 	 * String get blob url of the first attribute, with optional args
 	 * 

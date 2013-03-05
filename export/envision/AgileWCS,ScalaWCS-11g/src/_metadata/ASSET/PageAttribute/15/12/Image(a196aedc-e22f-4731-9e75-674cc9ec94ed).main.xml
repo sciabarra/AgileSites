@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>PageAttribute:1351275792827</id>
-    <name>Title</name>
+    <id>PageAttribute:1351275793569</id>
+    <name>Image</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-03-03T22:59:02.888Z</createddate>
-    <description>Title</description>
+    <createddate>2013-03-05T22:25:21.518Z</createddate>
+    <description>Image</description>
     <publist>AgileWCS</publist>
     <status>PL</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-02-07T22:52:42.000Z</updateddate>
+    <updateddate>2013-03-05T22:25:21.518Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -53,13 +53,13 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>96108e0c-5cbc-4970-a7d0-6040b8332de0</stringValue>
+            <stringValue>a196aedc-e22f-4731-9e75-674cc9ec94ed</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275792827</longValue>
+            <longValue>1351275793569</longValue>
         </data>
     </attribute>
     <attribute>
@@ -171,7 +171,7 @@
     <attribute>
         <name>type</name>
         <data>
-            <stringValue>string</stringValue>
+            <stringValue>blob</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -195,15 +195,15 @@
     <dependency>
       <depType>N</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275792827</resId>
-      <uid>96108e0c-5cbc-4970-a7d0-6040b8332de0</uid>
+      <resId>1351275793569</resId>
+      <uid>a196aedc-e22f-4731-9e75-674cc9ec94ed</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
 #Tue Mar 05 23:07:10 UTC 2013
-key=PageAttribute-96108e0c-5cbc-4970-a7d0-6040b8332de0
+key=PageAttribute-a196aedc-e22f-4731-9e75-674cc9ec94ed
 type=ASSETDATA
 sites=AgileWCS
 

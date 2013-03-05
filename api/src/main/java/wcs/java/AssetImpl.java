@@ -334,6 +334,15 @@ class AssetImpl extends wcs.java.Asset {
 	 * 
 	 */
 	@Override
+	public String getBlobUrl(String attribute, Arg... args) {
+		return getBlobUrl(attribute, 1, "application/octet-stream", args);
+	}
+	
+	/**
+	 * String get blob url of the first attribute
+	 * 
+	 */
+	@Override
 	public String getBlobUrl(String attribute, String mimeType, Arg... args) {
 		return getBlobUrl(attribute, 1, mimeType, args);
 	}
