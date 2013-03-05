@@ -50,7 +50,7 @@ trait PickerDSL {
   def select(where: String)(action: => Unit) {
     currentPicker.get()(0).select(where)
     action
-    currentPicker.get()(0).unselect()
+    currentPicker.get()(0).up()
   }
 
   /**

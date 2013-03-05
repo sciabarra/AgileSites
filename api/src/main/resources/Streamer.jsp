@@ -46,6 +46,6 @@
 			}
 		%></render:callelement><%
 		} /* END RENDER:CALLELEMENT */
-	%><%
+	%><%=seq.header()%><%
 		}
 	%></cs:ftcs>

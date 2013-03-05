@@ -7,7 +7,8 @@ public class Detail extends Element {
 
 	@Override
 	public String apply(Env env) {
-		return "I am the details";
+		
+		return "I am the detail.";
 	}
 
 }

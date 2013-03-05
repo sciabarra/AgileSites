@@ -97,7 +97,7 @@ public class Picker {
 	 * @param where
 	 * @return
 	 */
-	public Picker unselect() {
+	public Picker up() {
 		pop();
 		return this;
 	}
@@ -122,7 +122,7 @@ public class Picker {
 	public Picker replace(String where, String what) {
 		select(where);
 		top.html(what);
-		unselect();
+		up();
 		return this;
 	}
 
