@@ -59,22 +59,22 @@ class PickerSpec extends Specification with Log {
       //(s2x(log("After", menu.single("li").toString)))
     }
 
-    "append/prepend" in {
+    "before/after" in {
       val single = new Picker("/hello.html", "#menu ul").single("li")
-      val append = single.append("li", <li id="second">Second</li>.toString)
+      val after = single.after("li", <li id="second">Second</li>.toString)
 
       <ul>
         <li>First</li>
         <li id="second">Second</li>
-      </ul> must ==/(append)
+      </ul> must ==/(after)
 
-      val prepend = append.prepend("#second", <li>One and Half</li>.toString)
+      val before = after.before("#second", <li>One and Half</li>.toString)
 
       <ul>
         <li>First</li>
         <li>One and Half</li>
         <li id="second">Second</li>
-      </ul> must ==/(prepend)
+      </ul> must ==/(before)
     }
 
     "class/attr" in {

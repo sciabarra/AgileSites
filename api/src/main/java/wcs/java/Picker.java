@@ -45,7 +45,7 @@ public class Picker {
 	 * @param resource
 	 */
 	public Picker(String resource, String cssq) {
-		
+
 		InputStream is = Picker.class.getResourceAsStream(resource);
 		Element elem = null;
 		Document doc = null;
@@ -54,7 +54,7 @@ public class Picker {
 		try {
 			log.debug("parsing " + resource);
 			doc = Jsoup.parse(is, "UTF-8", baseUrl);
-			//System.out.println(doc.toString());
+			// System.out.println(doc.toString());
 			// stack.push(doc.body());
 		} catch (IOException e) {
 			log.warn("Cannot parse " + resource);
@@ -164,6 +164,17 @@ public class Picker {
 	}
 
 	/**
+	 * Keep only one instance of the node specified
+	 * 
+	 * @param where
+	 * @return
+	 */
+	public Picker empty(String where) {
+		top.select(where).empty();
+		return this;
+	}
+
+	/**
 	 * Print the current selected as a string
 	 */
 	public String toString() {
@@ -172,34 +183,54 @@ public class Picker {
 	}
 
 	/**
-	 * Return as a string the whole
+	 * Return the inner html of the selected node
 	 */
 	public String html() {
-		// log.debug(doc.toString());
-		return bottom.toString();
+		return bottom.html();
 	}
 
 	/**
-	 * Append
+	 * Return the html of the selected node including the node itself
+	 */
+	public String outerHtml() {
+		return bottom.outerHtml();
+	}
+
+	/**
+	 * Add before a given node
+	 * 
+	 * @param where
+	 * @param what
+	 * @return
+	 */
+	public Picker before(String where, String what) {
+		// top.select(where).parents().first().append(what);
+		top.select(where).before(what);
+		return this;
+	}
+
+	/**
+	 * Add after a given node
+	 * 
+	 * @param where
+	 * @param what
+	 * @return
+	 */
+	public Picker after(String where, String what) {
+		// top.select(where).parents().first().prepend(what);
+		top.select(where).after(what);
+		return this;
+	}
+
+	/**
+	 * Append the node as a children
 	 * 
 	 * @param where
 	 * @param what
 	 * @return
 	 */
 	public Picker append(String where, String what) {
-		top.select(where).parents().first().append(what);
-		return this;
-	}
-
-	/**
-	 * Prepend
-	 * 
-	 * @param where
-	 * @param what
-	 * @return
-	 */
-	public Picker prepend(String where, String what) {
-		top.select(where).parents().first().prepend(what);
+		top.select(where).append(what);
 		return this;
 	}
 
@@ -212,7 +243,7 @@ public class Picker {
 	}
 
 	/**
-	 * Set attribute
+	 * Add a class
 	 */
 	public Picker addClass(String where, String what) {
 		top.select(where).addClass(what);

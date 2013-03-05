@@ -77,7 +77,7 @@ trait PickerDSL {
      */
 
     def %>(what: String) {
-      currentPicker.get()(0).append(where, what)
+      currentPicker.get()(0).after(where, what)
     }
 
     /**
@@ -85,21 +85,21 @@ trait PickerDSL {
      */
 
     def %!>(what: String) {
-      currentPicker.get()(0).single(where).append(where, what)
+      currentPicker.get()(0).single(where).after(where, what)
     }
 
     /**
      * Prepend
      */
     def %<(what: String) {
-      currentPicker.get()(0).prepend(where, what)
+      currentPicker.get()(0).before(where, what)
     }
 
     /**
      * Single/Prepend
      */
     def %!<(what: String) {
-      currentPicker.get()(0).single(where).prepend(where, what)
+      currentPicker.get()(0).single(where).before(where, what)
     }
 
     /**

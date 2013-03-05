@@ -10,21 +10,23 @@ public class Layout extends Element {
 	@Override
 	public String apply(Env e) {
 		Asset a = e.getAsset();
-		
+
+		// select the resource
 		Picker p = new Picker("/agilewcs/index.html");
-		
+
+		// change the css as appropriate
 		p.select("head").attr("link", "href", "/cs/agilewcs/css/default.css")
 				.up();
 
+		// replace the detail
 		p.replace("#latest-post", a.call("AwDetail"));
-		
-		p.replace("#recent-posts", a.call("AwSummary"));
-		
 
-		// .replace("#sidebar", call("AwFooter", //
-		// arg("name", e.getString("name"))))
-		// .replace("#latest-post", a.call("AwSummary")) //
-		;
-		return p.html();
+		// replace multiple posts
+		p.empty("#recent-posts");
+		p.append("#recent-posts", a.call("AwSummary"));
+		p.append("#recent-posts", a.call("AwSummary"));
+
+		// return the html including the selected node
+		return p.outerHtml();
 	}
 }
