@@ -172,17 +172,6 @@ public class Site {
 		AttributeData attrs = data.getAttributeData("Publist");
 		if (attrs != null)
 			attrs.setDataAsList(Util.listString(name));
-		/*
-		 * AttributeData attrs = data.getAttributeData("Publist");
-		 * 
-		 * List list = attrs.getDataAsList(); if (list == null) list = new
-		 * LinkedList(); for (Object obj : list) if
-		 * (obj.toString().equals(name)) {
-		 * log.trace("site already in place, nothing to do"); return; }
-		 * list.add(name); log.trace("Publist=" + list);
-		 * 
-		 * attrs.setDataAsList(Util.listString(name));
-		 */
 	}
 
 	public String getName() {
