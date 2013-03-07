@@ -129,7 +129,7 @@ public class Template extends Asset {
 		mapElement.put(
 				"resdetails2",
 				attrString("resdetails2",
-						"agilewcs=" + System.currentTimeMillis()));
+						"agilesites=" + System.currentTimeMillis()));
 		mapElement.put("csstatus", attrString("csstatus", "live"));
 		mapElement.put("cscacheinfo", attrString("cscacheinfo", "false"));
 		mapElement.put("sscacheinfo", attrString("sscacheinfo", "false"));

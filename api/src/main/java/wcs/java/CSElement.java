@@ -56,7 +56,7 @@ public class CSElement extends Asset {
 
 	void setData(MutableAssetData data) {
 
-		// data.getAttributeData("createdby").setData("agilewcs");
+		// data.getAttributeData("createdby").setData("agilesites");
 		// data.getAttributeData("createddate").setData(new Date());
 
 		String elementName = null;
@@ -86,7 +86,7 @@ public class CSElement extends Asset {
 
 		// blob
 		byte[] bytes = template(elementClass.getCanonicalName()).getBytes();
-		BlobObject blob = new BlobObjectImpl(elementJsp, "AgileWCS", bytes);
+		BlobObject blob = new BlobObjectImpl(elementJsp, "AgileSites", bytes);
 
 		data.getAttributeData("url").setData(blob);
 		// data.getAttributeData("Mapping").setData(new ArrayList());

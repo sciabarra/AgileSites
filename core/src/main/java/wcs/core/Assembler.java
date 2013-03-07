@@ -30,23 +30,23 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		// WCS.debug("Satellite.setProperties=" + prp);
 		try {
 			staticBlobs = Pattern.compile(prp
-					.getProperty("agilewcs.blob.static"));
+					.getProperty("agilesites.blob.static"));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		WCS.debug("staticBlobs=" + staticBlobs);
 		try {
-			flexBlobs = Pattern.compile(prp.getProperty("agilewcs.blob.flex"));
+			flexBlobs = Pattern.compile(prp.getProperty("agilesites.blob.flex"));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		WCS.debug("flexBlobs=" + flexBlobs);
 		try {
 			StringTokenizer st = new StringTokenizer(
-					prp.getProperty("agilewcs.sites"), ",");
+					prp.getProperty("agilesites.sites"), ",");
 			while (st.hasMoreTokens()) {
 				String site = WCS.normalizeSiteName(st.nextToken());
-				String prefix = prp.getProperty("agilewcs." + site);
+				String prefix = prp.getProperty("agilesites." + site);
 				if (prefix != null)
 					sitePrefix.put(site, prefix);
 				else

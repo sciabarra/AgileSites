@@ -78,7 +78,7 @@ abstract public class Config {
 	private Properties properties = null;
 
 	/**
-	 * Get property from AgileWCS config
+	 * Get property from AgileSites config
 	 * 
 	 */
 	public String getProperty(String name) {
@@ -86,7 +86,7 @@ abstract public class Config {
 			properties = new Properties();
 			try {
 				properties.load(Config.class
-						.getResourceAsStream("/agilewcs.properties"));
+						.getResourceAsStream("/agilesites.properties"));
 				System.out.println(properties.toString());
 			} catch (IOException e) {
 				e.printStackTrace();

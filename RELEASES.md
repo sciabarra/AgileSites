@@ -1,4 +1,4 @@
-# AgileWCS
+# AgileSites
 
 Agile development framework for Oracle WebCenter Sites.
 

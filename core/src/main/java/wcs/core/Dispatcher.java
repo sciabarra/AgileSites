@@ -19,7 +19,7 @@ public class Dispatcher {
 	 */
 	static Dispatcher getDispatcher(ICS ics) {
 		if (dispatcher == null) {
-			String jarPath = ics.GetProperty("agilewcs.jar");
+			String jarPath = ics.GetProperty("agilesites.jar");
 			File jar = new File(jarPath);
 			if (jar.exists()) {
 				WCS.debug("[Dispatcher.getDispatcher] from " + jar);

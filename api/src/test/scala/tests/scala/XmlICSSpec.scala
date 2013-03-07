@@ -12,7 +12,7 @@ class XmlICSSpec extends Specification with Log {
   ics.addMapList("l3", Map("w" -> List("1", "2", "3")))
   ics.addMapList("l22", Map("x" -> List("10", "20"), "y" -> List("100", "200")))
 
-  val x: Env = new Env(ics, "agilewcs")
+  val x: Env = new Env(ics, "agilesites")
 
   override def is =
     "XmlICSSpec should" ^

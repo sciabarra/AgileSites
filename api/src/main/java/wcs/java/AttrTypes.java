@@ -31,7 +31,7 @@ public class AttrTypes extends Asset {
 
 		// blob
 		BlobObject blob = new BlobObjectImpl("AttrTypes." + getName(),
-				"AgileWCS", urlxml.getBytes());
+				"AgileSites", urlxml.getBytes());
 
 		data.getAttributeData("urlxml").setData(blob);
 	}
