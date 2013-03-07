@@ -10,7 +10,7 @@ import scala.xml.transform.RewriteRule
 
 object AgileSitesBuild extends Build with AgileSitesSupport {
 
-  val v = "0.3"
+  val v = "0.5"
 
   // remove then add those jars in setup
   val addFilterSetup = "scala-library*" || "agilesites-core*" || "junit*" //|| "specs2*"
