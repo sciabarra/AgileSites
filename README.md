@@ -1,6 +1,6 @@
-# AgileSites 0.9 (Rachael)
+# AgileSites 0.5 (Rick)
 
-(Status: Very Unstable Development Branch - for developers only - DO NOT USE)
+(Status: Almost Stable - but not yet pre-release branch - not yet ready for prime time)
 
 This project is an Agile Development framework for Oracle WebCenter Sites.
 
