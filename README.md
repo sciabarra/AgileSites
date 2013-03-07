@@ -1,6 +1,6 @@
 # AgileSites 0.9 (Rachael)
 
-(Status: Development Branch - for developers only )
+(Status: Very Unstable Development Branch - for developers only - DO NOT USE)
 
 This project is an Agile Development framework for Oracle WebCenter Sites.
 
