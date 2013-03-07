@@ -1,5 +1,5 @@
 // site to import/export
-wcsSites in ThisBuild := "AgileSites,ScalaSites"
+wcsSites in ThisBuild := "AgileSites"
 
 // versions (currently only valid values are 11g or 7.6)
 wcsVersion in ThisBuild := "11g"
@@ -44,8 +44,4 @@ wcsWebappSatellite in ThisBuild := "/JSK/11.1.1.6.1.app/App_Server/apache-tomcat
 // sample with satellite and an apache proxy 
 // VirtualHost agilesites.local: ProxyPass / http://sshost/ss/Satellite/agilesites
 // VirtualHost scalasites.local: ProxyPass / http://sshost/ss/Satellite/agilesites
-wcsVirtualHosts in ThisBuild := Seq( 
-    "AgileSites" -> "http://agilesites.loc", 
-    "ScalaSites" -> "http://scalasites.loc" 
-)
-
+wcsVirtualHosts in ThisBuild := Seq( "AgileSites" -> "http://agilesites.loc")
