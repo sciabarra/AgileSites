@@ -1,0 +1,755 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!--
+$Logfile: /VerticalApps/XcelerateD/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/SiteEntry/ContentForm.xml $
+$Revision: 39 $
+$Modtime: 9/02/04 2:06p $
+-->
+<!-- [2007-09-17 KG]
+ * XSS fixes (adapted from 6.3 fixes):
+   * isCleanString function usage
+   * CSVAR NAME -> STRING.STREAM VALUE
+ * removed old regex search where it has been replaced by isCleanString
+ * changed definitions of 'obj' to just forms[0] (not .elements[0])
+-->
+
+<!--
+- Confidential and Proprietary Information of divine,inc.
+-					All Rights Reserved.
+-
+- DESCRIPTION
+-
+- Form to create/edit SiteEntry assets
+-
+-->
+<!-- check whther user is allowed to edit SiteCatalog or ElementCatalog -->
+<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
+<USERISMEMBER GROUP="PageEditor"/>
+<if COND="Variables.errno=0">
+<then>
+	<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at"/>
+	<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description"/>
+	<setvar NAME="doproceed" VALUE="WrongACLToEditAsset"/>
+</then>
+<else>
+	<USERISMEMBER GROUP="ElementEditor"/>
+	<if COND="Variables.errno=0">
+	<then>
+		<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at"/>
+		<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description"/>
+		<setvar NAME="doproceed" VALUE="WrongACLToEditAsset"/>
+	</then>
+	</if>
+</else>
+</if>
+<setvar NAME="errno" VALUE="0"/>
+
+<if COND="Variables.doproceed=true">
+<then>
+
+	<INPUT TYPE="hidden" NAME="upcommand" VALUE="submit"/>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/ValidateInputForXSS" />
+	<![CDATA[	
+	
+	<SCRIPT LANGUAGE="JavaScript">
+	
+	var obj = document.forms[0];
+
+	function getAssetName()
+	{
+		return obj.elements['SiteEntry:name'].value;
+	}
+
+	function submitForm()
+	{
+		return checkfields();
+	}
+	
+	function SetCancelFlag () {
+		var obj = document.forms[0];
+
+		if(confirm("]]><XLAT.STREAM KEY="dvin/Common/CancelClicked" ESCAPE="true" ENCODE="false"/><![CDATA[")){
+			obj.elements['upcommand'].value="cancel";
+			obj.submit();
+			return false;
+		}
+	}
+	function checkfields() {
+
+		var obj = document.forms[0];
+		var SiteEntryName=obj.elements['SiteEntry:name'];
+		if ( isblank(SiteEntryName.value)) {
+	    ]]>
+		      alert("<XLAT.STREAM KEY="dvin/UI/Error/Youmustspecifyaname" ESCAPE="true" ENCODE="false"/>");
+	    <![CDATA[
+
+			return false;
+		}
+		
+		var isclean = isCleanString(SiteEntryName.value);
+		if (!isclean) {
+		]]>
+			alert("<XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/ApostropheNotAllowed" ESCAPE="true" ENCODE="false"/>");
+		<![CDATA[
+			return false;
+		}
+		var SiteEntryPageName=obj.elements['SiteEntry:pagename'];
+		if ( isblank(SiteEntryPageName.value)) {
+	    ]]>
+	        alert("<XLAT.STREAM KEY="dvin/UI/Error/selectasitecatalogpageforthisasset" ESCAPE="true" ENCODE="false"/>");
+	    <![CDATA[
+
+			return false;
+		}
+
+		var rootelement=obj.elements['SiteEntry:rootelement'];
+		if ( isblank(rootelement.value)) {
+	    ]]>
+	        alert("<XLAT.STREAM KEY="dvin/UI/CreateOptionalSiteCatalog" ESCAPE="true" ENCODE="false"/>");
+	    <![CDATA[
+
+			return false;
+		}
+	 	obj.submit();
+		return false;
+	}
+	function isblank(s) {
+		for(var i=0;i<s.length;i++){
+			var c = s.charAt(i);
+			if( (c!=' ') && (c != '\n') && ( c!='\t') && (c!='\r') )
+				return false;
+		}
+		return true;
+	}
+	function PickAssetCallback_SelectId(id){
+		var values = id.split(":");
+		if(values[0]=='CSElement'){
+			document.forms[0].elements['SiteEntry:cselement_id'].value=values[1];
+			document.forms[0].elements['SiteEntry:rootelement'].value=values[2];
+		} else {
+			//We should never see this..
+			]]>
+	        alert("<XLAT.STREAM KEY="UI/ErrorHTML/Unexpected" ESCAPE="true" ENCODE="false"/>");
+	    	<![CDATA[
+		}
+	}
+	function openPopup(url){
+		window.open(url,'Select CSElement','WIDTH=700,HEIGHT=700,status=0,scrollbars=1,resizable=yes');
+	}
+	</SCRIPT>
+	]]>
+
+
+
+	<SCRIPT LANGUAGE="JavaScript">
+	<![CDATA[
+	function fillPageName()
+	{
+		var pname = document.forms[0].elements['SiteEntry:name'].value;
+		document.forms[0].elements['SiteEntry:pagename'].value=pname.replace( /\s/g,"_");
+	}
+	
+	function clearCSElement()
+	{
+		document.forms[0].elements['SiteEntry:cselement_id'].value="";
+	}
+	]]>
+
+	<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Actions/PickAssetPopupForAssetType" outstring="urlpickassetpopup">
+		<satellite.argument name="cs_SelectionStyle" value="single"/>
+		<satellite.argument name="cs_environment" value="Variables.cs_environment"/>
+		<satellite.argument name="cs_formmode" value="Variables.cs_formmode"/>
+		<satellite.argument name="cs_CallbackSuffix" value='SelectId'/>
+		<satellite.argument name="searchAType" value='CSElement'/>
+	</SATELLITE.LINK>
+    <replace STR="Variables.urlalpopfront">
+	var urlBase = "Variables.urlalpopfront";
+	</replace>
+
+	</SCRIPT>
+<script language="Javascript">
+<![CDATA[
+function clearValue(ourPage,field)
+{
+	var obj = document.forms[0];
+	obj.elements[field+'name'].value="";
+	obj.elements[field+'value'].value="";
+	Fixpagename(ourPage);
+	return false;
+}
+
+function addValue(ourPage,field)
+{
+	var obj = document.forms[0];
+	var SiteEntryName=obj.elements['SiteEntry:name'];
+	if ( isblank(SiteEntryName.value)) {
+	]]>
+	      alert("<XLAT.STREAM KEY="dvin/UI/Error/Youmustspecifyaname" ESCAPE="true" ENCODE="false"/>");
+	<![CDATA[
+		SiteEntryName.focus();
+		return false;
+	}
+	var argname=obj.elements[field+":name"];
+	if ( isblank(argname.value)) {
+	      ]]>
+	      alert("<XLAT.STREAM KEY="dvin/AT/SiteEntry/Youmustspecifyanameforthisvalue" ESCAPE="true" ENCODE="false"/>");
+	      <![CDATA[
+			argname.focus();
+		return false;
+	}
+	argname=obj.elements[field+":value"];
+	if ( isblank(argname.value)) {
+	      ]]>
+	      alert("<XLAT.STREAM KEY="dvin/AT/SiteEntry/Youmustspecifyavalueforthisparam" ESCAPE="true" ENCODE="false"/>");
+	      <![CDATA[
+			argname.focus();
+		return false;
+	}
+	Fixpagename(ourPage);
+	return false;
+}
+function Fixpagename(ourPage)
+{
+	var obj = document.forms[0];
+
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	if(ourPage=="CopyFront")
+		ourPage="NewContentFront";
+
+	var	newpage = basePage + ourPage;
+	obj.pagename.value = newpage;
+
+	obj.submit();
+	return false;
+}
+function setVisibility(currElem,newvis) {
+	if(obj.elements[currElem])
+		obj.elements[currElem].style = newvis;
+}
+function showAdvancedCacheInfo(prefix)
+{
+	setVisibility(prefix+"cscacheinforow","");
+	setVisibility(prefix+"sscacheinforow","");
+}
+function hideAdvancedCacheInfo(prefix)
+{
+	setVisibility(prefix+"cscacheinforow","none");
+	setVisibility(prefix+"sscacheinforow","none");
+}
+function resetCacheInfoTextFields(prefix,flag)
+{
+	if (flag  == 'true,~0')
+	{
+		hideAdvancedCacheInfo(prefix);
+		document.getElementById(prefix+'cscacheinfo').value=flag;
+		document.getElementById(prefix+'sscacheinfo').value=flag;
+	}
+	else if (flag == 'false')
+	{
+		hideAdvancedCacheInfo(prefix);
+		document.getElementById(prefix+'cscacheinfo').value=flag;
+		document.getElementById(prefix+'sscacheinfo').value=flag;
+	}
+	else
+	{
+		showAdvancedCacheInfo(prefix);
+	}
+}
+]]>
+</script>
+	
+<!-- form buttons -->
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+		<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
+	</CALLELEMENT>
+	<div dojoType="dijit.layout.ContentPane" region="center">
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/SiteEntry/ContentFormSetVar"/>
+
+	<input type="hidden" name="SiteEntry:csstatus" value="Variables.ContentDetails:csstatus" REPLACEALL="Variables.ContentDetails:csstatus"/>
+
+	<!-- standard template for preview/inspect -->
+	<INPUT TYPE="hidden" NAME="SiteEntry:template" VALUE="OpenMarket/SiteEntryTemplate"/>
+
+	<TABLE class="width-outer-70" border="0" cellpadding="0" cellspacing="0">
+
+		<!-- SiteEntry page title w/ SiteEntry name -->
+		<TR>
+			<TD><span class="title-text"><XLAT.STREAM KEY="dvin/UI/SiteEntry"/>: </span><span class="title-value-text"><STRING.STREAM VARIABLE="ContentDetails:name"/></span></TD>
+		</TR>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+			<ARGUMENT NAME="SpaceBelow" VALUE="No"/>
+		</CALLELEMENT>
+
+		<!-- SiteEntry editing form -->
+	  	<TR>
+			<TD><TABLE border="0" cellpadding="0" cellspacing="0">
+
+				<!-- Beginning of Group 1 -->
+			<!--<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar">
+					<ARGUMENT NAME="SpaceAbove" VALUE="No"/>
+			</CALLELEMENT>-->
+			<TR>
+				<TD class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/Name"/>:</TD>
+				<TD><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></TD>
+
+	                 <PROPERTY.GET PARAM="xcelerate.asset.sizeofnamefield" INIFILE="futuretense_xcel.ini" VARNAME="sizeofnamefield"/>
+				<TD class="form-inset">
+				<IF COND="Variables.updatetype!=setformdefaults">
+				<THEN>
+					 <![CDATA[<INPUT TYPE="HIDDEN" NAME="SiteEntry:name" VALUE="]]><STRING.STREAM VALUE="Variables.ContentDetails:name"/><![CDATA["/>]]>
+					<STRING.STREAM VARIABLE="ContentDetails:name"/>
+				</THEN>
+				<ELSE>
+					<PROPERTY.GET PARAM="xcelerate.asset.sizeofnamefield" INIFILE="futuretense_xcel.ini" VARNAME="sizeofnamefield"/>
+
+					 <![CDATA[
+					  <INPUT TYPE="text" NAME="SiteEntry:name" SIZE="32" MAXLENGTH="]]><STRING.STREAM VARIABLE="sizeofnamefield"/> <![CDATA[" VALUE="]]><STRING.STREAM VARIABLE="ContentDetails:name"/><![CDATA[" onchange="fillPageName();" />]]>
+				</ELSE>
+				</IF>
+			  </TD>
+
+	        </TR>
+
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<TR>
+				<TD valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Description"/>:</TD>
+				<TD></TD>
+				<TD class="form-inset">
+					<TEXTAREA name="descriptionvis" cols="40" rows="2" wrap="virtual" onChange="checkLength(this.form.elements['descriptionvis'].value, 128, 'Description'); setField(this.form.elements['descriptionvis'].value, 128, 'SiteEntry:description', this)">
+					<STRING.STREAM VARIABLE="ContentDetails:description"/>
+					</TEXTAREA>
+					<SETVAR NAME="OutputQString"  VALUE="Variables.empty"/>
+					<STRING.ENCODE VARIABLE="ContentDetails:description" VARNAME="OutputQString"/>
+					<INPUT TYPE="hidden" NAME="SiteEntry:description" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/>
+				</TD>
+			</TR>
+
+
+			<IF COND="Variables.updatetype!=setformdefaults">
+			<THEN>
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+					<TR>
+					<TD class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/ID"/>:</TD>
+					<TD></TD>
+					<TD class="form-inset"><span class="disabledEditText"><STRING.STREAM VARIABLE="id"/></span></TD>
+					</TR>
+            </THEN>
+            </IF>
+
+			<setvar NAME="assettype" VALUE="Variables.AssetType"/>
+			<selectto LIST="Category" FROM="Category" WHERE="assettype"/>
+			<IF COND="Category.#numRows!=0">
+			<THEN>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/UI/Admin/Category"/>:</td>
+					<td></td>
+					<td class="form-inset">
+						<callelement NAME="OpenMarket/Xcelerate/Actions/Util/MakeCategoryList">
+							<argument NAME="Prefix" VALUE="Variables.AssetType"/>
+						</callelement></td>
+				</tr>
+			</THEN>
+			</IF>
+
+
+			<!-- Beginning of Group 3 -->
+	     	<!--<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>-->
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<TR>
+				<TD class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/AT/Pagename"/>:</TD>
+				<TD><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></TD>
+				<TD class="form-inset">
+					<IF COND="Variables.updatetype!=setformdefaults"><THEN>
+						<STRING.STREAM VARIABLE="ContentDetails:pagename"/>
+						<![CDATA[<INPUT TYPE="hidden" NAME="SiteEntry:pagename" VALUE="]]><STRING.STREAM VALUE="Variables.ContentDetails:pagename"/><![CDATA["/>]]>
+					</THEN><ELSE>
+						<![CDATA[<INPUT TYPE="text" NAME="SiteEntry:pagename" SIZE="32" MAXLENGTH="255"  VALUE="]]> <STRING.STREAM VARIABLE="ContentDetails:pagename"/> <![CDATA[" />]]><br/>
+						<input type="checkbox" name="SiteEntry:useExistingSiteCatalog" value="true"/><XLAT.STREAM KEY="dvin/AT/SiteEntry/useExitingSiteCatalog"/>
+					</ELSE></IF>
+				</TD>
+	  		</TR>
+
+	     	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<TR>
+				<TD class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/AT/Rootelement"/>:</TD>
+			<TD></TD>
+			<TD class="form-inset">					
+	      <XLAT.LOOKUP KEY="dvin/AT/Common/SelectFromTree" VARNAME="_xlat_select"/>
+	      <XLAT.LOOKUP KEY="dvin/AT/Common/SelectFromTree" VARNAME="_XLAT_" ESCAPE="true"/>
+          <INPUT TYPE="hidden" NAME="SiteEntry:cselement_id" VALUE="Variables.ContentDetails:cselement_id" REPLACEALL="Variables.ContentDetails:cselement_id"/>
+		  <IF COND="Variables.cs_environment=ucform">
+		  <THEN>
+			<![CDATA[
+			<INPUT TYPE="hidden" NAME="SiteEntry:rootelement" SIZE="32" MAXLENGTH="]]>255<![CDATA[" VALUE="]]><STRING.STREAM VARIABLE="ContentDetails:rootelement"/><![CDATA[" onChange="clearCSElement();" />]]>
+			<IF COND="Variables.ContentDetails:cselement_id!=Variables.empty">
+			<THEN>
+				<SETVAR NAME="siteEntryElement" VALUE="CSElement:Variables.ContentDetails:cselement_id:Variables.ContentDetails:rootelement:"/>
+			</THEN>
+			<ELSE>
+				<SETVAR NAME="siteEntryElement" VALUE=""/>
+			</ELSE>
+			</IF>
+				<div>
+					<div name="typeAheadSiteEntry"> </div>	
+					<div><XLAT.STREAM KEY="dvin/UI/Dnd/CreateOptionalSiteCatalog" ENCODE="false"/></div>		
+				</div>
+				<![CDATA[
+				<script type="text/javascript" language="JavaScript">
+					var selectDnDSiteEntry = function(){
+						var obj=document.forms[0].elements[0], widgetName="typeAheadSiteEntry";
+					var nodes= [];
+					nodes = dojo.query('div[name='+widgetName+']');
+					if(nodes.length === 0)
+						nodes = dojo.query('input[name='+widgetName+']');
+					var	typeWidgetIns=dijit.getEnclosingWidget(nodes[0]),
+						valueArray=typeWidgetIns.getAllDnDValues(),
+						obj = document.forms[0].elements[0];
+						
+						if(valueArray.length > 0){
+							var assetDataArray =  valueArray[0];
+							obj.form.elements["SiteEntry:cselement_id"].value = assetDataArray[0];
+							obj.form.elements["SiteEntry:rootelement"].value = assetDataArray[2];
+						}
+						else{
+							obj.form.elements["SiteEntry:cselement_id"].value = "";
+							obj.form.elements["SiteEntry:rootelement"].value = "";
+						}
+					}
+				</script>
+				]]>
+				<CALLELEMENT NAME='OpenMarket/Gator/FlexibleAssets/Common/TypeAheadWidget'>			
+					<ARGUMENT name="parentType" value='["CSElement"]'/>
+					<ARGUMENT name="subTypesForWidget" value='*'/>
+					<ARGUMENT name="subTypesForSearch" value=''/>
+					<ARGUMENT name="multipleVal" value="false"/>
+					<ARGUMENT name="widgetValue" value='Variables.siteEntryElement'/>	
+					<ARGUMENT name="funcToRun" value='selectDnDSiteEntry'/>
+					<ARGUMENT name="widgetNode" value='typeAheadSiteEntry'/>
+					<ARGUMENT name="typesForSearch" value='Dimension'/>	
+					<ARGUMENT name="displaySearchbox" value='false'/>
+					<ARGUMENT name="multiOrderedAttr" value='false'/>				
+				</CALLELEMENT>
+			</THEN>
+			<ELSE>
+			<IF COND="Variables.updatetype=setformdefaults">
+			<THEN>
+				<XLAT.STREAM KEY="dvin/UI/CreateOptionalSiteCatalog" ENCODE="false"/><br/>
+			</THEN>
+			</IF>	
+				<![CDATA[
+			<INPUT TYPE="text" NAME="SiteEntry:rootelement" SIZE="32" MAXLENGTH="]]>255<![CDATA[" VALUE="]]><STRING.STREAM VARIABLE="ContentDetails:rootelement"/><![CDATA[" onChange="clearCSElement();" />]]>
+				<IF COND="Variables.showSiteTree=false">
+				<THEN>
+					<!-- draw the recent asset popup -->
+						<A HREF="#" ONCLICK="javascript:openPopup('Variables.urlpickassetpopup');return false;" REPLACEALL="Variables.urlpickassetpopup" TARGET="_blank"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Browse"/></CALLELEMENT></A>
+				</THEN>
+				<ELSE>
+					<A class="inline-right" HREF="javascript:void(0)" onclick="SelectFromTreeTextField('SiteEntry:rootelement','SiteEntry:cselement_id','CSElement','single')" OnMouseOver="window.status='Variables._XLAT_'; return true" OnMouseOut="return window.status='';" REPLACEALL="Variables._XLAT_">
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/AddSelectedItems"/></CALLELEMENT>
+					</A>
+				</ELSE>
+				</IF>
+			</ELSE>
+			</IF>
+			</TD>
+	  		</TR>
+	     	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+
+            <!-- PR 15428 start - Added pageletonly option to be configurable only if wrapper=n -->
+            <TR>
+				<TD class="form-label-text"><XLAT.STREAM KEY="dvin/AT/SiteEntry/wrapperpage"/></TD>
+				<TD><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></TD>
+				<TD class="form-inset">
+					<IF COND="Variables.ContentDetails:cs_wrapper=y">
+					<THEN>
+						<input type="radio" id="SiteEntry:cs_wrapperYes" name="SiteEntry:cs_wrapper" value="y" checked="true" onclick="resetPageletOnly(false);"/><XLAT.STREAM KEY="dvin/Common/Yes"/>&nbsp;&nbsp;&nbsp;
+						<input type="radio" id="SiteEntry:cs_wrapperNo" name="SiteEntry:cs_wrapper" value="n" onclick="resetPageletOnly(true);"/><XLAT.STREAM KEY="dvin/Common/No"/>
+					</THEN>
+					<ELSE>
+						<input type="radio" id="SiteEntry:cs_wrapperYes" name="SiteEntry:cs_wrapper" value="y" onclick="resetPageletOnly(false);"/><XLAT.STREAM KEY="dvin/Common/Yes"/>&nbsp;&nbsp;&nbsp;
+						<input type="radio" id="SiteEntry:cs_wrapperNo" name="SiteEntry:cs_wrapper" value="n" checked="true" onclick="resetPageletOnly(true);"/><XLAT.STREAM KEY="dvin/Common/No"/>
+					</ELSE>
+					</IF>
+				</TD>
+	  		</TR>
+
+            <CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+
+            <tr id="SiteEntry:pageletonlyrow" style="visibility:hidden">
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/SiteEntry/pageletonly"/></td>
+				<td></td>
+                <td class="form-inset">
+                    <IF COND="Variables.ContentDetails:pageletonly=T">
+					<THEN>
+						<input type="radio" id="SiteEntry:pageletonlyYes" name="SiteEntry:pageletonly" value="T" checked="true"/><XLAT.STREAM KEY="dvin/Common/True"/>&nbsp;&nbsp;&nbsp;
+						<input type="radio" id="SiteEntry:pageletonlyNo" name="SiteEntry:pageletonly" value="F"/><XLAT.STREAM KEY="dvin/Common/False"/>
+					</THEN>
+					<ELSE>
+						<input type="radio" id="SiteEntry:pageletonlyYes" name="SiteEntry:pageletonly" value="T" /><XLAT.STREAM KEY="dvin/Common/True"/>&nbsp;&nbsp;&nbsp;
+						<input type="radio" id="SiteEntry:pageletonlyNo" name="SiteEntry:pageletonly" value="F" checked="true"/><XLAT.STREAM KEY="dvin/Common/False"/>
+					</ELSE>
+					</IF>
+                </td>
+            </tr>
+            <![CDATA[
+            <script>
+                if (document.getElementById('SiteEntry:cs_wrapperNo').checked==true)
+                    resetPageletOnly(true);
+                else
+                    resetPageletOnly(false);
+
+                function resetPageletOnly(bool)
+                {
+                    if (bool)
+                    {
+                        document.getElementById('SiteEntry:pageletonlyrow').style.visibility='visible';
+                    }
+                    else
+                    {
+                        document.getElementById('SiteEntry:pageletonlyNo').checked = true;
+                        document.getElementById('SiteEntry:pageletonlyrow').style.visibility='hidden';
+                    }
+                 }
+             </script>
+            ]]>
+            <!-- PR 15428 end-->
+
+            <!--<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>-->
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/Pagelevelparameters"/>:</td>
+				<td></td>
+				<td class="form-inset">
+					<!-- set default values from property file -->
+					<PROPERTY.GET PARAM="xcelerate.defaultpagecriteriaSiteEntry" INIFILE="futuretense_xcel.ini" VARNAME="defaultpagecriteria"/>
+
+					<fieldset style="margin-top : 10px">
+					<legend class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/Pagelevelparameters"/>:</legend>
+					<SETCOUNTER NAME="nthArg" VALUE="0"/>
+
+					<SETVAR NAME="numArgs" VALUE="Variables.ContentDetails:defaultarguments:Total"/>
+					<table border="0" style="margin:6px">
+						<tr>
+							<td></td><td><XLAT.STREAM KEY="dvin/Common/AT/Parametername"/></td><td><XLAT.STREAM KEY="dvin/Common/Value"/></td>
+						</tr>
+						<IF COND="Variables.ContentDetails:defaultarguments:Total!=0">
+						<THEN>
+							<LOOP COUNT="Variables.numArgs">
+								<setvar NAME="value" VALUE="Variables.ContentDetails:defaultarguments:Counters.nthArg:name"/>
+								<tr>
+									<ICS.CLEARERRNO/>
+									<ISINLIST STR="Variables.defaultpagecriteria" ITEM="Variables.value"/>
+									<IF COND="Variables.errno!=1">
+									<THEN>
+										<td>
+											<XLAT.LOOKUP KEY="dvin/UI/Deletethisitem" VARNAME="_XLAT_"/>
+											<XLAT.LOOKUP KEY="dvin/UI/Deletethisitem" VARNAME="mouseover" ESCAPE="true"/>
+											<A HREF="javascript:void(0);" onClick="return clearValue('Variables.ThisPage','SiteEntry:defaultarguments:Counters.nthArg:');" onmouseover="window.status='Variables.mouseover';return true;" onmouseout="window.status='';return true" REPLACEALL="Variables.ThisPage,Counters.nthArg,Variables.mouseover">
+												<img hspace="2" vspace="4" height="14" width="14" src="Variables.cs_imagedir/graphics/common/icon/iconDeleteContent.gif" border="0" ALT="Variables._XLAT_" title="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,Variables._XLAT_"/>
+											</A>
+										</td>
+										<td>
+											<STRING.ENCODE VARNAME="valueEnc" VARIABLE="value"/>
+											<INPUT TYPE="text" NAME="SiteEntry:defaultarguments:Counters.nthArg:name" MAXSIZE="32" SIZE="12" VALUE="Variables.valueEnc" REPLACEALL="Counters.nthArg,Variables.valueEnc"/>
+										</td>
+										<setvar NAME="value" VALUE="Variables.ContentDetails:defaultarguments:Counters.nthArg:value"/>
+										<STRING.ENCODE VARNAME="valueEnc" VARIABLE="value"/>
+										<td><INPUT TYPE="text" NAME="SiteEntry:defaultarguments:Counters.nthArg:value" MAXSIZE="32" SIZE="32" VALUE="Variables.valueEnc" REPLACEALL="Counters.nthArg,Variables.valueEnc"/></td>
+									</THEN>
+									<ELSE>
+										<td>
+											<XLAT.LOOKUP KEY="dvin/AT/SiteEntry/Cannotdeletedefaultpageletparams" VARNAME="_XLAT_"/>
+											<img hspace="2" vspace="4" height="14" width="14" src="Variables.cs_imagedir/graphics/common/icon/iconDeleteContentX.gif" border="0" ALT="Variables._XLAT_" title="Variables._XLAT_"  REPLACEALL="Variables.cs_imagedir,Variables._XLAT_"/>
+										</td>
+										<td><STRING.STREAM VARIABLE="value"/>
+										<STRING.ENCODE VARNAME="valueEnc" VARIABLE="value"/>
+										<INPUT TYPE="hidden" NAME="SiteEntry:defaultarguments:Counters.nthArg:name"  VALUE="Variables.valueEnc" REPLACEALL="Counters.nthArg,Variables.valueEnc"/>
+										 </td>
+										<setvar NAME="value" VALUE="Variables.ContentDetails:defaultarguments:Counters.nthArg:value"/>
+										<td><STRING.STREAM VARIABLE="value"/>
+										<STRING.ENCODE VARNAME="valueEnc" VARIABLE="value"/>
+										<INPUT TYPE="hidden" NAME="SiteEntry:defaultarguments:Counters.nthArg:value" VALUE="Variables.valueEnc" REPLACEALL="Counters.nthArg,Variables.valueEnc"/>
+										</td>
+									</ELSE>
+									</IF>
+
+								</tr>
+							<INCCOUNTER NAME="nthArg" VALUE="1"/>
+						</LOOP>
+					</THEN>
+					</IF>
+					<tr>
+						<td></td>
+						<td>
+							<INPUT TYPE="text" NAME="SiteEntry:defaultarguments:Counters.nthArg:name" MAXSIZE="32" SIZE="12" VALUE="" REPLACEALL="Counters.nthArg"/>
+						</td>
+						<td>
+							<INPUT TYPE="text" NAME="SiteEntry:defaultarguments:Counters.nthArg:value" MAXSIZE="32" SIZE="32" VALUE="" REPLACEALL="Counters.nthArg"/>
+						</td>
+						<td>
+							<XLAT.LOOKUP KEY="dvin/Common/AddNewValue" VARNAME="addNewValue"/>
+							<a href="javascript:void(0);" onClick="return addValue('Variables.ThisPage','SiteEntry:defaultarguments:Counters.nthArg')" REPLACEALL="Variables.ThisPage,Counters.nthArg"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/AddParameter"/></CALLELEMENT></a>
+						</td>
+					</tr>
+				</table>
+				<INCCOUNTER NAME="nthArg" VALUE="1"/>
+				</fieldset>
+				<input type="hidden" NAME="SiteEntry:defaultarguments:Total" VALUE="Counters.nthArg" REPLACEALL="Counters.nthArg"/>
+
+				</td>
+			</tr>
+
+			<!--<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>-->
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/PageletCacheCriteria"/>:</td>
+				<td></td>
+				<td class="form-inset">
+				<SETVAR NAME="pagecriteria" VALUE="Variables.empty"/>
+				<SETCOUNTER NAME="nthCrit" VALUE="0"/>
+				<IF COND="Variables.ContentDetails:pagecriteria:Total!=0">
+				<THEN>
+					<SETVAR NAME="numCriteria" VALUE="Variables.ContentDetails:pagecriteria:Total"/>
+					<LOOP COUNT="Variables.numCriteria">
+						<IF COND="Counters.nthCrit=0">
+						<THEN>
+							<SETVAR NAME="pagecriteria" VALUE="Variables.ContentDetails:pagecriteria:Counters.nthCrit"/>
+						</THEN>
+						<ELSE>
+							<SETVAR NAME="pagecriteria" VALUE="Variables.pagecriteria,Variables.ContentDetails:pagecriteria:Counters.nthCrit"/>
+						</ELSE>
+						</IF>
+						<INCCOUNTER NAME="nthCrit" VALUE="1"/>
+					</LOOP>
+				</THEN>
+				</IF>
+				<STRING.ENCODE VARNAME="pagecriteriaEnc" VARIABLE="pagecriteria"/>
+				<input TYPE="text" MAXLENGTH="255" SIZE="32" NAME="SiteEntry:pagecriteria" VALUE="Variables.pagecriteriaEnc" REPLACEALL="Variables.pagecriteriaEnc"/></td>
+			</tr>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/CacheRules"/>:</td>
+				<td></td>
+				<td class="form-inset">
+                    <INPUT TYPE="radio" NAME="SiteEntry:cacheradio" ID="SiteEntry:cacheinfoCached" VALUE="true,~0" onclick="resetCacheInfoTextFields('SiteEntry:','true,~0')"/> <XLAT.STREAM KEY="dvin/Common/AT/Cached"/>
+                    <INPUT TYPE="radio" NAME="SiteEntry:cacheradio" ID="SiteEntry:cacheinfoUncached" VALUE="false" onclick="resetCacheInfoTextFields('SiteEntry:','false')"/> <XLAT.STREAM KEY="dvin/Common/AT/Uncached"/>
+                    <INPUT TYPE="radio" NAME="SiteEntry:cacheradio" ID="SiteEntry:cacheinfoAdvanced" VALUE="" onclick="resetCacheInfoTextFields('SiteEntry:','advanced')"/> <XLAT.STREAM KEY="dvin/Common/AT/Advanced"/>
+                </td>
+			</tr>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr id="SiteEntry:cscacheinforow">
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/ContentServerCacheInfo"/>:</td>
+				<td></td>
+	             <SETVAR NAME="OutputQString"  VALUE="Variables.empty"/>
+					<SETVAR NAME="value" VALUE="Variables.ContentDetails:cscacheinfo"/>
+	             <SUBSTITUTE STR="Variables.value" WHAT="&#34;" WITH="&#38;quot;"
+	              OUTSTR="OutputQString"/>
+
+				<td class="form-inset"><input TYPE="text" MAXLENGTH="128" SIZE="32" NAME="SiteEntry:cscacheinfo" ID="SiteEntry:cscacheinfo" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/></td>
+			</tr>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr id="SiteEntry:sscacheinforow">
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/SatelliteCacheInfo"/>:</td>
+				<td></td>
+	             <SETVAR NAME="OutputQString"  VALUE="Variables.empty"/>
+					<SETVAR NAME="value" VALUE="Variables.ContentDetails:sscacheinfo"/>
+	             <SUBSTITUTE STR="Variables.value" WHAT="&#34;" WITH="&#38;quot;"
+	              OUTSTR="OutputQString"/>
+
+				<td class="form-inset"><input TYPE="text" MAXLENGTH="128" SIZE="32" NAME="SiteEntry:sscacheinfo" ID="SiteEntry:sscacheinfo" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/></td>
+			</tr>
+<![CDATA[
+<script>
+	var cscacheinfo = document.getElementById( 'SiteEntry:cscacheinfo' ).value;
+	var sscacheinfo = document.getElementById( 'SiteEntry:sscacheinfo' ).value;
+	if( cscacheinfo == 'true,~0' && sscacheinfo == 'true,~0' )
+	{
+		document.getElementById( 'SiteEntry:cacheinfoCached' ).checked = true;
+		hideAdvancedCacheInfo('SiteEntry:');
+	}
+	else if( cscacheinfo == 'false' && sscacheinfo == 'false' )
+	{
+		document.getElementById( 'SiteEntry:cacheinfoUncached' ).checked = true;
+		hideAdvancedCacheInfo('SiteEntry:');
+	}
+	else
+	{
+		document.getElementById( 'SiteEntry:cacheinfoAdvanced' ).checked = true;
+		showAdvancedCacheInfo('SiteEntry:');
+	}
+</script>
+]]>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/AccessControlLists"/>:</td>
+				<td></td>
+				<td class="form-inset">
+
+					<ACL.LIST LIST="allacls" ORDER="aclname"/>
+					<SELECT NAME="SiteEntry:acl" MULTIPLE="yes" SIZE="8">
+						<IF COND="Variables.ContentDetails:acl=Variables.empty">
+						<THEN>
+							<OPTION VALUE="" SELECTED="true"/><XLAT.STREAM KEY="dvin/Common/Any"/>
+						</THEN>
+						<ELSE>
+							<OPTION VALUE=""/><XLAT.STREAM KEY="dvin/Common/Any"/>
+						</ELSE>
+						</IF>
+						<LOOP LIST="allacls">
+ 						<ICS.CLEARERRNO/>
+							<ISINLIST STR="Variables.ContentDetails:acl" ITEM="allacls.aclname"/>
+
+							<IF COND="Variables.errno=1">
+							<THEN>
+								<OPTION VALUE="allacls.aclname" SELECTED="true" REPLACEALL="allacls.aclname"/><STRING.STREAM VALUE="allacls.aclname"/>
+							</THEN>
+							<ELSE>
+								<OPTION VALUE="allacls.aclname" REPLACEALL="allacls.aclname"/><STRING.STREAM VALUE="allacls.aclname"/>
+							</ELSE>
+							</IF>
+						</LOOP>
+					</SELECT>
+				</td>
+			</tr>
+
+            <!-- Beginning of Group 4 -->
+	        <ASSOCNAMEDMANAGER.LIST  LISTVARNAME="associations" TYPE="Variables.AssetType" SUBTYPE="Variables.ContentDetails:subtype"/>
+            <IF COND="associations.#numRows!=0">
+				<THEN>
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormTypeAhead"/>											
+				</THEN>
+				</IF>
+
+				<!-- Beginning of Group 5 -->
+				<IF COND="Variables.updatetype!=setformdefaults">
+				<THEN>
+				<!--<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>-->
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<TR>
+					<TD class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/Modified"/></TD>
+					<TD></TD>
+					<TD class="form-inset"><span class="disabledEditText">
+	                    <DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:updateddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:updateddate"/>
+	                    <XLAT.STREAM KEY="dvin/UI/ContentDetailsupdateddatebyupdatedby"/></span>
+	                </TD>
+				</TR>
+				</THEN>
+				</IF>
+
+			</TABLE><!--end of body--></TD>
+		</TR>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+		<tr>
+  <td><callelement NAME="OpenMarket/Xcelerate/Actions/Workflow/ShowAssigneeSelectionsBelow"/></td>
+ </tr>
+ <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+	</TABLE>
+	</div>
+</then>
+</if>
+</div>
+</FTCS>

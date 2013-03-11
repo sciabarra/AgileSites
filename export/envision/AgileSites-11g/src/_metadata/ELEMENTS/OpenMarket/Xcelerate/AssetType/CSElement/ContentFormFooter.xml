@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/CSElement/ContentFormFooter
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+		<IF COND="IsVariable.NoContinue=false">
+			<THEN>
+				<!-- <IMG height="1" width="10" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/> -->
+				<XLAT.LOOKUP KEY="dvin/AT/Common/Continue" VARNAME="_Continue_" ESCAPE="true"/>
+				<XLAT.LOOKUP KEY="dvin/AT/Common/Continue" VARNAME="_Continue_ALT"/>
+				<A HREF="javascript:void(0)" onclick="return FixpagenameWithCheck('Variables.ThisPage','ContentFormVariables.ContinueTo');" onmouseover="window.status='Variables._Continue_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables.ContinueTo,Variables.ThisPage,Variables._Continue_">
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Continue"/></CALLELEMENT>
+				</A>
+			</THEN>
+		</IF>
+</FTCS>

@@ -1,0 +1,429 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/Template/ContentFormName
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+<SCRIPT LANGUAGE="JavaScript">
+<![CDATA[
+function refreshAppSubtypeList( assettypefield, applicablesubtypefield )
+{
+	applicablesubtypefield.length = 0;
+	if ( assettypefield.value != "illegal")
+	{
+		var alistfield = "applicablesubtypes-" + assettypefield.value;
+		var alist = obj.elements[alistfield].value;
+		var subtypes = alist.split(",");
+		var i = 0;
+		var j = 0
+		for ( ; i < subtypes.length ; i++,j++ ) {
+			applicablesubtypefield.options[j] = new Option( subtypes[i++], subtypes[i], false,  false);
+		}
+	}
+	return false;
+}
+function handleNewSubtype( )
+{
+	obj.elements['Template:rootelement'].value = "";
+	var numElements = obj.elements['Template:element:Total'].value;
+	while( numElements > 0 )
+	{
+		numElements--;
+		var subtype =	obj.elements['Template:subtype'].value;
+		var name =	obj.elements['Template:name'].value;
+		if ( isblank(subtype) )
+			obj.elements['Template:element:'+numElements+':elementname'].value = '/' + name;
+		else
+			obj.elements['Template:element:'+numElements+':elementname'].value = subtype + '/' + name;
+
+		var numSiteEntries = obj.elements['Template:element:'+numElements+':siteentry:Total'].value;
+		while ( numSiteEntries > 0 )
+		{
+			numSiteEntries--;
+			var prevName =	obj.elements['Template:element:'+numElements+':siteentry:'+numSiteEntries+':pagename'].value;
+			if ( !isblank(prevName) )
+			{
+				var pubname = prevName.substring( 0, prevName.indexOf('/'));
+				if ( isblank(subtype) )
+				{
+					obj.elements['Template:element:'+numElements+':siteentry:'+numSiteEntries+':pagename'].value =	pubname + '/' + name;
+				}
+				else
+				{
+					obj.elements['Template:element:'+numElements+':siteentry:'+numSiteEntries+':pagename'].value =	pubname + '/' + subtype + '/' + name;
+				}
+			}
+		}
+	}
+}
+]]>
+</SCRIPT>
+
+<!-- in case we are copying, clear out the rootelement -->
+<if COND="Variables.updatetype=setformdefaults">
+<then>
+	<ASSET.SET NAME="theCurrentAsset" FIELD="rootelement" VALUE="Variables.empty"/>
+</then>
+</if>
+
+
+<!-- Template editing form -->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/ContentFormSetVar"/>
+
+<!-- if we do not have an assettype yet, make a list of all applicable subtypes for each asset type
+	 which will be used in the javascript when an asset type is selected -->
+<ASSET.GetLegalSubtypes TYPE="Template" PUBID="SessionVariables.pubid" LIST="subtypes"/>
+<IF COND="IsList.subtypes=false">
+<THEN>
+	<XLAT.LOOKUP KEY="dvin/UI/Admin/Noassettypesenabledforthissite" VARNAME="msgtext"/>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+	    <ARGUMENT NAME="msgtext" VALUE="Variables.msgtext"/>
+	    <ARGUMENT NAME="severity" VALUE="error"/>
+	</CALLELEMENT>
+</THEN>
+</IF>
+
+<if COND="Variables.updatetype=setformdefaults">
+<then>
+	<XLAT.LOOKUP KEY="dvin/Common/Any" VARNAME="_XLAT_Any"/>
+	<XLAT.LOOKUP KEY="dvin/UI/Util/Standardnosubtype" VARNAME="_XLAT_Nosubtype"/>
+	<!-- make a list of applicable subtypes for each asset type this template might be used for -->
+	<IF COND="IsList.subtypes=true">
+	<THEN>
+		<LOOP LIST="subtypes">
+			<setvar NAME="varname" VALUE="applicablesubsForsubtypes.subtype"/>
+			<SETVAR NAME="Variables.varname" VALUE="Variables._XLAT_Any,*"/>
+			<if COND="subtypes.subtype!=Variables.empty">
+			<then>
+				<ASSET.GetLegalSubtypes TYPE="subtypes.subtype" PUBID="SessionVariables.pubid" LIST="appsubtypes"/>
+				<if COND="IsList.appsubtypes=true">
+				<then>
+					<LOOP LIST="appsubtypes">
+						<if COND="IsColumn.appsubtypes.description=true">
+						<then>
+							<SETVAR NAME="Variables.varname" VALUE="Variables.Variables.varname,appsubtypes.description,appsubtypes.subtype"/>
+						</then>
+						<else>
+							<if COND="appsubtypes.subtype=Variables.empty">
+							<then>
+								<SETVAR NAME="Variables.varname" VALUE="Variables.Variables.varname,Variables._XLAT_Nosubtype,appsubtypes.subtype"/>
+							</then>
+							<else>
+								<SETVAR NAME="Variables.varname" VALUE="Variables.Variables.varname,appsubtypes.subtype,appsubtypes.subtype"/>
+							</else>
+							</if>
+						</else>
+						</if>
+					</LOOP>
+				</then>
+				</if>
+			</then>
+			</if>
+			<setvar NAME="appsubtypestring" VALUE="Variables.Variables.varname"/>
+			<STRING.ENCODE VARIABLE="appsubtypestring" VARNAME="appsubtypestringEnc"/>
+			<INPUT TYPE="HIDDEN" NAME="applicablesubtypes-subtypes.subtype" VALUE="Variables.appsubtypestringEnc" REPLACEALL="subtypes.subtype,Variables.appsubtypestringEnc"/>
+		</LOOP>
+	</THEN>
+	</IF>
+</then>
+</if>
+
+<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Template/ContentFormNavBar">
+	<argument NAME="CurrentCat" VALUE="Name"/>
+</callelement>
+
+<tr>
+<td>
+<table>
+
+    <CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer">
+      <ARGUMENT NAME="SpaceAbove" VALUE="No"/>
+    </CALLELEMENT>
+
+	<!-- name -->
+	<tr>
+		<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/Name"/>:</td>
+		<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+		<td class="form-inset">
+		<IF COND="Variables.updatetype!=setformdefaults">
+		<THEN>
+			<![CDATA[<INPUT TYPE="HIDDEN" NAME="Template:name" VALUE="]]><STRING.STREAM VALUE="Variables.ContentDetails:name"/><![CDATA["/>]]>
+			<STRING.STREAM VARIABLE="ContentDetails:name"/>
+		</THEN>
+		<ELSE>
+			<PROPERTY.GET PARAM="xcelerate.asset.sizeofnamefield" INIFILE="futuretense_xcel.ini" VARNAME="sizeofnamefield"/>
+			<STRING.ENCODE VARNAME="ContentDetails:nameEnc" VARIABLE="ContentDetails:name"/>
+			<INPUT TYPE="TEXT" NAME="Template:name" VALUE="Variables.ContentDetails:nameEnc" SIZE="32" MAXLENGTH="Variables.sizeofnamefield" REPLACEALL="Variables.sizeofnamefield,Variables.ContentDetails:nameEnc"/>
+		</ELSE>
+		</IF>
+		</td>
+	</tr>
+
+	<!-- description -->
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Description"/>:</td>
+		<td></td>
+		<td class="form-inset">
+			<textarea name="descriptionvis" cols="40" rows="2" wrap="virtual" onChange="checkLength(this.form.elements['descriptionvis'].value, 128, 'Description'); setField(this.form.elements['descriptionvis'].value, 128, 'Template:description', this)">
+				<STRING.STREAM VARIABLE="ContentDetails:description"/>
+			</textarea>
+			<SETVAR NAME="OutputQString"  VALUE="Variables.empty"/>
+			<STRING.ENCODE VARIABLE="ContentDetails:description" VARNAME="OutputQString"/>
+			<INPUT TYPE="hidden" NAME="Template:description" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/></td>
+	</tr>
+	<!-- id -->
+	<IF COND="Variables.updatetype!=setformdefaults">
+	<THEN>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/ID"/>:</td>
+		<td></td>
+		<td class="form-inset"><STRING.STREAM VARIABLE="id"/></td>
+	</tr>
+	</THEN>
+	</IF>
+
+	<!-- source -->
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Source"/>:</td>
+		<td></td>
+		<td class="form-inset">
+			<callelement NAME="OpenMarket/Xcelerate/Actions/Util/MakeSourceList">
+				<argument NAME="Prefix" VALUE="Template"/>
+			</callelement></td>
+	</tr>	
+
+	<!-- category -->
+	<setvar NAME="assettype" VALUE="Template"/>
+	<selectto LIST="Category" FROM="Category" WHERE="assettype"/>
+	<IF COND="Category.#numRows!=0">
+	<THEN>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		<tr>
+			<td class="form-label-text"><XLAT.STREAM KEY="dvin/UI/Admin/Category"/>:</td>
+			<td></td>
+			<td class="form-inset">
+				<callelement NAME="OpenMarket/Xcelerate/Actions/Util/MakeCategoryList">
+					<argument NAME="Prefix" VALUE="Template"/>
+	 			</callelement>
+			</td>
+		</tr>
+	</THEN>
+	</IF>
+
+	<!-- subtype - asset type for which the template applies -->
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/AT/ForAssetType"/>:</td>
+		<td></td>
+		<td class="form-inset">
+		<!-- subtype not editable after new template created -->
+		<IF COND="Variables.updatetype!=setformdefaults">
+		<THEN>
+			<TEMPLATEMANAGER.GetLegalAssetTypes NAME="Variables.assetname" PUBID="SessionVariables.pubid" LISTVARNAME="assettypes"/>
+			<if COND="IsList.assettypes=true">
+			<then>
+				<LOOP LIST="assettypes">
+					<if COND="assettypes.#curRow!=1">
+					<then>,
+					</then>
+					</if>
+					<STRING.STREAM LIST="assettypes" COLUMN="description"/>
+				</LOOP>
+			</then>
+			</if>
+			<![CDATA[<INPUT TYPE="HIDDEN" NAME="Template:subtype" VALUE="]]><STRING.STREAM VALUE="Variables.ContentDetails:subtype"/><![CDATA["/>]]>
+		</THEN>
+		<ELSE>
+			<!-- on new template allow selecting of asset type -->
+
+			<!-- to distinguish between selected typeless subtype and not yet selected asset type -->
+			<IF COND="IsVariable.Copyid=false">
+			<THEN>
+				<IF COND="Variables.ContentDetails:subtype=Variables.empty">
+				<THEN>
+					<IF COND="IsVariable.FieldsOnForm=false">
+					<THEN>
+						<SETVAR NAME="ContentDetails:subtype" VALUE="notSelected"/>
+					</THEN>
+					</IF>
+				</THEN>
+				</IF>
+			</THEN>
+			</IF>
+			<SELECT style="width:20em" dojoType="fw.dijit.UISimpleSelect" NAME="Template:subtype" SIZE="1" onChange="refreshAppSubtypeList( document.forms[0].elements['Template:subtype'], document.forms[0].elements['Template:applicablesubtypes']);handleNewSubtype();">
+			<OPTION VALUE="illegal"/>- <XLAT.STREAM KEY="dvin/Common/AT/chooseassettype"/> -
+			<IF COND="IsList.subtypes=true">
+			<THEN>
+				<LOOP LIST="subtypes">
+					<if COND="subtypes.subtype=Variables.empty">
+					<then>
+						<if COND="Variables.ContentDetails:subtype=subtypes.subtype">
+						<then>
+							<OPTION VALUE="" SELECTED="true"/><XLAT.STREAM KEY="dvin/AT/Template/TypelessTemplate"/>
+						</then>
+						<else>
+							<OPTION VALUE=""/><XLAT.STREAM KEY="dvin/AT/Template/TypelessTemplate"/>
+						</else>
+						</if>
+					</then>
+					<else>
+						<if COND="Variables.ContentDetails:subtype=subtypes.subtype">
+						<then>
+							<OPTION VALUE="subtypes.subtype" SELECTED="true" REPLACEALL="subtypes.subtype"/><STRING.STREAM LIST="subtypes" COLUMN="description"/>
+						</then>
+						<else>
+							<OPTION VALUE="subtypes.subtype" REPLACEALL="subtypes.subtype"/><STRING.STREAM LIST="subtypes" COLUMN="description"/>
+						</else>
+						</if>
+					</else>
+					</if>
+				</LOOP>
+			</THEN>
+			</IF>
+			</SELECT>
+		</ELSE>
+		</IF>
+		</td>
+   </tr>
+
+	<!-- applicable subtypes -->
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+	<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Template/Appliestosubtypes"/>:</td>
+	<td></td>
+	<td class="form-inset">
+		<SETCOUNTER NAME="numSubtypes" VALUE="1"/>
+		
+		<IF COND="Variables.ContentDetails:subtype!=Variables.empty">
+		<THEN>
+			<IF COND="IsList.subtypes=true">
+			<THEN>
+				<LOOP LIST="subtypes">
+					<IF COND="subtypes.subtype!=Variables.empty">
+					<THEN>
+						<IF COND="Variables.ContentDetails:subtype=subtypes.subtype">
+						<THEN>
+							<SETVAR NAME="errno" VALUE="0"/>
+							<ASSET.GetLegalSubtypes TYPE="Variables.ContentDetails:subtype" LIST="asubtypes" PUBID="SessionVariables.pubid"/>
+						</THEN>
+						</IF>
+					</THEN>
+					</IF>
+				</LOOP>
+			</THEN>
+			</IF>
+		</THEN>
+		</IF>
+
+		<if COND="IsList.asubtypes=true">
+		<then>
+			<SETCOUNTER NAME="numSubtypes" VALUE="asubtypes.#numRows"/>
+			<if COND="Variables.ContentDetails:applicablesubtypes:Total!=0">
+			<then>
+				<TEMPLATEASSET.AppliesToSubtype NAME="theCurrentAsset" SUBTYPE="*" OUTNAME="applies"/>
+				<if COND="Variables.applies=true">
+				<then>
+					<setvar NAME="selectAny" VALUE="true"/>
+				</then>
+				</if>
+			</then>
+			<else>
+				<setvar NAME="selectAny" VALUE="true"/>
+			</else>
+			</if>
+		</then>
+		<else>
+				<setvar NAME="selectAny" VALUE="true"/>
+		</else>
+		</if>
+		<INCCOUNTER NAME="numSubtypes" VALUE="1"/>
+		<SELECT NAME="Template:applicablesubtypes" MULTIPLE="YES" SIZE="5" REPLACEALL="Counters.numSubtypes">
+			<if COND="Variables.selectAny=true">
+			<then>
+				<OPTION VALUE="*" SELECTED="true"/><XLAT.STREAM KEY="dvin/Common/Any"/>
+			</then>
+			<else>
+				<OPTION VALUE="*"/><XLAT.STREAM KEY="dvin/Common/Any"/>
+			</else>
+			</if>
+			<if COND="IsList.asubtypes=true">
+			<then>
+				<loop LIST="asubtypes">
+					<if COND="asubtypes.subtype=Variables.empty">
+					<then>
+						<setvar NAME="subtypevalue" VALUE="-none-"/>
+					</then>
+					<else>
+						<setvar NAME="subtypevalue" VALUE="asubtypes.subtype"/>
+					</else>
+					</if>
+					<TEMPLATE.AppliesToSubtype NAME="theCurrentAsset" SUBTYPE="asubtypes.subtype" OUTNAME="applies"/>
+					<if COND="Variables.applies=true">
+					<then>
+			      	<OPTION VALUE="Variables.subtypevalue" REPLACEALL="Variables.subtypevalue" SELECTED="true"/>
+			      </then>
+			      <else>
+				      <OPTION VALUE="Variables.subtypevalue" REPLACEALL="Variables.subtypevalue"/>
+					</else>
+					</if>
+					<if COND="asubtypes.subtype=Variables.empty">
+					<then>
+						<XLAT.STREAM KEY="dvin/UI/Util/Standardnosubtype"/>
+					</then>
+					<else>
+						<if COND="IsColumn.asubtypes.description=true">
+						<then>
+							<STRING.STREAM LIST="asubtypes" COLUMN="description"/>
+						</then>
+						<else>
+							<STRING.STREAM LIST="asubtypes" COLUMN="subtype"/>
+						</else>
+						</if>
+					</else>
+					</if>
+
+				</loop>
+			</then>
+			</if>
+		</SELECT>
+	</td>
+	</tr>
+
+	<!-- args -->
+	
+	<callelement NAME="OpenMarket/Xcelerate/Actions/AssetMgt/ArgsForm"/>
+
+	<!-- keywords -->
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Keywords"/>:</td>
+		<td></td>
+          <setvar NAME="OutputQString"  VALUE="Variables.empty"/>
+			<STRING.ENCODE VARIABLE="ContentDetails:keyword" VARNAME="OutputQString"/>
+		<td class="form-inset"><INPUT TYPE="text" MAXLENGTH="128" SIZE="32" NAME="Template:keyword" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/></td>
+	</tr>
+	
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+	<TR>
+		<TD class="form-label-text"></TD><TD></TD><TD class="form-inset">
+			<callelement NAME="OpenMarket/Xcelerate/AssetType/Template/ContentFormFooter">
+				<argument NAME="ContinueTo" VALUE="Element"/>
+			</callelement>
+		</TD>
+	</TR>
+</table>
+</td>
+</tr>
+
+</table>
+
+</FTCS>

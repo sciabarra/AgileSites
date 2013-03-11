@@ -1,0 +1,249 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Gator/FlexibleAssets/Common/AssocTmpls
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<callelement NAME="OpenMarket/Xcelerate/Scripts/ValidateInputForXSS"/>
+<SCRIPT LANGUAGE="JavaScript">
+function GoToNextScreen(ourPage)
+{
+ 	var obj = document.forms[0].elements[0];
+ 	if(!isCleanString(obj.form.elements['flexassets:name'].value))
+    {
+        alert('<XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/ApostropheNotAllowed" ESCAPE="true" ENCODE="false"/>');
+        obj.form.elements['flexassets:name'].focus();
+        return false;
+    }
+ 	
+	if(obj.form.elements['TemplateChosen'].selectedIndex)
+		if(obj.form.elements['TemplateChosen'][obj.form.elements['TemplateChosen'].selectedIndex].value=="")
+		{
+		 alert("<XLAT.STREAM KEY="dvin/FlexibleAssets/Common/PickupType" ESCAPE="true" ENCODE="false"/>" );
+		 return ;
+		}
+	else{
+		if(obj.form.elements['TemplateChosen'].value=="")
+		{
+		 alert("<XLAT.STREAM KEY="dvin/FlexibleAssets/Common/PickupType" ESCAPE="true" ENCODE="false"/>" );
+		 return ;
+		}
+	}	
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	var	newpage = basePage + ourPage;
+	
+	if (obj.form.elements['flexassets:name'].value) {
+		var h = document.createElement('input');
+		h.setAttribute('type', 'hidden');
+		h.setAttribute('name', '__name__');
+		h.setAttribute('value', 'true');
+		obj.appendChild(h);
+	}
+
+	obj.form.pagename.value = newpage;
+
+	document.forms[0].submit();
+
+	return false;
+}
+
+function DoNothing(ourPage)
+{
+  var obj = document.forms[0].elements[0];
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	var	newpage = basePage + ourPage;
+  obj.form.pagename.value = newpage;
+
+	return false;
+}
+
+function SetCancelFlag () {
+	var obj = document.forms[0].elements[0];
+
+	obj.form.elements['upcommand'].value="cancel";
+	obj.form.submit();
+	return false;
+}
+</SCRIPT>
+<IF COND="Variables.cs_environment=ucform">					
+<THEN>
+	<SCRIPT LANGUAGE="JavaScript">
+		function submitForm()
+		{
+			alert("<XLAT.STREAM KEY="UI/Forms/PleaseSelectContinueOrCloseTab" ESCAPE="true" ENCODE="false"/>" );
+		}
+	</SCRIPT>
+</THEN>
+</IF>
+<IF COND="IsVariable.displayRecommendations=true">
+<THEN>
+	<INPUT TYPE="hidden" NAME="displayRecommendations" VALUE="Variables.displayRecommendations" REPLACEALL="Variables.displayRecommendations"/>
+</THEN>
+</IF>
+<!-- Removed the hidden field called 'StartItem'. It was interfering with the proper retrieval and display of the default values for an asset from the start menu item.
+Besides, its value is already being set as hidden field in OpenMarket/Xcelerate/Actions/NewContentFront.xml, the same element that calls this element -->
+<INPUT TYPE="hidden" NAME="upcommand" VALUE="submit"/>
+<div dojoType="dijit.layout.ContentPane" region="center">
+<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+
+	<!-- page title w/ asset type but no asset name -->
+     <assettype.list LIST="ThisAsset" FIELD1="assettype" VALUE1="Variables.AssetType"/>
+	<tr>
+		<td><span class="title-text"><STRING.STREAM LIST="ThisAsset" COLUMN="description"/></span></td>
+	</tr>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar"/>
+
+	<setvar NAME="errno"  VALUE="0"/>
+  <setvar NAME="errno"  VALUE="0"/>
+	<ATM.LOCATE TYPE="Variables.templatetype" VARNAME="myFieldMgr"/>
+	<COMPLEXASSETS.GETALLASSETS SITE="SessionVariables.pubid" NAME="myFieldMgr" LISTVARNAME="tmpltable"/>
+
+	<if COND="Variables.errno!=0">
+	<then>
+		<tr>
+			<td>
+				<!-- Note: Do nothing more after displaying this message. -->
+				<XLAT.LOOKUP KEY="dvin/FlexibleAssets/Common/MSGDef" VARNAME="MSGDef"/>
+                <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+					<argument NAME="severity" VALUE="warning"/>
+					<argument NAME="msgtext" VALUE="Variables.MSGDef"/>
+				</callelement>
+			</td>
+		</tr>
+	</then>
+
+	<!-- Ask the user to specify a name & choose a Type. -->
+	<else>
+		<COMPLEXASSETS.GETSORTEDLIST NAME="myFieldMgr" LIST="tmpltable" LISTVARNAME="tmpltable"/>
+		<setvar NAME="Tmplexists"  VALUE="true"/>
+
+		<tr>
+			<td>
+				<table border="0" cellpadding="0" cellspacing="0">
+					<tr>
+
+  						<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Name"/>:</td>
+ 						<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+ 						<setvar NAME="flextype"  VALUE="groups"/>
+ 						<ATM.GETASSETS FILTER="com.openmarket.gator.flextemplates.FlexTemplateManager" LISTVARNAME="out"/>
+						<LOOP LIST="out">
+							<IF COND="Variables.templatetype=out.assettype">
+							<THEN>
+								<setvar NAME="flextype" VALUE="asset"/>
+							</THEN>
+							</IF>
+						</LOOP>
+
+            <if COND="IsVariable.flexassets:name=true">
+						<then>
+						     <setvar NAME="ContentDetails:name"  VALUE="Variables.flexassets:name"/>
+						</then>
+						</if>
+						<if COND="IsVariable.flexgroups:name=true">
+						<then>
+						     <setvar NAME="ContentDetails:name"  VALUE="Variables.flexgroups:name"/>
+						</then>
+						</if>
+						<STRING.ENCODE VARIABLE="ContentDetails:name" VARNAME="ContentDetails:nameEnc"/>
+						<PROPERTY.GET PARAM="xcelerate.asset.sizeofnamefield" INIFILE="futuretense_xcel.ini" VARNAME="sizeofnamefield"/>
+						<IF COND="Variables.sizeofnamefield=">
+						<THEN>
+							<SETVAR NAME="sizeofnamefield" VALUE="64"/>
+						</THEN>
+						</IF>
+						<td class="form-inset">
+							<div dojoType="fw.dijit.UIInput" name="flexassets:name" maxLength="Variables.sizeofnamefield" value="Variables.ContentDetails:nameEnc" onKeyPress="DoNothing('Variables.ThisPage')" clearButton="true" REPLACEALL="Variables.sizeofnamefield,Variables.ThisPage,Variables.ContentDetails:nameEnc"></div>
+						</td>
+                       	</tr>
+				  <ASSETTYPE.LOAD NAME="TemplateTypeMgr" TYPE="Variables.templatetype"/>
+					<ASSETTYPE.SCATTER NAME="TemplateTypeMgr" PREFIX="AssetTypeObj"/>
+
+						<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+						<tr>
+							<td class="form-label-text"><span class="alert-color">*</span><STRING.STREAM VARIABLE="AssetTypeObj:description"/>:</td>
+							<td></td>
+							<td class="form-inset">
+								<SELECT NAME="TemplateChosen" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" onChange="GoToNextScreen('Variables.ThisPage')" REPLACEALL="Variables.ThisPage">
+									<OPTION VALUE="" SELECTED=""/><XLAT.STREAM KEY="dvin/AT/Common/chooseatype"/>
+
+									<loop LIST="tmpltable">
+ 									  <ASSET.LOAD NAME="myFieldAsset" TYPE="Variables.templatetype" OBJECTID="tmpltable.assetid"/>
+	                  <ASSET.GET NAME="myFieldAsset" FIELD="name" OUTPUT="Tmplname"/>
+
+ 										<OPTION VALUE="tmpltable.assetid"  REPLACEALL="tmpltable.assetid"/>
+										  <STRING.STREAM VARIABLE="Tmplname"/>
+ 									</loop>
+								</SELECT>
+							</td>
+						</tr>
+
+					<!--   Choose the ruleset type  Advanced UI -->
+
+
+
+ <callelement NAME="OpenMarket/Gator/Util/HasMarketStudio"/>
+
+ <if COND="Variables.hasMarketStudio=true">
+ <then>
+
+  	<INPUT TYPE="HIDDEN" NAME="RuleCreation" VALUE="UI"/>
+		<!--	 Uncomment this when  Advanced Rule creation needs to be supported
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+
+		<TR>
+			<TD>
+				<FONT FACE="Arial, Helvetica" SIZE="2">Pick the type of Rules Creation</FONT>
+			</TD>
+			<TD></TD>
+			<TD>
+				<SELECT NAME="RuleCreation">
+					<OPTION VALUE="" SELECTED="">&lt;Choose a RuleType&gt;</OPTION>
+					<OPTION VALUE="UI"/>UI
+					<OPTION VALUE="Advanced"/>Advanced
+				</SELECT>
+			</TD>
+		</TR>
+		 -->
+		</then>
+		</if>
+
+						<!-- footer bar -->
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+
+		<!-- form buttons -->
+		<tr>
+			<TD></TD><TD></TD>
+			<td>
+				<IF COND="Variables.cs_environment!=ucform">					
+				<THEN>
+					<XLAT.LOOKUP KEY="dvin/UI/Cancel" VARNAME="ForCancel" ESCAPE="true"/>
+					<XLAT.LOOKUP KEY="dvin/UI/Cancel" VARNAME="ForCancelALT"/>
+					<A HREF="javascript:void(0)" onclick="return SetCancelFlag()" onmouseover="window.status='Variables.ForCancel';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables.ForCancel">
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Cancel"/></CALLELEMENT>
+					</A>
+				</THEN>
+				</IF> 	
+				<XLAT.LOOKUP KEY="dvin/AT/Common/Continue" VARNAME="ForContinue" ESCAPE="true"/>
+				<XLAT.LOOKUP KEY="dvin/AT/Common/Continue" VARNAME="ForContinueALT"/>
+                <A HREF="javascript:void(0)" onclick="return GoToNextScreen('Variables.ThisPage')" onmouseover="window.status='Variables.ForContinue';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables.ThisPage,Variables.ForContinue">
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Continue"/></CALLELEMENT>
+				</A>
+			</td>
+		</tr>
+
+				
+				</table>
+			</td>
+		</tr>
+
+	</else>
+	</if>
+
+</table>
+</div>
+</FTCS>
+

@@ -1,0 +1,100 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Page/AttrAppendSelectDetails.xml $ 
+$Revision: 5 $ 
+$Modtime: 2/20/04 6:32p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- DESCRIPTION
+-	 The basic idea: start with a minimum, default
+-    query. Then append additional criteria depending
+-    on fields that have been selected in the search
+-    form
+-
+- HISTORY 
+-->
+
+
+<!-- Set the table name for SQLEXP use -->
+
+<!-- constrain by attributes if necessary -->
+
+<!-- Reduce the call The Attributetype for Felx Definition 
+     will be PageDefinition. No Manager required 
+  
+     <fatm.getattributetype  ASSETTYPE="Variables.AssetType"  VARNAME="attributetype"/> 
+-->    
+<SETVAR NAME="attributetype" VALUE="PageDefinition" />
+
+<ATM.LOCATE TYPE="Variables.attributetype" VARNAME="amgr"/>
+
+<COMPLEXASSETS.GETALLASSETS NAME="amgr" SITE="SessionVariables.pubid" LISTVARNAME="attrlst"/>
+
+<SETVAR NAME="ssCreated" VALUE="0"/>  
+
+<if COND="IsVariable.SelectedAttrs=true">
+<then>
+    <setvar NAME="sMyTmplAttributes"  VALUE="true"/>
+</then>
+</if>
+<if COND="IsVariable.AttrValueBasedSch!=true">
+<then>
+    <IF COND="IsVariable.AttrBasedSch=true">
+    <THEN>
+    	 <callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/AttrStandardConstraintsSch"/>
+    </THEN>
+    
+    <ELSE>
+        <INDEXOF STR="Variables.SelectedAttrs" WHAT="SelectedAttrs" OUTSTR="index" />         
+        <if cond="Variables.index=-1">
+        <then>
+             <callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/AttrRichTextSearch"/>
+        </then>
+        </if>
+    </ELSE>    
+    
+    </IF>
+</then>
+<else>
+ 		<callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/AttrRichTextSearch"/>
+</else>
+</if>
+ <!-- only generate an assetlist if a searchstate has been created -->
+<IF COND="Variables.ssCreated=1"><THEN>
+	<ASSETSET.SETSEARCHEDASSETS NAME="as" SITE="SessionVariables.pubid" ASSETTYPES="Variables.AssetType" CONSTRAINT="rtss"/>
+ 	<ASSETSET.GETASSETLIST NAME="as" LISTVARNAME="asrtlist"/>
+ 
+ <!-- errno -824 is a warning that search is inaccurate due to backend
+      indexing. Need save this err no because it may be overwritten  -->
+     <IF COND="Variables.asyncSearchWarnno=-824">
+     <THEN>
+         <SETVAR NAME="SearchNotUpToDateWarnNo" VALUE="Variables.asyncSearchWarnno"/>
+     </THEN>
+     </IF>
+
+ 	<IF COND="asrtlist.#numRows=0"><THEN>
+		<!-- no matches exist, apply a permanently false condition to query -->
+		<SETVAR NAME="queryend" VALUE="Variables.queryend AND 1 = 0"/>
+ 		<SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND 1= 0"/>
+ 	</THEN><ELSE>
+		<!-- matches exist, apply to query -->
+		<!--  KDW: Changed this so that we wouldn't blow up Oracle; used to be 2000   --> 
+		<textformat.tostring MAXCOUNT="1000" ELLIPSIS="FALSE" LIST="asrtlist" FIELD="assetid" VARNAME="limitlst"/>    
+        
+         <IF COND="IsVariable.limitlst=true">
+        <THEN>
+		    <SETVAR NAME="queryend" VALUE="Variables.queryend AND Variables.AssetType.id IN (Variables.limitlst)"/>
+  		    <SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Variables.AssetType.id IN (Variables.limitlst)"/>
+        </THEN>
+        </IF>
+	</ELSE></IF>
+</THEN></IF>
+ </FTCS>
+

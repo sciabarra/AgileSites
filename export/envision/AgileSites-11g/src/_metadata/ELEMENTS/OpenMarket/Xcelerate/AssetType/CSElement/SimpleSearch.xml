@@ -1,0 +1,190 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/CSElement/SimpleSearch.xml $ 
+$Revision: 7 $ 
+$Modtime: 2/27/04 2:46p $ 
+-->
+<!-- OpenMarket/Xcelerate/AssetType/CSElement/SimpleSearch
+--   Confidential and Proprietary Information of divine,inc.
+--					All Rights Reserved.
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+    <if COND="IsVariable.fields!=true">
+    <then>
+         <setvar NAME="fields"  VALUE="Variables.empty"/>
+    </then>
+    </if>
+     <if COND="IsVariable.SearchString!=true">
+    <then>
+         <setvar NAME="SearchString"  VALUE="Variables.empty"/>
+    </then>
+     </if>
+
+   	<tr>
+        <td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Search"/>:</td>
+        
+        <td NOWRAP="NOWRAP" class="form-inset">
+            <!-- Note this list must match exactly the values in the select named fields -->
+            <INPUT TYPE="HIDDEN" NAME="Name" VALUE=""/>
+            <INPUT TYPE="HIDDEN" NAME="Description" VALUE=""/>
+            <INPUT TYPE="HIDDEN" NAME="UpdatedBy" VALUE=""/>
+ 		<INPUT TYPE="HIDDEN" NAME="Rootelement" VALUE=""/>
+
+            <select name="fields" size="1">
+              <if COND="Variables.fields!=Variables.empty">
+              <then>
+                 <if COND="Variables.fields=Name">
+                 <then>
+                    <option value="Name" selected=""/><XLAT.STREAM KEY="dvin/Common/Name"/>
+                 </then>
+                 <else>
+                    <option value="Name"/><XLAT.STREAM KEY="dvin/Common/Name"/>
+                 </else>
+                 </if>
+                     
+                 <if COND="Variables.fields=Description">
+                 <then>
+                    <option value="Description" selected=""/><XLAT.STREAM KEY="dvin/Common/Description"/>
+                 </then>
+                 <else>
+                    <option value="Description"/><XLAT.STREAM KEY="dvin/Common/Description"/>
+                 </else>
+                 </if>
+                 
+                 
+                 <if COND="Variables.fields=Rootelement">
+                 <then>
+                    <option value="Rootelement" selected=""/><XLAT.STREAM KEY="dvin/Common/AT/ElementCatalogEntryName"/>
+                 </then>
+                 <else>
+                    <option value="Rootelement"/><XLAT.STREAM KEY="dvin/Common/AT/ElementCatalogEntryName"/>
+                 </else>
+                 </if>
+                     
+                 
+                     
+                 <if COND="Variables.fields=UpdatedBy">
+                 <then>
+                    <option value="UpdatedBy" selected=""/><XLAT.STREAM KEY="dvin/UI/Search/Modifiedby"/>
+                 </then>
+                 <else>
+                    <option value="UpdatedBy"/><XLAT.STREAM KEY="dvin/UI/Search/Modifiedby"/>
+                 </else>
+                 </if>
+
+              </then>
+              <else>
+                <option value="Name" selected=""/><XLAT.STREAM KEY="dvin/Common/Name"/>
+                <option value="Description"/><XLAT.STREAM KEY="dvin/Common/Description"/>
+ 		    <option value="Rootelement"/><XLAT.STREAM KEY="dvin/Common/AT/Elementname"/>
+                <option value="UpdatedBy"/><XLAT.STREAM KEY="dvin/UI/Search/Modifiedby"/>
+              </else>
+              </if>
+            </select>
+
+            <span class="form-label-text">&nbsp;<XLAT.STREAM KEY="dvin/UI/Search/for"/>&nbsp;</span>
+            <STRING.ENCODE VARNAME="encSearchString" VARIABLE="SearchString"/>
+            <input name="SearchString" value="Variables.encSearchString" REPLACEALL="Variables.encSearchString" type="text" SIZE="32" />&nbsp;<BR />
+            
+            </td>
+    </tr>
+    			<tr>
+				<!--<td colspan="3" class="light-line-color"><img height="1" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>-->
+			</tr>		
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/UI/ItemsperPageUC"/>:</td><td class="form-inset">
+		    <CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/SearchResultOptions"/></td> </tr> 
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr> 
+            <IF COND="IsVariable.OrderByDesc=true">
+            <THEN>
+			    <STRING.ENCODE VARIABLE="OrderByDesc" VARNAME="OrderByDescEnc"/>
+ 			    <INPUT TYPE="HIDDEN" NAME="OrderByDesc" VALUE="Variables.OrderByDescEnc" REPLACEALL="Variables.OrderByDescEnc"/>
+            </THEN>
+            <ELSE>
+			    <INPUT TYPE="HIDDEN" NAME="OrderByDesc" VALUE=""/>
+            </ELSE>
+            </IF>
+			<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/SortResultsBy"/>:</td><td class="form-inset">
+				
+        <SELECT NAME="OrderBy" onChange="this.form.elements['OrderByDesc'].value=this[this.selectedIndex].text">
+          <IF COND="Variables.OrderBy!=Variables.empty">
+          <THEN>
+                 <IF COND="Variables.OrderBy=CSElement.name">
+                 <THEN>
+ 					<OPTION VALUE="CSElement.name" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/Name"/>
+                 </THEN>
+                 <ELSE>
+  					<OPTION VALUE="CSElement.name"/><XLAT.STREAM KEY="dvin/Common/Name"/>
+                 </ELSE>
+                 </IF>
+			<IF COND="Variables.OrderBy=CSElement.rootelement">
+                 <THEN>
+ 					<OPTION VALUE="CSElement.rootelement" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/AT/ElementCatalogEntryName"/>
+                 </THEN>
+                 <ELSE>
+  					<OPTION VALUE="CSElement.rootelement"/><XLAT.STREAM KEY="dvin/Common/AT/ElementCatalogEntryName"/>
+                 </ELSE>
+                 </IF>
+
+                 <IF COND="Variables.OrderBy=createdby">
+                 <THEN>
+ 					<OPTION VALUE="createdby" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/CreatedBy"/>
+                 </THEN>
+                 <ELSE>
+  					<OPTION VALUE="createdby"/><XLAT.STREAM KEY="dvin/Common/CreatedBy"/>
+                 </ELSE>
+                 </IF>
+                 <IF COND="Variables.OrderBy=createddate DESC">
+                 <THEN>
+ 					<OPTION VALUE="createddate DESC" SELECTED=""/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/>
+                 </THEN>
+                 <ELSE>
+  					<OPTION VALUE="createddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/>
+                 </ELSE>
+                 </IF>
+                 <IF COND="Variables.OrderBy=updatedby">
+                 <THEN>
+ 					<OPTION VALUE="updatedby" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/ModifiedBy"/>
+                 </THEN>
+                 <ELSE>
+  					<OPTION VALUE="updatedby"/><XLAT.STREAM KEY="dvin/Common/ModifiedBy"/>
+                 </ELSE>
+                 </IF>
+                 <IF COND="Variables.OrderBy=updateddate DESC">
+                 <THEN>
+ 					<OPTION VALUE="updateddate DESC" SELECTED=""/><XLAT.STREAM KEY="dvin/UI/Search/ModifiedDate"/>
+                 </THEN>
+                 <ELSE>
+  					<OPTION VALUE="updateddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/ModifiedDate"/>
+                 </ELSE>
+                 </IF>
+  
+                 
+          </THEN>
+          <ELSE>
+					<OPTION VALUE="CSElement.name" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/Name"/>
+					<OPTION VALUE="CSElement.rootelement"/><XLAT.STREAM KEY="dvin/Common/AT/ElementCatalogEntryName"/>
+					<OPTION VALUE="createdby"/><XLAT.STREAM KEY="dvin/Common/CreatedBy"/>
+					<OPTION VALUE="createddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/>
+					<OPTION VALUE="updatedby"/><XLAT.STREAM KEY="dvin/Common/ModifiedBy"/>
+					<OPTION VALUE="updateddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/ModifiedDate"/>         
+          </ELSE>
+          </IF>
+	    </SELECT>
+
+				</td>
+			</tr>
+
+
+
+
+</FTCS> 
+

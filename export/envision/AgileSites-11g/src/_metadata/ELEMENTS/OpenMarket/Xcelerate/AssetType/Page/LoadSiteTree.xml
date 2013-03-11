@@ -1,0 +1,1006 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Page/LoadSiteTree
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+<!-- The _enableForms property enables/disables following assettypes from the advanced ui.
+	- All Flex assets and their parent assets
+	- All basic assets
+	- Engage assets like Recommendation, Segment and Promotion
+	- Special assets like Query and Collection
+	-->
+
+<IF COND="Variables.cs_environment=ucform">
+<THEN>
+	<IF COND="Variables.op=init">
+    <THEN>				
+	    <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/LoadSiteTreeRoots"/>	
+	 </THEN>
+	 <ELSE>
+	     <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/LoadSiteTreeNodes"/>	
+	 </ELSE>
+	 </IF>
+</THEN>	
+<ELSE>	
+	
+<PROPERTY.GET PARAM="advancedUI.enableAssetForms" INIFILE="futuretense_xcel.ini" VARNAME="_enableForms"/>
+<IF COND="Variables.command!=GetTypes">
+<THEN>
+	<!-- decide load root or load non-root -->
+	<if COND="Variables.op=init">
+	<then>
+		<PUBLICATION.LOAD NAME="publication" FIELD="id" VALUE="SessionVariables.pubid"/>
+		<!-- pubname is used inside "dvin/TreeApplet/PubnameSite" -->
+		<PUBLICATION.GET NAME="publication" FIELD="name" OUTPUT="pubname"/>
+		<PUBLICATION.GET NAME="publication" FIELD="description" OUTPUT="pubdesc"/>
+		
+		<REMOVEVAR NAME="LoadURL"/>
+		<REMOVEVAR NAME="ExecuteURL"/>
+		<REMOVEVAR NAME="executeFunction" />
+
+		<callelement NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+			<argument NAME="AdHoc" VALUE="SiteName"/>
+			<argument NAME="TreeNodeID" VALUE="Variables.empty"/>
+		</callelement>
+
+		<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="TreeOpURL">
+			<satellite.argument name="AssetType" value="Variables.AssetType"/>
+		</SATELLITE.LINK>
+
+		<XLAT.LOOKUP KEY="dvin/TreeApplet/PubnameSite" ENCODE="false" VARNAME="_XLAT_"/>
+		<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+			<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+			<ARGUMENT NAME="Description" VALUE="Variables.pubdesc"/>
+			<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+			<!-- LoadURL,ExecuteURL implicitly passed in -->
+			<ARGUMENT NAME="OpURL" VALUE="Variables.TreeOpURL"/>
+			<ARGUMENT NAME="OKActions" VALUE="PlacePage;refresh"/>
+			
+			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/siteplan.png"/>
+		</CALLELEMENT>
+		<!-- make Placed Pages and Unplaced Pages dummy nodes -->
+	
+		<SITEPLAN.ROOT LIST="PubRoot" OBJECTID="SessionVariables.pubid"/>
+	
+		<setvar NAME="tablename" VALUE="SitePlanTree"/>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+			<ARGUMENT NAME="type" VALUE="Long"/>
+		</CALLELEMENT>
+		<IF COND="Variables.validatedstatus=true">
+		<THEN>
+			<execsql LIST="mylist"
+				SQL="SELECT COUNT(*) as mycount
+				FROM  SitePlanTree
+				WHERE nparentid = PubRoot.nid 
+				AND ncode = 'Placed'"/>
+		</THEN>
+		</IF>
+		<REMOVEVAR NAME="LoadURL"/>
+		<REMOVEVAR NAME="ExecuteURL"/>
+		<IF COND="IsList.mylist=true">
+		<THEN>
+			<IF COND="mylist.mycount!=0">
+			<THEN>
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+					<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/Variables.AssetType/LoadSiteTree"/>
+					<satellite.argument name="op" value="load"/>
+					<satellite.argument name="loadpages" value="Placed"/>
+				</SATELLITE.LINK>
+			</THEN>
+			</IF>
+		</THEN>
+		</IF>
+
+		<callelement NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+			<argument NAME="AdHoc" VALUE="PlacedPages"/>
+			<argument NAME="TreeNodeID" VALUE="Variables.empty"/>
+		</callelement>
+	
+		<XLAT.LOOKUP KEY="dvin/TreeApplet/PlacedPages" ENCODE="false" VARNAME="_XLAT_"/>
+		<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+			<satellite.argument name="AssetType" value="Variables.AssetType"/>
+		</SATELLITE.LINK>
+
+		<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+			<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+			<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+			<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+			<!-- LoadURL,ExecuteURL implicitly passed in -->
+			<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+			<ARGUMENT NAME="OKActions" VALUE="PlacePage;refresh"/>
+			
+			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/placedpage.png"/>
+			<ARGUMENT NAME="RefreshKeys" VALUE="PlacedPages"/>
+		</CALLELEMENT>
+		
+		<setvar NAME="tablename" VALUE="SitePlanTree"/>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+			<ARGUMENT NAME="type" VALUE="Long"/>
+		</CALLELEMENT>
+		<IF COND="Variables.validatedstatus=true">
+		<THEN>
+			<execsql LIST="mylist"
+				SQL="SELECT COUNT(*) as mycount
+				FROM  SitePlanTree
+				WHERE nparentid = PubRoot.nid 
+				AND ncode = 'UnPlaced'"/>
+		</THEN>
+		</IF>
+		<REMOVEVAR NAME="LoadURL"/>
+		<REMOVEVAR NAME="ExecuteURL"/>
+		<IF COND="IsList.mylist=true">
+		<THEN>
+			<IF COND="mylist.mycount!=0">
+			<THEN>
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+					<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/Variables.AssetType/LoadSiteTree"/>
+					<satellite.argument name="op" value="load"/>
+					<satellite.argument name="loadpages" value="Unplaced"/>
+				</SATELLITE.LINK>
+			</THEN>
+			</IF>
+		</THEN>
+		</IF>
+		
+		<callelement NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+			<argument NAME="AdHoc" VALUE="UnplacedPages"/>
+			<argument NAME="TreeNodeID" VALUE="Variables.empty"/>
+		</callelement>
+		
+		<XLAT.LOOKUP KEY="dvin/TreeApplet/UnplacedPages" ENCODE="false" VARNAME="_XLAT_"/>
+		
+		<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+			<satellite.argument name="AssetType" value="Variables.AssetType"/>
+		</SATELLITE.LINK>
+		
+		<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+			<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+			<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+			<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+			<!-- LoadURL,ExecuteURL implicitly passed in -->
+			<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+ 			<ARGUMENT NAME="OKActions" VALUE="refresh"/>
+ 			
+			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/unplacedpage.png"/>
+			<ARGUMENT NAME="RefreshKeys" VALUE="UnplacedPages"/>
+		</CALLELEMENT>
+	</then>
+	<else>
+		<!-- Load operation -->
+		<SETVAR NAME="loadexecuted" VALUE="false"/>
+		
+		<!-- We arrive here if we are displaying the contents of the 'placed' or 'unplaced' node in the tree -->
+		<if COND="Variables.loadpages=Placed">
+		<then>
+						
+			<!-- Signal that we handled the request -->
+			<SETVAR NAME="loadexecuted" VALUE="true"/>
+			
+			<!-- expand the Placed Pages dummy node -->
+			
+			<!-- Beware, the list of placed pages can be long, so check its count first -->
+			<SITEPLAN.ROOT LIST="PubRoot" OBJECTID="SessionVariables.pubid"/>
+			
+			<!-- Decide whether we need to generate a dummy node or not -->
+			<setvar NAME="needdummynode" VALUE="false"/>
+			<if COND="Variables.id!=toomanycatalog">
+			<then>
+				<setvar NAME="nodecount" VALUE="0"/>
+				<setvar NAME="tablename" VALUE="SitePlanTree"/>
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+					<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+					<ARGUMENT NAME="type" VALUE="Long"/>
+				</CALLELEMENT>
+				<IF COND="Variables.validatedstatus=true">
+				<THEN>
+					<execsql LIST="mylist"
+						SQL="SELECT COUNT(*) as mycount
+						FROM  SitePlanTree
+						WHERE nparentid = PubRoot.nid 
+						AND ncode = 'Placed'"/>
+				</THEN>
+				</IF>
+				<IF COND="IsList.mylist=true">
+				<THEN>
+					<IF COND="mylist.mycount!=0">
+					<THEN>
+						<setvar NAME="nodecount" VALUE="mylist.mycount"/>
+					</THEN>
+					</IF>
+				</THEN>
+				</IF>
+				<!-- If the count is too big, emit a dummy node instead, where search criteria can be supplied -->
+				<callelement NAME="OpenMarket/Xcelerate/Util/LoadProperty">
+					<argument NAME="property" VALUE="xcelerate.treeMaxNodes"/>
+					<argument NAME="ini" VALUE="futuretense_xcel.ini"/>
+					<argument NAME="varname" VALUE="TOOMANY"/>
+				</callelement>
+				
+				<!-- compare rootCount and TooMany, return dummy node if COUNT is larger-->
+				<CALCULATOR.GO VALUE="Variables.nodecount Variables.TOOMANY GT" VARNAME="ANS"/>
+			
+				<if COND="Variables.ANS=1">
+				<then>
+					<setvar NAME="needdummynode" VALUE="true"/>
+				</then>
+				</if>
+			</then>
+			</if>
+			
+			<!-- If the count is too big, emit a dummy node instead, where search criteria can be supplied -->
+			<if COND="Variables.needdummynode=true">
+			<then>
+				<REMOVEVAR NAME="Image"/>
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+					<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/Variables.AssetType/LoadSiteTree"/>
+					<satellite.argument name="id" value="toomanycatalog"/>
+					<satellite.argument name="op" value="load"/>
+					<satellite.argument name="loadpages" value="Placed"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+					<satellite.argument name="AssetType" value="Variables.AssetType"/>
+				</SATELLITE.LINK>
+
+				<SETVAR NAME="SelCatForNode" VALUE=""/>
+				<XLAT.LOOKUP KEY="dvin/UI/SelCatalog" ENCODE="false" VARNAME="SelCatForNode"/>
+
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Variables.SelCatForNode"/>
+					<ARGUMENT NAME="Description" VALUE="Select from Variables.nodecount pages"/>
+					<ARGUMENT NAME="ID" VALUE="toomanycatalog"/>
+					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
+					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.empty"/>
+					<ARGUMENT NAME="OKActions" VALUE="refresh"/>
+				</CALLELEMENT>
+			</then>
+			<else>
+				<!-- No restrictions on the nodes we display - but we *may* need to take into account search criteria -->
+				<!-- check if DUMMY root node is previously loaded -->
+				<if COND="Variables.id=toomanycatalog">
+				<then>
+					<!-- not sure how the mode variable gets set, but if it IS set, we need the 'too many items' dialog instead of any actual nodes -->
+					<if COND="IsVariable.mode!=true">
+					<then>
+						<setvar NAME="nodecount" VALUE="0"/>
+						<setvar NAME="tablename" VALUE="SitePlanTree"/>
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+							<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+							<ARGUMENT NAME="type" VALUE="Long"/>
+						</CALLELEMENT>
+						<IF COND="Variables.validatedstatus=true">
+						<THEN>
+							<execsql LIST="mylist"
+								SQL="SELECT COUNT(*) as mycount
+								FROM  SitePlanTree
+								WHERE nparentid = PubRoot.nid 
+								AND ncode = 'Placed'"/>
+						</THEN>
+						</IF>
+						<IF COND="IsList.mylist=true">
+						<THEN>
+							<IF COND="mylist.mycount!=0">
+							<THEN>
+								<setvar NAME="nodecount" VALUE="mylist.mycount"/>
+							</THEN>
+							</IF>
+						</THEN>
+						</IF>
+						<STRING.LENGTH VALUE="Variables.nodecount" VARNAME="length"/>
+						Status:12:tooManyItems:Count:<STRING.STREAM VALUE="Variables.length:Variables.nodecount:"/>END:3:END:
+						<throwexception/>
+					</then>
+					</if>
+					<!-- else modify criteria and load selected roots -->
+					<setvar NAME="namematch" VALUE="%Variables.criteria%"/> 
+					<BEGINS STR="Variables.criteria" WHAT="%"/>
+					<if COND="Variables.errno=1">
+					<then>
+						<setvar NAME="namematch" VALUE="Variables.criteria"/>
+					</then>
+					</if>
+					<ENDS STR="Variables.criteria" WHAT="%"/>
+					<if COND="Variables.errno=1">
+					<then>
+						<setvar NAME="namematch" VALUE="Variables.criteria"/>
+					</then>
+					</if>
+					<if COND="Variables.criteria=%">
+					<then>
+						<setvar NAME="namematch" VALUE="%"/>
+					</then>
+					</if>
+
+					<!-- Grab only the matching nodes -->
+					<setvar NAME="tablename" VALUE="SitePlanTree"/>
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+						<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+						<ARGUMENT NAME="type" VALUE="Long"/>
+					</CALLELEMENT>
+					<IF COND="Variables.validatedstatus=true">
+					<THEN>
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+							<ARGUMENT NAME="columnvalue" VALUE="Variables.namematch"/>
+							<ARGUMENT NAME="type" VALUE="String"/>
+						</CALLELEMENT>
+						<IF COND="Variables.validatedstatus=true">
+						<THEN>
+							<execsql LIST="children"
+								TABLE="SitePlanTree,Page"
+								SQL="SELECT t0.*
+								FROM  SitePlanTree t0, Page t1
+								WHERE t0.otype='Page'
+								AND t0.oid=t1.id
+								AND t0.nparentid = PubRoot.nid
+								AND t0.ncode = 'Placed'
+								AND t1.name LIKE 'Variables.namematch'
+								ORDER BY t0.nrank ASC"/>
+						</THEN>
+						</IF>
+					</THEN>
+					</IF>
+				</then>
+				<else>
+					<!-- No special criteria; just grab all the nodes -->
+					<SITEPLAN.LOAD NAME="thePubNode" NODEID="PubRoot.nid"/>
+					<SITEPLAN.CHILDREN NAME="thePubNode" LIST="children" CODE="Placed" ORDER="nrank"/>
+				</else>
+				</if>
+				
+				<IF COND="IsList.children=true">
+				<THEN>
+					<IF COND="children.#numRows!=0">
+					<THEN>
+						<LOOP LIST="children">
+							<SITEPLAN.LOAD NAME="thePage" NODEID="children.nid"/>
+							<ASSET.LOAD NAME="currentChild" TYPE="children.otype" OBJECTID="children.oid"/>
+							<ASSET.GET NAME="currentChild" FIELD="name" OUTPUT="currentName"/>
+							<ASSET.GET NAME="currentChild" FIELD="description" OUTPUT="currentDesc"/>
+							<SITEPLAN.CHILDREN NAME="thePage" LIST="grandchildren" CODE="Placed" ORDER="nrank"/>
+							<ASSET.CHILDREN NAME="currentChild" LIST="relatedchildren"/>
+							
+							<REMOVEVAR NAME="LoadURL"/>
+							<IF COND="IsList.grandchildren=true">
+							<THEN>
+								<IF COND="grandchildren.#numRows!=0">
+								<THEN>
+									<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+										<satellite.argument name="AssetType" value="children.otype"/>
+										<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/children.otype/LoadSiteTree"/>
+										<satellite.argument name="op" value="load"/>
+										<satellite.argument name="loadpages" value="children.nid"/>
+									</SATELLITE.LINK>
+								</THEN>
+								</IF>
+							</THEN>
+							</IF>
+							<IF COND="IsList.relatedchildren=true">
+							<THEN>
+								<IF COND="relatedchildren.#numRows!=0">
+								<THEN>
+									<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+										<satellite.argument name="AssetType" value="children.otype"/>
+										<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/children.otype/LoadSiteTree"/>
+										<satellite.argument name="op" value="load"/>
+										<satellite.argument name="loadpages" value="children.nid"/>
+									</SATELLITE.LINK>
+									
+								</THEN>
+								</IF>
+							</THEN>
+							</IF>
+									<!--  Any  children references attribute -->	
+							<IF COND="IsVariable.LoadURL=false">
+							<THEN>			
+				 				<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/GetChildrenReferences">
+								    <ARGUMENT NAME="cid" VALUE="children.oid "/>				
+				 				</CALLELEMENT>
+			     
+			     				<IF COND="IsList.ChildrenReferences=true">
+				 				<THEN>	
+				 	   				 <SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+										<satellite.argument name="AssetType" value="children.otype"/>
+										<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/children.otype/LoadSiteTree"/>
+										<satellite.argument name="op" value="load"/>
+										<satellite.argument name="loadpages" value="children.nid"/>
+									</SATELLITE.LINK>	
+									
+								
+				 				</THEN>					
+							 	</IF>				 	
+  							</THEN>
+							</IF>
+							<SETVAR NAME="oldat" VALUE="Variables.AssetType"/>
+							
+							
+							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+								<ARGUMENT NAME="ID" VALUE="children.oid"/>
+								<ARGUMENT NAME="AssetType" VALUE="children.otype"/>
+								<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+							</CALLELEMENT>
+							<SETVAR NAME="AssetType" VALUE="Variables.oldat"/>
+							<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="ExecuteURL">
+								<satellite.argument name="AssetType" value="children.otype"/>
+								<satellite.argument name="n0_" value="Variables.TreeNodeID"/>
+								<satellite.argument name="op" value="displayNode"/>
+							</SATELLITE.LINK>
+
+							<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+								<satellite.argument name="AssetType" value="children.otype"/>
+							</SATELLITE.LINK>
+
+							<REMOVEVAR NAME="PreviewURL"/>
+							<PREVIEWURL.MAKEURL VARNAME="PreviewURL" ASSETTYPE="children.otype" ASSETID="children.oid" PUBID="SessionVariables.pubid"/>
+							<if cond="Variables._enableForms!=true">
+							<then>
+								<callelement NAME="OpenMarket/Xcelerate/Util/CheckTypeForGenerateLink">
+									<argument NAME="assettype" VALUE="children.otype"/>
+								</callelement>
+							</then>
+							</if>
+							<if cond="Variables.navigateLink=true">
+							<then>
+								<if cond="Variables.cs_environment=ucform">
+								<then>
+									<setvar name="OKActions" value="Status;Inspect;Edit;Preview;Delete;PlacePage;refresh"/>
+								</then>
+								<else>
+									<setvar name="OKActions" value="Inspect;Preview;PlacePage;refresh"/>
+								</else>
+								</if>
+							</then>
+							<else>
+								<setvar name="OKActions" value="Status;Inspect;Edit;Preview;Delete;PlacePage;refresh"/>
+							</else>
+							</if>
+							
+							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+								<ARGUMENT NAME="Label" VALUE="Variables.currentName"/>
+								<ARGUMENT NAME="Description" VALUE="Variables.currentDesc"/>
+								<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+								<!-- LoadURL implicitly passed in -->
+								<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+								<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+								<!-- PreviewURL implicitly passed in -->
+								<ARGUMENT NAME="OKActions" VALUE="Variables.OKActions"/>
+								
+								<ARGUMENT NAME="executeFunction" VALUE="inspect" />
+								<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/children.otype.png"/>
+								   <ARGUMENT NAME="RefreshKeys" VALUE="children.oid;children.nid"/> 
+							</CALLELEMENT>
+						</LOOP>
+					</THEN>
+					</IF>
+				</THEN>
+				</IF>
+			</else>
+			</if>
+		</then>
+		</if>
+		
+		<if COND="Variables.loadpages=Unplaced">
+		<then>
+			<!-- Signal that we handled the request -->
+			<SETVAR NAME="loadexecuted" VALUE="true"/>
+			
+			<!-- expand the Unplaced Pages dummy node -->
+			<!-- Beware, the count of unplaced pages can be long, so check its count first -->
+			<SITEPLAN.ROOT LIST="PubRoot" OBJECTID="SessionVariables.pubid"/>
+			
+			<!-- Decide whether we need to generate a dummy node or not -->
+			<setvar NAME="needdummynode" VALUE="false"/>
+			<if COND="Variables.id!=toomanycatalog">
+			<then>
+				<setvar NAME="nodecount" VALUE="0"/>
+				<setvar NAME="tablename" VALUE="SitePlanTree"/>
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+					<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+					<ARGUMENT NAME="type" VALUE="Long"/>
+				</CALLELEMENT>
+				<IF COND="Variables.validatedstatus=true">
+				<THEN>
+					<execsql LIST="mylist"
+						SQL="SELECT COUNT(*) as mycount
+						FROM  SitePlanTree
+						WHERE nparentid = PubRoot.nid 
+						AND ncode = 'UnPlaced'"/>
+				</THEN>
+				</IF>
+				<IF COND="IsList.mylist=true">
+				<THEN>
+					<IF COND="mylist.mycount!=0">
+					<THEN>
+						<setvar NAME="nodecount" VALUE="mylist.mycount"/>
+					</THEN>
+					</IF>
+				</THEN>
+				</IF>
+
+				<!-- If the count is too big, emit a dummy node instead, where search criteria can be supplied -->
+				<callelement NAME="OpenMarket/Xcelerate/Util/LoadProperty">
+					<argument NAME="property" VALUE="xcelerate.treeMaxNodes"/>
+					<argument NAME="ini" VALUE="futuretense_xcel.ini"/>
+					<argument NAME="varname" VALUE="TOOMANY"/>
+				</callelement>
+				
+				<!-- compare nodecount and TooMany, return dummy node if COUNT is larger-->
+				<CALCULATOR.GO VALUE="Variables.nodecount Variables.TOOMANY GT" VARNAME="ANS"/>
+			
+				<if COND="Variables.ANS=1">
+				<then>
+					<setvar NAME="needdummynode" VALUE="true"/>
+				</then>
+				</if>
+			</then>
+			</if>
+			
+			<if COND="Variables.needdummynode=true">
+			<then>
+				<REMOVEVAR NAME="Image"/>
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+					<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/Variables.AssetType/LoadSiteTree"/>
+					<satellite.argument name="id" value="toomanycatalog"/>
+					<satellite.argument name="op" value="load"/>
+					<satellite.argument name="loadpages" value="Unplaced"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+					<satellite.argument name="AssetType" value="Variables.AssetType"/>
+				</SATELLITE.LINK>
+
+				<SETVAR NAME="SelCatForNode" VALUE=""/>
+				<XLAT.LOOKUP KEY="dvin/UI/SelCatalog" ENCODE="false" VARNAME="SelCatForNode"/>
+
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Variables.SelCatForNode"/>
+					<ARGUMENT NAME="Description" VALUE="Select from Variables.nodecount pages"/>
+					<ARGUMENT NAME="ID" VALUE="toomanycatalog"/>
+					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
+					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.empty"/>
+					<ARGUMENT NAME="OKActions" VALUE="refresh"/>
+				</CALLELEMENT>
+			</then>
+			<else>
+				<!-- No restrictions on the nodes we display - but we *may* need to take into account search criteria -->
+				
+				<!-- check if DUMMY root node is previously loaded -->
+				<if COND="Variables.id=toomanycatalog">
+				<then>
+					<!-- not sure how the mode variable gets set, but if it IS set, we need the 'too many items' dialog instead of any actual nodes -->
+					<if COND="IsVariable.mode!=true">
+					<then>
+						<setvar NAME="nodecount" VALUE="0"/>
+						<setvar NAME="tablename" VALUE="SitePlanTree"/>
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+							<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+							<ARGUMENT NAME="type" VALUE="Long"/>
+						</CALLELEMENT>
+						<IF COND="Variables.validatedstatus=true">
+						<THEN>
+							<execsql LIST="mylist"
+								SQL="SELECT COUNT(*) as mycount
+								FROM  SitePlanTree
+								WHERE nparentid = PubRoot.nid 
+								AND ncode = 'UnPlaced'"/>
+						</THEN>
+						</IF>
+						<IF COND="IsList.mylist=true">
+						<THEN>
+							<IF COND="mylist.mycount!=0">
+							<THEN>
+								<setvar NAME="nodecount" VALUE="mylist.mycount"/>
+							</THEN>
+							</IF>
+						</THEN>
+						</IF>
+						<STRING.LENGTH VALUE="Variables.nodecount" VARNAME="length"/>
+						Status:12:tooManyItems:Count:<STRING.STREAM VALUE="Variables.length:Variables.nodecount:"/>END:3:END:
+						<throwexception/>
+					</then>
+					</if>
+					<!-- else modify criteria and load selected roots -->
+					<setvar NAME="namematch" VALUE="%Variables.criteria%"/> 
+					<BEGINS STR="Variables.criteria" WHAT="%"/>
+					<if COND="Variables.errno=1">
+					<then>
+						<setvar NAME="namematch" VALUE="Variables.criteria"/>
+					</then>
+					</if>
+					<ENDS STR="Variables.criteria" WHAT="%"/>
+					<if COND="Variables.errno=1">
+					<then>
+						<setvar NAME="namematch" VALUE="Variables.criteria"/>
+					</then>
+					</if>
+					<if COND="Variables.criteria=%">
+					<then>
+						<setvar NAME="namematch" VALUE="%"/>
+					</then>
+					</if>
+
+					<!-- Grab only the matching nodes -->
+					<setvar NAME="tablename" VALUE="SitePlanTree"/>
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+						<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+						<ARGUMENT NAME="type" VALUE="Long"/>
+					</CALLELEMENT>
+					<IF COND="Variables.validatedstatus=true">
+					<THEN>
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+							<ARGUMENT NAME="columnvalue" VALUE="Variables.namematch"/>
+							<ARGUMENT NAME="type" VALUE="String"/>
+						</CALLELEMENT>
+						<IF COND="Variables.validatedstatus=true">
+						<THEN>
+							<execsql LIST="children"
+								TABLE="SitePlanTree,Page"
+								SQL="SELECT t0.*
+								FROM  SitePlanTree t0, Page t1
+								WHERE t0.otype='Page'
+								AND t0.oid=t1.id
+								AND t0.nparentid = PubRoot.nid
+								AND t0.ncode = 'UnPlaced'
+								AND t1.name LIKE 'Variables.namematch'
+								ORDER BY t1.name"/>
+						</THEN>
+						</IF>
+					</THEN>
+					</IF>
+				</then>
+				<else>
+					<!-- No special criteria; just grab all the nodes -->
+                    <!--SITEPLAN.CHILDREN NAME="thePubNode" LIST="children" CODE="UnPlaced" ORDER="nrank"/-->
+                    <setvar NAME="tablename" VALUE="SitePlanTree"/>
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+						<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+						<ARGUMENT NAME="type" VALUE="Long"/>
+					</CALLELEMENT>
+					<IF COND="Variables.validatedstatus=true">
+					<THEN>
+						<execsql LIST="children" TABLE="SitePlanTree,Page" SQL="select siteplantree.nid,siteplantree.otype,siteplantree.oid from siteplantree,Page 
+							where siteplantree.nparentid = PubRoot.nid and
+							siteplantree.otype='Page' and siteplantree.ncode='UnPlaced'  and 
+							siteplantree.oid=Page.id and Page.status !='VO' order by Page.name" />
+					</THEN>
+					</IF>
+				</else>
+				</if>
+				
+				<IF COND="IsList.children=true">
+				<THEN>
+					<IF COND="children.#numRows!=0">
+					<THEN>
+						<LOOP LIST="children">
+							<SITEPLAN.LOAD NAME="thePage" NODEID="children.nid"/>
+							<ASSET.LOAD NAME="currentChild" TYPE="children.otype" OBJECTID="children.oid"/>
+							<ASSET.GET NAME="currentChild" FIELD="name" OUTPUT="currentName"/>
+							<ASSET.GET NAME="currentChild" FIELD="description" OUTPUT="currentDesc"/>
+							<SITEPLAN.CHILDREN NAME="thePage" LIST="grandchildren" ORDER="nrank"/>
+							<ASSET.CHILDREN NAME="currentChild" LIST="relatedchildren"/>
+								
+							<REMOVEVAR NAME="LoadURL"/>
+							<IF COND="IsList.grandchildren=true">
+							<THEN>
+								<IF COND="grandchildren.#numRows!=0">
+								<THEN>
+									<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+										<satellite.argument name="AssetType" value="children.otype"/>
+										<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/children.otype/LoadSiteTree"/>
+										<satellite.argument name="op" value="load"/>
+										<satellite.argument name="loadpages" value="children.nid"/>
+									</SATELLITE.LINK>
+								</THEN>
+								</IF>
+							</THEN>
+							</IF>
+							<IF COND="IsList.relatedchildren=true">
+							<THEN>
+								<IF COND="relatedchildren.#numRows!=0">
+								<THEN>
+									<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+										<satellite.argument name="AssetType" value="children.otype"/>
+										<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/children.otype/LoadSiteTree"/>
+										<satellite.argument name="op" value="load"/>
+										<satellite.argument name="loadpages" value="children.nid"/>
+									</SATELLITE.LINK>
+								</THEN>
+								</IF>
+							</THEN>
+							</IF>
+							
+								<!--  Any  children references attribute -->	
+							<IF COND="IsVariable.LoadURL=false">
+							<THEN>			
+				 				<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/GetChildrenReferences">
+								<ARGUMENT NAME="cid" VALUE="children.oid "/>				
+				 				</CALLELEMENT>
+			     
+			     				<IF COND="IsList.ChildrenReferences=true">
+				 				<THEN>	
+				 	   				 <SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+										<satellite.argument name="AssetType" value="children.otype"/>
+										<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/children.otype/LoadSiteTree"/>
+										<satellite.argument name="op" value="load"/>
+										<satellite.argument name="loadpages" value="children.nid"/>
+									</SATELLITE.LINK>	
+				 				</THEN>					
+							 	</IF>				 	
+  							</THEN>
+							</IF>
+										
+							<SETVAR NAME="oldat" VALUE="Variables.AssetType"/>
+							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+								<ARGUMENT NAME="ID" VALUE="children.oid"/>
+								<ARGUMENT NAME="AssetType" VALUE="children.otype"/>
+								<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+							</CALLELEMENT>
+							<SETVAR NAME="AssetType" VALUE="Variables.oldat"/>
+							<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="ExecuteURL">
+								<satellite.argument name="AssetType" value="children.otype"/>
+								<satellite.argument name="n0_" value="Variables.TreeNodeID"/>
+								<satellite.argument name="op" value="displayNode"/>
+							</SATELLITE.LINK>
+							
+							<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+								<satellite.argument name="AssetType" value="children.otype"/>
+							</SATELLITE.LINK>
+							
+							<REMOVEVAR NAME="PreviewURL"/>
+							<PREVIEWURL.MAKEURL VARNAME="PreviewURL" ASSETTYPE="children.otype" ASSETID="children.oid" PUBID="SessionVariables.pubid"/>
+							<if cond="Variables._enableForms!=true">
+							<then>
+								<callelement NAME="OpenMarket/Xcelerate/Util/CheckTypeForGenerateLink">
+									<argument NAME="assettype" VALUE="children.otype"/>
+								</callelement>
+							</then>
+							</if>
+							<if cond="Variables.navigateLink=true">
+							<then>
+								<if cond="Variables.cs_environment=ucform">
+								<then>
+									<setvar name="OKActions" value="Status;Inspect;Edit;Preview;Delete;refresh"/>
+								</then>
+								<else>
+									<setvar name="OKActions" value="Inspect;Preview;refresh"/>
+								</else>
+								</if>
+							</then>
+							<else>
+								<setvar name="OKActions" value="Status;Inspect;Edit;Preview;Delete;refresh"/>
+							</else>
+							</if>
+							<STRING.ENCODE VARIABLE="currentName" VARNAME="currentName"/>
+							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+								<ARGUMENT NAME="Label" VALUE="Variables.currentName"/>
+								<ARGUMENT NAME="Description" VALUE="Variables.currentDesc"/>
+								<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+								<!-- LoadURL implicitly passed in -->
+								<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+								<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+								<!-- PreviewURL implicitly passed in -->
+								<ARGUMENT NAME="OKActions" VALUE="Variables.OKActions"/>
+								
+								<ARGUMENT NAME="executeFunction" VALUE="inspect" />
+								<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/children.otype.png"/>
+								   <ARGUMENT NAME="RefreshKeys" VALUE="children.oid;children.nid"/>  
+								<!-- <ARGUMENT NAME="RefreshKeys" VALUE="children.oid"/> -->
+							</CALLELEMENT>
+						</LOOP>
+					</THEN>
+					</IF>
+				</THEN>
+				</IF>
+			</else>
+			</if>
+		</then>
+		</if>
+		
+		<if COND="Variables.loadexecuted=false">
+		<then>
+			<!-- Default clause: execute this one if nothing else matches -->
+			
+			<!-- expand an actual asset node -->
+			<!-- if asset type can be part of the SitePlanTree (Page right now) then
+				 need to get site children and also asset children.  For other types
+				 we just need asset children. -->
+				
+			<SETVAR NAME="assetid" VALUE="Variables.loadpages"/>
+				
+			<!-- for now hardcode Page check until I know how to distinguish -->
+					
+			<IF COND="Variables.AssetType=Page">
+			<THEN>
+				<SITEPLAN.LOAD NAME="thePage" NODEID="Variables.assetid"/>							
+				<SITEPLAN.GET NAME="thePage" FIELD="oid" OUTPUT="assetid"/>							 										
+				
+				
+				<SITEPLAN.CHILDREN NAME="thePage" LIST="children" ORDER="nrank"/>
+										
+				<IF COND="IsList.children=true">
+				<THEN>
+					<IF COND="children.#numRows!=0">
+					<THEN>
+						<LOOP LIST="children">
+							<SITEPLAN.LOAD NAME="thePage" NODEID="children.nid"/>
+							<ASSET.LOAD NAME="currentChild" TYPE="children.otype" OBJECTID="children.oid"/>
+							<ASSET.GET NAME="currentChild" FIELD="name" OUTPUT="currentName"/>
+							<ASSET.GET NAME="currentChild" FIELD="description" OUTPUT="currentDesc"/>
+							<SITEPLAN.CHILDREN NAME="thePage" LIST="grandchildren" ORDER="nrank"/>
+							<!-- detect whether we are in Placed or Unplaced section of tree -->
+							<SITEPLAN.NODEPATH NAME="thePage" LIST="myAncestors"/>
+							<GOTOROW LIST="myAncestors" ROWNUM="myAncestors.#numRows"/>
+							<SETROW LIST="myAncestors" ACTION="PREV"/>
+							<if cond="Variables._enableForms!=true">
+							<then>
+								<callelement NAME="OpenMarket/Xcelerate/Util/CheckTypeForGenerateLink">
+									<argument NAME="assettype" VALUE="Variables.AssetType"/>
+								</callelement>
+							</then>
+							</if>
+							<if cond="Variables.navigateLink=true">
+							<then>
+								<if cond="Variables.cs_environment=ucform">
+								<then>
+									<if cond="myAncestors.ncode=UnPlaced">
+									<then>
+										<setvar name="OKActions" value="Status;Inspect;Edit;Preview;Delete;refresh"/>
+									</then>
+									<else>
+										<setvar name="OKActions" value="Status;Inspect;Edit;Preview;Delete;PlacePage;refresh"/>
+									</else>
+									</if>
+								</then>
+								<else>
+									<if cond="myAncestors.ncode=UnPlaced">
+									<then>
+										<setvar name="OKActions" value="Inspect;Preview;refresh"/>
+									</then>
+									<else>
+										<setvar name="OKActions" value="Inspect;Preview;PlacePage;refresh"/>
+									</else>
+									</if>
+								</else>
+								</if>
+							</then>
+							<else>
+								<if cond="myAncestors.ncode=UnPlaced">
+									<then>
+										<setvar name="OKActions" value="Status;Inspect;Edit;Preview;Delete;refresh"/>
+									</then>
+									<else>
+										<setvar name="OKActions" value="Status;Inspect;Edit;Preview;Delete;PlacePage;refresh"/>
+									</else>
+									</if>
+							</else>
+							</if>
+							<REMOVEVAR NAME="LoadURL"/>
+							<IF COND="IsList.grandchildren=true">
+							<THEN>
+								<IF COND="grandchildren.#numRows!=0">
+								<THEN>
+									<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+										<satellite.argument name="AssetType" value="children.otype"/>
+										<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/children.otype/LoadSiteTree"/>
+										<satellite.argument name="op" value="load"/>
+										<satellite.argument name="loadpages" value="children.nid"/>
+									</SATELLITE.LINK>
+								</THEN>
+								</IF>
+							</THEN>
+							</IF>
+							<ASSET.CHILDREN NAME="currentChild" LIST="grandchildren"/>
+							<IF COND="IsList.grandchildren=true">
+							<THEN>
+								<IF COND="grandchildren.#numRows!=0">
+								<THEN>
+									<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+										<satellite.argument name="AssetType" value="children.otype"/>
+										<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/children.otype/LoadSiteTree"/>
+										<satellite.argument name="op" value="load"/>
+										<satellite.argument name="loadpages" value="children.nid"/>
+									</SATELLITE.LINK>
+								</THEN>
+								</IF>
+							</THEN>
+							</IF>
+							
+							
+							<!--  Any  children references attribute -->	
+							<IF COND="IsVariable.LoadURL=false">
+							<THEN>			
+				 				<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/GetChildrenReferences">
+								<ARGUMENT NAME="cid" VALUE="children.oid "/>				
+				 				</CALLELEMENT>
+			     
+			     				<IF COND="IsList.ChildrenReferences=true">
+				 				<THEN>					 	   			
+			 						 <SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+										<satellite.argument name="AssetType" value="children.otype"/>
+										<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/children.otype/LoadSiteTree"/>
+										<satellite.argument name="op" value="load"/>
+										<satellite.argument name="loadpages" value="children.nid"/>
+									</SATELLITE.LINK>	
+				 				</THEN>					
+							 	</IF>				 	
+  							</THEN>
+							</IF>
+															
+							<SETVAR NAME="oldat" VALUE="Variables.AssetType"/>
+							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+								<ARGUMENT NAME="ID" VALUE="children.oid"/>
+								<ARGUMENT NAME="AssetType" VALUE="children.otype"/>
+								<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+							</CALLELEMENT>
+							<SETVAR NAME="AssetType" VALUE="Variables.oldat"/>
+							
+							<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="ExecuteURL">
+								<satellite.argument name="AssetType" value="children.otype"/>
+								<satellite.argument name="n0_" value="Variables.TreeNodeID"/>
+								<satellite.argument name="op" value="displayNode"/>
+							</SATELLITE.LINK>
+							
+							<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+								<satellite.argument name="AssetType" value="children.otype"/>
+							</SATELLITE.LINK>
+							
+							<REMOVEVAR NAME="PreviewURL"/>
+							<PREVIEWURL.MAKEURL VARNAME="PreviewURL" ASSETTYPE="children.otype" ASSETID="children.oid" PUBID="SessionVariables.pubid"/>
+							
+							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+								<ARGUMENT NAME="Label" VALUE="Variables.currentName"/>
+								<ARGUMENT NAME="Description" VALUE="Variables.currentDesc"/>
+								<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+								<!-- LoadURL implicitly passed in -->
+								<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+								<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+								<!-- PreviewURL implicitly passed in -->
+								<ARGUMENT NAME="OKActions" VALUE="Variables.OKActions"/>
+								<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/children.otype.png"/>
+								<ARGUMENT NAME="RefreshKeys" VALUE="children.oid;children.nid"/>
+								<ARGUMENT NAME="executeFunction" VALUE="inspect" />
+							</CALLELEMENT>
+						</LOOP>
+					</THEN>
+					</IF>
+				</THEN>
+				</IF>
+			</THEN>
+			</IF>
+			
+		
+			<!--   
+ 					Now that we're allowing Page attributes, we also need to get the 
+ 					children that are related through attributes 
+ 					of data type defined as asset references.
+ 	
+ 					Pass the Parent Site Node
+				-->	
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/LoadChildrenReferences">
+					<ARGUMENT NAME="cid" VALUE="Variables.assetid"/>				
+				</CALLELEMENT>
+		</then>
+		</if>
+	</else>
+	</if>
+</THEN>
+<ELSE>
+	<SETVAR NAME="Variables.varname" VALUE="Variables.AssetType"/>
+</ELSE>
+</IF>
+</ELSE>	
+</IF>
+</FTCS>
