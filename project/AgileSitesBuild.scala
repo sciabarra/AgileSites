@@ -7,6 +7,7 @@ import sbtassembly.Plugin._
 import AssemblyKeys._
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
 import scala.xml.transform.RewriteRule
+import giter8.ScaffoldPlugin.scaffoldSettings
 
 object AgileSitesBuild extends Build with AgileSitesSupport {
 
@@ -102,7 +103,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   lazy val all: Project = Project(
     id = "all",
     base = file("."),
-    settings = commonSettings ++ assemblySettings ++ Seq(
+    settings = commonSettings ++ assemblySettings ++ scaffoldSettings ++ Seq(
       name := "agilesites-all",
       wcsCsdtTask,
       wcsCmTask,

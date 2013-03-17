@@ -11,15 +11,6 @@ import wcs.java.Env;
 
 public abstract class TestRunnerElement extends Element {
 
-	/**
-	 * Override this method to allow for test execution.
-	 * 
-	 * @return
-	 */
-	protected boolean isProduction() {
-		return true;
-	}
-
 	@SuppressWarnings("rawtypes")
 	abstract public Class[] tests();
 
@@ -65,11 +56,11 @@ public abstract class TestRunnerElement extends Element {
 		public void testFailure(Failure failure) throws Exception {
 			// sb.append("failure detected");
 			// sb.append("Failure").append(failure.toString()).append("<br>");
-				
+
 			lastFailure = failure.getMessage();
-			if(lastFailure==null)
+			if (lastFailure == null)
 				lastFailure = "Null pointer";
-			
+
 			failureCount++;
 			failures.append("<h2>").append(failure.getTestHeader())
 					.append("</h2>");
@@ -135,12 +126,8 @@ public abstract class TestRunnerElement extends Element {
 	public String apply(Env e) {
 
 		currEnv.set(e);
-		
-		//System.out.println(Thread.currentThread());
 
-		if (isProduction()) {
-			return "Sorry.";
-		}
+		// System.out.println(Thread.currentThread());
 
 		String test = e.getString("test");
 		if (test == null)

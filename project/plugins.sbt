@@ -1,3 +1,5 @@
+//scalaVersion := "2.9.2"
+
 resolvers += {
   val typesafeRepoUrl = new java.net.URL("http://repo.typesafe.com/typesafe/releases")
   val pattern = Patterns(false, "[organisation]/[module]/[sbtversion]/[revision]/[type]s/[module](-[classifier])-[revision].[ext]")
@@ -5,8 +7,15 @@ resolvers += {
   Resolver.url("artifactory", url("http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases"))(Resolver.ivyStylePatterns)
 }
 
-addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.1.0")
+libraryDependencies += "commons-httpclient" % "commons-httpclient" % "3.1"
+
+libraryDependencies += "commons-io" % "commons-io" % "2.4"
+
+libraryDependencies += "org.clapper" % "scalasti_2.9.1" % "0.5.8"
+
+addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.1.2")
 
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.8.4")
 
-libraryDependencies += "commons-httpclient" % "commons-httpclient" % "3.1"
+
+
