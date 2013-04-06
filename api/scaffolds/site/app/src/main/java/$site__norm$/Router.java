@@ -1,41 +1,77 @@
 package $site;format="normalize"$;
 
-import static wcs.core.Common.*;
-import wcs.core.*;
+import static wcs.core.Common.arg;
 
 import java.util.List;
+import java.util.StringTokenizer;
+
+import wcs.core.Call;
+import wcs.core.Id;
 import wcs.java.Env;
 import wcs.java.util.Log;
-import wcs.java.util.QueryString;
+import wcs.java.util.URL;
+
 /**
- * Simple router looking for pages by name
+ * Simple router invoking the tester only
  * 
  * @author msciab
- *
+ * 
  */
 public class Router extends wcs.java.Router {
 
-	private static Log log = new Log(Router.class);
-	
-	@Override
-	public Call route(Env e, String path, QueryString qs) {
-		// default home page
-		if (path == null)
-			path = "Home";
+	static final Log log = Log.getLog(Router.class);
 
-		try {
-			// search for a page with the given name
-			List<Id> pages = e.find("Page", arg("name", path));
-			if (pages.size() > 0) {
-				String cid = pages.get(0).cid.toString();
-				return call("$pfx$Wrapper", arg("c", "Page"), arg("cid", cid));
-			} else {
-				return call("$pfx$Error", arg("msg", "Page Not Found"));
-			}
-		} catch(Exception ex) {
-			log.warn(ex.getMessage());
-			return call("$pfx$Error", arg("msg", "Exception: "+ex.getMessage()));
+	@Override
+	public Call route(Env e, URL url) {
+
+		// split the token
+		String c = null;
+		String name = null;
+
+		StringTokenizer st = url.getPathTokens();
+		switch (st.countTokens()) {
+		case 0: // example: http://yoursite.com
+			// look for the home page
+			c = "Page";
+			name = "Home";
+			break;
+
+		case 1: // example: http://yoursite.com/Welcome
+			// look for a named page
+			c = "Page";
+			name = st.nextToken();
+			break;
+
+		case 2: // example: http://yoursite/Article/About
+			// the following assume all the asset types
+			// have the same prefix as the site name
+			c = "MySite_" + st.nextToken();
+			name = st.nextToken();
+			break;
+
+		// unknown path
+		default: // example: http://yoursite/service/action/parameter"
+			c = null;
+			break;
+		}
+
+		// path not split in pieces
+		if (c == null || name == null) {
+			return call("MyWrapper",
+					arg("error", "Path not found: " + url.getPath()));
+		}
+
+		// resolve the name to an id
+		List<Id> list = e.find(c, arg("name", name));
+		if (list.size() > 0) {
+			// found
+			return call("MyWrapper", //
+					arg("c", list.get(0).c), //
+					arg("cid", list.get(0).cid.toString()));
+		} else {
+			// not found
+			String error = "Asset not found: type:" + c + " name:" + name;
+			return call("MyWrapper", arg("error", error));
 		}
 	}
-
 }

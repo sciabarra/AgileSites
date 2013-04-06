@@ -1,0 +1,4 @@
+log4j.rootCategory=DEBUG, LogServer
+log4j.appender.LogServer=org.apache.log4j.net.SocketAppender
+log4j.appender.LogServer.Port=4445
+log4j.appender.LogServer.RemoteHost=127.0.0.1

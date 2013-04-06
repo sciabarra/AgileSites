@@ -1,6 +1,5 @@
 package wcs.java;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Stack;
@@ -11,6 +10,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import wcs.java.util.Log;
+import wcs.java.util.Util;
 
 /**
  * Build picking
@@ -19,7 +19,8 @@ import wcs.java.util.Log;
  * 
  */
 public class Picker {
-	private static Log log = new Log(Picker.class);
+
+	private static Log log = Log.getLog(Picker.class);
 
 	// TODO: define a better default
 	private static final String baseUrl = "http://localhost:8080/";
@@ -40,24 +41,72 @@ public class Picker {
 	}
 
 	/**
-	 * Create a picker for a given resource
+	 * Get a picker form a given resource in the classpath
 	 * 
 	 * @param resource
+	 * @param cssq
+	 * @return
 	 */
-	public Picker(String resource, String cssq) {
+	public static Picker load(String resource, String cssq) {
+		return new Picker(Picker.class.getResourceAsStream(resource), null,
+				cssq);
+	}
 
-		InputStream is = Picker.class.getResourceAsStream(resource);
+	/**
+	 * Get a picker form a given resource in the classpath and select the given
+	 * query
+	 * 
+	 * @param resource
+	 * @param cssq
+	 * @return
+	 */
+	public static Picker load(String resource) {
+		return new Picker(Picker.class.getResourceAsStream(resource), null,
+				null);
+	}
+
+	/**
+	 * Get a picker from a string
+	 * 
+	 * @param resource
+	 * @param cssq
+	 * @return
+	 */
+	public static Picker create(String html) {
+		return new Picker(null, html, null);
+	}
+
+	/**
+	 * Get a picker from a string and select the given query
+	 * 
+	 * @param resource
+	 * @param cssq
+	 * @return
+	 */
+	public static Picker create(String html, String cssq) {
+		return new Picker(null, html, cssq);
+	}
+
+	/**
+	 * Create a picker for a string
+	 */
+	private Picker(InputStream is, String html, String cssq) {
+
 		Element elem = null;
 		Document doc = null;
 
 		// parse
 		try {
-			log.debug("parsing " + resource);
-			doc = Jsoup.parse(is, "UTF-8", baseUrl);
-			// System.out.println(doc.toString());
-			// stack.push(doc.body());
-		} catch (IOException e) {
-			log.warn("Cannot parse " + resource);
+
+			if (is != null) {
+				log.debug("parsing resource");
+				doc = Jsoup.parse(is, "UTF-8", baseUrl);
+			} else if (html != null) {
+				log.debug("parsing string");
+				doc = Jsoup.parse(html);
+			}
+		} catch (Exception e) {
+			log.warn(e, "Cannot parse string");
 		}
 
 		// select internally
@@ -83,11 +132,14 @@ public class Picker {
 	 * 
 	 * @param where
 	 * @return
+	 * @throws Exception
 	 */
 	public Picker select(String where) {
 		Elements selected = top.select(where);
 		if (selected != null && selected.size() > 0)
 			push(selected.first());
+		else
+			log.warn("cannot select " + where);
 		return this;
 	}
 
@@ -103,21 +155,12 @@ public class Picker {
 	}
 
 	/**
-	 * Create a picker for a given resource selecting a specific subset
-	 * 
-	 * @param resource
-	 * @param cssq
-	 */
-	public Picker(String resource) {
-		this(resource, null);
-	}
-
-	/**
 	 * Replace where indicated with the specified html
 	 * 
 	 * @param where
 	 * @param what
 	 * @return
+	 * @throws Exception
 	 */
 	public Picker replace(String where, String what) {
 		select(where);
@@ -266,11 +309,37 @@ public class Picker {
 	}
 
 	/**
+	 * Set attribute prefix for all the attributes found
+	 */
+	public Picker prefixAttrs(String where, String attr, String prefix) {
+		for (Element el : top.select(where)) {
+			el.attr(attr, prefix + el.attr(attr));
+		}
+		return this;
+	}
+
+	/**
 	 * Add a class
 	 */
 	public Picker addClass(String where, String what) {
 		top.select(where).addClass(what);
 		return this;
+	}
+
+	/**
+	 * Convenience method to dump the stream currently created
+	 * 
+	 * @param stream
+	 * @return
+	 */
+	public Picker dump(Log log) {
+		if (log != null)
+			log.trace(Util.dumpStream(html()));
+		return this;
+	}
+
+	public Picker dump() {
+		return dump(null);
 	}
 
 }

@@ -43,5 +43,7 @@ wcsWebappSatellite in ThisBuild := "/JSK/11.1.1.6.1.app/App_Server/apache-tomcat
 /// front end url - NO slashes at the end please
 // sample with satellite and an apache proxy 
 // VirtualHost agilesites.local: ProxyPass / http://sshost/ss/Satellite/agilesites
-// VirtualHost scalasites.local: ProxyPass / http://sshost/ss/Satellite/agilesites
-wcsVirtualHosts in ThisBuild := Seq( "AgileSites" -> "http://agilesites.loc")
+// wcsVirtualHosts in ThisBuild := Seq( "AgileSites" -> "http://agilesites.loc")
+// sample with no apache and just the co-resident satellite
+wcsVirtualHosts in ThisBuild := Seq( "AgileSites" -> "http://localhost:8080/cs/Satellite/agilesites/")
+

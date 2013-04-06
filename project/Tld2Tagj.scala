@@ -1,4 +1,4 @@
-	package wcs.build
+package wcs.build
 
 import scala.xml._
 import java.io.File
@@ -28,7 +28,7 @@ object Tld2Tagj {
     """package wcs.java.tag;
     
 import COM.FutureTense.Interfaces.*;
-import java.util.logging.*;
+import org.apache.log4j.*;
 import java.lang.String;
 import wcs.core.Common;
 import wcs.core.Arg;
@@ -38,7 +38,7 @@ public class %s  {
   private static Logger log = Logger.getLogger("%s");  
   static String ftValList2String(String name, FTValList vl)  {
     StringBuilder sb = new StringBuilder();
-    sb.append(">>>");
+    //sb.append(">>>");
     sb.append(name);
     sb.append(":");
     java.util.Enumeration en = vl.keys();
@@ -53,7 +53,7 @@ public class %s  {
  """.format(cl, cl)
   }
 
-  def body(lib: String, name: String,  parArgs: List[String]): String = {
+  def body(lib: String, name: String, parArgs: List[String]): String = {
 
     val uname = if (javaKeywords.contains(name)) name + "_" else name
     val cname = uname(0).toUpperCase + uname.substring(1)
@@ -65,18 +65,18 @@ public class %s  {
       """.format(cname, x, x.toUpperCase)
     } mkString "\n";
 
-"""
+    """
   public static class %s {
   private FTValList args = new FTValList();
   private String output;
   public %s set(String name, String value) { args.setValString(name,value); return this; }
 %s
-  public %s() { }""".format(cname, cname, setParams, cname)+ """
+  public %s() { }""".format(cname, cname, setParams, cname) + """
   public int run(ICS ics) { 
       ics.runTag("%s", args); 
       if(debug) {
          java.lang.System.err.println(ftValList2String("%s", args));
-         log.finest(ftValList2String("%s", args));
+         log.trace(ftValList2String("%s", args));
       }
       return ics.GetErrno(); 
   }
@@ -125,7 +125,7 @@ public static %s %s() {
 
       val reqList = required.map { _ \\ "name" text }.toList
       val optList = optional.map { _ \\ "name" text }.toList
-      
+
       val parList = reqList ::: optList
 
       body(libname, tagname, parList)
@@ -136,9 +136,6 @@ public static %s %s() {
     preHead(filename) +
       res.mkString("\n") +
       postHead
-
-    //"%d".format(tags.size)
-
   }
 
   def main(args: Array[String]) {

@@ -1,7 +1,11 @@
 package wcs.java;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import wcs.core.Arg;
 import wcs.core.Common;
+import wcs.java.util.Log;
 import COM.FutureTense.Interfaces.ICS;
 
 /**
@@ -12,6 +16,8 @@ import COM.FutureTense.Interfaces.ICS;
  * 
  */
 public abstract class Element implements wcs.core.Element {
+
+	static Log log = Log.getLog(Element.class);
 
 	// current site
 	protected String site;
@@ -30,19 +36,45 @@ public abstract class Element implements wcs.core.Element {
 			Env env = new Env(ics, site);
 			return apply(env);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex, "exception applying element");
 			return ex.getMessage();
 		}
 	}
 
 	/**
-	 * Call a cs element in the same site
+	 * Generic CallElement
+	 * 
+	 * @param name
+	 * @param args
+	 * @return
+	 */
+	public String call(String name, Arg... args) {
+		List<Arg> list = new LinkedList<Arg>();
+		for (Arg arg : args)
+			list.add(arg);
+		list.add(Common.arg("ELEMENT", name));
+		return Common.call("ICS:CALLELEMENT", list);
+	}
+
+	/**
+	 * Convenience method for defining args
 	 * 
 	 * @param name
 	 * @return
 	 */
-	public String call(String name, Arg... args) {
-		return Common.call(site + "/" + name, args);
+	public Arg arg(String k, String v) {
+		return Common.arg(k, v);
+	}
+
+	/**
+	 * Convenience method to log in a functional way
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public String log(String msg) {
+		log.debug(msg);
+		return msg;
 	}
 
 	/**

@@ -20,21 +20,21 @@ class PickerSpec extends Specification with Log {
     //  println(picker.toString)
 
     "pick" in {
-      val picker = new Picker("/hello.html")
+      val picker = Picker.load("/hello.html")
 
       nlog("picked:", picker.toString) must
         contain("<div id=\"title\">")
     }
 
     "select" in {
-      val picker = new Picker("/hello.html")
+      val picker = Picker.load("/hello.html")
 
       nlog("selected:", picker.select("#content").toString) must
         startWith("<div id=\"content\">")
     }
 
     "replace" in {
-      val picker = new Picker("/hello.html", "#content")
+      val picker = Picker.load("/hello.html", "#content")
       val s = picker.replace("p", "welcome.").toString
 
       //println(s)
@@ -49,7 +49,7 @@ class PickerSpec extends Specification with Log {
 
     "single" in {
 
-      val menu = new Picker("/hello.html", "#menu ul")
+      val menu = Picker.load("/hello.html", "#menu ul")
       val single = menu.single("li")
 
       <ul>
@@ -60,7 +60,7 @@ class PickerSpec extends Specification with Log {
     }
 
     "before/after" in {
-      val single = new Picker("/hello.html", "#menu ul").single("li")
+      val single = Picker.load("/hello.html", "#menu ul").single("li")
       val after = single.after("li", <li id="second">Second</li>.toString)
 
       <ul>
@@ -78,7 +78,7 @@ class PickerSpec extends Specification with Log {
     }
 
     "class/attr" in {
-      val title = new Picker("/hello.html", "#title")
+      val title = Picker.load("/hello.html", "#title")
 
       val tit = title.attr("#title", "id", "replaced")
         .addClass("h1", "demo")

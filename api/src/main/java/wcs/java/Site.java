@@ -21,12 +21,12 @@ import com.fatwire.assetapi.site.SiteManager;
  * 
  */
 public class Site {
+	private static Log log = Log.getLog(Setup.class);
 
 	private String name;
 
 	private com.fatwire.assetapi.site.Site site;
 
-	private static Log log = new Log(Setup.class);
 
 	public Site(String name) {
 		this.name = name;

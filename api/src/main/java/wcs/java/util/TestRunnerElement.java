@@ -1,50 +1,81 @@
 package wcs.java.util;
 
+import java.util.StringTokenizer;
+
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
+import wcs.implx.XmlICS;
 import wcs.java.Element;
 import wcs.java.Env;
 
 public abstract class TestRunnerElement extends Element {
 
-	@SuppressWarnings("rawtypes")
-	abstract public Class[] tests();
+	final static Log log = Log.getLog(TestRunnerElement.class);
+
+	abstract public Class<?>[] tests();
 
 	private String testform(String pagename) {
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < tests().length; i++)
-			sb.append("<option>").append(tests()[i].getCanonicalName())
+
+		Class<?>[] tests = tests();
+		StringBuffer opts = new StringBuffer();
+		StringBuffer hids = new StringBuffer();
+		for (int i = 0; i < tests().length; i++) {
+			opts.append("<option>").append(tests[i].getCanonicalName())
 					.append("</option>");
-		return "<form method=\"get\">\n" + "Test to run:<br>"
-				+ "<select name='test'>" + sb.toString() + "</select><br>"
-				+ "<input name='pagename' type='hidden' value='" + pagename
-				+ "'>" + "<input type='submit' value='Run Test'>\n"
-				+ "</form>\n" //
-				+ "</form>\n"//
-		;
+			hids.append("<input type='hidden' name='test' value='")
+					.append(tests[i].getCanonicalName()).append("'>");
+		}
+		return "<h1>Test Runner</h1>"
+				+ "<form method=\"get\">\n"
+				+ "<input type='submit' value='Run All Tests'>"
+				+ "<input name='pagename' type='hidden' value='"
+				+ pagename
+				+ "'>"
+				+ hids.toString()
+				+ "</form>\n"
+				+ "<form method=\"get\">\n"
+				+ "Select tests to run:<br>"
+				+ "<select name='test' multiple size='"
+				+ tests.length
+				+ "'>"
+				+ opts.toString()
+				+ "</select><br>"
+				+ "<input name='pagename' type='hidden' value='"
+				+ pagename
+				+ "'>"
+				+ "<input name='run_some' type='submit' value='Run Some Tests'>\n"
+				+ "</form>\n";
 	}
 
+	StringBuilder header = new StringBuilder();
+
 	static class TestListener extends RunListener {
-		StringBuffer sb = new StringBuffer();
-		StringBuffer failures = new StringBuffer();
-		StringBuffer header = new StringBuffer();
-		int failureCount = 0;
+
 		String lastFailure = null;
+		StringBuilder sb = new StringBuilder();
+		StringBuilder failures = new StringBuilder();
+		int failureCount = 0;
+		int runCount = 0;
 
 		@Override
 		public void testAssumptionFailure(Failure failure) {
-			sb.append("Assumption").append(failure.getMessage()).append("<br>");
+			// sb.append("Assumption").append(failure.getMessage()).append("<br>");
 			super.testAssumptionFailure(failure);
+		}
+
+		public TestListener append(String msg) {
+			sb.append(msg);
+			return this;
 		}
 
 		@Override
 		public void testStarted(Description description) throws Exception {
+			log.trace("testStarted");
 
-			// sb.append("TestStarted").append(description.toString()).append("<br>");
 			sb.append("<b>").append(description.getClassName()).append(".")
 					.append(description.getMethodName()).append("</b>: ");
 			lastFailure = null;
@@ -54,8 +85,7 @@ public abstract class TestRunnerElement extends Element {
 
 		@Override
 		public void testFailure(Failure failure) throws Exception {
-			// sb.append("failure detected");
-			// sb.append("Failure").append(failure.toString()).append("<br>");
+			log.trace("testFailure");
 
 			lastFailure = failure.getMessage();
 			if (lastFailure == null)
@@ -71,9 +101,11 @@ public abstract class TestRunnerElement extends Element {
 
 		@Override
 		public void testFinished(Description description) throws Exception {
+			log.trace("testFinished");
+
 			// sb.append("Finished").append(description.toString()).append("<br>");
 			if (lastFailure != null) {
-				sb.append("KO:").append(lastFailure);
+				sb.append("KO:<pre>").append(lastFailure).append("</pre>");
 			} else
 				sb.append("OK");
 			sb.append("<br>");
@@ -82,50 +114,48 @@ public abstract class TestRunnerElement extends Element {
 
 		@Override
 		public void testIgnored(Description description) throws Exception {
+			log.trace("testIgnored");
+
 			sb.append("Skip: ").append(description.toString()).append("<br>");
 			super.testIgnored(description);
 		}
 
 		public String toString() {
-			return header.toString() + sb.toString() + failures.toString();
+			String s = failures.length() > 0 ? "<hr><h1>Failures</h1>"
+					+ failures.toString() : "";
+			return sb.toString() + s;
 		}
 
 		@Override
 		public void testRunFinished(Result result) throws Exception {
-			// sb.append("RunFinished").append(result.toString()).append("<br>");
-			if (failureCount > 0) {
-				header.append("<h1 style=\"color: red\">");
-			} else {
-				header.append("<h1>");
-			}
-			header.append("Test Count: #").append(result.getRunCount());
-			if (failureCount > 0) {
-				header.append(" Failures: # ").append(failureCount);
-			}
-			header.append("</h1>");
-
+			log.trace("testRunFinished");
+			runCount = result.getRunCount();
 			super.testRunFinished(result);
 		}
 
 		@Override
 		public void testRunStarted(Description description) throws Exception {
-			// sb.append("RunStarted").append(description.toString())
-			// .append("<br>");
+			log.trace("testRunStarted");
 			super.testRunStarted(description);
 		}
 
 	}
 
-	private static ThreadLocal<Env> currEnv = new ThreadLocal<Env>();
+	private static ThreadLocal<TestEnv> currTestEnv = new ThreadLocal<TestEnv>();
 
-	public static Env getEnv() {
-		return currEnv.get();
+	public static TestEnv getTestEnv() {
+		return currTestEnv.get();
 	}
 
 	@Override
 	public String apply(Env e) {
 
-		currEnv.set(e);
+		// create a new, modifiable env, then set it to a threadlocal
+		// so the testelement can find and use it
+		TestEnv te = new TestEnv(new XmlICS(e.ics), e.getString("site"));
+		te.setVar("tid", e.getString("tid"));
+		te.setVar("eid", e.getString("eid"));
+		currTestEnv.set(te);
 
 		// System.out.println(Thread.currentThread());
 
@@ -134,20 +164,39 @@ public abstract class TestRunnerElement extends Element {
 			return testform(e.getString("pagename"));
 
 		JUnitCore core = new JUnitCore();
-		RunListener listener = new TestListener();
-
+		TestListener listener = new TestListener();
 		core.addListener(listener);
 
-		@SuppressWarnings("rawtypes")
-		Class clazz;
-		try {
-			clazz = Class.forName(e.getString("test"));
-			core.run(clazz);
-			return listener.toString();
-		} catch (ClassNotFoundException ex) {
-			return "<h1>Exception</h1><p>" + ex + "</p>";
-		}
+		// run all the tests and collect results
+		int runCount = 0;
+		int failureCount = 0;
+		Class<?> clazz;
+		StringTokenizer st = new StringTokenizer(e.getString("test"), ";");
+		while (st.hasMoreTokens())
+			try {
+				clazz = Class.forName(st.nextToken());
+				core.run(clazz);
+				failureCount += listener.failureCount;
+				runCount += listener.runCount;
+			} catch (ClassNotFoundException ex) {
+				listener.append("<h1>Exception</h1><p>" + ex + "</p>");
+			}
+
+		// display results
+		if (failureCount > 0)
+			header.append("<h1 style=\"color: red\">");
+		else
+			header.append("<h1>");
+		header.append("Test Count: #").append(runCount);
+		if (failureCount > 0)
+			header.append(" Failures: # ").append(failureCount);
+		header.append("</h1>");
+
+		// removing the threadlocal in case of jar reloading
+		currTestEnv.remove();
+
+		// output
+		return header.toString() + listener.toString();
 
 	}
-
 }

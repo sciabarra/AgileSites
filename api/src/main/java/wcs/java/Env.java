@@ -6,12 +6,15 @@ import static wcs.java.util.Util.toInt;
 import static wcs.java.util.Util.toLong;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import wcs.core.Arg;
+import wcs.core.Common;
 import wcs.core.ICSProxyJ;
 import wcs.core.Id;
 import wcs.java.tag.AssetTag;
+import wcs.java.tag.PublicationTag;
 import wcs.java.util.Log;
 import wcs.java.util.Range;
 import COM.FutureTense.Interfaces.ICS;
@@ -25,9 +28,9 @@ import COM.FutureTense.Interfaces.IList;
  */
 public class Env extends ICSProxyJ {
 
-	private static Log log = new Log(Env.class);
-
+	private static Log log = Log.getLog(Env.class);
 	private Config config;
+	private String site;
 
 	/**
 	 * Build the env from the ICS
@@ -37,7 +40,7 @@ public class Env extends ICSProxyJ {
 	public Env(ICS ics, String site) {
 		init(ics);
 		config = Config.getConfig(site);
-		log.debug("Loading Config Class");
+		this.site = config.getSite();
 	}
 
 	/**
@@ -227,7 +230,7 @@ public class Env extends ICSProxyJ {
 	/**
 	 * Check if is a variable
 	 */
-	public boolean isVariable(String variable) {
+	public boolean isVar(String variable) {
 		return ics.GetVar(variable) != null;
 	}
 
@@ -239,9 +242,9 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
-	 * Check if it is a field
+	 * Check if it is a list columns
 	 */
-	public boolean isField(String list, String field) {
+	public boolean isColumn(String list, String field) {
 		return getString(list, field) != null;
 	}
 
@@ -253,10 +256,14 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
-	 * Return the asset identified by c/cid
+	 * Return the asset identified by c/cid (or null if not possible)
+	 * 
 	 */
 	public Asset getAsset(String c, Long cid) {
-		return new AssetImpl(this, c, cid);
+		if (c != null && cid != null)
+			return new AssetImpl(this, c, cid);
+		else
+			return null;
 	}
 
 	/**
@@ -289,6 +296,14 @@ public class Env extends ICSProxyJ {
 		return config;
 	}
 
+	public String getSiteId() {
+		String pub = tmp();
+		PublicationTag.load().name(pub)//
+				.field("name").value(config.getSite()).run(ics);
+		return PublicationTag.get().name(pub)//
+				.field("id").eval(ics, "output");
+	}
+
 	/**
 	 * Find assets
 	 */
@@ -297,6 +312,7 @@ public class Env extends ICSProxyJ {
 		AssetTag.List list = AssetTag.list();
 		String ls = tmp();
 		list.type(type).list(ls);
+		list.pubid(getSiteId());
 		int n = 1;
 		for (Arg arg : args) {
 			switch (n) {
@@ -325,12 +341,28 @@ public class Env extends ICSProxyJ {
 			}
 			n++;
 		}
+
 		list.run(ics);
 		List<Id> result = new ArrayList<Id>();
 		for (Integer pos : getRange(ls)) {
 			result.add(new Id(type, getLong(ls, pos, "id")));
 		}
 		return result;
+	}
+
+	/**
+	 * Call a CS Element in current site
+	 * 
+	 * @param name
+	 * @param args
+	 * @return
+	 */
+	public String call(String name, Arg... args) {
+		List<Arg> list = new LinkedList<Arg>();
+		for (Arg arg : args)
+			list.add(arg);
+		list.add(Common.arg("ELEMENTNAME", site + "/" + name));
+		return Common.call("RENDER:CALLELEMENT", list);
 	}
 
 }

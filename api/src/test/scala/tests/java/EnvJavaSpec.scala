@@ -7,12 +7,17 @@ import java.text.SimpleDateFormat
 
 class EnvJavaSpec extends Specification with Log {
 
+  sequential 
+  
   val fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
   val ics = new XmlICS()
   
   ics.addMapVar(Map("a" -> "xxx", "d" -> "2012-01-02 12:23:34", "n" -> "1234"))
   ics.addMapList("l", Map("f" -> List("xxx", "2012-01-02 12:23:34", "1234")))
+  
+  import wcs.java.util.Util.listString
+  ics.setList("ll", Array( listString("f", "a","b","c"), listString("g", "1", "2", "3")))
 
   val env = new Env(ics, "agilesites")
   "Env should" in {
@@ -74,6 +79,17 @@ class EnvJavaSpec extends Specification with Log {
       l(0) must_== "xxx"
       l(1) must_== "2012-01-02 12:23:34"
       l(2) must_== "1234"
+
+    }
+    
+    
+    "check loop again" in {
+      val ll = for (i <- 1 to env.getSize("ll")) yield {
+        (env.getString("ll", i, "f"), env.getString("ll", i, "g"))
+      }
+      ll(0) must_== ("a", "1")
+      ll(1) must_== ("b", "2")
+      ll(2) must_== ("c", "3")
 
     }
   }

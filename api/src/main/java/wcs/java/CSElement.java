@@ -14,7 +14,7 @@ import com.fatwire.assetapi.data.MutableAssetData;
  * @author msciab
  * 
  */
-public class CSElement extends Asset {
+public class CSElement extends AssetSetup {
 
 	private Class<?> elementClass;
 	private String elementName;
@@ -26,7 +26,7 @@ public class CSElement extends Asset {
 	 * @param elementClass
 	 */
 	public CSElement(String name, Class<?> elementClass) {
-		this(name, elementClass, null);
+		this(name, elementClass, (String) null);
 	}
 
 	/**
@@ -39,6 +39,15 @@ public class CSElement extends Asset {
 		this.elementName = elementName;
 	}
 
+	/**
+	 * Create a cselement with a chained asset setup
+	 * 
+	 */
+	public CSElement(String name, Class<?> elementClass, AssetSetup nextSetup) {
+		this(name, elementClass);
+		setNextSetup(nextSetup);
+	}
+
 	public String getElementName() {
 		return elementName;
 	}
@@ -48,10 +57,10 @@ public class CSElement extends Asset {
 				"rootelement", "url", "resdetails1", "resdetails2");
 	}
 
+	
+
 	private String template(String clazz) {
-		String template = new java.util.Scanner(getClass().getResourceAsStream(
-				"/Streamer.jsp")).useDelimiter("\\A").next();
-		return template.replaceAll("%CLASS%", clazz);
+		return Util.getResource("/Streamer.jsp").replaceAll("%CLASS%", clazz);
 	}
 
 	void setData(MutableAssetData data) {
@@ -99,7 +108,7 @@ public class CSElement extends Asset {
 	 * @param description
 	 * @return
 	 */
-	public Asset description(String description) {
+	public AssetSetup description(String description) {
 		setDescription(description);
 		return this;
 	}

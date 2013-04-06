@@ -1,6 +1,7 @@
 package wcs.core;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -103,17 +104,38 @@ public class Call {
 		return sb.toString();
 	}
 
+	
+	/**
+	 * Encode a call as a string
+	 * 
+	 * @param name
+	 * @param args
+	 * @return
+	 */
+	public static String encode(String name, List<Arg> args) {
+		StringBuilder sb = new StringBuilder();
+		// elements to call have the site name as a prefix
+		sb.append(SEP2).append(name).append(SEP);
+		for (Arg arg : args) {
+			if (arg.value != null)
+				sb.append(arg.name).append(SEP).append(arg.value).append(SEP);
+		}
+		sb.append(SEP2);
+		return sb.toString();
+	}
+
+	
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append(name).append("(");
+		StringBuilder sb = new StringBuilder();
+		sb.append("<").append(name.replace(':','-')).append(" ");
 		String[] keys = keysLeft();
 		Arrays.sort(keys);
 		for (String k : keys) {
-			sb.append(k).append("=").append(map.get(k)).append(",");
+			sb.append(k).append("=\"").append(map.get(k)).append("\" ");
 		}
-		if (sb.toString().endsWith(","))
+		if (sb.toString().endsWith(" "))
 			sb.setLength(sb.length() - 1);
-		sb.append(")");
+		sb.append("/>");
 		return sb.toString();
 	}
 }

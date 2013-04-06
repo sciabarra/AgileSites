@@ -1,7 +1,6 @@
 package wcs.java;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Properties;
 
 import wcs.core.WCS;
@@ -98,32 +97,22 @@ abstract public class Config {
 
 	// // STATIC PART ////
 
-	// keep a cache of config by site
-	private static HashMap<String, wcs.java.Config> configCache = new HashMap<String, wcs.java.Config>();
-
 	/**
-	 * Return a config, eventually cached You can use both the site name or his
-	 * normalized for to get the config
+	 * Return a config, eventually cached. You can use both the site name or his
+	 * normalized name for to get the config.
 	 * 
 	 * 
 	 * @param site
 	 * @return
 	 */
 	public static Config getConfig(String site) {
-		String normSite = WCS.normalizeSiteName(site);
-
-		Config config = configCache.get(normSite);
-		if (config != null)
-			return config;
-
 		try {
-			config = (Config) Class.forName(normSite + ".Config").newInstance();
-			configCache.put(site, config);
+			return (Config) Class.forName(
+					WCS.normalizeSiteName(site) + ".Config").newInstance();
 		} catch (Exception ex) {
-			//ex.printStackTrace();
+			ex.printStackTrace();
+			return null;
 		}
-
-		return config;
 	}
 
 	// // ABSTRACT PART ////

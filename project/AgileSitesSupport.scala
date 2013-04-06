@@ -4,6 +4,7 @@ import sbt._
 import Keys._
 import sbtassembly.Plugin._
 import AssemblyKeys._
+import Dialog._
 
 trait AgileSitesSupport {
 
@@ -18,7 +19,8 @@ trait AgileSitesSupport {
   lazy val wcsUser = SettingKey[String]("wcs-user", "WCS Site for user")
   lazy val wcsPassword = SettingKey[String]("wcs-password", "WCS Site password")
 
-  lazy val wcsSetup = InputKey[Unit]("wcs-setup", "WCS Setup")
+  lazy val wcsSetupOffline = InputKey[Unit]("wcs-setup-offline", "WCS Setup Offline")
+  lazy val wcsSetupOnline = TaskKey[Unit]("wcs-setup-online", "WCS Setup Online")
   lazy val wcsDeploy = TaskKey[Unit]("wcs-deploy", "WCS Deploy")
 
   lazy val wcsFlexBlobs = SettingKey[String]("wcs-flex-blobs", "WCS Flex Blobs Regexp")
@@ -28,11 +30,11 @@ trait AgileSitesSupport {
 
   lazy val wcsCsdtJar = SettingKey[String]("wcs-csdt-jar", "WCS CSDT Jar")
   lazy val wcsCsdt = InputKey[Unit]("wcs-dt", "WCS Development Tool")
-  lazy val wcsCm = InputKey[Unit]("wcs-cm", "WCS Catalog Mover")
 
   lazy val wcsCopyStatic = TaskKey[Unit]("wcs-copy-static", "WCS copy static resources")
   lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
   lazy val wcsUpdateAssets = TaskKey[String]("wcs-update-assets", "WCS update assets")
+  lazy val wcsLog = InputKey[Unit]("wcs-log", "WCS log manager")
 
   // generate tag access classes from tld files
   val coreGeneratorTask = (sourceGenerators in Compile) <+=
@@ -114,10 +116,10 @@ trait AgileSitesSupport {
               case "listds" => "@ALL_ASSETS;@ALL_NONASSETS"
               case "import" =>
                 println("""importing only sites - you need to run after:
-> wcs-dt import @ASSET_TYPE
-> wcs-dt import @ALL_ASSETS
-> wcs-dt import @STARTMENU
-> wcs-dt import @TREETAB""")
+                		|> wcs-dt import @ASSET_TYPE
+                		|> wcs-dt import @ALL_ASSETS
+                		|> wcs-dt import @STARTMENU
+                		|> wcs-dt import @TREETAB""".stripMargin)
                 "@SITE"
               case "export" =>
                 println("exporting only sites & assets types - you need to export manually assets and non-assets")
@@ -131,49 +133,25 @@ trait AgileSitesSupport {
   }
 
   // interface to catalogmover from sbt
-  val wcsCmTask = wcsCm <<= inputTask {
-    (argTask: TaskKey[Seq[String]]) =>
-      (argTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
-        (args, version, httpUrl, sites, user, password, classpath, s, runner) =>
-          val seljars = classpath.files
+  val wcsSetupOnlineTask = wcsSetupOnline <<=
+    (wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
+      (version, httpUrl, sites, user, password, classpath, s, runner) =>
+        val seljars = classpath.files
+        val url = httpUrl + "/CatalogManager"
 
-          //val cmd = args
-          //Run.run("COM.FutureTense.Apps.CatalogMover", seljars, cmd, s.log)(runner)
+        //println(url)
 
-          def help = println("""Usage: wcs-cm <function> [<options>]
- <function> to perform (import, import_all, export, export_all) 
- <options>::  -f <file to import>
-  -t <catalog name> (can be repeated, export only)
-                """)
+        val cp = classpath.files.mkString(java.io.File.pathSeparator)
+        val dir = file("export") / "Populate-" + version
+        val cmd = Seq("-cp", cp, "COM.FutureTense.Apps.CatalogMover")
 
-          if (args.size == 0) {
-            help
-          } else {
+        val opts = Seq("-u", user, "-p", password, "-b", url, "-d", dir.toString, "-x")
+        val all = cmd ++ opts ++ Seq("import_all")
 
-            //val url = new java.net.URL(httpUrl)
-            //val host = url.getProtocol + "://" + url.getHost+":"+url.getPort
-            //val path = url.getPath+ "CatalogManager"
-
-            val url = httpUrl + "/CatalogManager"
-
-            //println(url)
-
-            val cp = classpath.files.mkString(java.io.File.pathSeparator)
-            val dir = file("export") / "Populate-" + version
-            val cmd = Seq("-cp", cp, "COM.FutureTense.Apps.CatalogMover")
-
-            val opts = Seq("-u", user, "-p", password, "-b", url, "-d", dir.toString, "-x")
-            val all = cmd ++ opts ++ args
-
-            //println(all)
-            //for(file <- classpath.files) println(file)
-            //println(opts++args)
-
-            Fork.java(None, all, Some(new java.io.File(".")), s.log)
-
-          }
-      }
-  }
+        messageDialog("Ensure the application server is up and running, then press OK")
+        Fork.java(None, all, Some(new java.io.File(".")), s.log)
+        messageDialog("Setup Complete.\nYou can now create your site and templates and deploy them with wcs-deploy.")
+    }
 
   // package jar task - build the jar and copy it  to destination 
   val wcsPackageJarTask = wcsPackageJar <<=
@@ -352,7 +330,7 @@ trait AgileSitesSupport {
   }
 
   // setup task
-  val wcsSetupTask = wcsSetup <<= inputTask {
+  val wcsSetupOfflineTask = wcsSetupOffline <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
       (argTask,
         wcsPackageJar, managedClasspath in Runtime, classDirectory in Compile,
@@ -365,21 +343,21 @@ trait AgileSitesSupport {
 
             val static = (file(shared) / "Storage" / "Static") getAbsolutePath
 
+            messageDialog("Ensure the application server is NOT RUNNING, then press OK")
+
             if (args.length == 1 && args(0) == "satellite") {
 
-              println("*** Installing AgileSites for Satellite Server. ***");
+              println("*** Installing AgileSites for Satellite  ***");
 
               setupCopyJars(satelliteWebapp, classpath.files)
-
               setupServletRequest(satelliteWebapp, sites, virtualHosts, flexBlobs, staticBlobs)
-
               setupAgileSitesPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs)
 
-              println("*** Installed AgileSites for Satellite. You need to restart the application server or (if weblogic) redeploy the webapp Satellite. ***")
+              messageDialog("Installation Complete. Please restart your application server.")
 
             } else {
 
-              println("*** Installing AgileSites ***");
+              println("*** Installing AgileSites for ContentServer ***");
 
               val vhosts = (sites split ",") map { site =>
                 (site, url + "/Satellite/" + normalizeSiteName(site))
@@ -388,18 +366,83 @@ trait AgileSitesSupport {
               setupMkdirs(shared, version, sites)
 
               setupCopyJars(webapp, classpath.files)
-
               setupServletRequest(webapp, sites, vhosts, flexBlobs, staticBlobs)
-
               setupAgileSitesPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs)
-
               setupFutureTenseIni(home, static, appjar, sites, version)
 
-              println("*** Installed AgileSites. You need to restart the application server or (if weblogic) redeploy the webapp ContentServer,  then execute \"wcs-deploy\" ***")
-
+              messageDialog("Installation Complete. Please restart your application server then run wcs-setup-online.")
             }
 
         }
+  }
+
+  val wcsLogTask = wcsLog <<= inputTask {
+    (argTask: TaskKey[Seq[String]]) =>
+      (argTask, wcsUrl, wcsUser, wcsPassword, streams) map {
+        (args, url, user, pass, streams) =>
+
+          def parse(ls: List[String]) = ls match {
+            case Nil => "host=127.0.0.1&port=4445"
+            case logger :: Nil => "logger=" + logger + "&host=127.0.0.1&port=4445"
+            case logger :: port :: Nil => "logger=" + logger + "&port=" + port + "&host=127.0.0.1"
+            case logger :: port :: host :: _ => "logger=" + logger + "&host=" + host + "&port=" + port
+          }
+
+          def usage {
+            println("""|usage:
+                  | wcs-log view
+            	  |   start the log viewer
+                  | wcs-log list
+            	  |   list what you are sending to the remote logger
+                  | wcs-log start [<level>] [<logger>] [<port>] [<host>]
+                  |   enable logging to the log viewer
+                  | wcs-log stop [<logger>] [<port>] [<host>] 
+                  |   disable logging to the log viewer
+                  | <level>  defaults to DEBUG, must be one of ERROR, WARN, INFO, DEBUG, TRACE
+                  | <logger> defaults to the root loogger, you can restrict to your packages
+                  | <port>   defaults to 4445
+                  | <host>   defaults to 127.0.0.1
+                  |""".stripMargin)
+          }
+
+          val cmd = args match {
+            case Nil =>
+              usage
+              None
+            case "view" :: Nil =>
+              new Thread {
+                override def run {
+                  Fork.java(None, Seq("-jar", "lumbermill.jar"),
+                    Some(new File("bin")), streams.log)
+                }
+              }.start
+              None
+            case "start" :: Nil =>
+              Some("op=start&level=DEBUG&%s" format parse(Nil))
+            case "start" :: level :: rest =>
+              if ("ERROR|WARN|DEBUG|INFO|TRACE".r findAllIn level isEmpty) {
+                println("Invalid level " + level)
+                None
+              } else
+                Some("op=start&level=%s&%s" format (level, parse(rest)))
+            case "stop" :: rest =>
+              Some("op=stop&%s" format parse(rest))
+            case "list" :: rest =>
+              Some("op=list")
+            case _ =>
+              usage
+              None
+          }
+
+          if (cmd.isDefined) {
+            val req = "%s/ContentServer?pagename=AAAgileLog&user=%s&pass=%s&%s"
+              .format(url, user, pass, cmd.get)
+            //println(req)
+            val scan = new java.util.Scanner(new URL(req).openStream(), "UTF-8")
+            println(scan.useDelimiter("\\A").next())
+            scan.close
+          }
+      }
   }
 
 }

@@ -14,7 +14,7 @@ import wcs.java.util.Util;
 import com.fatwire.assetapi.data.AttributeData;
 import com.fatwire.assetapi.data.MutableAssetData;
 
-public class Template extends Asset {
+public class Template extends AssetSetup {
 
 	public final static char UNSPECIFIED = '\0';
 	public final static char INTERNAL = 'b';
@@ -69,6 +69,21 @@ public class Template extends Asset {
 	}
 
 	/**
+	 * Setup a template with a chained setup
+	 * 
+	 * @param subtype
+	 * @param name
+	 * @param ttype
+	 * @param elementClass
+	 * @param nextSetup
+	 */
+	public Template(String subtype, String name, char ttype,
+			Class<?> elementClass, AssetSetup nextSetup) {
+		this(subtype, name, ttype, elementClass);
+		setNextSetup(nextSetup);
+	}
+
+	/**
 	 * Fluent cache setter
 	 * 
 	 * @param cscache
@@ -102,9 +117,7 @@ public class Template extends Asset {
 	}
 
 	private String template(String clazz) {
-		String template = new java.util.Scanner(getClass().getResourceAsStream(
-				"/Streamer.jsp")).useDelimiter("\\A").next();
-		return template.replaceAll("%CLASS%", clazz);
+		return Util.getResource("/Streamer.jsp").replaceAll("%CLASS%", clazz);
 	}
 
 	@Override
@@ -176,7 +189,7 @@ public class Template extends Asset {
 	 * @param description
 	 * @return
 	 */
-	public Asset description(String description) {
+	public AssetSetup description(String description) {
 		setDescription(description);
 		return this;
 	}

@@ -3,8 +3,8 @@ package giter8
 import java.io.File
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.Charsets.UTF_8
-//import scala.collection.immutable.Map
-//import scala.collection.immutable.Stream
+import wcs.build.Dialog._
+
 
 object G8 {
   import scala.util.control.Exception.allCatch
@@ -36,7 +36,7 @@ object G8 {
   }
 
   def write(out: File, template: String, parameters: Map[String, String], append: Boolean = false) {
-	println("parameters="+parameters)
+    //println("parameters="+parameters)
     val applied = new StringTemplate(template)
       .setAttributes(parameters)
       .registerRenderer(renderer)
@@ -143,13 +143,13 @@ object G8Helpers {
       _ == propertiesLoc
     }
 
-    val parameters = propertiesFiles.headOption.map{ f =>
+    val parameters = propertiesFiles.headOption.map { f =>
       //val props = 
       readProps(new FileInputStream(f))
       //Ls.lookup(props).right.toOption.getOrElse(props)
     }.getOrElse(Map.empty)
 
-    //val parameters: Map[String,String] = Map.empty
+    //println("*** sono qui ***")
 
     val g8templates = tmpls.filter(!_.isDirectory)
 
@@ -184,7 +184,7 @@ object G8Helpers {
         if (fixed.contains(k))
           (k, v)
         else {
-          val in = Console.readLine("%s [%s]: ", k, v).trim
+          val in = inputDialog(k, v).getOrElse("").trim
           (k, if (in.isEmpty) v else in)
         }
     }
@@ -207,12 +207,18 @@ object G8Helpers {
     }.foreach {
       case (in, out) =>
         val existingScaffoldingAction = if (out.exists && isScaffolding) {
-          println(out.getCanonicalPath + " already exists")
-          print("do you want to append, override or skip existing file? [O/a/s] ")
-          Console.readLine match {
-            case a if a == "a" => Some(true)
-            case a if a == "o" || a == "" => Some(false)
-            case _ => None
+          if (out.getName.endsWith(".txt")) {
+            println(out.getCanonicalPath + " already exist, appending")
+            Some(true)
+          } else {
+            println()
+            optionsDialog(
+                "Already exists "+out.getCanonicalPath, 
+                 Array("Override", "Append", "Skip")) match {
+                  case 0 => Some(false) 
+                  case 1 => Some(true)
+                  case 2 => None
+            }
           }
         } else None
 
@@ -312,7 +318,7 @@ object ScaffoldPlugin extends sbt.Plugin {
 
   object ScaffoldingKeys {
     lazy val templatesPath = SettingKey[String]("wcs-templates-path")
-    lazy val scaffold    = InputKey[Unit]("wcs-gen",
+    lazy val scaffold = InputKey[Unit]("wcs-gen",
       """|
          |Usage:
          | wcs-gen <scaffold_name>
@@ -322,11 +328,12 @@ object ScaffoldPlugin extends sbt.Plugin {
          |
          |    scaffolds
          |    |_ site
-         |    |_ element
+         |    |_ cselement
+         |    |_ template
          |
-         |You have 2 different generations available.
+         |You have 3 different generations available.
          |
-         |To generate a new template, just type `wcs-gen scaffold`.
+         |To generate a new template, just type `wcs-gen <scaffold>`.
          |It will ask for the variable values, and generate the correct code.
          |""".stripMargin)
   }
@@ -338,32 +345,27 @@ object ScaffoldPlugin extends sbt.Plugin {
   val parser: sbt.Project.Initialize[State => Parser[String]] =
     (baseDirectory, templatesPath) { (b, t) =>
       (state: State) =>
-      val folder = b / t
+        val folder = b / t
 
-      println(folder)
-      
-      val templates = Option(folder.listFiles).toList.flatten
-        .filter(f => f.isDirectory && !f.isHidden)
-        .map(_.getName: Parser[String])
-        
-        println(templates)
+        val templates = Option(folder.listFiles).toList.flatten
+          .filter(f => f.isDirectory && !f.isHidden)
+          .map(_.getName: Parser[String])
 
-      (Space+) ~> templates.foldLeft("element": Parser[String])(_ | _)
+        (Space+) ~> templates.reduce(token(_) | token(_))
     }
 
-  val scafffoldTask = scaffold <<= InputTask(parser){ (argTask: TaskKey[String]) =>
+  val scaffoldTask = scaffold <<= InputTask(parser) { (argTask: TaskKey[String]) =>
     (baseDirectory, templatesPath, argTask) map { (b, t, name) =>
       val folder = b / t
-      G8Helpers.applyRaw(folder / name, b, Nil).fold(
+      val res = G8Helpers.applyRaw(folder / name, b, Nil)
+      //println(ls)
+      res.fold(
         e => sys.error(e),
-        r => println("Success :)")
-      )
+        r => println("*** wcs-gen successful\n*** remember to wcs-deploy new templates/cselements\n***"))
     }
   }
 
-
   lazy val scaffoldSettings: Seq[sbt.Project.Setting[_]] = Seq(
     templatesPath := "api/scaffolds",
-    scafffoldTask
-  )
+    scaffoldTask)
 }

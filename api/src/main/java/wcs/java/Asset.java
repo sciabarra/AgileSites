@@ -1,7 +1,6 @@
 package wcs.java;
 
 import java.util.Date;
-import java.util.List;
 
 import wcs.core.Arg;
 import wcs.java.util.Log;
@@ -11,7 +10,7 @@ import com.fatwire.assetapi.data.MutableAssetData;
 
 public abstract class Asset {
 
-	private static Log log = new Log(Asset.class);
+	private static Log log =  Log.getLog(Asset.class);
 
 	private String name;
 	private String description;
@@ -354,19 +353,8 @@ public abstract class Asset {
 		return null;
 	}
 
-	/**
-	 * Return a list of expected attributes
-	 * 
-	 */
-	abstract List<String> getAttributes();
-
-	/**
-	 * Define asset data for this asset
-	 * 
-	 * @return
-	 */
-	abstract void setData(MutableAssetData data);
-
+	
+	
 	/**
 	 * Print it
 	 */

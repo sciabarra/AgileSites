@@ -10,7 +10,7 @@ import java.util.Iterator;
  * 
  * For example "first Call(...) second Call(...) third"
  * 
- * The header is the prefix befora a call. Note that if there era no more Calls,
+ * The header is the prefix before a call. Note that if there era no more Calls,
  * the header is actually the footer.
  * 
  * The intended usage is

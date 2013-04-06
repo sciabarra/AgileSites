@@ -16,11 +16,9 @@ import wcs.java.tag.RenderTag;
 import wcs.java.util.Log;
 import COM.FutureTense.Interfaces.ICS;
 
-import com.fatwire.assetapi.data.MutableAssetData;
-
 class AssetImpl extends wcs.java.Asset {
 
-	private static Log log = new Log(Env.class);
+	private static Log log = Log.getLog(Env.class);
 
 	// the name of the asset
 	private String a = tmp();
@@ -317,18 +315,6 @@ class AssetImpl extends wcs.java.Asset {
 		return e.getDate(at(attribute), n, "value");
 	}
 
-	@Override
-	List<String> getAttributes() {
-		throw new RuntimeException(
-				"should not be called here - reserved for setup");
-	}
-
-	@Override
-	void setData(MutableAssetData data) {
-		throw new RuntimeException(
-				"should not be called here - reserved for setup");
-	}
-
 	/**
 	 * String get blob url of the first attribute
 	 * 
@@ -400,7 +386,7 @@ class AssetImpl extends wcs.java.Asset {
 		// copy additional args
 		for (Arg arg : args)
 			list.add(arg);
-		return Common.call("RENDER:CALLTEMPLATE", list.toArray(new Arg[0]));
+		return Common.call("RENDER:CALLTEMPLATE", list);
 	}
 
 	/**

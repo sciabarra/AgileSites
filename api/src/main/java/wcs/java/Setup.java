@@ -1,5 +1,8 @@
 package wcs.java;
 
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,24 +26,25 @@ import com.openmarket.xcelerate.asset.AssetIdImpl;
 
 abstract public class Setup implements wcs.core.Setup {
 
-	private static Log log = new Log(Setup.class);
+	private static Log log = Log.getLog(Setup.class);
 
 	private Site _site = null;
-	
+
 	/**
 	 * Return the current site - this is set by exec
+	 * 
 	 * @return
 	 */
 	public Site getSite() {
 		return _site;
 	}
-	
+
 	/**
 	 * Return assets to create
 	 * 
 	 * @return
 	 */
-	public abstract Asset[] getAssets();
+	public abstract Class<?>[] getAssets();
 
 	// implementation
 
@@ -58,12 +62,12 @@ abstract public class Setup implements wcs.core.Setup {
 	 */
 	public String exec(ICS ics, String site, String username, String password) {
 
-		System.out.println("*** site="+site);
-		
+		System.out.println("*** site=" + site);
+
 		session = SessionFactory.newSession(username, password);
 		adm = (AssetDataManager) session.getManager(AssetDataManager.class
 				.getName());
-		
+
 		this._site = new Site(site);
 
 		// future use
@@ -72,23 +76,44 @@ abstract public class Setup implements wcs.core.Setup {
 		log.debug("created session, adm, sim");
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("Setup.exec BEGIN");
+		sb.append(">>> Setup BEGIN");
 
 		try {
 
 			// future use
 			// sb.append("\nSite: " + getSite().createOrUpdate(sim));
 
-			for (Asset asset : getAssets()) {
-				asset.setSite(site);
-				sb.append("\n" + insertOrUpdate(ics, asset));
+			for (Class<?> clazz : getAssets()) {
+				log.debug("instantiating " + clazz.getCanonicalName());
+				Method m = clazz.getDeclaredMethod("setup");
+				if (m == null)
+					continue;
+				Object obj = m.invoke("setup");
+				if (obj != null && obj instanceof AssetSetup) {
+					log.debug("found an actual instance");
+					recurse(ics, sb, (AssetSetup) obj, site);
+				}
 			}
 
 		} catch (Exception e) {
-			sb.append("\nException: " + log.error(e));
+			CharArrayWriter caw = new CharArrayWriter();
+			e.printStackTrace(new PrintWriter(caw));
+			sb.append("\nException: ").append(caw.toString());
+			log.error(e, "Asset creation/update");
 		}
-		sb.append("\nSetup.exec END\n");
+		sb.append("\n<<< Setup END\n");
 		return sb.toString();
+	}
+
+	// recursive setup to handle the getNextAsset
+	private void recurse(ICS ics, StringBuilder sb, AssetSetup setup,
+			String site) {
+		if (setup == null)
+			return;
+		log.debug("installing " + setup.getName());
+		setup.setSite(site);
+		sb.append("\n" + insertOrUpdate(ics, setup));
+		recurse(ics, sb, setup.getNextSetup(), site);
 	}
 
 	/**
@@ -148,34 +173,34 @@ abstract public class Setup implements wcs.core.Setup {
 	 * @param adm
 	 * @param helper
 	 */
-	String insertOrUpdate(ICS ics, Asset asset) {
-		log.debug("insertOrUpdate " + asset);
+	String insertOrUpdate(ICS ics, AssetSetup setup) {
+		log.debug("insertOrUpdate " + setup);
 
 		// if (!false)
 		// return asset+" OK";
 
-		String what = asset.toString();
+		String what = setup.toString();
 
 		try {
 
-			MutableAssetData data = findByName(asset.getName(),
-					asset.getType(), null, asset.getAttributes());
+			MutableAssetData data = findByName(setup.getName(),
+					setup.getType(), null, setup.getAttributes());
 
 			// inserting
 			if (data == null)
 				return what + " INSERTING: "
-						+ insert(asset, Long.parseLong(ics.genID(true)));
+						+ insert(setup, Long.parseLong(ics.genID(true)));
 
 			// updating
-			return what + " UPDATING: " + update(asset, data);
+			return what + " UPDATING: " + update(setup, data);
 
 		} catch (Exception e) {
-			log.error(e);
+			log.error("insertOrUpdate failed", e);
 			return what + " ERROR: " + e.getMessage();
 		}
 	}
 
-	String insert(Asset asset, long id) throws AssetAccessException {
+	String insert(AssetSetup asset, long id) throws AssetAccessException {
 		log.debug("inserting " + asset);
 
 		AssetId aid = new AssetIdImpl(asset.getType(), id);
@@ -192,29 +217,29 @@ abstract public class Setup implements wcs.core.Setup {
 		try {
 			adm.insert(Util.listData(data));
 		} catch (Exception e) {
-			log.error(e);
+			log.error(e, "insert failed");
 			return "ERROR: " + e;
 		}
 		return "INSERT OK";
 	}
 
-	String update(Asset asset, MutableAssetData data)
+	String update(AssetSetup asset, MutableAssetData data)
 			throws AssetAccessException {
 		log.debug("update " + asset);
-		
+
 		// dump the asset in xml format
 		if (data.getAssetId().getType().equals("AttrTypes")) {
-			String dump = "\nAsset: " + data.getAssetId() + Util.dump(data);
+			String dump = "\nAsset: " + data.getAssetId() + Util.dumpAssetData(data);
 			log.debug(dump);
 		}
 
 		_site.setData(data);
 		asset.setData(data);
-
+	
 		try {
 			adm.update(Util.listData(data));
 		} catch (Exception e) {
-			log.error(e);
+			log.error(e, "update failed");
 			return "ERROR: " + e;
 		}
 		return "OK";

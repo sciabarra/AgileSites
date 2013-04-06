@@ -19,9 +19,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   val removeFilterSetup = addFilterSetup
 
   // configuring WCS jars as unmanaged lib
-  val unmanagedFilter = "spring-*" || "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
+  val unmanagedFilter = "log4j-*" || "slf4j*" || "spring-*" || "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
     "wem-sso-api-*" || "rest-api-*" || "cas-client-*" || "assetapi*" || "xstream*" ||
-    "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar" || "ehcache-*" || "slf4j*"
+    "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar" || "ehcache-*" 
 
   val includeFilterUnmanagedJars = includeFilter in unmanagedJars := unmanagedFilter
 
@@ -40,6 +40,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "junit" % "junit" % "4.8.2",
     "com.novocode" % "junit-interface" % "0.8" % "test",
     "org.specs2" %% "specs2" % "1.13",
+    "log4j" % "log4j" % "1.2.16",
     "org.apache.httpcomponents" % "httpclient" % "4.1.2",
     "org.apache.httpcomponents" % "httpcore" % "4.1.2",
     "org.apache.httpcomponents" % "httpmime" % "4.1.2",
@@ -106,15 +107,15 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     settings = commonSettings ++ assemblySettings ++ scaffoldSettings ++ Seq(
       name := "agilesites-all",
       wcsCsdtTask,
-      wcsCmTask,
-      wcsSetupTask,
+      wcsSetupOnlineTask,
+      wcsSetupOfflineTask,
       wcsDeployTask,
       wcsCopyStaticTask,
       wcsPackageJarTask,
       wcsUpdateAssetsTask,
+      wcsLogTask,
       excludedJars in assembly <<= (fullClasspath in assembly),
       EclipseKeys.skipProject := true,
       assembleArtifact in packageScala := false)) dependsOn (app) aggregate (app, api)
-
 }
 

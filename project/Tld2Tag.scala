@@ -20,7 +20,7 @@ import COM.FutureTense.Interfaces.FTValList
     
 object %s  {    
   val _debug = java.lang.System.getProperty("wcs.tag.debug") != null;
-  val log  = java.util.logging.Logger.getLogger("%s");
+  val log  = org.apache.log4j.Logger.getLogger("%s");
     
  """.format(cl,cl)
   }
@@ -40,7 +40,7 @@ object %s  {
   _ics_.runTag("%s", _args_);
   if(_debug) {
      Console.println(ftValList2String("%s", _args_))
-     log.finest(ftValList2String("%s", _args_))
+     log.trace(ftValList2String("%s", _args_))
   }
   _ics_.GetErrno
 }
@@ -52,7 +52,7 @@ object %s  {
   // dump an ftval list for logging
   def ftValList2String(name: String, vl: FTValList) = {
     var sb = new StringBuilder()
-    sb.append(">>>");
+    //sb.append(">>> ");
     sb.append(name)
     sb.append(":")
     val en = vl.keys

@@ -2,9 +2,11 @@ package $site;format="normalize"$;
 
 public class Config extends wcs.java.Config {
 
+	public static final String site = "$site$";
+
 	@Override
 	public String getSite() {
-		return "$site$";
+		return site;
 	}
 
 	@Override
@@ -20,8 +22,7 @@ public class Config extends wcs.java.Config {
 		// assuming the types in the flex family
 		// shares a common prefix
 		/**
-		 * if(type.startsWith("Agile_"))
-		 *	return "Agile_A";
+		 * if(type.startsWith("MySite_")) return "MySite_A";
 		 */
 
 		return null;

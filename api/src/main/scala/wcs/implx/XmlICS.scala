@@ -23,14 +23,22 @@ import COM.FutureTense.Interfaces.PastramiEngine
 import COM.FutureTense.Interfaces.IMIMENotifier
 import COM.FutureTense.Interfaces.IProperties
 import java.io.File
+import wcs.scala.Log
 
 /**
  * Mock class simulating (part of) ICS behaviour
  */
-class XmlICS(val base: File) extends ICS {
-
-  def this() = this(new File("export"))
+class XmlICS extends wcs.core.ICSProxyJ with Log {
   
+  // has ics?
+  var x = false
+
+  def this(ics: ICS) = {
+    this()
+    init(ics);
+    x = ics != null
+  }
+
   var varMap = Map[String, String]()
   var listMap = Map[String, IList]()
   var errno = 0;
@@ -41,29 +49,56 @@ class XmlICS(val base: File) extends ICS {
 
   def addMapVar(map: Map[String, String]) = { this.varMap = map }
 
+  // ser variable from java
+  def setVar(k: String, v: String) {
+    varMap += k -> v
+  }
+  
+  // set ilist from java
+  def setList(name: String, cols: Array[ java.util.List[String] ] ) {
+    import scala.collection.JavaConverters._
+     val seq = for(col <- cols) yield {
+       //val col2 = col.asInstanceOf[List[String]]
+       col.get(0) -> col.subList(1, col.size).asScala.toList
+    }
+    //debug("setList seq=%s", seq)
+    addMapList(name, seq.toMap)
+  }
+ 
   // implemented
-  def GetVar(arg0: String): String = { varMap.get(arg0).getOrElse { null } }
+  override def GetVar(a: String): String = {
+    varMap.get(a).getOrElse { if (x) ics.GetVar(a) else null }
+  }
 
-  def GetList(arg0: String): IList = { listMap.getOrElse(arg0, null) }
+  override def GetList(a: String): IList = {
+    listMap.getOrElse(a, if (x) ics.GetList(a) else null)
+  }
+
+  override def SetVar(arg0: String, arg1: String): Unit = {
+    setVar(arg0, arg1)
+    if (x) ics.SetVar(arg0, arg1)
+  }
+
+  override def SetErrno(arg0: Int): Unit = { errno = arg0 }
+
+  override def ClearErrno(): Unit = { errno = 0 }
 
   // to be implemented soon (but yet unimplemeneted)
 
-  def GetList(arg0: String, arg1: Boolean): IList = { null }
+  //def GetList(arg0: String, arg1: Boolean): IList = { null }
 
-  def RenameList(arg0: String, arg1: String): Boolean = { false }
+  //def RenameList(arg0: String, arg1: String): Boolean = { false }
 
-  def CopyList(arg0: String, arg1: String): Boolean = { false }
+  // def CopyList(arg0: String, arg1: String): Boolean = { false }
 
-  def SetVar(arg0: String, arg1: String): Unit = {
-    varMap += arg0 -> arg1
-  }
+  // def SetVar(arg0: String, arg1: Int): Unit = {}
 
-  def SetVar(arg0: String, arg1: Int): Unit = {}
+  // def SetVar(arg0: String, arg1: FTVAL): Unit = {}
 
-  def SetVar(arg0: String, arg1: FTVAL): Unit = {}
+  // unimplemented (proxyed - here for reference if they need to be implemented)
 
-  // unimplemented
-
+  /*
+   
   def PushVars(): Unit = {}
 
   def PopVars(): Unit = {}
@@ -129,14 +164,6 @@ class XmlICS(val base: File) extends ICS {
   def getComplexError(): ftErrors = { null }
 
   def setComplexError(arg0: ftErrors): Unit = {}
-
-  def SetErrno(arg0: Int): Unit = {
-    errno = arg0
-  }
-
-  def ClearErrno(): Unit = {
-    errno = 0
-  }
 
   def ResolveVariables(arg0: String): String = { null }
 
@@ -395,5 +422,7 @@ class XmlICS(val base: File) extends ICS {
   def getUserPrincipal(): Principal = { null }
 
   def getIProperties(): IProperties = { null }
+  
+  */
 
 }

@@ -8,7 +8,7 @@ import wcs.java.util.Util;
 
 import com.fatwire.assetapi.data.MutableAssetData;
 
-public class SiteEntry extends Asset {
+public class SiteEntry extends AssetSetup {
 
 	// private String element;
 	private String elementname;
@@ -22,7 +22,18 @@ public class SiteEntry extends Asset {
 	 * @param wrapper
 	 */
 	public SiteEntry(String name, boolean wrapper) {
-		this(name, wrapper, null);
+		this(name, wrapper, (String)null);
+	}
+
+	/**
+	 * Create a site entry, specifying if it is a wrapper or not
+	 * 
+	 * @param name
+	 * @param wrapper
+	 */
+	public SiteEntry(String name, boolean wrapper, AssetSetup nextSetup) {
+		this(name, wrapper, (String)null);
+		setNextSetup(nextSetup);
 	}
 
 	/**
@@ -95,7 +106,7 @@ public class SiteEntry extends Asset {
 	 * @param description
 	 * @return
 	 */
-	public Asset description(String description) {
+	public AssetSetup description(String description) {
 		setDescription(description);
 		return this;
 	}

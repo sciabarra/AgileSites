@@ -46,6 +46,14 @@
 			}
 		%></render:callelement><%
 		} /* END RENDER:CALLELEMENT */
+	%><%
+		if (name.equalsIgnoreCase("ICS:CALLELEMENT")) {
+	%><ics:callelement element='<%=c.getOnce("ELEMENT")%>'><%
+			for (String k : c.keysLeft()) {
+		%><ics:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><%
+			}
+		%></ics:callelement><%
+		} /* END ICS:CALLELEMENT */
 	%><%=seq.header()%><%
 		}
 	%></cs:ftcs>

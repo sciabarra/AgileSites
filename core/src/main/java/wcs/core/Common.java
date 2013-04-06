@@ -1,5 +1,7 @@
 package wcs.core;
 
+import java.util.List;
+
 public class Common {
 
 	private static long tmpVarCounter = System.currentTimeMillis();
@@ -40,6 +42,13 @@ public class Common {
 	 * Create an encoded call
 	 */
 	public static String call(String name, Arg... args) {
+		return Call.encode(name, args);
+	}
+
+	/**
+	 * Create an encoded call
+	 */
+	public static String call(String name, List<Arg> args) {
 		return Call.encode(name, args);
 	}
 

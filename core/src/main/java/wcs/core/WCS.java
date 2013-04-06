@@ -1,7 +1,7 @@
 package wcs.core;
 
 import java.util.Properties;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import COM.FutureTense.Interfaces.ICS;
 
@@ -39,7 +39,7 @@ public class WCS {
 	public static String debug(String msg) {
 		if (debug) {
 			System.err.println(">>> " + msg);
-			log.fine(msg);
+			log.debug(msg);
 		}
 		return msg;
 	}

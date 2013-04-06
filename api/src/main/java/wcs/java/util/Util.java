@@ -1,11 +1,19 @@
 package wcs.java.util;
 
+import java.io.BufferedReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+
+import wcs.core.Sequencer;
 
 import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AttributeDataImpl;
@@ -17,13 +25,14 @@ import com.openmarket.xcelerate.asset.AttributeDefImpl;
 /**
  * Utility and support data
  * 
+ * TODO: stub only class for now
+ * 
  * @author msciab
  * 
  */
 public class Util {
 
-	// private static Log log = new Log(Util.class);
-
+	private static Log log = Log.getLog(Util.class);
 
 	/**
 	 * Create a list from multiple arguments
@@ -94,32 +103,7 @@ public class Util {
 		return ls;
 	}
 
-	/*
-	 * public static String adump(Object o) { return o.toString(); }
-	 * 
-	 * public static String adump(AttributeData data) { Object d =
-	 * data.getData(); if (d == null) return "null"; else if(d instanceof List)
-	 * { StringBuffer sb = new StringBuffer("["); for(Object o: (List)d) {
-	 * sb.append(adump(o)).append(","); } sb.setLength(sb.length()-1);
-	 * sb.append("]"); } return d.toString(); }
-	 * 
-	 * / ** Dump Asset data.. / public static String dump(AssetData data) {
-	 * StringBuffer sb = new StringBuffer("\n-----\n"); for (String attr :
-	 * data.getAttributeNames()) { sb.append(attr); Object o =
-	 * data.getAttributeData(attr); //
-	 * sb.append("(").append(o.getClass()).append(")"); sb.append("="); String v
-	 * = "???";// o.toString(); if (o != null && o instanceof AttributeData) {
-	 * AttributeData a = (AttributeData) o; Object oo = a.getData(); if (oo
-	 * instanceof com.fatwire.assetapi.data.BlobObjectImpl) { BlobObject b =
-	 * (BlobObject) oo; if (b != null && b.getFilename() != null) v = "BLOB(" +
-	 * b.getFilename() + ")"; else v = "BLOB(null)"; } else if (a != null && a
-	 * instanceof AttributeData) { v = adump(a); } else if (a != null && oo !=
-	 * null) { v = oo.toString(); } else v = "null"; sb.append(v).append("\n");
-	 * } else sb.append("BOH!").append("\n"); } sb.append("------\n"); return
-	 * sb.toString(); }
-	 */
-
-	public static String dump(AssetData data) {
+	public static String dumpAssetData(AssetData data) {
 		String s = new com.thoughtworks.xstream.XStream().toXML(data);
 		try {
 			FileWriter fw = new FileWriter("/tmp/out.xml", true);
@@ -213,7 +197,8 @@ public class Util {
 			String filename, String value) {
 		AttributeTypeEnum type = AttributeTypeEnum.URL;
 		return new AttributeDataImpl(def(name, type), name, type,
-				new BlobObjectImpl(folder+"/"+filename, folder, value.getBytes()));
+				new BlobObjectImpl(folder + "/" + filename, folder,
+						value.getBytes()));
 
 	}
 
@@ -249,7 +234,6 @@ public class Util {
 
 	}
 
-	
 	public static Integer toInt(String l) {
 		if (l == null)
 			return null;
@@ -265,4 +249,95 @@ public class Util {
 
 	}
 
+	/**
+	 * Return a class list read from a list of resources
+	 * 
+	 * @param site
+	 * @param resourceName
+	 * @return
+	 */
+	public static Class<?>[] classesFromResource(String site,
+			String resourceName) {
+		String res = "/" + wcs.core.WCS.normalizeSiteName(site) + "/"
+				+ resourceName;
+		log.debug("res=" + res);
+		List<Class<?>> classList = new LinkedList<Class<?>>();
+		try {
+			InputStream is = Util.class.getResourceAsStream(res);
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+
+			String className = br.readLine();
+			while (className != null) {
+				log.debug("read " + className);
+				try {
+					if (className.trim().length() > 0)
+						classList.add(Class.forName(className));
+				} catch (Exception e) {
+					log.warn("oops! cannot create " + className);
+				}
+				className = br.readLine();
+			}
+		} catch (Exception e) {
+			log.warn(e.getMessage());
+			// e.printStackTrace();
+		}
+		return classList.toArray(new Class<?>[0]);
+	}
+
+	/**
+	 * Get a resource from the classpath
+	 * 
+	 * @param res
+	 * @return
+	 */
+	public static String getResource(String res) {
+		InputStream is = null;
+		try {
+			return new java.util.Scanner(
+					is = Util.class.getResourceAsStream(res)).useDelimiter(
+					"\\A").next();
+		} finally {
+			try {
+				is.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+
+	/**
+	 * Get a resource property file from the classpath
+	 * 
+	 * @param res
+	 * @return
+	 */
+	public static Properties getResourceProperties(String res) {
+		InputStream is = null;
+		Properties prp = new Properties();
+		try {
+			is = Util.class.getResourceAsStream(res);
+			prp.load(is);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				is.close();
+			} catch (Exception e) {
+			}
+		}
+		return prp;
+	}
+
+	/**
+	 * Convenience method to dump the stream resulting of the picker
+	 */
+	public static String dumpStream(String html) {
+		Sequencer seq = new Sequencer(html);
+		StringBuilder sb = new StringBuilder(seq.header());
+		while (seq.hasNext()) {
+			sb.append(seq.next().toString());
+			sb.append(seq.header());
+		}
+		return sb.toString();
+	}
 }
