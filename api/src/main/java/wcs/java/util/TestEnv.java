@@ -1,7 +1,7 @@
 package wcs.java.util;
 
 import COM.FutureTense.Interfaces.ICS;
-import wcs.implx.XmlICS;
+import wcs.scala.XmlICS;
 import wcs.java.Env;
 
 /**

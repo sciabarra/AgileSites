@@ -19,8 +19,7 @@ import COM.FutureTense.Interfaces.ICS
 import COM.FutureTense.Interfaces.FTValList
     
 object %s  {    
-  val _debug = java.lang.System.getProperty("wcs.tag.debug") != null;
-  val log  = org.apache.log4j.Logger.getLogger("%s");
+  val log  = wcs.core.Log.getLog("%s");
     
  """.format(cl,cl)
   }
@@ -38,10 +37,7 @@ object %s  {
      x => _args_.setValString(x._1.toString.substring(1), x._2)
   } 
   _ics_.runTag("%s", _args_);
-  if(_debug) {
-     Console.println(ftValList2String("%s", _args_))
-     log.trace(ftValList2String("%s", _args_))
-  }
+  log.trace(ftValList2String("%s", _args_))
   _ics_.GetErrno
 }
 """.format(lt, lt, lt)
@@ -52,7 +48,6 @@ object %s  {
   // dump an ftval list for logging
   def ftValList2String(name: String, vl: FTValList) = {
     var sb = new StringBuilder()
-    //sb.append(">>> ");
     sb.append(name)
     sb.append(":")
     val en = vl.keys
@@ -117,9 +112,6 @@ object %s  {
     preHead(filename) +
       res.mkString("\n") +
       postHead
-
-    //"%d".format(tags.size)
-
   }
 
   def main(args: Array[String]) {

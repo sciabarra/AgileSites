@@ -1,7 +1,7 @@
 package tests.java
 import org.specs2.mutable.Specification
 import wcs.scala.Log
-import wcs.implx.XmlICS
+import wcs.scala.XmlICS
 import wcs.java.Env
 import java.text.SimpleDateFormat
 

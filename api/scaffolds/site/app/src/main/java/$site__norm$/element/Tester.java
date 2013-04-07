@@ -1,6 +1,6 @@
 package $site;format="normalize"$.element;
 
-import mysite.Config;
+import $site;format="normalize"$.Config;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.SiteEntry;

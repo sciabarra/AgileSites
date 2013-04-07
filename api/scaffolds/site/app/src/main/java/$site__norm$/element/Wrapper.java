@@ -1,12 +1,12 @@
 package $site;format="normalize"$.element;
 
+import wcs.core.Log;
 import wcs.java.Asset;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.Element;
 import wcs.java.Env;
 import wcs.java.Picker;
-import wcs.java.util.Log;
 
 public class Wrapper extends Element {
 	

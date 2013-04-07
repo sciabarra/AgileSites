@@ -17,6 +17,7 @@ import com.fatwire.cs.core.uri.QueryAssembler;
 import com.fatwire.cs.core.uri.Simple;
 
 public class Assembler implements com.fatwire.cs.core.uri.Assembler {
+	final static Log log = Log.getLog(Assembler.class);
 
 	private QueryAssembler qa = new QueryAssembler();
 	private Map<String, String> sitePrefix = new HashMap<String, String>();
@@ -27,20 +28,20 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 
 	@Override
 	public void setProperties(Properties prp) {
-		// WCS.debug("Satellite.setProperties=" + prp);
+		// log.debug("Satellite.setProperties=" + prp);
 		try {
 			staticBlobs = Pattern.compile(prp
 					.getProperty("agilesites.blob.static"));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		WCS.debug("staticBlobs=" + staticBlobs);
+		log.debug("staticBlobs=" + staticBlobs);
 		try {
 			flexBlobs = Pattern.compile(prp.getProperty("agilesites.blob.flex"));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		WCS.debug("flexBlobs=" + flexBlobs);
+		log.debug("flexBlobs=" + flexBlobs);
 		try {
 			StringTokenizer st = new StringTokenizer(
 					prp.getProperty("agilesites.sites"), ",");
@@ -50,13 +51,13 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 				if (prefix != null)
 					sitePrefix.put(site, prefix);
 				else
-					WCS.debug("no site prefix for " + site);
+					log.debug("no site prefix for " + site);
 
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		WCS.debug("sitePrefixes=" + sitePrefix);
+		log.debug("sitePrefixes=" + sitePrefix);
 
 		try {
 			qa.setProperties(prp);
@@ -83,9 +84,9 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		if (q != null)
 			def.setQueryStringParameter("q", q);
 
-		WCS.debug("c=" + site);
-		WCS.debug("cid=" + path);
-		WCS.debug("q=" + q);
+		log.debug("c=" + site);
+		log.debug("cid=" + path);
+		log.debug("q=" + q);
 
 		return def;
 
@@ -100,14 +101,14 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 					if (pos == -1) {
 						String k = URLDecoder.decode(pair, "UTF-8");
 						def.setQueryStringParameter(k, "");
-						WCS.debug("qs: " + k);
+						log.debug("qs: " + k);
 					} else {
 						String k = URLDecoder.decode(pair.substring(0, pos),
 								"UTF-8");
 						String v = URLDecoder.decode(pair.substring(pos + 1),
 								"UTF-8");
 						def.setQueryStringParameter(k, v);
-						WCS.debug("qs: " + k + "=" + v);
+						log.debug("qs: " + k + "=" + v);
 					}
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
@@ -137,10 +138,10 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		def.setQueryStringParameter("blobwhere", blobwhere);
 		def.setQueryStringParameter("blobtable", blobtable);
 
-		WCS.debug("blobcol=" + blobcol);
-		WCS.debug("blobkey=" + blobkey);
-		WCS.debug("blobwhere=" + blobwhere);
-		WCS.debug("blobtable=" + blobtable);
+		log.debug("blobcol=" + blobcol);
+		log.debug("blobkey=" + blobkey);
+		log.debug("blobwhere=" + blobwhere);
+		log.debug("blobtable=" + blobtable);
 
 		addQueryString(def, uri.getQuery());
 		return def;
@@ -160,14 +161,14 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		if (flexBlobs != null) {
 			Matcher mFlex = flexBlobs.matcher(subpath);
 			if (mFlex.find()) {
-				WCS.debug("flexBlob subpath=" + subpath);
+				log.debug("flexBlob subpath=" + subpath);
 				return blobDef(uri, subpath, false);
 			}
 		}
 		if (staticBlobs != null) {
 			Matcher mStatic = staticBlobs.matcher(subpath);
 			if (mStatic.find()) {
-				WCS.debug("staticBlob subpath=" + subpath);
+				log.debug("staticBlob subpath=" + subpath);
 				return blobDef(uri, subpath, true);
 			}
 		}
@@ -181,26 +182,26 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		// get path
 		Definition result = null;
 		String path = uri.getPath();
-		WCS.debug("dissassembling " + path);
+		log.debug("dissassembling " + path);
 
 		// search if it is one of the configured sites
 		Matcher match = sitePattern.matcher(path);
 		if (match.find()) {
 			String site = match.group(2);
 			String subpath = match.group(4);
-			WCS.debug("site=" + site + " subpath=" + subpath);
+			log.debug("site=" + site + " subpath=" + subpath);
 			if (sitePrefix.containsKey(site)) {
 				// check if it is one of the blobs
 				result = disassembleBlob(uri, site, subpath);
 				if (result == null) {
-					WCS.debug("*** asset found");
+					log.debug("*** asset found");
 					return assetDef(uri, site, subpath);
 				} else {
-					WCS.debug("*** blob found");
+					log.debug("*** blob found");
 					return result;
 				}
 			} else {
-				WCS.debug("no known site " + site);
+				log.debug("no known site " + site);
 			}
 		}
 		return qa.disassemble(uri, type);

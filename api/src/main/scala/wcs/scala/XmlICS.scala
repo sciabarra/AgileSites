@@ -1,29 +1,11 @@
-package wcs.implx
+package wcs.scala
 
-import java.io.OutputStream
-import java.security.Principal
-import java.util.Enumeration
-import com.fatwire.cs.core.uri.Definition
-import com.fatwire.cs.core.db.StatementParam
-import com.fatwire.cs.core.db.PreparedStmt
-import COM.FutureTense.ContentServer.PageData
-import COM.FutureTense.XML.Template.Seed
-import COM.FutureTense.Util.ftErrors
-import COM.FutureTense.Cache.Satellite
+import scala.Array.canBuildFrom
+import scala.collection.JavaConverters.asScalaBufferConverter
+
 import COM.FutureTense.Interfaces.ICS
-import COM.FutureTense.Interfaces.FTVAL
 import COM.FutureTense.Interfaces.IList
-import COM.FutureTense.Interfaces.FTValList
-import COM.FutureTense.Interfaces.ISearchEngine
-import COM.FutureTense.Interfaces.ISyncHash
-import COM.FutureTense.Interfaces.IServlet
-import COM.FutureTense.Interfaces.IURLDefinition
-import COM.FutureTense.Interfaces.IJSPObject
-import COM.FutureTense.Interfaces.PastramiEngine
-import COM.FutureTense.Interfaces.IMIMENotifier
-import COM.FutureTense.Interfaces.IProperties
-import java.io.File
-import wcs.scala.Log
+import wcs.scala.util.MapListIList
 
 /**
  * Mock class simulating (part of) ICS behaviour

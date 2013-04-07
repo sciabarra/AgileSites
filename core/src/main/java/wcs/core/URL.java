@@ -24,7 +24,7 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //package com.kennardconsulting.core.net;
-package wcs.java.util;
+package wcs.core;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -39,6 +39,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+
+import wcs.core.Log;
 
 /**
  * Represents a www-form-urlencoded query string containing an (ordered) list of

@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
-import wcs.java.util.Log;
+import wcs.core.Log;
 import wcs.java.util.Util;
 
 import COM.FutureTense.Interfaces.ICS;

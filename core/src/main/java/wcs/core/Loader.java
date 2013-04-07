@@ -14,6 +14,8 @@ import java.net.URLClassLoader;
  */
 public class Loader {
 
+	final static Log log = Log.getLog(Loader.class);
+
 	private long jarTimestamp = 0;
 	private URLClassLoader ucl;
 	private ClassLoader mycl = getClass().getClassLoader();
@@ -39,28 +41,23 @@ public class Loader {
 
 		if (jar == null) {
 
-			WCS.debug("[Loader]: no jar specified");
+			log.debug("[Loader]: no jar specified");
 			return mycl;
 		}
 
 		if (!jar.exists()) {
-			WCS.debug("[Loader]: jar not found!!!");
+			log.debug("[Loader]: jar not found!!!");
 			return mycl;
 		}
 
-		// WCS.debug("curTimestamp=" + curTimestamp);
-		// WCS.debug("jarTimestamp=" + jarTimestamp);
-
 		// reloading jar if modified
 		long curTimestamp = jar.lastModified();
+		log.trace("curTimestamp=%l jarTimestamp=%j", curTimestamp, jarTimestamp);
 		if (curTimestamp > jarTimestamp) {
 			URL url = jar.toURI().toURL();
-
-			WCS.debug("[Loader] reloading " + url);
-
+			log.debug("[Loader] reloading " + url);
 			jarTimestamp = curTimestamp;
 			ucl = new URLClassLoader(new URL[] { url }, mycl);
-
 		}
 		return ucl;
 

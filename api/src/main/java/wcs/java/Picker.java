@@ -9,7 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import wcs.java.util.Log;
+import wcs.core.Log;
 import wcs.java.util.Util;
 
 /**

@@ -28,24 +28,21 @@ object Tld2Tagj {
     """package wcs.java.tag;
     
 import COM.FutureTense.Interfaces.*;
-import org.apache.log4j.*;
-import java.lang.String;
 import wcs.core.Common;
 import wcs.core.Arg;
+import wcs.core.Log;
     
 public class %s  {    
-  private static boolean debug = java.lang.System.getProperty("wcs.tag.debug") != null;
-  private static Logger log = Logger.getLogger("%s");  
+  private static Log log = Log.getLog(%s.class);  
   static String ftValList2String(String name, FTValList vl)  {
     StringBuilder sb = new StringBuilder();
-    //sb.append(">>>");
     sb.append(name);
     sb.append(":");
     java.util.Enumeration en = vl.keys();
     while (en.hasMoreElements()) {
       String k = en.nextElement().toString();
       Object v = vl.getValString(k);
-      sb.append( " "+k+"="+v);
+      sb.append(" ").append(k).append("=").append(v.toString());
     }
     return sb.toString();
   }
@@ -74,10 +71,7 @@ public class %s  {
   public %s() { }""".format(cname, cname, setParams, cname) + """
   public int run(ICS ics) { 
       ics.runTag("%s", args); 
-      if(debug) {
-         java.lang.System.err.println(ftValList2String("%s", args));
-         log.trace(ftValList2String("%s", args));
-      }
+      log.trace(ftValList2String("%s", args));
       return ics.GetErrno(); 
   }
   public String eval(ICS ics, String output) {

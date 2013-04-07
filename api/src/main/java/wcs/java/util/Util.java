@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import wcs.core.Log;
 import wcs.core.Sequencer;
 
 import com.fatwire.assetapi.data.AssetData;

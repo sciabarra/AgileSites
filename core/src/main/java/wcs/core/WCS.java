@@ -1,18 +1,15 @@
 package wcs.core;
 
 import java.util.Properties;
-import org.apache.log4j.Logger;
-
 import COM.FutureTense.Interfaces.ICS;
 
 public class WCS {
 
-	final static Logger log = Logger.getLogger(WCS.class.getCanonicalName());
+	final static Log log = Log.getLog(WCS.class);
 
 	final static boolean debug = System.getProperty("wcs.core.debug") != null;
 
 	final static Properties properties = new Properties();
-
 
 	/**
 	 * Normalize Site name
@@ -32,19 +29,6 @@ public class WCS {
 	}
 
 	/**
-	 * Print debug messages if the core debug property is enabled
-	 * 
-	 * @param msg
-	 */
-	public static String debug(String msg) {
-		if (debug) {
-			System.err.println(">>> " + msg);
-			log.debug(msg);
-		}
-		return msg;
-	}
-
-	/**
 	 * Dispatch requests
 	 * 
 	 * @param ics
@@ -52,16 +36,18 @@ public class WCS {
 	 * @return
 	 */
 	public static String dispatch(ICS ics, String clazz) {
-		WCS.debug("[WCS.dispatch] Dispatching...");
+		log.trace("[WCS.dispatch] Dispatching...");
 		try {
 			Dispatcher dispatcher = Dispatcher.getDispatcher(ics);
 			if (dispatcher != null)
 				return dispatcher.dispatch(ics, clazz);
-			else
-				return WCS.debug("[WCS.dispatch] Not found jar.");
+			else {
+				log.error("[WCS.dispatch] Not found jar.");
+				return "[WCS.dispatch] Not found jar";
+			}
 		} catch (Exception ex) {
-			return WCS.debug("[WCS.dispatch] !!! Cannot dispatch: "
-					+ ex.getMessage());
+			log.warn(ex, "[WCS.dispatch]Cannot dispatch!");
+			return "[WCS.dispatch] Cannot dispatch: " + ex.getMessage();
 		}
 	}
 
@@ -75,23 +61,23 @@ public class WCS {
 	 * @return
 	 */
 	public static String deploy(ICS ics, String site, String user, String pass) {
-		WCS.debug("[WCS.deploy] Deploying sites=" + site + " user=" + user
-				+ " pass=" + pass);
+		log.debug("[WCS.deploy] Deploying sites=%s user=%s", site, user);
 		try {
-			WCS.debug("[WCS.deploy] Getting dispatcher.");
+			log.debug("[WCS.deploy] Getting dispatcher.");
 			Dispatcher dispatcher = Dispatcher.getDispatcher(ics);
 			if (dispatcher != null) {
-				WCS.debug("[WCS.deploy] Deploying...");
+				log.debug("[WCS.deploy] Deploying...");
 				String result = dispatcher.deploy(ics, site, user, pass);
-				WCS.debug("[WCS.deploy] Deployed.");
+				log.debug("[WCS.deploy] Deployed.");
 				return result;
-			} else
-				return WCS.debug("[WCS.dispatch] Not found jar.");
+			} else {
+				log.debug("[WCS.deploy] Not found jar.");
+				return "[WCS.deploy] Not found jar.";
+			}
 		} catch (Exception ex) {
-			return WCS.debug("[WCS.deploy] Error invoking deploy:"
-					+ ex.getMessage());
+			log.debug(ex, "[WCS.deploy] Error invoking deploy");
+			return "[WCS.deploy] Error invoking deploy";
 		}
-
 	}
 
 	/**
@@ -104,12 +90,12 @@ public class WCS {
 	 */
 	public static Call route(ICS ics, String site, String path, String query)
 			throws Exception {
-		WCS.debug("[WCS.dispatch] Dispatching...");
+		log.debug("[WCS.route] Dispatching...");
 		Dispatcher dispatcher = Dispatcher.getDispatcher(ics);
 		if (dispatcher != null) {
 			return dispatcher.route(ics, site, path, query);
 		} else {
-			WCS.debug("[WCS.router] Not found jar.");
+			log.debug("[WCS.route] Not found jar.");
 		}
 		return null;
 	}

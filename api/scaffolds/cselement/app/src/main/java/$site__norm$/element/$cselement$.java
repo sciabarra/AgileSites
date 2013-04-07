@@ -1,11 +1,11 @@
 package $site;format="normalize"$.element;
 
+import wcs.core.Log;
 import wcs.java.Env;
 import wcs.java.Element;
 import wcs.java.CSElement;
 import wcs.java.AssetSetup;
 import wcs.java.Picker;
-import wcs.java.util.Log;
 
 public class $cselement$ extends Element {
 

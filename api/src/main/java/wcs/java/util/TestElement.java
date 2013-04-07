@@ -14,6 +14,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import wcs.core.Call;
+import wcs.core.Log;
+import wcs.core.URL;
 import wcs.java.Router;
 
 /**

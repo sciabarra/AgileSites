@@ -2,7 +2,7 @@ package wcs.java;
 
 import java.util.List;
 
-import wcs.java.util.Log;
+import wcs.core.Log;
 import wcs.java.util.Util;
 
 import com.fatwire.assetapi.common.SiteAccessException;

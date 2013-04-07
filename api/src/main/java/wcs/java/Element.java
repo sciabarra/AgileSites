@@ -5,7 +5,7 @@ import java.util.List;
 
 import wcs.core.Arg;
 import wcs.core.Common;
-import wcs.java.util.Log;
+import wcs.core.Log;
 import COM.FutureTense.Interfaces.ICS;
 
 /**

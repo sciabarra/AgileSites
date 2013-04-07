@@ -3,7 +3,7 @@ package wcs.java;
 import java.util.Date;
 
 import wcs.core.Arg;
-import wcs.java.util.Log;
+import wcs.core.Log;
 
 import com.fatwire.assetapi.data.AttributeData;
 import com.fatwire.assetapi.data.MutableAssetData;
@@ -93,7 +93,7 @@ public abstract class Asset {
 	 * Range of an asset association
 	 */
 	public Iterable<Integer> getAssocRange(String assoc) {
-		return new wcs.java.util.Range(0);
+		return new wcs.core.Range(0);
 	}
 
 	/**
@@ -328,7 +328,7 @@ public abstract class Asset {
 	 * @return
 	 */
 	public Iterable<Integer> getRange(String attribute) {
-		return new wcs.java.util.Range(0);
+		return new wcs.core.Range(0);
 	}
 
 	/**

@@ -1,4 +1,4 @@
-package wcs.java.util;
+package wcs.core;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

@@ -13,10 +13,10 @@ import wcs.core.Arg;
 import wcs.core.Common;
 import wcs.core.ICSProxyJ;
 import wcs.core.Id;
+import wcs.core.Log;
+import wcs.core.Range;
 import wcs.java.tag.AssetTag;
 import wcs.java.tag.PublicationTag;
-import wcs.java.util.Log;
-import wcs.java.util.Range;
 import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
 

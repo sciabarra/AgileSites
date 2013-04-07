@@ -1,15 +1,13 @@
 package $site;format="normalize"$;
 
-import static wcs.core.Common.arg;
-
-import java.util.List;
-import java.util.StringTokenizer;
-
+import wcs.core.Log;
+import wcs.core.URL;
 import wcs.core.Call;
 import wcs.core.Id;
 import wcs.java.Env;
-import wcs.java.util.Log;
-import wcs.java.util.URL;
+import java.util.List;
+import java.util.StringTokenizer;
+import static wcs.core.Common.arg;
 
 /**
  * Simple router invoking the tester only

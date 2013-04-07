@@ -8,7 +8,8 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
-import wcs.implx.XmlICS;
+import wcs.scala.XmlICS;
+import wcs.core.Log;
 import wcs.java.Element;
 import wcs.java.Env;
 

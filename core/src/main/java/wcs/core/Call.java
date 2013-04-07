@@ -79,7 +79,6 @@ public class Call {
 				// out.println(">>>" + k + "=" + v);
 				call.map.put(k, v);
 			} catch (Exception ex) {
-				WCS.debug(ex.getMessage());
 			}
 		}
 		return call;

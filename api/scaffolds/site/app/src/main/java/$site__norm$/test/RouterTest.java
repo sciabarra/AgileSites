@@ -6,7 +6,6 @@ import wcs.java.util.TestElement;
 import org.junit.Before;
 import org.junit.Test;
 
-
 public class RouterTest extends TestElement {
 
 	Router it;

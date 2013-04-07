@@ -1,8 +1,9 @@
-package wcs.implx
+package wcs.scala.util
 
 import COM.FutureTense.Interfaces.IList
-
 import wcs.scala.Log
+import scala.annotation.elidable
+import scala.annotation.elidable.FINER
 
 class MapListIList(val name: String, val listMap: Map[String, List[String]]) extends IList with Log {
 

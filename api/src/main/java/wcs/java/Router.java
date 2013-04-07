@@ -2,9 +2,9 @@ package wcs.java;
 
 import wcs.core.Arg;
 import wcs.core.Call;
+import wcs.core.Log;
+import wcs.core.URL;
 import wcs.core.WCS;
-import wcs.java.util.Log;
-import wcs.java.util.URL;
 import COM.FutureTense.Interfaces.ICS;
 
 abstract public class Router implements wcs.core.Router {
