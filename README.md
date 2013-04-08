@@ -1,35 +1,93 @@
-# AgileSites 0.5 (Rick)
+# AgileSites 0.5 (Rick Deckard)
 
-Current Relese: 0.5-beta1 
+Welcome to **AgileSites**, the framework for Agile development with Oracle WebCenter Sites (formerly Fatwire ContentServer).
 
-This project is an Agile Development framework for Oracle WebCenter Sites.
+# Developing for Oracle  WebCenter Sites ?
 
-The framework is tested currently  with WCS JSK 11gR1 
-Sample sites can be imported *ONLY* in WCS 11gR1
+If you ever developed with Fatwire or Sites, you may have a wish list, including items like:
 
+## Use a __real__ [[MVC|Feature-MVC]] pattern 
 
-If you are in a hurry this readme includes a (succing) introduction to the whole framework.
+thus separating presentation (view) from logic (control) and content (model) ?
 
-Check the [[AgileSites.pdf|AgileSites book]] for the complete documentation.
+## Avoid [[unreadable JSPs|Feature-Java]]  
 
-# Before you start
+coding all your logic in plain Java (or Scala) and keeping views in simple HTML ?
 
-This framework is a game changing. It tries to modernize Oracle WCS development providing a layer that introduces a lot of features for developing in a modern, easier and agile way. 
+## Keep the [[HTML design|Feature-Original-HTML]] in his original form 
+
+so they can be updated easily by Web Designer ?
+
+## Code with a [[better API|Feature-API]] 
+
+that is both simpler, shorter, consistent and preventing you from doing silly mistakes?
+
+## Save you from a [[deployment hell|Feature-Build]] 
+
+with css/javascript to copy, jars to deploy, templates to publish and so on?
+
+## Use a real [[version control system|Feature-VCS]] 
+
+to manage your work and share it with other developers?
+
+## Write easily [[unit and integration test|Feature-Testing]] 
+
+so you can develop in Test Driven way and keep a test suite to verify consistency.
+
+## Run a [[continous integration server|Feature-Continuous-Integration]] 
+
+integrating and verifying the work of your team, allowing each developer to work in isolation with the JSK?
+
+## Deploy your code as a [[single jar|Feature-Single-Jar]] 
+
+that can be easily shared, tracked and compared?
+
+##  [[Not having to restart|Feature-Hot-Deploy]] the application server 
+
+when change  your Java code?
+
+## Use your [[preferred IDE|Feature-IDE]] 
+
+either  Eclipse, Netbeans IntellijIdea or even Notepad or VI if you like ?
+
+## Keep your [[existing work|Feature-Compatible]] 
+
+while developing new code using this framework?
+
+## Be 100% compliant to [[standard practices|Feature-Standard]] 
+
+so you won't lose Oracle Support?
+
+*If any of above is of interest*, the this framework may be suitable for you.
+
+# Ok, I am sold, now what?
+
+- Install the framework
+- Read this tutorial 
+- Check this reference reference for the API guide
+
+# A note of caution
+
+This framework is changing the rules of the game in Sites Development. It tries to modernize Oracle WebCenter Site development providing a layer that introduces a lot of features for developing in a modern, easier and agile way. 
 
 This framework is *strongly opinionated*. It is built based on the following assumptions (or opinions). Incidentally those opinions are very similar to those advocates by the Agile Development Movinment
 
-- developers should work in isolation, share their code through a version control system
-- you need to be able to write unit tests for every single piece of code you write
+- developers should work in isolation, using either a jump start kit or a local install of the product, sharing their code through a version control system
+- you *must* and need to be able to write unit tests for every single piece of code you write
 - you need a build system that must be run by a continuous integration system checking the work
-- being able to code in pure Java (leveraging Java OOP and code reuse) s better that write a lot of Java logic inside a JSP (forgetting 2/3 of what you can do in Java)
-- HTML should be HTML, and must be kept in is original form to be easily modifiable by designer who must not need to understand JSP
+- being able to write your code in straight Java (leveraging Java OOP and code reuse) is muh better that writing a lot of Java logic inside a JSP (losing on average 70% of the power of Java)
+- HTML should be HTML, and must be kept in is original form to be easily modifiable by designer 
 - You ought to use your favorite tool without strange plugins (either pure eclipse, or Netbeans, IntelliJ or even notepad if you like)
-- The code must be deployed in jars, not published. Dependencies in code are much more complex than they can be managed by publishing
+- The code must be deployed in jars, not published. Dependencies in code are much more complex than they can be managed by publishing. So forget about publishing templates and welcome deploying your application jar (that does NOT need restart of the application server)
 
-However, while changing all the rules of the game, it plays fair:
+However, while changing all the rules of the game, it tries to play fair:
 
-Only documented API is used for implementing the Framework. It does not break any contract so the whole framework appear as a standard implementation of a site.
-As a result you need not to worry of incompatible changes would break the site since they would affect any other site.
+- Only documented API is used for implementing the Framework. 
+- It does not break any contract so the whole framework appear to the product like normal user code implementing a 
+
+As a result you need not to worry of incompatible changes would break the site, since they would affect any other site. And Oracle has not reason to refuse support as long as the question are not specific to the internals of the framework. 
+
+The framework is commercially supported by Sciabarra srl, a company working with Fatwire (originally OpenMarket ContentServer) since 1999. 
 
 
 # Installation
