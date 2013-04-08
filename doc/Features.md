@@ -1,4 +1,4 @@
-# Simpler API  # {API} 
+# Simpler API [API] 
 
 ## Problem
 
@@ -10,7 +10,7 @@ A new, simplified, consistent API is offered. This API hide many of the complexi
 
 Furthermore, all the existing Fatwire is  kept accessible and available, and can be used if required.
 
-# Deployment Hell {Deploy} 
+# Deployment Hell [Deploy] 
  
 ## Problem
 
