@@ -6,6 +6,7 @@
 .classpath
 .project
 .settings/
+.metadata
 # sbt specific
 target/
 tags/
