@@ -6,7 +6,7 @@ Welcome to **AgileSites**, the framework for Agile development with Oracle WebCe
 
 If you ever developed with Fatwire or Sites, you may have a wish list, including items like:
 
-## Use a __real__ [[MVC|Feature-MVC]] pattern 
+## Use a __real__ [MVC pattern](/doc/Features#MVC)  
 
 thus separating presentation (view) from logic (control) and content (model) ?
 
