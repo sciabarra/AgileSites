@@ -1,4 +1,4 @@
-# Simpler API {API} 
+# Simpler API  # {API} 
 
 ## Problem
 
