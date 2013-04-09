@@ -77,7 +77,6 @@ So, do you want:
 
 Beins a commercial friendly (Apache) open source license, there is no license to pay.
 
-If you need support you may consider commercial support from [Sciabarra srl](http://www.sciabarra.com/fatwire)
 
 # A note of caution
 
@@ -105,5 +104,4 @@ However, while changing all the rules of the game, it tries to play fair:
 
 As a result you need not to worry of incompatible changes would break the site, since they would affect any other site.
 Oracle has not reason to refuse support as long as the question are not specific to the internals of the framework. 
-And for those questions there is our [commercial support](http:/www.sciabarra.com/fatwire/)
 
