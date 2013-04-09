@@ -175,7 +175,7 @@ The deployment of a web site is a single jar containing both source code and htm
 
 Since all the code is a single jar, deploying a site is only a matter of copying a jar in place, and it is possible to compare the complete code deployed for a site just comparing the deployed jar.
 
-# <a name="Support"></a>Keep Oracle Support {Support}
+# <a name="Support"></a>Keep Oracle Support
 
 ## Problem
 
@@ -224,4 +224,3 @@ Furthermore you do not have a real source code of your templates, since they are
 The framework keeps everything in source form in Java code, including metadata for templates. Developers work entirely outside of the CMS, then they update metadata and deploy code with a single command, without having to restart the application server. The development lifecycle is pretty fast. 
 
 However, since everything is still in source format and not kept outside the CMS, it can be revision controlled, shared, merged and tracked using any standard version control system, either subversion, git, mercurial or proprietary systems.
-
