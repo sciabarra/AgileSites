@@ -8,10 +8,11 @@ Welcome to **AgileSites**, the framework for Agile development with Oracle WebCe
 
 # Developing for Oracle  WebCenter Sites ?
 
-If you ever developed with Fatwire or Sites, you may have found it  is not very developer friendly and have a wish list.
-I had a wish list too, and this is my own. If your wish list has similar items to my own, you may be interested in this project.
+If you ever developed with Fatwire or Sites, you may think (as many does) itis not very developer friendly/
+So as a developer you may  have a wish list. I had a wish list too, and this is my own.
+If your wish list has similar items to my own, you may be interested in this project.
 
-# Do you want
+So, do you want:
 
 ## Use a __real__ [MVC pattern](/doc/Features.md#MVC)  
 
