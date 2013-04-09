@@ -1,59 +1,63 @@
 # AgileSites 0.5 (Rick Deckard)
 
+Warning - still work in progress - do not download yet.
+
+-----
+
 Welcome to **AgileSites**, the framework for Agile development with Oracle WebCenter Sites (formerly Fatwire ContentServer).
 
 # Developing for Oracle  WebCenter Sites ?
 
 If you ever developed with Fatwire or Sites, you may have a wish list, including items like:
 
-## Use a __real__ [MVC pattern](/doc/Features#MVC)  
+## Use a __real__ [MVC pattern](/doc/Features.md#MVC)  
 
 thus separating presentation (view) from logic (control) and content (model) ?
 
-## Avoid [unreadable JSPs](/doc/Features#NoJSP) 
+## Avoid [unreadable JSPs](/doc/Features.md#NoJSP) 
 
 coding all your logic in plain Java (or Scala) and keeping views in simple HTML ?
 
-## Keep the [HTML design](/doc/Features#HTML) in his original form 
+## Keep the [HTML design](/doc/Features.md#HTML) in his original form 
 so they can be updated easily by Web Designer ?
 
-## Code with a [better API](/doc/Features#API)
+## Code with a [better API](/doc/Features.md#API)
 
 that is both simpler, shorter, consistent and preventing you from doing silly mistakes?
 
-## Save yourselg from a [deployment hell](/doc/Features#Deploy)
+## Save yourself from a [deployment hell](/doc/Features.md#Deploy)
 
 with css/javascript to copy, jars to deploy, templates to publish and so on?
 
-## Use a real [version control system](/doc/Features#VCS) 
+## Use a real [version control system](/doc/Features.md#VCS) 
 
 to manage your work and share it with other developers?
 
-## Write easily [unit tests|(/doc/Features#UnitTest)
+## Write easily [unit tests|(/doc/Features.md#UnitTest)
 
 so you can develop in Test Driven way and keep a test suite to verify consistency.
 
-## Run a [continous integration server](/doc/Features#CI) 
+## Run a [continous integration server](/doc/Features.md#CI) 
 
 integrating and verifying the work of your team, allowing each developer to work in isolation with the JSK?
 
-## Deploy your code as a [single jar](/doc/Features#Jar) 
+## Deploy your code as a [single jar](/doc/Features.md#Jar) 
 
 that can be easily shared, tracked and compared?
 
-##  [Not having to restart](/doc/Features#HotDeploy) the application server 
+##  HotDeploy your changes, [Not having to restart](/doc/Features.md#HotDeploy) the application server 
 
 when change  your Java code?
 
-## Use your [preferred IDE](/doc/Features#IDE)
+## Use your [preferred IDE](/doc/Features.md#IDE)
 
 either  Eclipse, Netbeans IntellijIdea or even Notepad or VI if you like ?
 
-## Keep your [existing work](/doc/Features#Compatible) 
+## Keep your [existing work](/doc/Features.md#Compatible) 
 
 while developing new code using this framework?
 
-## Be 100% compliant to [[standard practices|Feature-Standard]] 
+## Be 100% compliant to [standard practices](/doc/Features.md#Support) 
 
 so you won't lose Oracle Support?
 
@@ -121,6 +125,3 @@ The framework is commercially supported by Sciabarra srl, a company working with
 - generate a new template with "wcs-gen template" and a new CSElement with "wcs-gen cselement"
 - Remember to redeply (invoking wcs-deploy) if you add a template or a cselement or you change the html
 - otherwise just code in Java in eclipse keeping the 
-
-
-
