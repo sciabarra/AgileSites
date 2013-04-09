@@ -10,47 +10,46 @@ If you ever developed with Fatwire or Sites, you may have a wish list, including
 
 thus separating presentation (view) from logic (control) and content (model) ?
 
-## Avoid [[unreadable JSPs|Feature-Java]]  
+## Avoid [unreadable JSPs](/doc/Features#NoJSP) 
 
 coding all your logic in plain Java (or Scala) and keeping views in simple HTML ?
 
-## Keep the [[HTML design|Feature-Original-HTML]] in his original form 
-
+## Keep the [HTML design](/doc/Features#HTML) in his original form 
 so they can be updated easily by Web Designer ?
 
-## Code with a [[better API|Feature-API]] 
+## Code with a [better API](/doc/Features#API)
 
 that is both simpler, shorter, consistent and preventing you from doing silly mistakes?
 
-## Save you from a [[deployment hell|Feature-Build]] 
+## Save yourselg from a [deployment hell](/doc/Features#Deploy)
 
 with css/javascript to copy, jars to deploy, templates to publish and so on?
 
-## Use a real [[version control system|Feature-VCS]] 
+## Use a real [version control system](/doc/Features#VCS) 
 
 to manage your work and share it with other developers?
 
-## Write easily [[unit and integration test|Feature-Testing]] 
+## Write easily [unit tests|(/doc/Features#UnitTest)
 
 so you can develop in Test Driven way and keep a test suite to verify consistency.
 
-## Run a [[continous integration server|Feature-Continuous-Integration]] 
+## Run a [continous integration server](/doc/Features#CI) 
 
 integrating and verifying the work of your team, allowing each developer to work in isolation with the JSK?
 
-## Deploy your code as a [[single jar|Feature-Single-Jar]] 
+## Deploy your code as a [single jar](/doc/Features#Jar) 
 
 that can be easily shared, tracked and compared?
 
-##  [[Not having to restart|Feature-Hot-Deploy]] the application server 
+##  [Not having to restart](/doc/Features#HotDeploy) the application server 
 
 when change  your Java code?
 
-## Use your [[preferred IDE|Feature-IDE]] 
+## Use your [preferred IDE](/doc/Features#IDE)
 
 either  Eclipse, Netbeans IntellijIdea or even Notepad or VI if you like ?
 
-## Keep your [[existing work|Feature-Compatible]] 
+## Keep your [existing work](/doc/Features#Compatible) 
 
 while developing new code using this framework?
 
