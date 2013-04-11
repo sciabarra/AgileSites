@@ -2,19 +2,20 @@
 
 ## Problem
 
-Fatwire/WCS api is pretty old, sometimes ugly and inconsistent. Furthermore is it offering too many options that are confusing and are not guiding to follow best practices.
+Fatwire/WCS api is pretty old, sometimes ugly and inconsistent. 
+Furthermore is it offering too many options that are confusing, and are not guiding the developer to follow best practices.
 
 ## Solution
 
-A new, simplified, consistent API is offered. This API hide many of the complexities of the Fawire API, like the different way to access basic and flex attributes. The goal is to provide 80% of the functionalities with  20% of the complexity.
-
-Furthermore, all the existing Fatwire is  kept accessible and available, and can be used if required.
+A new, simplified, consistent API is offered. This API hide many of the complexities of the Fawire API, like the different way to access basic and flex attributes. 
+The goal is to provide 80% of the functionalities with  20% of the complexity.
+However, all the existing Fatwire is  kept accessible and available, and can be used if required.
 
 # <a name="Deploy"></a>Deployment Hell 
  
 ## Problem
 
-A Fatwire website is tipically  very complex to deploy, since it is comprised of many different components: library jars, customization jars, css and javascript files, CSElements, Templates, database tables and some content mandatory
+A Fatwire website is tipically  very complex to deploy, since it is comprised of many different components: library jars, customization jars, css and javascript files, CSElements, Templates, database tables and some content that must be always present.
 
 ## Solution
 
@@ -22,10 +23,11 @@ The system is provided from the ground up with an automated build system that pe
 
 A whole site can be install a new system with 2 commands:
 
-- wcs-setup-offlinet before starting the application server, 
+- wcs-setup-offline before starting the application server, 
 - wcs-setup-online after starting the application server
 
-An existing install system can be updated with a single command (wcs-deploy) without having to restart the application server.
+Then a site can be deployed and update with a single command (wcs-deploy) 
+You do not need to restart the application server except the first time when deploying the core.
 
 # <a name="Compatible"></a>Compatible with your work
 
@@ -35,15 +37,14 @@ Rarely a project exists in a vacuum, so if you decide to give a try to this fram
 
 ## Solution
 
-The framework is totally compatible with any existing project. It implements template logic in Java, but templates are called by standard JSP, so you can freely mix framework managed templates with existing templates. 
+The framework is totally compatible with any existing project. It implements template logic in Java, 
+but templates are called by standard JSP, so you can freely mix framework managed templates with existing templates. 
 
 You can even write templates partially in JSP and partially in Java using the entire hot deploy infrastructure of the framework.
 
-# <a name="CI"></a>Continuous Integation
-
+# <a name="CI"></a>Continuous Integration
 
 ## Problem
-
 
 Continuos Integration is one the key practices in Agile development.
 
@@ -64,9 +65,7 @@ Using a standard Continuous Integration server like Jenkins is just a matter of:
 - configure Jenkins it to checkout the code and deploy it on the server
 - run the tests (both unit test coming from the developers and integration test coming from tester) using the provided build tool and distribuite the results to developers through a mailing list.
 
-
-
-# <a name="HotDeploy"></a>Do not restart the Application Server 
+# <a name="HotDeploy"></a>Do not have to restart the application server or redeploy the app
 
 ## Problem
 
@@ -92,7 +91,7 @@ The application built with AgileWCS is a completely standard Java application no
 
 As a result, nothing else but any java IDE is required, and this can be Eclipse without plugins, NetBeans, Idea or even nothing at all. Compilation, packaging and deploying is included by a command line tool that is part of the framework.
 
-# <a name="NoJSP"></a>Move Away from JSP  
+# <a name="NoJSP"></a>Move Away from JSP
 
 ## Problem
 
@@ -130,7 +129,6 @@ To keep the Agility of development using JSP, all your code is stored in a jar t
 
 You have all the Java power at your finger tips. However, templates are still templates, and they are invoked by a JSP. The stub code to generate the JSP is managed automatically by the framework so you don't have to worry of it.
 
-
 # <a name="MVC"></a>MVC Pattern
 
 ## Problem
@@ -151,7 +149,6 @@ Furthermore, also the view is kept separated, and [[in its original form|Feature
 
 Developers write all the template code in plain Java, implementing a controller that collect data from the model and place it in the view as needed.
 
-
 # <a name="HTML"></a>Keep HTML in the original form
 
 ## Problem
@@ -166,7 +163,6 @@ Major problems arises when Web Designers update the web design, since at every u
 
 The framework allows developer to use unchanged original HTML files. A specific API, using jquery-like CSS based selectors allow to pick specific pieces of html, replace with content and render them without having to mix code and HTML. This way web designer can freely update the html and the CSS and, as long as id and classes are kept unchanged, there is no need to change the business logic code.
 
-
 # <a name="Jar"></a>Single Jar Deploy
 
 ## Problem
@@ -179,8 +175,7 @@ The deployment of a web site is a single jar containing both source code and htm
 
 Since all the code is a single jar, deploying a site is only a matter of copying a jar in place, and it is possible to compare the complete code deployed for a site just comparing the deployed jar.
 
-
-# <a name="Support"></a>Keep Oracle Support {Support}
+# <a name="Support"></a>Keep Oracle Support
 
 ## Problem
 
@@ -229,4 +224,3 @@ Furthermore you do not have a real source code of your templates, since they are
 The framework keeps everything in source form in Java code, including metadata for templates. Developers work entirely outside of the CMS, then they update metadata and deploy code with a single command, without having to restart the application server. The development lifecycle is pretty fast. 
 
 However, since everything is still in source format and not kept outside the CMS, it can be revision controlled, shared, merged and tracked using any standard version control system, either subversion, git, mercurial or proprietary systems.
-
