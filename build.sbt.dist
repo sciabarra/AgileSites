@@ -1,5 +1,14 @@
 // site to import/export
-wcsSites in ThisBuild := "AgileSites"
+wcsSites in ThisBuild := "Demo"
+
+/// front end url - NO SLASH TO THE END please
+
+// sample with satellite and an apache proxy 
+// VirtualHost agilesites.local: ProxyPass / http://sshost/ss/Satellite/agilesites
+// wcsVirtualHosts in ThisBuild := Seq( "Demo" -> "http://demo.loc")
+
+// sample with no apache and just the co-resident satellite
+wcsVirtualHosts in ThisBuild := Seq( "Demo" -> "http://localhost:8080/cs/Satellite/demo")
 
 // versions (currently only valid values are 11g or 7.6)
 wcsVersion in ThisBuild := "11g"
@@ -40,10 +49,4 @@ wcsStaticBlobs in ThisBuild := """^(.*\.(css|js|jpg|png|gif))$"""
 // webapp directory of Satellite Server 
 wcsWebappSatellite in ThisBuild := "/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/webapps/ss/"
 
-/// front end url - NO slashes at the end please
-// sample with satellite and an apache proxy 
-// VirtualHost agilesites.local: ProxyPass / http://sshost/ss/Satellite/agilesites
-// wcsVirtualHosts in ThisBuild := Seq( "AgileSites" -> "http://agilesites.loc")
-// sample with no apache and just the co-resident satellite
-wcsVirtualHosts in ThisBuild := Seq( "AgileSites" -> "http://localhost:8080/cs/Satellite/agilesites/")
 

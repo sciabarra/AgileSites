@@ -12,7 +12,7 @@ public class Error extends Element {
 	final static Log log = Log.getLog(Error.class);
 	
 	public static AssetSetup setup() {
-		return new CSElement("$prefix$Error", mysite.element.Error.class);
+		return new CSElement("$prefix$Error", $site;format="normalize"$.element.Error.class);
 	}
 
 	@Override

@@ -10,7 +10,7 @@ import wcs.java.util.Util;
 public class Tester extends TestRunnerElement {
 
 	public static AssetSetup setup() {
-		return new CSElement("$prefix$Tester", mysite.element.Tester.class, //
+		return new CSElement("$prefix$Tester", $site;format="normalize"$.element.Tester.class, //
 				new SiteEntry("$prefix$Tester", false));
 	}
 

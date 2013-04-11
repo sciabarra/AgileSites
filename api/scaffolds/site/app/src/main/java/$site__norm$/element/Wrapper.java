@@ -13,7 +13,7 @@ public class Wrapper extends Element {
 	private final static Log log = Log.getLog(Wrapper.class);
 
 	public static AssetSetup setup() {
-		return new CSElement("$prefix$Wrapper", mysite.element.Wrapper.class);
+		return new CSElement("$prefix$Wrapper", $site;format="normalize"$.element.Wrapper.class);
 	}
 
 	@Override

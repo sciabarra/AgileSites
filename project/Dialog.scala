@@ -10,10 +10,10 @@ object Dialog {
     jf.setVisible(true)
 
     val res = JOptionPane.showInputDialog(jf, prompt, defaultValue)
-
     jf.setVisible(false)
     jf.dispose
-    if (res == null) Some(res) else None
+    //println("res="+res)
+    if (res != null) Some(res) else None
   }
 
   def optionsDialog(prompt: String, options: Array[Object]): Int = {

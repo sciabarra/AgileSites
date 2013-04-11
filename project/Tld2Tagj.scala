@@ -42,7 +42,7 @@ public class %s  {
     while (en.hasMoreElements()) {
       String k = en.nextElement().toString();
       Object v = vl.getValString(k);
-      sb.append(" ").append(k).append("=").append(v.toString());
+      sb.append(" ").append(k).append("=").append(v!=null?v.toString():"null");
     }
     return sb.toString();
   }

@@ -52,7 +52,7 @@ public class Loader {
 
 		// reloading jar if modified
 		long curTimestamp = jar.lastModified();
-		log.trace("curTimestamp=%l jarTimestamp=%j", curTimestamp, jarTimestamp);
+		log.trace("curTimestamp=%d jarTimestamp=%d", curTimestamp, jarTimestamp);
 		if (curTimestamp > jarTimestamp) {
 			URL url = jar.toURI().toURL();
 			log.debug("[Loader] reloading " + url);

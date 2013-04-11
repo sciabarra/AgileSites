@@ -43,7 +43,7 @@ public class Router extends wcs.java.Router {
 		case 2: // example: http://yoursite/Article/About
 			// the following assume all the asset types
 			// have the same prefix as the site name
-			c = "MySite_" + st.nextToken();
+			c = "$site$_" + st.nextToken();
 			name = st.nextToken();
 			break;
 
@@ -55,7 +55,7 @@ public class Router extends wcs.java.Router {
 
 		// path not split in pieces
 		if (c == null || name == null) {
-			return call("MyWrapper",
+			return call("$prefix$Wrapper",
 					arg("error", "Path not found: " + url.getPath()));
 		}
 
@@ -63,13 +63,13 @@ public class Router extends wcs.java.Router {
 		List<Id> list = e.find(c, arg("name", name));
 		if (list.size() > 0) {
 			// found
-			return call("MyWrapper", //
+			return call("$prefix$Wrapper", //
 					arg("c", list.get(0).c), //
 					arg("cid", list.get(0).cid.toString()));
 		} else {
 			// not found
 			String error = "Asset not found: type:" + c + " name:" + name;
-			return call("MyWrapper", arg("error", error));
+			return call("$prefix$Wrapper", arg("error", error));
 		}
 	}
 }

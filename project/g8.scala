@@ -5,7 +5,6 @@ import org.apache.commons.io.FileUtils
 import org.apache.commons.io.Charsets.UTF_8
 import wcs.build.Dialog._
 
-
 object G8 {
   import scala.util.control.Exception.allCatch
   import org.clapper.scalasti.StringTemplate
@@ -184,8 +183,14 @@ object G8Helpers {
         if (fixed.contains(k))
           (k, v)
         else {
-          val in = inputDialog(k, v).getOrElse("").trim
-          (k, if (in.isEmpty) v else in)
+          val in = inputDialog(k, v)
+          println(in)
+          val r = in match {
+            case Some(thing) => (k, thing)
+            case None => (k, v)
+          }
+          println(r)
+          r
         }
     }
   }
@@ -213,12 +218,12 @@ object G8Helpers {
           } else {
             println()
             optionsDialog(
-                "Already exists "+out.getCanonicalPath, 
-                 Array("Override", "Append", "Skip")) match {
-                  case 0 => Some(false) 
-                  case 1 => Some(true)
-                  case 2 => None
-            }
+              "Already exists " + out.getCanonicalPath,
+              Array("Override", "Append", "Skip")) match {
+                case 0 => Some(false)
+                case 1 => Some(true)
+                case 2 => None
+              }
           }
         } else None
 
@@ -318,10 +323,10 @@ object ScaffoldPlugin extends sbt.Plugin {
 
   object ScaffoldingKeys {
     lazy val templatesPath = SettingKey[String]("wcs-templates-path")
-    lazy val scaffold = InputKey[Unit]("wcs-gen",
+    lazy val scaffold = InputKey[Unit]("wcs-generate",
       """|
          |Usage:
-         | wcs-gen <scaffold_name>
+         | wcs-generate <scaffold_name>
          |
          |The name of the scaffold is the name of the folder located directly under `src/main/scaffolds`
          |Assuming you `scaffolds` folder has the following structure:
@@ -361,7 +366,7 @@ object ScaffoldPlugin extends sbt.Plugin {
       //println(ls)
       res.fold(
         e => sys.error(e),
-        r => println("*** wcs-gen successful\n*** remember to wcs-deploy new templates/cselements\n***"))
+        r => println("***\n*** wcs-generate successful\n*** remember to create the site in WCS then wcs-deploy new templates/cselements\n***"))
     }
   }
 
