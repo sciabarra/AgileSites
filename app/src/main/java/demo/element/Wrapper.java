@@ -20,11 +20,11 @@ public class Wrapper extends Element {
 	public String apply(Env e) {
 		log.trace("Demo Wrapper");
 
-		Picker html = Picker.load("/demo/index.html");
+		Picker html = Picker.load("/demo/page.html");
 
 		// change relative references to absolute
-		html.prefixAttrs("link[rel=stylesheet]", "href", "/cs/");
-		html.prefixAttrs("script", "src", "/cs/");
+		html.prefixAttrs("link[rel=stylesheet]", "href", "/cs/demo/");
+		html.prefixAttrs("script", "src", "/cs/demo/");
 
 		// handle errors
 		if (e.isVar("error"))

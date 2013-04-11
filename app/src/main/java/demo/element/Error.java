@@ -19,9 +19,9 @@ public class Error extends Element {
 	public String apply(Env e) {
 		log.trace("Demo Error");
 		
-		Picker html = Picker.load("/demo/index.html", "#content");
+		Picker html = Picker.load("/demo/page.html", "#header");
 		html.replace("#title", "Error");
 		html.replace("#message", e.getString("error"));
-		return html/*.dump(log)*/.html();
+		return html/*.dump(log)*/.outerHtml();
 	}
 }
