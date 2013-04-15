@@ -21,6 +21,7 @@ import wcs.java.util.Util;
 public class Picker {
 
 	private static Log log = Log.getLog(Picker.class);
+	private StringBuffer warnings = new StringBuffer();
 
 	// TODO: define a better default
 	private static final String baseUrl = "http://localhost:8080/";
@@ -29,6 +30,23 @@ public class Picker {
 
 	private Element top;
 	private Element bottom;
+
+	private void warn(Exception ex, String warning) {
+		warnings.append("<li>").append(warning); //
+		if (ex != null)
+			warnings.append("<blockquote><pre>").append(Util.ex2str(ex))//
+					.append("</pre></blockquote>");
+		warnings.append("</li>");
+		log.warn(warning);
+	}
+
+	private String warnings() {
+		if (warnings.length() > 0)
+			return "<ol style='font-color: red'>" + warnings.toString()
+					+ "</ol>";
+		else
+			return "";
+	}
 
 	private void push(Element elem) {
 		stack.push(elem);
@@ -97,7 +115,6 @@ public class Picker {
 
 		// parse
 		try {
-
 			if (is != null) {
 				log.debug("parsing resource");
 				doc = Jsoup.parse(is, "UTF-8", baseUrl);
@@ -106,7 +123,7 @@ public class Picker {
 				doc = Jsoup.parse(html);
 			}
 		} catch (Exception e) {
-			log.warn(e, "Cannot parse string");
+			warn(e, "cannot parse template");
 		}
 
 		// select internally
@@ -117,7 +134,7 @@ public class Picker {
 			} else
 				elem = doc;
 		} else {
-			log.debug("creating a void doc");
+			warn(null, "document not found - creating a void doc");
 			doc = new Document(baseUrl);
 			elem = doc;
 		}
@@ -138,8 +155,10 @@ public class Picker {
 		Elements selected = top.select(where);
 		if (selected != null && selected.size() > 0)
 			push(selected.first());
-		else
-			log.warn("cannot select " + where);
+		else {
+			push(top);
+			warn(null, "cannot select " + where);
+		}
 		return this;
 	}
 
@@ -240,14 +259,14 @@ public class Picker {
 	 * Return the inner html of the selected node
 	 */
 	public String html() {
-		return bottom.html();
+		return bottom.html() + warnings();
 	}
 
 	/**
 	 * Return the html of the selected node including the node itself
 	 */
 	public String outerHtml() {
-		return bottom.outerHtml();
+		return bottom.outerHtml() + warnings();
 	}
 
 	/**

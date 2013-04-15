@@ -11,9 +11,9 @@ import java.util.List;
 import wcs.core.Arg;
 import wcs.core.Common;
 import wcs.core.Log;
-import wcs.java.tag.AssetTag;
-import wcs.java.tag.AssetsetTag;
-import wcs.java.tag.RenderTag;
+import wcs.core.tag.AssetTag;
+import wcs.core.tag.AssetsetTag;
+import wcs.core.tag.RenderTag;
 import COM.FutureTense.Interfaces.ICS;
 
 class AssetImpl extends wcs.java.Asset {

@@ -184,12 +184,12 @@ object G8Helpers {
           (k, v)
         else {
           val in = inputDialog(k, v)
-          println(in)
+          //println(in)
           val r = in match {
             case Some(thing) => (k, thing)
             case None => (k, v)
           }
-          println(r)
+          //println(r)
           r
         }
     }

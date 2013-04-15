@@ -50,8 +50,9 @@ trait AgileSitesSupport {
           if tld.getName.endsWith(".tld")
           val src = tld.getAbsolutePath
           val cls = Tld2Tag.tld2class(src)
+          val clsj = Tld2Tagj.tld2class(src)
           val dst = file(dstDir / cls + ".scala")
-          val dstj = file(dstDir / cls + ".java")
+          val dstj = file(dstDir / clsj + ".java")
           //	if tld.getName.equalsIgnoreCase("asset.tld") // select only one for debug generator
         } yield {
           if (!dst.exists) {
@@ -103,32 +104,32 @@ trait AgileSitesSupport {
         (args, version, url, sites, user, password, classpath, s, runner) =>
           val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d|spring-\\d|commons-logging-|servlet-api).*.jar$".r;
           val seljars = classpath.files.filter(f => !re.findAllIn(f.getName).isEmpty)
-          val cmd = Array(url + "/ContentServer",
-            "username=" + user,
-            "password=" + password,
-            "cmd=" + (if (args.size > 0) args(0) else "listcs"),
-            "fromSites=" + sites,
-            "datastore=" + sites + "-" + version,
-            "resources=" + (if (args.size > 1) args(1)
-            else if (args.size == 0) "@ALL_ASSETS"
-            else if (args.size >= 1) args(0) match {
-              case "listcs" => "@ALL_ASSETS;@ALL_NONASSETS"
-              case "listds" => "@ALL_ASSETS;@ALL_NONASSETS"
-              case "import" =>
-                println("""importing only sites - you need to run after:
-                		|> wcs-dt import @ASSET_TYPE
-                		|> wcs-dt import @ALL_ASSETS
-                		|> wcs-dt import @STARTMENU
-                		|> wcs-dt import @TREETAB""".stripMargin)
-                "@SITE"
-              case "export" =>
-                println("exporting only sites & assets types - you need to export manually assets and non-assets")
-                "@SITE;@ASSET_TYPE"
-            }))
+          val firstArg = if (args.size > 0) args(0) else "listcs"
+          var resources = if (args.size > 1) args.drop(1)
+          else firstArg match {
+            case "listcs" => Seq("@ALL_ASSETS;@ALL_NONASSETS")
+            case "listds" => Seq("@ALL_ASSETS;@ALL_NONASSETS")
+            case "import" =>
+              Seq("@SITE", "@ASSET_TYPE", "@ALL_ASSETS", "@STARTMENU", "@TREETAB")
+            case "export" =>
+              Seq("@SITE", "@ASSET_TYPE", "@ALL_ASSETS", "@STARTMENU", "@TREETAB")
+            case _ =>
+              println("Unknown command")
+              Seq()
+          }
 
-          //println(cmd.mkString("java -cp "+seljars.mkString(":")+" com.fatwire.csdt.client.main.CSDT ", " ", ""))
-          Run.run("com.fatwire.csdt.client.main.CSDT",
-            seljars, cmd, s.log)(runner)
+          for (res <- resources) {
+            val cmd = Array(url + "/ContentServer",
+              "username=" + user,
+              "password=" + password,
+              "cmd=" + firstArg,
+              "resources=" + res,
+              "fromSites=" + sites,
+              "datastore=" + sites + "-" + version)
+
+            Run.run("com.fatwire.csdt.client.main.CSDT",
+              seljars, cmd, s.log)(runner)
+          }
       }
   }
 
@@ -148,9 +149,9 @@ trait AgileSitesSupport {
         val opts = Seq("-u", user, "-p", password, "-b", url, "-d", dir.toString, "-x")
         val all = cmd ++ opts ++ Seq("import_all")
 
-        messageDialog("Ensure the application server is up and running, then press OK")
+        messageDialog("Ensure the application server is UP and RUNNING, then press OK")
         Fork.java(None, all, Some(new java.io.File(".")), s.log)
-        messageDialog("Setup Complete.\nYou can now create your site and templates and deploy them with wcs-deploy.")
+        messageDialog("Setup Complete.\nYou can now create site and templates.\nYou need to deploy them with \"wcs-deploy\".")
     }
 
   // package jar task - build the jar and copy it  to destination 
@@ -370,7 +371,7 @@ trait AgileSitesSupport {
               setupAgileSitesPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs)
               setupFutureTenseIni(home, static, appjar, sites, version)
 
-              messageDialog("Installation Complete. Please restart your application server then run wcs-setup-online.")
+              messageDialog("Installation Complete. Please restart your application server.\nYou need to complete with \"wcs-setup-online\".")
             }
 
         }
@@ -391,13 +392,13 @@ trait AgileSitesSupport {
           def usage {
             println("""|usage:
                   | wcs-log view
-            	  |   start the log viewer
+            	  |    start the log viewer
                   | wcs-log list
-            	  |   list what you are sending to the remote logger
+            	  |    list what you are sending to the remote logger
                   | wcs-log start [<level>] [<logger>] [<port>] [<host>]
-                  |   enable logging to the log viewer
+                  |    enable logging to the log viewer
                   | wcs-log stop [<logger>] [<port>] [<host>] 
-                  |   disable logging to the log viewer
+                  |    disable logging to the log viewer
                   | <level>  defaults to DEBUG, must be one of ERROR, WARN, INFO, DEBUG, TRACE
                   | <logger> defaults to the root loogger, you can restrict to your packages
                   | <port>   defaults to 4445
@@ -413,7 +414,7 @@ trait AgileSitesSupport {
               new Thread {
                 override def run {
                   Fork.java(None, Seq("-jar", "lumbermill.jar"),
-                    Some(new File("bin")), streams.log)
+                    Some(new File("bin")), StdoutOutput)
                 }
               }.start
               None

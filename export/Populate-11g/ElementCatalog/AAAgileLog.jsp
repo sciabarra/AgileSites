@@ -60,6 +60,7 @@ if(ics.UserIsMember("xceladmin,xceleditor") && op!=null) {
 		for (Map.Entry<String,String> entry: map.entrySet()) {
 			%><%= entry.getKey() +" "+ entry.getValue()+"\n" %><%
 		}
+	  else { %>No logger enabled<% }
 	}
 	application.setAttribute("logmap", map);
 } else { %>login error<% } %></cs:ftcs>

@@ -21,7 +21,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   // configuring WCS jars as unmanaged lib
   val unmanagedFilter = "log4j-*" || "slf4j*" || "spring-*" || "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
     "wem-sso-api-*" || "rest-api-*" || "cas-client-*" || "assetapi*" || "xstream*" ||
-    "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar" || "ehcache-*" 
+    "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar" || "ehcache-*"
 
   val includeFilterUnmanagedJars = includeFilter in unmanagedJars := unmanagedFilter
 
@@ -52,22 +52,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     version <<= (wcsVersion) { x => v + "_" + x },
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
-    unmanagedJarsTask /*
-    // ugly stuff to rename the generated project name adding the version number
-    ,EclipseKeys.projectTransformerFactories := Seq(new EclipseTransformerFactory[RewriteRule] {
-      import scala.xml.Node
-      import com.typesafe.sbteclipse.core.Validation
-      import scalaz.Scalaz._
-      override def createTransformer(ref: ProjectRef, state: State): Validation[RewriteRule] = {
-        val rule = new RewriteRule {
-          override def transform(n: Node): Seq[Node] =
-            if (n.label == "name")
-              <name>{ n.text + "_" + v }</name>
-            else n
-        }
-        rule.success
-      }
-    })*/ )
+    unmanagedJarsTask)
 
   val commonSettings = coreSettings ++ Seq(
     libraryDependencies <++= (version) {
@@ -97,7 +82,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     id = "app",
     base = file("app"),
     settings = commonSettings ++ Seq(
-      name := "agilesites-app",  
+      name := "agilesites-app",
       wcsCopyHtmlTask)) dependsOn (api)
 
   /// ALL

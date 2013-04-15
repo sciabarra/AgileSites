@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import wcs.core.WCS;
-import wcs.java.tag.BlobserviceTag;
+import wcs.core.tag.BlobserviceTag;
 import COM.FutureTense.Interfaces.ICS;
 
 /**

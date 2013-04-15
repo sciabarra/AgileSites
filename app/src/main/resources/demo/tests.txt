@@ -1,3 +1,0 @@
-demo.test.RouterTest
-demo.test.WrapperTest
-demo.test.ErrorTest

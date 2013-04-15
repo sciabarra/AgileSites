@@ -38,17 +38,16 @@ public class RouterTest extends TestElement {
 				"Asset not found: type:Page name:Hello");
 	}
 
-
 	@Test
 	public void test2() {
 
 		parse(it.route(env(), url("/Article/Welcome")));
 		assertAttr("ics-callelement", "error",
-				"Asset not found: type:MySite_Article name:Welcome");
+				"Asset not found: type:$site$_Article name:Welcome");
 
 		parse(it.route(env(), url("/Article/Welcome?with=parameter&other")));
 		assertAttr("ics-callelement", "error",
-				"Asset not found: type:MySite_Article name:Welcome");
+				"Asset not found: type:$site$_Article name:Welcome");
 	}
 
 	@Test

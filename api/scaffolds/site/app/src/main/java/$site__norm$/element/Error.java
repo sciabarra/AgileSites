@@ -19,9 +19,9 @@ public class Error extends Element {
 	public String apply(Env e) {
 		log.trace("$site$ Error");
 		
-		Picker html = Picker.load("/$site;format="normalize"$/index.html", "#content");
+		Picker html = Picker.load("/$site;format="normalize"$/simple.html", "#content");
 		html.replace("#title", "Error");
-		html.replace("#message", e.getString("error"));
+		html.replace("#subtitle", e.getString("error"));
 		return html/*.dump(log)*/.html();
 	}
 }

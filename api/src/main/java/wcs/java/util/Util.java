@@ -1,10 +1,12 @@
 package wcs.java.util;
 
 import java.io.BufferedReader;
+import java.io.CharArrayWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -340,5 +342,14 @@ public class Util {
 			sb.append(seq.header());
 		}
 		return sb.toString();
+	}
+
+	/**
+	 * Stream an exceptions in a string
+	 */
+	public static String ex2str(Exception ex) {
+		CharArrayWriter caw = new CharArrayWriter();
+		ex.printStackTrace(new PrintWriter(caw));
+		return caw.toString();
 	}
 }

@@ -2,20 +2,27 @@
 --%><%@ taglib prefix="cs" uri="futuretense_cs/ftcs1_0.tld"%><%@ taglib
 	prefix="ics" uri="futuretense_cs/ics.tld"%><%@ taglib prefix="insite"
 	uri="futuretense_cs/insite.tld"%><%@ taglib prefix="render"
-	uri="futuretense_cs/render.tld"%><%@ page import="wcs.core.*"%><cs:ftcs><ics:if condition='<%=ics.GetVar("tid") != null%>'><ics:then><render:logdep cid='<%=ics.GetVar("tid")%>' c="Template" /></ics:then></ics:if><%
+	uri="futuretense_cs/render.tld"%><%@ page import="wcs.core.*"
+	%><%! final static Log log = Log.getLog("%CLASS%");
+%><cs:ftcs><ics:if condition='<%=ics.GetVar("tid") != null%>'><ics:then><render:logdep cid='<%=ics.GetVar("tid")%>' c="Template" /></ics:then></ics:if><%
 		String res = WCS.dispatch(ics, "%CLASS%");
 		Sequencer seq = new Sequencer(res);
 	%><%=seq.header()%><%
 		while (seq.hasNext()) {
 			Call c = seq.next();
 			String name = c.getName();
+			log.debug(c.toString());
 			if (name.equalsIgnoreCase("RENDER:CALLTEMPLATE")) {
+				String cc = c.getOnce("C");
+				String cid = c.getOnce("CID");
+				String tname = c.getOnce("TNAME");
+				log.trace("render:calltemplate tname=%s c=%s cid=%s", tname, cc, cid);
 	%><render:calltemplate 
+		c='<%=cc%>' 
+		cid='<%=cid%>'
 	    site='<%=c.getOnce("SITE")%>'
+		tname='<%=tname%>'
 		ttype='<%=c.getOnce("TTYPE")%>' 
-		tname='<%=c.getOnce("TNAME")%>'
-		c='<%=c.getOnce("C")%>' 
-		cid='<%=c.getOnce("CID")%>'
 		slotname='<%=c.getOnce("SLOTNAME")%>' 
 		tid='<%=c.getOnce("TID")%>'><%
 			for (String k : c.keysLeft()) {
@@ -25,12 +32,16 @@
 		} /* end RENDER:CALLTEMPLATE */
 	%><%
 		if (name.equalsIgnoreCase("INSITE:CALLTEMPLATE")) {
+			String cc = c.getOnce("C");
+			String cid = c.getOnce("CID");
+			String tname = c.getOnce("TNAME");
+			log.trace("insite:calltemplate tname=%s c=%s cid=%s", tname, cc, cid);
 	%><insite:calltemplate 
 	    site='<%=c.getOnce("SITE")%>'
+		c='<%=cc%>'
+		cid='<%=cid%>'
+		tname='<%=tname%>'
 		ttype='<%=c.getOnce("TTYPE")%>' 
-		tname='<%=c.getOnce("TNAME")%>'
-		c='<%=c.getOnce("C")%>'
-		cid='<%=c.getOnce("CID")%>'
 		slotname='<%=c.getOnce("SLOTNAME")%>' 
 		tid='<%=c.getOnce("TID")%>'><%
 			for (String k : c.keysLeft()) {
@@ -40,7 +51,9 @@
 		} /* END INSITE:CALLTEMPLATE */
 	%><%
 		if (name.equalsIgnoreCase("RENDER:CALLELEMENT")) {
-	%><render:callelement elementname='<%=c.getOnce("ELEMENTNAME")%>'><%
+			String elementname = c.getOnce("ELEMENTNAME");
+			log.trace("ics:callelement element=%s", elementname);
+	%><render:callelement elementname='<%=elementname%>'><%
 			for (String k : c.keysLeft()) {
 		%><render:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><%
 			}
@@ -48,7 +61,9 @@
 		} /* END RENDER:CALLELEMENT */
 	%><%
 		if (name.equalsIgnoreCase("ICS:CALLELEMENT")) {
-	%><ics:callelement element='<%=c.getOnce("ELEMENT")%>'><%
+			String element = c.getOnce("ELEMENT");
+			log.trace("ics:callelement element=%s", element);
+	%><ics:callelement element='<%=element%>'><%
 			for (String k : c.keysLeft()) {
 		%><ics:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><%
 			}

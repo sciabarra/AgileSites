@@ -8,12 +8,12 @@ object Tld2Tag {
   def tld2class(s: String) = {
     val f = (new File(s)).getName
     val f1 = f.take(f.size - 4)
-    "%s%sTag".format(f1.charAt(0).toUpper, f1.substring(1))
+    "Tag%s%s".format(f1.charAt(0).toUpper, f1.substring(1))
   }
 
   def preHead(s: String) = {
     val cl = tld2class(s)
-    """package wcs.scala.tag
+    """package wcs.core.tag
     
 import COM.FutureTense.Interfaces.ICS
 import COM.FutureTense.Interfaces.FTValList

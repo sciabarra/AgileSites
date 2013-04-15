@@ -22,7 +22,7 @@ public class ErrorTest extends TestElement {
 		parse(it.apply(env().setVar("error", "Hello, world")));
 
 		// check the result
-		assertText("#message", "Hello, world");
+		assertText("#subtitle", "Hello, world");
 	}
 
 }

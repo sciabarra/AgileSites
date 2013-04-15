@@ -8,7 +8,8 @@ import wcs.java.AssetSetup;
 public class $subtype$$template$ extends Element {
 
 	public static AssetSetup setup() {
-		return new Template("$subtype$", "$prefix$$template$", 
+		
+		return new Template("$type$", "$subtype$/$prefix$$template$", 
 			Template.INTERNAL, // change template type here
 			$site;format="normalize"$.element.$type;format="normalize"$.$subtype$$template$.class) //
 			.cache("false", "false") // change caching here

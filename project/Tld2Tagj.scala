@@ -25,7 +25,7 @@ object Tld2Tagj {
 
   def preHead(s: String) = {
     val cl = tld2class(s)
-    """package wcs.java.tag;
+    """package wcs.core.tag;
     
 import COM.FutureTense.Interfaces.*;
 import wcs.core.Common;

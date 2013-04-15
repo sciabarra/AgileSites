@@ -37,11 +37,9 @@ abstract public class Router implements wcs.core.Router {
 		}
 	}
 
-
 	private ICS i;
 	private Env e;
 	
-
 	@Override
 	public Call route(ICS ics, String _site, String _path, String _query) {
 		log.debug("site=" + _site + " path=" + _path + " query=" + _query);
@@ -59,6 +57,7 @@ abstract public class Router implements wcs.core.Router {
 		Call call = new Call("ICS:CALLELEMENT", args);
 		call.addArg("site", site);
 		call.addArg("element", site + "/" + name);
+		log.trace("call returns %s", call.toString());
 		return call;
 	}
 	

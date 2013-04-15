@@ -15,8 +15,8 @@ import wcs.core.ICSProxyJ;
 import wcs.core.Id;
 import wcs.core.Log;
 import wcs.core.Range;
-import wcs.java.tag.AssetTag;
-import wcs.java.tag.PublicationTag;
+import wcs.core.tag.AssetTag;
+import wcs.core.tag.PublicationTag;
 import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
 
@@ -348,6 +348,16 @@ public class Env extends ICSProxyJ {
 			result.add(new Id(type, getLong(ls, pos, "id")));
 		}
 		return result;
+	}
+
+	/**
+	 * Find one assets
+	 */
+	public Asset findOne(String type, Arg... args) {
+		List<Id> result = find(type, args);
+		if (result.size() != 1)
+			return null;
+		return getAsset(result.get(0).c, result.get(0).cid);
 	}
 
 	/**
