@@ -17,9 +17,7 @@ cs
 sites
 misc
 build.sbt
-appo
-wiki
 *Old.scala
 *Old.java
-jsk
+jsk*
 workspace

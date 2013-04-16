@@ -1,0 +1,149 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateD/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/PageDefinition/PreUpdate.xml $
+$Revision: 21 $ 
+$Modtime: 8/27/04 3:18p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- PreUpdate.xml
+-
+- DESCRIPTION
+-	
+-
+- HISTORY 
+-->
+
+<!-- determine template type (will set TemplateType for us) -->
+<callelement NAME="OpenMarket/Xcelerate/AssetType/PageDefinition/GetTemplateType"/>
+
+<if COND="Variables.updatetype=edit">
+	<then>
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/PageDefinition/AssetGather">
+			<argument NAME="GetOrSet" VALUE="set"/>
+		</callelement>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+    	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+			<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+			<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+    	</CALLELEMENT>
+ 	</then>
+</if>
+
+<if COND="Variables.updatetype=create">
+	<then>
+	<if COND="IsVariable.workflowid=true">
+		<then>
+			<setvar NAME="GAworkflowid" VALUE="Variables.workflowid"/>
+	  </then>
+		<else>
+			<setvar NAME="GAworkflowid" VALUE="Variables.null"/>
+		</else>
+		</if>
+
+		<setvar NAME="GAworkflowid" VALUE="Variables.workflowid"/>
+		<setvar NAME="GAstatus" VALUE="Variables.status"/>
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/PageDefinition/AssetGather">
+			<argument NAME="GetOrSet" VALUE="set"/>
+		</callelement>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+    	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+			<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+			<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+    	</CALLELEMENT>
+	</then>
+</if>
+
+<if COND="Variables.updatetype=delete">
+<then>
+        <callelement NAME="OpenMarket/Xcelerate/AssetType/PageDefinition/GetTemplateType"/>
+        <if COND="Variables.TemplateType=asset">
+        <then>
+            <fatm.getassettypes TEMPLATETYPE="Variables.AssetType"  LISTVARNAME="fassettypelist"/>
+         </then>
+        <else>
+           <fgtm.getassettypes TEMPLATETYPE="Variables.AssetType"  LISTVARNAME="fassettypelist"/>
+        </else>
+        </if>
+
+       <loop LIST="fassettypelist">
+            <atm.locate TYPE="fassettypelist.assettype" VARNAME="pgtmgr"/>
+     	    <!--ASSET.LOAD TYPE="Variables.AssetType" NAME="ProdTmplinst" OBJECTID="Variables.id"/-->
+             <LISTOBJECT.CREATE NAME="singleTmpl" COLUMNS="assetid"/>
+            <LISTOBJECT.ADDROW NAME="singleTmpl" assetid="Variables.id"/>
+            <LISTOBJECT.TOLIST NAME="singleTmpl" LISTVARNAME="prdtmplslist"/>
+            <setvar NAME="errno"  VALUE="0"/>
+            
+            <if COND="Variables.TemplateType=asset">
+            <then>
+                <flexassets.gettypedassets   NAME="pgtmgr" LISTVARNAME="flexlist"  LIST="prdtmplslist"/>
+            </then>
+            <else>
+                 <flexgroups.gettypedassets   NAME="pgtmgr" LISTVARNAME="flexlist"  LIST="prdtmplslist"/>
+             </else>
+            </if>
+            <IF COND="IsList.flexlist=true">
+            <THEN>
+                <IF COND="flexlist.#numRows!=0">
+                <THEN>
+                      <callelement NAME="OpenMarket/Xcelerate/Actions/Util/ShowError">
+                        <argument NAME="error" VALUE="fTemplateBeingReferred"/>
+                     </callelement>
+                     <throwexception/>
+                </THEN>
+                </IF>
+            </THEN>
+            </IF>
+        </loop>
+        <setvar NAME="updateddate" VALUE="CS.SQLDate"/>
+    	<setvar NAME="updatedby" VALUE="SessionVariables.username"/>
+    	<!-- Change the name of the deleted record, so user can create another page with same name -->
+        <!-- coommenting this to fix the testtrack bug 1845 -->
+    	<!-- setvar NAME="name" VALUE="Variables.id"/-->	
+        <if cond="Variables.cs_formmode=Spark">
+        <then>
+            <!-- we need to delete the flex asset type that uses this def instance in Spark -->
+            <ASSET.DELETEASSETTYPE TYPE="Spark_Variables.name"/>
+            <setvar name="errno" value="0"/>
+        </then>
+        </if>
+</then>
+</if>
+<if COND="Variables.updatetype=remotepost">
+<then>
+  <callelement NAME="OpenMarket/Xcelerate/AssetType/PageDefinition/RemotePost"/>
+</then>
+</if>
+
+<if COND="Variables.updatetype=updatefrom">
+    <then>
+    </then>
+</if>
+<!-- If the asset is updated from dah -->
+<if COND="Variables.dashUpdate=dashUpdate">
+<then>
+	<if COND="Variables.dashUpdateType=create">
+    <then>
+		<!--if the operation is create-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=edit">
+    <then>
+		<!--if the operation is edit-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=delete">
+    <then>
+		<!--if the operation is delete-->
+    </then>
+    </if>
+</then>
+</if>
+</FTCS>
+

@@ -20,7 +20,7 @@ public class $subtype$LayoutTest extends TestElement {
 
 	@Test
 	public void test() {
-		Env e = env();
+		Env e = env("");
 		parse(it.apply(e));
 		Asset a = e.findOne("Page", arg("name", "Home"));
 		assertText("#title", a.getName());

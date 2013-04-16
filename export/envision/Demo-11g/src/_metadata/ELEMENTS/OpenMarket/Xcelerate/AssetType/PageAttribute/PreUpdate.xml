@@ -1,0 +1,229 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1"><!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/PageAttribute/PreUpdate.xml $
+$Revision: 34 $ 
+$Modtime: 2/13/04 3:42p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- PreUpdate.xml
+-
+- DESCRIPTION
+-	
+-
+- HISTORY 
+-->
+ 
+<!--
+	Note: setformdefaults, delete, updateform are NOT implemented
+	for Attributes
+	Only edit, remotepost, and create are implemented
+-->
+
+<if COND="Variables.updatetype=edit">
+<then>
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/PageAttribute/GetOrSetVars">
+		<argument NAME="GetOrSet" VALUE="set"/>
+	</callelement>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+    	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+		<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+		<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+    	</CALLELEMENT>
+</then>
+<else>
+	<if COND="Variables.updatetype=setformdefaults">
+	<then>
+		<!-- This default value doesn't work with VErity.  Hence commenting this -->
+		<!--ASSET.SET NAME="theCurrentAsset" FIELD="charsetname" VALUE="iso-8859-1"/-->
+	</then>
+	<else>	
+		<if COND="Variables.updatetype=create">
+		<then>
+			<callelement NAME="OpenMarket/Xcelerate/AssetType/PageAttribute/GetOrSetVars">
+				<argument NAME="GetOrSet" VALUE="set"/>
+			</callelement>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+				<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+				<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+			</CALLELEMENT>
+		</then>
+		<else>
+			<!--
+				Note: GetOrSetVars is looking for AttrArgument and AttrArgumentValue
+				If these are there then they are a semi-colon separated lists, names in
+				AttrArgument, and Values in AttrArgumentValue that then gets converted into
+				a CS List and "Gathered"
+			-->
+			<if COND="Variables.updatetype=remotepost">
+			<then>
+				<if COND="IsVariable.workflowid=true">
+				<then>
+					<setvar NAME="Attributes:workflowid" VALUE="Variables.workflowid"/>
+				</then>
+				</if>
+				<if COND="IsVariable.name=true">
+				<then>
+					<setvar NAME="Attributes:name" VALUE="Variables.name"/>
+				</then>
+				</if>
+				<if COND="IsVariable.status=true">
+				<then>
+					<setvar NAME="Attributes:status" VALUE="Variables.status"/>
+				</then>
+				</if>
+				<if COND="IsVariable.description=true">
+				<then>
+					<setvar NAME="Attributes:description" VALUE="Variables.description"/>
+				</then>
+				</if>
+				<if COND="IsVariable.description=true">
+				<then>
+					<setvar NAME="Attributes:description" VALUE="Variables.description"/>
+				</then>
+				</if>
+				<if COND="IsVariable.valuestyle=true">
+				<then>
+					<setvar NAME="Attributes:valuestyle" VALUE="Variables.valuestyle"/>
+				</then>
+				<else>
+					<setvar NAME="Attributes:valuestyle" VALUE="S"/>
+				</else>
+				</if>
+				<if COND="IsVariable.type=true">
+				<then>
+					<setvar NAME="Attributes:type" VALUE="Variables.type"/>
+				</then>
+				</if>
+				<if COND="IsVariable.assettypename=true">
+				<then>
+					<setvar NAME="Attributes:assettypename" VALUE="Variables.assettypename"/>
+				</then>
+				</if>
+				<if COND="IsVariable.upload=true">
+				<then>
+					<setvar NAME="Attributes:upload" VALUE="Variables.upload"/>
+				</then>
+				</if>
+				<if COND="IsVariable.contenttype=true">
+				<then>
+					<setvar NAME="Attributes:contenttype" VALUE="Variables.contenttype"/>
+				</then>
+				</if>
+				<if COND="IsVariable.diffpres=true">
+				<then>
+					<setvar NAME="Attributes:diffpres" VALUE="Variables.diffpres"/>
+				</then>
+				</if>
+				<if COND="IsVariable.diffconv=true">
+				<then>
+					<setvar NAME="Attributes:diffconv" VALUE="Variables.diffconv"/>
+				</then>
+				</if>
+				<if COND="IsVariable.searchconv=true">
+				<then>
+					<setvar NAME="Attributes:searchconv" VALUE="Variables.searchconv"/>
+				</then>
+				</if>
+				<if COND="IsVariable.attributetype=true">
+				<then>
+					<!--This is the name not the id, so lookup the id-->
+					<asset.list TYPE="AttrTypes" LIST="AttrTypesList" FIELD1="name" VALUE1="Variables.attributetype"/>
+					<if COND="Variables.errno=0">
+					<then>
+						<setvar NAME="Attributes:attributetype" VALUE="AttrTypesList.id"/>
+					</then>
+					<else>
+						<br/><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/NofindAttrType"/> <STRING.STREAM VARIABLE="attributetype"/> <XLAT.STREAM KEY="dvin/Common/Error"/> <STRING.STREAM VARIABLE="errno"/>
+					</else>
+					</if>
+				</then>
+				</if>
+				<if COND="IsVariable.editing=true">
+				<then>
+					<setvar NAME="Attributes:editing" VALUE="Variables.editing"/>
+				</then>
+				<else>
+					<setvar NAME="Attributes:editing" VALUE="L"/>
+				</else>
+				</if>
+				<if COND="IsVariable.storage=true">
+				<then>
+					<setvar NAME="Attributes:storage" VALUE="Variables.storage"/>
+				</then>
+				<else>
+					<setvar NAME="Attributes:storage" VALUE="L"/>
+				</else>
+				</if>
+				<if COND="IsVariable.externalid=true">
+				<then>
+					<setvar NAME="Attributes:externalid" VALUE="Variables.externalid"/>
+				</then>
+				</if>
+				<if COND="IsVariable.externalcolumn=true">
+				<then>
+					<setvar NAME="Attributes:externalcolumn" VALUE="Variables.externalcolumn"/>
+				</then>
+				</if>
+				<if COND="IsVariable.externaltable=true">
+				<then>
+					<setvar NAME="Attributes:externaltable" VALUE="Variables.externaltable"/>
+				</then>
+				</if>
+				<if COND="IsVariable.enginename=true">
+				<then>
+					<setvar NAME="Attributes:enginename" VALUE="Variables.enginename"/>
+				</then>
+				</if>
+				<if COND="IsVariable.charsetname=true">
+				<then>
+					<setvar NAME="Attributes:charsetname" VALUE="Variables.charsetname"/>
+				</then>
+				</if>
+				<if COND="IsVariable.embedtype=true">
+				<then>
+					<setvar NAME="Attributes:embedtype" VALUE="Variables.embedtype"/>
+				</then>
+				</if>
+                                
+                                
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/PageAttribute/GetOrSetVars">
+					<argument NAME="GetOrSet" VALUE="set"/>
+				</callelement>
+			</then>
+			</if>
+		</else>
+		</if>
+	</else>
+	</if>
+</else>
+</if>
+<!-- If the asset is updated from dah -->
+<if COND="Variables.dashUpdate=dashUpdate">
+<then>
+	<if COND="Variables.dashUpdateType=create">
+	<then>
+		<!--if the operation is create-->
+	</then>
+	</if>
+	<if COND="Variables.dashUpdateType=edit">
+	<then>
+		<!--if the operation is edit-->
+	</then>
+	</if>
+	<if COND="Variables.dashUpdateType=delete">
+	<then>
+		<!--if the operation is delete-->
+	</then>
+	</if>
+</then>
+</if>
+
+</FTCS>
+

@@ -43,25 +43,28 @@ public class TestElement extends TestCase {
 	}
 
 	/**
-	 * Return current env
+	 * Return current env not routed (so no variables coming from the router)
 	 * 
 	 * @return
 	 */
 	public TestEnv env() {
-		TestEnv te = TestRunnerElement.getTestEnv();
-		return te;
+		return TestRunnerElement.getTestEnv();
 	}
 
 	/**
-	 * Return current env routed
+	 * Return the current env routed (so variables coming from router are available)
 	 * 
 	 * @return
 	 */
 	public TestEnv env(String path) {
+		if (path == null)
+			path = "";
 		TestEnv te = env();
 		try {
-			Router.getRouter(te.getString("site")).route(te,
+			Call call = Router.getRouter(te.getString("site")).route(te,
 					URL.parse(new URI(path)));
+			for(String k: call.keysLeft())
+				te.SetVar(k, call.getOnce(k));
 		} catch (URISyntaxException e) {
 			log.warn(e, "parsing %s", path);
 		}
@@ -220,7 +223,7 @@ public class TestElement extends TestCase {
 			fail("cannot find " + cssq);
 	}
 
-	protected void dbg(String fmt, Object... args) {
-		System.out.printf("::: " + fmt + "\n", args);
+	protected void dump(Log log) {
+		log.debug(Util.dumpStream(doc.html()));
 	}
 }

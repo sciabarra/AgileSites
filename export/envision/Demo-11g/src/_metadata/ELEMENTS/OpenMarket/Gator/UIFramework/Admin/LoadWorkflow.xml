@@ -1,0 +1,1099 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<SETVAR NAME="cs.contenttype" VALUE="text/html; charset=UTF-8"/>
+
+<!-- OpenMarket/Gator/UIFramework/Admin/LoadWorkflow
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/BasicEnvironment"/>
+
+<!-- This element handles all children of the Workflow root node -->
+<!-- Variables.Depth=1 means 'State Codes' and 'Processes' -->
+<!-- Variables.Depth=2 means 'Add New' and any state codes for
+	  Variables.Node=StateCodes or 'Add New' and any workflows
+	  for Variables.Node=Processes -->
+<!-- Variables.Depth=3 means Process children for Variables.Process -->
+
+<XLAT.LOOKUP KEY="dvin/TreeApplet/AddNew" ENCODE="false" VARNAME="_AddNew_"/>
+
+<IF COND="Variables.command!=GetTypes">
+<THEN>
+	
+	<IF COND="Variables.op=init">
+	<THEN>
+		<SETVAR NAME="errno" VALUE="0"/>
+		<USERISMEMBER GROUP="xceladmin"/>
+		<IF COND="Variables.errno=0">
+		<THEN> 
+			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/TreePermissionError"/>
+			<THROWEXCEPTION/>
+		</THEN>
+		</IF>
+	
+	<!-- States -->
+		<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+			<ARGUMENT NAME="AdHoc" VALUE="States"/>
+			<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+		</CALLELEMENT>
+		
+		<REMOVEVAR NAME="Description"/>
+		<REMOVEVAR NAME="ExecuteURL"/>
+		<REMOVEVAR NAME="OKActions"/>
+        <XLAT.LOOKUP KEY="dvin/TreeApplet/States" ENCODE="false" VARNAME="_XLAT_"/>
+		<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+			<satellite.argument name="AssetType" value="Variables.AssetType"/>
+		</SATELLITE.LINK>
+
+		<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowStatusCodeFront" outstring="ExecuteURL">
+			<satellite.argument name="action" value="list"/>
+		</SATELLITE.LINK>
+
+		<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadAdminTree" outstring="LoadURL">
+			<satellite.argument name="op" value="load"/>
+			<satellite.argument name="NodeType" value="Workflow"/>
+			<satellite.argument name="Node" value="States"/>
+			<satellite.argument name="Depth" value="2"/>
+		</SATELLITE.LINK>
+
+		<XLAT.LOOKUP KEY="dvin/UI/Admin/WorkflowStates" ENCODE="false" VARNAME="statesDesc"/> 
+		<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+			<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+			<ARGUMENT NAME="Description" VALUE="Variables.statesDesc"/>
+			<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+			<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
+			<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+			<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfstate.png"/>
+			<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_States"/>
+		</CALLELEMENT>
+		
+		<REMOVEVAR NAME="RefreshKeys"/>
+		
+	<!-- Processes -->
+		<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+			<ARGUMENT NAME="AdHoc" VALUE="Processes"/>
+			<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+		</CALLELEMENT>
+		
+		<REMOVEVAR NAME="Description"/>
+		<REMOVEVAR NAME="ExecuteURL"/>
+		<REMOVEVAR NAME="OKActions"/>
+        <XLAT.LOOKUP KEY="dvin/TreeApplet/Processes" ENCODE="false" VARNAME="_XLAT_"/>
+		<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+			<satellite.argument name="AssetType" value="Variables.AssetType"/>
+		</SATELLITE.LINK>
+
+		<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowProcessListFront" outstring="ExecuteURL"/>
+
+		<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadAdminTree" outstring="LoadURL">
+			<satellite.argument name="op" value="load"/>
+			<satellite.argument name="NodeType" value="Workflow"/>
+			<satellite.argument name="Node" value="Processes"/>
+			<satellite.argument name="Depth" value="2"/>
+		</SATELLITE.LINK>
+		<XLAT.LOOKUP KEY="dvin/UI/Admin/WorkflowProcesses" ENCODE="false" VARNAME="processDesc"/> 
+		<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+			<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+			<ARGUMENT NAME="Description" VALUE="Variables.processDesc"/> 
+			<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+			<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
+			<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+			<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+			<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfprocess.png"/>
+			<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_Process"/>
+		</CALLELEMENT>
+		
+		<REMOVEVAR NAME="RefreshKeys"/>
+		
+	</THEN>
+	<ELSE>
+		<IF COND="Variables.Depth=2">
+		<THEN>
+			<IF COND="Variables.Node=Email">
+			<THEN>
+	
+				<!-- Email -->
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+					<ARGUMENT NAME="AdHoc" VALUE="Email:New"/>
+					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+				</CALLELEMENT>
+				
+				<REMOVEVAR NAME="LoadURL"/>
+				<REMOVEVAR NAME="OKActions"/>
+                <XLAT.LOOKUP KEY="dvin/TreeApplet/AddANewEmailObject" ENCODE="false" VARNAME="_XLAT_"/>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+					<satellite.argument name="AssetType" value="Variables.AssetType"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowSubjectFront" outstring="ExecuteURL">
+					<satellite.argument name="action" value="new"/>
+				</SATELLITE.LINK>
+
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Variables._AddNew_"/>
+					<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+				</CALLELEMENT>
+				
+				<!-- display the email objects -->
+				<SELECTTO LIST="ActiveWflSubject" FROM="WorkflowSubject" WHAT="*" ORDERBY="name"/> 
+				<loop LIST="ActiveWflSubject">
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+						<ARGUMENT NAME="AdHoc" VALUE="Email:Existing:ActiveWflSubject.name"/>
+						<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+					
+					<REMOVEVAR NAME="Description"/>
+					<REMOVEVAR NAME="LoadURL"/>
+					<REMOVEVAR NAME="OKActions"/>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowSubjectFront" outstring="ExecuteURL">
+						<satellite.argument name="action" value="details"/>
+						<satellite.argument name="id" value="ActiveWflSubject.id"/>
+					</SATELLITE.LINK>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+						<ARGUMENT NAME="Label" VALUE="ActiveWflSubject.name"/>
+						<ARGUMENT NAME="Description" VALUE="ActiveWflSubject.description"/> 
+						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfemail.png"/>
+					</CALLELEMENT>
+				</loop>
+	
+			</THEN>
+			</IF>
+	
+			<IF COND="Variables.Node=Actions">
+			<THEN>
+	
+				<!-- Step Actions -->
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+					<ARGUMENT NAME="AdHoc" VALUE="StepActions"/>
+					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+				</CALLELEMENT>
+				
+				<REMOVEVAR NAME="LoadURL"/>
+				<REMOVEVAR NAME="OKActions"/>
+                <XLAT.LOOKUP KEY="dvin/TreeApplet/StepActions" ENCODE="false" VARNAME="_XLAT_"/>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+					<satellite.argument name="AssetType" value="Variables.AssetType"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+					<satellite.argument name="action" value="list"/>
+					<satellite.argument name="acttype" value="Step"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadAdminTree" outstring="LoadURL">
+					<satellite.argument name="op" value="load"/>
+					<satellite.argument name="NodeType" value="Workflow"/>
+					<satellite.argument name="SubNode" value="StepActions"/>
+					<satellite.argument name="Depth" value="3"/>
+				</SATELLITE.LINK>
+
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
+					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+					<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_Action_Step"/>
+				</CALLELEMENT>
+	
+					<!-- Step Conditions -->
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+					<ARGUMENT NAME="AdHoc" VALUE="StepConditions"/>
+					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+				</CALLELEMENT>
+				
+				<REMOVEVAR NAME="LoadURL"/>
+				<REMOVEVAR NAME="OKActions"/>
+                <XLAT.LOOKUP KEY="dvin/TreeApplet/StepConditions" ENCODE="false" VARNAME="_XLAT_"/>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+					<satellite.argument name="AssetType" value="Variables.AssetType"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+					<satellite.argument name="action" value="list"/>
+					<satellite.argument name="acttype" value="Condition"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadAdminTree" outstring="LoadURL">
+					<satellite.argument name="op" value="load"/>
+					<satellite.argument name="NodeType" value="Workflow"/>
+					<satellite.argument name="SubNode" value="StepConditions"/>
+					<satellite.argument name="Depth" value="3"/>
+				</SATELLITE.LINK>
+
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
+					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+					<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_Action_Condition"/>
+				</CALLELEMENT>
+			
+				<!-- Timed Actions, previously called Assignment Actions -->
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+					<ARGUMENT NAME="Adhoc" VALUE="TimedActions"/>
+					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+				</CALLELEMENT>
+				
+				<REMOVEVAR NAME="LoadURL"/>
+				<REMOVEVAR NAME="OKActions"/>
+                <XLAT.LOOKUP KEY="dvin/TreeApplet/TimedActions" ENCODE="false" VARNAME="_XLAT_"/>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+					<satellite.argument name="AssetType" value="Variables.AssetType"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+					<satellite.argument name="action" value="list"/>
+					<satellite.argument name="acttype" value="Timed"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadAdminTree" outstring="LoadURL">
+					<satellite.argument name="op" value="load"/>
+					<satellite.argument name="NodeType" value="Workflow"/>
+					<satellite.argument name="SubNode" value="TimedActions"/>
+					<satellite.argument name="Depth" value="3"/>
+				</SATELLITE.LINK>
+
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
+					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+					<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_Action_Timed"/>
+				</CALLELEMENT>
+	
+				<!-- Delegate Actions -->
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+					<ARGUMENT NAME="AdHoc" VALUE="DelegateActions"/>
+					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+				</CALLELEMENT>
+				
+				<REMOVEVAR NAME="LoadURL"/>
+				<REMOVEVAR NAME="OKActions"/>
+                <XLAT.LOOKUP KEY="dvin/TreeApplet/DelegateActions" ENCODE="false" VARNAME="_XLAT_"/>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+					<satellite.argument name="AssetType" value="Variables.AssetType"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+					<satellite.argument name="action" value="list"/>
+					<satellite.argument name="acttype" value="Delegate"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadAdminTree" outstring="LoadURL">
+					<satellite.argument name="op" value="load"/>
+					<satellite.argument name="NodeType" value="Workflow"/>
+					<satellite.argument name="SubNode" value="DelegateActions"/>
+					<satellite.argument name="Depth" value="3"/>
+				</SATELLITE.LINK>
+
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
+					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+					<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_Action_Delegate"/>
+				</CALLELEMENT>
+	
+				<!-- Deadlock Actions -->
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+					<ARGUMENT NAME="AdHoc" VALUE="DeadlockActions"/>
+					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+				</CALLELEMENT>
+				
+				<REMOVEVAR NAME="LoadURL"/>
+				<REMOVEVAR NAME="OKActions"/>
+                <XLAT.LOOKUP KEY="dvin/TreeApplet/DeadlockActions" ENCODE="false" VARNAME="_XLAT_"/>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+					<satellite.argument name="AssetType" value="Variables.AssetType"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+					<satellite.argument name="action" value="list"/>
+					<satellite.argument name="acttype" value="Deadlock"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadAdminTree" outstring="LoadURL">
+					<satellite.argument name="op" value="load"/>
+					<satellite.argument name="NodeType" value="Workflow"/>
+					<satellite.argument name="SubNode" value="DeadlockActions"/>
+					<satellite.argument name="Depth" value="3"/>
+				</SATELLITE.LINK>
+
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
+					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+					<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_Action_Deadlock"/>
+				</CALLELEMENT>
+	
+				<!-- Group Deadlock Actions -->
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+					<ARGUMENT NAME="AdHoc" VALUE="GroupActions"/>
+					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+				</CALLELEMENT>
+				
+				<REMOVEVAR NAME="LoadURL"/>
+				<REMOVEVAR NAME="OKActions"/>
+                <XLAT.LOOKUP KEY="dvin/TreeApplet/GroupDeadlockActions" ENCODE="false" VARNAME="_XLAT_"/>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+					<satellite.argument name="AssetType" value="Variables.AssetType"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+					<satellite.argument name="action" value="list"/>
+					<satellite.argument name="acttype" value="Group"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadAdminTree" outstring="LoadURL">
+					<satellite.argument name="op" value="load"/>
+					<satellite.argument name="NodeType" value="Workflow"/>
+					<satellite.argument name="SubNode" value="GroupActions"/>
+					<satellite.argument name="Depth" value="3"/>
+				</SATELLITE.LINK>
+
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+					<ARGUMENT NAME="LoadURL" VALUE="Variables.LoadURL"/>
+					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+					<ARGUMENT NAME="RefreshKeys" VALUE="Workflow_Action_Group"/>
+				</CALLELEMENT>
+				<REMOVEVAR NAME="RefreshKeys"/>
+			</THEN>
+			</IF>
+	
+			<IF COND="Variables.Node=States">
+			<THEN>
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+					<ARGUMENT NAME="AdHoc" VALUE="States:New"/>
+					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+				</CALLELEMENT>
+				
+				<REMOVEVAR NAME="LoadURL"/>
+				<REMOVEVAR NAME="OKActions"/>
+                <XLAT.LOOKUP KEY="dvin/TreeApplet/AddANewWorkflowState" ENCODE="false" VARNAME="_XLAT_"/>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+					<satellite.argument name="AssetType" value="Variables.AssetType"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowStatusCodeFront" outstring="ExecuteURL">
+					<satellite.argument name="action" value="new"/>
+				</SATELLITE.LINK>
+
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Variables._AddNew_"/>
+					<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+				</CALLELEMENT>
+				
+				<!-- display the workflow state codes -->
+				<SELECTTO LIST="ActiveWflStates" FROM="WorkflowStatusCode" WHAT="*" ORDERBY="description"/>
+				<loop LIST="ActiveWflStates">
+					<substitute STR="ActiveWflStates.workflowstatuscode" WHAT="%20" WITH="/XCEL-SEP/" OUTSTR="sanestatuscode"/>
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+						<ARGUMENT NAME="AdHoc" VALUE="States:Existing:ActiveWflStates.workflowstatuscode"/>
+						<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+					
+					<REMOVEVAR NAME="Description"/>
+					<REMOVEVAR NAME="LoadURL"/>
+					<REMOVEVAR NAME="OKActions"/>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowStatusCodeFront" outstring="ExecuteURL">
+						<satellite.argument name="action" value="details"/>
+						<satellite.argument name="id" value="ActiveWflStates.id"/>
+					</SATELLITE.LINK>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+						<ARGUMENT NAME="Label" VALUE="ActiveWflStates.workflowstatuscode"/>
+						<ARGUMENT NAME="Description" VALUE="ActiveWflStates.description"/>
+						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfstate.png"/>
+					</CALLELEMENT>
+				</loop>
+			</THEN>
+			</IF>
+			<IF COND="Variables.Node=Functions">
+			<THEN>
+				<!-- Add new is commented out in response to Defect 4196.
+					Please do not remove this code.
+					 We may need to put it back sometimes later -->
+	
+				<!--
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+					<ARGUMENT NAME="Adhoc" VALUE="Functions:New"/>
+					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+				</CALLELEMENT>
+				
+				<REMOVEVAR NAME="LoadURL"/>
+				<REMOVEVAR NAME="OKActions"/>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+					<satellite.argument name="AssetType" value="Variables.AssetType"/>
+				</SATELLITE.LINK>
+
+				<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowFunctionFront" outstring="ExecuteURL">
+					<satellite.argument name="action" value="new"/>
+				</SATELLITE.LINK>
+
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Add New"/>
+					<ARGUMENT NAME="Description" VALUE="Add a New Function"/>
+					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+				</CALLELEMENT>
+				-->
+	
+				<!-- display the functions -->
+				<SELECTTO LIST="WfFuncs" FROM="CCFunction" WHAT="*" ORDERBY="ccfunction"/> 
+				<loop LIST="WfFuncs">
+				<substitute STR="WfFuncs.ccfunction" WHAT="%20" WITH="/XCEL-SEP/" OUTSTR="sanefunction"/>
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+						<ARGUMENT NAME="AdHoc" VALUE="Functions:Existing:WfFuncs.description"/>
+						<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+					
+					<REMOVEVAR NAME="Description"/>
+					<REMOVEVAR NAME="LoadURL"/>
+					<REMOVEVAR NAME="OKActions"/>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowFunctionFront" outstring="ExecuteURL">
+						<satellite.argument name="action" value="details"/>
+						<satellite.argument name="id" value="WfFuncs.id"/>
+					</SATELLITE.LINK>
+
+                    <!-- start #10517 Use locale string label if avaiable otherwise use database description-->
+                    <WORKFLOWENGINE.GETFUNCTIONID ID="WfFuncs.id" OBJVARNAME="functionObject" />
+                    <WORKFLOWFUNCTION.GETDESCRIPTION NAME="functionObject" VARNAME="funcDesc" />
+                    <CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+                        <ARGUMENT NAME="Label" VALUE="Variables.sanefunction"/> 
+			<ARGUMENT NAME="Description" VALUE="Variables.funcDesc"/> 
+                        <ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+                        <ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+                        <ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+                        <ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wffunction.png"/>
+                    </CALLELEMENT>
+                    <!-- end #10517 -->
+                </loop>
+			</THEN>
+			</IF>
+	
+			<IF COND="Variables.Node=Processes">
+			<THEN>
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+						<ARGUMENT NAME="AdHoc" VALUE="Processes:New"/>
+						<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+					
+					<REMOVEVAR NAME="LoadURL"/>
+					<REMOVEVAR NAME="OKActions"/>
+                    
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/AddAWorkflowProcess" ENCODE="false" VARNAME="_XLAT_"/>
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+		
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowFront" outstring="ExecuteURL">
+						<satellite.argument name="action" value="new"/>
+					</SATELLITE.LINK>
+
+                    			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+						<ARGUMENT NAME="Label" VALUE="Variables._AddNew_"/>
+						<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+					</CALLELEMENT>
+					
+					<!-- display the workflow processes for all sites -->
+					<WORKFLOWENGINE.GETALLPROCESSES NAME="processes" PREFIX="wfq:"/>
+					<setcounter NAME="NPROCESSES" VALUE="0"/>
+					<if COND="IsVariable.wfq:Total=true">
+					<then>
+					<if COND="Variables.wfq:Total!=0">
+					<then>
+						<loop FROM="0" COUNT="Variables.wfq:Total">
+							<WORKFLOWPROCESS.GETPROCESSNAME NAME="wfq:Counters.NPROCESSES" VARNAME="apname"/>
+							<WORKFLOWPROCESS.GETID NAME="wfq:Counters.NPROCESSES" VARNAME="apid"/>
+                            <WORKFLOWPROCESS.GETPROCESSDESCRIPTION NAME="wfq:Counters.NPROCESSES"  VARNAME="processDescription" />
+							
+							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+								<ARGUMENT NAME="AdHoc" VALUE="Processes:Existing:Variables.apid"/>
+								<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+							</CALLELEMENT>
+
+							<REMOVEVAR NAME="OKActions"/>
+
+							<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+								<satellite.argument name="AssetType" value="Variables.AssetType"/>
+							</SATELLITE.LINK>
+
+							<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowFront" outstring="ExecuteURL">
+								<satellite.argument name="action" value="details"/>
+								<satellite.argument name="processid" value="Variables.apid"/>
+							</SATELLITE.LINK>
+
+							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+								<ARGUMENT NAME="Label" VALUE="Variables.apname"/>
+								<ARGUMENT NAME="Description" VALUE="Variables.processDescription"/>
+								<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+								<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+								<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+								<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfprocess.png"/>
+							</CALLELEMENT>
+							<inccounter NAME="NPROCESSES" VALUE="1"/>
+			  			</loop>
+					</then>
+					</if>
+					</then>
+					</if>
+			</THEN>
+			</IF>
+		</THEN>
+		<ELSE>
+			<IF COND="Variables.Depth=3">
+			<THEN>
+				<!-- Step Actions -->
+				<IF COND="Variables.SubNode=StepActions">
+				<THEN>
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+						<ARGUMENT NAME="AdHoc" VALUE="StepActions:New"/>
+						<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+					
+					<REMOVEVAR NAME="LoadURL"/>
+					<REMOVEVAR NAME="OKActions"/>
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/AddAStepAction" ENCODE="false" VARNAME="_XLAT_"/>
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+						<satellite.argument name="action" value="new"/>
+						<satellite.argument name="acttype" value="Step"/>
+					</SATELLITE.LINK>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+						<ARGUMENT NAME="Label" VALUE="Variables._AddNew_"/>
+						<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+					</CALLELEMENT>
+					
+					<!-- display the step actions -->
+					<WORKFLOWENGINE.GETAVAILABLESTEPACTIONS PREFIX="wfstp:"/>
+					<setcounter NAME="NACTIONS" VALUE="0"/>
+					<if COND="IsVariable.wfstp:Total=true">
+					<then>
+					<if COND="Variables.wfstp:Total!=0">
+					<then>
+					<loop FROM="0" COUNT="Variables.wfstp:Total">
+		
+						<WORKFLOWACTION.GETNAME NAME="wfstp:Counters.NACTIONS" VARNAME="actionname"/>
+						<WORKFLOWACTION.GETID NAME="wfstp:Counters.NACTIONS" VARNAME="actionid"/>
+						<WORKFLOWACTION.GETDESCRIPTION NAME="wfstp:Counters.NACTIONS" VARNAME="actiondescription"/>
+						
+						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+							<ARGUMENT NAME="AdHoc" VALUE="StepActions:Existing:Variables.actionname"/>
+							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+						</CALLELEMENT>
+						
+						<REMOVEVAR NAME="Description"/>
+						<REMOVEVAR NAME="OKActions"/>
+						<substitute STR="Variables.actionname" WHAT="%20" WITH="/XCEL-SEP/" OUTSTR="saneactionname"/>
+
+						<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+							<satellite.argument name="AssetType" value="Variables.AssetType"/>
+						</SATELLITE.LINK>
+
+						<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+							<satellite.argument name="action" value="details"/>
+							<satellite.argument name="id" value="Variables.actionid"/>
+							<satellite.argument name="acttype" value="Step"/>
+						</SATELLITE.LINK>
+
+						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+							<ARGUMENT NAME="Label" VALUE="Variables.saneactionname"/> 
+							<ARGUMENT NAME="Description" VALUE="Variables.actiondescription"/>  
+							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+							<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+						</CALLELEMENT>
+						<inccounter NAME="NACTIONS" VALUE="1"/>
+					</loop>
+					</then>
+					</if>
+					</then>
+					</if>
+				</THEN>
+				</IF> <!-- step action-->
+	
+				<!-- Step Conditions -->
+				<IF COND="Variables.SubNode=StepConditions">
+				<THEN>
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+						<ARGUMENT NAME="AdHoc" VALUE="StepConditions:New"/>
+						<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+					
+					<REMOVEVAR NAME="LoadURL"/>
+					<REMOVEVAR NAME="OKActions"/>
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/AddAStepCondition" ENCODE="false" VARNAME="_XLAT_"/>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+						<satellite.argument name="action" value="new"/>
+						<satellite.argument name="acttype" value="Condition"/>
+					</SATELLITE.LINK>
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+						<ARGUMENT NAME="Label" VALUE="Variables._AddNew_"/>
+						<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+					</CALLELEMENT>
+					
+					<!-- display the step conditions -->
+					<WORKFLOWENGINE.GETAVAILABLECONDITIONS PREFIX="wfsc:"/>
+					<setcounter NAME="NACTIONS" VALUE="0"/>
+					<if COND="IsVariable.wfsc:Total=true">
+					<then>
+					<if COND="Variables.wfsc:Total!=0">
+					<then>
+					<loop FROM="0" COUNT="Variables.wfsc:Total">
+						<WORKFLOWACTION.GETNAME NAME="wfsc:Counters.NACTIONS" VARNAME="actionname"/>
+						<WORKFLOWACTION.GETID NAME="wfsc:Counters.NACTIONS" VARNAME="actionid"/>
+						<WORKFLOWACTION.GETDESCRIPTION NAME="wfsc:Counters.NACTIONS" VARNAME="actiondescription"/>
+						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+							<ARGUMENT NAME="AdHoc" VALUE="StepConditions:Existing:Variables.actionname"/>
+							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+						</CALLELEMENT>
+						
+						<REMOVEVAR NAME="Description"/>
+						<REMOVEVAR NAME="OKActions"/>
+						<substitute STR="Variables.actionname" WHAT="%20" WITH="/XCEL-SEP/" OUTSTR="saneactionname"/>
+
+						<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+							<satellite.argument name="action" value="details"/>
+							<satellite.argument name="id" value="Variables.actionid"/>
+							<satellite.argument name="acttype" value="Condition"/>
+						</SATELLITE.LINK>
+
+						<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+							<satellite.argument name="AssetType" value="Variables.AssetType"/>
+						</SATELLITE.LINK>
+
+						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+							<ARGUMENT NAME="Label" VALUE="Variables.saneactionname"/> 
+							<ARGUMENT NAME="Description" VALUE="Variables.actiondescription"/>  
+							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+							<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+						</CALLELEMENT>
+						<inccounter NAME="NACTIONS" VALUE="1"/>
+					</loop>
+					</then>
+					</if>
+					</then>
+					</if>
+				</THEN>
+				</IF><!-- step conditions -->
+	
+				<!-- Timed Actions previously named Assignment Actions -->
+				<!-- scanlon mod 1/28/03 added ID arg as passed in -->
+				<IF COND="Variables.SubNode=TimedActions">
+				<THEN>
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+						<ARGUMENT NAME="AdHoc" VALUE="TimedActions:New"/>
+						<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+					
+					<REMOVEVAR NAME="LoadURL"/>
+					<REMOVEVAR NAME="OKActions"/>
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/AddATimedAction" ENCODE="false" VARNAME="_XLAT_"/>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+						<satellite.argument name="action" value="new"/>
+						<satellite.argument name="acttype" value="Timed"/>
+					</SATELLITE.LINK>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+						<ARGUMENT NAME="Label" VALUE="Variables._AddNew_"/>
+						<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+					</CALLELEMENT>
+					
+					<!-- display the Timed Actions previously named Assignment Actions -->
+					<WORKFLOWENGINE.GETAVAILABLEASSIGNMENTACTIONS PREFIX="wfa:"/>
+					<setcounter NAME="NACTIONS" VALUE="0"/>
+					<if COND="IsVariable.wfa:Total=true">
+					<then>
+					<if COND="Variables.wfa:Total!=0">
+					<then>
+					<loop FROM="0" COUNT="Variables.wfa:Total">
+						<WORKFLOWACTION.GETNAME NAME="wfa:Counters.NACTIONS" VARNAME="actionname"/>
+						<WORKFLOWACTION.GETID NAME="wfa:Counters.NACTIONS" VARNAME="actionid"/>
+						<WORKFLOWACTION.GETDESCRIPTION NAME="wfa:Counters.NACTIONS" VARNAME="actiondescription"/>
+						
+						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+							<ARGUMENT NAME="AdHoc" VALUE="TimedActions:Existing:Variables.actionname"/>
+							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+						</CALLELEMENT>
+						
+						<REMOVEVAR NAME="Description"/>
+						<REMOVEVAR NAME="OKActions"/>
+						<substitute STR="Variables.actionname" WHAT="%20" WITH="/XCEL-SEP/" OUTSTR="saneactionname"/>
+
+						<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+							<satellite.argument name="action" value="details"/>
+							<satellite.argument name="id" value="Variables.actionid"/>
+							<satellite.argument name="acttype" value="Timed"/>
+						</SATELLITE.LINK>
+
+						<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+							<satellite.argument name="AssetType" value="Variables.AssetType"/>
+						</SATELLITE.LINK>
+
+						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+							<ARGUMENT NAME="Label" VALUE="Variables.saneactionname"/> 
+							<ARGUMENT NAME="Description" VALUE="Variables.actiondescription"/>  
+							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+							<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+						</CALLELEMENT>
+						<inccounter NAME="NACTIONS" VALUE="1"/>
+					</loop>
+					</then>
+					</if>
+					</then>
+					</if>
+				</THEN>
+				</IF><!-- Timed Actions-->
+	
+				<!-- Delegate Actions -->
+				<IF COND="Variables.SubNode=DelegateActions">
+				<THEN>
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+						<ARGUMENT NAME="AdHoc" VALUE="DelegateActions:New"/>
+						<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+					
+					<REMOVEVAR NAME="LoadURL"/>
+					<REMOVEVAR NAME="OKActions"/>
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/AddADelegateAction" ENCODE="false" VARNAME="_XLAT_"/>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+						<satellite.argument name="action" value="new"/>
+						<satellite.argument name="acttype" value="Delegate"/>
+					</SATELLITE.LINK>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+						<ARGUMENT NAME="Label" VALUE="Variables._AddNew_"/>
+						<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+					</CALLELEMENT>
+					
+					<!-- display the delegate actions -->
+					<WORKFLOWENGINE.GETAVAILABLEDELEGATEACTIONS PREFIX="wfdlg:"/>
+					<setcounter NAME="NACTIONS" VALUE="0"/>
+					<if COND="IsVariable.wfdlg:Total=true">
+					<then>
+					<if COND="Variables.wfdlg:Total!=0">
+					<then>
+					<loop FROM="0" COUNT="Variables.wfdlg:Total">
+						<WORKFLOWACTION.GETNAME NAME="wfdlg:Counters.NACTIONS" VARNAME="actionname"/>
+						<WORKFLOWACTION.GETID NAME="wfdlg:Counters.NACTIONS" VARNAME="actionid"/>
+						<WORKFLOWACTION.GETDESCRIPTION NAME="wfdlg:Counters.NACTIONS" VARNAME="actiondescription"/>
+						
+						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+							<ARGUMENT NAME="AdHoc" VALUE="DelegateActions:Existing:Variables.actionname"/>
+							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+						</CALLELEMENT>
+						
+						<REMOVEVAR NAME="Description"/>
+						<REMOVEVAR NAME="OKActions"/>
+						<substitute STR="Variables.actionname" WHAT="%20" WITH="/XCEL-SEP/" OUTSTR="saneactionname"/>
+
+						<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+							<satellite.argument name="action" value="details"/>
+							<satellite.argument name="id" value="Variables.actionid"/>
+							<satellite.argument name="acttype" value="Delegate"/>
+						</SATELLITE.LINK>
+
+						<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+							<satellite.argument name="AssetType" value="Variables.AssetType"/>
+						</SATELLITE.LINK>
+
+						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+							<ARGUMENT NAME="Label" VALUE="Variables.saneactionname"/> 
+							<ARGUMENT NAME="Description" VALUE="Variables.actiondescription"/>  
+							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+							<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+						</CALLELEMENT>
+						<inccounter NAME="NACTIONS" VALUE="1"/>
+					</loop>
+					</then>
+					</if>
+					</then>
+					</if>
+				</THEN>
+				</IF> <!-- delegate action-->
+	
+				<!-- Deadlock Actions -->
+				<IF COND="Variables.SubNode=DeadlockActions">
+				<THEN>
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+						<ARGUMENT NAME="AdHoc" VALUE="DeadlockActions:New"/>
+						<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+					
+					<REMOVEVAR NAME="LoadURL"/>
+					<REMOVEVAR NAME="OKActions"/>
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/AddADeadlockAction" ENCODE="false" VARNAME="_XLAT_"/>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+						<satellite.argument name="action" value="new"/>
+						<satellite.argument name="acttype" value="Deadlock"/>
+					</SATELLITE.LINK>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+						<ARGUMENT NAME="Label" VALUE="Variables._AddNew_"/>
+						<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+					</CALLELEMENT>
+					
+					<!-- display the deadlock actions -->
+					<WORKFLOWENGINE.GETAVAILABLEDEADLOCKACTIONS PREFIX="wfdlk:"/>
+					<setcounter NAME="NACTIONS" VALUE="0"/>
+					<if COND="IsVariable.wfdlk:Total=true">
+					<then>
+					<if COND="Variables.wfdlk:Total!=0">
+					<then>
+					<loop FROM="0" COUNT="Variables.wfdlk:Total">
+						<WORKFLOWACTION.GETNAME NAME="wfdlk:Counters.NACTIONS" VARNAME="actionname"/>
+						<WORKFLOWACTION.GETID NAME="wfdlk:Counters.NACTIONS" VARNAME="actionid"/>
+						<WORKFLOWACTION.GETDESCRIPTION NAME="wfdlk:Counters.NACTIONS" VARNAME="actiondescription"/>
+						
+						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+							<ARGUMENT NAME="AdHoc" VALUE="DeadlockActions:Existing:Variables.actionname"/>
+							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+						</CALLELEMENT>
+						
+						<REMOVEVAR NAME="Description"/>
+						<REMOVEVAR NAME="OKActions"/>
+						<substitute STR="Variables.actionname" WHAT="%20" WITH="/XCEL-SEP/" OUTSTR="saneactionname"/>
+
+						<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+							<satellite.argument name="action" value="details"/>
+							<satellite.argument name="id" value="Variables.actionid"/>
+							<satellite.argument name="acttype" value="Deadlock"/>
+						</SATELLITE.LINK>
+
+						<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+							<satellite.argument name="AssetType" value="Variables.AssetType"/>
+						</SATELLITE.LINK>
+
+						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+							<ARGUMENT NAME="Label" VALUE="Variables.saneactionname"/> 
+							<ARGUMENT NAME="Description" VALUE="Variables.actiondescription"/>  
+							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+							<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+						</CALLELEMENT>
+						<inccounter NAME="NACTIONS" VALUE="1"/>
+					</loop>
+					</then>
+					</if>
+					</then>
+					</if>
+				</THEN>
+				</IF> <!-- deadlock action-->
+	
+			<!-- Group Actions -->
+				<IF COND="Variables.SubNode=GroupActions">
+				<THEN>
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+						<ARGUMENT NAME="AdHoc" VALUE="GroupActions:New"/>
+						<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+					
+					<REMOVEVAR NAME="LoadURL"/>
+					<REMOVEVAR NAME="OKActions"/>
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/AddAGroupAction" ENCODE="false" VARNAME="_XLAT_"/>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+						<satellite.argument name="action" value="new"/>
+						<satellite.argument name="acttype" value="Group"/>
+					</SATELLITE.LINK>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+						<ARGUMENT NAME="Label" VALUE="Variables._AddNew_"/>
+						<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+					</CALLELEMENT>
+					
+					<!-- display the deadlock actions -->
+					<WORKFLOWENGINE.GETAVAILABLEGROUPACTIONS PREFIX="wfgrp:"/>
+					<setcounter NAME="NACTIONS" VALUE="0"/>
+					<if COND="IsVariable.wfgrp:Total=true">
+					<then>
+					<if COND="Variables.wfgrp:Total!=0">
+					<then>
+					<loop FROM="0" COUNT="Variables.wfgrp:Total">
+					
+						<WORKFLOWACTION.GETNAME NAME="wfgrp:Counters.NACTIONS" VARNAME="actionname"/>
+						<WORKFLOWACTION.GETID NAME="wfgrp:Counters.NACTIONS" VARNAME="actionid"/>
+						<WORKFLOWACTION.GETDESCRIPTION NAME="wfgrp:Counters.NACTIONS" VARNAME="actiondescription"/>
+						
+						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+							<ARGUMENT NAME="AdHoc" VALUE="GroupActions:Existing:Variables.actionname"/>
+							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+						</CALLELEMENT>
+						
+						<REMOVEVAR NAME="Description"/>
+						<REMOVEVAR NAME="OKActions"/>
+						<substitute STR="Variables.actionname" WHAT="%20" WITH="/XCEL-SEP/" OUTSTR="saneactionname"/>
+
+						<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/WorkflowActionsFront" outstring="ExecuteURL">
+							<satellite.argument name="action" value="details"/>
+							<satellite.argument name="id" value="Variables.actionid"/>
+							<satellite.argument name="acttype" value="Group"/>
+						</SATELLITE.LINK>
+
+						<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+							<satellite.argument name="AssetType" value="Variables.AssetType"/>
+						</SATELLITE.LINK>
+
+						<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+							<ARGUMENT NAME="Label" VALUE="Variables.saneactionname"/> 
+							<ARGUMENT NAME="Description" VALUE="Variables.actiondescription"/> 
+							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+							<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/wfaction.png"/>
+						</CALLELEMENT>
+						<inccounter NAME="NACTIONS" VALUE="1"/>
+					</loop>
+					</then>
+					</if>
+					</then>
+					</if>
+				</THEN>
+				</IF> <!-- group action-->
+	
+	
+			</THEN>
+			</IF>
+		</ELSE>
+		</IF>
+	</ELSE>
+	</IF>
+</THEN>
+<ELSE>
+	<SETVAR NAME="Variables.popupVar" VALUE="false"/>
+</ELSE>
+</IF>
+
+</FTCS> 

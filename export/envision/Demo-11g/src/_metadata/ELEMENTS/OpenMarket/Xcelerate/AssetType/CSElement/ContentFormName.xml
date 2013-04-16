@@ -1,0 +1,111 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/CSElement/ContentFormName
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+
+<!-- in case we are copying, clear out the rootelement -->
+<if COND="Variables.updatetype=setformdefaults">
+<then>
+	<ASSET.SET NAME="theCurrentAsset" FIELD="rootelement" VALUE="Variables.empty"/>
+</then>
+</if>
+
+<!-- CSElement editing form -->
+<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/CSElement/ContentFormSetVar"/>
+
+<callelement NAME="OpenMarket/Xcelerate/AssetType/CSElement/ContentFormNavBar">
+	<argument NAME="CurrentCat" VALUE="Name"/>
+</callelement>
+
+<tr>
+<td>
+<table border="0" cellpadding="0" cellspacing="0" class="width-inner-100">
+
+
+	<!-- Beginning of Group 1 -->
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/Name"/>:</td>
+		<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+		<td class="form-inset">
+		<IF COND="Variables.updatetype!=setformdefaults">
+		<THEN>
+		    <STRING.ENCODE VARIABLE="ContentDetails:name" VARNAME="ContentDetails:nameEnc"/>
+			<INPUT TYPE="HIDDEN" NAME="CSElement:name" VALUE="Variables.ContentDetails:nameEnc" REPLACEALL="Variables.ContentDetails:nameEnc"/>
+			<STRING.STREAM VARIABLE="ContentDetails:name"/>
+		</THEN>
+		<ELSE>
+			<PROPERTY.GET PARAM="xcelerate.asset.sizeofnamefield" INIFILE="futuretense_xcel.ini" VARNAME="sizeofnamefield"/>
+			<STRING.ENCODE VARIABLE="ContentDetails:name" VARNAME="ContentDetails:nameEnc"/>
+			<INPUT TYPE="TEXT" NAME="CSElement:name" VALUE="Variables.ContentDetails:nameEnc" SIZE="32" MAXLENGTH="Variables.sizeofnamefield" REPLACEALL="Variables.sizeofnamefield,Variables.ContentDetails:nameEnc"/>
+		</ELSE>
+		</IF>
+		</td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Description"/>:</td>
+		<td></td>
+		<td class="form-inset">
+			<textarea name="descriptionvis" cols="40" rows="2" wrap="virtual" onChange="checkLength(this.form.elements['descriptionvis'].value, 128, 'Description'); setField(this.form.elements['descriptionvis'].value, 128, 'CSElement:description', this)">
+				<STRING.STREAM VARIABLE="ContentDetails:description"/>
+			</textarea>
+			<SETVAR NAME="OutputQString" VALUE="Variables.empty"/>
+			<STRING.ENCODE VARIABLE="ContentDetails:description" VARNAME="OutputQString"/>
+			<INPUT TYPE="hidden" NAME="CSElement:description" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/></td>
+	</tr>
+
+
+		<IF COND="Variables.updatetype!=setformdefaults">
+		<THEN>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		<TR>
+			<TD class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/ID"/>:</TD>
+			<TD></TD>
+			<TD class="form-inset"><STRING.STREAM VARIABLE="id"/></TD>
+		</TR>
+		</THEN>
+		</IF>
+
+		<!-- Beginning of Group 2 -->
+		<setvar NAME="assettype" VALUE="Variables.AssetType"/>
+		<selectto LIST="Category" FROM="Category" WHERE="assettype"/>
+		<IF COND="Category.#numRows!=0">
+		<THEN>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/UI/Admin/Category"/>:</td>
+				<td></td>
+				<td class="form-inset">
+					<callelement NAME="OpenMarket/Xcelerate/Actions/Util/MakeCategoryList">
+						<argument NAME="Prefix" VALUE="Variables.AssetType"/>
+					</callelement></td>
+			</tr>
+		</THEN>
+		</IF>
+
+	<callelement NAME="OpenMarket/Xcelerate/Actions/AssetMgt/ArgsForm"/>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+	<TR>
+		<TD class="form-label-text"></TD><TD></TD><TD class="form-inset">
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/CSElement/ContentFormFooter">
+			<argument NAME="ContinueTo" VALUE="Element"/>
+		</callelement>
+		</TD>
+	</TR>
+</table>
+</td>
+</tr>
+	
+
+</table>
+</FTCS>

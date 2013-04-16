@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Attributes/ValueStyle
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<!--List of Valid Attribute value styles -->
+<LISTOBJECT.CREATE NAME="lStyles" COLUMNS="ITEM"/>
+<XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/single" VARNAME="_XLAT1_"/>
+<LISTOBJECT.ADDROW NAME="lStyles" ITEM="Variables._XLAT1_"/>
+
+<SETVAR NAME="singleunique" VALUE="false"/>
+<SETVAR NAME="errno" VALUE="0"/>
+<ISINLIST ITEM="Variables.ContentDetails:type" STR="asset,string,int" />
+<if COND="Variables.errno=1">
+<then>
+	<SETVAR NAME="errno" VALUE="0"/>
+	<SETVAR NAME="singleunique" VALUE="true"/>
+</then>
+</if>
+
+<if COND="Variables.singleunique=false">
+<then>
+	<STRINGLIST NAME="GAValueStyle" STR="S,O" DELIM=","/>
+</then>
+<else>
+	<STRINGLIST NAME="GAValueStyle" STR="S,N,O" DELIM=","/>
+	<XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/singleunique" VARNAME="_XLAT2_"/>
+	<LISTOBJECT.ADDROW NAME="lStyles" ITEM="Variables._XLAT2_"/>
+</else>
+</if>
+<REMOVEVAR NAME="singleunique"/>
+
+<XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/multiple" VARNAME="_XLAT3_"/>
+<LISTOBJECT.ADDROW NAME="lStyles" ITEM="Variables._XLAT3_"/>
+<LISTOBJECT.TOLIST NAME="lStyles" LISTVARNAME="GAvsDescription"/>
+
+<!--Now drop down the  types  selection box -->
+
+<setrow LIST="GAvsDescription" ACTION="FIRST"/>
+<if COND="IsVariable.DoingASearch=true">
+<then>
+	<select name="ValueStyle" size="1">
+		<if COND="IsVariable.ValueStyle=true">
+		<then>
+			<loop LIST="GAValueStyle">
+				<if COND="Variables.ValueStyle=GAValueStyle.ITEM">
+				<then>
+					<option value="GAValueStyle.ITEM" SELECTED="" REPLACEALL="GAValueStyle.ITEM"> <STRING.STREAM  LIST="GAvsDescription" COLUMN="ITEM"/> </option>
+				</then>
+				<else>
+					<option value="GAValueStyle.ITEM" REPLACEALL="GAValueStyle.ITEM"> <STRING.STREAM LIST="GAvsDescription" COLUMN="ITEM"/></option>
+  				</else>
+				</if>
+				<setrow LIST="GAvsDescription" ACTION="NEXT"/>
+			</loop>
+		</then>
+		<else>
+			<option value=""><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/AnyNumber"/> </option>
+			<loop LIST="GAValueStyle">
+				<option value="GAValueStyle.ITEM" REPLACEALL="GAValueStyle.ITEM"><STRING.STREAM LIST="GAvsDescription" COLUMN="ITEM"/></option>
+				<setrow LIST="GAvsDescription" ACTION="NEXT"/>
+			</loop>
+		</else>
+		</if>
+	</select>
+</then>
+<else> 
+	<select name="Attributes:valuestyle" size="1" >   
+		<loop LIST="GAValueStyle">
+			<if COND="Variables.ContentDetails:valuestyle=GAValueStyle.ITEM">
+			<then>
+				<option value="GAValueStyle.ITEM" SELECTED="" REPLACEALL="GAValueStyle.ITEM"> <STRING.STREAM LIST="GAvsDescription" COLUMN="ITEM"/></option>
+			</then>
+			<else>
+				<option value="GAValueStyle.ITEM" REPLACEALL="GAValueStyle.ITEM"> <STRING.STREAM LIST="GAvsDescription" COLUMN="ITEM"/></option>
+			</else>
+			</if>
+			<setrow LIST="GAvsDescription" ACTION="NEXT"/>
+		</loop>
+	</select>
+</else>
+</if>
+
+</FTCS> 
+

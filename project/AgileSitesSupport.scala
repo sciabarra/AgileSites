@@ -395,11 +395,11 @@ trait AgileSitesSupport {
             	  |    start the log viewer
                   | wcs-log list
             	  |    list what you are sending to the remote logger
-                  | wcs-log start [<level>] [<logger>] [<port>] [<host>]
+                  | wcs-log <level> [<logger>] [<port>] [<host>]
                   |    enable logging to the log viewer
                   | wcs-log stop [<logger>] [<port>] [<host>] 
                   |    disable logging to the log viewer
-                  | <level>  defaults to DEBUG, must be one of ERROR, WARN, INFO, DEBUG, TRACE
+                  | <level>  must be one of error, warn, info, debug, trace
                   | <logger> defaults to the root loogger, you can restrict to your packages
                   | <port>   defaults to 4445
                   | <host>   defaults to 127.0.0.1
@@ -420,16 +420,16 @@ trait AgileSitesSupport {
               None
             case "start" :: Nil =>
               Some("op=start&level=DEBUG&%s" format parse(Nil))
-            case "start" :: level :: rest =>
-              if ("ERROR|WARN|DEBUG|INFO|TRACE".r findAllIn level isEmpty) {
-                println("Invalid level " + level)
-                None
-              } else
-                Some("op=start&level=%s&%s" format (level, parse(rest)))
             case "stop" :: rest =>
               Some("op=stop&%s" format parse(rest))
             case "list" :: rest =>
               Some("op=list")
+            case level :: rest =>
+              if ("ERROR|WARN|DEBUG|INFO|TRACE".r findAllIn level.toUpperCase isEmpty) {
+                println("Invalid level " + level)
+                None
+              } else
+                Some("op=start&level=%s&%s" format (level.toUpperCase, parse(rest)))
             case _ =>
               usage
               None

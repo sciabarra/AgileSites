@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>PageDefinition:1351275793306</id>
+    <name>Content</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2013-04-15T21:56:41.196Z</createddate>
+    <description></description>
+    <publist>Demo</publist>
+    <status>PL</status>
+    <subtype></subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2013-04-15T21:56:41.196Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>5136914e-a0f7-47d6-a014-b3c1ade5319e</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1351275793306</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Attributes</name>
+        <data>
+            <listValue/>
+        </data>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <list>
+    <dependency>
+      <depType>N</depType>
+      <resType>PageDefinition</resType>
+      <resId>1351275793306</resId>
+      <uid>5136914e-a0f7-47d6-a014-b3c1ade5319e</uid>
+    </dependency>
+  </list>
+</dependencies>
+==================______________________==================
+#
+#Tue Apr 16 20:58:26 UTC 2013
+key=PageDefinition-5136914e-a0f7-47d6-a014-b3c1ade5319e
+type=ASSETDATA
+sites=Demo
+
+==================___ END METADATA ___==================-->

@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ftcs SYSTEM "futuretense_cs.dtd">
+<ftcs version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/Template/LoadTree/init
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<ics.clearerrno/>
+<setvar name="tablename" value="Template"/>
+<execsql list="Testcount" 
+         sql="SELECT count(*) as mycount FROM Template,AssetPublication
+                WHERE status!='VO'
+                    AND Template.id = AssetPublication.assetid 
+                    AND (AssetPublication.pubid = SessionVariables.pubid OR AssetPublication.pubid=0)" TABLE="Template,AssetPublication"/>
+                    
+<if cond="Testcount.mycount!=0">
+<then>
+    <satellite.link assembler="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+        <satellite.argument name="AssetType" value="Variables.AssetType"/>
+        <satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/Variables.AssetType/LoadTree"/>
+        <satellite.argument name="op" value="load"/>
+    </satellite.link>
+</then>
+<else>
+    <removevar name="LoadURL"/>
+</else>
+</if>
+
+<callelement name="OpenMarket/Gator/UIFramework/BuildTreeNodeID" scoped="STACKED">
+    <argument name="AdHoc" value="Variables.AssetType"/>
+    <argument name="TreeNodeID" value="Variables.empty"/>
+</callelement>
+
+<removevar name="ExecuteURL"/>
+<removevar name="OKActions"/>
+<removevar name="browseURL"/>
+
+<callelement name="OpenMarket/Gator/UIFramework/BuildTreeNode">
+    <argument name="Label" value="Template"/>
+    <argument name="Description" value="Template"/>
+    <argument name="ID" value="Variables.TreeNodeID"/>
+    <argument name="RefreshKeys" value="Dummy__Template"/>
+</callelement>
+
+<removevar name="LoadURL"/>
+<removevar name="Image"/>
+
+</ftcs>

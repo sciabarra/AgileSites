@@ -1,0 +1,143 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!--
+$Logfile: /VerticalApps/XcelerateC/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/CSElement/PreUpdate.xml $ 
+$Revision: 9 $ 
+$Modtime: 9/15/03 1:14p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- PreUpdate.xml
+-
+- DESCRIPTION
+-
+-    When a content category is created, edited, or copied,
+-    this element is called before the database update
+-    function is invoked.
+-
+-    This element is passed in an argument: 'updatetype'
+-    whose value can drive special processing based
+-    on the type of update
+-
+-    Documents expect to see the blob field which require
+-    special handling
+-->
+
+<if COND="Variables.updatetype=setformdefaults">
+    <then>
+
+    </then>
+</if>
+
+<if COND="Variables.updatetype=editfront">
+<then>
+</then>
+</if>
+
+
+<if COND="Variables.updatetype=edit">
+    <then>
+            
+
+ 		<ASSET.GATHER NAME="theCurrentAsset" PREFIX="CSElement" FIELDLIST="Variables.FieldsOnForm"/>
+ 		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+    	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+			<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+			<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+    	</CALLELEMENT>
+   </then>
+</if>
+
+<if COND="Variables.updatetype=create">
+<then>
+	<SETVAR NAME="rootElement" VALUE="Variables.CSElement:rootelement"/>
+	<ASSET.LIST LIST="CSEntries" TYPE="CSElement" FIELD1="rootelement" VALUE1="Variables.CSElement:rootelement" EXCLUDEVOIDED="true"/>
+    <IF COND="IsError.Variables.errno=false">
+    <THEN>
+   		<setvar NAME="assetName" VALUE="CSEntries.name"/>
+		<SETVAR NAME="assetType" VALUE="CSElement"/>
+	    <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+		<argument NAME="severity" VALUE="error"/>
+			<argument NAME="elem" VALUE="ElementInUse"/>
+	    </callelement>
+	   <throwexception/>	
+    </THEN>
+    </IF>
+	<ASSET.LIST LIST="TemplateEntries" TYPE="Template" FIELD1="rootelement" VALUE1="Variables.CSElement:rootelement" EXCLUDEVOIDED="true"/>
+    <IF COND="IsError.Variables.errno=false">
+    <THEN>
+   		<setvar NAME="assetName" VALUE="TemplateEntries.name"/>
+		<SETVAR NAME="assetType" VALUE="Template"/>
+	    <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+			<argument NAME="severity" VALUE="error"/>
+			<argument NAME="elem" VALUE="ElementInUse"/>
+	    </callelement>
+	   <throwexception/>	
+    </THEN>
+    </IF>
+   
+
+    <ASSET.GATHER NAME="theCurrentAsset" PREFIX="CSElement" FIELDLIST="Variables.FieldsOnForm"/>
+    <!-- workaround to fix bug associated with ASSET.GATHER -->    
+    <ASSET.SET NAME="theCurrentAsset" FIELD="rootelement" VALUE="Variables.CSElement:rootelement"/>
+ 		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+    	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+			<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+			<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+    	</CALLELEMENT>
+ 
+</then>
+</if>
+
+<if COND="Variables.updatetype=delete">
+    <then>
+    </then>
+</if>
+
+<if COND="Variables.updatetype=remotepost">
+    <then>
+    <IF COND="Variables.Action=update">
+    <THEN>
+         <CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Util/MakeFieldListforRemotePost"/>
+         <ASSET.GATHER NAME="theCurrentAsset" FIELDLIST="Variables.updateFieldList"/>
+    </THEN>
+    <ELSE>
+        <ASSET.GATHER NAME="theCurrentAsset"/>
+    </ELSE>
+    </IF>
+
+    </then>
+</if>
+
+<if COND="Variables.updatetype=updatefrom">
+    <then>
+    </then>
+</if>
+
+<!-- If the asset is updated from dah -->
+<if COND="Variables.dashUpdate=dashUpdate">
+<then>
+	<if COND="Variables.dashUpdateType=create">
+    <then>
+		<!--if the operation is create-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=edit">
+    <then>
+		<!--if the operation is edit-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=delete">
+    <then>
+		<!--if the operation is delete-->
+    </then>
+    </if>
+</then>
+</if>
+
+</FTCS>
+
