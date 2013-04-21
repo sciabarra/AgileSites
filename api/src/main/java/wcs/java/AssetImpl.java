@@ -9,11 +9,13 @@ import java.util.Date;
 import java.util.List;
 
 import wcs.core.Arg;
+import wcs.core.Call;
 import wcs.core.Common;
 import wcs.core.Log;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.AssetsetTag;
 import wcs.core.tag.RenderTag;
+import wcs.java.util.Util;
 import COM.FutureTense.Interfaces.ICS;
 
 class AssetImpl extends wcs.java.Asset {
@@ -31,18 +33,27 @@ class AssetImpl extends wcs.java.Asset {
 	private Env e;
 	// the ICS from the env
 	private ICS i;
+	// the config
+	private Config cfg;
 
 	private Long cid;
 	private String c;
+
+	boolean insite = false;
 
 	public AssetImpl(Env env, String c, Long cid) {
 		this.e = env;
 		this.i = e.ics;
 		this.c = c;
 		this.cid = cid;
+		this.cfg = e.getConfig();
+		
 		AssetTag.load().name(a).type(c).objectid(cid.toString()).run(i);
 		String subtype = AssetTag.getsubtype().name(a).eval(i, "OUTPUT");
 		setTypeSubtype(c, subtype);
+		
+		String rendermode = i.GetVar("rendermode");
+		insite = rendermode!=null && rendermode.equals("insite");
 	}
 
 	/**
@@ -61,6 +72,13 @@ class AssetImpl extends wcs.java.Asset {
 	}
 
 	/**
+	 * Return the asset list name associated to an attribute
+	 * 
+	 * @param attribute
+	 * @return
+	 */
+
+	/**
 	 * Lazily load in a list the attribute
 	 * 
 	 * @param attribute
@@ -69,6 +87,7 @@ class AssetImpl extends wcs.java.Asset {
 	private String at(String attribute) {
 		log.debug("extracting attribute " + attribute);
 		String attrList = as() + attribute.toUpperCase();
+		;
 		if (i.GetList(attrList) == null) {
 			String attrType = e.getConfig().getAttributeType(getType());
 			AssetsetTag.getattributevalues().name(as).attribute(attribute)
@@ -212,8 +231,11 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public String getString(String attribute) {
+		if(insite)
+			return edit(attribute);
 		return e.getString(at(attribute), "value");
 	}
+
 
 	/**
 	 * Return the nth attribute of the the attribute rib as a string, or null if
@@ -323,7 +345,7 @@ class AssetImpl extends wcs.java.Asset {
 	public String getBlobUrl(String attribute, Arg... args) {
 		return getBlobUrl(attribute, 1, "application/octet-stream", args);
 	}
-	
+
 	/**
 	 * String get blob url of the first attribute
 	 * 
@@ -417,5 +439,52 @@ class AssetImpl extends wcs.java.Asset {
 
 		log.debug("getUrl: outstr=" + res);
 		return res;
+	}
+	
+	
+	/**
+	 * 
+	 * Edit a field - extra parameters read from the config
+	 * 
+	 * @param attribute
+	 * @param index
+	 * @param args
+	 * @return
+	 */
+	private String edit(String attribute, int index, Arg... args) {
+		String value = index < 0 ? e.getString(at(attribute), "value") : //
+				e.getString(at(attribute), index, "value");
+
+		// read a call or create a new call with no parameters
+		Call call = Util.readAttributeConfig(attribute, cfg);
+		if (call == null)
+			call = new Insite();
+
+		call.addArg("ASSETTYPE", e.getC());
+		call.addArg("ASSETID", e.getCid().toString());
+		call.addArg("FIELD", attribute);
+		call.addArg("VALUE", value);
+
+		// index, optional
+		if (index > 0)
+			call.addArg("INDEX", Integer.toString(index));
+
+		// additional parameters
+		for (Arg arg : args)
+			call.addArg(arg.name, arg.value);
+		log.trace("edit: %s", call.encode());
+		return call.encode();
+	}
+
+	/**
+	 * 
+	 * Edit a field - extra parameters read from the config
+	 * 
+	 * @param attribute
+	 * @param args
+	 * @return
+	 */
+	private String edit(String attribute, Arg... args) {
+		return edit(attribute, -1, args);
 	}
 }

@@ -21,12 +21,13 @@ public class Wrapper extends Element {
 	@Override
 	public String apply(Env e) {
 		log.trace("Demo Wrapper");
-
-		Picker html = Picker.load("/demo/simple.html");
+		
+		Picker html = Picker.load("/blueprint/template.html");
 
 		// change relative references to absolute
-		html.prefixAttrs("link[rel=stylesheet]", "href", "/cs/demo/");
-		html.prefixAttrs("script", "src", "/cs/demo/");
+		html.prefixAttrs("link[rel=stylesheet]", "href", "/cs/blueprint/");
+		html.prefixAttrs("script[id=js-import]", "src", "/cs/blueprint/");
+		html.replace("#js-base", "var base='/cs/blueprint/'");
 
 		// handle errors
 		if (e.isVar("error"))

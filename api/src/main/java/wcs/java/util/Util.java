@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,8 +16,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import wcs.core.Call;
 import wcs.core.Log;
 import wcs.core.Sequencer;
+import wcs.java.Config;
 
 import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AttributeDataImpl;
@@ -352,4 +355,31 @@ public class Util {
 		ex.printStackTrace(new PrintWriter(caw));
 		return caw.toString();
 	}
+
+	/**
+	 * Read the configuration of an insite field
+	 * 
+	 * @param name
+	 * @param config
+	 * @return
+	 */
+	public static Call readAttributeConfig(String name, Config config) {
+		try {
+			Field field = config.getClass().getField(name);
+			return (Call) field.get(config);
+		} catch (NoSuchFieldException e) {
+			log.warn(e, "no such a field %s", name);
+		} catch (SecurityException e) {
+			log.warn(e, "cannot access field %s", name);
+		} catch (IllegalArgumentException e) {
+			log.warn(e, "for %s", name);
+			;
+		} catch (IllegalAccessException e) {
+			log.warn(e, "for %s", name);
+			;
+		}
+		return null;
+
+	}
+
 }

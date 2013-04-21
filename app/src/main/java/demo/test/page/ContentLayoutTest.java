@@ -25,7 +25,7 @@ public class ContentLayoutTest extends TestElement {
 	public void test() {
 		Env e = env("");
 		parse(it.apply(e));
-		dump(log);
+		//dump(log);
 		Asset a = e.findOne("Page", arg("name", "Home"));
 		assertText("#title", a.getName());
 		assertText("#subtitle", a.getDescription());
