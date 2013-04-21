@@ -26,11 +26,12 @@ public class ContentLayout extends Element {
 		log.debug("c/cid=%s/%s", e.getC(), e.getCid().toString());		
 		Asset a = e.getAsset();	
 		log.debug("asset="+a);
-		Picker html = Picker.load("/demo/simple.html" , "#content");
+		Picker html = Picker.load("/blueprint/template.html" , "#content");
 		log.debug("picker ok");
 		
-		html.replace("#title", a.getName());
-		html.replace("#subtitle", a.getDescription());
+		html.prefixAttrs("img", "src", "/cs/blueprint/");
+		html.replace("#title", a.getString("Title"));
+		html.replace("#subtitle", a.getString("Subtitle"));
 		return html.dump(log).html();
 	}
 

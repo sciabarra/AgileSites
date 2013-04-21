@@ -93,7 +93,6 @@ public class Call {
 	 */
 	public static String encode(String name, Arg... args) {
 		StringBuilder sb = new StringBuilder();
-		// elements to call have the site name as a prefix
 		sb.append(SEP2).append(name).append(SEP);
 		for (Arg arg : args) {
 			if (arg.value != null)
@@ -103,7 +102,19 @@ public class Call {
 		return sb.toString();
 	}
 
-	
+	/**
+	 * Encode the call as a string
+	 */
+	public String encode() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(SEP2).append(name).append(SEP);
+		for (Map.Entry<String, String> entry : map.entrySet())
+			sb.append(entry.getKey()).append(SEP).append(entry.getValue())
+					.append(SEP);
+		sb.append(SEP2);
+		return sb.toString();
+	}
+
 	/**
 	 * Encode a call as a string
 	 * 
@@ -123,10 +134,9 @@ public class Call {
 		return sb.toString();
 	}
 
-	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<").append(name.replace(':','-')).append(" ");
+		sb.append("<").append(name.replace(':', '-')).append(" ");
 		String[] keys = keysLeft();
 		Arrays.sort(keys);
 		for (String k : keys) {

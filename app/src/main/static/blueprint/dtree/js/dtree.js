@@ -10,51 +10,51 @@
 |--------------------------------------------------*/
 
 // Node object
-function Node(id, pid, name, url, title, target, icon, iconOpen, open) {
-	this.id = id;
-	this.pid = pid;
-	this.name = name;
-	this.url = url;
-	this.title = title;
-	this.target = target;
-	this.icon = icon;
-	this.iconOpen = iconOpen;
-	this._io = open || false;
-	this._is = false;
-	this._ls = false;
-	this._hc = false;
-	this._ai = 0;
-	this._p;
+function Node(id, pid, name, url, title, target, icon, iconOpen, open) {
+	this.id = id;
+	this.pid = pid;
+	this.name = name;
+	this.url = url;
+	this.title = title;
+	this.target = target;
+	this.icon = icon;
+	this.iconOpen = iconOpen;
+	this._io = open || false;
+	this._is = false;
+	this._ls = false;
+	this._hc = false;
+	this._ai = 0;
+	this._p;
 };
 
 // Tree object
-function dTree(objName) {
-	this.config = {
-		target					: null,
-		folderLinks			: true,
-		useSelection		: true,
-		useCookies			: true,
-		useLines				: true,
-		useIcons				: true,
-		useStatusText		: false,
-		closeSameLevel	: false,
-		inOrder					: false
+function dTree(objName) {
+	this.config = {
+		target					: null,
+		folderLinks			: true,
+		useSelection		: true,
+		useCookies			: true,
+		useLines				: true,
+		useIcons				: true,
+		useStatusText		: false,
+		closeSameLevel	: false,
+		inOrder					: false
 	}
-	this.icon = {
-		root				: 'dtree/img/base.gif',
-		folder			: 'dtree/img/folder.gif',
-		folderOpen	: 'dtree/img/folderopen.gif',
-		node				: 'dtree/img/page.gif',
-		empty				: 'dtree/img/empty.gif',
-		line				: 'dtree/img/line.gif',
-		join				: 'dtree/img/join.gif',
-		joinBottom	: 'dtree/img/joinbottom.gif',
-		plus				: 'dtree/img/plus.gif',
-		plusBottom	: 'dtree/img/plusbottom.gif',
-		minus				: 'dtree/img/minus.gif',
-		minusBottom	: 'dtree/img/minusbottom.gif',
-		nlPlus			: 'dtree/img/nolines_plus.gif',
-		nlMinus			: 'dtree/img/nolines_minus.gif'
+	this.icon = {
+		root				: base+'dtree/img/base.gif', 
+		folder				: base+'dtree/img/folder.gif',
+		folderOpen			: base+'dtree/img/folderopen.gif',
+		node				: base+'dtree/img/page.gif',
+		empty				: base+'dtree/img/empty.gif',
+		line				: base+'dtree/img/line.gif',
+		join				: base+'dtree/img/join.gif',
+		joinBottom	 		: base+'dtree/img/joinbottom.gif',
+		plus				: base+'dtree/img/plus.gif',
+		plusBottom	        : base+'dtree/img/plusbottom.gif',
+		minus				: base+ 'dtree/img/minus.gif',
+		minusBottom			: base+'dtree/img/minusbottom.gif',
+		nlPlus				: base+ 'dtree/img/nolines_plus.gif',
+		nlMinus				: base+'dtree/img/nolines_minus.gif'
 	};
 	this.obj = objName;
 	this.aNodes = [];

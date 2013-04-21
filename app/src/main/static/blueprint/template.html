@@ -8,9 +8,11 @@
 <!-- Framework CSS -->
 <link rel="stylesheet" href="css/screen.css" type="text/css"	media="screen, projection">
 <link rel="stylesheet" href="css/print.css" type="text/css"	media="print">
-<!--[if lt IE 8]><link rel="stylesheet" href="%BASE%blueprint/css/ie.css" type="text/css" media="screen, projection"><![endif]-->
+<!--[if lt IE 8]><link rel="stylesheet" 
+      href="blueprint/css/ie.css" type="text/css" media="screen, projection"><![endif]-->
 <link rel="styleSheet" href="dtree/css/dtree.css" type="text/css" />
-<script type="text/javascript" src="dtree/js/dtree.js"></script>
+<script id="js-base" type="text/javascript">var base = ''</script>
+<script id="js-import" type="text/javascript" src="dtree/js/dtree.js"></script>
 <style>
 .right { position: absolute right: 0px }
 .center { text-align: center; }
@@ -20,14 +22,13 @@
 	<div id="content" class="container">
 		<div class="span-24 last">
 			<div class="right">
-				<a href="#">Top</a>&nbsp;|&nbsp;<a href="#">Level</a>&nbsp;|&nbsp;<a
-					href="#">Pages</a>
+				<a href="#">Top</a>&nbsp;|&nbsp;<a href="#">Level</a>&nbsp;|&nbsp;<a href="#">Pages</a>
 			</div>
 		</div>
 		<div id="header" class="span-24">
 			<h1 id="title">Title</h1>
 			<hr>
-			<h2 class="alt">Subtitle</h2>
+			<h2 id="subtitle" class="alt">Subtitle</h2>
 		</div>
 		<hr>
 		<hr class="space">
@@ -129,12 +130,12 @@
 					d.add(8, 1, 'Node 1.2', 'example01.html');
 					d.add(9, 0, 'My Pictures', 'example01.html',
 							'Pictures I\'ve taken over the years', '', '',
-							'dtree/img/imgfolder.gif');
+							base+'dtree/img/imgfolder.gif');
 					d.add(10, 9, 'The trip to Iceland', 'example01.html',
 							'Pictures of Gullfoss and Geysir');
 					d.add(11, 9, 'Mom\'s birthday', 'example01.html');
 					d.add(12, 0, 'Recycle Bin', 'example01.html', '', '',
-							'dtree/img/trash.gif');
+							base+'dtree/img/trash.gif');
 
 					document.write(d);
 				//-->

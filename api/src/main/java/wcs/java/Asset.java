@@ -10,7 +10,7 @@ import com.fatwire.assetapi.data.MutableAssetData;
 
 public abstract class Asset {
 
-	private static Log log =  Log.getLog(Asset.class);
+	private static Log log = Log.getLog(Asset.class);
 
 	private String name;
 	private String description;
@@ -22,7 +22,7 @@ public abstract class Asset {
 	private Date startDate;
 	private Date endDate;
 	private String template;
-	
+
 	public Asset() {
 	}
 
@@ -79,7 +79,7 @@ public abstract class Asset {
 	public Long getId() {
 		return null;
 	}
-	
+
 	/**
 	 * The current template or null if undefined
 	 * 
@@ -219,7 +219,6 @@ public abstract class Asset {
 		return null;
 	}
 
-	
 	/**
 	 * String get blob url of the first attribute, with optional args
 	 * 
@@ -227,7 +226,7 @@ public abstract class Asset {
 	public String getBlobUrl(String attribute, Arg... args) {
 		return null;
 	}
-	
+
 	/**
 	 * String get blob url of the first attribute, with optional args
 	 * 
@@ -332,6 +331,26 @@ public abstract class Asset {
 	}
 
 	/**
+	 * Edit the attribute
+	 * 
+	 * @param asset
+	 * @return
+	 
+	public String edit(String attribute, Arg...args) {
+		return "";
+	}*/
+
+	/**
+	 * Edit the attribute at the given index
+	 * 
+	 * @param asset
+	 * @return
+	 
+	public String edit(String attribute, int index, Arg...args) {
+		return "";
+	}*/
+
+	/**
 	 * Call the template by name with current c/cid and extra some optional args
 	 * 
 	 */
@@ -353,8 +372,6 @@ public abstract class Asset {
 		return null;
 	}
 
-	
-	
 	/**
 	 * Print it
 	 */
