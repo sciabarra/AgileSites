@@ -4,9 +4,12 @@ import wcs.java.Env;
 import wcs.java.Element;
 import wcs.java.Template;
 import wcs.java.AssetSetup;
+import wcs.core.Log;
 
 public class $subtype$$template$ extends Element {
 
+	Log log = Log.getLog($site;format="normalize"$.element.$type;format="normalize"$.$subtype$$template$.class); 
+			
 	public static AssetSetup setup() {
 		
 		return new Template("$type$", "$subtype$/$prefix$$template$", 
@@ -17,7 +20,7 @@ public class $subtype$$template$ extends Element {
 	}
 
 	@Override
-	public String apply(Env env) {
+	public String apply(Env e) {
 		return "<h1>$subtype$$template$</h1>";
 
 		// TODO: implement here the logic

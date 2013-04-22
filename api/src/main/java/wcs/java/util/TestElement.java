@@ -12,6 +12,7 @@ import junit.framework.TestCase;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.junit.matchers.JUnitMatchers;
 
 import wcs.core.Call;
 import wcs.core.Log;
@@ -52,7 +53,8 @@ public class TestElement extends TestCase {
 	}
 
 	/**
-	 * Return the current env routed (so variables coming from router are available)
+	 * Return the current env routed (so variables coming from router are
+	 * available)
 	 * 
 	 * @return
 	 */
@@ -63,7 +65,7 @@ public class TestElement extends TestCase {
 		try {
 			Call call = Router.getRouter(te.getString("site")).route(te,
 					URL.parse(new URI(path)));
-			for(String k: call.keysLeft())
+			for (String k : call.keysLeft())
 				te.SetVar(k, call.getOnce(k));
 		} catch (URISyntaxException e) {
 			log.warn(e, "parsing %s", path);
@@ -202,6 +204,22 @@ public class TestElement extends TestCase {
 	}
 
 	/**
+	 * Check the text selected with the "css" query, is contained as a
+	 * substring.
+	 * 
+	 * @param cssq
+	 * @param html
+	 */
+
+	public void assertTextContains(String cssq, String text) {
+		String val = text(cssq);
+		if (val != null)
+			assertThat(val, JUnitMatchers.containsString(text));
+		else
+			fail("cannot find " + cssq);
+	}
+
+	/**
 	 * Check the attribute of the node, selected with "css" query, has the
 	 * expected value
 	 * 
@@ -223,7 +241,21 @@ public class TestElement extends TestCase {
 			fail("cannot find " + cssq);
 	}
 
+	/**
+	 * Dump inner html
+	 * 
+	 * @param log
+	 */
 	protected void dump(Log log) {
 		log.debug(Util.dumpStream(doc.html()));
+	}
+	
+	/**
+	 * Dump outper html
+	 * 
+	 * @param log
+	 */
+	protected void odump(Log log) {
+		log.debug(Util.dumpStream(doc.outerHtml()));
 	}
 }

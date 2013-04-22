@@ -39,8 +39,10 @@ public class Env extends ICSProxyJ {
 	 */
 	public Env(ICS ics, String site) {
 		init(ics);
-		config = Config.getConfig(site);
-		this.site = config.getSite();
+		if (site != null) {
+			config = Config.getConfig(site);
+			this.site = config.getSite();
+		}
 	}
 
 	/**
@@ -80,7 +82,7 @@ public class Env extends ICSProxyJ {
 		IList ls = ics.GetList(list);
 		if (ls == null)
 			return null;
-		if(row <= ls.numRows())
+		if (row <= ls.numRows())
 			ls.moveTo(row);
 		else
 			return null;

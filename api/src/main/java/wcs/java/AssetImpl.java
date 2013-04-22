@@ -409,7 +409,8 @@ class AssetImpl extends wcs.java.Asset {
 		// copy additional args
 		for (Arg arg : args)
 			list.add(arg);
-		return Common.call("RENDER:CALLTEMPLATE", list);
+		return Common.call(insite ? "INSITE:CALLTEMPLATE"
+				: "RENDER:CALLTEMPLATE", list);
 	}
 
 	/**

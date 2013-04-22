@@ -88,6 +88,12 @@ class PickerSpec extends Specification with Log {
         <h1 test="demo" class=" demo">Hello</h1>
       </div> must ==/(title)
     }
-
+    
+    
+    "html/outerHtml" in {
+      val menu = Picker.load("/hello.html", "#menu")
+      menu.html()  startsWith "<ul>"
+      menu.outerHtml()  startsWith """<div id="menu">"""
+    }
   }
 }

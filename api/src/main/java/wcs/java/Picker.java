@@ -221,6 +221,19 @@ public class Picker {
 	}
 
 	/**
+	 * Remove specified attributes
+	 * 
+	 * @param where
+	 * @return
+	 */
+	public Picker removeAttrs(String where, String... attrs) {
+		for (Element el : top.select(where))
+			for (String attr : attrs)
+				el.attributes().remove(attr);
+		return this;
+	}
+
+	/**
 	 * Keep only one instance of the node specified
 	 * 
 	 * @param where
@@ -351,7 +364,8 @@ public class Picker {
 	}
 
 	/**
-	 * Convenience method to dump the stream currently created
+	 * Convenience method to dump the html of the current node - embedded calls
+	 * are decoded.
 	 * 
 	 * @param stream
 	 * @return
@@ -362,8 +376,17 @@ public class Picker {
 		return this;
 	}
 
-	public Picker dump() {
-		return dump(null);
+	/**
+	 * Convenience method to dump the outer html of the current node - embedded
+	 * calls are decoded.
+	 * 
+	 * @param stream
+	 * @return
+	 */
+	public Picker odump(Log log) {
+		if (log != null)
+			log.trace(Util.dumpStream(outerHtml()));
+		return this;
 	}
 
 }

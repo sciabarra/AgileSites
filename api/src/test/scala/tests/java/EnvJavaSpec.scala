@@ -19,7 +19,7 @@ class EnvJavaSpec extends Specification with Log {
   import wcs.java.util.Util.listString
   ics.setList("ll", Array( listString("f", "a","b","c"), listString("g", "1", "2", "3")))
 
-  val env = new Env(ics, "agilesites")
+  val env = new Env(ics, null)
   "Env should" in {
 
     "check var a is xxx" in {

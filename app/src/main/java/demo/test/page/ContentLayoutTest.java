@@ -5,10 +5,8 @@ import org.junit.Test;
 
 import wcs.core.Log;
 import wcs.java.Env;
-import wcs.java.Asset;
 import wcs.java.util.TestElement;
 import demo.element.page.ContentLayout;
-import static wcs.core.Common.arg;
 
 // this test must be run by AgileSites TestRunnerElement
 public class ContentLayoutTest extends TestElement {
@@ -23,10 +21,11 @@ public class ContentLayoutTest extends TestElement {
 
 	@Test
 	public void test() {
+		
 		Env e = env(""); // route the home page
 		parse(it.apply(e));
-		//dump(log);
-		//Asset a = e.findOne("Page", arg("name", "Home"));
+		odump(log);
+
 		assertText("#title", "Home");
 		assertText("#subtitle", "Home Page");
 		assertText("#teaser-title1", "First Teaser");

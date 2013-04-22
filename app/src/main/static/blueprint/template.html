@@ -6,23 +6,32 @@
 <title>Title</title>
 <meta name="description" content="Description">
 <!-- Framework CSS -->
-<link rel="stylesheet" href="css/screen.css" type="text/css"	media="screen, projection">
-<link rel="stylesheet" href="css/print.css" type="text/css"	media="print">
+<link rel="stylesheet" href="css/screen.css" type="text/css"
+	media="screen, projection">
+<link rel="stylesheet" href="css/print.css" type="text/css"
+	media="print">
 <!--[if lt IE 8]><link rel="stylesheet" 
       href="blueprint/css/ie.css" type="text/css" media="screen, projection"><![endif]-->
 <link rel="styleSheet" href="dtree/css/dtree.css" type="text/css" />
-<script id="js-base" type="text/javascript">var base = ''</script>
+<script id="js-base" type="text/javascript">
+	var base = ''
+</script>
 <script id="js-import" type="text/javascript" src="dtree/js/dtree.js"></script>
 <style>
-.right { position: absolute right: 0px }
-.center { text-align: center; }
+.right {
+	position: absolute right:  0px
+}
+.center {
+	text-align: center;
+}
 </style>
 </head>
 <body>
 	<div id="content" class="container">
 		<div class="span-24 last">
 			<div class="right">
-				<a href="#">Top</a>&nbsp;|&nbsp;<a href="#">Level</a>&nbsp;|&nbsp;<a href="#">Pages</a>
+				<a href="#">Top</a>&nbsp;|&nbsp;<a href="#">Level</a>&nbsp;|&nbsp;<a
+					href="#">Pages</a>
 			</div>
 		</div>
 		<div id="header" class="span-24">
@@ -92,22 +101,24 @@
 			</div>
 			<hr>
 			<div class="span-7 colborder">
-				<a id="teaser-link1" href="#"><h6 id="teaser-title1">Related One</h6></a>
-				<p id="teaser-body1">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-					do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-					enim ad minim veniam, quis nostrud exercitation ullamco laboris
-					nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-					reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-					pariatur.</p>
+				<a id="teaser-link1" href="#"><h6 id="teaser-title1">Teaser
+						One</h6></a>
+				<p id="teaser-body1">Lorem ipsum dolor sit amet, consectetur
+					adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+					exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate
+					velit esse cillum dolore eu fugiat nulla pariatur.</p>
 			</div>
 			<div class="span-7 last">
-				<a id="teaser-link2" href="#"><h6 id="teaser-title2">Related Two</h6></a>
-				<p id="teaser-body2">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-					do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-					enim ad minim veniam, quis nostrud exercitation ullamco laboris
-					nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-					reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-					pariatur.</p>
+				<a id="teaser-link2" href="#"><h6 id="teaser-title2">Teaser
+						Two</h6></a>
+				<p id="teaser-body2">Lorem ipsum dolor sit amet, consectetur
+					adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+					exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate
+					velit esse cillum dolore eu fugiat nulla pariatur.</p>
 			</div>
 		</div>
 		<div class="span-7 last">
@@ -129,45 +140,53 @@
 					d.add(7, 0, 'Node 4', 'example01.html');
 					d.add(8, 1, 'Node 1.2', 'example01.html');
 					d.add(9, 0, 'My Pictures', 'example01.html',
-							'Pictures I\'ve taken over the years', '', '',
-							base+'dtree/img/imgfolder.gif');
+							'Pictures I\'ve taken over the years', '', '', base
+									+ 'dtree/img/imgfolder.gif');
 					d.add(10, 9, 'The trip to Iceland', 'example01.html',
 							'Pictures of Gullfoss and Geysir');
 					d.add(11, 9, 'Mom\'s birthday', 'example01.html');
-					d.add(12, 0, 'Recycle Bin', 'example01.html', '', '',
-							base+'dtree/img/trash.gif');
+					d.add(12, 0, 'Recycle Bin', 'example01.html', '', '', base
+							+ 'dtree/img/trash.gif');
 
 					document.write(d);
 				//-->
 				</script>
 			</div>
 			<h3></h3>
-			<hr>
-			<h4>First Children</h4>
-			<p>Vestibulum ante ipsum primis in faucibus orci luctus et
-				ultrices posuere cubilia Curae; Cras ornare mattis nunc. Mauris
-				venenatis, pede sed aliquet vehicula, lectus tellus pulvinar neque,
-				non cursus sem nisi vel augue.</p>
-			<hr>
-			<h4>Second Children</h4>
-			<p>Vestibulum ante ipsum primis in faucibus orci luctus et
-				ultrices posuere cubilia Curae; Cras ornare mattis nunc. Mauris
-				venenatis, pede sed aliquet vehicula, lectus tellus pulvinar neque,
-				non cursus sem nisi vel augue.</p>
-			<hr>
-			<h4>Parent</h4>
-			<p>Vestibulum ante ipsum primis in faucibus orci luctus et
-				ultrices posuere cubilia Curae; Cras ornare mattis nunc. Mauris
-				venenatis, pede sed aliquet vehicula, lectus tellus pulvinar neque,
-				non cursus sem nisi vel augue.</p>
+			<div id="related" class="related">
+				<hr>
+				<h4 id="related-title">First</h4>
+				<p id="related-body">Vestibulum ante ipsum primis in faucibus orci luctus et
+					ultrices posuere cubilia Curae; Cras ornare mattis nunc. Mauris
+					venenatis, pede sed aliquet vehicula, lectus tellus pulvinar neque,
+					non cursus sem nisi vel augue.</p>
+			</div>
+			<div class="related">
+				<hr>
+				<h4>Second</h4>
+				<p>Vestibulum ante ipsum primis in faucibus orci luctus et
+					ultrices posuere cubilia Curae; Cras ornare mattis nunc. Mauris
+					venenatis, pede sed aliquet vehicula, lectus tellus pulvinar neque,
+					non cursus sem nisi vel augue.</p>
+			</div>
+			<div class="related">
+				<hr>
+				<h4>Third</h4>
+				<p>Vestibulum ante ipsum primis in faucibus orci luctus et
+					ultrices posuere cubilia Curae; Cras ornare mattis nunc. Mauris
+					venenatis, pede sed aliquet vehicula, lectus tellus pulvinar neque,
+					non cursus sem nisi vel augue.</p>
+			</div>
 		</div>
 		<hr>
 		<div class="span-24 center">
 			&copy; 2013 <a href="http://www.sciabarra.com">Sciabarra srl</a> -
 			Built with <a href="http://github.com/sciabarra/AgileSites">AgileSites</a>
-			framework for <a href="https://www.oracle.com/us/products/middleware/webcenter/sites/overview/index.html">Oracle WebCenter Sites</a> - Written by <a
-				href="http://linkedin.com/in/msciab">Michele Sciabarra</a>
-				- CSS by <a href="http://www.blueprintcss.org">Blueprint CSS</a> -
+			framework for <a
+				href="https://www.oracle.com/us/products/middleware/webcenter/sites/overview/index.html">Oracle
+				WebCenter Sites</a> - Written by <a href="http://linkedin.com/in/msciab">Michele
+				Sciabarra</a> - CSS by <a href="http://www.blueprintcss.org">Blueprint
+				CSS</a> -
 		</div>
 	</div>
 </body>

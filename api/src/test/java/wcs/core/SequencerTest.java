@@ -49,10 +49,9 @@ public class SequencerTest {
 		Sequencer seq = new Sequencer(simpleCall);
 		assertEquals(seq.header(), "before");
 		assertTrue(seq.hasNext());
-		assertEquals(seq.next().toString(), "hello()");
+		assertEquals(seq.next().toString(), "<hello/>");
 		assertFalse(seq.hasNext());
 		assertEquals(seq.header(), "");
-
 	}
 
 	// assertEquals(seq.header(), "Element:");
@@ -61,31 +60,31 @@ public class SequencerTest {
 
 	@Test
 	public void multiCall() {
-		//dump(multiCall);
+		dump(multiCall);
 		Sequencer seq = new Sequencer(multiCall);
 
 		assertEquals(seq.header(), "Element:");
 		assertTrue(seq.hasNext());
 		Call call = seq.next();
-		assertEquals(call.toString(), "element()");
+		assertEquals(call.toString(), "<element/>");
 		assertNull(call.getOnce("a"));
-		assertEquals(call.toString(), "element()");
+		assertEquals(call.toString(), "<element/>");
 
 		assertEquals(seq.header(), "Template:");
 		assertTrue(seq.hasNext());
 		call = seq.next();
-		assertEquals(call.toString(), "template(a=1)");
+		assertEquals(call.toString(), "<template a=\"1\"/>");
 		assertEquals(call.getOnce("a"), "1");
 		assertNull(call.getOnce("a"));
-		assertEquals(call.toString(), "template()");
+		assertEquals(call.toString(), "<template/>");
 
 		assertEquals(seq.header(), "Insite:");
 		assertTrue(seq.hasNext());
 		call = seq.next();
-		assertEquals(call.toString(), "insite(a=1,b=2)");
+		assertEquals(call.toString(), "<insite a=\"1\" b=\"2\"/>");
 		assertEquals(call.getOnce("a"), "1");
 		assertNull(call.getOnce("a"));
-		assertEquals(call.toString(), "insite(b=2)");
+		assertEquals(call.toString(), "<insite b=\"2\"/>");
 
 		assertFalse(seq.hasNext());
 		assertEquals(seq.header(), "End");
