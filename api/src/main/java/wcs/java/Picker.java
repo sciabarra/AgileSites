@@ -30,6 +30,8 @@ public class Picker {
 
 	private Element top;
 	private Element bottom;
+	// last select operation was ok?
+	private boolean selectOk;
 
 	private void warn(Exception ex, String warning) {
 		warnings.append("<li>").append(warning); //
@@ -153,13 +155,15 @@ public class Picker {
 	 */
 	public Picker select(String where) {
 		Elements selected = top.select(where);
-		if (selected != null && selected.size() > 0)
+		if (selected != null && selected.size() > 0) {
 			push(selected.first());
-		else {
-			push(top);
+			selectOk = true;
+			return this;
+		} else {
+			selectOk = false;
 			warn(null, "cannot select " + where);
+			return this;
 		}
-		return this;
 	}
 
 	/**
@@ -182,9 +186,10 @@ public class Picker {
 	 * @throws Exception
 	 */
 	public Picker replace(String where, String what) {
-		select(where);
-		top.html(what);
-		up();
+		if (select(where).selectOk) {
+			top.html(what);
+			up();
+		}
 		return this;
 	}
 

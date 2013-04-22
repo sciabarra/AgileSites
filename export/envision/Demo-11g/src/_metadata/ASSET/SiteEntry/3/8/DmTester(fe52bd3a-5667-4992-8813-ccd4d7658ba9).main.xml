@@ -6,10 +6,10 @@
     <createddate>2013-04-15T21:56:47.134Z</createddate>
     <description>DmTester</description>
     <publist>Demo</publist>
-    <status>PL</status>
+    <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-04-15T21:56:47.134Z</updateddate>
+    <updateddate>2013-04-22T08:36:45.245Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -202,7 +202,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Tue Apr 16 20:58:26 UTC 2013
+#Mon Apr 22 08:52:14 UTC 2013
 key=SiteEntry-fe52bd3a-5667-4992-8813-ccd4d7658ba9
 type=ASSETDATA
 sites=Demo

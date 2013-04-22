@@ -73,15 +73,18 @@
 			String assettype = c.getOnce("ASSETTYPE");
 			String field = c.getOnce("FIELD");
 			String value = c.getOnce("VALUE");
+			String index = c.getOnce("INDEX");
 		%><insite:edit 
 		    assettype='<%= assettype %>'
 		    assetid='<%= assetid %>'
 		    field='<%= field %>'
-			value='<%= value %>'><%--
+			value='<%= value %>'
+			index='<%= index %>'
+			><%
 				for (String k : c.keysLeft()) {
 			%><insite:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><%
 				}
-			--%></insite:edit><%
+			%></insite:edit><%
 		} /* END INSITE:EDIT */
 	%><% // -----------------------------------------------------
 	%><%=seq.header()%><%

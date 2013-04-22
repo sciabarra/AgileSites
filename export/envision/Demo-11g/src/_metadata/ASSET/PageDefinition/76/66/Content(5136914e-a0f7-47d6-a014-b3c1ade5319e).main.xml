@@ -4,12 +4,12 @@
     <name>Content</name>
     <createdby>fwadmin</createdby>
     <createddate>2013-04-15T21:56:41.196Z</createddate>
-    <description></description>
+    <description>Content</description>
     <publist>Demo</publist>
-    <status>PL</status>
+    <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-04-15T21:56:41.196Z</updateddate>
+    <updateddate>2013-04-21T10:42:58.045Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -69,7 +69,188 @@
     <attribute>
         <name>Attributes</name>
         <data>
-            <listValue/>
+            <listValue>
+                <item>
+                    <item>
+                        <name>ordinal</name>
+                        <data>
+                            <integerValue>8</integerValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>required</name>
+                        <data>
+                            <stringValue>false</stringValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>assetid</name>
+                        <data>
+                            <stringValue>PageAttribute:1351275794175</stringValue>
+                        </data>
+                    </item>
+                </item>
+                <item>
+                    <item>
+                        <name>ordinal</name>
+                        <data>
+                            <integerValue>2</integerValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>required</name>
+                        <data>
+                            <stringValue>false</stringValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>assetid</name>
+                        <data>
+                            <stringValue>PageAttribute:1351275793580</stringValue>
+                        </data>
+                    </item>
+                </item>
+                <item>
+                    <item>
+                        <name>ordinal</name>
+                        <data>
+                            <integerValue>1</integerValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>required</name>
+                        <data>
+                            <stringValue>true</stringValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>assetid</name>
+                        <data>
+                            <stringValue>PageAttribute:1351275793548</stringValue>
+                        </data>
+                    </item>
+                </item>
+                <item>
+                    <item>
+                        <name>ordinal</name>
+                        <data>
+                            <integerValue>7</integerValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>required</name>
+                        <data>
+                            <stringValue>false</stringValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>assetid</name>
+                        <data>
+                            <stringValue>PageAttribute:1351275794169</stringValue>
+                        </data>
+                    </item>
+                </item>
+                <item>
+                    <item>
+                        <name>ordinal</name>
+                        <data>
+                            <integerValue>6</integerValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>required</name>
+                        <data>
+                            <stringValue>false</stringValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>assetid</name>
+                        <data>
+                            <stringValue>PageAttribute:1351275793566</stringValue>
+                        </data>
+                    </item>
+                </item>
+                <item>
+                    <item>
+                        <name>ordinal</name>
+                        <data>
+                            <integerValue>5</integerValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>required</name>
+                        <data>
+                            <stringValue>true</stringValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>assetid</name>
+                        <data>
+                            <stringValue>PageAttribute:1351275793560</stringValue>
+                        </data>
+                    </item>
+                </item>
+                <item>
+                    <item>
+                        <name>ordinal</name>
+                        <data>
+                            <integerValue>3</integerValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>required</name>
+                        <data>
+                            <stringValue>false</stringValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>assetid</name>
+                        <data>
+                            <stringValue>PageAttribute:1351275793634</stringValue>
+                        </data>
+                    </item>
+                </item>
+                <item>
+                    <item>
+                        <name>ordinal</name>
+                        <data>
+                            <integerValue>9</integerValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>required</name>
+                        <data>
+                            <stringValue>false</stringValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>assetid</name>
+                        <data>
+                            <stringValue>PageAttribute:1351275794182</stringValue>
+                        </data>
+                    </item>
+                </item>
+                <item>
+                    <item>
+                        <name>ordinal</name>
+                        <data>
+                            <integerValue>4</integerValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>required</name>
+                        <data>
+                            <stringValue>true</stringValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>assetid</name>
+                        <data>
+                            <stringValue>PageAttribute:1351275793554</stringValue>
+                        </data>
+                    </item>
+                </item>
+            </listValue>
         </data>
     </attribute>
     <associations>
@@ -81,6 +262,60 @@
 <dependencies>
   <list>
     <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351275793548</resId>
+      <uid>bd9fde78-f4d8-4768-9732-a25cdd864138</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351275793554</resId>
+      <uid>eeff1b67-f704-4bd4-9b6a-1d712dcea3f3</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351275793560</resId>
+      <uid>0af911fc-942b-473a-af83-bc038e03bfe2</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351275793566</resId>
+      <uid>9ac730ff-913a-48c7-b776-4bc63bc186ea</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351275793580</resId>
+      <uid>f7a19b42-b7b4-4f52-b574-1afb01083e11</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351275793634</resId>
+      <uid>759034f7-5ad9-42ce-a9aa-f233bdd98788</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351275794169</resId>
+      <uid>88d6906f-af59-41c9-b172-b6fc24d0e2b5</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351275794175</resId>
+      <uid>55421df3-1c5d-4566-8d36-3939df43577e</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351275794182</resId>
+      <uid>97f68741-014a-434a-9981-103f99ff7ff9</uid>
+    </dependency>
+    <dependency>
       <depType>N</depType>
       <resType>PageDefinition</resType>
       <resId>1351275793306</resId>
@@ -90,7 +325,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Tue Apr 16 20:58:26 UTC 2013
+#Mon Apr 22 08:52:14 UTC 2013
 key=PageDefinition-5136914e-a0f7-47d6-a014-b3c1ade5319e
 type=ASSETDATA
 sites=Demo

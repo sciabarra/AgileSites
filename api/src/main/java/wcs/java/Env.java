@@ -80,7 +80,10 @@ public class Env extends ICSProxyJ {
 		IList ls = ics.GetList(list);
 		if (ls == null)
 			return null;
-		ls.moveTo(row);
+		if(row <= ls.numRows())
+			ls.moveTo(row);
+		else
+			return null;
 		try {
 			return ls.getValue(field);
 		} catch (NoSuchFieldException e) {

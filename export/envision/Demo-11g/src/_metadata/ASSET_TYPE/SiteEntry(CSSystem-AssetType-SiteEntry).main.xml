@@ -11,7 +11,7 @@
         <description>SiteEntry</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>c:\Java\Sites\11gR1\App_Server\apache-tomcat-6.0.32\temp\fwcs-tmp\temp3\dcs805940992480836930.tmp</urldescriptorspec>
+        <urldescriptorspec>c:\Java\Sites\11gR1\App_Server\apache-tomcat-6.0.32\temp\fwcs-tmp\temp1367\dcs1660141860771843767.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-SiteEntry</uid>
         <useDimension></useDimension>
@@ -516,7 +516,7 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA0KDQoNCg==</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Tue Apr 16 20:58:25 UTC 2013
+#Mon Apr 22 08:52:12 UTC 2013
 key=@ASSET_TYPE-CSSystem-AssetType-SiteEntry
 type=ASSET_TYPE
 sites=Demo

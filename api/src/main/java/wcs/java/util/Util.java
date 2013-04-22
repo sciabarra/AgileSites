@@ -186,7 +186,6 @@ public class Util {
 	 */
 	public static AttributeDataImpl attrArray(String name, Object... value) {
 		AttributeTypeEnum type = AttributeTypeEnum.ARRAY;
-		System.out.println("#####" + array2list(value));
 		return new AttributeDataImpl(def(name, type), name, type,
 				(Object) array2list(value));
 
@@ -208,23 +207,31 @@ public class Util {
 
 	}
 
-	/**
-	 * Get as a date
-	 */
+	// formatter for fatwire format
 	private static SimpleDateFormat fmt = new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss");
 
+	/**
+	 * Convert as a date, eventually the day 0 of the epoch if you cannot
+	 * convert
+	 */
 	public static java.util.Date toDate(String s) {
 		if (s != null) {
 			try {
 				return fmt.parse(s);
 			} catch (Exception e) {
-				return null;
 			}
 		}
 		return null;
 	}
 
+	/**
+	 * 
+	 * Convert in a long, 0l if errors
+	 * 
+	 * @param l
+	 * @return
+	 */
 	public static Long toLong(String l) {
 		if (l == null)
 			return null;
@@ -234,12 +241,17 @@ public class Util {
 		} catch (NumberFormatException ex) {
 			return null;
 		} catch (Exception ex) {
-			// ex.printStackTrace();
-			return null;
+			log.warn(ex, "unexpected");
 		}
-
+		return null;
 	}
 
+	/**
+	 * Convert in a int, 0 if erros
+	 * 
+	 * @param l
+	 * @return
+	 */
 	public static Integer toInt(String l) {
 		if (l == null)
 			return null;
@@ -247,12 +259,10 @@ public class Util {
 			int ll = Integer.parseInt(l);
 			return new Integer(ll);
 		} catch (NumberFormatException ex) {
-			return null;
 		} catch (Exception ex) {
-			// ex.printStackTrace();
-			return null;
+			log.warn(ex, "unexpected");
 		}
-
+		return null;
 	}
 
 	/**
@@ -368,18 +378,15 @@ public class Util {
 			Field field = config.getClass().getField(name);
 			return (Call) field.get(config);
 		} catch (NoSuchFieldException e) {
-			log.warn(e, "no such a field %s", name);
+			log.warn("no such a field %s", name);
 		} catch (SecurityException e) {
-			log.warn(e, "cannot access field %s", name);
+			log.warn("cannot access field %s", name);
 		} catch (IllegalArgumentException e) {
-			log.warn(e, "for %s", name);
-			;
+			log.warn("for %s", name);
 		} catch (IllegalAccessException e) {
-			log.warn(e, "for %s", name);
-			;
+			log.warn("for %s", name);
 		}
 		return null;
 
-	}
-
+	}	
 }

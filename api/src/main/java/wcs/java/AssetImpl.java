@@ -47,13 +47,13 @@ class AssetImpl extends wcs.java.Asset {
 		this.c = c;
 		this.cid = cid;
 		this.cfg = e.getConfig();
-		
+
 		AssetTag.load().name(a).type(c).objectid(cid.toString()).run(i);
 		String subtype = AssetTag.getsubtype().name(a).eval(i, "OUTPUT");
 		setTypeSubtype(c, subtype);
-		
+
 		String rendermode = i.GetVar("rendermode");
-		insite = rendermode!=null && rendermode.equals("insite");
+		insite = rendermode != null && rendermode.equals("insite");
 	}
 
 	/**
@@ -223,29 +223,30 @@ class AssetImpl extends wcs.java.Asset {
 	}
 
 	/**
-	 * Return the first attribute of the the attribute rib as a string, or null
-	 * if not found
+	 * Return the first attribute of the the attribute rib as a string, or the
+	 * null if not found
 	 * 
 	 * @param asset
 	 * @return
 	 */
 	@Override
 	public String getString(String attribute) {
-		if(insite)
-			return edit(attribute);
+		if (insite)
+			return edit(attribute, 1);
 		return e.getString(at(attribute), "value");
 	}
 
-
 	/**
-	 * Return the nth attribute of the the attribute rib as a string, or null if
-	 * not found
+	 * Return the nth attribute of the the attribute rib as a string, or the
+	 * void string if not found
 	 * 
 	 * @param asset
 	 * @return
 	 */
 	@Override
 	public String getString(String attribute, int n) {
+		if (insite)
+			return edit(attribute, n);
 		return e.getString(at(attribute), n, "value");
 	}
 
@@ -432,16 +433,13 @@ class AssetImpl extends wcs.java.Asset {
 			tid = i.GetVar("eid");
 			ttype = "CSElement";
 		}
-
 		String res = RenderTag.gettemplateurl().tname(template).c(c)
 				.cid(cid.toString()).site(i.GetVar("site")).tid(tid)
 				.ttype(ttype).eval(i, "outstr");
-
 		log.debug("getUrl: outstr=" + res);
 		return res;
 	}
-	
-	
+
 	/**
 	 * 
 	 * Edit a field - extra parameters read from the config
@@ -452,8 +450,10 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 */
 	private String edit(String attribute, int index, Arg... args) {
-		String value = index < 0 ? e.getString(at(attribute), "value") : //
-				e.getString(at(attribute), index, "value");
+
+		log.trace("edit: attribute size=%s", e.getSize(at(attribute)));
+
+		String value = e.getString(at(attribute), index, "value");
 
 		// read a call or create a new call with no parameters
 		Call call = Util.readAttributeConfig(attribute, cfg);
@@ -464,27 +464,14 @@ class AssetImpl extends wcs.java.Asset {
 		call.addArg("ASSETID", e.getCid().toString());
 		call.addArg("FIELD", attribute);
 		call.addArg("VALUE", value);
-
-		// index, optional
-		if (index > 0)
-			call.addArg("INDEX", Integer.toString(index));
+		call.addArg("INDEX", Integer.toString(index));
 
 		// additional parameters
 		for (Arg arg : args)
 			call.addArg(arg.name, arg.value);
-		log.trace("edit: %s", call.encode());
-		return call.encode();
-	}
 
-	/**
-	 * 
-	 * Edit a field - extra parameters read from the config
-	 * 
-	 * @param attribute
-	 * @param args
-	 * @return
-	 */
-	private String edit(String attribute, Arg... args) {
-		return edit(attribute, -1, args);
+		log.trace("edit: %s", call.encode());
+
+		return call.encode();
 	}
 }

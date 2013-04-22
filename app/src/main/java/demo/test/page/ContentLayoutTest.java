@@ -23,11 +23,15 @@ public class ContentLayoutTest extends TestElement {
 
 	@Test
 	public void test() {
-		Env e = env("");
+		Env e = env(""); // route the home page
 		parse(it.apply(e));
 		//dump(log);
-		Asset a = e.findOne("Page", arg("name", "Home"));
-		assertText("#title", a.getName());
-		assertText("#subtitle", a.getDescription());
+		//Asset a = e.findOne("Page", arg("name", "Home"));
+		assertText("#title", "Home");
+		assertText("#subtitle", "Home Page");
+		assertText("#teaser-title1", "First Teaser");
+		assertText("#teaser-body1", "First Teaser Text");
+		assertText("#teaser-title2", "Second Teaser");
+		assertText("#teaser-body2", "Second Teaser Text");
 	}
 }

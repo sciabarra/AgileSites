@@ -6,10 +6,10 @@
     <createddate>2013-04-15T21:56:47.198Z</createddate>
     <description>DmWrapper</description>
     <publist>Demo</publist>
-    <status>PL</status>
+    <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-04-15T21:56:47.198Z</updateddate>
+    <updateddate>2013-04-22T08:36:45.320Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -105,7 +105,7 @@
     <attribute>
         <name>resdetails2</name>
         <data>
-            <stringValue>timestamp=1366063007194</stringValue>
+            <stringValue>timestamp=1366619805313</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -136,9 +136,9 @@
 </dependencies>
 ==================______________________==================
 #
-#Tue Apr 16 20:58:27 UTC 2013
+#Mon Apr 22 08:52:14 UTC 2013
 storable0=/ELEMENTS/JSP/Demo/DmWrapper.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FDemo%2FDmWrapper.jsp
-@hashval=275849140
+@hashval=87667262
 key=CSElement-f4381158-c5a6-49cd-8db9-702aa5b36d24
 type=ASSETDATA
 sites=Demo
