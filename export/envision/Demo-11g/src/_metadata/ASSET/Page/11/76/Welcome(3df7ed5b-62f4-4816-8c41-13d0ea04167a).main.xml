@@ -9,7 +9,7 @@
     <status>ED</status>
     <subtype>Content</subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-04-22T08:45:52.946Z</updateddate>
+    <updateddate>2013-04-23T17:31:49.237Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -33,7 +33,7 @@
     <attribute>
         <name>template</name>
         <data>
-            <stringValue>Page/DmContentLayout</stringValue>
+            <stringValue>DmContentLayout</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -117,9 +117,7 @@
     <attribute>
         <name>Summary</name>
         <data>
-            <stringValue>&lt;div&gt;
-	Welcome&lt;/div&gt;
-</stringValue>
+            <stringValue>hello</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -128,12 +126,6 @@
             <stringValue>&lt;div&gt;
 	Welcome&lt;/div&gt;
 </stringValue>
-        </data>
-    </attribute>
-    <attribute>
-        <name>Related</name>
-        <data>
-            <stringList>Page:1351275793648</stringList>
         </data>
     </attribute>
     <attribute>
@@ -147,15 +139,20 @@
         <name>TeaserText</name>
         <data>
             <stringList>&lt;div&gt;
-	FirstText&lt;/div&gt;
-</stringList>
+	FirstText&lt;/div&gt;</stringList>
             <stringList>&lt;div&gt;
 	SecondText&lt;/div&gt;
 </stringList>
         </data>
     </attribute>
     <attribute>
-        <name>TeaserLink</name>
+        <name>Related</name>
+        <data>
+            <stringList>Page:1351275793648</stringList>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SeeAlso</name>
         <data/>
     </attribute>
     <associations>
@@ -230,7 +227,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Mon Apr 22 08:52:14 UTC 2013
+#Wed Apr 24 10:30:24 UTC 2013
 key=Page-3df7ed5b-62f4-4816-8c41-13d0ea04167a
 type=ASSETDATA
 sites=Demo

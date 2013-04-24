@@ -9,7 +9,7 @@
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-04-21T10:42:58.045Z</updateddate>
+    <updateddate>2013-04-24T06:51:23.003Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -74,7 +74,7 @@
                     <item>
                         <name>ordinal</name>
                         <data>
-                            <integerValue>8</integerValue>
+                            <integerValue>7</integerValue>
                         </data>
                     </item>
                     <item>
@@ -134,7 +134,7 @@
                     <item>
                         <name>ordinal</name>
                         <data>
-                            <integerValue>7</integerValue>
+                            <integerValue>6</integerValue>
                         </data>
                     </item>
                     <item>
@@ -154,7 +154,7 @@
                     <item>
                         <name>ordinal</name>
                         <data>
-                            <integerValue>6</integerValue>
+                            <integerValue>8</integerValue>
                         </data>
                     </item>
                     <item>
@@ -167,6 +167,26 @@
                         <name>assetid</name>
                         <data>
                             <stringValue>PageAttribute:1351275793566</stringValue>
+                        </data>
+                    </item>
+                </item>
+                <item>
+                    <item>
+                        <name>ordinal</name>
+                        <data>
+                            <integerValue>9</integerValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>required</name>
+                        <data>
+                            <stringValue>false</stringValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>assetid</name>
+                        <data>
+                            <stringValue>PageAttribute:1351275794846</stringValue>
                         </data>
                     </item>
                 </item>
@@ -207,26 +227,6 @@
                         <name>assetid</name>
                         <data>
                             <stringValue>PageAttribute:1351275793634</stringValue>
-                        </data>
-                    </item>
-                </item>
-                <item>
-                    <item>
-                        <name>ordinal</name>
-                        <data>
-                            <integerValue>9</integerValue>
-                        </data>
-                    </item>
-                    <item>
-                        <name>required</name>
-                        <data>
-                            <stringValue>false</stringValue>
-                        </data>
-                    </item>
-                    <item>
-                        <name>assetid</name>
-                        <data>
-                            <stringValue>PageAttribute:1351275794182</stringValue>
                         </data>
                     </item>
                 </item>
@@ -312,8 +312,8 @@
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275794182</resId>
-      <uid>97f68741-014a-434a-9981-103f99ff7ff9</uid>
+      <resId>1351275794846</resId>
+      <uid>96a78f25-3d32-47ef-80fb-c8560c8ed816</uid>
     </dependency>
     <dependency>
       <depType>N</depType>
@@ -325,7 +325,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Mon Apr 22 08:52:14 UTC 2013
+#Wed Apr 24 10:30:24 UTC 2013
 key=PageDefinition-5136914e-a0f7-47d6-a014-b3c1ade5319e
 type=ASSETDATA
 sites=Demo

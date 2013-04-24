@@ -54,10 +54,12 @@
 			String cc = c.getOnce("C");
 			String cid = c.getOnce("CID");
 			String tname = c.getOnce("TNAME");
+			String field = c.getOnce("FIELD");
 	  %><insite:calltemplate 
 		    site='<%=c.getOnce("SITE")%>'
 			c='<%=cc%>'
 			cid='<%=cid%>'
+			field='<%=field%>'
 			tname='<%=tname%>'
 			ttype='<%=c.getOnce("TTYPE")%>' 
 			slotname='<%=c.getOnce("SLOTNAME")%>' 
@@ -67,6 +69,29 @@
 			}
 		%></insite:calltemplate><%
 		} /* END INSITE:CALLTEMPLATE */
+	%><% // -----------------------------------------------------
+	 if (name.equalsIgnoreCase("INSITE:CALLTEMPLATELOOP")) {
+		String cc = c.getOnce("C");
+		String field = c.getOnce("FIELD");
+		String listname = c.getOnce("LISTNAME");
+		String output = Common.tmp();
+       %><insite:slotlist field='<%= field %>'
+         ><ics:listloop listname='<%= listname %>'
+         ><ics:listget listname='<%= listname %>' 
+               fieldname='value' 
+               output='<%= output %>'
+         /><insite:calltemplate 
+			c='<%=cc%>'
+			cid='<%=ics.GetVar(output)%>'
+		    site='<%=c.getOnce("SITE")%>'
+			tname='<%=c.getOnce("TNAME")%>'
+			ttype='<%=c.getOnce("TTYPE")%>' 
+			tid='<%=c.getOnce("TID")%>'><%
+		for (String k : c.keysLeft()) {
+	       %><insite:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><%
+		}
+	   %></insite:calltemplate></ics:listloop></insite:slotlist><%
+	 } /* END INSITE:CALLTEMPLATELOOP */
 	%><% // -----------------------------------------------------
 		if (name.equalsIgnoreCase("INSITE:EDIT")) {
 			String assetid = c.getOnce("ASSETID");
@@ -80,13 +105,13 @@
 		    field='<%= field %>'
 			value='<%= value %>'
 			index='<%= index %>'
-			><%
-				for (String k : c.keysLeft()) {
-			%><insite:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><%
-				}
-			%></insite:edit><%
+		><%
+		  for (String k : c.keysLeft()) {
+		%><insite:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><%
+		   }
+		 %></insite:edit><%
 		} /* END INSITE:EDIT */
 	%><% // -----------------------------------------------------
 	%><%=seq.header()%><%
-		}
+  }
 %></cs:ftcs>

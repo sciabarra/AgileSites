@@ -9,7 +9,7 @@
     <status>ED</status>
     <subtype>Content</subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-04-22T08:51:38.422Z</updateddate>
+    <updateddate>2013-04-24T08:01:41.510Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -33,7 +33,7 @@
     <attribute>
         <name>template</name>
         <data>
-            <stringValue>Page/DmContentLayout</stringValue>
+            <stringValue>DmContentLayout</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -147,12 +147,6 @@
         </data>
     </attribute>
     <attribute>
-        <name>Related</name>
-        <data>
-            <stringList>Page:1351275793658</stringList>
-        </data>
-    </attribute>
-    <attribute>
         <name>TeaserTitle</name>
         <data>
             <stringList>First Teaser</stringList>
@@ -167,8 +161,17 @@
         </data>
     </attribute>
     <attribute>
-        <name>TeaserLink</name>
-        <data/>
+        <name>Related</name>
+        <data>
+            <stringList>Page:1351275793658</stringList>
+            <stringList>Page:1351275793648</stringList>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SeeAlso</name>
+        <data>
+            <stringList>Page:1351275793340</stringList>
+        </data>
     </attribute>
     <associations>
         <href>myPathassociations</href>
@@ -178,6 +181,18 @@
 <!--==================___ METADATA ___================
 <dependencies>
   <list>
+    <dependency>
+      <depType>E</depType>
+      <resType>Page</resType>
+      <resId>1351275793340</resId>
+      <uid>4adc5be5-d187-4c2b-a299-670a3011382e</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>Page</resType>
+      <resId>1351275793648</resId>
+      <uid>83ee131a-608e-4ef5-a7df-79d76a0ffb7e</uid>
+    </dependency>
     <dependency>
       <depType>E</depType>
       <resType>Page</resType>
@@ -234,21 +249,21 @@
     </dependency>
     <dependency>
       <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351275794846</resId>
+      <uid>96a78f25-3d32-47ef-80fb-c8560c8ed816</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
       <resType>PageDefinition</resType>
       <resId>1351275793306</resId>
       <uid>5136914e-a0f7-47d6-a014-b3c1ade5319e</uid>
-    </dependency>
-    <dependency>
-      <depType>N</depType>
-      <resType>Page</resType>
-      <resId>1351275793340</resId>
-      <uid>4adc5be5-d187-4c2b-a299-670a3011382e</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Mon Apr 22 08:52:14 UTC 2013
+#Wed Apr 24 10:30:25 UTC 2013
 storable0=ASSET/Page/75/77/Home.Image(4adc5be5-d187-4c2b-a299-670a3011382e).test.jpg||_storable_type\=Home.Image%284adc5be5-d187-4c2b-a299-670a3011382e%29.test.jpg&_blob_prop\=Image&_value_count\=S
 key=Page-4adc5be5-d187-4c2b-a299-670a3011382e
 type=ASSETDATA
