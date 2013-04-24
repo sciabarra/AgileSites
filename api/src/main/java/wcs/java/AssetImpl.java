@@ -364,9 +364,12 @@ class AssetImpl extends wcs.java.Asset {
 	public String getBlobUrl(String attribute, int pos, String mimeType,
 			Arg... args) {
 
+		Long blobWhere = this.getId(attribute, pos);
+		if(blobWhere==null)
+			return null;
+
 		Config cfg = e.getConfig();
 		Config.BlobConfig bcfg = cfg.getBlobConfig(e.ics);
-		Long blobWhere = this.getId(attribute, pos);
 
 		// invoke tag
 		RenderTag.Getbloburl tag = RenderTag.getbloburl()

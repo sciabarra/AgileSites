@@ -41,19 +41,18 @@ public class ContentLayout extends Element {
 		html.append("#related-container",
 				a.getSlotList("Related", "Content/DmSummary"));
 
-		/*
-		 * for (int i : a.getRange("Related")) {
-		 * html.append("#related-container", a.getSlot("Related", i,
-		 * "Content/DmSummary")); }
-		 */
+		String image = a.getBlobUrl("Image");
+		if (image == null)
+			html.remove("#image-main");
+		else
+			html.attr("#image-main", "src", image);
 
 		html.replace("#seealso1", a.getSlot("SeeAlso", 1, "Content/DmSeeAlso"));
 		html.replace("#seealso2", a.getSlot("SeeAlso", 2, "Content/DmSeeAlso"));
 		html.replace("#seealso3", a.getSlot("SeeAlso", 3, "Content/DmSeeAlso"));
 
-		// html.replace("#seealso1", "<h1>salve</h1>");
-
-		Picker.dump(log, "***" + a.getSlot("SeeAlso", 2, "Content/DmSeeAlso"));
+		// Picker.dump(log, "***" + a.getSlot("SeeAlso", 2,
+		// "Content/DmSeeAlso"));
 
 		return html.html();
 	}
