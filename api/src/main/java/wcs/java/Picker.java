@@ -377,6 +377,19 @@ public class Picker {
 	}
 
 	/**
+	 * Convenience method to dump a generic html
+	 * are decoded.
+	 * 
+	 * @param stream
+	 * @return
+	 */
+	public static void dump(Log log, String html) {
+		if (log != null)
+			log.trace(Util.dumpStream(html));		
+	}
+
+	
+	/**
 	 * Convenience method to dump the outer html of the current node - embedded
 	 * calls are decoded.
 	 * 

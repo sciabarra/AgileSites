@@ -48,10 +48,11 @@ public class Template extends AssetSetup {
 	 */
 	public Template(String subtype, String name, char ttype,
 			Class<?> elementClass) {
-		super("Template", subtype, //
-				subtype == null || subtype.trim().length() == 0 //
-				? name : subtype + "/" + name //
-		);
+		//super("Template", subtype, //
+		//		subtype == null || subtype.trim().length() == 0 //
+		//		? name : subtype + "/" + name //
+		//);
+		super("Template", subtype, name);
 		this.clazz = elementClass.getCanonicalName();
 		if (subtype == null || subtype.trim().length() == 0) {
 			subtype = "";

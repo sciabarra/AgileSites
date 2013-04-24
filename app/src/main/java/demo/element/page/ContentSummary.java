@@ -12,7 +12,6 @@ public class ContentSummary extends Element {
 	Log log = Log.getLog(ContentSummary.class);
 
 	public static AssetSetup setup() {
-
 		return new Template("Page", "Content/DmSummary", Template.INTERNAL, // change
 				demo.element.page.ContentSummary.class) //
 				.cache("false", "false") // change caching here
@@ -28,5 +27,4 @@ public class ContentSummary extends Element {
 		html.removeAttrs("*[id^=related]", "id");
 		return html.outerHtml();
 	}
-
 }

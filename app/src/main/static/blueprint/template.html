@@ -19,8 +19,9 @@
 <script id="js-import" type="text/javascript" src="dtree/js/dtree.js"></script>
 <style>
 .right {
-	position: absolute right:  0px
+	position: absolute right:                               0px
 }
+
 .center {
 	text-align: center;
 }
@@ -42,11 +43,21 @@
 		<hr>
 		<hr class="space">
 		<div class="span-15 prepend-1 colborder">
+			<b id="date">July 07, 2012</b>
+			<blockquote id="summary">Integer cursus ornare mauris.
+				Praesent nisl arcu, imperdiet eu, ornare id, scelerisque ut, nunc.
+				Praesent sagittis erat sed velit tempus imperdiet. Ut tristique,
+				ante in interdum hendrerit, erat enim faucibus felis, quis rutrum
+				mauris lorem quis sem. Vestibulum ligula nisi, mattis nec, posuere
+				et, blandit eu, ligula. Nam suscipit placerat odio. Class aptent
+				taciti sociosqu ad litora torquent per conubia nostra, per inceptos
+				hymenaeos. Pellentesque tortor libero, venenatis vitae, rhoncus eu,
+				placerat ut, mi. Nulla nulla.</blockquote>
 			<div id="detail">
 				<p>
-					<img src="img/test.jpg" class="top pull-1 left" alt="test">Lorem
-					ipsum dolor sit amet, <em>consectetuer adipiscing elit</em>. Nunc
-					congue ipsum vestibulum libero. Aenean vitae justo. Nam eget
+					<img src="img/test.jpg" class="top pull-1 left" alt="test">
+					Lorem ipsum dolor sit amet, <em>consectetuer adipiscing elit</em>.
+					Nunc congue ipsum vestibulum libero. Aenean vitae justo. Nam eget
 					tellus. Etiam convallis, est eu lobortis mattis, lectus tellus
 					tempus felis, a ultricies erat ipsum at metus.
 				</p>
@@ -63,32 +74,6 @@
 					non tristique posuere, erat odio eleifend nisl, non convallis est
 					tortor blandit ligula. Nulla id augue.
 				</p>
-				<p>Nullam mattis, odio ut tempus facilisis, metus nisl facilisis
-					metus, auctor consectetuer felis ligula nec mauris. Vestibulum odio
-					erat, fermentum at, commodo vitae, ultrices et, urna. Mauris
-					vulputate, mi pulvinar sagittis condimentum, sem nulla aliquam
-					velit, sed imperdiet mi purus eu magna. Nulla varius metus ut eros.
-					Aenean aliquet magna eget orci. Class aptent taciti sociosqu ad
-					litora.</p>
-				<p>Vivamus euismod. Cum sociis natoque penatibus et magnis dis
-					parturient montes, nascetur ridiculus mus. Suspendisse vel nibh ut
-					turpis dictum sagittis. Aliquam vel velit a elit auctor
-					sollicitudin. Nam vel dui vel neque lacinia pretium. Quisque nunc
-					erat, venenatis id, volutpat ut, scelerisque sed, diam. Mauris
-					ante. Pellentesque habitant morbi tristique senectus et netus et
-					malesuada fames ac turpis egestas. Donec mattis. Morbi dignissim
-					sollicitudin libero. Nulla lorem.</p>
-				<blockquote>
-					<p>Integer cursus ornare mauris. Praesent nisl arcu, imperdiet
-						eu, ornare id, scelerisque ut, nunc. Praesent sagittis erat sed
-						velit tempus imperdiet. Ut tristique, ante in interdum hendrerit,
-						erat enim faucibus felis, quis rutrum mauris lorem quis sem.
-						Vestibulum ligula nisi, mattis nec, posuere et, blandit eu,
-						ligula. Nam suscipit placerat odio. Class aptent taciti sociosqu
-						ad litora torquent per conubia nostra, per inceptos hymenaeos.
-						Pellentesque tortor libero, venenatis vitae, rhoncus eu, placerat
-						ut, mi. Nulla nulla.</p>
-				</blockquote>
 				<p>
 					Maecenas vel metus quis magna pharetra fermentum. <em>Integer
 						sit amet tortor</em>. Maecenas porttitor, pede sed gravida auctor,
@@ -101,8 +86,7 @@
 			</div>
 			<hr>
 			<div class="span-7 colborder">
-				<a id="teaser-link1" href="#"><h6 id="teaser-title1">Teaser
-						One</h6></a>
+				<h6 id="teaser-title1">Teaser One</h6>
 				<p id="teaser-body1">Lorem ipsum dolor sit amet, consectetur
 					adipisicing elit, sed do eiusmod tempor incididunt ut labore et
 					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
@@ -111,8 +95,7 @@
 					velit esse cillum dolore eu fugiat nulla pariatur.</p>
 			</div>
 			<div class="span-7 last">
-				<a id="teaser-link2" href="#"><h6 id="teaser-title2">Teaser
-						Two</h6></a>
+				<h6 id="teaser-title2">Teaser Two</h6>
 				<p id="teaser-body2">Lorem ipsum dolor sit amet, consectetur
 					adipisicing elit, sed do eiusmod tempor incididunt ut labore et
 					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
@@ -121,7 +104,7 @@
 					velit esse cillum dolore eu fugiat nulla pariatur.</p>
 			</div>
 		</div>
-		<div class="span-7 last">
+		<div id="related-container" class="span-7 last">
 			<div class="dtree">
 				<p>
 					<a href="javascript: d.openAll();">open all</a> | <a
@@ -156,10 +139,10 @@
 			<div id="related" class="related">
 				<hr>
 				<h4 id="related-title">First</h4>
-				<p id="related-body">Vestibulum ante ipsum primis in faucibus orci luctus et
-					ultrices posuere cubilia Curae; Cras ornare mattis nunc. Mauris
-					venenatis, pede sed aliquet vehicula, lectus tellus pulvinar neque,
-					non cursus sem nisi vel augue.</p>
+				<p id="related-body">Vestibulum ante ipsum primis in faucibus
+					orci luctus et ultrices posuere cubilia Curae; Cras ornare mattis
+					nunc. Mauris venenatis, pede sed aliquet vehicula, lectus tellus
+					pulvinar neque, non cursus sem nisi vel augue.</p>
 			</div>
 			<div class="related">
 				<hr>
@@ -179,14 +162,51 @@
 			</div>
 		</div>
 		<hr>
-		<div class="span-24 center">
-			&copy; 2013 <a href="http://www.sciabarra.com">Sciabarra srl</a> -
-			Built with <a href="http://github.com/sciabarra/AgileSites">AgileSites</a>
-			framework for <a
-				href="https://www.oracle.com/us/products/middleware/webcenter/sites/overview/index.html">Oracle
-				WebCenter Sites</a> - Written by <a href="http://linkedin.com/in/msciab">Michele
-				Sciabarra</a> - CSS by <a href="http://www.blueprintcss.org">Blueprint
-				CSS</a> -
+		<div class="span-24">
+			<div id="seealso1" class="span-7 prepend-1 colborder">
+				<a id="seealso-link1" href="#">
+					<h6 id="seealso-title1">See Also One</h6>
+				</a>
+				<p id="seealso-text1">Lorem ipsum dolor sit amet, consectetur
+					adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+					exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate
+					velit esse cillum dolore eu fugiat nulla pariatur.</p>
+			</div>
+			<div id="seealso2" class="span-7 colborder">
+				<a id="seealso-link2" href="#">
+					<h6 id="seealso-title2">See Also Two</h6>
+				</a>
+				<p id="seealso-text2">Lorem ipsum dolor sit amet, consectetur
+					adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+					exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate
+					velit esse cillum dolore eu fugiat nulla pariatur.</p>
+			</div>
+			<div id="seealso3" class="span-7 last">
+				<a id="seealso-link3" href="#">
+					<h6 id="seealso-title3">See Also Three</h6>
+				</a>
+				<p id="seealso-text3">Lorem ipsum dolor sit amet, consectetur
+					adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+					exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate
+					velit esse cillum dolore eu fugiat nulla pariatur.</p>
+			</div>
+
+			<hr>
+			<div class="span-24 center">
+				&copy; 2013 <a href="http://www.sciabarra.com">Sciabarra srl</a> -
+				Built with <a href="http://github.com/sciabarra/AgileSites">AgileSites</a>
+				framework for <a
+					href="https://www.oracle.com/us/products/middleware/webcenter/sites/overview/index.html">Oracle
+					WebCenter Sites</a> - Written by <a
+					href="http://linkedin.com/in/msciab">Michele Sciabarra</a> - CSS by
+				<a href="http://www.blueprintcss.org">Blueprint CSS</a> -
+			</div>
 		</div>
 	</div>
 </body>

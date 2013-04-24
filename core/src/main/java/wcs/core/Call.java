@@ -42,6 +42,13 @@ public class Call {
 		map.remove(key);
 		return val;
 	}
+	
+	/**
+	 * Get the value of a parameter.
+	 */
+	public String get(String key) {
+		return map.get(key);
+	}
 
 	/**
 	 * Add an argument

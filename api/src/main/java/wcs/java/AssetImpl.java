@@ -15,6 +15,7 @@ import wcs.core.Log;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.AssetsetTag;
 import wcs.core.tag.RenderTag;
+import wcs.java.util.IfNull;
 import wcs.java.util.Util;
 import COM.FutureTense.Interfaces.ICS;
 
@@ -385,32 +386,139 @@ class AssetImpl extends wcs.java.Asset {
 	}
 
 	/**
-	 * Call the template by name with current c/cid and extra some optional args
+	 * Invoke the actual slot call
 	 * 
+	 * if pos <0 it is a list otherwise it is a slot call.
+	 * 
+	 * 
+	 * @param template
+	 * @param attribute
+	 * @param n
+	 * @param args
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	private String insiteCall(String template, String attribute, int n,
+			Arg... args) {
+
+		try {
+			// let's start with the common parameters
+			List<Arg> list = new ArrayList<Arg>();
+			list.add(arg("SITE", i.GetVar("site")));
+			list.add(arg("TNAME", template));
+			list.add(arg("TTYPE", //
+					i.GetVar("tid") != null ? "Template" : "CSElement"));
+			list.add(arg("TID", //
+					i.GetVar("tid") != null ? i.GetVar("tid") : i.GetVar("eid")));
+
+			// read the type configuration
+
+			Insite insite = Util.readAttributeConfig(attribute, e.getConfig());
+			String c = insite.get("C");
+			if (insite == null || insite.get("C") == null) {
+				log.error("need to configure c for attribute %s", attribute);
+				throw new IllegalArgumentException("attribute " + attribute
+						+ " has not a type configured in Config");
+			}
+
+			list.add(arg("C", c));
+			list.add(arg("FIELD", attribute));
+
+			// copy additional args
+			for (Arg arg : args)
+				list.add(arg);
+
+			if (n < 0) {
+				return Common.call("INSITE:CALLTEMPLATELOOP", list);
+			} else {				
+				list.add(arg("CID", ""+IfNull.ifn(getId(attribute, n), 0l)));
+				return Common.call("INSITE:CALLTEMPLATE", list);
+			}
+		} catch (Exception ex) {
+			log.error(ex, "exception in insiteCall");
+			return "ERROR "+ex.getMessage();
+		}
+	}
+
+	/**
+	 * Call the template by name with current c/cid, specifiying a slot name and
+	 * eventually some extra optional args.
+	 * 
+	 * @param name
+	 * @param args
+	 * @return
 	 */
 	@Override
-	public String call(String name, Arg... args) {
+	public String call(String template, Arg... args) {
+		// let's start with the common parameters
 		List<Arg> list = new ArrayList<Arg>();
 		list.add(arg("SITE", i.GetVar("site")));
+		list.add(arg("TNAME", template));
 		list.add(arg("C", c));
 		list.add(arg("CID", cid.toString()));
-		list.add(arg("TNAME", name));
-
-		list.add(arg("TTYPE", i.GetVar("tid") != null //
-		? "Template"
+		list.add(arg("TTYPE", i.GetVar("tid") != null ? "Template"
 				: "CSElement"));
-		list.add(arg("TID", i.GetVar("tid") != null //
-		? i.GetVar("tid")
-				: i.GetVar("eid")));
+		list.add(arg("TID",
+				i.GetVar("tid") != null ? i.GetVar("tid") : i.GetVar("eid")));
+		return Common.call("RENDER:CALLTEMPLATE", list);
+	}
 
-		// TODO: use the slot properly
-		list.add(arg("SLOTNAME", name.replace('/', '_')));
+	/**
+	 * Render a list of slots pointed by the asset field using the the specified
+	 * template.
+	 * 
+	 * Slot type is configured in Config. You need a field of the same name of
+	 * the field specifying the type as parameter "c"
+	 * 
+	 * @param field
+	 * @param template
+	 * @param type
+	 * @param i
+	 * @param args
+	 * @return
+	 */
+	@Override
+	public String getSlotList(String attribute, String template, Arg... args)
+			throws IllegalArgumentException {
+		return insiteCall(template, attribute, -1, args);
+	}
 
-		// copy additional args
-		for (Arg arg : args)
-			list.add(arg);
-		return Common.call(insite ? "INSITE:CALLTEMPLATE"
-				: "RENDER:CALLTEMPLATE", list);
+	/**
+	 * Render a single slot pointed by the i-th asset field using the the
+	 * specified template.
+	 * 
+	 * Slot type is configured in Config. You need a field of the same name of
+	 * the field specifying the type as parameter "c"
+	 * 
+	 * @param field
+	 * @param template
+	 * @param type
+	 * @param i
+	 * @param args
+	 * @return
+	 */
+	@Override
+	public String getSlot(String attribute, int i, String template, Arg... args)
+			throws IllegalArgumentException {
+		return insiteCall(template, attribute, i, args);
+	}
+
+	/**
+	 * Render a single slot pointed by the first asset field using the the
+	 * specified template.
+	 * 
+	 * Slot type is configured in Config. You need a field of the same name of
+	 * the field specifying the type as parameter "c"
+	 * 
+	 * @param field
+	 * @param template
+	 * @param args
+	 * @return
+	 */
+	@Override
+	public String getSlot(String attribute, String template, Arg... args)
+			throws IllegalArgumentException {
+		return insiteCall(template, attribute, 1, args);
 	}
 
 	/**
@@ -452,11 +560,8 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	private String edit(String attribute, int index, Arg... args) {
 
-		log.trace("edit: attribute size=%s", e.getSize(at(attribute)));
-
-		String value = e.getString(at(attribute), index, "value");
-
 		// read a call or create a new call with no parameters
+		String value = e.getString(at(attribute), index, "value");
 		Call call = Util.readAttributeConfig(attribute, cfg);
 		if (call == null)
 			call = new Insite();

@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import wcs.core.Call;
 import wcs.core.Log;
 import wcs.core.Sequencer;
 import wcs.java.Config;
+import wcs.java.Insite;
 
 import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AttributeDataImpl;
@@ -29,9 +29,8 @@ import com.fatwire.assetapi.def.AttributeTypeEnum;
 import com.openmarket.xcelerate.asset.AttributeDefImpl;
 
 /**
- * Utility and support data
+ * Utility and support functions
  * 
- * TODO: stub only class for now
  * 
  * @author msciab
  * 
@@ -373,20 +372,13 @@ public class Util {
 	 * @param config
 	 * @return
 	 */
-	public static Call readAttributeConfig(String name, Config config) {
+	public static Insite readAttributeConfig(String attribute, Config config) {
 		try {
-			Field field = config.getClass().getField(name);
-			return (Call) field.get(config);
-		} catch (NoSuchFieldException e) {
-			log.warn("no such a field %s", name);
-		} catch (SecurityException e) {
-			log.warn("cannot access field %s", name);
-		} catch (IllegalArgumentException e) {
-			log.warn("for %s", name);
-		} catch (IllegalAccessException e) {
-			log.warn("for %s", name);
+			Field field = config.getClass().getField(attribute);
+			return (Insite) field.get(config);
+		} catch (Exception ex) {
+			log.error("no such a field %s",  attribute);
 		}
 		return null;
-
 	}	
 }

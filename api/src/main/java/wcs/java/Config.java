@@ -3,6 +3,7 @@ package wcs.java;
 import java.io.IOException;
 import java.util.Properties;
 
+import wcs.core.Arg;
 import wcs.core.WCS;
 import wcs.core.tag.BlobserviceTag;
 import COM.FutureTense.Interfaces.ICS;
@@ -14,6 +15,17 @@ import COM.FutureTense.Interfaces.ICS;
  * 
  */
 abstract public class Config {
+
+	public Insite insite(Arg... args) {
+		Insite insite = new Insite();
+		for (Arg arg : args)
+			insite.addArg(arg.name, arg.value);
+		return insite;
+	}
+	
+	public Arg arg(String k, String v) {
+		return new Arg(k.toUpperCase(),v);
+	}
 
 	static class BlobConfig {
 
@@ -94,7 +106,7 @@ abstract public class Config {
 		}
 		return properties.getProperty(name);
 	}
-
+	
 	// // STATIC PART ////
 
 	/**

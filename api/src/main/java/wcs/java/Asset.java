@@ -335,26 +335,80 @@ public abstract class Asset {
 	 * 
 	 * @param asset
 	 * @return
-	 
-	public String edit(String attribute, Arg...args) {
-		return "";
-	}*/
+	 * 
+	 *         public String edit(String attribute, Arg...args) { return ""; }
+	 */
 
 	/**
 	 * Edit the attribute at the given index
 	 * 
 	 * @param asset
 	 * @return
-	 
-	public String edit(String attribute, int index, Arg...args) {
-		return "";
-	}*/
+	 * 
+	 *         public String edit(String attribute, int index, Arg...args) {
+	 *         return ""; }
+	 */
 
 	/**
 	 * Call the template by name with current c/cid and extra some optional args
 	 * 
 	 */
 	public String call(String name, Arg... args) {
+		return "";
+	}
+
+	/**
+	 * Render a list of slots pointed by the asset field using the the specified
+	 * template.
+	 * 
+	 * Slot type is configured in Config. You need a field of the same name of
+	 * the field specifying the type as parameter "c"
+	 * 
+	 * @param field
+	 * @param template
+	 * @param type
+	 * @param i
+	 * @param args
+	 * @return
+	 */
+	public String getSlotList(String field, String template, Arg... args)
+			throws IllegalArgumentException {
+		return "";
+	}
+
+	/**
+	 * Render a single slot pointed by the i-th asset field using the the specified
+	 * template.
+	 * 
+	 * Slot type is configured in Config. You need a field of the same name of
+	 * the field specifying the type as parameter "c"
+	 * 
+	 * @param field
+	 * @param template
+	 * @param type
+	 * @param i
+	 * @param args
+	 * @return
+	 */
+	public String getSlot(String attribute, int i, String template, Arg... args)
+			throws IllegalArgumentException {
+		return "";
+	}
+
+	/**
+	 * Render a single slot pointed by the first asset field using the the specified
+	 * template.
+	 * 
+	 * Slot type is configured in Config. You need a field of the same name of
+	 * the field specifying the type as parameter "c"
+	 * 
+	 * @param attribute
+	 * @param template
+	 * @param args
+	 * @return
+	 */
+	public String getSlot(String attribute, String template, Arg... args)
+			throws IllegalArgumentException {
 		return "";
 	}
 

@@ -6,10 +6,14 @@ public class Config extends wcs.java.Config {
 
 	// Configure
 	
-	public Insite Title = new Insite();
+	public Insite SeeAlso = insite(arg("c","Page"));
+	
+	public Insite Related = insite(arg("c","Page"));
+	
+	public Insite Title = insite();
 	//.editor("dojotext").mode("text");
 
-	public Insite Subtitle = new Insite();
+	public Insite Subtitle = insite();
 	//.editor("fckeditor").mode("html");
 
 	

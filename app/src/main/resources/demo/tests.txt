@@ -3,3 +3,4 @@ demo.test.WrapperTest
 demo.test.ErrorTest
 demo.test.page.ContentLayoutTest
 demo.test.page.ContentSummaryTest
+demo.test.page.ContentSeeAlsoTest
