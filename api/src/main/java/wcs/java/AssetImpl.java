@@ -541,32 +541,13 @@ class AssetImpl extends wcs.java.Asset {
 	}
 
 	/**
-	 * Return the URL to render this asset using the configured default template
+	 * Return the URL to render this asset
 	 */
 	@Override
 	public String getUrl(Arg... args) {
-		return "TODO";
-		// return getUrl(e.getConfig().getDefaultTemplate(c), args);
+		return e.getUrl(getId(), args);
 	}
 
-	/**
-	 * Return the URL to render this asset using a specified template
-	 */
-	@Override
-	public String getUrl(String template, Arg... args) {
-
-		String tid = i.GetVar("tid");
-		String ttype = "Template";
-		if (tid == null) {
-			tid = i.GetVar("eid");
-			ttype = "CSElement";
-		}
-		String res = RenderTag.gettemplateurl().tname(template).c(c)
-				.cid(cid.toString()).site(i.GetVar("site")).tid(tid)
-				.ttype(ttype).eval(i, "outstr");
-		log.debug("getUrl: outstr=" + res);
-		return res;
-	}
 
 	/**
 	 * 

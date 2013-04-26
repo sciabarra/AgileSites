@@ -8,6 +8,7 @@ import wcs.java.CSElement;
 import wcs.java.AssetSetup;
 import wcs.java.Picker;
 import wcs.java.SitePlan;
+import static java.lang.String.format;
 
 public class Topmenu extends Element {
 
@@ -23,10 +24,10 @@ public class Topmenu extends Element {
 		log.debug("Testing Topmenu");
 
 		Picker html = Picker.load("/blueprint/template.html", "#topmenu");
-		log.debug("picker="+html);
-		
+		log.debug("picker=" + html);
+
 		html.dump(log);
-		
+
 		SitePlan sp = e.getSitePlan();
 		StringBuilder sb = new StringBuilder();
 		Id me = e.getId();
@@ -34,11 +35,11 @@ public class Topmenu extends Element {
 		for (Id id : sp.children()) {
 			String name = e.getAsset(id).getName();
 			if (id.equals(me)) {
-				sb.append("<b>").append(name).append("</b>");
+				sb.append("<b>").append(name).append("</b>").append(sep);
 			} else {
-				sb.append("<a href='#'>").append(name).append("</a>");
+				sb.append(format("<a href='%s'>%s</a>%s", //
+						e.getUrl(id), name, sep));
 			}
-			sb.append(sep);
 		}
 		if (sb.length() > 0)
 			sb.setLength(sb.length() - sep.length());

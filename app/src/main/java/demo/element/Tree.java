@@ -32,8 +32,8 @@ public class Tree extends Element {
 		for (Id id : sp.children()) {
 			Asset a = e.getAsset(id); 
 			String node = String.format(//
-					"d.add(%d, %d, '%s');\n", //
-					id.cid, parent.cid, a.getName());
+					"d.add(%d, %d, '%s', '%s');\n", //
+					id.cid, parent.cid, a.getName(), a.getUrl());
 			result.append(node);
 			visit(id, result);
 		}

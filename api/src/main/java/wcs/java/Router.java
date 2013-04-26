@@ -2,6 +2,7 @@ package wcs.java;
 
 import wcs.core.Arg;
 import wcs.core.Call;
+import wcs.core.Id;
 import wcs.core.Log;
 import wcs.core.URL;
 import wcs.core.WCS;
@@ -32,7 +33,7 @@ abstract public class Router implements wcs.core.Router {
 			router.site = Config.getConfig(site).getSite();
 			return router;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex, "cannot get router");
 			return null;
 		}
 	}
@@ -61,5 +62,21 @@ abstract public class Router implements wcs.core.Router {
 		return call;
 	}
 	
+	/**
+	 * Route an asset
+	 * 
+	 * @param env
+	 * @param url
+	 * @return
+	 */
 	abstract public Call route(Env env, URL url);
+	
+	/**
+	 * Link an asset
+	 * 
+	 * @param env
+	 * @param id
+	 * @return
+	 */
+	abstract public String link(Env env, Id id, Arg...args);
 }

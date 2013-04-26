@@ -15,8 +15,10 @@ import wcs.core.ICSProxyJ;
 import wcs.core.Id;
 import wcs.core.Log;
 import wcs.core.Range;
+import wcs.core.WCS;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.PublicationTag;
+import wcs.core.tag.RenderTag;
 import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
 
@@ -30,6 +32,7 @@ public class Env extends ICSProxyJ {
 
 	private static Log log = Log.getLog(Env.class);
 	private Config config;
+	private Router router;
 	private String site;
 
 	/**
@@ -42,6 +45,7 @@ public class Env extends ICSProxyJ {
 		if (site != null) {
 			config = Config.getConfig(site);
 			this.site = config.getSite();
+			router = Router.getRouter(site);
 		}
 	}
 
@@ -286,8 +290,6 @@ public class Env extends ICSProxyJ {
 		return getAsset(getC(), getCid());
 	}
 
-	
-	
 	/**
 	 * Return current "c" (content type)
 	 * 
@@ -310,13 +312,19 @@ public class Env extends ICSProxyJ {
 	public Id getId() {
 		return new Id(getC(), getCid());
 	}
-	
-	
+
 	/**
 	 * Return the current config
 	 */
 	public Config getConfig() {
 		return config;
+	}
+
+	/**
+	 * Return the current router
+	 */
+	public Router getRouter() {
+		return router;
 	}
 
 	public String getSiteId() {
@@ -329,6 +337,25 @@ public class Env extends ICSProxyJ {
 
 	public SitePlan getSitePlan() {
 		return new SitePlan(this);
+	}
+
+	/**
+	 * Return the URL to render this asset
+	 */
+	public String getUrl(Id id, Arg... args) {
+		String pCid = getRouter().link(this, id, args);
+		String pC = WCS.normalizeSiteName(getConfig().getSite());
+		String res = RenderTag.getpageurl().pagename("AAAgileRouter")//
+				.c(pC).cid(pCid).assembler("agilesites").eval(ics, "outstr");
+		log.debug("getUrl: outstr=" + res);
+		return res;
+	}
+
+	/**
+	 * Return the URL to render this asset
+	 */
+	public String getUrl(String c, Long cid, Arg... args) {
+		return getUrl(new Id(c, cid), args);
 	}
 
 	/**

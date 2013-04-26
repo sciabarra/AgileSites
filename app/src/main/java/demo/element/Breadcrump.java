@@ -9,6 +9,7 @@ import wcs.java.CSElement;
 import wcs.java.AssetSetup;
 import wcs.java.Picker;
 import wcs.java.SitePlan;
+import static java.lang.String.format;
 
 public class Breadcrump extends Element {
 
@@ -38,8 +39,7 @@ public class Breadcrump extends Element {
 			log.trace("id: %s", id);
 			if (!id.c.equals("Publication")) {
 				String name = e.getAsset(id).getName();
-				sb.append("<a href='#'>").append(name).append("</a>");
-				sb.append(sep);
+				sb.append(format("<a href='%s'>%s</a>%s",  e.getUrl(id), name, sep));
 			}
 		}
 		sb.append("<b>").append(a.getName()).append("</b>");

@@ -23,7 +23,6 @@ public abstract class Asset {
 	private Date startDate;
 	private Date endDate;
 	private String template;
-	
 
 	public Asset() {
 	}
@@ -388,8 +387,8 @@ public abstract class Asset {
 	}
 
 	/**
-	 * Render a single slot pointed by the i-th asset field using the the specified
-	 * template.
+	 * Render a single slot pointed by the i-th asset field using the the
+	 * specified template.
 	 * 
 	 * Slot type is configured in Config. You need a field of the same name of
 	 * the field specifying the type as parameter "c"
@@ -407,8 +406,8 @@ public abstract class Asset {
 	}
 
 	/**
-	 * Render a single slot pointed by the first asset field using the the specified
-	 * template.
+	 * Render a single slot pointed by the first asset field using the the
+	 * specified template.
 	 * 
 	 * Slot type is configured in Config. You need a field of the same name of
 	 * the field specifying the type as parameter "c"
@@ -423,17 +422,11 @@ public abstract class Asset {
 		return "";
 	}
 
+	
 	/**
-	 * Return the URL to render this asset using the configured default template
+	 * Return the URL to render this asset 
 	 */
 	public String getUrl(Arg... args) {
-		return null;
-	}
-
-	/**
-	 * Return the URL to render this asset using a specified template
-	 */
-	public String getUrl(String template, Arg... args) {
 		return null;
 	}
 
