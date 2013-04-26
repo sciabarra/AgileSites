@@ -272,12 +272,22 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
+	 * Return the asset identified by and Id (or null if not found)
+	 * 
+	 */
+	public Asset getAsset(Id id) {
+		return getAsset(id.c, id.cid);
+	}
+
+	/**
 	 * Return the asset identified by the current c/cid
 	 */
 	public Asset getAsset() {
 		return getAsset(getC(), getCid());
 	}
 
+	
+	
 	/**
 	 * Return current "c" (content type)
 	 * 
@@ -295,6 +305,14 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
+	 * Return current asset id
+	 */
+	public Id getId() {
+		return new Id(getC(), getCid());
+	}
+	
+	
+	/**
 	 * Return the current config
 	 */
 	public Config getConfig() {
@@ -307,6 +325,10 @@ public class Env extends ICSProxyJ {
 				.field("name").value(config.getSite()).run(ics);
 		return PublicationTag.get().name(pub)//
 				.field("id").eval(ics, "output");
+	}
+
+	public SitePlan getSitePlan() {
+		return new SitePlan(this);
 	}
 
 	/**
@@ -378,6 +400,13 @@ public class Env extends ICSProxyJ {
 			list.add(arg);
 		list.add(Common.arg("ELEMENTNAME", site + "/" + name));
 		return Common.call("RENDER:CALLELEMENT", list);
+	}
+
+	/**
+	 * Clear the current error code
+	 */
+	public void clearError() {
+		ics.ClearErrno();
 	}
 
 }

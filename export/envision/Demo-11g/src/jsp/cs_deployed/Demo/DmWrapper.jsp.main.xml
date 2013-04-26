@@ -9,7 +9,7 @@
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-04-24T10:19:33.249Z</updateddate>
+    <updateddate>2013-04-26T11:22:53.981Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -105,14 +105,14 @@
     <attribute>
         <name>resdetails2</name>
         <data>
-            <stringValue>timestamp=1366798773240</stringValue>
+            <stringValue>timestamp=1366975373975</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>url</name>
         <data>
             <blobValue>
-                <filename>Demo\DmWrapper_demo.element.Wrapper.jsp</filename>
+                <filename>Demo\DmWrapper_demo.element.Wrapper,0.jsp</filename>
                 <foldername></foldername>
                 <filedata></filedata>
             </blobValue>
@@ -136,9 +136,9 @@
 </dependencies>
 ==================______________________==================
 #
-#Wed Apr 24 10:30:25 UTC 2013
+#Fri Apr 26 12:55:41 UTC 2013
 storable0=/ELEMENTS/JSP/Demo/DmWrapper.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FDemo%2FDmWrapper.jsp
-@hashval=405933939
+@hashval=455555474
 key=CSElement-f4381158-c5a6-49cd-8db9-702aa5b36d24
 type=ASSETDATA
 sites=Demo

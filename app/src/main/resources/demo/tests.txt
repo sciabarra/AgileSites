@@ -4,3 +4,6 @@ demo.test.ErrorTest
 demo.test.page.ContentLayoutTest
 demo.test.page.ContentSummaryTest
 demo.test.page.ContentSeeAlsoTest
+demo.test.TreeTest
+demo.test.BreadcrumpTest
+demo.test.TopmenuTest

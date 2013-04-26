@@ -3,9 +3,9 @@ package wcs.core;
 import org.apache.log4j.Logger;
 
 /**
- * Log class that logs to a socket if available.
- * This class is a layer on top of Log4J but it is used in order to change implementation 
- * if needed at some point.
+ * Log class that logs to a socket if available. This class is a layer on top of
+ * Log4J but it is used in order to change implementation if needed at some
+ * point.
  * 
  * @author msciab
  * 
@@ -14,19 +14,9 @@ public class Log {
 
 	private Logger logger = null;
 
-	/*
-	private String className;
-	private String e2s(Exception e) {
-		if (e == null)
-			return "";
-		CharArrayWriter caw = new CharArrayWriter();
-		e.printStackTrace(new PrintWriter(caw));
-		return "\n" + caw.toString();
-	}*/
-
 	private Log(Logger logger) {
 		this.logger = logger;
-		//this.className = logger.getName();
+		// this.className = logger.getName();
 	}
 
 	public void trace(String message, Object... args) {
@@ -34,9 +24,9 @@ public class Log {
 	}
 
 	public void trace(Exception ex, String message, Object... args) {
-		//System.out.println("[TRACE]" + className + String.format(message, args) + e2s(ex));
 		if (logger != null && logger.isTraceEnabled())
-			logger.trace(String.format(message, args), ex);
+			logger.trace(args.length > 0 ? String.format(message, args)
+					: message, ex);
 	}
 
 	public void debug(String message, Object... args) {
@@ -46,7 +36,8 @@ public class Log {
 	public void debug(Exception ex, String message, Object... args) {
 		// System.out.println("[DEBUG]" + className + message + e2s(ex));
 		if (logger != null && logger.isDebugEnabled())
-			logger.debug(String.format(message, args), ex);
+			logger.debug(args.length > 0 ? String.format(message, args)
+					: message, ex);
 	}
 
 	public void info(String message, Object... args) {
@@ -54,9 +45,10 @@ public class Log {
 	}
 
 	public void info(Exception ex, String message, Object... args) {
-		//System.out.println("[ INFO]" + className + message + e2s(ex));
+		// System.out.println("[ INFO]" + className + message + e2s(ex));
 		if (logger != null && logger.isInfoEnabled())
-			logger.info(String.format(message, args), ex);
+			logger.info(args.length > 0 ? String.format(message, args)
+					: message, ex);
 	}
 
 	public void warn(String message, Object... args) {
@@ -64,9 +56,11 @@ public class Log {
 	}
 
 	public void warn(Exception ex, String message, Object... args) {
-		//System.out.println("[WARN ]" + className + String.format(message, args) + e2s(ex));
+		// System.out.println("[WARN ]" + className + String.format(message,
+		// args) + e2s(ex));
 		if (logger != null)
-			logger.warn(String.format(message, args), ex);
+			logger.warn(args.length > 0 ? String.format(message, args)
+					: message, ex);
 	}
 
 	public void error(String message, Object... args) {
@@ -74,9 +68,11 @@ public class Log {
 	}
 
 	public void error(Exception ex, String message, Object... args) {
-		//System.out.print("[ERROR]" + className + String.format(message, args) + e2s(ex));
+		// System.out.print("[ERROR]" + className + String.format(message, args)
+		// + e2s(ex));
 		if (logger != null)
-			logger.error(String.format(message, args), ex);
+			logger.error(args.length > 0 ? String.format(message, args)
+					: message, ex);
 	}
 
 	/**
@@ -94,7 +90,6 @@ public class Log {
 		return new Log(logger);
 	}
 
-	
 	/**
 	 * Get a logger by class
 	 * 
@@ -102,6 +97,6 @@ public class Log {
 	 * @return
 	 */
 	public static Log getLog(Class<?> clazz) {
-		return getLog(clazz==null ? null : clazz.getCanonicalName());
+		return getLog(clazz == null ? null : clazz.getCanonicalName());
 	}
 }

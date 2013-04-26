@@ -1,13 +1,13 @@
 package demo.element.page;
 
+import static wcs.java.util.IfNull.ifn;
 import wcs.core.Log;
-import wcs.java.Env;
-import wcs.java.Element;
-import wcs.java.Template;
 import wcs.java.Asset;
 import wcs.java.AssetSetup;
+import wcs.java.Element;
+import wcs.java.Env;
 import wcs.java.Picker;
-import static wcs.java.util.IfNull.*;
+import wcs.java.Template;
 
 public class ContentLayout extends Element {
 
@@ -23,13 +23,16 @@ public class ContentLayout extends Element {
 	@Override
 	public String apply(Env e) {
 
-		log.trace("c/cid=%s/%s", e.getC(), e.getCid().toString());
+		// log.trace("c/cid=%s/%s", e.getC(), e.getCid().toString());
+
 		Asset a = e.getAsset();
 		Picker html = Picker.load("/blueprint/template.html", "#content");
 
 		html.prefixAttrs("img", "src", "/cs/blueprint/");
 		html.replace("#title", a.getString("Title"));
 		html.replace("#subtitle", a.getString("Subtitle"));
+		html.replace("#summary", a.getString("Summary"));
+		html.replace("#detail", a.getString("Detail"));
 
 		html.replace("#teaser-title1", ifn(a.getString("TeaserTitle", 1), ""));
 		html.replace("#teaser-body1", ifn(a.getString("TeaserText", 1), ""));
@@ -51,8 +54,10 @@ public class ContentLayout extends Element {
 		html.replace("#seealso2", a.getSlot("SeeAlso", 2, "Content/DmSeeAlso"));
 		html.replace("#seealso3", a.getSlot("SeeAlso", 3, "Content/DmSeeAlso"));
 
-		// Picker.dump(log, "***" + a.getSlot("SeeAlso", 2,
-		// "Content/DmSeeAlso"));
+		html.replace("#tree", e.call("DmTree"));
+		html.replace("#topmenu", e.call("DmTopmenu"));
+		html.replace("#breadcrump", e.call("DmBreadcrump",//
+				arg("c", a.getC()), arg("cid", a.getCid().toString())));
 
 		return html.html();
 	}

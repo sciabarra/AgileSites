@@ -6,7 +6,7 @@
     <createddate>2013-04-24T08:35:58.141Z</createddate>
     <description></description>
     <publist>Demo</publist>
-    <status>ED</status>
+    <status>VO</status>
     <subtype>Content</subtype>
     <updatedby>fwadmin</updatedby>
     <updateddate>2013-04-24T09:07:08.186Z</updateddate>
@@ -154,7 +154,9 @@
     </associations>
 </ns2:assetBean>
 
+
 <!--==================___ METADATA ___================
+
 <dependencies>
   <list>
     <dependency>
@@ -213,9 +215,10 @@
     </dependency>
   </list>
 </dependencies>
+
 ==================______________________==================
 #
-#Wed Apr 24 10:30:25 UTC 2013
+#Fri Apr 26 12:55:41 UTC 2013
 key=Page-14f57ebe-899a-4fed-8950-36efb0cde37a
 type=ASSETDATA
 sites=Demo

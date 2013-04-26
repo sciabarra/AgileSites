@@ -3,6 +3,7 @@ package wcs.java;
 import java.util.Date;
 
 import wcs.core.Arg;
+import wcs.core.Id;
 import wcs.core.Log;
 
 import com.fatwire.assetapi.data.AttributeData;
@@ -22,6 +23,7 @@ public abstract class Asset {
 	private Date startDate;
 	private Date endDate;
 	private String template;
+	
 
 	public Asset() {
 	}
@@ -63,11 +65,20 @@ public abstract class Asset {
 	}
 
 	/**
+	 * The current asset id
+	 * 
+	 * @return
+	 */
+	public Id getId() {
+		return null;
+	}
+
+	/**
 	 * The current asset type
 	 * 
 	 * @return
 	 */
-	public String getType() {
+	public String getC() {
 		return type;
 	}
 
@@ -76,7 +87,7 @@ public abstract class Asset {
 	 * 
 	 * @return
 	 */
-	public Long getId() {
+	public Long getCid() {
 		return null;
 	}
 
@@ -215,7 +226,7 @@ public abstract class Asset {
 	 * @param asset
 	 * @return
 	 */
-	public Long getId(String attribute) {
+	public Long getCid(String attribute) {
 		return null;
 	}
 
@@ -250,7 +261,7 @@ public abstract class Asset {
 	 * @param asset
 	 * @return
 	 */
-	public Long getId(String attribute, int n) {
+	public Long getCid(String attribute, int n) {
 		return null;
 	}
 

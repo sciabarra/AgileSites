@@ -35,7 +35,7 @@ public class RouterTest extends TestElement {
 		else {
 			assertAttr("ics-callelement", "element", "Demo/DmWrapper");
 			assertAttr("ics-callelement", "c", "Page");
-			assertAttr("ics-callelement", "cid", home.getId().toString());
+			assertAttr("ics-callelement", "cid", home.getCid().toString());
 		}
 
 		parse(it.route(e, url("?a=1&b=2&c=3")));

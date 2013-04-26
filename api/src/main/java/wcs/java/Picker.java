@@ -133,12 +133,13 @@ public class Picker {
 			if (cssq != null) {
 				log.debug("selecting " + cssq);
 				elem = doc.select(cssq).first();
+				if (elem == null) {
+					throw new IllegalArgumentException("cannot select " + cssq);
+				}
 			} else
 				elem = doc;
 		} else {
-			warn(null, "document not found - creating a void doc");
-			doc = new Document(baseUrl);
-			elem = doc;
+			throw new IllegalArgumentException("cannot load document");
 		}
 
 		// finally assign....
@@ -377,18 +378,16 @@ public class Picker {
 	}
 
 	/**
-	 * Convenience method to dump a generic html
-	 * are decoded.
+	 * Convenience method to dump a generic html are decoded.
 	 * 
 	 * @param stream
 	 * @return
 	 */
 	public static void dump(Log log, String html) {
 		if (log != null)
-			log.trace(Util.dumpStream(html));		
+			log.trace(Util.dumpStream(html));
 	}
 
-	
 	/**
 	 * Convenience method to dump the outer html of the current node - embedded
 	 * calls are decoded.

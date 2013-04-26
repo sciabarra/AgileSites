@@ -21,6 +21,8 @@ import wcs.core.Sequencer;
 import wcs.java.Config;
 import wcs.java.Insite;
 
+import COM.FutureTense.Interfaces.IList;
+
 import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AttributeDataImpl;
 import com.fatwire.assetapi.data.BlobObject;
@@ -357,6 +359,31 @@ public class Util {
 	}
 
 	/**
+	 * Convenience method to dump an IList
+	 */
+	public static String dumpIList(IList ilist) {
+		if (ilist == null)
+			return "NULL ILIST!";
+		StringBuffer sb = new StringBuffer("*****\n");
+		for (int i = 1; i <= ilist.numRows(); i++) {
+			sb.append(i + ") ");
+			for (int j = 0; j < ilist.numColumns(); j++) {
+				String k = ilist.getColumnName(j);
+				sb.append(k).append("=");
+				try {
+					sb.append(ilist.getValue(k).toString()).append(" ");
+				} catch (NoSuchFieldException e) {
+					// e.printStackTrace();
+				}
+			}
+			ilist.moveTo(i);
+			sb.append("\n");
+		}
+		sb.append("*****");
+		return sb.toString();
+	}
+
+	/**
 	 * Stream an exceptions in a string
 	 */
 	public static String ex2str(Exception ex) {
@@ -377,8 +404,8 @@ public class Util {
 			Field field = config.getClass().getField(attribute);
 			return (Insite) field.get(config);
 		} catch (Exception ex) {
-			log.error("no such a field %s",  attribute);
+			log.error("no such a field %s", attribute);
 		}
 		return null;
-	}	
+	}
 }

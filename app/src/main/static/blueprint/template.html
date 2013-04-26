@@ -18,10 +18,6 @@
 </script>
 <script id="js-import" type="text/javascript" src="dtree/js/dtree.js"></script>
 <style>
-.right {
-	position: absolute right:                               0px
-}
-
 .center {
 	text-align: center;
 }
@@ -29,18 +25,22 @@
 </head>
 <body>
 	<div id="content" class="container">
-		<div class="span-24 last">
-			<div class="right">
-				<a href="#">Top</a>&nbsp;|&nbsp;<a href="#">Level</a>&nbsp;|&nbsp;<a
-					href="#">Pages</a>
+		<div class="span-24 last right">
+			<div id="topmenu" class="right">
+				<a href="#">Top</a>&nbsp;|&nbsp; <a href="#">Level</a>&nbsp;|&nbsp;
+				<a href="#">Pages</a>
 			</div>
 		</div>
-		<div id="header" class="span-24">
+		<div id="header" class="span-24 last">
 			<h1 id="title">Title</h1>
 			<hr>
 			<h2 id="subtitle" class="alt">Subtitle</h2>
 		</div>
 		<hr>
+		<div id="breadcrump" class="span-24 last">
+			<a href="#">This</a>&nbsp;&raquo;&nbsp;<a href="#">is a</a>&nbsp;&raquo;&nbsp;<a
+				href="#">breadcrump</a>
+		</div>
 		<hr class="space">
 		<div class="span-15 prepend-1 colborder">
 			<b id="date">July 07, 2012</b>
@@ -53,35 +53,25 @@
 				taciti sociosqu ad litora torquent per conubia nostra, per inceptos
 				hymenaeos. Pellentesque tortor libero, venenatis vitae, rhoncus eu,
 				placerat ut, mi. Nulla nulla.</blockquote>
-			<div id="detail">
+			<div>
 				<p>
-					<img id="image-main" src="img/test.jpg" class="top pull-1 left" alt="test">
-					Lorem ipsum dolor sit amet, <em>consectetuer adipiscing elit</em>.
-					Nunc congue ipsum vestibulum libero. Aenean vitae justo. Nam eget
-					tellus. Etiam convallis, est eu lobortis mattis, lectus tellus
-					tempus felis, a ultricies erat ipsum at metus.
-				</p>
-				<p>
-					Lorem ipsum dolor sit amet, consectetuer adipiscing elit. <a
-						href="#">Morbi et risus</a>. Aliquam nisl. Nulla facilisi. Cras
-					accumsan vestibulum ante. Vestibulum sed tortor. Praesent <span
-						class="caps">SMALL CAPS</span> tempus fringilla elit. Ut elit
-					diam, sagittis in, nonummy in, gravida non, nunc. Ut orci. Class
-					aptent taciti sociosqu ad litora torquent per conubia nostra, per
-					inceptos hymenaeos. Nam egestas, orci eu imperdiet malesuada, nisl
-					purus fringilla odio, quis commodo est orci vitae justo. Aliquam
-					placerat odio tincidunt nulla. Cras in libero. Aenean rutrum, magna
-					non tristique posuere, erat odio eleifend nisl, non convallis est
-					tortor blandit ligula. Nulla id augue.
-				</p>
-				<p>
-					Maecenas vel metus quis magna pharetra fermentum. <em>Integer
-						sit amet tortor</em>. Maecenas porttitor, pede sed gravida auctor,
-					nulla augue aliquet elit, at pretium urna orci ut metus. Aliquam in
-					dolor. Vestibulum ante ipsum primis in faucibus orci luctus et
-					ultrices posuere cubilia Curae; Sed aliquam, tellus id ornare
-					posuere, quam nunc accumsan turpis, at convallis tellus orci et
-					nisl. Phasellus congue neque a lorem.
+					<img id="image-main" src="img/test.jpg" class="top pull-1 left"
+						alt="test">
+				<div id="detail">
+					<p>
+						Lorem ipsum dolor sit amet, consectetuer adipiscing elit. <a
+							href="#">Morbi et risus</a>. Aliquam nisl. Nulla facilisi. Cras
+						accumsan vestibulum ante. Vestibulum sed tortor. Praesent <span
+							class="caps">SMALL CAPS</span> tempus fringilla elit. Ut elit
+						diam, sagittis in, nonummy in, gravida non, nunc. Ut orci. Class
+						aptent taciti sociosqu ad litora torquent per conubia nostra, per
+						inceptos hymenaeos. Nam egestas, orci eu imperdiet malesuada, nisl
+						purus fringilla odio, quis commodo est orci vitae justo. Aliquam
+						placerat odio tincidunt nulla. Cras in libero. Aenean rutrum,
+						magna non tristique posuere, erat odio eleifend nisl, non
+						convallis est tortor blandit ligula. Nulla id augue.
+					</p>
+				</div>
 				</p>
 			</div>
 			<hr>
@@ -105,14 +95,15 @@
 			</div>
 		</div>
 		<div id="related-container" class="span-7 last">
-			<div class="dtree">
+			<div id="tree" class="dtree">
 				<p>
 					<a href="javascript: d.openAll();">open all</a> | <a
 						href="javascript: d.closeAll();">close all</a>
 				</p>
 				<script type="text/javascript">
-				<!--
 					d = new dTree('d');
+				</script>
+				<script id="tree-body" type="text/javascript">
 					d.add(0, -1, 'My example tree');
 					d.add(1, 0, 'Node 1', 'example01.html');
 					d.add(2, 0, 'Node 2', 'example01.html');
@@ -130,9 +121,9 @@
 					d.add(11, 9, 'Mom\'s birthday', 'example01.html');
 					d.add(12, 0, 'Recycle Bin', 'example01.html', '', '', base
 							+ 'dtree/img/trash.gif');
-
+				</script>
+				<script type="text/javascript">
 					document.write(d);
-				//-->
 				</script>
 			</div>
 			<h3></h3>

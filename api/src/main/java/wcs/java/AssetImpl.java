@@ -11,6 +11,7 @@ import java.util.List;
 import wcs.core.Arg;
 import wcs.core.Call;
 import wcs.core.Common;
+import wcs.core.Id;
 import wcs.core.Log;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.AssetsetTag;
@@ -39,6 +40,7 @@ class AssetImpl extends wcs.java.Asset {
 
 	private Long cid;
 	private String c;
+	private Id id;
 
 	boolean insite = false;
 
@@ -47,6 +49,7 @@ class AssetImpl extends wcs.java.Asset {
 		this.i = e.ics;
 		this.c = c;
 		this.cid = cid;
+		this.id = new Id(c, cid);
 		this.cfg = e.getConfig();
 
 		AssetTag.load().name(a).type(c).objectid(cid.toString()).run(i);
@@ -66,7 +69,7 @@ class AssetImpl extends wcs.java.Asset {
 	private String as() {
 		if (as == null) {
 			as = tmp();
-			AssetsetTag.setasset().name(as).type(getType()).id(cid.toString())
+			AssetsetTag.setasset().name(as).type(getC()).id(cid.toString())
 					.run(i);
 		}
 		return as;
@@ -88,9 +91,8 @@ class AssetImpl extends wcs.java.Asset {
 	private String at(String attribute) {
 		log.debug("extracting attribute " + attribute);
 		String attrList = as() + attribute.toUpperCase();
-		;
 		if (i.GetList(attrList) == null) {
-			String attrType = e.getConfig().getAttributeType(getType());
+			String attrType = e.getConfig().getAttributeType(getC());
 			AssetsetTag.getattributevalues().name(as).attribute(attribute)
 					.listvarname(attrList).typename(attrType).run(i);
 		}
@@ -106,7 +108,7 @@ class AssetImpl extends wcs.java.Asset {
 	private String ass(String assoc) {
 		String assocList = as() + "_ASS_" + assoc.toUpperCase();
 		if (i.GetList(assocList) == null) {
-			AssetTag.children().code(assocList).type(getType())
+			AssetTag.children().code(assocList).type(getC())
 					.assetid(cid.toString()).code(assoc).order("nrank").run(i);
 		}
 		return assocList;
@@ -116,7 +118,15 @@ class AssetImpl extends wcs.java.Asset {
 	 * Return the id of the asset
 	 */
 	@Override
-	public Long getId() {
+	public Id getId() {
+		return id;
+	}
+
+	/**
+	 * Return the cid of the asset
+	 */
+	@Override
+	public Long getCid() {
 		return cid;
 	}
 
@@ -207,7 +217,7 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 */
 	@Override
-	public Long getId(String attribute) {
+	public Long getCid(String attribute) {
 		return e.getLong(at(attribute), "value");
 	}
 
@@ -219,7 +229,7 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 */
 	@Override
-	public Long getId(String attribute, int n) {
+	public Long getCid(String attribute, int n) {
 		return e.getLong(at(attribute), n, "value");
 	}
 
@@ -364,8 +374,8 @@ class AssetImpl extends wcs.java.Asset {
 	public String getBlobUrl(String attribute, int pos, String mimeType,
 			Arg... args) {
 
-		Long blobWhere = this.getId(attribute, pos);
-		if(blobWhere==null)
+		Long blobWhere = this.getCid(attribute, pos);
+		if (blobWhere == null)
 			return null;
 
 		Config cfg = e.getConfig();
@@ -409,23 +419,28 @@ class AssetImpl extends wcs.java.Asset {
 			List<Arg> list = new ArrayList<Arg>();
 			list.add(arg("SITE", i.GetVar("site")));
 			list.add(arg("TNAME", template));
+
 			list.add(arg("TTYPE", //
 					i.GetVar("tid") != null ? "Template" : "CSElement"));
 			list.add(arg("TID", //
 					i.GetVar("tid") != null ? i.GetVar("tid") : i.GetVar("eid")));
 
-			// read the type configuration
+			list.add(arg("ASSETTYPE", c));
+			list.add(arg("ASSETID", cid.toString()));
+			list.add(arg("FIELD", attribute));
+			list.add(arg("INDEX", Integer.toString(n)));
+
+			// read internal c/cid, c from the attribute configuration
+
+			long icid = IfNull.ifn(getCid(attribute, n), 0l);
 
 			Insite insite = Util.readAttributeConfig(attribute, e.getConfig());
-			String c = insite.get("C");
+			String ic = insite.get("C");
 			if (insite == null || insite.get("C") == null) {
 				log.error("need to configure c for attribute %s", attribute);
 				throw new IllegalArgumentException("attribute " + attribute
 						+ " has not a type configured in Config");
 			}
-
-			list.add(arg("C", c));
-			list.add(arg("FIELD", attribute));
 
 			// copy additional args
 			for (Arg arg : args)
@@ -433,13 +448,14 @@ class AssetImpl extends wcs.java.Asset {
 
 			if (n < 0) {
 				return Common.call("INSITE:CALLTEMPLATELOOP", list);
-			} else {				
-				list.add(arg("CID", ""+IfNull.ifn(getId(attribute, n), 0l)));
+			} else {
+				list.add(arg("C", ic));
+				list.add(arg("CID", Long.toString(icid)));
 				return Common.call("INSITE:CALLTEMPLATE", list);
 			}
 		} catch (Exception ex) {
 			log.error(ex, "exception in insiteCall");
-			return "ERROR "+ex.getMessage();
+			return "ERROR " + ex.getMessage();
 		}
 	}
 

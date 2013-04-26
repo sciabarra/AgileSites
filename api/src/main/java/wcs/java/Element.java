@@ -6,6 +6,7 @@ import java.util.List;
 import wcs.core.Arg;
 import wcs.core.Common;
 import wcs.core.Log;
+import wcs.java.util.Util;
 import COM.FutureTense.Interfaces.ICS;
 
 /**
@@ -35,8 +36,11 @@ public abstract class Element implements wcs.core.Element {
 			site = ics.GetVar("site");
 			Env env = new Env(ics, site);
 			return apply(env);
+		} catch (NullPointerException npe) {
+			log.error(npe, "NPE: ");
+			return "NULL <span style='display: none'>" + Util.ex2str(npe) + "</span>";
 		} catch (Exception ex) {
-			log.error(ex, "exception applying element");
+			log.error(ex, "exception in element");
 			return ex.getMessage();
 		}
 	}

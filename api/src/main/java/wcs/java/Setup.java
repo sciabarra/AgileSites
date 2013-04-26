@@ -184,7 +184,7 @@ abstract public class Setup implements wcs.core.Setup {
 		try {
 
 			MutableAssetData data = findByName(setup.getName(),
-					setup.getType(), null, setup.getAttributes());
+					setup.getC(), null, setup.getAttributes());
 
 			// inserting
 			if (data == null)
@@ -203,9 +203,9 @@ abstract public class Setup implements wcs.core.Setup {
 	String insert(AssetSetup asset, long id) throws AssetAccessException {
 		log.debug("inserting " + asset);
 
-		AssetId aid = new AssetIdImpl(asset.getType(), id);
+		AssetId aid = new AssetIdImpl(asset.getC(), id);
 
-		MutableAssetData data = adm.newAssetData(asset.getType(),
+		MutableAssetData data = adm.newAssetData(asset.getC(),
 				asset.getSubtype());
 
 		data.setAssetId(aid);
