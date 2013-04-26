@@ -11,7 +11,7 @@
         <description>Attribute Editor</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>c:\Java\Sites\11gR1\App_Server\apache-tomcat-6.0.32\temp\fwcs-tmp\temp77\dcs4364476102224113817.tmp</urldescriptorspec>
+        <urldescriptorspec>c:\Java\Sites\11gR1\App_Server\apache-tomcat-6.0.32\temp\fwcs-tmp\temp176\dcs6947912950289721876.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-AttrTypes</uid>
         <useDimension></useDimension>
@@ -504,7 +504,7 @@ dFB1YmxpY2F0aW9uLnB1YmlkPTApDQoJCVZhcmlhYmxlcy5xdWVyeWVuZA0K</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Fri Apr 26 12:55:39 UTC 2013
+#Fri Apr 26 21:22:04 UTC 2013
 key=@ASSET_TYPE-CSSystem-AssetType-AttrTypes
 type=ASSET_TYPE
 sites=Demo
