@@ -9,7 +9,7 @@
     <status>ED</status>
     <subtype>Content</subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-04-26T10:30:27.074Z</updateddate>
+    <updateddate>2013-04-29T09:00:15.307Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -123,7 +123,9 @@
     <attribute>
         <name>Summary</name>
         <data>
-            <stringValue>SubTitle</stringValue>
+            <stringValue>&lt;div&gt;
+	This is a SUMMARY.&lt;/div&gt;
+</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -265,7 +267,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Fri Apr 26 21:22:05 UTC 2013
+#Mon Apr 29 09:25:03 UTC 2013
 storable0=ASSET/Page/75/77/Home.Image(4adc5be5-d187-4c2b-a299-670a3011382e).test.jpg||_storable_type\=Home.Image%284adc5be5-d187-4c2b-a299-670a3011382e%29.test.jpg&_blob_prop\=Image&_value_count\=S
 key=Page-4adc5be5-d187-4c2b-a299-670a3011382e
 type=ASSETDATA

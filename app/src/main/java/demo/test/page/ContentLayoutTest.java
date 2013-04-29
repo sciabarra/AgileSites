@@ -11,7 +11,7 @@ import demo.element.page.ContentLayout;
 // this test must be run by AgileSites TestRunnerElement
 public class ContentLayoutTest extends TestElement {
 	
-	Log log = Log.getLog(ContentLayoutTest.class);
+	final static Log log = Log.getLog(ContentLayoutTest.class);
 	ContentLayout it;
 	
 	@Before

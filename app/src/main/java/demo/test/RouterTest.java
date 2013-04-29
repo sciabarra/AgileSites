@@ -13,7 +13,7 @@ import static wcs.core.Common.*;
 
 public class RouterTest extends TestElement {
 
-	Log log = Log.getLog(RouterTest.class);
+	final static Log log = Log.getLog(RouterTest.class);
 	Router it;
 	Env e;
 	Asset home;

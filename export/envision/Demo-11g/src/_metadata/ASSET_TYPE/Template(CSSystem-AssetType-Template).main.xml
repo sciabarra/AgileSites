@@ -11,7 +11,7 @@
         <description>Template</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>c:\Java\Sites\11gR1\App_Server\apache-tomcat-6.0.32\temp\fwcs-tmp\temp176\dcs3515619738880906214.tmp</urldescriptorspec>
+        <urldescriptorspec>c:\Java\Sites\11gR1\App_Server\apache-tomcat-6.0.32\temp\fwcs-tmp\temp20\dcs3376275463853327177.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-Template</uid>
         <useDimension></useDimension>
@@ -856,7 +856,7 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA0K</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Fri Apr 26 21:22:02 UTC 2013
+#Mon Apr 29 09:25:00 UTC 2013
 key=@ASSET_TYPE-CSSystem-AssetType-Template
 type=ASSET_TYPE
 sites=Demo

@@ -8,7 +8,7 @@ import wcs.core.Log;
 
 public class $subtype$$template$ extends Element {
 
-	Log log = Log.getLog($site;format="normalize"$.element.$type;format="normalize"$.$subtype$$template$.class); 
+	final static Log log = Log.getLog($template$.class); 
 			
 	public static AssetSetup setup() {
 		

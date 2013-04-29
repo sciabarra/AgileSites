@@ -11,7 +11,7 @@ import $site;format="normalize"$.element.$type;format="normalize"$.$subtype$$tem
 // this test must be run by AgileSites TestRunnerElement
 public class $subtype$$template$Test extends TestElement {
 
-	Log log = Log.getLog($site;format="normalize"$.element.$type;format="normalize"$.$subtype$$template$.class);
+	final static Log log = Log.getLog($template$Test.class);
 	$subtype$$template$ it;
 	
 	@Before

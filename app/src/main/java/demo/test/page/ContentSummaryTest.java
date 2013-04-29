@@ -10,7 +10,7 @@ import demo.element.page.ContentSummary;
 // this test must be run by AgileSites TestRunnerElement
 public class ContentSummaryTest extends TestElement {
 
-	Log log = Log.getLog(ContentSummary.class);
+	final static Log log = Log.getLog(ContentSummaryTest.class);
 	ContentSummary it;
 
 	@Before

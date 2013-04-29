@@ -54,23 +54,5 @@ public class Tree extends Element {
 
 		html.replace("#tree-body", result.toString());
 		return html/* .dump(log) */.html();
-
-		/*
-		sb.append("d.add(" + parent.cid + ", -1, '" + e.getConfig().getSite()
-				+ "');");
-
-		// children
-		for (Id id : sp.children()) {
-			String node = String.format(//
-					"d.add(%d, %d, '%s');", //
-					id.cid, parent.cid, id.toString());
-
-			log.trace(node);
-
-			sb.append(node);
-			// sb.append("d.add(1, 0, 'Sub');");
-			// sb.append("d.add(2, 1, 'SubSub');");
-		}*/
-
 	}
 }

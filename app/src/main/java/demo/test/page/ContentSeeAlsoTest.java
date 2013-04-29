@@ -10,7 +10,7 @@ import demo.element.page.ContentSeeAlso;
 // this test must be run by AgileSites TestRunnerElement
 public class ContentSeeAlsoTest extends TestElement {
 
-	Log log = Log.getLog(demo.element.page.ContentSeeAlso.class);
+	final static Log log = Log.getLog(ContentSeeAlsoTest.class);
 	ContentSeeAlso it;
 
 	@Before
