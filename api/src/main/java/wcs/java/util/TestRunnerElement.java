@@ -1,5 +1,6 @@
 package wcs.java.util;
 
+import java.io.ByteArrayOutputStream;
 import java.util.StringTokenizer;
 
 import org.junit.runner.Description;
@@ -8,16 +9,25 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
-import wcs.scala.XmlICS;
 import wcs.core.Log;
 import wcs.java.Element;
 import wcs.java.Env;
+import wcs.scala.XmlICS;
 
 public abstract class TestRunnerElement extends Element {
 
 	final static Log log = Log.getLog(TestRunnerElement.class);
 
 	abstract public Class<?>[] tests();
+
+	private String alltests() {
+		StringBuilder sb = new StringBuilder();
+		for (Class<?> clazz : tests()) {
+			sb.append(clazz.getCanonicalName()).append(";");
+		}
+		sb.setLength(sb.length() - 1);
+		return sb.toString();
+	}
 
 	private String testform(String pagename) {
 
@@ -30,6 +40,7 @@ public abstract class TestRunnerElement extends Element {
 			hids.append("<input type='hidden' name='test' value='")
 					.append(tests[i].getCanonicalName()).append("'>");
 		}
+
 		return "<h1>Test Runner</h1>"
 				+ "<form method=\"get\">\n"
 				+ "<input type='submit' value='Run All Tests'>"
@@ -49,7 +60,9 @@ public abstract class TestRunnerElement extends Element {
 				+ pagename
 				+ "'>"
 				+ "<input name='run_some' type='submit' value='Run Some Tests'>\n"
-				+ "</form>\n";
+				+ "</form>\n"
+				+ "<a href='/cs/ContentServer?xml=1&cs.contenttype=text/xml&pagename="
+				+ pagename + "'>XML</a>";
 	}
 
 	StringBuilder header = new StringBuilder();
@@ -61,6 +74,7 @@ public abstract class TestRunnerElement extends Element {
 		StringBuilder failures = new StringBuilder();
 		int failureCount = 0;
 		int runCount = 0;
+		int skipCount = 0;
 
 		@Override
 		public void testAssumptionFailure(Failure failure) {
@@ -75,6 +89,7 @@ public abstract class TestRunnerElement extends Element {
 
 		@Override
 		public void testStarted(Description description) throws Exception {
+
 			log.trace("testStarted");
 
 			sb.append("<b>").append(description.getClassName()).append(".")
@@ -82,22 +97,6 @@ public abstract class TestRunnerElement extends Element {
 			lastFailure = null;
 
 			super.testStarted(description);
-		}
-
-		@Override
-		public void testFailure(Failure failure) throws Exception {
-			log.trace("testFailure");
-
-			lastFailure = failure.getMessage();
-			if (lastFailure == null)
-				lastFailure = "Null pointer";
-
-			failureCount++;
-			failures.append("<h2>").append(failure.getTestHeader())
-					.append("</h2>");
-			failures.append("<pre>").append(failure.getTrace())
-					.append("</pre>");
-			super.testFailure(failure);
 		}
 
 		@Override
@@ -114,9 +113,25 @@ public abstract class TestRunnerElement extends Element {
 		}
 
 		@Override
+		public void testFailure(Failure failure) throws Exception {
+
+			log.trace("testFailure");
+
+			lastFailure = failure.getMessage();
+			if (lastFailure == null)
+				lastFailure = "Null pointer";
+
+			failureCount++;
+			failures.append("<h2>").append(failure.getTestHeader())
+					.append("</h2>");
+			failures.append("<pre>").append(failure.getTrace())
+					.append("</pre>");
+			super.testFailure(failure);
+		}
+
+		@Override
 		public void testIgnored(Description description) throws Exception {
 			log.trace("testIgnored");
-
 			sb.append("Skip: ").append(description.toString()).append("<br>");
 			super.testIgnored(description);
 		}
@@ -131,6 +146,7 @@ public abstract class TestRunnerElement extends Element {
 		public void testRunFinished(Result result) throws Exception {
 			log.trace("testRunFinished");
 			runCount = result.getRunCount();
+			skipCount = result.getIgnoreCount();
 			super.testRunFinished(result);
 		}
 
@@ -148,6 +164,24 @@ public abstract class TestRunnerElement extends Element {
 		return currTestEnv.get();
 	}
 
+	/**
+	 * Xml Test - run it all from Jenkins
+	 * 
+	 * @return
+	 */
+	public String xmlTest() {
+		return "";
+	}
+
+	/**
+	 * Html Test - run only selected tests
+	 * 
+	 * @return
+	 */
+	public String htmlTest() {
+		return "";
+	}
+
 	@Override
 	public String apply(Env e) {
 
@@ -159,29 +193,58 @@ public abstract class TestRunnerElement extends Element {
 		currTestEnv.set(te);
 
 		// System.out.println(Thread.currentThread());
+		JUnitCore core = new JUnitCore();
+		String tests = e.getString("test");
 
-		String test = e.getString("test");
-		if (test == null)
+		// XML Test?
+		ByteArrayOutputStream xmlOutput = null;
+		XmlTestReport report = null;
+		if (e.getString("xml") != null) {
+			xmlOutput = new ByteArrayOutputStream();
+			report = new XmlTestReport();
+			report.setOutput(xmlOutput);
+			core.addListener(report);
+			tests = alltests();
+		}
+
+		// do we have tests, or we need to ask for them?
+		if (tests == null)
 			return testform(e.getString("pagename"));
 
-		JUnitCore core = new JUnitCore();
 		TestListener listener = new TestListener();
 		core.addListener(listener);
 
-		// run all the tests and collect results
+		// initialize the report
+		int errorCount = 0;
+		int skipCount = 0;
 		int runCount = 0;
 		int failureCount = 0;
-		Class<?> clazz;
-		StringTokenizer st = new StringTokenizer(e.getString("test"), ";");
+
+		long timestamp = System.currentTimeMillis();
+
+		if (report != null)
+			report.startTestSuite(e.getString("site"));
+
+		// run all the tests and collect results
+		StringTokenizer st = new StringTokenizer(tests, ";");
 		while (st.hasMoreTokens())
 			try {
-				clazz = Class.forName(st.nextToken());
-				core.run(clazz);
+				String testName = st.nextToken();
+				//System.out.println(testName);
+				core.run(Class.forName(testName));
+
+				skipCount += listener.skipCount;
 				failureCount += listener.failureCount;
 				runCount += listener.runCount;
-			} catch (ClassNotFoundException ex) {
+			} catch (Throwable ex) {
+				errorCount++;
 				listener.append("<h1>Exception</h1><p>" + ex + "</p>");
 			}
+
+		// record the results
+		if (report != null)
+			report.endTestSuite(runCount, failureCount, errorCount, skipCount,
+					System.currentTimeMillis() - timestamp);
 
 		// display results
 		if (failureCount > 0)
@@ -197,7 +260,9 @@ public abstract class TestRunnerElement extends Element {
 		currTestEnv.remove();
 
 		// output
-		return header.toString() + listener.toString();
-
+		if (xmlOutput == null)
+			return header.toString() + listener.toString();
+		else
+			return new String(xmlOutput.toByteArray());
 	}
 }

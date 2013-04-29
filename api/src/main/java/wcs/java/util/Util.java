@@ -386,7 +386,7 @@ public class Util {
 	/**
 	 * Stream an exceptions in a string
 	 */
-	public static String ex2str(Exception ex) {
+	public static String ex2str(Throwable ex) {
 		CharArrayWriter caw = new CharArrayWriter();
 		ex.printStackTrace(new PrintWriter(caw));
 		return caw.toString();
