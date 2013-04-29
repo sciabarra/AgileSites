@@ -1,5 +1,6 @@
 package $site;format="normalize"$;
 
+import wcs.core.Arg;
 import wcs.core.Log;
 import wcs.core.URL;
 import wcs.core.Call;
@@ -72,4 +73,25 @@ public class Router extends wcs.java.Router {
 			return call("$prefix$Wrapper", arg("error", error));
 		}
 	}
+	
+	
+	/**
+	 * Create a link with just the page name
+	 * 
+	 * Special case: the home page, normalized to just the void string
+	 */
+	@Override
+	public String link(Env e, Id id, Arg... args) {
+		String name = e.getAsset(id).getName();
+		if (id.c.equals("Page"))
+			// home page
+			if (name.equals("Home"))
+				return "";
+			else
+				return "/" + name;
+		else
+			// assuming all the types starts with Demo_, remove the prefix
+			return "/" + id.c.substring(6) + "/" + name;
+	}
+
 }
