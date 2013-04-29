@@ -126,7 +126,6 @@ public class Template extends AssetSetup {
 	void setData(MutableAssetData data) {
 
 		// log.info(Util.dump(data));
-
 		// String rootelement = getSubtype() + "/" + getName();
 
 		final String body = template(clazz);
@@ -169,8 +168,6 @@ public class Template extends AssetSetup {
 		data.getAttributeData("element").setData(
 				Util.list(attrStruct("Structure Element", mapElement)));
 
-		data.getAttributeData("ttype").setData(
-				ttype == UNSPECIFIED ? null : "" + ttype);
 
 		// default page criteria
 		data.getAttributeData("pagecriteria").setDataAsList(
@@ -178,6 +175,10 @@ public class Template extends AssetSetup {
 						"site", /* "sitepfx", */"ft_ss"));
 
 		data.getAttributeData("acl").setDataAsList(Util.listString(""));
+
+		
+		data.getAttributeData("ttype").setData(
+				ttype == UNSPECIFIED ? null : "" + ttype);
 
 		if (data.getAttributeData("applicablesubtypes") != null)
 			data.getAttributeData("applicablesubtypes").setData("*");

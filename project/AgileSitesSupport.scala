@@ -20,7 +20,7 @@ trait AgileSitesSupport {
   lazy val wcsPassword = SettingKey[String]("wcs-password", "WCS Site password")
 
   lazy val wcsSetupOffline = InputKey[Unit]("wcs-setup-offline", "WCS Setup Offline")
-  lazy val wcsSetupOnline = TaskKey[Unit]("wcs-setup-online", "WCS Setup Online")
+  lazy val wcsSetupOnline =  InputKey[Unit]("wcs-setup-online", "WCS Setup Online")
   lazy val wcsDeploy = TaskKey[Unit]("wcs-deploy", "WCS Deploy")
 
   lazy val wcsFlexBlobs = SettingKey[String]("wcs-flex-blobs", "WCS Flex Blobs Regexp")
@@ -134,9 +134,10 @@ trait AgileSitesSupport {
   }
 
   // interface to catalogmover from sbt
-  val wcsSetupOnlineTask = wcsSetupOnline <<=
-    (wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
-      (version, httpUrl, sites, user, password, classpath, s, runner) =>
+  val wcsSetupOnlineTask = wcsSetupOnline <<= inputTask {
+   (argsTask: TaskKey[Seq[String]]) =>
+    (argsTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
+     (args, version, httpUrl, sites, user, password, classpath, s, runner) =>
         val seljars = classpath.files
         val url = httpUrl + "/CatalogManager"
 
@@ -149,10 +150,13 @@ trait AgileSitesSupport {
         val opts = Seq("-u", user, "-p", password, "-b", url, "-d", dir.toString, "-x")
         val all = cmd ++ opts ++ Seq("import_all")
 
-        messageDialog("Ensure the application server is UP and RUNNING, then press OK")
+        if(args.length == 0) messageDialog("Ensure the application server is UP and RUNNING, then press OK")
         Fork.java(None, all, Some(new java.io.File(".")), s.log)
-        messageDialog("Setup Complete.\nYou can now create site and templates.\nYou need to deploy them with \"wcs-deploy\".")
+        if(args.length == 0) messageDialog("Setup Complete.\nYou can now create site and templates.\nYou need to deploy them with \"wcs-deploy\".")
     }
+}
+
+
 
   // package jar task - build the jar and copy it  to destination 
   val wcsPackageJarTask = wcsPackageJar <<=
