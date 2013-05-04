@@ -1,7 +1,8 @@
 @echo off
 if exist build.sbt goto run
-echo "To start, copy build.sbt.sbt to build.sbt and EDIT IT."
-echo "Reading the README.md and the documentation does not hurt, too." 
+echo To start, copy build.sbt.sbt to build.sbt and EDIT IT.
+echo Reading the README.md and the documentation does not hurt, too. 
+pause
 goto end 
 :run
 set SCRIPT_DIR=%~dp0
