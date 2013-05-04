@@ -1,32 +1,26 @@
 // site to import/export
 wcsSites in ThisBuild := "Demo"
 
-/// front end url - NO SLASH TO THE END please
-
-// sample with satellite and an apache proxy 
-// VirtualHost agilesites.local: ProxyPass / http://sshost/ss/Satellite/agilesites
-// wcsVirtualHosts in ThisBuild := Seq( "Demo" -> "http://demo.loc")
-
-// sample with no apache and just the co-resident satellite
-wcsVirtualHosts in ThisBuild := Seq( "Demo" -> "http://localhost:8080/cs/Satellite/demo")
+/// front end url - NO slashes at the end please
+wcsVirtualHosts in ThisBuild := Seq("Demo" -> "http://demo.loc")
 
 // versions (currently only valid values are 11g or 7.6)
 wcsVersion in ThisBuild := "11g"
 
 // home directory of WCS - leave it to
-wcsHome in ThisBuild := "/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/"
+wcsHome in ThisBuild := "c:/Oracle/WebCenter/Sites/11gR1/Sites/11.1.1.6.1"
 
 // shared folder
-wcsShared in ThisBuild := "/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/Shared"
+wcsShared in ThisBuild := "c:/Oracle/WebCenter/Sites/11gR1/Sites/11.1.1.6.1/Shared"
 
 // webapp directory of WebCenter Sites 
-wcsWebapp in ThisBuild := "/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/webapps/cs/"
+wcsWebapp in ThisBuild := "c:/Oracle/WebCenter/Sites/11gR1/App_Server/apache-tomcat-6.0.32/webapps/cs/"
 
 // location of the csdt-client jar
-wcsCsdtJar in ThisBuild := "/JSK/11.1.1.6.1.app/Sites/11.1.1.6.1/csdt-client-1.2.2.jar"
+wcsCsdtJar in ThisBuild := "c:/Oracle/WebCenter/Sites/11gR1/Sites/11.1.1.6.1/csdt-client-1.2.2.jar"
 
 // url to content server - NO slashes at the end please 
-// must allow access to ContentServer, CatalogManager and Satellite
+// the url must allow access to ContentServer, CatalogManager and Satellite
 wcsUrl in ThisBuild := "http://localhost:8080/cs"
 
 // user to import/export
@@ -44,9 +38,10 @@ wcsFlexBlobs in ThisBuild := """^/(\d+)\.(jpg|png|gif)$"""
 wcsStaticBlobs in ThisBuild := """^(.*\.(css|js|jpg|png|gif))$"""
 
 /// configurations for front-end Satellite and proxy
-/// "wcs-setup satellite" must be run in the separate satellite host
+/// "wcs-setup-offline satellite" must be run in the separate satellite host
 
 // webapp directory of Satellite Server 
-wcsWebappSatellite in ThisBuild := "/JSK/11.1.1.6.1.app/App_Server/apache-tomcat-6.0.32/webapps/ss/"
+wcsWebappSatellite in ThisBuild := "c:/Oracle/WebCenter/Sites/11gR1/App_Server/apache-tomcat-6.0.32/webapps/ss/"
 
-
+// debug 
+javacOptions ++= Seq("-g:vars")

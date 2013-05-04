@@ -83,7 +83,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("app"),
     settings = commonSettings ++ Seq(
       name := "agilesites-app",
-      wcsCopyHtmlTask)) dependsOn (api)
+      wcsCopyHtmlTask
+      //, wcsGitVersionTask // uncomment if you use git
+    )) dependsOn (api)
 
   /// ALL
   lazy val all: Project = Project(

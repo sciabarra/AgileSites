@@ -35,6 +35,7 @@ trait AgileSitesSupport {
   lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
   lazy val wcsUpdateAssets = TaskKey[String]("wcs-update-assets", "WCS update assets")
   lazy val wcsLog = InputKey[Unit]("wcs-log", "WCS log manager")
+  
 
   // generate tag access classes from tld files
   val coreGeneratorTask = (sourceGenerators in Compile) <+=
@@ -157,7 +158,6 @@ trait AgileSitesSupport {
 }
 
 
-
   // package jar task - build the jar and copy it  to destination 
   val wcsPackageJarTask = wcsPackageJar <<=
     (assembly, wcsShared) map {
@@ -190,6 +190,22 @@ trait AgileSitesSupport {
           println("*** " + srcDir)
           recursiveCopy(srcDir, dstDir)(isHtml)
       }
+
+  val wcsGitVersionTask =
+    (resourceGenerators in Compile) <+=
+      (resourceManaged in Compile) map {
+        (dstDir) =>
+          
+          dstDir.mkdir   
+          
+          val tgt = dstDir / "version.txt" 
+          println("+++ "+tgt)
+
+          "git describe --always --tags" #> tgt ! 
+          
+          Seq[File](tgt)
+      }
+
 
   // copy resources to the webapp task
   val wcsUpdateAssetsTask = wcsUpdateAssets <<=
