@@ -1,4 +1,5 @@
 #!/bin/bash
+umask 0
 cp build.sbt.ci build.sbt
 echo Hello
 curl "http://localhost:8080/cs/HelloCS"
