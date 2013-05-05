@@ -1,6 +1,6 @@
 #!/bin/bash
 if test -n "$JAVA_HOME"
-then PATH="$JAVA_HOME/bin:$PATH"
+then export PATH="$JAVA_HOME/bin:$PATH"
 fi
 if ! java -version
 then echo java not found. Please install JDK and set JAVA_HOME ; exit

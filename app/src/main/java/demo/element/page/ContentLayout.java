@@ -41,8 +41,10 @@ public class ContentLayout extends Element {
 		html.replace("#teaser-body2", ifn(a.getString("TeaserText", 2), ""));
 
 		html.remove("div.related");
-		html.append("#related-container",
-				a.getSlotList("Related", "Content/DmSummary"));
+		for(int i: a.getRange("Related")) {
+			Asset r = e.getAsset("Page", a.getCid("Related", i)); 
+			html.append("#related-container", r.call("DmSummary"));
+		}
 
 		String image = a.getBlobUrl("Image");
 		if (image == null)
@@ -50,9 +52,9 @@ public class ContentLayout extends Element {
 		else
 			html.attr("#image-main", "src", image);
 
-		html.replace("#seealso1", a.getSlot("SeeAlso", 1, "Content/DmSeeAlso"));
-		html.replace("#seealso2", a.getSlot("SeeAlso", 2, "Content/DmSeeAlso"));
-		html.replace("#seealso3", a.getSlot("SeeAlso", 3, "Content/DmSeeAlso"));
+		html.replace("#seealso1", a.getSlot("SeeAlso", 1, "DmContentSeeAlso"));
+		html.replace("#seealso2", a.getSlot("SeeAlso", 2, "DmContentSeeAlso"));
+		html.replace("#seealso3", a.getSlot("SeeAlso", 3, "DmContentSeeAlso"));
 
 		html.replace("#tree", e.call("DmTree"));
 		html.replace("#topmenu", e.call("DmTopmenu"));

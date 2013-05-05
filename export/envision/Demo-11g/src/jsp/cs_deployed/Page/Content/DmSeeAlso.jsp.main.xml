@@ -6,7 +6,7 @@
     <createddate>2013-04-24T06:55:08.049Z</createddate>
     <description>Template DmSeeAlso for type Page Content</description>
     <publist>Demo</publist>
-    <status>ED</status>
+    <status>VO</status>
     <subtype>Page</subtype>
     <updatedby>fwadmin</updatedby>
     <updateddate>2013-04-26T11:22:54.207Z</updateddate>
@@ -265,7 +265,9 @@
     </associations>
 </ns2:assetBean>
 
+
 <!--==================___ METADATA ___================
+
 <dependencies>
   <list>
     <dependency>
@@ -276,10 +278,10 @@
     </dependency>
   </list>
 </dependencies>
+
 ==================______________________==================
 #
-#Fri Apr 26 12:55:39 UTC 2013
-storable0=/ELEMENTS/JSP/Page/Content/DmSeeAlso.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FPage%2FContent%2FDmSeeAlso.jsp
+#Sun May 05 16:31:41 UTC 2013
 @hashval=109518572
 key=Template-850debc9-2576-46f0-ac44-fe57a79817ab
 type=ASSETDATA

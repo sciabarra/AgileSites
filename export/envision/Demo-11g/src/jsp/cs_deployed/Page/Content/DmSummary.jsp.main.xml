@@ -6,7 +6,7 @@
     <createddate>2013-04-23T17:08:57.405Z</createddate>
     <description>Template DmSummary for type Page Content</description>
     <publist>Demo</publist>
-    <status>ED</status>
+    <status>VO</status>
     <subtype>Page</subtype>
     <updatedby>fwadmin</updatedby>
     <updateddate>2013-04-26T11:22:54.153Z</updateddate>
@@ -265,7 +265,9 @@
     </associations>
 </ns2:assetBean>
 
+
 <!--==================___ METADATA ___================
+
 <dependencies>
   <list>
     <dependency>
@@ -276,10 +278,10 @@
     </dependency>
   </list>
 </dependencies>
+
 ==================______________________==================
 #
-#Fri Apr 26 12:55:39 UTC 2013
-storable0=/ELEMENTS/JSP/Page/Content/DmSummary.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FPage%2FContent%2FDmSummary.jsp
+#Sun May 05 16:31:41 UTC 2013
 @hashval=-711255868
 key=Template-3b4bc188-5e14-4390-8139-c8f839dc7f8a
 type=ASSETDATA

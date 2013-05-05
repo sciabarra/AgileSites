@@ -4,14 +4,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import wcs.core.Log;
-import wcs.java.Env;
 import wcs.java.util.TestElement;
 import $site;format="normalize"$.element.$type;format="normalize"$.$subtype$$template$;
 
 // this test must be run by AgileSites TestRunnerElement
 public class $subtype$$template$Test extends TestElement {
 
-	final static Log log = Log.getLog($template$Test.class);
+	final static Log log = Log.getLog($subtype$$template$Test.class);
 	$subtype$$template$ it;
 	
 	@Before
@@ -22,6 +21,6 @@ public class $subtype$$template$Test extends TestElement {
 	@Test
 	public void test() {
 		parse(it.apply(env()));
-		assertText("h1", "$subtype$$template$");
+		assertText("h1", "$prefix$$subtype$$template$");
 	}
 }

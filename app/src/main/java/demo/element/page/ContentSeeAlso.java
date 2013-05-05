@@ -1,39 +1,37 @@
 package demo.element.page;
 
+import wcs.core.Log;
 import wcs.java.Asset;
 import wcs.java.Env;
 import wcs.java.Element;
 import wcs.java.Picker;
 import wcs.java.Template;
 import wcs.java.AssetSetup;
-import wcs.core.Log;
 
 public class ContentSeeAlso extends Element {
 
-	Log log = Log.getLog(demo.element.page.ContentSeeAlso.class);
+	final static Log log = Log.getLog(ContentSeeAlso.class);
 
 	public static AssetSetup setup() {
 
-		return new Template("Page", "Content/DmSeeAlso", Template.INTERNAL, // change
+		return new Template("Page", "DmContentSeeAlso", Template.INTERNAL, // change
+																			// template
+																			// type
+																			// here
 				demo.element.page.ContentSeeAlso.class) //
 				.cache("false", "false") // change caching here
-				.description("Template DmSeeAlso for type Page Content");
+				.description("Template DmContentSeeAlso for type Page Content");
 	}
 
 	@Override
 	public String apply(Env e) {
-		log.trace(">>>>>>ContentSeeAlso: %s/%d", e.getC(), e.getCid());
-
 		Picker html = Picker.load("/blueprint/template.html", "#seealso1");
-		if(e.getCid()==0)
-			return html.html();
-		
 		Asset a = e.getAsset();
 		html.replace("#seealso-title1", a.getString("Title"));
 		html.replace("#seealso-text1", a.getString("Summary"));
-
+		html.attr("#seealso-link1", "href", a.getUrl());
+		html.removeAttrs("*[id^=seealso]", "id");
 		return html.html();
-
 	}
 
 }

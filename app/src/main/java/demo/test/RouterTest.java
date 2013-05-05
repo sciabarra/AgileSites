@@ -1,15 +1,15 @@
 package demo.test;
 
-import org.junit.Before;
-import org.junit.Test;
-
+import demo.Config;
 import wcs.core.Log;
 import wcs.java.Asset;
 import wcs.java.Env;
 import wcs.java.Router;
 import wcs.java.util.TestElement;
-import demo.Config;
 import static wcs.core.Common.*;
+import org.junit.Before;
+import org.junit.Test;
+
 
 public class RouterTest extends TestElement {
 
@@ -49,9 +49,9 @@ public class RouterTest extends TestElement {
 
 	@Test
 	public void test1() {
-		parse(it.route(env(), url("/Hello")));
+		parse(it.route(env(), url("/DoesNotExist")));
 		assertAttr("ics-callelement", "error",
-				"Asset not found: type:Page name:Hello");
+				"Asset not found: type:Page name:DoesNotExist");
 
 		parse(it.route(env(), url("/Hello?extra=parameter")));
 		assertAttr("ics-callelement", "error",

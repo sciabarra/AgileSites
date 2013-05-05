@@ -19,10 +19,15 @@ public class ContentSeeAlsoTest extends TestElement {
 	}
 
 	@Test
-	public void test() {
-		// dump(log);
+	public void testHome() {
 		parse(it.apply(env("")));
-		assertText("#seealso-title1", "Home");
+		assertText("h6", "Home");
 		assertTextContains("div", "This is a SUMMARY.");
+	}
+
+	@Test
+	public void testAboutLink() {
+		parse(it.apply(env("/About")));
+		assertAttrContains("a", "href", "/About");
 	}
 }

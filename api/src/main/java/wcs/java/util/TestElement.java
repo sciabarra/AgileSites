@@ -242,6 +242,28 @@ public class TestElement extends TestCase {
 	}
 
 	/**
+	 * Check the attribute of the node, selected with "css" query, contains the
+	 * expected value
+	 * 
+	 * 
+	 * of the selected node.
+	 * 
+	 * @param cssq
+	 * @param html
+	 */
+	public void assertAttrContains(String cssq, String attr, String value) {
+		Elements elem = doc.select(cssq);
+		if (elem != null) {
+			String attribute = elem.attr(attr);
+			if (attribute != null)
+				assertThat(attribute, JUnitMatchers.containsString(value));
+			else
+				fail("cannot find attribute " + attr + " in " + cssq);
+		} else
+			fail("cannot find " + cssq);
+	}
+
+	/**
 	 * Dump inner html
 	 * 
 	 * @param log
@@ -249,9 +271,9 @@ public class TestElement extends TestCase {
 	protected void dump(Log log) {
 		log.debug(Util.dumpStream(doc.html()));
 	}
-	
+
 	/**
-	 * Dump outper html
+	 * Dump outer html
 	 * 
 	 * @param log
 	 */

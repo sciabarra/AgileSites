@@ -25,4 +25,3 @@ echo Reading the README.md and the documentation does not hurt, too.
 :pause
 pause
 :end
-cls
