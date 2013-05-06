@@ -43,3 +43,5 @@ Then deploy the code with
 ``wcs-deploy``
 
 Check the site is up and running with http://localhost:8080/cs/Satellite/demo
+
+Run tests with http://localhost:8080/cs/ContentServer?pagename=Demo/DmTester
