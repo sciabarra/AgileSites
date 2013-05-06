@@ -1,5 +1,6 @@
 #!/bin/bash
 umask 0
+export PATH=/usr/local/bin:$PATH
 cp build.sbt.ci build.sbt
 echo Hello
 curl "http://regulus.sciabarra.com/cs/HelloCS"
