@@ -9,7 +9,7 @@ wcsUrl in ThisBuild := "http://regulus.sciabarra.com/cs"
 wcsUser in ThisBuild := "fwadmin"
 
 // password to import/export
-wcsPassword in ThisBuild := "xceladmin"
+wcsPassword in ThisBuild := "kpn"
 
 // WebCenter Site main directory
 wcsHome in ThisBuild := "/home/sites/sites"

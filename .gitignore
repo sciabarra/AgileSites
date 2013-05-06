@@ -7,7 +7,7 @@
 .project
 .settings/
 .metadata
-project/core.built
+report.xml
 # sbt specific
 target/
 tags/

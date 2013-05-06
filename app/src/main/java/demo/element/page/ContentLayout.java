@@ -8,6 +8,7 @@ import wcs.java.Element;
 import wcs.java.Env;
 import wcs.java.Picker;
 import wcs.java.Template;
+import wcs.java.util.Util;
 
 public class ContentLayout extends Element {
 
@@ -23,11 +24,10 @@ public class ContentLayout extends Element {
 	@Override
 	public String apply(Env e) {
 
-		// log.trace("c/cid=%s/%s", e.getC(), e.getCid().toString());
-
 		Asset a = e.getAsset();
 		Picker html = Picker.load("/blueprint/template.html", "#content");
-
+		html.replace("#version", Util.getResource("/version.txt"));
+		
 		html.prefixAttrs("img", "src", "/cs/blueprint/");
 		html.replace("#title", a.getString("Title"));
 		html.replace("#subtitle", a.getString("Subtitle"));
@@ -36,7 +36,6 @@ public class ContentLayout extends Element {
 
 		html.replace("#teaser-title1", ifn(a.getString("TeaserTitle", 1), ""));
 		html.replace("#teaser-body1", ifn(a.getString("TeaserText", 1), ""));
-
 		html.replace("#teaser-title2", ifn(a.getString("TeaserTitle", 2), ""));
 		html.replace("#teaser-body2", ifn(a.getString("TeaserText", 2), ""));
 
