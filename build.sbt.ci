@@ -3,7 +3,7 @@
 
 // url to content server - NO slashes at the end please 
 // the url must allow access to ContentServer, CatalogManager and Satellite
-wcsUrl in ThisBuild := "http://localhost:8080/cs"
+wcsUrl in ThisBuild := "http://regulus.sciabarra.com/cs"
 
 // user to import/export
 wcsUser in ThisBuild := "fwadmin"
