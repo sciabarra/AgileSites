@@ -1,53 +1,47 @@
 # How to install AgileSites
 
-(work in progress - still an incomplete page)
+## Prerequisites
 
-## Install Sites JSK or a local install
+Install Sites or the JSK, version 11gR1 
 
-## Download a stable release of AgileSites
+## Download 
 
-Download.
+Download a stable release of AgileSites (0.5 currently)
 
-Unzip somewhere.
+Unzip it somewhere.
 
 ## Configure
 
-copy build.sbt.dist to build.sbt and edit it
+Copy build.sbt.dist to build.sbt and edit it
 
 To the mininimum you need to provide paths where your installation is.
 
 If you want the Demo site up and running, leave the site Demo in the wcsSites, otherwise remove it.
 
-## AgileShell
+## Install 
 
-Start agileshell
+Start the agileshell running either agilesites.bat or agilesites.sh
 
-## Offline Install
+Ensure sites is not running and run
 
-Shutdown Sites.
+`wcs-setup-offline``
 
-``core/clean
-core/publish-local
-wcs-setup-offline``
+If you get exceptions, review the paths carefully and repeat
 
-## Online Install
-
-Start Sites
+Now start Sites/JSK amd run
 
 ``wcs-setup-online``
 
-## Optionally, import the Demo site
+## Import
 
-if you want also the demo site, ensure it is in the wcsSites property in the build.sbt
+First import the site with CSDT with
 
-Then import the site and deploy the code this way
+``wcs-dt import``
 
-``wcs-import 
-wcs-deploy
-``
+Then deploy the code with
+
+``wcs-deploy``
 
 Check the site is up and running with http://localhost:8080/cs/Satellite/demo
 
-## What's next
-
-Follow the [Tutorial](Tutorial.md) for building your site
+Run tests with http://localhost:8080/cs/ContentServer?pagename=Demo/DmTester
