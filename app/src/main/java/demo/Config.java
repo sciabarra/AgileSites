@@ -5,10 +5,18 @@ import wcs.java.Insite;
 public class Config extends wcs.java.Config {
 
 	// Configure
+
+	//public Insite Detail = insite().c("Page");
+
+	//public Insite Summary = insite().c("Page");
+
+	//public Insite TeaserText = insite().c("Page");
+
+	//public Insite TeaserTitle = insite().c("Page");
+
+	//public Insite SeeAlso = insite(arg("c","Page"));
 	
-	public Insite SeeAlso = insite(arg("c","Page"));
-	
-	public Insite Related = insite(arg("c","Page"));
+	//public Insite Related = insite(arg("c","Page"));
 	
 	public Insite Title = insite();
 	//.editor("dojotext").mode("text");

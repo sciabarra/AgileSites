@@ -21,7 +21,7 @@ public class SequencerTest {
 	@Before
 	public void init() {
 		stringOnly = "hello";
-		
+
 		callOnly = call("test", arg("a", "1"));
 
 		simpleCall = "before" + call("hello");
@@ -34,10 +34,9 @@ public class SequencerTest {
 				+ "End";
 	}
 
-	
 	@Test
 	public void stringOnly() {
-		//dump(simpleCall);
+		// dump(simpleCall);
 		Sequencer seq = new Sequencer(stringOnly);
 		assertFalse(seq.hasNext());
 		assertEquals(seq.header(), "hello");
@@ -45,7 +44,7 @@ public class SequencerTest {
 
 	@Test
 	public void simpleCall() {
-		//dump(simpleCall);
+		// dump(simpleCall);
 		Sequencer seq = new Sequencer(simpleCall);
 		assertEquals(seq.header(), "before");
 		assertTrue(seq.hasNext());
@@ -60,7 +59,8 @@ public class SequencerTest {
 
 	@Test
 	public void multiCall() {
-		dump(multiCall);
+		// dump(multiCall);
+
 		Sequencer seq = new Sequencer(multiCall);
 
 		assertEquals(seq.header(), "Element:");
@@ -94,20 +94,23 @@ public class SequencerTest {
 	@Test
 	public void callOnly() {
 		dump(callOnly);
-		//Sequencer seq = new Sequencer(stringOnly);
-		//assertFalse(seq.hasNext());
-		//assertEquals(seq.header(), "hello");
+		Sequencer seq = new Sequencer(callOnly);
+		assertEquals(seq.header(), "");
+		assertTrue(seq.hasNext());
+		assertEquals(seq.next().toString(), "<test a=\"1\"/>");
+		assertEquals(seq.header(), "");
+		assertFalse(seq.hasNext());
 	}
-	
+
 	public void dump(String sequence) {
 		Sequencer seq = new Sequencer(sequence);
-		out.println(seq.header());
+		out.println("STRING#" + seq.header().length() + ":" + seq.header());
 		while (seq.hasNext()) {
 			Call call = seq.next();
-			out.print(call.toString());
-			out.print(" a=" + call.getOnce("a") + " ");
-			out.println(call.toString());
-			out.println(seq.header());
+			out.println("CALL:" + call.toString());
+			// out.print(" a=" + call.getOnce("a") + " ");
+			// out.println(call.toString());
+			out.println("STRING#" + seq.header().length() + ":" + seq.header());
 		}
 	}
 }

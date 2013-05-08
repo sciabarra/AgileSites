@@ -13,6 +13,7 @@ while (seq.hasNext()) {
 	Call c = seq.next();
 	String name = c.getName();
 	log.trace("JSP: %s", c.toString());
+	System.out.println(c.toString());
 %><% // -----------------------------------------------------
 if (name.equalsIgnoreCase("ICS:CALLELEMENT")) {
 	String element = c.getOnce("ELEMENT");
@@ -116,12 +117,14 @@ for (String k : c.keysLeft()) {
 %></insite:calltemplate></ics:listloop></insite:slotlist><%
 } /* END INSITE:CALLTEMPLATELOOP */
 %><% // -----------------------------------------------------
+try {
 if (name.equalsIgnoreCase("INSITE:EDIT")) {
 	String assetid = c.getOnce("ASSETID");
 	String assettype = c.getOnce("ASSETTYPE");
 	String field = c.getOnce("FIELD");
 	String value = c.getOnce("VALUE");
 	String index = c.getOnce("INDEX");
+	String mode = c.getOnce("MODE");
 %><insite:edit 
     assettype='<%= assettype %>'
     assetid='<%= assetid %>'
@@ -134,6 +137,10 @@ if (name.equalsIgnoreCase("INSITE:EDIT")) {
    }
  %></insite:edit><%
 } /* END INSITE:EDIT */
+} catch(Exception ex) {
+	ex.printStackTrace();
+	%>ERR<%
+}
 %><% // -----------------------------------------------------
 %><%=seq.header()%><%
 }

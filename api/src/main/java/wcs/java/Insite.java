@@ -11,6 +11,9 @@ public class Insite extends Call {
 
 	public Insite() {
 		super("INSITE:EDIT");
+		//addArg("MODE", "text");
+		//addArg("EDITOR","html");
+		//addArg("PARAMS", "{}");
 	}
 
 	public Insite c(String c) {
@@ -37,33 +40,4 @@ public class Insite extends Call {
 		addArg("PARAMS", params);
 		return this;
 	}
-
-	/*
-	 * public Edit value(String value) { addArg("VALUE", value); return this; }
-	 */
-
-	/*
-	 * public Edit field(String field) { addArg("FIELD", field); return this;
-	 * }/*
-	 */
-
-	/*
-	 * public Edit assetid(String assetid) { addArg("ASSETID", assetid); return
-	 * this; }/*
-	 */
-
-	/*
-	 * public Edit assettype(String assettype) { addArg("ASSETTYPE", assettype);
-	 * return this; }/*
-	 */
-
-	/*
-	 * public Edit width(String width) { addArg("WIDTH", width); return this;
-	 * }/*
-	 */
-
-	/*
-	 * public Edit height(String height) { addArg("HEIGHT", height); return
-	 * this; }/*
-	 */
 }
