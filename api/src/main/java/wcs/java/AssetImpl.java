@@ -68,7 +68,7 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	private String as() {
 		if (as == null) {
-			as = tmp();
+			as = tmp()+"_";
 			AssetsetTag.setasset().name(as).type(getC()).id(cid.toString())
 					.run(i);
 		}
@@ -188,6 +188,16 @@ class AssetImpl extends wcs.java.Asset {
 	}
 
 	/**
+	 * Check if the attribute exist
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public boolean isAttribute(String attribute) {
+		return e.isList(at(attribute));
+	}
+	
+	/**
 	 * Return an iterable of the attribute list
 	 * 
 	 * @param attribute
@@ -233,6 +243,32 @@ class AssetImpl extends wcs.java.Asset {
 		return e.getLong(at(attribute), n, "value");
 	}
 
+	
+	/**
+	 * Return the related asset pointed by the attribute of the given type
+	 * if not found
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	@Override
+	public Asset getAsset(String attribute, String type) {
+		return e.getAsset(type, getCid(attribute));		
+	}
+
+	/**
+	 * Return the related asset pointed by the nth attribute of the given type
+	 * if not found
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	@Override
+	public Asset getAsset(String attribute, int i, String type) {
+		return e.getAsset(type, getCid(attribute, i));		
+	}
+
+	
 	/**
 	 * Return the first attribute of the the attribute rib as a string, or the
 	 * null if not found
@@ -242,11 +278,22 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public String getString(String attribute) {
-		if (insite)
-			return edit(attribute, 1);
 		return e.getString(at(attribute), "value");
 	}
-
+	
+	/**
+	 * Edit (or return if not insite) the first named attribute as a string, or null
+	 * if not found
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public String editString(String attribute) {
+		if (insite)
+			return edit(attribute, 1);
+		return getString(attribute);
+	}
+	
 	/**
 	 * Return the nth attribute of the the attribute rib as a string, or the
 	 * void string if not found
@@ -256,9 +303,21 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public String getString(String attribute, int n) {
+		return e.getString(at(attribute), n, "value");
+	}
+
+	
+	/**
+	 * Edit (or return if not insite) the first named attribute as a string, or null
+	 * if not found
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public String editString(String attribute, int n) {
 		if (insite)
 			return edit(attribute, n);
-		return e.getString(at(attribute), n, "value");
+		return getString(attribute, n);
 	}
 
 	/**
@@ -411,7 +470,7 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	private String insiteCall(String template, String attribute, int n,
+	private String insiteCall(String type, String template, String attribute, int n,
 			Arg... args) {
 
 		try {
@@ -428,29 +487,19 @@ class AssetImpl extends wcs.java.Asset {
 			list.add(arg("ASSETTYPE", c));
 			list.add(arg("ASSETID", cid.toString()));
 			list.add(arg("FIELD", attribute));
-			list.add(arg("INDEX", Integer.toString(n)));
-
-			// read internal c/cid, c from the attribute configuration
-
-			long icid = IfNull.ifn(getCid(attribute, n), 0l);
-
-			Insite insite = Util.readAttributeConfig(attribute, e.getConfig());
-			String ic = insite.get("C");
-			if (insite == null || insite.get("C") == null) {
-				log.error("need to configure c for attribute %s", attribute);
-				throw new IllegalArgumentException("attribute " + attribute
-						+ " has not a type configured in Config");
-			}
-
+			
 			// copy additional args
 			for (Arg arg : args)
 				list.add(arg);
 
+			list.add(arg("CHILDTYPE", type));
 			if (n < 0) {
+				list.add(arg("LISTNAME", at(attribute)));
 				return Common.call("INSITE:CALLTEMPLATELOOP", list);
 			} else {
-				list.add(arg("C", ic));
-				list.add(arg("CID", Long.toString(icid)));
+				long icid = IfNull.ifn(getCid(attribute, n), 0l);
+				list.add(arg("CHILDID", Long.toString(icid)));
+				list.add(arg("INDEX", Integer.toString(n)));
 				return Common.call("INSITE:CALLTEMPLATE", list);
 			}
 		} catch (Exception ex) {
@@ -497,9 +546,9 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 */
 	@Override
-	public String getSlotList(String attribute, String template, Arg... args)
+	public String slotList(String attribute, String type, String template, Arg... args)
 			throws IllegalArgumentException {
-		return insiteCall(template, attribute, -1, args);
+		return insiteCall(type, template, attribute, -1, args);
 	}
 
 	/**
@@ -517,9 +566,9 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 */
 	@Override
-	public String getSlot(String attribute, int i, String template, Arg... args)
+	public String slot(String attribute, int i, String type, String template, Arg... args)
 			throws IllegalArgumentException {
-		return insiteCall(template, attribute, i, args);
+		return insiteCall(type, template, attribute, i, args);
 	}
 
 	/**
@@ -535,9 +584,9 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 */
 	@Override
-	public String getSlot(String attribute, String template, Arg... args)
+	public String slot(String attribute, String type, String template, Arg... args)
 			throws IllegalArgumentException {
-		return insiteCall(template, attribute, 1, args);
+		return insiteCall(type, template, attribute, 1, args);
 	}
 
 	/**
@@ -547,7 +596,6 @@ class AssetImpl extends wcs.java.Asset {
 	public String getUrl(Arg... args) {
 		return e.getUrl(getId(), args);
 	}
-
 
 	/**
 	 * 

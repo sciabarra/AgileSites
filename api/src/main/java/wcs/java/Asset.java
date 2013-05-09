@@ -207,6 +207,16 @@ public abstract class Asset {
 	public Date getEndDate() {
 		return endDate;
 	}
+	
+	/**
+	 * Check if the attribute exist
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public boolean isAttribute(String attribute) {
+		return false;
+	}
 
 	/**
 	 * Return the number of elements in the attribute
@@ -217,7 +227,7 @@ public abstract class Asset {
 	public int getSize(String attribute) {
 		return 0;
 	}
-
+	
 	/**
 	 * Return the first attribute of the attribute list as an id (long), or null
 	 * if not found
@@ -228,7 +238,30 @@ public abstract class Asset {
 	public Long getCid(String attribute) {
 		return null;
 	}
+	
+	/**
+	 * Return the related asset pointed by the attribute of the given type
+	 * if not found
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public Asset getAsset(String attribute, String type) {
+		return null;
+	}
 
+	/**
+	 * Return the related asset pointed by the nth attribute of the given type
+	 * if not found
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public Asset getAsset(String attribute, int i, String type) {
+		return null;
+	}
+
+	
 	/**
 	 * String get blob url of the first attribute, with optional args
 	 * 
@@ -254,7 +287,7 @@ public abstract class Asset {
 	}
 
 	/**
-	 * Return the nth attribute of the attribute list as an id (long), or null
+	 * Return the nth attribute of the named attribute as an id (long), or null
 	 * if not found
 	 * 
 	 * @param asset
@@ -265,7 +298,7 @@ public abstract class Asset {
 	}
 
 	/**
-	 * Return the first attribute of the the attribute rib as a string, or null
+	 * Return the first attribute of the the named attribute as a string, or null
 	 * if not found
 	 * 
 	 * @param asset
@@ -274,15 +307,37 @@ public abstract class Asset {
 	public String getString(String attribute) {
 		return null;
 	}
-
+	
 	/**
-	 * Return the nth attribute of the the attribute rib as a string, or null if
+	 * Return the nth named attribute as a string, or null if
 	 * not found
 	 * 
 	 * @param asset
 	 * @return
 	 */
 	public String getString(String attribute, int n) {
+		return null;
+	}
+
+	/**
+	 * Edit (or return if not insite) the first named attribute as a string, or null
+	 * if not found
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public String editString(String attribute) {
+		return null;
+	}
+
+	/**
+	 * Edit (or return if not insite) the nth named attribute as a string, or null if
+	 * not found
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public String editString(String attribute, int n) {
 		return null;
 	}
 
@@ -350,16 +405,6 @@ public abstract class Asset {
 	 */
 
 	/**
-	 * Edit the attribute at the given index
-	 * 
-	 * @param asset
-	 * @return
-	 * 
-	 *         public String edit(String attribute, int index, Arg...args) {
-	 *         return ""; }
-	 */
-
-	/**
 	 * Call the template by name with current c/cid and extra some optional args
 	 * 
 	 */
@@ -381,7 +426,7 @@ public abstract class Asset {
 	 * @param args
 	 * @return
 	 */
-	public String getSlotList(String field, String template, Arg... args)
+	public String slotList(String field, String type, String template, Arg... args)
 			throws IllegalArgumentException {
 		return "";
 	}
@@ -400,7 +445,7 @@ public abstract class Asset {
 	 * @param args
 	 * @return
 	 */
-	public String getSlot(String attribute, int i, String template, Arg... args)
+	public String slot(String attribute, int i, String type, String template, Arg... args)
 			throws IllegalArgumentException {
 		return "";
 	}
@@ -413,11 +458,12 @@ public abstract class Asset {
 	 * the field specifying the type as parameter "c"
 	 * 
 	 * @param attribute
+	 * @param template type
 	 * @param template
 	 * @param args
 	 * @return
 	 */
-	public String getSlot(String attribute, String template, Arg... args)
+	public String slot(String attribute, String type, String template, Arg... args)
 			throws IllegalArgumentException {
 		return "";
 	}

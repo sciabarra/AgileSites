@@ -194,6 +194,7 @@ public class Picker {
 		return this;
 	}
 
+
 	// private method to implement both single and remove
 	private Picker removeOrSingle(String where, boolean keepFirst) {
 

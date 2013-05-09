@@ -20,5 +20,6 @@ misc
 build.sbt
 *Old.scala
 *Old.java
+*.bak
 jsk*
 workspace

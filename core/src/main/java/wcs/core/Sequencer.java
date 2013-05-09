@@ -15,17 +15,17 @@ import java.util.Iterator;
  * 
  * The intended usage is
  * 
- * Sequencer seq = new Sequence(encoded); 
+ * Sequencer seq = new Sequence(encoded);
  * 
  * output seq.header();
  * 
- * while(seq.hasNext()) { 
+ * while(seq.hasNext()) {
  * 
- * Call call = seq.next(); 
+ * Call call = seq.next();
  * 
  * output call print
  * 
- * seq.header(); 
+ * seq.header();
  * 
  * }
  * 
@@ -35,8 +35,13 @@ import java.util.Iterator;
 public class Sequencer implements Iterator<Call> {
 
 	// separators
-	private final static String SEP = "\0";
-	private final static String SEP2 = SEP + SEP;
+	private final static String SEP = Call.SEP;
+	private final static String SEP2START = Call.SEP2START;
+	private final static String SEP2END = Call.SEP2END;
+
+	private final static int SEPlen = Call.SEP.length();
+	private final static int SEP2STARTlen = Call.SEP2START.length();
+	private final static int SEP2ENDlen = Call.SEP2END.length();
 
 	private int start = -1;
 	private String res = "";
@@ -48,7 +53,7 @@ public class Sequencer implements Iterator<Call> {
 	 */
 	public Sequencer(String res) {
 		this.res = res;
-		start = res.indexOf(SEP2);
+		start = res.indexOf(SEP2START);
 	}
 
 	/**
@@ -64,14 +69,14 @@ public class Sequencer implements Iterator<Call> {
 	 */
 	@Override
 	public Call next() {
-
-		int end = res.indexOf(SEP2 + SEP, start + 2);
+		
+		int end = res.indexOf(SEP+SEP2END, start + SEP2STARTlen);
 		if (end == -1)
 			end = res.length();
 
-		String call = res.substring(start, end);
-		res = res.substring(end + 3);
-		start = res.indexOf(SEP2);
+		String call = res.substring(start+SEP2STARTlen, end);
+		res = res.substring(end + SEPlen+SEP2ENDlen);
+		start = res.indexOf(SEP2START);
 
 		return Call.decode(call);
 
@@ -89,7 +94,7 @@ public class Sequencer implements Iterator<Call> {
 	 * @return
 	 */
 	public String header() {
-		//System.out.println(start+":"+res);
+		// System.out.println(start+":"+res);
 		if (start != -1)
 			return res.substring(0, start);
 		else

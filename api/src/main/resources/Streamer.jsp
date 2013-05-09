@@ -6,14 +6,14 @@
 %><%@ page import="wcs.core.*" 
 %><%! final static Log log = Log.getLog("%CLASS%.jsp");
 %><cs:ftcs><ics:if condition='<%=ics.GetVar("tid") != null%>'><ics:then><render:logdep cid='<%=ics.GetVar("tid")%>' c="Template" /></ics:then></ics:if><%
-		String res = WCS.dispatch(ics, "%CLASS%");
+String res = WCS.dispatch(ics, "%CLASS%");
 Sequencer seq = new Sequencer(res);
+//log.trace("STRING#%d?%s:\"%s\"", seq.header().length(), ""+seq.hasNext(), seq.header());
 %><%=seq.header()%><%
 while (seq.hasNext()) {
 	Call c = seq.next();
-	String name = c.getName();
-	log.trace("JSP: %s", c.toString());
-	System.out.println(c.toString());
+	String name = c.getName();	
+	//log.trace("CALL: %s", c.toString());
 %><% // -----------------------------------------------------
 if (name.equalsIgnoreCase("ICS:CALLELEMENT")) {
 	String element = c.getOnce("ELEMENT");
@@ -52,17 +52,17 @@ if (name.equalsIgnoreCase("RENDER:CALLTEMPLATE")) {
 } /* end RENDER:CALLTEMPLATE */
 %><% // -----------------------------------------------------
 if (name.equalsIgnoreCase("INSITE:CALLTEMPLATE")) {
-	String cc = c.getOnce("C");
-	String cid = c.getOnce("CID");
+	String atype = c.getOnce("ASSETTYPE");
+	String aid = c.getOnce("ASSETID");
+	String childtype = c.getOnce("CHILDTYPE");
+	String childid = c.getOnce("CHILDID");
 	String tname = c.getOnce("TNAME");
 	String ttype = c.getOnce("TTYPE");
 	String tid = c.getOnce("TID"); 
 	String field = c.getOnce("FIELD");
-	String atype = c.getOnce("ASSETTYPE");
-	String aid = c.getOnce("ASSETID");
 	String site = c.getOnce("SITE"); 
 	String index = c.getOnce("INDEX");
-if(cid!=null && cid.equals("0")) {
+if(childid!=null && childid.equals("0")) {
   %><insite:calltemplate 
     site='<%=site%>'
 	assettype='<%=atype%>'
@@ -83,8 +83,8 @@ if(cid!=null && cid.equals("0")) {
 	assetid='<%=aid%>'
 	field='<%=field%>'
 	index='<%=index%>'
-	c='<%=cc%>'
-	cid='<%=cid%>'
+	c='<%=childtype%>'
+	cid='<%=childid%>'
 	tname='<%=tname%>'
 	ttype='<%=ttype%>' 
 	tid='<%=tid%>'><%
@@ -92,39 +92,51 @@ if(cid!=null && cid.equals("0")) {
 	  %><insite:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><%
      }
   %></insite:calltemplate><%
-} }	/* END INSITE:CALLTEMPLATE */
+   } 
+} /* END INSITE:CALLTEMPLATE */
 %><% // -----------------------------------------------------
 if (name.equalsIgnoreCase("INSITE:CALLTEMPLATELOOP")) {
-String cc = c.getOnce("C");
+String assettype = c.getOnce("ASSETTYPE");
+String assetid = c.getOnce("ASSETID");
+String childtype = c.getOnce("CHILDTYPE");
 String field = c.getOnce("FIELD");
 String listname = c.getOnce("LISTNAME");
 String output = Common.tmp();
-%><insite:slotlist field='<%= field %>'
- ><ics:listloop listname='<%= listname %>'
- ><ics:listget listname='<%= listname %>' 
-       fieldname='value' 
-       output='<%= output %>'
- /><insite:calltemplate 
-	c='<%=cc%>'
-	cid='<%=ics.GetVar(output)%>'
-    site='<%=c.getOnce("SITE")%>'
-	tname='<%=c.getOnce("TNAME")%>'
-	ttype='<%=c.getOnce("TTYPE")%>' 
-	tid='<%=c.getOnce("TID")%>'><%
-for (String k : c.keysLeft()) {
-   %><insite:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><%
-}
-%></insite:calltemplate></ics:listloop></insite:slotlist><%
+String site = c.getOnce("SITE");
+String tname = c.getOnce("TNAME");
+String ttype = c.getOnce("TTYPE");
+String tid = c.getOnce("TID");
+%><insite:slotlist 
+  field='<%= field %>'
+  assettype='<%= assettype %>'
+  assetid='<%= assetid %>'
+><ics:listloop 
+  listname='<%= listname %>'
+><ics:listget 
+  listname='<%= listname %>' 
+  fieldname='value'
+  output='<%= output %>' 
+/><insite:calltemplate 
+  c='<%= childtype %>'
+  cid='<%= ics.GetVar(output) %>' 
+  site='<%= site %>'
+  tname='<%= tname %>'
+  ttype='<%= ttype %>' 
+  tid='<%= tid %>'
+><% for (String k : c.keysLeft()) {
+   %><insite:argument 
+      name='<%=k%>' 
+      value='<%=c.getOnce(k)%>' 
+     /><%
+   } %></insite:calltemplate></ics:listloop></insite:slotlist><%
 } /* END INSITE:CALLTEMPLATELOOP */
 %><% // -----------------------------------------------------
-try {
 if (name.equalsIgnoreCase("INSITE:EDIT")) {
-	String assetid = c.getOnce("ASSETID");
 	String assettype = c.getOnce("ASSETTYPE");
+	String assetid = c.getOnce("ASSETID");
 	String field = c.getOnce("FIELD");
 	String value = c.getOnce("VALUE");
 	String index = c.getOnce("INDEX");
-	String mode = c.getOnce("MODE");
 %><insite:edit 
     assettype='<%= assettype %>'
     assetid='<%= assetid %>'
@@ -133,14 +145,11 @@ if (name.equalsIgnoreCase("INSITE:EDIT")) {
 	index='<%= index %>'
 ><%
   for (String k : c.keysLeft()) {
-%><insite:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><%
+%><insite:argument name='<%=k%>' value='<%=c.getOnce(k)%>' 
+/><%
    }
  %></insite:edit><%
 } /* END INSITE:EDIT */
-} catch(Exception ex) {
-	ex.printStackTrace();
-	%>ERR<%
-}
 %><% // -----------------------------------------------------
 %><%=seq.header()%><%
 }

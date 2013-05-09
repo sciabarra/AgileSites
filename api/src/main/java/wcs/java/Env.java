@@ -251,10 +251,17 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
-	 * Check if it is a list columns
+	 * Check if exists as a list column
 	 */
-	public boolean isColumn(String list, String field) {
+	public boolean isListCol(String list, String field) {
 		return getString(list, field) != null;
+	}
+
+	/**
+	 * Check if exists as ano object
+	 */
+	public boolean isObj(String object) {
+		return ics.GetObj(object) != null;
 	}
 
 	/**

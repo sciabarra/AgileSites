@@ -8,8 +8,9 @@ import java.util.StringTokenizer;
 
 public class Call {
 
-	private final static String SEP = "\0";
-	private final static String SEP2 = SEP + SEP;
+	public final static String SEP = "\0";
+	public final static String SEP2END = SEP + "~";
+	public final static String SEP2START = "~" + SEP ;
 
 	private Map<String, String> map = new HashMap<String, String>();
 	private String name = "";
@@ -74,6 +75,9 @@ public class Call {
 	 * @return
 	 */
 	public static Call decode(String encoded) {
+		
+		//System.out.println("decoding "+encoded);
+		
 		StringTokenizer st = new StringTokenizer(encoded, SEP);
 
 		String name = st.nextToken();
@@ -100,12 +104,12 @@ public class Call {
 	 */
 	public static String encode(String name, Arg... args) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(SEP2).append(name).append(SEP);
+		sb.append(SEP2START).append(name).append(SEP);
 		for (Arg arg : args) {
 			if (arg.value != null)
 				sb.append(arg.name).append(SEP).append(arg.value).append(SEP);
 		}
-		sb.append(SEP2);
+		sb.append(SEP2END);
 		return sb.toString();
 	}
 
@@ -114,11 +118,11 @@ public class Call {
 	 */
 	public String encode() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(SEP2).append(name).append(SEP);
+		sb.append(SEP2START).append(name).append(SEP);
 		for (Map.Entry<String, String> entry : map.entrySet())
 			sb.append(entry.getKey()).append(SEP).append(entry.getValue())
 					.append(SEP);
-		sb.append(SEP2);
+		sb.append(SEP2END);
 		return sb.toString();
 	}
 
@@ -132,12 +136,12 @@ public class Call {
 	public static String encode(String name, List<Arg> args) {
 		StringBuilder sb = new StringBuilder();
 		// elements to call have the site name as a prefix
-		sb.append(SEP2).append(name).append(SEP);
+		sb.append(SEP2START).append(name).append(SEP);
 		for (Arg arg : args) {
 			if (arg.value != null)
 				sb.append(arg.name).append(SEP).append(arg.value).append(SEP);
 		}
-		sb.append(SEP2);
+		sb.append(SEP2END);
 		return sb.toString();
 	}
 

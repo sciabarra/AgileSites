@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import wcs.core.Call;
 import wcs.core.Log;
 import wcs.core.Sequencer;
 import wcs.java.Config;
@@ -352,7 +353,8 @@ public class Util {
 		Sequencer seq = new Sequencer(html);
 		StringBuilder sb = new StringBuilder(seq.header());
 		while (seq.hasNext()) {
-			sb.append(seq.next().toString());
+			Call call = seq.next();
+			sb.append(call.toString());
 			sb.append(seq.header());
 		}
 		return sb.toString();
@@ -407,5 +409,18 @@ public class Util {
 			log.error("no such a field %s", attribute);
 		}
 		return null;
+	}
+
+	public static String hexDump(String s) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			sb.append(String.format("%c=%2s ", c, Integer.toHexString(c)));
+			if (i % 8 == 7)
+				sb.append("\n");
+		}
+		sb.append("\n");
+		return sb.toString();
+
 	}
 }

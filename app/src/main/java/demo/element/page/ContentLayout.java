@@ -29,10 +29,10 @@ public class ContentLayout extends Element {
 		html.replace("#version", Util.getResource("/version.txt"));
 		
 		html.prefixAttrs("img", "src", "/cs/blueprint/");
-		html.replace("#title", a.getString("Title"));
-		html.replace("#subtitle", a.getString("Subtitle"));
-		html.replace("#summary", a.getString("Summary"));
-		html.replace("#detail", a.getString("Detail"));
+		html.replace("#title", a.editString("Title"));
+		html.replace("#subtitle", a.editString("Subtitle"));
+		html.replace("#summary", a.editString("Summary"));
+		html.replace("#detail", a.editString("Detail"));
 
 		html.replace("#teaser-title1", ifn(a.getString("TeaserTitle", 1), ""));
 		html.replace("#teaser-body1", ifn(a.getString("TeaserText", 1), ""));
@@ -51,9 +51,9 @@ public class ContentLayout extends Element {
 		else
 			html.attr("#image-main", "src", image);
 
-		html.replace("#seealso1", a.getSlot("SeeAlso", 1, "DmContentSeeAlso"));
-		html.replace("#seealso2", a.getSlot("SeeAlso", 2, "DmContentSeeAlso"));
-		html.replace("#seealso3", a.getSlot("SeeAlso", 3, "DmContentSeeAlso"));
+		html.replace("#seealso1", a.slot("SeeAlso", 1, "Page", "DmContentSeeAlso"));
+		html.replace("#seealso2", a.slot("SeeAlso", 2, "Page", "DmContentSeeAlso"));
+		html.replace("#seealso3", a.slot("SeeAlso", 3, "Page", "DmContentSeeAlso"));
 
 		html.replace("#tree", e.call("DmTree"));
 		html.replace("#topmenu", e.call("DmTopmenu"));

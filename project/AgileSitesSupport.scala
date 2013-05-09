@@ -199,11 +199,16 @@ trait AgileSitesSupport {
           dstDir.mkdir   
           
           val tgt = dstDir / "version.txt" 
-          println("+++ "+tgt)
-
-          "git describe --always --tags" #> tgt ! 
-          
-          Seq[File](tgt)
+  
+          try {
+           "git describe --always --tags" #> tgt ! 
+            
+            println("+++ "+tgt)
+            
+            Seq[File](tgt)
+          } catch {
+             case _ => Seq[File]()
+          }
       }
 
 
@@ -364,7 +369,11 @@ trait AgileSitesSupport {
 
             val static = (file(shared) / "Storage" / "Static") getAbsolutePath
 
-            messageDialog("Ensure the application server is NOT RUNNING, then press OK")
+
+            val silent = ( args.length > 0 && args(args.length-1) == "silent" )  
+
+            if(!silent)
+              messageDialog("Ensure the application server is NOT RUNNING, then press OK")
 
             if (args.length == 1 && args(0) == "satellite") {
 
@@ -374,7 +383,8 @@ trait AgileSitesSupport {
               setupServletRequest(satelliteWebapp, sites, virtualHosts, flexBlobs, staticBlobs)
               setupAgileSitesPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs)
 
-              messageDialog("Installation Complete. Please restart your application server.")
+              if(!silent)
+                messageDialog("Installation Complete. Please restart your application server.")
 
             } else {
 
@@ -390,8 +400,9 @@ trait AgileSitesSupport {
               setupServletRequest(webapp, sites, vhosts, flexBlobs, staticBlobs)
               setupAgileSitesPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs)
               setupFutureTenseIni(home, static, appjar, sites, version)
-
-              messageDialog("Installation Complete. Please restart your application server.\nYou need to complete with \"wcs-setup-online\".")
+              
+              if(!silent)
+                messageDialog("Installation Complete. Please restart your application server.\nYou need to complete with \"wcs-setup-online\".")
             }
 
         }
