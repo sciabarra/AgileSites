@@ -10,8 +10,7 @@ public class $subtype$$template$ extends Element {
 
 	final static Log log = Log.getLog($subtype$$template$.class); 
 			
-	public static AssetSetup setup() {
-		
+	public static AssetSetup setup() {	
 		return new Template("$type$", "$prefix$$subtype$$template$", 
 			Template.INTERNAL, // change template type here
 			$site;format="normalize"$.element.$type;format="normalize"$.$subtype$$template$.class) //
