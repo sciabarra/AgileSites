@@ -26,23 +26,26 @@ public class ContentLayout extends Element {
 
 		Asset a = e.getAsset();
 		Picker html = Picker.load("/blueprint/template.html", "#content");
-		
+
 		html.prefixAttrs("img", "src", "/cs/blueprint/");
 		html.replace("#title", a.editString("Title"));
 		html.replace("#subtitle", a.editString("Subtitle"));
 		html.replace("#summary", a.editString("Summary"));
 		html.replace("#detail", a.editString("Detail"));
 
-		html.replace("#teaser-title1", ifn(a.getString("TeaserTitle", 1), ""));
-		html.replace("#teaser-body1", ifn(a.getString("TeaserText", 1), ""));
-		html.replace("#teaser-title2", ifn(a.getString("TeaserTitle", 2), ""));
-		html.replace("#teaser-body2", ifn(a.getString("TeaserText", 2), ""));
-
+		html.replace("#teaser-title1", ifn(a.editString("TeaserTitle", 1), ""));
+		html.replace("#teaser-body1", ifn(a.editString("TeaserText", 1), ""));
+		html.replace("#teaser-title2", ifn(a.editString("TeaserTitle", 2), ""));
+		html.replace("#teaser-body2", ifn(a.editString("TeaserText", 2), ""));
+		
+		/*
+		 *  for(int i: a.getRange("Related")) { Asset
+		 * r = e.getAsset("Page", a.getCid("Related", i));
+		 * html.append("#related-container", r.call("DmSummary")); }
+		 */
 		html.remove("div.related");
-		for(int i: a.getRange("Related")) {
-			Asset r = e.getAsset("Page", a.getCid("Related", i)); 
-			html.append("#related-container", r.call("DmSummary"));
-		}
+		html.append("#related-container",
+				a.slotList("Related", "Page", "DmSummary"));
 
 		String image = a.getBlobUrl("Image");
 		if (image == null)
@@ -50,9 +53,12 @@ public class ContentLayout extends Element {
 		else
 			html.attr("#image-main", "src", image);
 
-		html.replace("#seealso1", a.slot("SeeAlso", 1, "Page", "DmContentSeeAlso"));
-		html.replace("#seealso2", a.slot("SeeAlso", 2, "Page", "DmContentSeeAlso"));
-		html.replace("#seealso3", a.slot("SeeAlso", 3, "Page", "DmContentSeeAlso"));
+		html.replace("#seealso1",
+				a.slot("SeeAlso", 1, "Page", "DmContentSeeAlso"));
+		html.replace("#seealso2",
+				a.slot("SeeAlso", 2, "Page", "DmContentSeeAlso"));
+		html.replace("#seealso3",
+				a.slot("SeeAlso", 3, "Page", "DmContentSeeAlso"));
 
 		html.replace("#tree", e.call("DmTree"));
 		html.replace("#topmenu", e.call("DmTopmenu"));
