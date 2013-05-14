@@ -26,5 +26,4 @@ public class $subtype$Layout extends Element {
 		html.replace("#subtitle", a.getDescription());
 		return html/*.dump(log)*/.html();
 	}
-
 }

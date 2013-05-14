@@ -423,9 +423,9 @@ trait AgileSitesSupport {
           def usage {
             println("""|usage:
                   | wcs-log view
-            	  |    start the log viewer
+            	    |    start the log viewer
                   | wcs-log list
-            	  |    list what you are sending to the remote logger
+            	    |    list what you are sending to the remote logger
                   | wcs-log <level> [<logger>] [<port>] [<host>]
                   |    enable logging to the log viewer
                   | wcs-log stop [<logger>] [<port>] [<host>] 

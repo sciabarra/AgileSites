@@ -84,7 +84,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     settings = commonSettings ++ Seq(
       name := "agilesites-app",
       wcsCopyHtmlTask
-      //,wcsGitVersionTask // uncomment if you use git
     )) dependsOn (api)
 
   /// ALL

@@ -26,7 +26,6 @@ public class ContentLayout extends Element {
 
 		Asset a = e.getAsset();
 		Picker html = Picker.load("/blueprint/template.html", "#content");
-		html.replace("#version", Util.getResource("/version.txt"));
 		
 		html.prefixAttrs("img", "src", "/cs/blueprint/");
 		html.replace("#title", a.editString("Title"));
