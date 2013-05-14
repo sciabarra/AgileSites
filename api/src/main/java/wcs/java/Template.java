@@ -29,15 +29,19 @@ public class Template extends AssetSetup {
 	private String folderelement;
 
 	private String clazz;
-
 	private String cscache;
-
 	private String sscache;
-
 	private char ttype;
+	private String forSubtype;
+
+	public Template(String subtype, String name, char ttype,
+			Class<?> elementClass) {
+		this(subtype, name, ttype, null, elementClass);
+	}
 
 	/**
-	 * Create a template with given subtype, name, and top element
+	 * Create a template with given subtype, name, and top element, applying to
+	 * given subtypes.
 	 * 
 	 * Description defaults to the name, cache defaults to false/false
 	 * 
@@ -46,12 +50,9 @@ public class Template extends AssetSetup {
 	 * @param description
 	 * @param element
 	 */
-	public Template(String subtype, String name, char ttype,
+	public Template(String subtype, String name, char ttype, String forSubtype,
 			Class<?> elementClass) {
-		//super("Template", subtype, //
-		//		subtype == null || subtype.trim().length() == 0 //
-		//		? name : subtype + "/" + name //
-		//);
+
 		super("Template", subtype, name);
 		this.clazz = elementClass.getCanonicalName();
 		if (subtype == null || subtype.trim().length() == 0) {
@@ -66,6 +67,10 @@ public class Template extends AssetSetup {
 		fileelement = name + "_" + clazz + ".jsp";
 
 		this.ttype = ttype;
+		if (forSubtype == null || forSubtype.trim().length() == 0)
+			this.forSubtype = "*";
+		else
+			this.forSubtype = forSubtype;
 		cache("false", "false");
 	}
 
@@ -168,7 +173,6 @@ public class Template extends AssetSetup {
 		data.getAttributeData("element").setData(
 				Util.list(attrStruct("Structure Element", mapElement)));
 
-
 		// default page criteria
 		data.getAttributeData("pagecriteria").setDataAsList(
 				Util.listString("c", "cid", "context", /* "p", */"rendermode",
@@ -176,13 +180,10 @@ public class Template extends AssetSetup {
 
 		data.getAttributeData("acl").setDataAsList(Util.listString(""));
 
-		
 		data.getAttributeData("ttype").setData(
 				ttype == UNSPECIFIED ? null : "" + ttype);
 
-		if (data.getAttributeData("applicablesubtypes") != null)
-			data.getAttributeData("applicablesubtypes").setData("*");
-
+		data.getAttributeData("applicablesubtypes").setData(forSubtype);
 	}
 
 	/**

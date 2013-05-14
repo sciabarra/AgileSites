@@ -13,7 +13,7 @@ public class $subtype$Layout extends Element {
 		
 		return new Template("$type$", "$prefix$$subtype$Layout", 
 			Template.LAYOUT, // change template type here
-			$site;format="normalize"$.element.$type;format="normalize"$.$subtype$Layout.class) //
+			"$subtype$", $site;format="normalize"$.element.$type;format="normalize"$.$subtype$Layout.class) //
 			.cache("false", "false") // change caching here
 			.description("Layout for type $type$ $subtype$");
 	}

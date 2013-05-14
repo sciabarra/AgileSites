@@ -13,7 +13,7 @@ public class $subtype$$template$ extends Element {
 	public static AssetSetup setup() {	
 		return new Template("$type$", "$prefix$$subtype$$template$", 
 			Template.INTERNAL, // change template type here
-			$site;format="normalize"$.element.$type;format="normalize"$.$subtype$$template$.class) //
+			"$subtype$", $site;format="normalize"$.element.$type;format="normalize"$.$subtype$$template$.class) //
 			.cache("false", "false") // change caching here
 			.description("Template $prefix$$subtype$$template$ for type $type$ $subtype$");
 	}
