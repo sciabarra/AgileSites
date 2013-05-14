@@ -194,7 +194,7 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 */
 	public boolean isAttribute(String attribute) {
-		return e.isList(at(attribute));
+		return e.isList(at(attribute)) && e.getSize(at(attribute))>0;
 	}
 	
 	/**
