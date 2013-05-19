@@ -1,4 +1,4 @@
-# AgileSites 1.0 
+# Welcome to AgileSites 1.0 
 
 Welcome to **AgileSites**, the Open Source framework for Agile development with Oracle WebCenter Sites (formerly Fatwire Content Server). 
 The framework is released under the commercial friendly Apache License 2.0.
@@ -7,14 +7,14 @@ Read on this page if you want to know more about this framework.
 
 If you already know what is it, then you can:
 
-- [Install it](http://www.agilesites.org/Install.html) following the linked instructions.
+- [Install it](http://www.agilesites.org/install.html) following the linked instructions.
 - [Learn about it](http://www.agilesites.org/tutorial/) reading a tutorial.
-- [Check references](http://www.agilesites.org/references/) for in-depth documentation.
-- [Browse the API](http://www.agilesites.org/javadoc/index.html) reading the JavaDocs
+- [Check references](http://www.agilesites.org/reference/) for in-depth documentation.
+- [Browse the API](http://www.agilesites.org/javadoc/) reading the JavaDocs
 
-# Developing for Oracle  WebCenter Sites ?
+# Developing for Oracle Sites ?
 
-If you ever developed with Fatwire or Sites, you may think (as many does) it is not very developer friendly.
+If you ever developed with Fatwire Content Server or Oracle WebCenter Sites, you may think (as many does) it is not very developer friendly.
 
 As a developer you may have a wish list. I had a wish list too. Then at some point I took the time to fulfill all my wishes for Fatwire and Sites development.
 
