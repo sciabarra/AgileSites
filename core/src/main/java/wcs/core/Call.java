@@ -1,5 +1,8 @@
 package wcs.core;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +13,7 @@ public class Call {
 
 	public final static String SEP = "\0";
 	public final static String SEP2END = SEP + "~";
-	public final static String SEP2START = "~" + SEP ;
+	public final static String SEP2START = "~" + SEP;
 
 	private Map<String, String> map = new HashMap<String, String>();
 	private String name = "";
@@ -43,7 +46,7 @@ public class Call {
 		map.remove(key);
 		return val;
 	}
-	
+
 	/**
 	 * Get the value of a parameter.
 	 */
@@ -75,9 +78,9 @@ public class Call {
 	 * @return
 	 */
 	public static Call decode(String encoded) {
-		
-		//System.out.println("decoding "+encoded);
-		
+
+		// System.out.println("decoding "+encoded);
+
 		StringTokenizer st = new StringTokenizer(encoded, SEP);
 
 		String name = st.nextToken();
@@ -85,8 +88,8 @@ public class Call {
 
 		while (st.hasMoreTokens()) {
 			try {
-				String k = st.nextToken();
-				String v = st.nextToken();
+				String k = URLDecoder.decode(st.nextToken(), "UTF-8");
+				String v = URLDecoder.decode(st.nextToken(), "UTF-8");
 				// out.println(">>>" + k + "=" + v);
 				call.map.put(k, v);
 			} catch (Exception ex) {
@@ -119,9 +122,14 @@ public class Call {
 	public String encode() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(SEP2START).append(name).append(SEP);
-		for (Map.Entry<String, String> entry : map.entrySet())
-			sb.append(entry.getKey()).append(SEP).append(entry.getValue())
-					.append(SEP);
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			try {
+				String k = URLEncoder.encode(entry.getKey(), "UTF-8");
+				String v = URLEncoder.encode(entry.getValue(), "UTF-8");
+				sb.append(k).append(SEP).append(v).append(SEP);
+			} catch (UnsupportedEncodingException e) {
+			}
+		}
 		sb.append(SEP2END);
 		return sb.toString();
 	}
@@ -139,7 +147,12 @@ public class Call {
 		sb.append(SEP2START).append(name).append(SEP);
 		for (Arg arg : args) {
 			if (arg.value != null)
-				sb.append(arg.name).append(SEP).append(arg.value).append(SEP);
+				try {
+					sb.append(URLEncoder.encode(arg.name, "UTF-8")).append(SEP);
+					sb.append(URLEncoder.encode(arg.value, "UTF-8"))
+							.append(SEP);
+				} catch (Exception ex) {
+				}
 		}
 		sb.append(SEP2END);
 		return sb.toString();
