@@ -60,6 +60,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
         coreDependencies ++ Seq("com.sciabarra" %% "agilesites-core" % x)
     })
 
+  import javadoc.JavadocPlugin.javadocSettings
+
   /// CORE
   lazy val core: Project = Project(
     id = "core",
@@ -74,8 +76,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   lazy val api: Project = Project(
     id = "api",
     base = file("api"),
-    settings = commonSettings ++ Seq(
-      name := "agilesites-api"))
+    settings = commonSettings ++ javadocSettings ++ Seq(
+      name := "agilesites-api") 
+  )
 
   /// APP 
   lazy val app: Project = Project(
@@ -93,6 +96,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     settings = commonSettings ++ assemblySettings ++ scaffoldSettings ++ Seq(
       name := "agilesites-all",
       wcsCsdtTask,
+      wcsVirtualHostsTask,
       wcsSetupOnlineTask,
       wcsSetupOfflineTask,
       wcsDeployTask,

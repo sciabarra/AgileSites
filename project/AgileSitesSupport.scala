@@ -10,7 +10,6 @@ trait AgileSitesSupport {
 
   // new settings
   lazy val wcsHome = SettingKey[String]("wcs-home", "WCS Home Directory")
-  lazy val wcsSites = SettingKey[String]("wcs-sites", "WCS Sites to configure")
   lazy val wcsShared = SettingKey[String]("wcs-shared", "WCS Shared Directory")
   lazy val wcsWebapp = SettingKey[String]("wcs-webapp", "WCS ContentServer Webapp CS Directory")
   lazy val wcsVersion = SettingKey[String]("wcs-version", "WCS or Fatwire Version")
@@ -19,13 +18,15 @@ trait AgileSitesSupport {
   lazy val wcsUser = SettingKey[String]("wcs-user", "WCS Site for user")
   lazy val wcsPassword = SettingKey[String]("wcs-password", "WCS Site password")
 
+  lazy val wcsSites = SettingKey[String]("wcs-sites", "WCS Sites to configure")
+  lazy val wcsVirtualHosts = SettingKey[Seq[Tuple2[String, String]]]("wcs-virtual-hosts", "WCS Virtual Host mapping")
+
   lazy val wcsSetupOffline = InputKey[Unit]("wcs-setup-offline", "WCS Setup Offline")
   lazy val wcsSetupOnline =  InputKey[Unit]("wcs-setup-online", "WCS Setup Online")
   lazy val wcsDeploy = TaskKey[Unit]("wcs-deploy", "WCS Deploy")
 
   lazy val wcsFlexBlobs = SettingKey[String]("wcs-flex-blobs", "WCS Flex Blobs Regexp")
   lazy val wcsStaticBlobs = SettingKey[String]("wcs-static-blobs", "WCS Static Blobs Regexp")
-  lazy val wcsVirtualHosts = SettingKey[Seq[Tuple2[String, String]]]("wcs-virtual-hosts", "WCS Virtual Host mapping")
   lazy val wcsWebappSatellite = SettingKey[String]("wcs-webapp-satellite", "WCS SatelliteServer Webapp CS Directory")
 
   lazy val wcsCsdtJar = SettingKey[String]("wcs-csdt-jar", "WCS CSDT Jar")
@@ -36,6 +37,11 @@ trait AgileSitesSupport {
   lazy val wcsUpdateAssets = TaskKey[String]("wcs-update-assets", "WCS update assets")
   lazy val wcsLog = InputKey[Unit]("wcs-log", "WCS log manager")
   
+
+  // initial value for sites and vhosts
+  //val wcsSitesTask = wcsSites := Seq[String]()
+
+  val wcsVirtualHostsTask = wcsVirtualHosts := Seq[Tuple2[String, String]]() ;
 
   // generate tag access classes from tld files
   val coreGeneratorTask = (sourceGenerators in Compile) <+=
@@ -189,26 +195,6 @@ trait AgileSitesSupport {
           val srcDir = base / "src" / "main" / "static"
           println("*** " + srcDir)
           recursiveCopy(srcDir, dstDir)(isHtml)
-      }
-
-  val wcsGitVersionTask =
-    (resourceGenerators in Compile) <+=
-      (resourceManaged in Compile) map {
-        (dstDir) =>
-          
-          dstDir.mkdir   
-          
-          val tgt = dstDir / "version.txt" 
-  
-          try {
-           "git describe --always --tags" #> tgt ! 
-            
-            println("+++ "+tgt)
-            
-            Seq[File](tgt)
-          } catch {
-             case _ => Seq[File]()
-          }
       }
 
 
