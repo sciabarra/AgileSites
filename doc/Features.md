@@ -2,20 +2,22 @@
 
 ## Problem
 
-Fatwire/WCS api is pretty old, sometimes ugly and inconsistent. 
+Fatwire/Sites api is pretty old, sometimes ugly and inconsistent.
+ 
 Furthermore is it offering too many options that are confusing, and are not guiding the developer to follow best practices.
 
 ## Solution
 
-A new, simplified, consistent API is offered. This API hide many of the complexities of the Fawire API, like the different way to access basic and flex attributes. 
-The goal is to provide 80% of the functionalities with  20% of the complexity.
+A new, simplified, consistent API is offered. This API hide many of the complexities of the Fawire API, like the different way to access basic and flex attributes.
+ 
+The goal is to provide 80% of the functionality with  20% of the complexity.
 However, all the existing Fatwire is  kept accessible and available, and can be used if required.
 
 # <a name="Deploy"></a>Deployment Hell 
  
 ## Problem
 
-A Fatwire website is tipically  very complex to deploy, since it is comprised of many different components: library jars, customization jars, css and javascript files, CSElements, Templates, database tables and some content that must be always present.
+A Fatwire website is typically  very complex to deploy, since it is comprised of many different components: library jars, customization jars, css and javascript files, CSElements, Templates, database tables and some content that must be always present.
 
 ## Solution
 
@@ -23,8 +25,8 @@ The system is provided from the ground up with an automated build system that pe
 
 A whole site can be install a new system with 2 commands:
 
-- wcs-setup-offline before starting the application server, 
-- wcs-setup-online after starting the application server
+- `wcs-setup-offline` before starting the application server, 
+- `wcs-setup-online` after starting the application server
 
 Then a site can be deployed and update with a single command (wcs-deploy) 
 You do not need to restart the application server except the first time when deploying the core.
@@ -46,7 +48,7 @@ You can even write templates partially in JSP and partially in Java using the en
 
 ## Problem
 
-Continuos Integration is one the key practices in Agile development.
+Continuous Integration is one the key practices in Agile development.
 
 Every developer should work in isolation in his own machine but when many developers are working at the same time, the full test suite must be run against the development server.
 

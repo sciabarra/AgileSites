@@ -4,13 +4,27 @@ Agile development framework for Oracle WebCenter Sites.
 
 Release history.
 
-# Versions
+## [version 0.5.0](...)
 
-## version 0.1 
+- tons of impromevents
+- implemented SitePlan and Insite support
+- documentation
+- cleaning up
+- dropped (temporarily) scala support 
 
-Proof of concept of the classloader
+## version 0.3
+
+No formal releases.
+
+- totally redesigned API
+- introduced a java api, so scala is now optional
+- implemented the html picker
+- catalog manager support 
+- demo site for java and scala
 
 ## version 0.2, 
+
+No formal releses.
 
 First usable version. Limited api.
 
@@ -20,14 +34,8 @@ First usable version. Limited api.
 - api accessing tags and list, 
 - initial mock and log  support
 
+## version 0.1 
 
-## version 0.3
+No formal releases.
 
-- totally redesigned API
-- introduced a java api, so scala is now optional
-- implemented the html picker
-- catalog manager support 
-- demo site for java and scala
-- documentation
-
-
+Proof of concept of the classloader
