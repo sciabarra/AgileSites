@@ -13,10 +13,10 @@ title : AgileSites
 tagline: the Easy framework for Agile development with Oracle Sites
 author :
   name : Michele Sciabarra
-  email : agilesites@sciabarra.com
+  email : michele@sciabarra.com
   github : sciabarra
   twitter : agilesites
-  feedburner : agilesites
+ # feedburner : agilesites
 
 # The production_url is only used when full-domain names are needed
 # such as sitemap.txt 
@@ -83,7 +83,7 @@ JB :
   comments :
     provider : disqus
     disqus :
-      short_name : jekyllbootstrap
+      short_name : agilesites
     livefyre :
       site_id : 123
     intensedebate :
