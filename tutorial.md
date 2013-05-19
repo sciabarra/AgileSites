@@ -1,10 +1,8 @@
 ---
 layout: page
-title : About
-header : About
+title: Tutorial
 group: navigation
 ---
 {% include JB/setup %}
 
-{% include README.md %}
-
+Tutorial

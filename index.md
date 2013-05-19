@@ -5,6 +5,8 @@ tagline: the Easy framework for  Agile development with Oracle  WebCenter Sites 
 ---
 {% include JB/setup %}
 
+<h1>Warning: The site is not yet complete and public - please be patient.</h1>
+
 <iframe width="840" height="630" src="http://www.youtube.com/embed/WA59KZ4PwJs" frameborder="0" allowfullscreen="yes"> </iframe>
 
 {% include README.md %}
