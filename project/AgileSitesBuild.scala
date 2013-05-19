@@ -61,6 +61,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     })
 
   import javadoc.JavadocPlugin.javadocSettings
+  import javadoc.JavadocPlugin.javadocTarget
 
   /// CORE
   lazy val core: Project = Project(
@@ -76,9 +77,11 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   lazy val api: Project = Project(
     id = "api",
     base = file("api"),
-    settings = commonSettings ++ javadocSettings ++ Seq(
-      name := "agilesites-api") 
-  )
+    settings = commonSettings ++ 
+    javadocSettings ++ Seq(
+      javadocTarget := file("..") / "gh-pages" / "javadoc", 
+      name := "agilesites-api"
+  ))
 
   /// APP 
   lazy val app: Project = Project(

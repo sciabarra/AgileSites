@@ -1,9 +1,16 @@
-0
-# AgileSites 0.5 (Rick)
+# AgileSites 1.0 
 
-Welcome to **AgileSites**, the Open Source framework for Agile development with Oracle WebCenter Sites (formerly Fatwire Content Server). The framework is released under the commercial friendly Apache License 2.0.
+Welcome to **AgileSites**, the Open Source framework for Agile development with Oracle WebCenter Sites (formerly Fatwire Content Server). 
+The framework is released under the commercial friendly Apache License 2.0.
 
-If you already know what this framework is, go [here for a documentation index](/doc/Index.md). Otherwise read on for an introduction.
+Read on this page if you want to know more about this framework.
+
+If you already know what is it, then you can:
+
+- [Install it](http://www.agilesites.org/Install.html) following the linked instructions.
+- [Learn about it](http://www.agilesites.org/tutorial/) reading a tutorial.
+- [Check references](http://www.agilesites.org/references/) for in-depth documentation.
+- [Browse the API](http://www.agilesites.org/javadoc/index.html) reading the JavaDocs
 
 # Developing for Oracle  WebCenter Sites ?
 
@@ -15,58 +22,57 @@ If your wish list has items similar to my own, you may be interested in this pro
 
 So, do you want...
 
-## Use a __real__ [MVC pattern](/doc/Features.md#MVC)  
+## Use a __real__ [MVC pattern](Features.md#MVC)  
 
-### thus separating presentation (view) from logic (control) and content (model) ?
+thus separating presentation (view) from logic (control) and content (model) ?
 
-## Avoid [unreadable JSPs](/doc/Features.md#NoJSP) 
+## Avoid [unreadable JSPs](Features.md#NoJSP) 
 
-### coding all your logic in plain Java (using full Java oop and not crippled JSP Java and awkward library CSElements) ?
+coding all your logic in plain Java (using full Java oop and not crippled JSP Java and awkward library CSElements) ?
 
-## Keep the [HTML design](/doc/Features.md#HTML) in his original form 
+## Keep the [HTML design](Features.md#HTML) in his original form 
 
-### so they can be updated easily by Web Designer ?
+so it can be updated easily by Web Designer without extensive recoding?
 
-## Code with a [better API](/doc/Features.md#API)
+## Code with a [better API](Features.md#API)
 
-### possiblysimpler, less verbose, consistent and preventing you from doing silly mistakes?
+possiblysimpler, less verbose, consistent and preventing you from doing silly mistakes?
 
-## Save yourself from a [deployment hell](/doc/Features.md#Deploy) with a simple build and an installer
+## Save yourself from a [deployment hell](Features.md#Deploy) with a simple build and an installer
 
-### avoiding manual  css/javascript to copy, jars to deploy, templates to publish, tables to catalog move, properties to edit and so on?
+avoiding manual css/javascript to copy, jars to deploy, templates to publish, tables to catalog move, properties to edit and so on?
 
-## Use a real [version control system](/doc/Features.md#VCS) 
+## Use a real [version control system](Features.md#VCS) 
 
-### to track your work and share it with other developers?
+thus tracking your work and sharing it with other developers in an healthy way?
 
-## Write easily *real* [unit tests](/doc/Features.md#UnitTest)?
+## Write easily *real* [unit tests](Features.md#UnitTest)?
 
-### so you can develop in Test Driven way and keep a test suite to avoid regression bugs?
+so you can develop in Test Driven way and keep a test suite to avoid regression bugs?
 
-## Run a [continous integration server](/doc/Features.md#CI) ?
+## Run a [continous integration server](Features.md#CI) ?
 
-### integrating and verifying the work of your team, allowing each developer to work in isolation with the JSK?
+integrating and verifying the work of your team, allowing each developer to work in isolation with the JSK?
 
-## Deploy your code as a [single jar](/doc/Features.md#Jar) ?
+## Deploy your code as a [single jar](Features.md#Jar) ?
 
-### that can be easily shared, tracked, compared and deployed?
+that can be easily shared, tracked, compared and deployed?
 
-##  Hot deploy your changes, [not having to restart](/doc/Features.md#HotDeploy) the application server ?
+##  Hot deploy your changes, [not having to restart](Features.md#HotDeploy) the application server ?
 
-### when you do any change, even small, to your Java code?
+when you do any change, even small, to your Java code?
 
-## Use your [preferred IDE](/doc/Features.md#IDE) and not CSExplorer or a mandatory Eclipse-only plugin
+## Use your [preferred IDE](Features.md#IDE) and not CSExplorer or a mandatory Eclipse-only plugin
 
-### either  Eclipse, Netbeans IntellijIdea or even Notepad or VI if you like ?
+either  Eclipse, Netbeans IntellijIdea or even Notepad or VI if you like ?
 
-## Keep your [existing work](/doc/Features.md#Compatible) ?
+## Keep your [existing work](Features.md#Compatible) ?
 
-### while developing new code using this framework?
+while developing new code using this framework?
 
-## Keep Oracle Support _
+## Keep Oracle Support 
 
-Being 100% compliant to [standard practices](/doc/Features.md#Support) 
-
+being 100% compliant to [standard practices](Features.md#Support) 
 
 *If any of above is in your wish list*, then this framework may be suitable for you.
 
@@ -105,5 +111,4 @@ As a result you need not to worry of incompatible changes would break the site, 
 Oracle has not reason to refuse support as long as the question are not specific to the internals of the framework.  
 
 And the framework ultimately is a collections of method calls (stored in a single jar= that produces strings  rendered by JSPs.
-
 
