@@ -1,3 +1,5 @@
+##### Prev:  [Configuration](Configuration.md)
+
 ## Create a site in Sites
 
 After the configuration and the installation of the configuration, you can now create a new site.
@@ -55,3 +57,6 @@ This is normal since you do not have yet any page.
 >http://localhost:8080/cs/ContentServer?pagename=MySite/MyTester
 
 Run All tests.
+
+#####  Next:  [New Template](NewTemplate.md)
+

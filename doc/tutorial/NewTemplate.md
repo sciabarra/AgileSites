@@ -1,3 +1,5 @@
+##### Prev:  [New Site](NewSite.md).
+
 
 ##  Create the home page
 
@@ -9,5 +11,9 @@ Create a template for the home page, and deploy it
 
 ``wcs-generate template
 wcs-deploy``
+
+##### Next: [Picker](Picker.md)
+
+
 
 

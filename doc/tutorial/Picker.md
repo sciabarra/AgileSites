@@ -1,3 +1,9 @@
+##### Prev:  [New Template](NewTemplate.md)
+
 # The Picker
 
-![Successful import](../img/snap1188.png)
+#####  Next:  [Read Content](ReadContent.md)
+
+
+
+

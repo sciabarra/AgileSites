@@ -1,4 +1,5 @@
----- 
+
+##### Prev:  [Tutorial Index](/tutorial.html)
 
 ## Prerequisites 
 
@@ -14,6 +15,7 @@ Furthermore it is possible to [install the full Sites in your computer](http://w
 
 Once you installed Sites, follows the [installation procedure](Install.md) to install AgileSites. You do not require the installation of the demo site, although it is convenient to have it installed during development.
 
-----
 
-Tutorial Next:  [Configuration](Configuration.md).
+##### Next:  [Configuration](Configuration.md)
+
+
