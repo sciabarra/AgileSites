@@ -2,6 +2,10 @@
 layout: page
 title: NewSite
 ---
+Tutorial Next:  [Configuration](Configuration.html)
+
+---- 
+
 ## Create a site in Sites
 
 After the configuration and the installation of the configuration, you can now create a new site.
@@ -59,3 +63,8 @@ This is normal since you do not have yet any page.
 >http://localhost:8080/cs/ContentServer?pagename=MySite/MyTester
 
 Run All tests.
+
+----
+
+Tutorial Next:  [New Template](NewTemplate.html)
+

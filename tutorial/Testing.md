@@ -2,4 +2,13 @@
 layout: page
 title: Testing
 ---
-# Test
+Tutorial Prev:  [Read Content](ReadContent.html).
+
+---- 
+
+# Testing
+
+----
+
+Tutorial Next:  [Edit Content](EditContent.html)
+

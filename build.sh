@@ -15,8 +15,4 @@ echo "---" ;\
 cat $i ) | sed -e 's!\.md!\.html!g' | perl -pe 's!\.?\./img/!/img/!g'  >$b
 echo $b
 done ; done
-# javadocs
-#javadoc @javadoc.files -subpackages "wcs" -d javadoc
-#javadoc -sourcepath "$H/core/src/main/java;$H/api/src/main/java" -subpackages "wcs" -d javadoc
-javadoc -subpackages "wcs" -d javadoc $(grep -v '#' javadoc.files) 
 
