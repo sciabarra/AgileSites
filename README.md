@@ -25,57 +25,57 @@ If your wish list has items similar to my own, you may be interested in this pro
 
 So, do you want...
 
-## Use a __real__ [MVC pattern](ABOUT.md#MVC)  
+## Use a __real__ [MVC pattern](http://www.agilesites.org/about.html#MVC)  
 
 thus separating presentation (view) from logic (control) and content (model) ?
 
-## Avoid [unreadable JSPs](ABOUT.md#NoJSP) 
+## Avoid [unreadable JSPs](http://www.agilesites.org/about.html#NoJSP) 
 
 coding all your logic in plain Java (using full Java oop and not crippled JSP Java and awkward library CSElements) ?
 
-## Keep the [HTML design](ABOUT.md#HTML) in his original form 
+## Keep the [HTML design](http://www.agilesites.org/about.html#HTML) in his original form 
 
 so it can be updated easily by Web Designer without extensive recoding?
 
-## Code with a [better API](ABOUT.md#API)
+## Code with a [better API](http://www.agilesites.org/about.html#API)
 
 possiblysimpler, less verbose, consistent and preventing you from doing silly mistakes?
 
-## Save yourself from a [deployment hell](ABOUT.md#Deploy) with a simple build and an installer
+## Save yourself from a [deployment hell](http://www.agilesites.org/about.html#Deploy) with a simple build and an installer
 
 avoiding manual css/javascript to copy, jars to deploy, templates to publish, tables to catalog move, properties to edit and so on?
 
-## Use a real [version control system](ABOUT.md#VCS) 
+## Use a real [version control system](http://www.agilesites.org/about.html#VCS) 
 
 thus tracking your work and sharing it with other developers in an healthy way?
 
-## Write easily *real* [unit tests](ABOUT.md#UnitTest)?
+## Write easily *real* [unit tests](http://www.agilesites.org/about.html#UnitTest)?
 
 so you can develop in Test Driven way and keep a test suite to avoid regression bugs?
 
-## Run a [continous integration server](ABOUT.md#CI) ?
+## Run a [continous integration server](http://www.agilesites.org/about.html#CI) ?
 
 integrating and verifying the work of your team, allowing each developer to work in isolation with the JSK?
 
-## Deploy your code as a [single jar](ABOUT.md#Jar) ?
+## Deploy your code as a [single jar](http://www.agilesites.org/about.html#Jar) ?
 
 that can be easily shared, tracked, compared and deployed?
 
-##  Hot deploy your changes, [not having to restart](ABOUT.md#HotDeploy) the application server ?
+##  Hot deploy your changes, [not having to restart](http://www.agilesites.org/about.html#HotDeploy) the application server ?
 
 when you do any change, even small, to your Java code?
 
-## Use your [preferred IDE](ABOUT.md#IDE) and not CSExplorer or a mandatory Eclipse-only plugin
+## Use your [preferred IDE](http://www.agilesites.org/about.html#IDE) and not CSExplorer or a mandatory Eclipse-only plugin
 
 either  Eclipse, Netbeans IntellijIdea or even Notepad or VI if you like ?
 
-## Keep your [existing work](ABOUT.md#Compatible) ?
+## Keep your [existing work](http://www.agilesites.org/about.html#Compatible) ?
 
 while developing new code using this framework?
 
 ## Keep Oracle Support 
 
-being 100% compliant to [standard practices](ABOUT.md#Support) 
+being 100% compliant to [standard practices](http://www.agilesites.org/about.html#Support) 
 
 *If any of above is in your wish list*, then this framework may be suitable for you.
 
