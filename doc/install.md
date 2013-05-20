@@ -47,6 +47,8 @@ Now you can start the application server. Since it can takes some time before it
 
 > http://localhost:8080/cs/HelloCS
 
+You 
+
 Once you get an answer from the application server
 
 ``wcs-setup-online``
@@ -90,10 +92,16 @@ Check the site is up and running with:
 
 > http://localhost:8080/cs/Satellite/demo
 
-Run tests with 
+![Demo Site](./img/snap0469.png)
+
+Run tests accessing to  
 
 > http://localhost:8080/cs/ContentServer?pagename=Demo/DmTester
 
+then click on "Run All Tests" and expect 0 tests failed.
+
 ## Apache and Satellite
+
+The installation for development is complete but for live deployment you need to configure also Satellite Server and Apache.
 
 Learn how to configure a Satellite and Apache front end installation in the [deployment reference](http://www.agilesites.org/reference/Deployment.html).

@@ -1,17 +1,19 @@
-# Tutorial
+---- 
 
-With this tutorial you can learn how to use AgileSites  creating a new site in Oracle WebCenter Sites.
-
-## Prerequisites
+## Prerequisites 
 
 The framework **requires** you develop in your local machine with a local installation of Sites.  You are expected to share code and content model through a version control system. 
 
-However this is not a limitation. The JumpStartKit (a locally installable version of Sites) is available from Oracle support to customers. It is convenient because it is very easy to install and includes everthing you need for development.
+However this is not a limitation, since you can easily install them on your system..
 
-Furthermore it is possible to [install Sites in your computer](http://www.sciabarra.com/fatwire/2012/04/09/download-and-install-a-development-fatwire-instance-also-on-mac/) for development purposes. You can install it without Oracle (using Hypersonic SQL **version 1.8.0**) or you may also use the free Oracle XE.
+The JumpStartKit (a locally installable version of Sites) is available from Oracle support to customers. It is convenient because it is very easy to install and includes everthing you need for development.
 
-**NOTE** If your habit is developing on a shared instance with Sites Explorer and you want to keep working that way, then AgileSites is probably not fit for your way of working.
+Furthermore it is possible to [install the full Sites in your computer](http://www.sciabarra.com/fatwire/2012/04/09/download-and-install-a-development-fatwire-instance-also-on-mac/) for development purposes. You can install it with free Oracle XE, with the free Microsoft SQLServer or even with the simple, in memory Hypersonic SQL  (only **version 1.8.0**) 
 
-Once you installed Sites, follows the [installation](Install.md) steps to install AgileSites. Note you do not require the installation of the demo site, although it is convenient to have it installed during development.
+**NOTE** If your habit is developing on a shared instance with Sites Explorer and you want to keep working that way, then AgileSites is probably not fit for your way of working. 
 
-Once both Sites and AgileSites is installed, please [go here](Configuration.md) to learn how to configure the site.
+Once you installed Sites, follows the [installation procedure](Install.md) to install AgileSites. You do not require the installation of the demo site, although it is convenient to have it installed during development.
+
+----
+
+Tutorial Next:  [Configuration](Configuration.md).
