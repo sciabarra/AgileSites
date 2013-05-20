@@ -52,6 +52,9 @@ trait AgileSitesSupport {
 
         // generate tags
         val tlds = file(srcDir) / "WEB-INF" / "futuretense_cs"
+
+        println("******************** looking into "+tlds)
+
         val l = for {
           tld <- tlds.listFiles
           if tld.getName.endsWith(".tld")
@@ -66,7 +69,7 @@ trait AgileSitesSupport {
             IO.write(dstj, bodyj)
             println("+++ " + dstj)
           }
-          dstj :: Nil
+          dstj 
         }
 
         // copy versioned class
@@ -81,7 +84,7 @@ trait AgileSitesSupport {
         }
 
         // return files generated and copied
-        l.toSeq.flatten ++ ll.toSeq
+        l.toSeq ++ ll.toSeq
     }
 
   // copy files from a src dir to a target dir recursively 
@@ -231,9 +234,8 @@ trait AgileSitesSupport {
       prp.setProperty("uri.assembler.1.classname", "wcs.core.Assembler")
     }
 
-    prp.setProperty("agilesites.sites", sites)
     for ((k, v) <- sitesSeq) {
-      prp.setProperty("agilesites." + normalizeSiteName(k), v)
+      prp.setProperty("agilesites.site." + normalizeSiteName(k), v)
     }
 
     prp.setProperty("agilesites.blob.flex", flexBlobs)
@@ -252,7 +254,8 @@ trait AgileSitesSupport {
     val prp = new java.util.Properties
     prp.load(new java.io.FileReader(prpFile))
 
-    prp.setProperty("agilesites.sites", sites);
+    //prp.setProperty("agilesites.sites", sites); // not used for now
+    
     prp.setProperty("agilesites.jar", appjar);
     prp.setProperty("agilesites.static", file(static).getAbsolutePath);
 
@@ -271,6 +274,7 @@ trait AgileSitesSupport {
 
     if (prpFile.exists)
       prpFile.delete
+
     prp.setProperty("agilesites.sites", sites);
     prp.setProperty("agilesites.jar", appjar);
     prp.setProperty("agilesites.static", file(static).getAbsolutePath);
@@ -360,7 +364,8 @@ trait AgileSitesSupport {
 
               setupCopyJars(satelliteWebapp, classpath.files)
               setupServletRequest(satelliteWebapp, sites, virtualHosts, flexBlobs, staticBlobs)
-              setupAgileSitesPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs)
+              
+              //setupAgileSitesPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs) //not used for now
 
               if(!silent)
                 messageDialog("Installation Complete. Please restart your application server.")

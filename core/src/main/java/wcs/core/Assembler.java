@@ -4,10 +4,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,17 +37,24 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		}
 		log.debug("staticBlobs=" + staticBlobs);
 		try {
-			flexBlobs = Pattern.compile(prp.getProperty("agilesites.blob.flex"));
+			flexBlobs = Pattern
+					.compile(prp.getProperty("agilesites.blob.flex"));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		log.debug("flexBlobs=" + flexBlobs);
 		try {
-			StringTokenizer st = new StringTokenizer(
-					prp.getProperty("agilesites.sites"), ",");
-			while (st.hasMoreTokens()) {
-				String site = WCS.normalizeSiteName(st.nextToken());
-				String prefix = prp.getProperty("agilesites." + site);
+			// look for sites
+			Enumeration<?> keys = prp.keys();
+			while (keys.hasMoreElements()) {
+
+				String key = keys.nextElement().toString();
+				if (!key.startsWith("agilesites.site."))
+					continue;
+
+				String site = key.substring("agilesites.site.".length());
+				String prefix = prp.getProperty(key);
+
 				if (prefix != null)
 					sitePrefix.put(site, prefix);
 				else
