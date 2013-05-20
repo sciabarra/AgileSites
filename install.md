@@ -60,9 +60,7 @@ Once you get an answer from the application server
 
 Check for this image to confirm successful setup online:
 
-
 ![Successful import](/img/snap1188.png)
-
 
 This will complete the installation of the framework.
 

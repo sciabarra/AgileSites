@@ -1,5 +1,5 @@
 H=../0.5
-
+javadoc -sourcepath "$H/core/src/main/java;$H/api/src/main/java" -subpackages "wcs" -d javadoc
 cp $H/*.md _includes
 cp -rvf $H/doc/img .
 for j in . tutorial reference ; do 
