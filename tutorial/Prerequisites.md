@@ -3,9 +3,7 @@ layout: page
 title: Prerequisites
 ---
 
-Tutorial Prev:  [Tutorial Index](/tutorial.html).
-
----- 
+##### Prev:  [Tutorial Index](/tutorial.html)
 
 ## Prerequisites 
 
@@ -22,8 +20,6 @@ Furthermore it is possible to [install the full Sites in your computer](http://w
 Once you installed Sites, follows the [installation procedure](Install.html) to install AgileSites. You do not require the installation of the demo site, although it is convenient to have it installed during development.
 
 
-----
-
-Tutorial Next:  [Configuration](Configuration.html)
+##### Next:  [Configuration](Configuration.html)
 
 

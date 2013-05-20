@@ -2,9 +2,7 @@
 layout: page
 title: Configuration
 ---
-Tutorial Prev: [Prerequisites](Prerequisites.html)
-
-----
+##### Prev: [Prerequisites](Prerequisites.html)
 
 # Choose a name and a prefix
 
@@ -57,6 +55,4 @@ On Satellite Server:
 
 **HINT** The variable `wcsSites` variable is actually a comma separated list of sites name. However you should specify more than one site only when you are using tightly coupled sites sharing assets. They are exported all together by CSDT.
 
-----
-
-Tutorial Next: [New Site](NewSite.html)
+##### Next: [New Site](NewSite.html)

@@ -2,10 +2,8 @@
 layout: page
 title: NewTemplate
 ---
+##### Prev:  [New Site](NewSite.html).
 
-Tutorial Prev:  [New Site](NewSite.html).
-
----- 
 
 ##  Create the home page
 
@@ -18,9 +16,7 @@ Create a template for the home page, and deploy it
 ``wcs-generate template
 wcs-deploy``
 
-----
-
-Tutorial Next:  [HTML Views](Picker.html)
+##### Next: [Picker](Picker.html)
 
 
 

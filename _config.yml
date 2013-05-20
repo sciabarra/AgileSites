@@ -13,7 +13,7 @@ title : AgileSites
 tagline: the Easy framework for Agile development with Oracle Sites
 author :
   name : Michele Sciabarra
-  email : michele@sciabarra.com
+  email : 
   github : sciabarra
   twitter : agilesites
  # feedburner : agilesites
@@ -81,7 +81,7 @@ JB :
   # Set 'provider' to false to turn commenting off globally.
   #
   comments :
-    provider : disqus
+    provider : false
     disqus :
       short_name : agilesites
     livefyre :
@@ -99,7 +99,7 @@ JB :
   # Set 'provider' to false to turn analytics off globally.
   #        
   analytics :
-    provider : google 
+    provider : false 
     google : 
         tracking_id : 'UA-123-12'
     getclicky :

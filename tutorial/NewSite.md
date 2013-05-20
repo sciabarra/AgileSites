@@ -2,9 +2,7 @@
 layout: page
 title: NewSite
 ---
-Tutorial Next:  [Configuration](Configuration.html)
-
----- 
+##### Prev:  [Configuration](Configuration.html)
 
 ## Create a site in Sites
 
@@ -64,7 +62,5 @@ This is normal since you do not have yet any page.
 
 Run All tests.
 
-----
-
-Tutorial Next:  [New Template](NewTemplate.html)
+#####  Next:  [New Template](NewTemplate.html)
 

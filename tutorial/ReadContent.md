@@ -2,7 +2,7 @@
 layout: page
 title: ReadContent
 ---
-Tutorial Prev:  [HTML Views](Picker.html).
+##### Prev:  [Picker](Picker.html).
 
 ---- 
 
@@ -10,7 +10,7 @@ Tutorial Prev:  [HTML Views](Picker.html).
 
 ----
 
-Tutorial Next:  [Testing](Testing.html)
+##### Next:  [Testing](Testing.html)
 
 
 
