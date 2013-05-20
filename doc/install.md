@@ -1,5 +1,3 @@
-# How to install AgileSites
-
 ## Download 
 
 Download a stable release of AgileSites from GitHub. 
@@ -20,7 +18,7 @@ You also need to decide for a front end web server, usually running Apache and a
 
 For development those components are optional, so you just need to ensure the ``wcsUrl`` is pointing to your local development environment.
 
-See the [configuration reference](http://www.agilesites.org/reference/Configuration..html) for details.
+See the [configuration reference](http://www.agilesites.org/reference/Configuration.html) for details.
 
 ## Installation 
 
@@ -38,7 +36,7 @@ Now start Sites/JSK and run
 
 This will complete the installation of the framework.
 
-You can now create a new site following the [tutorial](http://www.agilesites.org/tutorial/) or go on this document to learn how to import the demo site.
+You can now create a new site following the [tutorial](http://www.agilesites.org/tuttorial.html) or go on this document to learn how to import the demo site.
 
 **NOTE**: You can use `wcs-setup-online silent` and `wcs-setup-online silent` to skip informative GUI messages (if you are installing in a server without a GUI)
 
