@@ -58,22 +58,15 @@ trait AgileSitesSupport {
           val src = tld.getAbsolutePath
           val cls = Tld2Tag.tld2class(src)
           val clsj = Tld2Tagj.tld2class(src)
-          val dst = file(dstDir / cls + ".scala")
           val dstj = file(dstDir / clsj + ".java")
           //	if tld.getName.equalsIgnoreCase("asset.tld") // select only one for debug generator
         } yield {
-          if (!dst.exists) {
-            val body = Tld2Tag(src)
-            IO.write(dst, body)
-            //print(cls + " ")
-            println("+++ " + dst)
-          }
           if (!dstj.exists) {
             val bodyj = Tld2Tagj(src)
             IO.write(dstj, bodyj)
             println("+++ " + dstj)
           }
-          dst :: dstj :: Nil
+          dstj :: Nil
         }
 
         // copy versioned class
