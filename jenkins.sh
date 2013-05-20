@@ -3,7 +3,7 @@
 CS=http://localhost:8080/cs
 TEST=Demo/DmTester
 umask 0
-cp jenkins.build.sbt build.sbt
+cp jenkins.build_sbt build.sbt
 echo Hello
 curl "$CS/HelloCS"
 echo Setup
