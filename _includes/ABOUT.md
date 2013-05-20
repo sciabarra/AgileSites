@@ -1,8 +1,4 @@
----
-layout: page
-title: Features
----
-# <a name="API"></a>Simpler API
+# <a name="API"> </a>Simpler API
 
 ## Problem
 
@@ -17,7 +13,7 @@ A new, simplified, consistent API is offered. This API hide many of the complexi
 The goal is to provide 80% of the functionality with  20% of the complexity.
 However, all the existing Fatwire is  kept accessible and available, and can be used if required.
 
-# <a name="Deploy"></a>Deployment Hell 
+# <a name="Deploy"> </a>Deployment Hell 
  
 ## Problem
 
@@ -35,7 +31,7 @@ A whole site can be install a new system with 2 commands:
 Then a site can be deployed and update with a single command (wcs-deploy) 
 You do not need to restart the application server except the first time when deploying the core.
 
-# <a name="Compatible"></a>Compatible with your work
+# <a name="Compatible"> </a>Compatible with your work
 
 ## Problem
 
@@ -48,7 +44,7 @@ but templates are called by standard JSP, so you can freely mix framework manage
 
 You can even write templates partially in JSP and partially in Java using the entire hot deploy infrastructure of the framework.
 
-# <a name="CI"></a>Continuous Integration
+# <a name="CI"> </a>Continuous Integration
 
 ## Problem
 
@@ -71,7 +67,7 @@ Using a standard Continuous Integration server like Jenkins is just a matter of:
 - configure Jenkins it to checkout the code and deploy it on the server
 - run the tests (both unit test coming from the developers and integration test coming from tester) using the provided build tool and distribuite the results to developers through a mailing list.
 
-# <a name="HotDeploy"></a>Do not have to restart the application server or redeploy the app
+# <a name="HotDeploy"> </a>Do not have to restart the application server or redeploy the app
 
 ## Problem
 
@@ -83,7 +79,7 @@ The framework features hot deploy as a key feature. After any code change, a jar
 
 So you have the advantage of being able to use full java without losing the immediate gratification of seeing the result without any delay that usually breaks the development flow and is a productivity killer.
 
-# <a name="IDE"></a>Pick your preferred IDE
+# <a name="IDE"> </a>Pick your preferred IDE
 
 ## Problem
 
@@ -97,7 +93,7 @@ The application built with AgileWCS is a completely standard Java application no
 
 As a result, nothing else but any java IDE is required, and this can be Eclipse without plugins, NetBeans, Idea or even nothing at all. Compilation, packaging and deploying is included by a command line tool that is part of the framework.
 
-# <a name="NoJSP"></a>Move Away from JSP
+# <a name="NoJSP"> </a>Move Away from JSP
 
 ## Problem
 
@@ -135,7 +131,7 @@ To keep the Agility of development using JSP, all your code is stored in a jar t
 
 You have all the Java power at your finger tips. However, templates are still templates, and they are invoked by a JSP. The stub code to generate the JSP is managed automatically by the framework so you don't have to worry of it.
 
-# <a name="MVC"></a>MVC Pattern
+# <a name="MVC"> </a>MVC Pattern
 
 ## Problem
 
@@ -155,7 +151,7 @@ Furthermore, also the view is kept separated, and [[in its original form|Feature
 
 Developers write all the template code in plain Java, implementing a controller that collect data from the model and place it in the view as needed.
 
-# <a name="HTML"></a>Keep HTML in the original form
+# <a name="HTML"> </a>Keep HTML in the original form
 
 ## Problem
 
@@ -169,7 +165,7 @@ Major problems arises when Web Designers update the web design, since at every u
 
 The framework allows developer to use unchanged original HTML files. A specific API, using jquery-like CSS based selectors allow to pick specific pieces of html, replace with content and render them without having to mix code and HTML. This way web designer can freely update the html and the CSS and, as long as id and classes are kept unchanged, there is no need to change the business logic code.
 
-# <a name="Jar"></a>Single Jar Deploy
+# <a name="Jar"> </a>Single Jar Deploy
 
 ## Problem
 
@@ -181,7 +177,7 @@ The deployment of a web site is a single jar containing both source code and htm
 
 Since all the code is a single jar, deploying a site is only a matter of copying a jar in place, and it is possible to compare the complete code deployed for a site just comparing the deployed jar.
 
-# <a name="Support"></a>Keep Oracle Support
+# <a name="Support"> </a>Keep Oracle Support
 
 ## Problem
 
@@ -189,15 +185,15 @@ If you pick the framework, you may want to keep getting support from the vendor,
 
 ## Solution
 
-AgileSites does not change Fatwire/WCS in any way. Templates are still invoked using JSP, and JSP code is standard Java code, so nothing is different from standard practices. 
+AgileSites does not change Fatwire/Sites way of operate in any way. Templates are still invoked using JSP, and JSP code is standard Java code, so nothing is different from standard practices. 
 
 The entire hot deploy api is actually a standard feature of Java that exists since Java 1.0: it is implemented using the standard class loader used for applets. Everything else is provided either with java classes that extends existing api (but don't change it) and a standard external build tool that packges your code and deploy it. 
 
 Finally, the asset model update is implemented using standard Fatwire/WCS Elements and SiteEntries, invoked through the Catalog Manager.
 
-In conclusion, all the framework is a layer built on top of standard Fatwire/WCS and nothing is "invalidating your guarantee", except you may not ask support for the specific framework to the Vendor. Support for the framework however is available from us.
+In conclusion, all the framework is a layer built on top of standard Fatwire/Sites and nothing is "invalidating your guarantee", except you may not ask support for the specific framework to the Vendor. Support for the framework however is available from us.
 
-# <a name="UnitTest"></a>Unit Test Templates and CSElement 
+# <a name="UnitTest"> </a>Unit Test Templates and CSElement 
 
 ## Problem
 
@@ -215,7 +211,7 @@ Since all the templates are implemented in a Java class, they can now be tested 
 
 This makes very easy to write unit test. Furthermore, the framework integrates content impor and the tool selenium. This make easy to write also integration test to be used in [[continuous integration|Feature-Continuous-Integration]].
 
-# <a name="VersionControl"></a> Version Control your Code 
+# <a name="VersionControl"> </a> Version Control your Code 
 
 ## Problem
 

@@ -16,4 +16,4 @@ Furthermore it is possible to [install Sites in your computer](http://www.sciaba
 
 If your habit is to develop on a shared instance and you want to keep working that way, then AgileSites is probably not fit for your way of working.
 
-Once done, follows the [installation](Install.md) steps. You do not require the demo site, although it is convenient to have it installed during development.
+Once done, follows the [installation](Install.html) steps. You do not require the demo site, although it is convenient to have it installed during development.
