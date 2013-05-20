@@ -48,8 +48,6 @@ trait AgileSitesSupport {
     (sourceManaged in Compile, wcsWebapp, baseDirectory, wcsVersion) map {
       (dstDir, srcDir, base, version) =>
 
-        println("*** Generating tags from %s\n".format(srcDir))
-
         // generate tags
         val tlds = file(srcDir) / "WEB-INF" / "futuretense_cs"
 
