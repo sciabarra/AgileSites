@@ -1,10 +1,20 @@
 ---
 layout: page
-title: about
+title: About
 ---
-# <a name="API"> </a>Simpler API
+AgileSites is a framework for Oracle WebCenter Sites designed with the following goals in mind:
 
-## Problem
+- to be easy to use
+- allows for agile development practices
+- make development with distributed team (offshore) possible and healthy
+- be compatible with standard coding practices
+- use only documented API to keep Oracle Support
+
+In short AgileSites scale and speed up development with Oracle Sites.
+
+Here is a list of what is has to offer.
+
+# <a name="API"> </a>Simpler API
 
 Fatwire/Sites api is pretty old, sometimes ugly and inconsistent.
  
@@ -19,9 +29,7 @@ However, all the existing Fatwire is  kept accessible and available, and can be 
 
 # <a name="Deploy"> </a>Deployment Hell 
  
-## Problem
-
-A Fatwire website is typically  very complex to deploy, since it is comprised of many different components: library jars, customization jars, css and javascript files, CSElements, Templates, database tables and some content that must be always present.
+A Fatwire website is typically very complex to deploy, since it is comprised of many different components: library jars, customization jars, css and javascript files, CSElements, Templates, database tables and some content that must be always present.
 
 ## Solution
 
@@ -37,8 +45,6 @@ You do not need to restart the application server except the first time when dep
 
 # <a name="Compatible"> </a>Compatible with your work
 
-## Problem
-
 Rarely a project exists in a vacuum, so if you decide to give a try to this framework, you want to be able to keep your existing work and not having to rewrite everything.
 
 ## Solution
@@ -50,9 +56,7 @@ You can even write templates partially in JSP and partially in Java using the en
 
 # <a name="CI"> </a>Continuous Integration
 
-## Problem
-
-Continuous Integration is one the key practices in Agile development.
+Continuous Integration is one of the key practices in Agile development.
 
 Every developer should work in isolation in his own machine but when many developers are working at the same time, the full test suite must be run against the development server.
 
@@ -67,15 +71,16 @@ Since building the site is pretty easy from a single source, every developer can
 Since there is a build and writing tests is easy, and a version control system can be used, every developer have just to commit his changes to the version control system
 
 Using a standard Continuous Integration server like Jenkins is just a matter of:
+
 - installing a Jump Start Kit on the integration server and perform the first install
 - configure Jenkins it to checkout the code and deploy it on the server
 - run the tests (both unit test coming from the developers and integration test coming from tester) using the provided build tool and distribuite the results to developers through a mailing list.
 
-# <a name="HotDeploy"> </a>Do not have to restart the application server or redeploy the app
+# <a name="HotDeploy"> </a>No restart of application server for Java coding
 
-## Problem
+Coding in JSP with Fatwire/Sites has the advantage that you can see immediately the result without restarting the application server.
 
-Coding in JSP with Fatwire/WCS has the advantage that you can see immediately the result without restarting the application server. Traditionally, when coding in Java instead  a major hassle is the requirement to restart the application server to see the code change. 
+Traditionally, when coding in Java instead  a major hassle is the requirement to restart the application server to see the code change. 
 
 ## Solution
 
@@ -83,9 +88,7 @@ The framework features hot deploy as a key feature. After any code change, a jar
 
 So you have the advantage of being able to use full java without losing the immediate gratification of seeing the result without any delay that usually breaks the development flow and is a productivity killer.
 
-# <a name="IDE"> </a>Pick your preferred IDE
-
-## Problem
+# <a name="IDE"> </a>Use your preferred IDE and VCS
 
 The choice of development tool usable with Fatwire has been traditionally very limited. Traditionally you have to use the windows-only and limited Content Server Explorer. More recently a few plugins has been made available, all of them Eclipse based, including the CSDT tool.
 
@@ -93,43 +96,41 @@ But if you want to use another IDE, or just Eclipse without a plugin (that may b
 
 ## Solution
 
-The application built with AgileWCS is a completely standard Java application not requiring any plugin to be edited: just add the relevant jars in the classpath, and a tool to generate the correct classpath and download them from repositories is included.
+The application built with AgileSites is a completely standard Java application not requiring any plugin to be edited: just add the relevant jars in the classpath, and a tool to generate the correct classpath and download them from repositories is included.
 
 As a result, nothing else but any java IDE is required, and this can be Eclipse without plugins, NetBeans, Idea or even nothing at all. Compilation, packaging and deploying is included by a command line tool that is part of the framework.
 
 # <a name="NoJSP"> </a>Move Away from JSP
 
-## Problem
-
-WCS/Fatwire require developers implement templates either using JSP or its proprietary XML based language. 
+Sites/Fatwire require developers implement templates either using JSP or its proprietary XML based language. 
 
 JSP are great for implementing simple rendering logic, and they dynamic, since they are recompiled on the fly. Developers enjoy instant gratifications seeing immediately the results of their efforts.
 
 With those advantages comes many disadvantages. The problem with JSP is that they are really meant to implement **simple** rendering logic *ONLY*. A normal Java Web Applications uses also servlet as controllers, and very often MVC frameworks like Struts or Spring MVC to better organize the code. 
 
-In WCS/Fatwire unfortunately JSP is the only mean to develop code, unless you write an extensions jar to add to the webapp, then you deploy it and restart the application server.
+In Sites/Fatwire unfortunately JSP is the only mean to develop code, unless you write an extensions jar to add to the webapp, then you deploy it and restart the application server.
 
 Since restarting the application server is slow, most developers  end up writing complex logic directly in the JSP, writing JSP that are almost all comprised of Java code. This  practice has many shortcomings.
 
-First, JSP cannot share code. You cannot define for example an utility method in a JSP and call it in another jsp.
+- First, JSP cannot share code. You cannot define for example an utility method in a JSP and call it in another jsp.
 
-You can use a JSP in Fatwire/WCS as a CSElement and call it from another JSP, but they are very cumbersome to use.
+You can use a JSP in Fatwire/Sites as a CSElement and call it from another JSP, but they are very cumbersome to use.
 
 Alternatively, you can write your code in a Java class, deploy it in a separate jar, then restart the application server before using it. This is very cumbersome in the development process.
 
-Second, the syntax of JSP is frankly ugly and unreadable. Indentation is very difficult, and often you cannot indent at all to avoid generating tons unindented HTML (that must required to be readable too). 
+- Second, the syntax of JSP is frankly ugly and unreadable. Indentation is very difficult, and often you cannot indent at all to avoid generating tons unindented HTML (that must required to be readable too). 
 
-Third, Fatwire/WCS is complicating things because the API can often be invoked only through the tag, so you end up switching from java to html and back only to call an API through a tag.
+- Third, Fatwire/Sites is complicating things because the API can often be invoked only through the tag, so you end up switching from java to html and back only to call an API through a tag.
 
 Many projects end up with a lot of Java code inside a JSP, with a lot of code copied and pasted between JSP, getting a large, unmanageable amount of spaghetti code with lot of repetitions. 
 
-This is not entirely a Fatwire/WCS fault but definitely the limitations of JSP encourage those bad practices.
+This is not entirely a Fatwire/Sites fault but definitely the limitations of JSP encourage those bad practices.
 
 ## Solution
 
 The fundamental feature of this framework is allowing developers to write templates directly in Java, and providing APIs to render the view  from an unchanged HTML (the typical HTML that you receive from web designers). 
 
-Since accessing to the content model in Fatwire/WCS is usually done using JSP tags, a specific API has been developed to provide easy invocation of  JSP tags directly in Java.
+Since accessing to the content model in Fatwire/Sites is usually done using JSP tags, a specific API has been developed to provide easy invocation of  JSP tags directly in Java.
 
 To keep the Agility of development using JSP, all your code is stored in a jar that is dinamically redeployed when you change it, so there is no need to restart the application server. You keep the instant gratification of JSP, but you can write ordered, clean Java code, splitting it in multiple classes and reusing code without limite call-elements.
 
@@ -137,27 +138,23 @@ You have all the Java power at your finger tips. However, templates are still te
 
 # <a name="MVC"> </a>MVC Pattern
 
-## Problem
-
-A common problem in Fatwire/WCS development is that templates do not implement a Model-View-Controller pattern.
+A common problem in Fatwire/Sites development is that templates do not implement a Model-View-Controller pattern.
 
 Instead, a template is just a JSP where you mix  the rendering logic (view), the content reading logic (model) and some specific business logic (control)
 
 ## Solution
 
-The AgileWCS framework enables you writing your code in Java, not in JSP.
+The AgileSites framework enables you writing your code in Java, not in JSP.
 
 Each template now has a corresponding class that acts as a controller. 
 
 A specific API to define the content (model) and retrieve it, is provided, separating the model from the controller.
 
-Furthermore, also the view is kept separated, and [[in its original form|Feature-Original-HTML]]: the view is indeed the original HTML as provided by web designers.
+Furthermore, also the view is kept separated, and in its original form: the view is indeed the original HTML as provided by web designers.
 
 Developers write all the template code in plain Java, implementing a controller that collect data from the model and place it in the view as needed.
 
 # <a name="HTML"> </a>Keep HTML in the original form
-
-## Problem
 
 In any large web development project, web designer are different people from web developers, since different skills are required.
 
@@ -171,21 +168,19 @@ The framework allows developer to use unchanged original HTML files. A specific 
 
 # <a name="Jar"> </a>Single Jar Deploy
 
-## Problem
-
 Deploying code though publishing templates is error prone, does not capture real dependencies in code and is very hard to track.
 
 ## Solution
 
-The deployment of a web site is a single jar containing both source code and html resources. The jar is automatically packaged and deployed just copying it on his final destinations. Changes are picked when the jar is deployed.
+The deployment of an AgileSites project is a single jar containing both source code and html resources. The jar is automatically packaged and deployed just copying it on his final destinations. Changes are picked when the jar is deployed.
 
 Since all the code is a single jar, deploying a site is only a matter of copying a jar in place, and it is possible to compare the complete code deployed for a site just comparing the deployed jar.
 
 # <a name="Support"> </a>Keep Oracle Support
 
-## Problem
+If you pick the framework, you may want to keep getting support from the vendor, and using this framework should not be a reason to lose support. 
 
-If you pick the framework, you may want to keep getting support from the vendor, and using this framework should not be a reason to lose support. Furthermore you want to use all the available feature of Fatwire/WCS  without being limited in any way.
+Furthermore you want to use all the available feature of Fatwire/Sites  without being limited in any way.
 
 ## Solution
 
@@ -193,19 +188,17 @@ AgileSites does not change Fatwire/Sites way of operate in any way. Templates ar
 
 The entire hot deploy api is actually a standard feature of Java that exists since Java 1.0: it is implemented using the standard class loader used for applets. Everything else is provided either with java classes that extends existing api (but don't change it) and a standard external build tool that packges your code and deploy it. 
 
-Finally, the asset model update is implemented using standard Fatwire/WCS Elements and SiteEntries, invoked through the Catalog Manager.
+Finally, the asset model update is implemented using standard Fatwire/Sites Elements and SiteEntries, invoked through the Catalog Manager.
 
 In conclusion, all the framework is a layer built on top of standard Fatwire/Sites and nothing is "invalidating your guarantee", except you may not ask support for the specific framework to the Vendor. Support for the framework however is available from us.
 
 # <a name="UnitTest"> </a>Unit Test Templates and CSElement 
 
-## Problem
-
 Agile programming mandates you write tests for every features you implement.
 
 In addition to unit test, is is important to be able to perform integration test in an automated way.
 
-Unfortunately, with Fatwire/WCS templates live inside the CMS and are almost impossible to test:  they can be called only through HTTP and often not directly.  
+Unfortunately, with Fatwire/Sites templates live inside the CMS and are almost impossible to test:  they can be called only through HTTP and often not directly.  
 
 Templates depends on the current content model so you cannot reproduce their behaviour unless you initialise the whole content in an expected way, that can be a lot time consuming.
 
@@ -217,11 +210,9 @@ This makes very easy to write unit test. Furthermore, the framework integrates c
 
 # <a name="VersionControl"> </a> Version Control your Code 
 
-## Problem
+Developers cannot really use a version control system with standard Fatwire/Sites since all the templates are stored inside the database and it may required to version control database records, that is not easy (if possible at all).
 
-Developers cannot really use a version control system with standard Fatwire/WCS since all the templates are stored inside the database and it may required to version control database records, that is not easy (if possible at all).
-
-A limited solution is using internal Fatwire/WCS revision tracking, but that is not a real version control system. It is more suitable for revision tracking content, not code. It lacks many of the features of typical VCS, like merging changes from different developers and allowing concurrent development.
+A limited solution is using internal Fatwire/Sites revision tracking, but that is not a real version control system. It is more suitable for revision tracking content, not code. It lacks many of the features of typical VCS, like merging changes from different developers and allowing concurrent development.
 
 Furthermore you do not have a real source code of your templates, since they are actually stored inside the database. Comparing versions is pretty difficult (you have to manually export templates, compare then then compare manually database records storing metadata about the templates).
 

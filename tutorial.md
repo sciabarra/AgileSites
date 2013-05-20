@@ -1,6 +1,6 @@
 ---
 layout: page
-title: tutorial
+title: Tutorial
 ---
 Read the following documents in order to learn how to use AgileSites.
 

@@ -1,6 +1,6 @@
 ---
 layout: page
-title: reference
+title: Reference
 ---
 Here there are more detailed information than you ever wanted to know.
 
