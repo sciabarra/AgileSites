@@ -1,56 +1,88 @@
 ## Download 
 
-Download a stable release of AgileSites from GitHub. 
+AgileSites is distributed as a source zip from GitHub.
 
-Stable releases are [listed here](http://www.agilesites.org/download.html)
+You need to download a stable release of AgileSites from GitHub. Stable releases are [listed here](http://www.agilesites.org/download.html)
 
-Unzip them somewhere and read on to configure it.
+It is recommended you pick the latest stable version, 
+unzip it in a folder of your choice where you put your projects. Then read on to learn how to configure it.
 
 ## Configuration
 
-Copy `build.sbt.dist` to `build.sbt` and edit it.
+You need a `build.sbt` where you specify paths in your installation. 
+
+First step is to copy `build.sbt.dist` into `build.sbt` and edit it.
 
 You need to provide details on your installation.
 
-At least you need to configure paths, so the AgileSites installer can locate your Sites files.
+Default values are fine if you are using JumpStart Kit 11gR1 installed the default location with the default users.
 
-You also need to decide for a front end web server, usually running Apache and a Satellite server in front of your sites and behind you web server. 
+At least you need to configure paths and users, so the AgileSites installer can locate your Sites files.
 
-For development those components are optional, so you just need to ensure the ``wcsUrl`` is pointing to your local development environment.
+You can skip all the options for the Apache and Satellite front end if you are installing for development.
 
-See the [configuration reference](http://www.agilesites.org/reference/Configuration.html) for details.
+For development those components are optional, so you just need to ensure the ``wcsUrl`` points to your local development environment (please check the port if you are not using 8080)
+
+You can read about Satellite and Apache front end installation in the [deployment reference](http://www.agilesites.org/reference/Deployment.html).
+
+You can read details of the configuration in the [configuration reference](http://www.agilesites.org/reference/Configuration.html) to understand each parameter if you have doubts.
 
 ## Installation 
 
-Start the AgileShell running either `agilesites.bat` or `agilesites.sh`
+Ensure you have a connection to internet and start the AgileShell running either `agilesites.bat` or `agilesites.sh`
 
-Ensure sites is ***not running*** and execute
+**NOTE** The first time the shell is started, it will take some time before you get an answer, since it will download jar dependencies and build the core library. 
 
-`wcs-setup-offline``
+**HINT** If you are performing an installation using an existing code base, you can force the source to a safe state before stating the shell running the `clean.bat` or `clean.sh` script.
 
-If you get exceptions, review the paths carefully and repeat.
+Once you get the prompt, ensure the applications server where Sites is installed is ***not running*** and execute
 
-Now start Sites/JSK and run
+`wcs-setup-offline`
+
+**HINT** If you get errors or exceptions, please review the paths carefully. A wrong path is by far the most common cause of failing installation.
+
+**NOTE** The installer pops up a dialog box. If you are installing on a server without a GUI, you can skip the dialog box (and the warnings) using `wcs-setup-offiline silent`  
+
+Now you can start the application server. Since it can takes some time before it is active, it is useful to invoke the `HelloCS` servlet and wait until you get an answer. In a default local install the servlet can be reached as:
+
+> http://localhost:8080/cs/HelloCS
+
+Once you get an answer from the application server
 
 ``wcs-setup-online``
+
+
+**NOTE** currently the shell shows some error messages about missing configuration files for log4j and ehcache. This is actually normal, so you can ignore those erros.
+
+Check for this image to confirm successful setup online:
+
+![Successful import](./img/snap1188.png)
 
 This will complete the installation of the framework.
 
 You can now create a new site following the [tutorial](http://www.agilesites.org/tuttorial.html) or go on this document to learn how to import the demo site.
 
-**NOTE**: You can use `wcs-setup-online silent` and `wcs-setup-online silent` to skip informative GUI messages (if you are installing in a server without a GUI)
+##  Importing the Demo site (Optional)
+Importing a site on a server where AgileSites is already installed needs  2 steps:
 
-## Import
+- import the content model (with csdt)
+- deploy the code 
 
-To import a site, you need to import the content model and then deploy the site.
+The site imported is the one pointed by the `wcsSites` variable in the `build.sbt` configuration file.
 
-The site imported is the one pointed by the `wcsSites` variable in the 
+You can then import (optionally) import the Demo site for reference.
 
-First import the site using the CSDT with
+Before starting ensure that in build.sbt there is the line
+
+> `wcsSites in ThisBuild := "Demo"`
+
+Then import the site using the CSDT with
 
 ``wcs-dt import``
 
-Then deploy the code with
+**NOTE** If you have installed sample sites like FirstSiteII or Avisports then you will get an error message because a treetab of the Demo is already present in the sample sites.
+
+Finally deploy the code with
 
 ``wcs-deploy``
 
@@ -62,7 +94,6 @@ Run tests with
 
 > http://localhost:8080/cs/ContentServer?pagename=Demo/DmTester
 
+## Apache and Satellite
 
-## Satellite
-
-TODO
+Learn how to configure a Satellite and Apache front end installation in the [deployment reference](http://www.agilesites.org/reference/Deployment.html).

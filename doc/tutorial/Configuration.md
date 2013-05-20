@@ -18,9 +18,8 @@ wcsSites in ThisBuild := "MySite"
 
 - shut down the application server running Sites,
 - execute again the ``wcs-setup-offline`` command
--  restart it  
--  execute the ``wcs-setup-online`` command.
-
+- restart it  
+- execute the ``wcs-setup-online`` command.
 
 If you have a virtual host configured (with satellite and apache in place) for your new site then you should also configure virtual hosts mapping, but for now you can leave out this step.
 

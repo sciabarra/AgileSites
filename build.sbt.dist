@@ -1,4 +1,8 @@
-// sites to import/export
+/// Configuration Parameters for Sites 
+
+// site names to import/export
+// NOTE: if you change this you need to repeat the offline and online setup
+// See http://www.agilesites.org/install.html
 wcsSites in ThisBuild := "Demo"
 
 // url to content server - NO slashes at the end please 
@@ -26,7 +30,7 @@ wcsWebapp in ThisBuild := "c:/Oracle/WebCenter/Sites/11gR1/App_Server/apache-tom
 // location of the csdt-client jar
 wcsCsdtJar in ThisBuild := "c:/Oracle/WebCenter/Sites/11gR1/Sites/11.1.1.6.1/csdt-client-1.2.2.jar"
 
-/// configurations for front-end Satellite and proxy
+/// Configurations options for front-end Satellite and proxy
 /// "wcs-setup-offline satellite" must be run in the separate satellite host
 
 // webapp directory of Satellite Server 
@@ -43,9 +47,6 @@ wcsFlexBlobs in ThisBuild := """^/(\d+)\.(jpg|png|gif)$"""
 // the first group must be the name of the static resource 
 wcsStaticBlobs in ThisBuild := """^(.*\.(css|js|jpg|png|gif))$"""
 
-
 // debug 
 javacOptions ++= Seq("-g:vars")
 
-// documentation
-//Seq(javadoc.Oracle/WebCenterdocPlugin.javadocSettings: _*)
