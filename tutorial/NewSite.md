@@ -34,7 +34,7 @@ After creating the site, you need also to create an user and assign to that user
 
 Once done you need to log out and then log in again to select your new site as the active site.
 
-## Create the site code with the generator
+## Create the basic code of the site with the generator
 
 Once created the site in Sites, you can use generate the site code from the shell with the command:
 
@@ -52,15 +52,42 @@ Accessing the site with
 
 > http://localhost:8080/cs/Satellite/mysite
 
-You should see "Error, Home Page not found"
+You should see the following screenshot:
 
-This is normal since you do not have yet any page.
+![Default Error Page](/img/snap3695.png)
 
-## Run Tests
+This is normal since you do not have yet any page, so the Error Page is shown declaring it cannot find the home pages
 
->http://localhost:8080/cs/ContentServer?pagename=MySite/MyTester
+You can then invoker the tester with
 
-Run All tests.
+>http://localhost:8080/cs/ContentServer?pagename=MyTester
+
+You should see this screenshot:
+
+![Tester](/img/snap2246.png)
+
+Clicking on "Run All Tests" you should expect no errors:
+
+![Run All Tests](/img/snap2543.png)
+
+You can also select a few tests and run only the selected tests clicking on "Run Some Tests". Try it.
+
+## Import in eclipse
+
+**Note**: you need the eclipse plugin [http://www.scala-ide.org](http://www.scala-ide.org "Scala IDE") to use the default export. Projects are currently Java only, but planned extensions of the framework  will allow also Scala coding, so this requirement is not going to be removed. 
+ 
+Once the new site and the new project has been created you can generate configuration files for your IDE. Execute the command:
+
+`eclipse`
+
+In the shell. Using eclipse you can select the following sequence of options to import the projects in Eclipse:
+
+> File | Import | General | Existing Projects 
+
+and select the main directory of AgileSites. You should see the following screenshot:
+
+![Import AgileSites projects](/img/snap4673.png)
+
+You will actually work only on the `agilesites-app` project. 
 
 #####  Next:  [New Template](NewTemplate.html)
-
