@@ -1,5 +1,7 @@
 package $site;format="normalize"$.test;
 
+import static wcs.core.Common.*;
+
 import org.junit.Before;
 import org.junit.Test;
 

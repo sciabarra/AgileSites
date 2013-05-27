@@ -62,7 +62,7 @@ abstract public class Setup implements wcs.core.Setup {
 	 */
 	public String exec(ICS ics, String site, String username, String password) {
 
-		System.out.println("*** site=" + site);
+		log.debug("site=%s", site);
 
 		session = SessionFactory.newSession(username, password);
 		adm = (AssetDataManager) session.getManager(AssetDataManager.class

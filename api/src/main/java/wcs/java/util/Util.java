@@ -20,7 +20,6 @@ import wcs.core.Call;
 import wcs.core.Log;
 import wcs.core.Sequencer;
 import wcs.java.Config;
-import wcs.java.Insite;
 
 import COM.FutureTense.Interfaces.IList;
 
@@ -32,7 +31,7 @@ import com.fatwire.assetapi.def.AttributeTypeEnum;
 import com.openmarket.xcelerate.asset.AttributeDefImpl;
 
 /**
- * Utility and support functions
+ * Utility and support functions specific for AgileSites
  * 
  * 
  * @author msciab
@@ -395,22 +394,28 @@ public class Util {
 	}
 
 	/**
-	 * Read the configuration of an insite field
+	 * Read a configuration attribute
 	 * 
 	 * @param name
 	 * @param config
 	 * @return
 	 */
-	public static Insite readAttributeConfig(String attribute, Config config) {
+	public static Object readAttributeConfig(String attribute, Config config) {
 		try {
 			Field field = config.getClass().getField(attribute);
-			return (Insite) field.get(config);
+			return field.get(config);
 		} catch (Exception ex) {
 			log.error("no such a field %s", attribute);
 		}
 		return null;
 	}
 
+	/**
+	 * Hexadecimal dump of a string
+	 * 
+	 * @param s
+	 * @return
+	 */
 	public static String hexDump(String s) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < s.length(); i++) {

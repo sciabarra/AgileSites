@@ -1,5 +1,7 @@
 package $site;format="normalize"$.element;
 
+import static wcs.core.Common.*;
+
 import wcs.core.Log;
 import wcs.java.Env;
 import wcs.java.Element;

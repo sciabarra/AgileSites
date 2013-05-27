@@ -34,6 +34,8 @@ public class Env extends ICSProxyJ {
 	private Config config;
 	private Router router;
 	private String site;
+	private boolean insite;
+	private boolean preview;
 
 	/**
 	 * Build the env from the ICS
@@ -47,6 +49,9 @@ public class Env extends ICSProxyJ {
 			this.site = config.getSite();
 			router = Router.getRouter(site);
 		}
+		String rendermode = ics.GetVar("rendermode");
+		insite = rendermode != null && rendermode.equals("insite");
+		preview = rendermode != null && rendermode.startsWith("preview");
 	}
 
 	/**
@@ -258,10 +263,17 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
-	 * Check if exists as ano object
+	 * Check if exists as an object
 	 */
 	public boolean isObj(String object) {
 		return ics.GetObj(object) != null;
+	}
+
+	/**
+	 * Check if we are in the insite editing mode
+	 */
+	public boolean isInsite() {
+		return insite;
 	}
 
 	/**
@@ -347,11 +359,18 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
-	 * Return the URL to render this asset
+	 * Return the URL to render this asset - note that rendering is different if
+	 * we are in insite/preview mode or in live model
 	 */
 	public String getUrl(Id id, Arg... args) {
+		if (insite || preview) {
+			return RenderTag.getpageurl().pagename("AAAgileRouter").c(id.c)
+					.cid(id.cid.toString()).assembler("query")
+					.eval(ics, "outstr");
+		}
 		String pCid = getRouter().link(this, id, args);
 		String pC = WCS.normalizeSiteName(getConfig().getSite());
+
 		String res = RenderTag.getpageurl().pagename("AAAgileRouter")//
 				.c(pC).cid(pCid).assembler("agilesites").eval(ics, "outstr");
 		log.debug("getUrl: outstr=" + res);

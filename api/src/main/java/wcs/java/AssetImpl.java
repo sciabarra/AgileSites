@@ -1,24 +1,20 @@
 package wcs.java;
 
-import static wcs.core.Common.arg;
-import static wcs.core.Common.tmp;
+import static wcs.core.Common.*;
 import static wcs.java.util.Util.toDate;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import COM.FutureTense.Interfaces.ICS;
+import wcs.core.tag.AssetTag;
+import wcs.core.tag.AssetsetTag;
+import wcs.core.tag.RenderTag;
 import wcs.core.Arg;
 import wcs.core.Call;
 import wcs.core.Common;
 import wcs.core.Id;
 import wcs.core.Log;
-import wcs.core.tag.AssetTag;
-import wcs.core.tag.AssetsetTag;
-import wcs.core.tag.RenderTag;
-import wcs.java.util.IfNull;
-import wcs.java.util.Util;
-import COM.FutureTense.Interfaces.ICS;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 class AssetImpl extends wcs.java.Asset {
 
@@ -35,8 +31,6 @@ class AssetImpl extends wcs.java.Asset {
 	private Env e;
 	// the ICS from the env
 	private ICS i;
-	// the config
-	private Config cfg;
 
 	private Long cid;
 	private String c;
@@ -50,14 +44,11 @@ class AssetImpl extends wcs.java.Asset {
 		this.c = c;
 		this.cid = cid;
 		this.id = new Id(c, cid);
-		this.cfg = e.getConfig();
+		insite = env.isInsite();
 
 		AssetTag.load().name(a).type(c).objectid(cid.toString()).run(i);
 		String subtype = AssetTag.getsubtype().name(a).eval(i, "OUTPUT");
 		setTypeSubtype(c, subtype);
-
-		String rendermode = i.GetVar("rendermode");
-		insite = rendermode != null && rendermode.equals("insite");
 	}
 
 	/**
@@ -68,7 +59,7 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	private String as() {
 		if (as == null) {
-			as = tmp()+"_";
+			as = tmp() + "_";
 			AssetsetTag.setasset().name(as).type(getC()).id(cid.toString())
 					.run(i);
 		}
@@ -194,9 +185,16 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 */
 	public boolean isAttribute(String attribute) {
-		return e.isList(at(attribute)) && e.getSize(at(attribute))>0;
+		return e.isList(at(attribute)) && e.getSize(at(attribute)) > 0;
 	}
-	
+
+	/**
+	 * Return if we are in insite editing
+	 */
+	public boolean isInsite() {
+		return insite;
+	}
+
 	/**
 	 * Return an iterable of the attribute list
 	 * 
@@ -243,17 +241,16 @@ class AssetImpl extends wcs.java.Asset {
 		return e.getLong(at(attribute), n, "value");
 	}
 
-	
 	/**
-	 * Return the related asset pointed by the attribute of the given type
-	 * if not found
+	 * Return the related asset pointed by the attribute of the given type if
+	 * not found
 	 * 
 	 * @param asset
 	 * @return
 	 */
 	@Override
 	public Asset getAsset(String attribute, String type) {
-		return e.getAsset(type, getCid(attribute));		
+		return e.getAsset(type, getCid(attribute));
 	}
 
 	/**
@@ -265,10 +262,9 @@ class AssetImpl extends wcs.java.Asset {
 	 */
 	@Override
 	public Asset getAsset(String attribute, int i, String type) {
-		return e.getAsset(type, getCid(attribute, i));		
+		return e.getAsset(type, getCid(attribute, i));
 	}
 
-	
 	/**
 	 * Return the first attribute of the the attribute rib as a string, or the
 	 * null if not found
@@ -280,23 +276,10 @@ class AssetImpl extends wcs.java.Asset {
 	public String getString(String attribute) {
 		return e.getString(at(attribute), "value");
 	}
-	
+
 	/**
-	 * Edit (or return if not insite) the first named attribute as a string, or null
-	 * if not found
-	 * 
-	 * @param asset
-	 * @return
-	 */
-	public String editString(String attribute) {
-		if (insite)
-			return edit(attribute, 1);
-		return getString(attribute);
-	}
-	
-	/**
-	 * Return the nth attribute of the the attribute rib as a string, or the
-	 * void string if not found
+	 * Return the nth attribute of the the attribute as a string, or the void
+	 * string if not found
 	 * 
 	 * @param asset
 	 * @return
@@ -306,17 +289,18 @@ class AssetImpl extends wcs.java.Asset {
 		return e.getString(at(attribute), n, "value");
 	}
 
-	
 	/**
-	 * Edit (or return if not insite) the first named attribute as a string, or null
-	 * if not found
+	 * Edit (or return if not insite) the first named attribute as a string, or
+	 * null if not found and pass additional parameters
 	 * 
 	 * @param asset
 	 * @return
 	 */
-	public String editString(String attribute, int n) {
+	@Override
+	public String editString(String attribute, int n, String params,
+			Arg... args) {
 		if (insite)
-			return edit(attribute, n);
+			return edit(attribute, n, params, args);
 		return getString(attribute, n);
 	}
 
@@ -470,8 +454,8 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	private String insiteCall(String type, String template, String attribute, int n,
-			Arg... args) {
+	private String insiteCall(String type, String template, String attribute,
+			int n, String emptyText, Arg... args) {
 
 		try {
 			// let's start with the common parameters
@@ -487,18 +471,23 @@ class AssetImpl extends wcs.java.Asset {
 			list.add(arg("ASSETTYPE", c));
 			list.add(arg("ASSETID", cid.toString()));
 			list.add(arg("FIELD", attribute));
-			
+
+			if (emptyText != null)
+				list.add(arg("EMPTYTEXT", emptyText));
+
 			// copy additional args
-			for (Arg arg : args)
+			for (Arg arg : args) {
+				// System.out.println(arg.toString());
 				list.add(arg);
+			}
 
 			list.add(arg("CHILDTYPE", type));
 			if (n < 0) {
 				list.add(arg("LISTNAME", at(attribute)));
 				return Common.call("INSITE:CALLTEMPLATELOOP", list);
 			} else {
-				long icid = IfNull.ifn(getCid(attribute, n), 0l);
-				list.add(arg("CHILDID", Long.toString(icid)));
+				Long icid = (Long) ifn(getCid(attribute, n), 0l);
+				list.add(arg("CHILDID", icid.toString()));
 				list.add(arg("INDEX", Integer.toString(n)));
 				return Common.call("INSITE:CALLTEMPLATE", list);
 			}
@@ -546,9 +535,26 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 */
 	@Override
-	public String slotList(String attribute, String type, String template, Arg... args)
-			throws IllegalArgumentException {
-		return insiteCall(type, template, attribute, -1, args);
+	public String slotList(String attribute, String type, String template,
+			Arg... args) throws IllegalArgumentException {
+		return insiteCall(type, template, attribute, -1, null, args);
+	}
+
+	/**
+	 * Render an empty slot to drag additional content to a list.
+	 * 
+	 * @param field
+	 * @param template
+	 * @param type
+	 * @param i
+	 * @param args
+	 * @return
+	 */
+	@Override
+	public String slotEmpty(String attribute, String type, String template,
+			String emptyText) throws IllegalArgumentException {
+		return insite ? insiteCall(type, template, attribute,
+				getSize(attribute) + 1, emptyText) : "";
 	}
 
 	/**
@@ -566,9 +572,9 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 */
 	@Override
-	public String slot(String attribute, int i, String type, String template, Arg... args)
-			throws IllegalArgumentException {
-		return insiteCall(type, template, attribute, i, args);
+	public String slot(String attribute, int i, String type, String template,
+			String emptyText, Arg... args) throws IllegalArgumentException {
+		return insiteCall(type, template, attribute, i, emptyText, args);
 	}
 
 	/**
@@ -584,9 +590,9 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 */
 	@Override
-	public String slot(String attribute, String type, String template, Arg... args)
-			throws IllegalArgumentException {
-		return insiteCall(type, template, attribute, 1, args);
+	public String slot(String attribute, String type, String template,
+			String emptyText, Arg... args) throws IllegalArgumentException {
+		return insiteCall(type, template, attribute, 1, emptyText, args);
 	}
 
 	/**
@@ -599,20 +605,19 @@ class AssetImpl extends wcs.java.Asset {
 
 	/**
 	 * 
-	 * Edit a field - extra parameters read from the config
+	 * Edit a field with parameters
 	 * 
 	 * @param attribute
 	 * @param index
 	 * @param args
 	 * @return
 	 */
-	private String edit(String attribute, int index, Arg... args) {
+	private String edit(String attribute, int index, String params, Arg... args) {
 
 		// read a call or create a new call with no parameters
 		String value = e.getString(at(attribute), index, "value");
-		Call call = Util.readAttributeConfig(attribute, cfg);
-		if (call == null)
-			call = new Insite();
+
+		Call call = new Call("INSITE:EDIT");
 
 		call.addArg("ASSETTYPE", e.getC());
 		call.addArg("ASSETID", e.getCid().toString());
@@ -620,9 +625,11 @@ class AssetImpl extends wcs.java.Asset {
 		call.addArg("VALUE", value);
 		call.addArg("INDEX", Integer.toString(index));
 
-		// additional parameters
+		if (params != null)
+			call.addArg("PARAMS", params);
+
 		for (Arg arg : args)
-			call.addArg(arg.name, arg.value);
+			call.addArg(arg.name.toUpperCase(), arg.value);
 
 		log.trace("edit: %s", call.encode());
 

@@ -1,5 +1,8 @@
 package $site;format="normalize"$.element.$type;format="normalize"$;
 
+import static wcs.core.Common.*;
+
+import wcs.core.Log;
 import wcs.java.Env;
 import wcs.java.Element;
 import wcs.java.Template;
@@ -8,9 +11,10 @@ import wcs.java.AssetSetup;
 import wcs.java.Picker;
 
 public class $subtype$Layout extends Element {
+	
+	final static Log log = Log.getLog($subtype$Layout.class); 
 
-	public static AssetSetup setup() {
-		
+	public static AssetSetup setup() {		
 		return new Template("$type$", "$prefix$$subtype$Layout", 
 			Template.LAYOUT, // change template type here
 			"$subtype$", $site;format="normalize"$.element.$type;format="normalize"$.$subtype$Layout.class) //

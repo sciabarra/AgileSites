@@ -4,11 +4,10 @@
 %><%@ taglib prefix="insite" uri="futuretense_cs/insite.tld"
 %><%@ taglib prefix="render" uri="futuretense_cs/render.tld"
 %><%@ page import="wcs.core.*" 
-%><%! final static Log log = Log.getLog("%CLASS%.jsp");
+%><%! final static Log log = Log.getLog("jsp.%CLASS%");
 %><cs:ftcs><ics:if condition='<%=ics.GetVar("tid") != null%>'><ics:then><render:logdep cid='<%=ics.GetVar("tid")%>' c="Template" /></ics:then></ics:if><%
 String res = WCS.dispatch(ics, "%CLASS%");
 Sequencer seq = new Sequencer(res);
-//log.trace("STRING#%d?%s:\"%s\"", seq.header().length(), ""+seq.hasNext(), seq.header());
 %><%=seq.header()%><%
 while (seq.hasNext()) {
 	Call c = seq.next();
@@ -18,18 +17,14 @@ while (seq.hasNext()) {
 if (name.equalsIgnoreCase("ICS:CALLELEMENT")) {
 	String element = c.getOnce("ELEMENT");
 %><ics:callelement element='<%=element%>'><%
-    for (String k : c.keysLeft()) {
-	%><ics:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><%
-	}
+    for (String k : c.keysLeft()) { %><ics:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><% }
 %></ics:callelement><%
 } /* END ICS:CALLELEMENT */
 %><% // -----------------------------------------------------
 if (name.equalsIgnoreCase("RENDER:CALLELEMENT")) {
 	String elementname = c.getOnce("ELEMENTNAME");
 	%><render:callelement elementname='<%=elementname%>'><%
-	 for (String k : c.keysLeft()) {
-	  %><render:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><%
-	 }
+	 for (String k : c.keysLeft()) { %><render:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><% }
 	%></render:callelement><%
 } /* END RENDER:CALLELEMENT */
 %><% // -----------------------------------------------------
@@ -45,9 +40,7 @@ if (name.equalsIgnoreCase("RENDER:CALLTEMPLATE")) {
 	ttype='<%=c.getOnce("TTYPE")%>' 
 	slotname='<%=c.getOnce("SLOTNAME")%>' 
 	tid='<%=c.getOnce("TID")%>'><%
-	for (String k : c.keysLeft()) {
-  	%><render:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><%
-	}
+	for (String k : c.keysLeft()) { %><render:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><% }
 %></render:calltemplate><%
 } /* end RENDER:CALLTEMPLATE */
 %><% // -----------------------------------------------------
@@ -62,19 +55,19 @@ if (name.equalsIgnoreCase("INSITE:CALLTEMPLATE")) {
 	String field = c.getOnce("FIELD");
 	String site = c.getOnce("SITE"); 
 	String index = c.getOnce("INDEX");
+	String empty = Common.nn(c.getOnce("EMPTYTEXT"));
 if(childid!=null && childid.equals("0")) {
-  %><insite:calltemplate 
+  %><insite:calltemplate  
     site='<%=site%>'
 	assettype='<%=atype%>'
 	assetid='<%=aid%>'
 	field='<%=field%>'
 	index='<%=index%>'
 	tname='<%=tname%>'
-	ttype='<%=ttype%>' 
+	ttype='<%=ttype%>'
+	emptytext='<%=empty%>'
 	tid='<%=tid%>'><%
-	for (String k : c.keysLeft()) {
-      %><insite:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><%
-	}
+    for (String k : c.keysLeft()) { %><insite:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><% }
   %></insite:calltemplate><%
 } else {
   %><insite:calltemplate 
@@ -86,13 +79,12 @@ if(childid!=null && childid.equals("0")) {
 	c='<%=childtype%>'
 	cid='<%=childid%>'
 	tname='<%=tname%>'
-	ttype='<%=ttype%>' 
+	emptytext='<%=empty%>'
+	ttype='<%=ttype%>'
 	tid='<%=tid%>'><%
-	for (String k : c.keysLeft()) {
-	  %><insite:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><%
-     }
+    for (String k : c.keysLeft()) { %><insite:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><% }
   %></insite:calltemplate><%
-   } 
+  } 
 } /* END INSITE:CALLTEMPLATE */
 %><% // -----------------------------------------------------
 if (name.equalsIgnoreCase("INSITE:CALLTEMPLATELOOP")) {
@@ -123,12 +115,8 @@ String tid = c.getOnce("TID");
   tname='<%= tname %>'
   ttype='<%= ttype %>' 
   tid='<%= tid %>'
-><% for (String k : c.keysLeft()) {
-   %><insite:argument 
-      name='<%=k%>' 
-      value='<%=c.getOnce(k)%>' 
-     /><%
-   } %></insite:calltemplate></ics:listloop></insite:slotlist><%
+><% for (String k : c.keysLeft()) { %><insite:argument  name='<%=k%>' value='<%=c.getOnce(k)%>' /><% }
+  %></insite:calltemplate></ics:listloop></insite:slotlist><%
 } /* END INSITE:CALLTEMPLATELOOP */
 %><% // -----------------------------------------------------
 if (name.equalsIgnoreCase("INSITE:EDIT")) {
@@ -137,17 +125,19 @@ if (name.equalsIgnoreCase("INSITE:EDIT")) {
 	String field = c.getOnce("FIELD");
 	String value = c.getOnce("VALUE");
 	String index = c.getOnce("INDEX");
+	String editor = Common.nn(c.getOnce("EDITOR"));
+	String params = Common.ifn(c.getOnce("PARAMS"), "{}").toString();
+	String mode = Common.ifn(c.getOnce("MODE"), "html").toString();
 %><insite:edit 
     assettype='<%= assettype %>'
     assetid='<%= assetid %>'
     field='<%= field %>'
 	value='<%= value %>'
 	index='<%= index %>'
-><%
-  for (String k : c.keysLeft()) {
-%><insite:argument name='<%=k%>' value='<%=c.getOnce(k)%>' 
-/><%
-   }
+	editor='<%= editor %>'
+	mode='<%= mode %>'
+	params='<%= params %>'	
+><% for (String k : c.keysLeft()) { %><insite:argument name='<%=k%>' value='<%=c.getOnce(k)%>' /><% }
  %></insite:edit><%
 } /* END INSITE:EDIT */
 %><% // -----------------------------------------------------

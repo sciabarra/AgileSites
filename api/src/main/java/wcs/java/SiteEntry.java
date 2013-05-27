@@ -75,7 +75,7 @@ public class SiteEntry extends AssetSetup {
 
 		// root element
 		data.getAttributeData("category").setData("");
-		data.getAttributeData("pagename").setData(elementname);
+		data.getAttributeData("pagename").setData(getName());
 		data.getAttributeData("rootelement").setData(elementname);
 		data.getAttributeData("cs_wrapper").setData(wrapper ? "y" : "n");
 
@@ -89,8 +89,8 @@ public class SiteEntry extends AssetSetup {
 		data.getAttributeData("pageletonly").setData("false");
 
 		data.getAttributeData("pagecriteria").setDataAsList(
-				Util.listString("c", "cid", "context", "p", "rendermode",
-						"site", "sitepfx", "ft_ss"));
+				Util.listString("c", "cid", "context",/* "p",*/"rendermode",
+						"site", /*"sitepfx",*/ "ft_ss"));
 
 		data.getAttributeData("defaultarguments").setDataAsList(
 				Util.list(

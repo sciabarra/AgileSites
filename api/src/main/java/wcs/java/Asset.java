@@ -1,11 +1,11 @@
 package wcs.java;
 
-import java.util.Date;
+import static wcs.core.Common.*;
 
 import wcs.core.Arg;
 import wcs.core.Id;
 import wcs.core.Log;
-
+import java.util.Date;
 import com.fatwire.assetapi.data.AttributeData;
 import com.fatwire.assetapi.data.MutableAssetData;
 
@@ -207,7 +207,7 @@ public abstract class Asset {
 	public Date getEndDate() {
 		return endDate;
 	}
-	
+
 	/**
 	 * Check if the attribute exist
 	 * 
@@ -225,9 +225,9 @@ public abstract class Asset {
 	 * @return
 	 */
 	public int getSize(String attribute) {
-		return 0;
+		throw new RuntimeException("this asset is not bound");
 	}
-	
+
 	/**
 	 * Return the first attribute of the attribute list as an id (long), or null
 	 * if not found
@@ -236,18 +236,18 @@ public abstract class Asset {
 	 * @return
 	 */
 	public Long getCid(String attribute) {
-		return null;
+		throw new RuntimeException("this asset is not bound");
 	}
-	
+
 	/**
-	 * Return the related asset pointed by the attribute of the given type
-	 * if not found
+	 * Return the related asset pointed by the attribute of the given type if
+	 * not found
 	 * 
 	 * @param asset
 	 * @return
 	 */
 	public Asset getAsset(String attribute, String type) {
-		return null;
+		throw new RuntimeException("this asset is not bound");
 	}
 
 	/**
@@ -258,16 +258,15 @@ public abstract class Asset {
 	 * @return
 	 */
 	public Asset getAsset(String attribute, int i, String type) {
-		return null;
+		throw new RuntimeException("this asset is not bound");
 	}
 
-	
 	/**
 	 * String get blob url of the first attribute, with optional args
 	 * 
 	 */
 	public String getBlobUrl(String attribute, Arg... args) {
-		return null;
+		throw new RuntimeException("this asset is not bound");
 	}
 
 	/**
@@ -275,7 +274,7 @@ public abstract class Asset {
 	 * 
 	 */
 	public String getBlobUrl(String attribute, String mimeType, Arg... args) {
-		return null;
+		throw new RuntimeException("this asset is not bound");
 	}
 
 	/**
@@ -283,7 +282,7 @@ public abstract class Asset {
 	 */
 	public String getBlobUrl(String attribute, int pos, String mimeType,
 			Arg... args) {
-		return null;
+		throw new RuntimeException("this asset is not bound");
 	}
 
 	/**
@@ -294,51 +293,83 @@ public abstract class Asset {
 	 * @return
 	 */
 	public Long getCid(String attribute, int n) {
-		return null;
+		throw new RuntimeException("this asset is not bound");
 	}
 
 	/**
-	 * Return the first attribute of the the named attribute as a string, or null
-	 * if not found
+	 * Return the first attribute of the the named attribute as a string, or
+	 * null if not found
 	 * 
 	 * @param asset
 	 * @return
 	 */
 	public String getString(String attribute) {
-		return null;
+		throw new RuntimeException("this asset is not bound");
 	}
-	
+
 	/**
-	 * Return the nth named attribute as a string, or null if
-	 * not found
+	 * Return the nth named attribute as a string, or null if not found
 	 * 
 	 * @param asset
 	 * @return
 	 */
 	public String getString(String attribute, int n) {
-		return null;
+		throw new RuntimeException("this asset is not bound");
 	}
 
-	/**
-	 * Edit (or return if not insite) the first named attribute as a string, or null
-	 * if not found
-	 * 
-	 * @param asset
-	 * @return
-	 */
 	public String editString(String attribute) {
-		return null;
+		return editString(attribute, 1);
+	}
+
+	public String editString(String attribute, int n) {
+		return editString(attribute, n, "");
 	}
 
 	/**
-	 * Edit (or return if not insite) the nth named attribute as a string, or null if
-	 * not found
+	 * Edit the n-th element of the given attribute, using the given parameters.
+	 * 
+	 * @param attribute
+	 * @param n
+	 * @param args
+	 * @return
+	 */
+	public String editString(String attribute, int n, String params,
+			Arg... args) {
+		throw new RuntimeException("this is not a bound asset");
+	}
+
+	/**
+	 * Edit (or return if not insite) the nth named attribute as a string, or
+	 * null if not found and pass additional parameters using the CK editor
 	 * 
 	 * @param asset
 	 * @return
 	 */
-	public String editString(String attribute, int n) {
-		return null;
+	public String editText(String attribute, int n, String params) {
+		return editString(attribute, 1, nn(params), arg("editor", "ckeditor"));
+	}
+
+	/**
+	 * Edit (or return if not insite) the first named attribute as a string, or
+	 * null if not found and pass additional parameters
+	 * 
+	 * @param asset
+	 * @param args
+	 * @return
+	 */
+	public String editString(String attribute, String params, Arg... args) {
+		return editString(attribute, 1, params, args);
+	}
+
+	/**
+	 * Edit (or return if not insite) the first named attribute as a string, or
+	 * null if not found using the CK editor
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public String editText(String attribute, String params) {
+		return editText(attribute, 1, params);
 	}
 
 	/**
@@ -349,7 +380,7 @@ public abstract class Asset {
 	 * @return
 	 */
 	public Integer getInt(String attribute) {
-		return null;
+		throw new RuntimeException("this is not a bound asset");
 	}
 
 	/**
@@ -360,7 +391,7 @@ public abstract class Asset {
 	 * @return
 	 */
 	public Integer getInt(String attribute, int n) {
-		return null;
+		throw new RuntimeException("this is not a bound asset");
 	}
 
 	/**
@@ -371,7 +402,7 @@ public abstract class Asset {
 	 * @return
 	 */
 	public Date getDate(String attribute) {
-		return null;
+		throw new RuntimeException("this is not a bound asset");
 	}
 
 	/**
@@ -382,7 +413,7 @@ public abstract class Asset {
 	 * @return
 	 */
 	public Date getDate(String attribute, int n) {
-		return null;
+		throw new RuntimeException("this is not a bound asset");
 	}
 
 	/**
@@ -396,20 +427,11 @@ public abstract class Asset {
 	}
 
 	/**
-	 * Edit the attribute
-	 * 
-	 * @param asset
-	 * @return
-	 * 
-	 *         public String edit(String attribute, Arg...args) { return ""; }
-	 */
-
-	/**
 	 * Call the template by name with current c/cid and extra some optional args
 	 * 
 	 */
 	public String call(String name, Arg... args) {
-		return "";
+		throw new RuntimeException("this is not a bound asset");
 	}
 
 	/**
@@ -426,9 +448,17 @@ public abstract class Asset {
 	 * @param args
 	 * @return
 	 */
-	public String slotList(String field, String type, String template, Arg... args)
-			throws IllegalArgumentException {
-		return "";
+	public String slotList(String field, String type, String template,
+			Arg... args) throws IllegalArgumentException {
+		throw new RuntimeException("this is not a bound asset");
+	}
+
+	/**
+	 * Render an empty slot.
+	 */
+	public String slotEmpty(String attribute, String type, String template,
+			String emptyText) throws IllegalArgumentException {
+		throw new RuntimeException("this is not a bound asset");
 	}
 
 	/**
@@ -445,9 +475,9 @@ public abstract class Asset {
 	 * @param args
 	 * @return
 	 */
-	public String slot(String attribute, int i, String type, String template, Arg... args)
-			throws IllegalArgumentException {
-		return "";
+	public String slot(String attribute, int i, String type, String template,
+			String emptyText, Arg... args) throws IllegalArgumentException {
+		throw new RuntimeException("this is not a bound asset");
 	}
 
 	/**
@@ -458,22 +488,22 @@ public abstract class Asset {
 	 * the field specifying the type as parameter "c"
 	 * 
 	 * @param attribute
-	 * @param template type
+	 * @param template
+	 *            type
 	 * @param template
 	 * @param args
 	 * @return
 	 */
-	public String slot(String attribute, String type, String template, Arg... args)
-			throws IllegalArgumentException {
-		return "";
+	public String slot(String attribute, String type, String template,
+			String emptyText, Arg... args) throws IllegalArgumentException {
+		throw new RuntimeException("this is not a bound asset");
 	}
 
-	
 	/**
-	 * Return the URL to render this asset 
+	 * Return the URL to render this asset
 	 */
 	public String getUrl(Arg... args) {
-		return null;
+		throw new RuntimeException("this is not a bound asset");
 	}
 
 	/**

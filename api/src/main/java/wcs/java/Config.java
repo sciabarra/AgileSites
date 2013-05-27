@@ -16,13 +16,6 @@ import COM.FutureTense.Interfaces.ICS;
  */
 abstract public class Config {
 
-	public Insite insite(Arg... args) {
-		Insite insite = new Insite();
-		for (Arg arg : args)
-			insite.addArg(arg.name, arg.value);
-		return insite;
-	}
-	
 	public Arg arg(String k, String v) {
 		return new Arg(k.toUpperCase(),v);
 	}

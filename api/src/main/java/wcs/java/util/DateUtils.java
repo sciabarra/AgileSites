@@ -9,7 +9,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
+/**
+ * A set of helper methods related to date manipulation.
+ *
+ */
 final class DateUtils {
 
     private static final int ONE_SECOND = 1000;

@@ -23,6 +23,8 @@ public abstract class Element implements wcs.core.Element {
 	// current site
 	protected String site;
 
+	protected boolean insite = false;
+
 	/**
 	 * Execute the element
 	 * 
@@ -34,11 +36,14 @@ public abstract class Element implements wcs.core.Element {
 	public String exec(ICS ics) {
 		try {
 			site = ics.GetVar("site");
+			insite = ics.GetVar("rendermode") != null
+					&& ics.GetVar("rendermode").equals("insite");
 			Env env = new Env(ics, site);
 			return apply(env);
 		} catch (NullPointerException npe) {
 			log.error(npe, "NPE: ");
-			return "NULL <span style='display: none'>" + Util.ex2str(npe) + "</span>";
+			return "NULL <span style='display: none'>" + Util.ex2str(npe)
+					+ "</span>";
 		} catch (Exception ex) {
 			log.error(ex, "exception in element");
 			return ex.getMessage();

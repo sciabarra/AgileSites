@@ -271,6 +271,16 @@ public class TestElement extends TestCase {
 	protected void dump(Log log) {
 		log.debug(Util.dumpStream(doc.html()));
 	}
+	
+	/**
+	 * Dump selected inner html
+	 * 
+	 * @param log
+	 */
+	protected void dump(Log log, String wh) {
+		log.debug(Util.dumpStream(doc.select(wh).html()));
+	}
+
 
 	/**
 	 * Dump outer html
@@ -280,4 +290,14 @@ public class TestElement extends TestCase {
 	protected void odump(Log log) {
 		log.debug(Util.dumpStream(doc.outerHtml()));
 	}
+	
+	/**
+	 * Dump outer html of selected element 
+	 * 
+	 * @param log
+	 */
+	protected void odump(Log log, String wh) {
+		log.debug(Util.dumpStream(doc.select(wh).outerHtml()));
+	}
+
 }

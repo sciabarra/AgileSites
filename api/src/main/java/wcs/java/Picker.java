@@ -11,9 +11,11 @@ import org.jsoup.select.Elements;
 
 import wcs.core.Log;
 import wcs.java.util.Util;
+import static wcs.core.Common.*;
 
 /**
- * Build picking
+ * Picker is a template engine building html pages or snippets using
+ * replacements and modifications in the html with jQuery-style selectors.
  * 
  * @author msciab
  * 
@@ -65,7 +67,7 @@ public class Picker {
 	 * 
 	 * @param resource
 	 * @param cssq
-	 * @return
+	 * @return a new picker 
 	 */
 	public static Picker load(String resource, String cssq) {
 		return new Picker(Picker.class.getResourceAsStream(resource), null,
@@ -78,7 +80,7 @@ public class Picker {
 	 * 
 	 * @param resource
 	 * @param cssq
-	 * @return
+	 * @return a new picker
 	 */
 	public static Picker load(String resource) {
 		return new Picker(Picker.class.getResourceAsStream(resource), null,
@@ -90,7 +92,7 @@ public class Picker {
 	 * 
 	 * @param resource
 	 * @param cssq
-	 * @return
+	 * @return a new picker
 	 */
 	public static Picker create(String html) {
 		return new Picker(null, html, null);
@@ -101,7 +103,7 @@ public class Picker {
 	 * 
 	 * @param resource
 	 * @param cssq
-	 * @return
+	 * @return a new picker
 	 */
 	public static Picker create(String html, String cssq) {
 		return new Picker(null, html, cssq);
@@ -188,18 +190,16 @@ public class Picker {
 	 */
 	public Picker replace(String where, String what) {
 		if (select(where).selectOk) {
-			top.html(what);
+			top.html(nn(what));
 			up();
 		}
 		return this;
 	}
 
-
 	// private method to implement both single and remove
 	private Picker removeOrSingle(String where, boolean keepFirst) {
 
 		Iterator<org.jsoup.nodes.Element> it = top.select(where).iterator();
-
 		// keep the first
 		if (keepFirst)
 			if (it.hasNext())
@@ -246,7 +246,7 @@ public class Picker {
 	}
 
 	/**
-	 * Empty the specified note
+	 * Empty the specified node
 	 * 
 	 * @param where
 	 * @return
@@ -268,7 +268,7 @@ public class Picker {
 	}
 
 	/**
-	 * Print the current selected as a string
+	 * Print the current selected node as a string
 	 */
 	public String toString() {
 		// log.debug(doc.toString());
@@ -294,11 +294,11 @@ public class Picker {
 	 * 
 	 * @param where
 	 * @param what
-	 * @return
+	 * @return itself
 	 */
 	public Picker before(String where, String what) {
 		// top.select(where).parents().first().append(what);
-		top.select(where).before(what);
+		top.select(where).before(nn(what));
 		return this;
 	}
 
@@ -307,11 +307,11 @@ public class Picker {
 	 * 
 	 * @param where
 	 * @param what
-	 * @return
+	 * @return itself
 	 */
 	public Picker after(String where, String what) {
 		// top.select(where).parents().first().prepend(what);
-		top.select(where).after(what);
+		top.select(where).after(nn(what));
 		return this;
 	}
 
@@ -320,10 +320,10 @@ public class Picker {
 	 * 
 	 * @param where
 	 * @param what
-	 * @return
+	 * @return itself
 	 */
 	public Picker append(String where, String what) {
-		top.select(where).append(what);
+		top.select(where).append(nn(what));
 		return this;
 	}
 
@@ -335,7 +335,7 @@ public class Picker {
 	 * @return
 	 */
 	public Picker append(String what) {
-		top.append(what);
+		top.append(nn(what));
 		return this;
 	}
 
@@ -343,7 +343,7 @@ public class Picker {
 	 * Set attribute
 	 */
 	public Picker attr(String where, String attr, String what) {
-		top.select(where).attr(attr, what);
+		top.select(where).attr(attr, nn(what));
 		return this;
 	}
 
@@ -351,6 +351,7 @@ public class Picker {
 	 * Set attribute prefix for all the attributes found
 	 */
 	public Picker prefixAttrs(String where, String attr, String prefix) {
+		prefix = nn(prefix);
 		for (Element el : top.select(where)) {
 			el.attr(attr, prefix + el.attr(attr));
 		}
@@ -359,6 +360,7 @@ public class Picker {
 
 	/**
 	 * Add a class
+	 * 
 	 */
 	public Picker addClass(String where, String what) {
 		top.select(where).addClass(what);
@@ -370,7 +372,7 @@ public class Picker {
 	 * are decoded.
 	 * 
 	 * @param stream
-	 * @return
+	 * @return itself
 	 */
 	public Picker dump(Log log) {
 		if (log != null)
