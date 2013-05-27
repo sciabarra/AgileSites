@@ -77,11 +77,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   lazy val api: Project = Project(
     id = "api",
     base = file("api"),
-    settings = commonSettings ++ 
-    javadocSettings ++ Seq(
-      javadocTarget := file("..") / "gh-pages" / "javadoc", 
-      name := "agilesites-api"
-  ))
+    settings = commonSettings ++ Seq(
+      name := "agilesites-api"))
 
   /// APP 
   lazy val app: Project = Project(
@@ -89,8 +86,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("app"),
     settings = commonSettings ++ Seq(
       name := "agilesites-app",
-      wcsCopyHtmlTask
-    )) dependsOn (api)
+      wcsCopyHtmlTask)) dependsOn (api)
 
   /// ALL
   lazy val all: Project = Project(

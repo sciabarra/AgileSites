@@ -51,8 +51,6 @@ trait AgileSitesSupport {
         // generate tags
         val tlds = file(srcDir) / "WEB-INF" / "futuretense_cs"
 
-        println("******************** looking into "+tlds)
-
         val l = for {
           tld <- tlds.listFiles
           if tld.getName.endsWith(".tld")
