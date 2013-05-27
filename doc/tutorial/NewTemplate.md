@@ -1,5 +1,9 @@
 ##### Prev:  [New Site](NewSite.md).
 
+We have now the skeleton of the site.
+
+We are ready to render the home page.
+
 
 ##  Create the home page
 
