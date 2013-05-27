@@ -1,5 +1,7 @@
 ##### Prev:  [Configuration](Configuration.md)
 
+In this section we describe which steps are needed in order to create a new site, both in Site and in AgileSites, and start development.
+
 ## Create a site in Sites
 
 After the configuration and the installation of the configuration, you can now create a new site.
@@ -30,7 +32,7 @@ After creating the site, you need also to create an user and assign to that user
 
 Once done you need to log out and then log in again to select your new site as the active site.
 
-## Create the basic code of the site with the generator
+## Generate the AgileSites site code
 
 Once created the site in Sites, you can use generate the site code from the shell with the command:
 
@@ -38,11 +40,11 @@ Once created the site in Sites, you can use generate the site code from the shel
 
 A popup will appear asking for the site name (use `MySite` or your own) and the site prefix (user `My` or your own).
 
-Then you can deploy 
+Then you need to deploy templates and cselements for the site.
 
 ``wcs-deploy``
 
-# Access the site and the tests
+## Access the new site and the tester
 
 Accessing the site with 
 
@@ -52,9 +54,9 @@ You should see the following screenshot:
 
 ![Default Error Page](../img/snap3695.png)
 
-This is normal since you do not have yet any page, so the Error Page is shown declaring it cannot find the home pages
+It is normal since you do not have yet any page, so the Error Page is displayed, declaring it cannot find the home page (that does not yet exist).
 
-You can then invoker the tester with
+You can then invoke the tester with:
 
 >http://localhost:8080/cs/ContentServer?pagename=MyTester
 
@@ -70,7 +72,7 @@ You can also select a few tests and run only the selected tests clicking on "Run
 
 ## Importing the project in eclipse
 
-**Note**: you need the eclipse plugin [http://www.scala-ide.org](http://www.scala-ide.org "Scala IDE") to use the default export. Projects are currently Java only, but planned extensions of the framework  will allow also Scala coding.
+**Note**: you need the eclipse plugin [http://www.scala-ide.org](http://www.scala-ide.org "Scala IDE") to use the default export. Projects are currently Java only, but planned extensions of the framework  will allow also Scala coding. 
 
 Once the new site and the new project has been created you can generate configuration files for your IDE. Execute the command in the shell:
 
@@ -80,7 +82,7 @@ Using eclipse you can then select the following sequence of options to import th
 
 > File | Import | General | Existing Projects 
 
-openinng the main directory of AgileSites. You should see the following screenshot:
+opening the main directory of AgileSites. You should see the following screenshot:
 
 ![Import AgileSites projects](../img/snap4673.png)
 
@@ -92,9 +94,11 @@ Select all of them. You will work mostly only on the `agilesites-app` project fo
 
 You may change the `agilesites-api` core if you want to extend the framework adding your functionalities. If you do so, consider contribute them to the project. 
 
-You are not expected to change the `agilesites-core` code except for adding very low level functionality.
+You are not expected to change the `agilesites-core` code except for adding very low level functionality. 
 
-## Source code of the project
+**NOTE** You may import the project without the Scala Plugin in Eclipse (for example manually removing the ScalaNature option from the project) or even working with different IDEs than eclipse. That is fine but it is not covered in the tutorial you are reading. So your mileage may vary.
+
+## Walk-through of the generated source code 
 
 The generated code is in the `agilesites-app` project, in the source folder `src/main/java` in the package with the name you chose (in this case `mysite`).
 
@@ -118,11 +122,15 @@ In the package `mysite` there are 3 (mandatory) files:
 
 The `Config` is the holder of configuration files. It provides the sinte name and some important methods detailes in the API. You are not expected to change it, unless you need to customise the Configuration.
 
-The `Setup` code will be executed to setup your site templates when you perform the `wcs-setup` command. You are not expected to change it unless you need to add custom initializations. It mostly reads the resource file `src/main/resources/elements.txt` and install all the elements listed there.
+The `Setup` code will be executed to setup your site templates when you you execute the `wcs-deploy` command. You are not expected to change it unless you need to add custom initialization. 
 
-The `Router` is responsible for translating url in assets or other invocations, and for generate url mapping an asset to an url. The default is able to map Page invoked by name into id, and generate links using the name of the Page.  
+The `Setup `reads the resource file `src/main/resources/elements.txt` and install all the elements listed there.
 
-The logic here can be extended to implement complex routing logic for custom urls.
+The `Router` is responsible for translating URL in assets or other invocations (for example Ajax calls), and for generating the mapping of an asset into an url. 
+
+The default Router maps Page names in url and viceversa. The default code read an url and looks for a page whose name matched the url portion managed by the router. Also it generates link mapping assets into an url portion equals to the name.
+
+The router can be extended to manage arbitrary and complex url mappings.
 
 ### `mysite.element` classes
 
@@ -138,6 +146,6 @@ If you inspect with the Admin in the Dev tab what has been created you will see:
 
 
 
-### `myste.tests` classes 
+### `mysite.tests` classes 
 
 #####  Next:  [New Template](NewTemplate.md)

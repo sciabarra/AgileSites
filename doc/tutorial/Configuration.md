@@ -1,6 +1,8 @@
 ##### Prev: [Prerequisites](Prerequisites.md)
 
-# Choose a name and a prefix
+In this section we introduce which configuration steps are required in order to start development.
+
+## Choose a name and a prefix
 
 The first step is naming your site. Here I am assume your choice was **MySite**. Of course you need to change examples accordingly to your decision.
 
@@ -8,11 +10,9 @@ Also you need to choose a prefix that you will use consistently to name specific
 
 The prefix is the common conventions used to avoid name clashes. Here I will use the prefix *My*.
 
-**NOTE** We experienced problems when Content Definitions or Attributes have the same name in 2 different sites.
+**NOTE** We experienced problems when Content Definitions or Attributes have the same name in 2 different sites. So we recommend to use always a prefix when naming Attributes, Content and Parent definitions, in order to guarantee the uniqueness of the names. Templates are also automatically named with a prefix when created by the deployer (see later in this tutorial).
 
-Although this should be not a problem, in practice it is, so we recommend to use always a prefix when naming Attributes, Content and Parent definitions. Templates are also automatically named with a prefix by the deployer.
-
-# Configure a new site and a virtual host
+## Configure a new site and a virtual host
 
 Edit the `build.sbt` and put your site name in the `wcsSites` variable. For example:
 
@@ -30,11 +30,11 @@ wcsVirtualHosts in ThisBuild += ("MySite" -> "http://www.mysite.com")
 
 You can remove others sites but if they were already installed the installer won't remove configurations for them so they still be available.
 
-# Reinstall to update configurations
+## Reinstall to update configurations
 
- After changing the name  of the current site, you **must**  reinstall. Installation will actually create configurations 
+ After changing the name  of the current site, you **need** to reinstall. Installation is needed in order to create  the appropriate configurations. 
 
-This means:
+Reinstallation steps:
 
 On Content Server (Sites):
 
@@ -48,6 +48,8 @@ On Satellite Server:
 - shut down the application server running Sites,
 - execute again the ``wcs-setup-offline satellite`` command
 - restart it  
+
+Check the [Installation Guide](http://www.agilesites.org/install.html) for more details.
 
 **HINT** The variable `wcsSites` variable is actually a comma separated list of sites name. However you should specify more than one site only when you are using tightly coupled sites sharing assets. They are exported all together by CSDT.
 
