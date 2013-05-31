@@ -126,11 +126,13 @@ The `Setup` code will be executed to setup your site templates when you you exec
 
 The `Setup `reads the resource file `src/main/resources/elements.txt` and install all the elements listed there.
 
-The `Router` is responsible for translating URL in assets or other invocations (for example Ajax calls), and for generating the mapping of an asset into an url. 
+The `Router` is responsible for translating URL in assets or other invocations (for example Ajax calls), and for generating the mapping of an asset into an URL. Please check the [architecture](/reference/Architecture.md) to fully understand the role of the router. 
 
-The default Router maps Page names in url and viceversa. The default code read an url and looks for a page whose name matched the url portion managed by the router. Also it generates link mapping assets into an url portion equals to the name.
+The default `Router.route` maps Page names in URL and viceversa. The default code read the url portion managed by the router and looks for a page whose name matches the name.
 
-The router can be extended to manage arbitrary and complex url mappings.
+The default `Router.link` does the opposite: provided an asset Page, it will return its name as url fragment for locating it.
+
+The router can be extended to manage arbitrary and complex URL mappings.
 
 ### `mysite.element` classes
 
@@ -142,8 +144,9 @@ The standard wizard will generate 3 classes:
 
 Those 3 classes are all CSElements. In the code of the class there is the configuration of the CSElement and the actual CSElement was created whey you performed the `wcs-deploy` step. 
 
-If you inspect with the Admin in the Dev tab what has been created you will see:
+If you inspect with the Admin in the Dev tab what has been created you will see the following SiteEntry 
 
+![Standard CSElement and SiteEntry](../img/snap9963.png)
 
 
 ### `mysite.tests` classes 
