@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>CSElement:1351275795277</id>
+    <id>CSElement:1351275803151</id>
     <name>DmTree</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-04-24T16:50:37.800Z</createddate>
+    <createddate>2013-06-01T18:01:38.060Z</createddate>
     <description>DmTree</description>
     <publist>Demo</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-05-05T15:06:32.661Z</updateddate>
+    <updateddate>2013-06-01T19:11:59.044Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -53,13 +53,13 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>f461245e-ec22-4e28-a955-e10df8514df6</stringValue>
+            <stringValue>a64fe758-53a3-4e60-b1b9-c130c834d71e</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275795277</longValue>
+            <longValue>1351275803151</longValue>
         </data>
     </attribute>
     <attribute>
@@ -99,13 +99,13 @@
     <attribute>
         <name>resdetails1</name>
         <data>
-            <stringValue>eid=1351275795277</stringValue>
+            <stringValue>eid=1351275803151</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>resdetails2</name>
         <data>
-            <stringValue>timestamp=1367766392655</stringValue>
+            <stringValue>timestamp=1370113919033</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -129,17 +129,17 @@
     <dependency>
       <depType>N</depType>
       <resType>CSElement</resType>
-      <resId>1351275795277</resId>
-      <uid>f461245e-ec22-4e28-a955-e10df8514df6</uid>
+      <resId>1351275803151</resId>
+      <uid>a64fe758-53a3-4e60-b1b9-c130c834d71e</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Sun May 05 16:31:42 UTC 2013
+#Sat Jun 01 21:29:23 UTC 2013
 storable0=/ELEMENTS/JSP/Demo/DmTree.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FDemo%2FDmTree.jsp
-@hashval=797040932
-key=CSElement-f461245e-ec22-4e28-a955-e10df8514df6
+@hashval=1979922597
+key=CSElement-a64fe758-53a3-4e60-b1b9-c130c834d71e
 type=ASSETDATA
 sites=Demo
 

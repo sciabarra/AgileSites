@@ -1,10 +1,10 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
-    <id class="string">1351275793259</id>
+    <id class="string">1351275803362</id>
     <resourceType>STARTMENU</resourceType>
     <deps class="empty-set"/>
     <data class="com.openmarket.xcelerate.startmenu.StartMenuItem">
-      <id>1351275793259</id>
+      <id>1351275803362</id>
       <uid>ffc49b79-699d-4d2c-8e05-770040a22304</uid>
       <name>New Template</name>
       <assetType>Template</assetType>
@@ -74,7 +74,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Mon May 06 12:51:21 UTC 2013
+#Sat Jun 01 21:29:24 UTC 2013
 key=@STARTMENU-ffc49b79-699d-4d2c-8e05-770040a22304
 type=STARTMENU
 sites=Demo

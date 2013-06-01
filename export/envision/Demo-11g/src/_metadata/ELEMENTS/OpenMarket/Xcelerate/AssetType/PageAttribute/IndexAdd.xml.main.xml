@@ -10,7 +10,7 @@
         <string></string>
         <string></string>
         <string></string>
-        <string>OpenMarket/Xcelerate/AssetType/PageAttribute/IndexAdd.xml</string>
+        <string>OpenMarket\Xcelerate\AssetType\PageAttribute\IndexAdd.xml</string>
         <string></string>
         <string></string>
       </com.openmarket.xcelerate.common.ElementCatalogEntry>
@@ -23,9 +23,9 @@
 </dependencies>
 ==================______________________==================
 #
-#Mon May 06 12:51:18 UTC 2013
+#Sat Jun 01 21:29:16 UTC 2013
 storable0=/ELEMENTS/OpenMarket/Xcelerate/AssetType/PageAttribute/IndexAdd.xml|null|_storable_type\=%2FELEMENTS%2FOpenMarket%2FXcelerate%2FAssetType%2FPageAttribute%2FIndexAdd.xml
-@hashval=-1080720915
+@hashval=1612867898
 key=@ELEMENTCATALOG-OpenMarket/Xcelerate/AssetType/PageAttribute/IndexAdd
 type=ELEMENTCATALOG
 

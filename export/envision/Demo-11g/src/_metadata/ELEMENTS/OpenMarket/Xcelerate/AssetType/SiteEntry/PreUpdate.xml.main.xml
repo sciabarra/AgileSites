@@ -10,7 +10,7 @@
         <string>pre-update to new/edit</string>
         <string></string>
         <string></string>
-        <string>OpenMarket/Xcelerate/AssetType/SiteEntry/PreUpdate.xml</string>
+        <string>OpenMarket\Xcelerate\AssetType\SiteEntry\PreUpdate.xml</string>
         <string></string>
         <string></string>
       </com.openmarket.xcelerate.common.ElementCatalogEntry>
@@ -23,7 +23,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Mon May 06 12:51:18 UTC 2013
+#Sat Jun 01 21:29:15 UTC 2013
 storable0=/ELEMENTS/OpenMarket/Xcelerate/AssetType/SiteEntry/PreUpdate.xml|null|_storable_type\=%2FELEMENTS%2FOpenMarket%2FXcelerate%2FAssetType%2FSiteEntry%2FPreUpdate.xml
 @hashval=1115778368
 key=@ELEMENTCATALOG-OpenMarket/Xcelerate/AssetType/SiteEntry/PreUpdate

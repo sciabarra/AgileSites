@@ -10,7 +10,7 @@
         <string>Restore  Search  Vars</string>
         <string></string>
         <string></string>
-        <string>OpenMarket/Xcelerate/AssetType/Template/ManageSchVars.xml</string>
+        <string>OpenMarket\Xcelerate\AssetType\Template\ManageSchVars.xml</string>
         <string></string>
         <string></string>
       </com.openmarket.xcelerate.common.ElementCatalogEntry>
@@ -23,7 +23,7 @@
 </dependencies>
 ==================______________________==================
 #
-#Mon May 06 12:51:17 UTC 2013
+#Sat Jun 01 21:29:14 UTC 2013
 storable0=/ELEMENTS/OpenMarket/Xcelerate/AssetType/Template/ManageSchVars.xml|null|_storable_type\=%2FELEMENTS%2FOpenMarket%2FXcelerate%2FAssetType%2FTemplate%2FManageSchVars.xml
 @hashval=1106479887
 key=@ELEMENTCATALOG-OpenMarket/Xcelerate/AssetType/Template/ManageSchVars

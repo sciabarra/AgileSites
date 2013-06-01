@@ -10,7 +10,7 @@
         <string></string>
         <string></string>
         <string></string>
-        <string>OpenMarket/Xcelerate/AssetType/Page/SetRuleVars.xml</string>
+        <string>OpenMarket\Xcelerate\AssetType\Page\SetRuleVars.xml</string>
         <string></string>
         <string></string>
       </com.openmarket.xcelerate.common.ElementCatalogEntry>
@@ -23,9 +23,9 @@
 </dependencies>
 ==================______________________==================
 #
-#Mon May 06 12:51:19 UTC 2013
+#Sat Jun 01 21:29:18 UTC 2013
 storable0=/ELEMENTS/OpenMarket/Xcelerate/AssetType/Page/SetRuleVars.xml|null|_storable_type\=%2FELEMENTS%2FOpenMarket%2FXcelerate%2FAssetType%2FPage%2FSetRuleVars.xml
-@hashval=-234024990
+@hashval=59106274
 key=@ELEMENTCATALOG-OpenMarket/Xcelerate/AssetType/Page/SetRuleVars
 type=ELEMENTCATALOG
 

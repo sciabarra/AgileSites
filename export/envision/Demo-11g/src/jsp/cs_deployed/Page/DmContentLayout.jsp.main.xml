@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>Template:1351275794718</id>
+    <id>Template:1351275803136</id>
     <name>DmContentLayout</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-04-23T17:08:57.369Z</createddate>
+    <createddate>2013-06-01T18:01:37.867Z</createddate>
     <description>Layout for type Page Content</description>
     <publist>Demo</publist>
     <status>ED</status>
     <subtype>Page</subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-05-05T15:06:32.534Z</updateddate>
+    <updateddate>2013-06-01T19:11:58.840Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -53,13 +53,13 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>6d6a4098-2857-45ce-9433-8bf1c69ebdae</stringValue>
+            <stringValue>a10309de-b4b4-4ced-9e18-fb2045da3324</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275794718</longValue>
+            <longValue>1351275803136</longValue>
         </data>
     </attribute>
     <attribute>
@@ -142,7 +142,7 @@
                 <item>
                     <name>resdetails2</name>
                     <data>
-                        <stringValue>agilesites=1367766392528</stringValue>
+                        <stringValue>agilesites=1370113918831</stringValue>
                     </data>
                 </item>
                 <item>
@@ -232,7 +232,7 @@
                 <item>
                     <name>resdetails1</name>
                     <data>
-                        <stringValue>tid=1351275794718</stringValue>
+                        <stringValue>tid=1351275803136</stringValue>
                     </data>
                 </item>
                 <item>
@@ -245,7 +245,7 @@
                     <name>url</name>
                     <data>
                         <blobValue>
-                            <filename>Page\DmContentLayout_demo.element.page.ContentLayout,0.jsp</filename>
+                            <filename>Page\DmContentLayout_demo.element.page.ContentLayout.jsp</filename>
                             <foldername></foldername>
                             <filedata></filedata>
                         </blobValue>
@@ -271,17 +271,17 @@
     <dependency>
       <depType>N</depType>
       <resType>Template</resType>
-      <resId>1351275794718</resId>
-      <uid>6d6a4098-2857-45ce-9433-8bf1c69ebdae</uid>
+      <resId>1351275803136</resId>
+      <uid>a10309de-b4b4-4ced-9e18-fb2045da3324</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Sun May 05 16:31:41 UTC 2013
+#Sat Jun 01 21:29:20 UTC 2013
 storable0=/ELEMENTS/JSP/Page/DmContentLayout.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FPage%2FDmContentLayout.jsp
-@hashval=-1457954332
-key=Template-6d6a4098-2857-45ce-9433-8bf1c69ebdae
+@hashval=1068065957
+key=Template-a10309de-b4b4-4ced-9e18-fb2045da3324
 type=ASSETDATA
 sites=Demo
 

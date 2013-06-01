@@ -10,7 +10,7 @@
         <string>Shows Element buttons based on conditions</string>
         <string></string>
         <string></string>
-        <string>OpenMarket/Xcelerate/AssetType/Template/ShowElementButtons.xml</string>
+        <string>OpenMarket\Xcelerate\AssetType\Template\ShowElementButtons.xml</string>
         <string></string>
         <string></string>
       </com.openmarket.xcelerate.common.ElementCatalogEntry>
@@ -23,9 +23,9 @@
 </dependencies>
 ==================______________________==================
 #
-#Mon May 06 12:51:17 UTC 2013
+#Sat Jun 01 21:29:14 UTC 2013
 storable0=/ELEMENTS/OpenMarket/Xcelerate/AssetType/Template/ShowElementButtons.xml|null|_storable_type\=%2FELEMENTS%2FOpenMarket%2FXcelerate%2FAssetType%2FTemplate%2FShowElementButtons.xml
-@hashval=-1120601854
+@hashval=-1266920923
 key=@ELEMENTCATALOG-OpenMarket/Xcelerate/AssetType/Template/ShowElementButtons
 type=ELEMENTCATALOG
 

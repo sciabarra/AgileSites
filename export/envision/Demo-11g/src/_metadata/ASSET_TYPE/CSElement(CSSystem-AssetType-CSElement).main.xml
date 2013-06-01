@@ -11,7 +11,7 @@
         <description>CSElement</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>c:\Java\Sites\11gR1\App_Server\apache-tomcat-6.0.32\temp\fwcs-tmp\temp144\dcs7298070191669253917.tmp</urldescriptorspec>
+        <urldescriptorspec>c:\Java\Sites\11gR1\App_Server\apache-tomcat-6.0.32\temp\fwcs-tmp\temp1\dcs5649546356086799405.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-CSElement</uid>
         <useDimension></useDimension>
@@ -250,7 +250,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/CSElement/SelectSummary.sql</string>
+            <string>OpenMarket\Xcelerate\AssetType\CSElement\SelectSummary.sql</string>
             <null/>
             <null/>
             <null/>
@@ -604,7 +604,7 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA0KDQo=</byte-array>
 </dependencies>
 ==================______________________==================
 #
-#Mon May 06 12:51:17 UTC 2013
+#Sat Jun 01 21:29:15 UTC 2013
 key=@ASSET_TYPE-CSSystem-AssetType-CSElement
 type=ASSET_TYPE
 sites=Demo

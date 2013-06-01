@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>CSElement:1351275795708</id>
+    <id>CSElement:1351275803218</id>
     <name>DmTopmenu</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-04-25T14:48:44.768Z</createddate>
+    <createddate>2013-06-01T18:01:54.682Z</createddate>
     <description>DmTopmenu</description>
     <publist>Demo</publist>
-    <status>ED</status>
+    <status>PL</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-05-05T15:06:32.742Z</updateddate>
+    <updateddate>2013-06-01T17:58:45.132Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275795708</longValue>
+            <longValue>1351275803218</longValue>
         </data>
     </attribute>
     <attribute>
@@ -99,13 +99,13 @@
     <attribute>
         <name>resdetails1</name>
         <data>
-            <stringValue>eid=1351275795708</stringValue>
+            <stringValue>eid=1351275803159</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>resdetails2</name>
         <data>
-            <stringValue>timestamp=1367766392734</stringValue>
+            <stringValue>timestamp=1370113919177</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -129,16 +129,16 @@
     <dependency>
       <depType>N</depType>
       <resType>CSElement</resType>
-      <resId>1351275795708</resId>
+      <resId>1351275803218</resId>
       <uid>b47c7ded-99f2-47e9-82b9-bb1c3897d45c</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Sun May 05 16:31:42 UTC 2013
+#Sat Jun 01 21:29:23 UTC 2013
 storable0=/ELEMENTS/JSP/Demo/DmTopmenu.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FDemo%2FDmTopmenu.jsp
-@hashval=512201300
+@hashval=-1149183801
 key=CSElement-b47c7ded-99f2-47e9-82b9-bb1c3897d45c
 type=ASSETDATA
 sites=Demo

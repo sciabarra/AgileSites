@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>Template:1351275796671</id>
+    <id>Template:1351275803146</id>
     <name>DmSummary</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-05-05T15:06:32.617Z</createddate>
+    <createddate>2013-06-01T18:01:38.000Z</createddate>
     <description>Template DmSummary for type Page </description>
     <publist>Demo</publist>
-    <status>PL</status>
+    <status>ED</status>
     <subtype>Page</subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-05-05T15:06:32.617Z</updateddate>
+    <updateddate>2013-06-01T19:11:58.971Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -53,13 +53,13 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>c7a135dd-cec2-4099-ac2c-84024dfa56cb</stringValue>
+            <stringValue>435a4907-825a-4a9c-a9d6-19d608ade4a0</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275796671</longValue>
+            <longValue>1351275803146</longValue>
         </data>
     </attribute>
     <attribute>
@@ -142,7 +142,7 @@
                 <item>
                     <name>resdetails2</name>
                     <data>
-                        <stringValue>agilesites=1367766392615</stringValue>
+                        <stringValue>agilesites=1370113918961</stringValue>
                     </data>
                 </item>
                 <item>
@@ -232,7 +232,7 @@
                 <item>
                     <name>resdetails1</name>
                     <data>
-                        <stringValue>tid=1351275796671</stringValue>
+                        <stringValue>tid=1351275803146</stringValue>
                     </data>
                 </item>
                 <item>
@@ -271,17 +271,17 @@
     <dependency>
       <depType>N</depType>
       <resType>Template</resType>
-      <resId>1351275796671</resId>
-      <uid>c7a135dd-cec2-4099-ac2c-84024dfa56cb</uid>
+      <resId>1351275803146</resId>
+      <uid>435a4907-825a-4a9c-a9d6-19d608ade4a0</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Sun May 05 16:31:41 UTC 2013
+#Sat Jun 01 21:29:20 UTC 2013
 storable0=/ELEMENTS/JSP/Page/DmSummary.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FPage%2FDmSummary.jsp
-@hashval=-1983439932
-key=Template-c7a135dd-cec2-4099-ac2c-84024dfa56cb
+@hashval=-603284539
+key=Template-435a4907-825a-4a9c-a9d6-19d608ade4a0
 type=ASSETDATA
 sites=Demo
 

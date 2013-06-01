@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>CSElement:1351275793310</id>
+    <id>CSElement:1351275803116</id>
     <name>DmTester</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-04-15T21:56:47.091Z</createddate>
+    <createddate>2013-06-01T18:01:37.569Z</createddate>
     <description>DmTester</description>
     <publist>Demo</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-05-05T15:06:32.362Z</updateddate>
+    <updateddate>2013-06-01T19:11:58.570Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -53,13 +53,13 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>bf490bb3-5d33-458b-803a-de2258517a0f</stringValue>
+            <stringValue>ea3575e7-42de-49f8-b8c6-5b1906daf345</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275793310</longValue>
+            <longValue>1351275803116</longValue>
         </data>
     </attribute>
     <attribute>
@@ -99,20 +99,20 @@
     <attribute>
         <name>resdetails1</name>
         <data>
-            <stringValue>eid=1351275793310</stringValue>
+            <stringValue>eid=1351275803116</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>resdetails2</name>
         <data>
-            <stringValue>timestamp=1367766392354</stringValue>
+            <stringValue>timestamp=1370113918560</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>url</name>
         <data>
             <blobValue>
-                <filename>Demo\DmTester_demo.element.Tester,0.jsp</filename>
+                <filename>Demo\DmTester_demo.element.Tester.jsp</filename>
                 <foldername></foldername>
                 <filedata></filedata>
             </blobValue>
@@ -129,17 +129,17 @@
     <dependency>
       <depType>N</depType>
       <resType>CSElement</resType>
-      <resId>1351275793310</resId>
-      <uid>bf490bb3-5d33-458b-803a-de2258517a0f</uid>
+      <resId>1351275803116</resId>
+      <uid>ea3575e7-42de-49f8-b8c6-5b1906daf345</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Sun May 05 16:31:42 UTC 2013
+#Sat Jun 01 21:29:23 UTC 2013
 storable0=/ELEMENTS/JSP/Demo/DmTester.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FDemo%2FDmTester.jsp
-@hashval=-2072643196
-key=CSElement-bf490bb3-5d33-458b-803a-de2258517a0f
+@hashval=-258908475
+key=CSElement-ea3575e7-42de-49f8-b8c6-5b1906daf345
 type=ASSETDATA
 sites=Demo
 
