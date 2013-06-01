@@ -17,6 +17,20 @@ import com.fatwire.cs.core.uri.QueryAssembler;
 import com.fatwire.cs.core.uri.Simple;
 
 public class Assembler implements com.fatwire.cs.core.uri.Assembler {
+
+	public static URI buildUri(String prefix, String suffix) {
+		try {
+
+			URI uri = new URI(prefix);
+			uri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
+					uri.getPort(), uri.getPath() + Common.nn(suffix), null,
+					null);
+			return uri;
+		} catch (URISyntaxException e) {
+			return null;
+		}
+	}
+
 	final static Log log = Log.getLog(Assembler.class);
 
 	private QueryAssembler qa = new QueryAssembler();
@@ -222,12 +236,17 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		String mode = def.getParameter("rendermode");
 		String prefix = sitePrefix.get(site);
 
-		if (mode != null && mode.startsWith("preview"))
+		if (mode != null && !mode.equals("live"))
 			return qa.assemble(def);
 
-		if (prefix != null)
-			return suffix == null ? new URI(prefix) : new URI(prefix + suffix);
-
+		if (prefix != null) {
+			try {
+				// the prefix is supposed to be already properly encoded...
+				return buildUri(prefix, suffix);
+			} catch (Exception ex) {
+				log.trace("unencodable url!", ex);
+			}
+		}
 		return qa.assemble(def);
 
 	}
