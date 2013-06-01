@@ -11,7 +11,9 @@ import giter8.ScaffoldPlugin.scaffoldSettings
 
 object AgileSitesBuild extends Build with AgileSitesSupport {
 
-  val v = "0.5"
+  // if you change this 
+  // remember to update the agilesites scripts
+  val v = "1.0" 
 
   // remove then add those jars in setup
   val addFilterSetup = "scala-library*" || "agilesites-core*" || "junit*" //|| "specs2*"
@@ -39,7 +41,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "commons-logging" % "commons-logging" % "1.1.1",
     "junit" % "junit" % "4.8.2",
     "com.novocode" % "junit-interface" % "0.8" % "test",
-    "org.specs2" %% "specs2" % "1.13",
+    //"org.specs2" %% "specs2" % "1.13",
     "log4j" % "log4j" % "1.2.16",
     "org.apache.httpcomponents" % "httpclient" % "4.1.2",
     "org.apache.httpcomponents" % "httpcore" % "4.1.2",
@@ -49,7 +51,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   val coreSettings = Defaults.defaultSettings ++ Seq(
     scalaVersion := "2.10.0",
     organization := "com.sciabarra",
-    version <<= (wcsVersion) { x => v + "_" + x },
+    version <<= (wcsVersion) { x => v +  "_" + x },
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
     unmanagedJarsTask)
