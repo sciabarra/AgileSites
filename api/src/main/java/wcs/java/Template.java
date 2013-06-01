@@ -149,8 +149,8 @@ public class Template extends AssetSetup {
 				attrString("resdetails2",
 						"agilesites=" + System.currentTimeMillis()));
 		mapElement.put("csstatus", attrString("csstatus", "live"));
-		mapElement.put("cscacheinfo", attrString("cscacheinfo", "false"));
-		mapElement.put("sscacheinfo", attrString("sscacheinfo", "false"));
+		mapElement.put("cscacheinfo", attrString("cscacheinfo", cscache));
+		mapElement.put("sscacheinfo", attrString("sscacheinfo", sscache));
 		mapElement.put("url", blob);
 
 		HashMap mapSiteEntry = new HashMap<String, Object>();

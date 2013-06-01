@@ -8,8 +8,15 @@ import wcs.core.URL;
 import wcs.core.WCS;
 import COM.FutureTense.Interfaces.ICS;
 
+/**
+ * The router - implement the abstract methods to provide url->asset and
+ * asset->url conversions.
+ * 
+ * @author msciab
+ * 
+ */
 abstract public class Router implements wcs.core.Router {
-	
+
 	private static Log log = Log.getLog(Router.class);
 
 	private String site;
@@ -40,28 +47,28 @@ abstract public class Router implements wcs.core.Router {
 
 	private ICS i;
 	private Env e;
-	
+
 	@Override
 	public Call route(ICS ics, String _site, String _path, String _query) {
 		log.debug("site=" + _site + " path=" + _path + " query=" + _query);
 		this.i = ics;
 		site = Config.getConfig(_site).getSite();
 		this.e = new Env(i, site);
-		if(_query == null || _query.trim().length()==0)
+		if (_query == null || _query.trim().length() == 0)
 			_query = "";
 		else
-			_query = "?" +_query;
+			_query = "?" + _query;
 		return route(e, URL.parse(_path, _query));
 	}
 
 	public Call call(String name, Arg... args) {
 		Call call = new Call("ICS:CALLELEMENT", args);
 		call.addArg("site", site);
-		call.addArg("element", site + "/" + name);
+		call.addArg("element", name);
 		log.trace("call returns %s", call.toString());
 		return call;
 	}
-	
+
 	/**
 	 * Route an asset
 	 * 
@@ -70,7 +77,7 @@ abstract public class Router implements wcs.core.Router {
 	 * @return
 	 */
 	abstract public Call route(Env env, URL url);
-	
+
 	/**
 	 * Link an asset
 	 * 
@@ -78,5 +85,5 @@ abstract public class Router implements wcs.core.Router {
 	 * @param id
 	 * @return
 	 */
-	abstract public String link(Env env, Id id, Arg...args);
+	abstract public String link(Env env, Id id, Arg... args);
 }

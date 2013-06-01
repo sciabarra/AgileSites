@@ -15,7 +15,7 @@ public class Wrapper extends Element {
 
 	public static AssetSetup setup() {
 		return new CSElement("$prefix$Wrapper", $site;format="normalize"$.element.Wrapper.class,
-				new SiteEntry("$prefix$Wrapper", true));
+				new SiteEntry("$site;format="normalize"$", true, "$site/$prefix$Wrapper"));
 	}
 
 	@Override

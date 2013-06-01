@@ -11,7 +11,8 @@ import COM.FutureTense.Interfaces.ICS;
 
 /**
  * 
- * Element
+ * This class implements element logic and will be invoked by templates and
+ * cselements
  * 
  * @author msciab
  * 

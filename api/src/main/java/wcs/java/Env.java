@@ -23,7 +23,8 @@ import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
 
 /**
- * Env
+ * Facade to the Sites services. It is passed as the main argument to element
+ * logic.
  * 
  * @author msciab
  * 
@@ -34,6 +35,7 @@ public class Env extends ICSProxyJ {
 	private Config config;
 	private Router router;
 	private String site;
+	private String normSite;
 	private boolean insite;
 	private boolean preview;
 
@@ -47,6 +49,7 @@ public class Env extends ICSProxyJ {
 		if (site != null) {
 			config = Config.getConfig(site);
 			this.site = config.getSite();
+			this.normSite = WCS.normalizeSiteName(site);
 			router = Router.getRouter(site);
 		}
 		String rendermode = ics.GetVar("rendermode");
@@ -73,6 +76,8 @@ public class Env extends ICSProxyJ {
 	public String getString(String list, String field) {
 		IList ls = ics.GetList(list);
 		if (ls == null)
+			return null;
+		if(ls.numRows()==0)
 			return null;
 		try {
 			return ls.getValue(field);
@@ -360,11 +365,11 @@ public class Env extends ICSProxyJ {
 
 	/**
 	 * Return the URL to render this asset - note that rendering is different if
-	 * we are in insite/preview mode or in live model
+	 * we are in insite/preview mode or in live mode
 	 */
 	public String getUrl(Id id, Arg... args) {
 		if (insite || preview) {
-			return RenderTag.getpageurl().pagename("AAAgileRouter").c(id.c)
+			return RenderTag.getpageurl().pagename(normSite).c(id.c)
 					.cid(id.cid.toString()).assembler("query")
 					.eval(ics, "outstr");
 		}

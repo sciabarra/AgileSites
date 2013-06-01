@@ -15,7 +15,7 @@ public class Wrapper extends Element {
 
 	public static AssetSetup setup() {
 		return new CSElement("DmWrapper", demo.element.Wrapper.class,
-				new SiteEntry("DmWrapper", true));
+				new SiteEntry("demo", true, "Demo/DmWrapper"));
 	}
 
 	@Override

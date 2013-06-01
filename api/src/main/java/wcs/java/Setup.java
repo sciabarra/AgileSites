@@ -24,6 +24,13 @@ import com.fatwire.system.Session;
 import com.fatwire.system.SessionFactory;
 import com.openmarket.xcelerate.asset.AssetIdImpl;
 
+/**
+ * The setup class. Invoking the setup method will initialize templates and
+ * cselements.
+ * 
+ * @author msciab
+ * 
+ */
 abstract public class Setup implements wcs.core.Setup {
 
 	private static Log log = Log.getLog(Setup.class);
@@ -183,8 +190,8 @@ abstract public class Setup implements wcs.core.Setup {
 
 		try {
 
-			MutableAssetData data = findByName(setup.getName(),
-					setup.getC(), null, setup.getAttributes());
+			MutableAssetData data = findByName(setup.getName(), setup.getC(),
+					null, setup.getAttributes());
 
 			// inserting
 			if (data == null)
@@ -229,13 +236,14 @@ abstract public class Setup implements wcs.core.Setup {
 
 		// dump the asset in xml format
 		if (data.getAssetId().getType().equals("AttrTypes")) {
-			String dump = "\nAsset: " + data.getAssetId() + Util.dumpAssetData(data);
+			String dump = "\nAsset: " + data.getAssetId()
+					+ Util.dumpAssetData(data);
 			log.debug(dump);
 		}
 
 		_site.setData(data);
 		asset.setData(data);
-	
+
 		try {
 			adm.update(Util.listData(data));
 		} catch (Exception e) {

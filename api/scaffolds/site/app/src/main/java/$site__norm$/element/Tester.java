@@ -11,7 +11,7 @@ public class Tester extends TestRunnerElement {
 
 	public static AssetSetup setup() {
 		return new CSElement("$prefix$Tester", $site;format="normalize"$.element.Tester.class, //
-				new SiteEntry("$prefix$Tester", false));
+				new SiteEntry("$site;format="normalize"$-tester", false, "$site/$prefix$Tester"));
 	}
 
 	@Override

@@ -9,6 +9,13 @@ import java.util.Date;
 import com.fatwire.assetapi.data.AttributeData;
 import com.fatwire.assetapi.data.MutableAssetData;
 
+/**
+ * Main asset abstraction. You get an asset from an Env then use this class to
+ * generate code.
+ * 
+ * @author msciab
+ * 
+ */
 public abstract class Asset {
 
 	private static Log log = Log.getLog(Asset.class);
