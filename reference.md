@@ -4,9 +4,12 @@ title: Reference
 ---
 Here there are more detailed information than you ever wanted to know.
 
-- [Configuration](reference/Configuration.html): all the available configuration options
-- [Shell](reference/Shell.html): all the available command line commands available
+- [FAQ](reference/FAQ.html): frequently asked questions, with answers
 - [Architecture](reference/Architecture.html): understanding how the framework works
+- [Rendering](reference/Rendering.html): the rendering process that is implemented by the framework
+- [Configuration](reference/Configuration.html): all the available configuration options
 - [Deployment](reference/Deployment.html): configuring the front end and the cluster
+- [Scaffold](reference/Scaffold.html): overview of the code generated with scaffolding
+- [Shell](reference/Shell.html): all the available command line commands 
 - [Releases](reference/Releases.html): release history
 

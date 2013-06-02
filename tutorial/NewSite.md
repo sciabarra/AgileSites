@@ -4,6 +4,8 @@ title: NewSite
 ---
 ##### Prev:  [Configuration](Configuration.html)
 
+In this section we describe which steps are needed in order to create a new site, both in Site and in AgileSites, and start development.
+
 ## Create a site in Sites
 
 After the configuration and the installation of the configuration, you can now create a new site.
@@ -17,7 +19,7 @@ Create a new site with the chosen name (in this case *MySite*), enabling at leas
 - Template
 - CSElement
 - SiteEntry
-- AttrTypes
+- AttrTypes 
 - Page
 - PageAttribute
 - PageDefinitions
@@ -34,19 +36,22 @@ After creating the site, you need also to create an user and assign to that user
 
 Once done you need to log out and then log in again to select your new site as the active site.
 
-## Create the basic code of the site with the generator
+## Generate the AgileSites site code
 
 Once created the site in Sites, you can use generate the site code from the shell with the command:
 
 ``wcs-generate site``
 
-A popup will appear asking for the site name (use `MySite` or your own) and the site prefix (user `My` or your own).
+A popup will appear asking for the site name (use `MySite` or your own) and the site prefix (use `My` or your own).
 
-Then you can deploy 
+Then you need to deploy templates and cselements for the site.
 
 ``wcs-deploy``
 
-# Access the site and the tests
+
+You can learn more on the generated source [here](../reference/Scaffold.html).
+
+## Access the new site and the tester
 
 Accessing the site with 
 
@@ -56,11 +61,13 @@ You should see the following screenshot:
 
 ![Default Error Page](/img/snap3695.png)
 
-This is normal since you do not have yet any page, so the Error Page is shown declaring it cannot find the home pages
+It is normal since you do not have yet any page, so the Error Page is displayed, declaring it cannot find the home page (that does not yet exist).
 
-You can then invoker the tester with
+You can then invoke the tester with:
 
->http://localhost:8080/cs/ContentServer?pagename=MyTester
+>http://localhost:8080/cs/ContentServer?pagename=mysite-tester
+
+(in general is the lowercase version of your site name with concatenated "-tester").
 
 You should see this screenshot:
 
@@ -72,22 +79,33 @@ Clicking on "Run All Tests" you should expect no errors:
 
 You can also select a few tests and run only the selected tests clicking on "Run Some Tests". Try it.
 
-## Import in eclipse
+## Importing the project in eclipse
 
-**Note**: you need the eclipse plugin [http://www.scala-ide.org](http://www.scala-ide.org "Scala IDE") to use the default export. Projects are currently Java only, but planned extensions of the framework  will allow also Scala coding, so this requirement is not going to be removed. 
- 
-Once the new site and the new project has been created you can generate configuration files for your IDE. Execute the command:
+**Note**: you need the eclipse plugin [http://www.scala-ide.org](http://www.scala-ide.org "Scala IDE") to use the default export. Projects are currently Java only, but planned extensions of the framework  will allow also Scala coding. 
+
+Once the new site and the new project has been created you can generate configuration files for your IDE. Execute the command in the shell:
 
 `eclipse`
 
-In the shell. Using eclipse you can select the following sequence of options to import the projects in Eclipse:
+Using eclipse you can then select the following sequence of options to import the projects in Eclipse:
 
 > File | Import | General | Existing Projects 
 
-and select the main directory of AgileSites. You should see the following screenshot:
+opening the main directory of AgileSites. You should see the following screenshot:
 
 ![Import AgileSites projects](/img/snap4673.png)
 
-You will actually work only on the `agilesites-app` project. 
+then selecting the folder where you unzipped AgileSites, you should see 3 projects.
+
+![Import](/img/snap6285.png)
+
+Select all of them. You will work mostly only on the `agilesites-app` project for implementing your application code.  However other projects are required for compilation.
+
+You may change the `agilesites-api` core if you want to extend the framework adding your functionalities. If you do so, consider contribute them to the project. 
+
+You are not expected to change the `agilesites-core` code except for adding very low level functionality. 
+
+**NOTE** You may import the project without the Scala Plugin in Eclipse (for example manually removing the ScalaNature option from the project) or even working with different IDEs than eclipse. That is fine but it is not covered in the tutorial you are reading. So your mileage may vary.
+
 
 #####  Next:  [New Template](NewTemplate.html)

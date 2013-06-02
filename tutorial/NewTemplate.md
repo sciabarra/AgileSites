@@ -4,6 +4,10 @@ title: NewTemplate
 ---
 ##### Prev:  [New Site](NewSite.html).
 
+We have now the skeleton of the site.
+
+We are ready to render the home page.
+
 
 ##  Create the home page
 
@@ -16,7 +20,10 @@ Create a template for the home page, and deploy it
 ``wcs-generate template
 wcs-deploy``
 
-##### Next: [Picker](Picker.html)
+
+##### Next: [Java Idiom](JavaIdiom.html)
+
+
 
 
 

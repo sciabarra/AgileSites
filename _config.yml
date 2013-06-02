@@ -10,7 +10,7 @@ pygments: true
 # so be sure to set them if your theme uses them.
 #
 title : AgileSites
-tagline: the Easy framework for Agile development with Oracle Sites
+tagline: the Easy framework for Agile development with Oracle WebCenter Sites
 author :
   name : Michele Sciabarra
   email : 

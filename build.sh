@@ -1,5 +1,6 @@
 H=../0.5
 cp $H/*.md _includes
+cp $H/doc/*.md .
 cp -rvf $H/doc/img .
 for j in . tutorial reference ; do 
 mkdir $j
@@ -15,4 +16,4 @@ echo "---" ;\
 cat $i ) | sed -e 's!\.md!\.html!g' | perl -pe 's!\.?\./img/!/img/!g'  >$b
 echo $b
 done ; done
-
+jekyll serve

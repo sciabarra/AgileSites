@@ -16,9 +16,7 @@
 ../0.5/api/src/main/java/wcs/java/Template.java
 #../0.5/api/src/main/java/wcs/java/util/DOMElementWriter.java
 ../0.5/api/src/main/java/wcs/java/util/Util.java
-../0.5/api/src/main/java/wcs/java/util/IfNull.java
 ../0.5/api/src/main/java/wcs/java/util/DateUtils.java
-../0.5/api/src/main/java/wcs/java/util/FileUtils.java
 ../0.5/api/src/main/java/wcs/java/util/StringUtils.java
 ../0.5/api/src/main/java/wcs/java/util/TestEnv.java
 ../0.5/api/src/main/java/wcs/java/util/TestElement.java
