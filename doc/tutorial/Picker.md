@@ -148,21 +148,20 @@ Note however that even if you selected an inner element, the selection is tempor
 
 Let's see which replacements methods are available:
 
-<pre><![CDATA[
-<div id="title">
-	<h1>Hello</h1>
-</div>
-<div id="content">
-	<p>How are you?</p>
-</div>
-<div id="menu">
-	<ul>
-		<li>First</li>
-		<li>Second</li>
-		<li>Third</li>
-	</ul>
-</div>
-]]></pre>
+<pre>
+&lt;div id="title">
+	&lt;h1>Hello&lt;/h1>
+&lt;/div>
+&lt;div id="content">
+	&lt;p>How are you?&lt;/p>
+&lt;/div>
+&lt;div id="menu">
+	&lt;ul>
+		&lt;li>First&lt;/li>
+		&lt;li>Second&lt;/li>
+		&lt;li>Third&lt;/li>
+	&lt;/ul>
+&lt;/div></pre>
 
 #####  Next:  [Read Content](ReadContent.md)
 

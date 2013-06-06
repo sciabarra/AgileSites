@@ -15,7 +15,7 @@ Create a new site with the chosen name (in this case *MySite*), enabling at leas
 - Template
 - CSElement
 - SiteEntry
-- AttrTypes
+- AttrTypes 
 - Page
 - PageAttribute
 - PageDefinitions
@@ -38,11 +38,14 @@ Once created the site in Sites, you can use generate the site code from the shel
 
 ``wcs-generate site``
 
-A popup will appear asking for the site name (use `MySite` or your own) and the site prefix (user `My` or your own).
+A popup will appear asking for the site name (use `MySite` or your own) and the site prefix (use `My` or your own).
 
 Then you need to deploy templates and cselements for the site.
 
 ``wcs-deploy``
+
+
+You can learn more on the generated source [here](../reference/Scaffold.md).
 
 ## Access the new site and the tester
 
@@ -58,7 +61,9 @@ It is normal since you do not have yet any page, so the Error Page is displayed,
 
 You can then invoke the tester with:
 
->http://localhost:8080/cs/ContentServer?pagename=MyTester
+>http://localhost:8080/cs/ContentServer?pagename=mysite-tester
+
+(in general is the lowercase version of your site name with concatenated "-tester").
 
 You should see this screenshot:
 
@@ -98,57 +103,5 @@ You are not expected to change the `agilesites-core` code except for adding very
 
 **NOTE** You may import the project without the Scala Plugin in Eclipse (for example manually removing the ScalaNature option from the project) or even working with different IDEs than eclipse. That is fine but it is not covered in the tutorial you are reading. So your mileage may vary.
 
-## Walk-through of the generated source code 
-
-The generated code is in the `agilesites-app` project, in the source folder `src/main/java` in the package with the name you chose (in this case `mysite`).
-
-![Generated Project Files](../img/snap6038.png)
-
-The generated project has 3 packages:
-
-- `mysite`
-- `mysite.element`
-- `mysite.test`
-
-Let's discuss the default content of the three packages
-
-### `mysite` classes
-
-In the package `mysite` there are 3 (mandatory) files:
-
-- `Config`
-- `Setup`
-- `Router`
-
-The `Config` is the holder of configuration files. It provides the sinte name and some important methods detailes in the API. You are not expected to change it, unless you need to customise the Configuration.
-
-The `Setup` code will be executed to setup your site templates when you you execute the `wcs-deploy` command. You are not expected to change it unless you need to add custom initialization. 
-
-The `Setup `reads the resource file `src/main/resources/elements.txt` and install all the elements listed there.
-
-The `Router` is responsible for translating URL in assets or other invocations (for example Ajax calls), and for generating the mapping of an asset into an URL. Please check the [architecture](/reference/Architecture.md) to fully understand the role of the router. 
-
-The default `Router.route` maps Page names in URL and viceversa. The default code read the url portion managed by the router and looks for a page whose name matches the name.
-
-The default `Router.link` does the opposite: provided an asset Page, it will return its name as url fragment for locating it.
-
-The router can be extended to manage arbitrary and complex URL mappings.
-
-### `mysite.element` classes
-
-The standard wizard will generate 3 classes:
-
-- `Wrapper`
-- `Tester`
-- `Error`
-
-Those 3 classes are all CSElements. In the code of the class there is the configuration of the CSElement and the actual CSElement was created whey you performed the `wcs-deploy` step. 
-
-If you inspect with the Admin in the Dev tab what has been created you will see the following SiteEntry 
-
-![Standard CSElement and SiteEntry](../img/snap9963.png)
-
-
-### `mysite.tests` classes 
 
 #####  Next:  [New Template](NewTemplate.md)
