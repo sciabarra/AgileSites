@@ -51,6 +51,5 @@ On Satellite Server:
 
 Check the [Installation Guide](http://www.agilesites.org/install.html) for more details.
 
-**HINT** The variable `wcsSites` variable is actually a comma separated list of sites name. However you should specify more than one site only when you are using tightly coupled sites sharing assets. They are exported all together by CSDT.
 
 ##### Next: [New Site](NewSite.md)

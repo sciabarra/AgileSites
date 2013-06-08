@@ -49,7 +49,7 @@ For reference a list of selector, literally copied from [here](http://jsoup.org/
 
 -   **[attr=value]**: elements with attribute value 
 -   **[attr~=regex]**: elements with attribute values that match the regular expression; e.g. img[src~=(?i)\.(png|jpe?g)]
--    *: all elements, e.g. *
+-    *: all elements, 
 
 ### Selector combinations
 

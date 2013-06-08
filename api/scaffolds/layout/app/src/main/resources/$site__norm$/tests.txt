@@ -1,1 +1,1 @@
-$site;format="normalize"$.test.$type;format="normalize"$.$subtype$LayoutTest
+$site;format="normalize"$.test.$type;format="normalize"$.$subtype;format="deprefix"$LayoutTest

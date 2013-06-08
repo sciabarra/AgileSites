@@ -45,7 +45,6 @@ Then you need to deploy templates and cselements for the site.
 
 ``wcs-deploy``
 
-
 You can learn more on the generated source [here](../reference/Scaffold.md).
 
 ## Access the new site and the tester
@@ -99,10 +98,7 @@ then selecting the folder where you unzipped AgileSites, you should see 3 projec
 Select all of them. You will work mostly only on the `agilesites-app` project for implementing your application code.  However other projects are required for compilation.
 
 You may change the `agilesites-api` core if you want to extend the framework adding your functionalities. If you do so, consider contribute them to the project. 
-
 You are not expected to change the `agilesites-core` code except for adding very low level functionality. 
-
-**NOTE** You may import the project without the Scala Plugin in Eclipse (for example manually removing the ScalaNature option from the project) or even working with different IDEs than eclipse. That is fine but it is not covered in the tutorial you are reading. So your mileage may vary.
 
 
 #####  Next:  [New Template](NewTemplate.md)

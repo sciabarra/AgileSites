@@ -8,21 +8,21 @@ import wcs.java.Element;
 import wcs.java.Template;
 import wcs.java.AssetSetup;
 
-public class $subtype$$template$ extends Element {
+public class $subtype;format="deprefix"$$template$ extends Element {
 
-	final static Log log = Log.getLog($subtype$$template$.class); 
+	final static Log log = Log.getLog($subtype;format="deprefix"$$template$.class); 
 			
 	public static AssetSetup setup() {	
-		return new Template("$type$", "$prefix$$subtype$$template$", 
+		return new Template("$type$", "$subtype$$template$", 
 			Template.INTERNAL, // change template type here
-			"$subtype$", $site;format="normalize"$.element.$type;format="normalize"$.$subtype$$template$.class) //
+			"$subtype$", $site;format="normalize"$.element.$type;format="normalize"$.$subtype;format="deprefix"$$template$.class) //
 			.cache("false", "false") // change caching here
-			.description("Template $prefix$$subtype$$template$ for type $type$ $subtype$");
+			.description("Template $subtype$$template$ for type $type$ $subtype$");
 	}
 
 	@Override
 	public String apply(Env e) {
-		return "<h1>$prefix$$subtype$$template$</h1>";
+		return "<h1>$subtype$$template$</h1>";
 
 		// TODO: implement here the logic
 		// sample logic with the html picker

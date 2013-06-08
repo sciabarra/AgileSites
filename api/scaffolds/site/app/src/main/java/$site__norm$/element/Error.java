@@ -1,3 +1,4 @@
+
 package $site;format="normalize"$.element;
 
 import wcs.core.Log;

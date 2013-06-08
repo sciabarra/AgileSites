@@ -10,14 +10,14 @@ import wcs.java.Asset;
 import wcs.java.AssetSetup;
 import wcs.java.Picker;
 
-public class $subtype$Layout extends Element {
+public class $subtype;format="deprefix"$Layout extends Element {
 	
-	final static Log log = Log.getLog($subtype$Layout.class); 
+	final static Log log = Log.getLog($subtype;format="deprefix"$Layout.class); 
 
 	public static AssetSetup setup() {		
-		return new Template("$type$", "$prefix$$subtype$Layout", 
+		return new Template("$type$", "$subtype$Layout", 
 			Template.LAYOUT, // change template type here
-			"$subtype$", $site;format="normalize"$.element.$type;format="normalize"$.$subtype$Layout.class) //
+			"$subtype$", $site;format="normalize"$.element.$type;format="normalize"$.$subtype;format="deprefix"$Layout.class) //
 			.cache("false", "false") // change caching here
 			.description("Layout for type $type$ $subtype$");
 	}
