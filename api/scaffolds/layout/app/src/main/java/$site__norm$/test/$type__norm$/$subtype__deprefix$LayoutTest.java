@@ -13,21 +13,22 @@ import $site;format="normalize"$.element.$type;format="normalize"$.$subtype$Layo
 import static wcs.core.Common.arg;
 
 // this test must be run by AgileSites TestRunnerElement
-public class $subtype$LayoutTest extends TestElement {
+public class $subtype;format="deprefix"$LayoutTest extends TestElement {
 	
 	final static Log log = Log.getLog($subtype$LayoutTest.class); 
 
-	$subtype$Layout it;
+	$subtype;format="deprefix"$Layout it;
 	
 	@Before
 	public void setUp() {
-		it = new $subtype$Layout();
+		it = new $subtype;format="deprefix"$Layout();
 	}
 
 	@Test
 	public void test() {
 		Env e = env("");
 		parse(it.apply(e));
+		
 		Asset a = e.findOne("Page", arg("name", "Home"));
 		assertText("#title", a.getName());
 		assertText("#subtitle", a.getDescription());

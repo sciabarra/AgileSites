@@ -24,30 +24,43 @@ Switch to the Administrative interface, clicking on the icon shown below in the 
 
 ![Admin](../img/snap2093.png)
 
-Click on the **New** link in the toolbar, and then finally click on the **New Page Definition** link in the list that appears.
-
+Click on the **New** link in the toolbar, and then finally click on the **New Page Definition** link in the list of the new items.
 
 ![New Page Definition](../img/snap1821.png)
 
+You can create a new page definition. 
 Create `MyHome` page definition: 
 
 ![My Home](../img/snap6106.png)
 
+**Note** Since if 2 definitions with the same name appears in different sites then there can be problems, it is recommended you name all the content definitions with the site prefix, in order to reduce non-unique name conflicts.
+
 ## Generate and deploy layout
 
+We now need to create the template to render the home page. Templates that can be used to select render an asset directly are the layouts.
+
+Since you need to create a template and then a class, and furthermore you need also to create a test, there is a generator to simplify the operation.
+
+The command to generate is simply:
+
 `wcs-generate layout`
+
+The shell will ask for some parameters, use the following answers:
 
 - subtype: MyHome
 - site: MySite
 - type: Page
-- prefix: (leave empty)
 
-**NOTE: if your subtype has a prefix (``MyHome``) then it is recommended to leave  the prefix empty to avoid ugly names like 'MyMyHomeLayout`.
+Once done, you can deploy the genenerated templates with the command
 
 `wcs-deploy`
 
 
 ##  Create the home page
+
+Now you are read to create the nome Page.
+
+![Contributor Interface](../img/snap7755.png)
 
 New Page
 
