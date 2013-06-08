@@ -1,6 +1,6 @@
 ##### Prev: [Prerequisites](Prerequisites.md)
 
-In this section we introduce which configuration steps are required in order to start development.
+In this section we introduce the configuration steps required in order to start development.
 
 ## Choose a name and a prefix
 

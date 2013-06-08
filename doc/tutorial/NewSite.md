@@ -20,6 +20,7 @@ Create a new site with the chosen name (in this case *MySite*), enabling at leas
 - PageAttribute
 - PageDefinitions
 
+
 ![Asset Type enabling](../img/snap4206.png)
 
 After creating the site, you need also to create an user and assign to that user at the minimum the following roles for your site *MySite*
