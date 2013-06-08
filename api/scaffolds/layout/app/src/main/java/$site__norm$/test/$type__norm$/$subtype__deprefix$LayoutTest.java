@@ -9,13 +9,13 @@ import wcs.core.Log;
 import wcs.java.Env;
 import wcs.java.Asset;
 import wcs.java.util.TestElement;
-import $site;format="normalize"$.element.$type;format="normalize"$.$subtype$Layout;
+import $site;format="normalize"$.element.$type;format="normalize"$.$subtype;format="deprefix"$Layout;
 import static wcs.core.Common.arg;
 
 // this test must be run by AgileSites TestRunnerElement
 public class $subtype;format="deprefix"$LayoutTest extends TestElement {
 	
-	final static Log log = Log.getLog($subtype$LayoutTest.class); 
+	final static Log log = Log.getLog($subtype;format="deprefix"$LayoutTest.class); 
 
 	$subtype;format="deprefix"$Layout it;
 	
