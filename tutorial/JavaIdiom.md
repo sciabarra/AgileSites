@@ -12,9 +12,9 @@ In this section we introduce the peculiar Java idioms used in the API.
 
 In every class you should add this line:
 
-{% highlight java %}
+```java
 import static wcs.core.Common.*
-{% endhighlight %}
+```
 
 This static import will include some common static methods that can be used as functions and will make easier to use the API.
 
@@ -24,17 +24,17 @@ Even if there is no such a thing like a proper function in Java, I will call in 
 
 In java you have to check often if something is null or not. The `ifn` function does exactly this. For example, the following will check if `l` is null and if it is not the it will converted to 0. 
 
-{% highlight java %}
+```java
 String cid = ifn(e.getId("Related"), 0l).toString()
-{% endhighlight %}
+```
 
 Note that the whole stuff is a bit tricky with types. Both the parameters of `ifn` are objects, so the `0l` will be boxed to a `Long`; the result will be converted to a string avoiding the check for null using the `toString` method always available. If you need a type different than String you will have to add a cast in front of `ifn`
 
 For the specific case (very frequent) of avoiding a null string, converting it in a void (but not null) string there is the `nn` function. For example:
 
-{% highlight java %}
+```java
 html.replace("somewhere", nn(e.getString("Title")))
-{% endhighlight %}
+```
 
 In this way you can prevent a null pointer converting the eventual null value returned in an empty string.
 
@@ -42,9 +42,9 @@ In this way you can prevent a null pointer converting the eventual null value re
 
 The function 
 
-{% highlight java %}
+```java
 id("Page", 123456l)
-{% endhighlight %} 
+``` 
 
 returns an instance of classe wcs.core.Id. This is simple that invoking new Id("Page", 123456l). There are a number of API calls that expect an instance of class `Id`.
 
@@ -56,9 +56,9 @@ There are numerous cases when a sequence of pairs key/value must be provided. Fo
 
 Using the function `arg` you can write the call like this:
 
-{% highlight java %}
+```java
 e.call("DmSummary", arg("c", id.c), arg("cid", id.cid.toString()))
-{% endhighlight %}
+```
 
 The function `arg` actually creates an instance of class `Arg` that is a value class with 2 public fields: `k` and `v`. The call is declared as having a variable number of arguments of type arg (declaration: `Arg...args`)
 
@@ -78,9 +78,9 @@ To use it, you must use the  `wcs.core.Log` class, that can send logs to a log v
 
 The code to use logs is very similar to stardard practices. In your application code, for the class `X` add the following code at the beginning of your class:
 
-{% highlight java %}
+```java
 private static final wcs.core.Log log = wcs.core.Log.getLog(X.class);
-{% endhighlight %}
+```
 
 
 Then you can use the following logging methods:
@@ -93,9 +93,9 @@ Then you can use the following logging methods:
 
 Note that all the logging methods are actually using a format string, so you can use is as the `StringFormat.printf`. For example:
 
-{% highlight java %}
+```java
 log.debug("c=%s cid=%d", id.c, id.cid)
-{% endhighlight %}
+```
 
 ## Invoking Tags
 
@@ -105,15 +105,15 @@ Using `ICS` is possible to use both the Asset API and all the tag libraries. Whi
 
 Sites JSP:
 
-{% endhighlight %}jsp
+```jsp
 <asset:load name="a" type="Page" objectid="12345"/>
-{% endhighlight %}
+```
 
 Sites XML:
 
-{% endhighlight %}xml
+```xml
 <asset.load name="a" type="Page" objectid="12345"/>
-{% endhighlight %}
+```
 
 
 Tags in fatwire are divided in libraries. For each tag the documentation lists all the available attributes with her meaning.
@@ -126,23 +126,23 @@ You can then pass attributes to the tag invoking a sequence of chained methods, 
 
 For example the equivalent of 
 
-{% endhighlight %}jsp
+```jsp
 <asset:load name="a" type="Page" objectid="123456"/>
-{% endhighlight %} 
+``` 
 
 is (assuming that is `Env e`):
 
-{% highlight java %}
+```java
 AssetTag.load().name("a"").type("Page").objectid("123456").run(e.ics);
-{% endhighlight %}
+```
 
 Note that arguments are always string, so for example a Long as in `id.cid` must be passed as `id.cid.toString()`.
 
 Each tag  provides a method for each attribute defined in the tld. However it is also possible to pass arbitrary tags (accepted by some tags like the calls) with 'set(key,value). So this is equivalent, except you define the attribute with a string instead of calling a method.
 
-{% highlight java %}
+```java
 AssetTag.load().name("a"").set("type", "Page").set("objectid", "123456").run(e.ics);
-{% endhighlight %}
+```
 
 ### Read a value generated from a tag
 
@@ -150,17 +150,17 @@ Note that a very common occurrence is that the tag will generate a value storing
 
 Here is an example of the common pattern you would use, using for example `asset:get` and 
 
-{% highlight java %}
+```java
 String tmp = Common.tmp(); 
 AssetTag.get().name("a").field("id").output(tmp).run(e.ics); 
 return e.getString(tmp);
-{% endhighlight %}
+```
 
 Because this is so common there is the following shortcut:
 
-{% highlight java %}
+```java
 return AssetTag.get().name("a").field("id").eval("output",e.ics)
-{% endhighlight %}
+```
 
 This shortcut works exactly as the previous example: a temporary variable will be generated and stored as the value of the `output` attribute in the previous example. Then the tag will be executed, the value of the variable read and returned.
 
