@@ -177,7 +177,7 @@ trait AgileSitesSupport {
     (baseDirectory, wcsWebapp) map {
       (base, tgt) =>
         val src = base / "app" / "src" / "main" / "static"
-        recursiveCopy(src, file(tgt))(!isHtml(_))
+        recursiveCopy(src, file(tgt))(x=>true)
     }
 
   val wcsCopyHtmlTask =
