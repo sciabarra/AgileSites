@@ -1,5 +1,3 @@
-# FAQ
-
 ## How can I delete a template, layout or a cselement created by the generator?
 
 The `wcs-generate` for templates, cselements and layouts generates normally just 2 classes, one is the actual element class and another is the test class. In addition, they add the class name in the list of classes to be deployed and the test name in the list of tests to be run.

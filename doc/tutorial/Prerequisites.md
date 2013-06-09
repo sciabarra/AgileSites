@@ -15,7 +15,7 @@ It is convenient because it does not requires too many resources and can be inst
 
 **NOTE** It is possible to [install the full Sites in your computer](http://www.sciabarra.com/fatwire/2012/04/09/download-and-install-a-development-fatwire-instance-also-on-mac/) for development purposes. You can install it with free Oracle XE or  the free Microsoft SQLServer. It is even possible to install it with the simple, in-memory database Hypersonic SQL  (note, only using **version 1.8.0**) 
 
-Once you installed Sites, follows the [installation procedure](Install.md) to install AgileSites. You do not require the installation of the demo site, although it is convenient to have it installed during development.
+Once you installed Sites, follows the [installation procedure](../install.md) to install AgileSites. You do not require the installation of the demo site, although it is convenient to have it installed during development.
 
 ## A local instance is required
 

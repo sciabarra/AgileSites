@@ -1,5 +1,3 @@
-# AgileSites
-
 Agile development framework for Oracle WebCenter Sites.
 
 Release history.
