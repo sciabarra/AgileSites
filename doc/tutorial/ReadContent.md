@@ -1,5 +1,11 @@
 ##### Prev:  [Picker](Picker.md).
 
+
+
+## Continuos compilations
+
+``~wcs-package-jar``
+
 ## Add it to 
 
 Find Page Definition

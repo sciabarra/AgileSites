@@ -58,30 +58,30 @@ Once done, you can deploy the genenerated templates with the command
 
 ##  Create the home page
 
-Now you are read to create the nome Page.
+Now you are read to create the nome Page. Go in the contributor interface clicking on the icon in the top bar to the right.
 
 ![Contributor Interface](../img/snap7755.png)
 
-New Page
-
+Click on the toolbar on New
 Give `Home` as name and select the (only) available template `MyHomeLayout`
 
 ![New Layout](../img/snap6677.png)
 
-Verify that in meta data the defintion is `MyHome`
+Verify that in meta data section the page defintion is `MyHome`. 
 
 ![Page Definition is MyHome](../img/snap5365.png)
 
+It has been assigned automatically because it is the only available page definition. However when more than once Page Definition is available, the system will ask to choose one.
 
-## Continuos compilations
+Now, set in the Description field the value "Home Page"
 
-``~wcs-package-jar``
+![Description](../img/snap3950.png)
+
+Now test the generated template works, clicking on the switch to select the web view. This is what you should see: 
+
+![Description](../img/snap5968.png)
+
+
 
 
 ##### Next: [Java Idiom](JavaIdiom.md)
-
-
-
-
-
-
