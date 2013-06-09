@@ -10,7 +10,7 @@ Here there is a guide to the Picker, including a reference list for the selector
 
 For the examples, please consider the `/sample.html` resource is the following:
 
-```html
+{% highlight html %}
 <div id="title">
 	<h1>Hello</h1>
 </div>
@@ -24,7 +24,7 @@ For the examples, please consider the `/sample.html` resource is the following:
 		<li>Third</li>
 	</ul>
 </div>
-```
+{% endhighlight %}
 
 and that the selector syntax `#content` will select the part of the html with `id="content"`
 
@@ -40,44 +40,44 @@ Here some samples of loading:
 
 Load the html from a resource in the jar (packaged from the original placed under `app/src/main/static/mysite/template.html`)
 
-```java
+{% highlight java %}
 Picker.load("/mysite/resource.html")
-```
+{% endhighlight %}
 
 Load from the same resource as before the html block identified by the selector "#content" (see below for the selectors):
 
-```java
+{% highlight java %}
 Picker.load("/mysite/resource.html", "#content")
-```
+{% endhighlight %}
 
 You can create a picker using literal html if you need it (typically if it is a small piece of html):
 
-```java
+{% highlight java %}
 Picker.create("<h1>Title<h1>")
-```
+{% endhighlight %}
 
 ### html() and outerHtml()
 
 
 If you load a snippet of html like this
 
-```java
+{% highlight java %}
 Picker p = Picker.load("/sample.html", "#title")
-```
+{% endhighlight %}
 
 To get the whole block selected you use `p.outerHtml()`:
 
-```html
+{% highlight html %}
 <div id="title">
   <h1>Hello</h1>
 </div>
-```
+{% endhighlight %}
 
 If you instead use `p.html()` you will output only the inner part of the loaded html.
 
-```html
+{% highlight html %}
 <h1>Hello</h1>
-```
+{% endhighlight %}
 
 ## Selectors 
 
@@ -137,19 +137,19 @@ Let's see which replacements methods are available with some samples
 
 Replace is the most used method:
 
-```java
+{% highlight java %}
 Picker.load("/sample.html", "#content")
 .replace("p", "welcome")
 .outerHtml()
-```
+{% endhighlight %}
 
 Result:
 
-```html
+{% highlight html %}
 <div id="content">
   <p>welcome.</p>
 </div>	
-```
+{% endhighlight %}
 
 ### single, remove, before, after
 
@@ -157,34 +157,34 @@ You can return a single instance of a sequence of items, append, prepend and rem
 
 Check those examples:
 
-```java
+{% highlight java %}
 Picker p = Picker.load("/sample.html", "#menu li");
 p.single("li").html();
-```
+{% endhighlight %}
 
 Result:
 
-```html
+{% highlight html %}
 <ul>
   <li>First</li>
 </ul>
-```
+{% endhighlight %}
 
 Code:
 
-```java
+{% highlight java %}
 p.after("li", "<li id=\"second\">Second</li>");	
 p.before("#second", "<li>One and Half</li>");
 p.remove("li:eq(1)")
 p.html();
-```
+{% endhighlight %}
 
-```html
+{% highlight html %}
 <ul>
  <li>One and Half</li>
  <li id="second">Second</li>
 </ul>
-```
+{% endhighlight %}
 
 ### Attributes
 
@@ -192,21 +192,21 @@ Some samples of replacement and removal of attributes:
 
 Code:
 
-```java
+{% highlight java %}
 Picker.load("/sample.html", "#title")
 .addClass("h1", "demo")
 .attr("h1", "test", "demo")
 .removeAttrs("div", "id")
 .outerHtml();
-```
+{% endhighlight %}
 
 Results:
 
-```html
+{% highlight html %}
 <div id="replaced">
    <h1 test="demo" class=" demo">Hello</h1>
 </div>
-```
+{% endhighlight %}
 
 ### select, up
 
