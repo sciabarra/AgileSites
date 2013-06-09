@@ -19,11 +19,11 @@ First step is to copy `build.sbt.dist` into `build.sbt` and edit it.
 
 You need to provide details on your installation.
 
-Default values are fine if you are using JumpStart Kit 11gR1 installed the default location with the default users.
+Default values are fine if you are using JumpStart Kit 11gR1 installed the default location, using the default `fwadmin` user and the default password.
 
-At least you need to configure paths and users, so the AgileSites installer can locate your Sites files.
+If you changed the defaults, you need to configure paths and users in the `build.sbt`, so the AgileSites installer will locate your Sites installation and update properly.
 
-You can skip all the options for the Apache and Satellite front end if you are installing for development.
+You can skip all the options for the Apache and Satellite front end if you are installing for development only.
 
 For development those components are optional, so you just need to ensure the ``wcsUrl`` points to your local development environment (please check the port if you are not using 8080)
 
@@ -45,7 +45,7 @@ Once you get the prompt, ensure the applications server where Sites is installed
 
 **HINT** If you get errors or exceptions, please review the paths carefully. A wrong path is by far the most common cause of failing installation.
 
-**NOTE** The installer pops up a dialog box. If you are installing on a server without a GUI, you can skip the dialog box (and the warnings) using `wcs-setup-offiline silent`  
+**NOTE** The installer pops up a dialog box. If you are installing on a server without a GUI, you can skip the dialog box (and the warnings) using `wcs-setup-offline silent`  
 
 Now you can start the application server. Since it can takes some time before it is active, it is useful to invoke the `HelloCS` servlet and wait until you get an answer. In a default local install the servlet can be reached as:
 
@@ -69,6 +69,7 @@ This will complete the installation of the framework.
 You can now create a new site following the [tutorial](http://www.agilesites.org/tuttorial.html) or go on this document to learn how to import the demo site.
 
 ##  Importing the Demo site (Optional)
+
 Importing a site on a server where AgileSites is already installed needs  2 steps:
 
 - import the content model (with csdt)
@@ -76,7 +77,7 @@ Importing a site on a server where AgileSites is already installed needs  2 step
 
 The site imported is the one pointed by the `wcsSites` variable in the `build.sbt` configuration file.
 
-You can then import (optionally) import the Demo site for reference.
+You can  (optionally) import the Demo site for reference.
 
 Before starting ensure that in build.sbt there is the line
 
@@ -86,7 +87,7 @@ Then import the site using the CSDT with
 
 ``wcs-dt import``
 
-**NOTE** If you have installed sample sites like FirstSiteII or Avisports then you will get an error message because a treetab of the Demo is already present in the sample sites.
+**NOTE** If you have installed sample sites like FirstSiteII or Avisports then you may get an error message because a treetab of the Demo is already present in the sample sites.
 
 Finally deploy the code with
 
@@ -108,4 +109,4 @@ then click on "Run All Tests" and expect 0 tests failed.
 
 The installation for development is complete but for live deployment you need to configure also Satellite Server and Apache.
 
-Learn how to configure a Satellite and Apache front end installation in the [deployment reference](http://www.agilesites.org/reference/Deployment.html).
+You can learn how to configure a Satellite and Apache front end installation in the [deployment reference](http://www.agilesites.org/reference/Deployment.html).

@@ -52,7 +52,7 @@ Those 3 classes are all CSElements. In the code of the class there is the config
 
 If you inspect with the Admin in the Dev tab what has been created you will see the following SiteEntry 
 
-![Standard CSElement and SiteEntry](/img/snap9963.png)
+![Standard CSElement and SiteEntry](/img/snap5765.png)
 
 Please check the [Architecture](/reference/Architecture.html) document to understand how they fit in the big picture.
 

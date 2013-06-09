@@ -11,5 +11,6 @@ Here there are more detailed information than you ever wanted to know.
 - [Deployment](reference/Deployment.html): configuring the front end and the cluster
 - [Scaffold](reference/Scaffold.html): overview of the code generated with scaffolding
 - [Shell](reference/Shell.html): all the available command line commands 
+- [Picker](reference/Picker.html): detailed documentation for the Picker
 - [Releases](reference/Releases.html): release history
 

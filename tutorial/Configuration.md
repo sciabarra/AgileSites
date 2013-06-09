@@ -4,7 +4,7 @@ title: Configuration
 ---
 ##### Prev: [Prerequisites](Prerequisites.html)
 
-In this section we introduce which configuration steps are required in order to start development.
+In this section we introduce the configuration steps required in order to start development.
 
 ## Choose a name and a prefix
 
@@ -55,6 +55,5 @@ On Satellite Server:
 
 Check the [Installation Guide](http://www.agilesites.org/install.html) for more details.
 
-**HINT** The variable `wcsSites` variable is actually a comma separated list of sites name. However you should specify more than one site only when you are using tightly coupled sites sharing assets. They are exported all together by CSDT.
 
 ##### Next: [New Site](NewSite.html)

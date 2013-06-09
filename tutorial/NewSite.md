@@ -24,6 +24,7 @@ Create a new site with the chosen name (in this case *MySite*), enabling at leas
 - PageAttribute
 - PageDefinitions
 
+
 ![Asset Type enabling](/img/snap4206.png)
 
 After creating the site, you need also to create an user and assign to that user at the minimum the following roles for your site *MySite*
@@ -47,7 +48,6 @@ A popup will appear asking for the site name (use `MySite` or your own) and the 
 Then you need to deploy templates and cselements for the site.
 
 ``wcs-deploy``
-
 
 You can learn more on the generated source [here](../reference/Scaffold.html).
 
@@ -102,10 +102,7 @@ then selecting the folder where you unzipped AgileSites, you should see 3 projec
 Select all of them. You will work mostly only on the `agilesites-app` project for implementing your application code.  However other projects are required for compilation.
 
 You may change the `agilesites-api` core if you want to extend the framework adding your functionalities. If you do so, consider contribute them to the project. 
-
 You are not expected to change the `agilesites-core` code except for adding very low level functionality. 
-
-**NOTE** You may import the project without the Scala Plugin in Eclipse (for example manually removing the ScalaNature option from the project) or even working with different IDEs than eclipse. That is fine but it is not covered in the tutorial you are reading. So your mileage may vary.
 
 
 #####  Next:  [New Template](NewTemplate.html)

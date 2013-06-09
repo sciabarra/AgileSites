@@ -4,11 +4,21 @@ title: ReadContent
 ---
 ##### Prev:  [Picker](Picker.html).
 
----- 
 
-# Assets
 
-----
+## Continuos compilations
+
+``~wcs-package-jar``
+
+## Add it to 
+
+Find Page Definition
+
+![Find Page Definition](/img/snap6558.png)
+
+Add the attribute to the page defintion
+
+![Add attribute](/img/snap7313.png)
 
 ##### Next:  [Testing](Testing.html)
 
