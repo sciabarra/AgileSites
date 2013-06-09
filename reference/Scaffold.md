@@ -2,7 +2,10 @@
 layout: page
 title: Scaffold
 ---
+(Draft)
+
 This document is a reference guide of the code generated with scaffolding.
+
 
 ## Scaffold `site`
 
@@ -66,17 +69,18 @@ And finally the `Tester` is invoked with `/cs/Satellite?pagename=site-tester` (c
 
 TODO
 
-
 ## Scaffold `layout`
 
-TODO
+Generate a new layout template, with a test.
 
-## Scaffold `cselement`
-
-
-TODO
 
 ## Scaffold `template`
 
-TODO
+Generate a new internal template, with a test
+
+
+## Scaffold `cselement`
+
+Generate a new cselement, with a test
+
  
