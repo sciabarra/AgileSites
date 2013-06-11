@@ -15,11 +15,11 @@ A site is organized as a hierarchy of Pages. Typically you have the Home Page, t
 
 This means there are different types of Pages, and each type has usually a different collection of data associated to it.
 
-In Sites, we model the concept that Pages can havebe of different type  creating a Page definition.
+In Sites, we model the concept that Pages can be of a different "kind", creating a Page Definition.
 
-A Page definition is technically a subtype of the Page asset type, while Page is the asset type. You define an asset subtype of pages creating an instance of another asset type, the Page Definition.
+A Page definition is technically a subtype of the Page asset type, while Page is the asset type. You define an asset subtype of Pages creating an instance of another asset type, the Page Definition.
 
-We will see later that each page definition has also an associated set of attributes that defines the content specific for each Page subtype. For now, we will create a new Page defintion, one specific for Home Page.
+We will see later that each page definition has also an associated set of attributes that defines the content specific for each Page subtype. For now, we will only create a new Page defintion, specific for the Home Page.
 
 
 ### Creating the MyHome content definition
@@ -37,15 +37,15 @@ Create `MyHome` page definition:
 
 ![My Home](/img/snap6106.png)
 
-**Note** Since if 2 definitions with the same name appears in different sites then there can be problems, it is recommended you name all the content definitions with the site prefix, in order to reduce non-unique name conflicts.
+**Note** Since if there are 2 definitions with the same name in different results in problems  it is recommended you name all the content definitions with the site prefix, in order to reduce non-unique name conflicts.
 
 ## Generate and deploy layout
 
-We now need to create the template to render the home page. Templates that can be used to select render an asset directly are the layouts.
+We now need to create the template to render the home page. Templates that can be used to render an asset directly are the layouts.
 
-Since you need to create a template and then a class, and furthermore you need also to create a test, there is a generator to simplify the operation.
+Since you need to create a template and then a class, and furthermore you need also to create a test for it, there is a generator to simplify the operation.
 
-The command to generate is simply:
+The command to generate a layout is simply:
 
 `wcs-generate layout`
 
@@ -55,7 +55,7 @@ The shell will ask for some parameters, use the following answers:
 - site: MySite
 - type: Page
 
-Once done, you can deploy the genenerated templates with the command
+Once done, you can deploy the generated templates with the command
 
 `wcs-deploy`
 
@@ -75,7 +75,7 @@ Verify that in meta data section the page defintion is `MyHome`.
 
 ![Page Definition is MyHome](/img/snap5365.png)
 
-It has been assigned automatically because it is the only available page definition. However when more than once Page Definition is available, the system will ask to choose one.
+The Page Definition  has been assigned automatically because it is the only available page definition. However when more than a single Page Definition is available, the system will ask to choose one.
 
 Now, set in the Description field the value "Home Page"
 
@@ -84,8 +84,6 @@ Now, set in the Description field the value "Home Page"
 Now test the generated template works, clicking on the switch to select the web view. This is what you should see: 
 
 ![Description](/img/snap5968.png)
-
-
 
 
 ##### Next: [Java Idiom](JavaIdiom.html)

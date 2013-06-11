@@ -4,7 +4,9 @@ title: Shell
 ---
 # Agile Shell
 
+(Draft)
 
+Documentation of the commands in the shell.
 
 ## setup
 
