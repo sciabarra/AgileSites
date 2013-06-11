@@ -1,4 +1,4 @@
-H=../0.5
+H=../1.0
 cp $H/*.md _includes
 cp $H/doc/*.md .
 cp -rvf $H/doc/img .

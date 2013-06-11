@@ -1,6 +1,6 @@
 ## Note: the project is not yet released. We are close but not yet there - please wait a few days.
 
-# Welcome to AgileSites 1.0 
+# Welcome to AgileSites 1.0 (codename: Black Swan)
 
 Welcome to **AgileSites**, the Open Source framework for Agile development with Oracle WebCenter Sites (formerly Fatwire Content Server).
  

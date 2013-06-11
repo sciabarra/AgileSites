@@ -20,9 +20,57 @@ and removing the entries for `mysite.element.SampleLatyout` and `mysite.tests.Sa
  
 ## How do I add a custom library to the framework?
 
-A library can be used for 2 purposes: compilation and runtime. 
+You need to locate it in a repository accessible by maven, using websites like [MVN repository](http://mvnrepository.com). Assuming you want something like, for example, jfreechart, locate it and locate its sbt dependency. In the site you will find a string like this:
 
-XXXX
+```
+libraryDependencies += "jfree" % "jfreechart" % "1.0.13"         
+```
+
+Then open the file `project/AgileSitesBuild` and  locate the:
+
+```
+val coreDependencies = Seq(
+    "javax.servlet" % "servlet-api" % "2.5",
+```
+
+add your dependency at the beginning as follows:
+
+```
+val coreDependencies = Seq(
+    "jfree" % "jfreechart" % "1.0.13",
+    "javax.servlet" % "servlet-api" % "2.5",
+```
+
+Note you dropped the `libraryDependencies +=` and added a comma to the end.
+
+This is enough to download the jar and use it for compilation.  If you want also to deploy in the application server together the other jars, you need to add in the deployment filter.
+
+Locate the 
+
+```
+val addFilterSetup = "scala-library*" ||
+```
+
+and add:
+
+```
+val addFilterSetup = "jfreechart*" || "scala-library*" ||
+```
+
+This filter is used to select the jars to add to the Sites webapp, so you use only the initial part of name of the jar without the version.
+
+**NOTE** if a jar has additional dependent jars that are required to run it, you need to add those to the filter, too.
+
+Finally you can use them. Shut down the application server, enter in the shell and execute:
+
+```
+reload
+update
+eclipse
+wcs-setup-offline
+```
+
+Restart the application server, refresh your eclipse project and enjoy using your new library both in the project and in the deployment.
 
 ## The compilation has some wierd behaviours
 
@@ -34,19 +82,4 @@ Sometimes the compilation system get confused by intensive changes done to the s
 
 When you start the shell, the script will build the core library if it is not already there. However, if you are not connected to internet (for example you are behind a proxy without direct access to internet) the initial build may file and the core library ends up not being build.
 
-Ensure java can access the internet (for example configuring a proxy for Java), exit the agile shell, execute the clean batch/shell script and then run again the `agileshell`. Those steps should rebuild properly
-
-## Why not use just GST-Foundation? Why another framework?
-
-While there are some similarities (both provides a MVC framework and a customizable url assembler) there are also many differences.
-
-The key technical choice of GST is using Groovy for writing the controller (using AssetAPI to retrieve the content) and keep JSP (with the addition of the JSTL) to render the view. 
-
-AgileSites instead moves away from JSP, offers pure Java coding for the controller and uses pure HTML views with a jQuery-style replacement logic.
-
-We believe this way you do not need to learn Groovy (although it is similar to Java is not Java), you can keep the HTML in the original form instead of changin it in HTML-with-code, and most importantly you can deal with a much simple API that the tag API/Asset API you still need to use with GST.
-
-However, the key priority for AgileSites is to make Agile development possible, providing those functionality current day developers feel should be out-of-the-box. 
-There is a lot of emphasis on simplification: simplifying installation, simplification the deployment, simplification of the base API for becoming quickly productive, simplification of test writing and so on.
-
-We believe that GST-Foundation priorities are different and also it offers a different feature set.  So if needed, we think you can use both the frameworks in a project, like any other java project where you use different libraries from different sources. 
+Ensure java can access the internet (for example configuring a proxy for Java), exit the agile shell, execute the `clean` batch/shell script and then run again the `agileshell`.  After those steps the build should rebuild correctly.

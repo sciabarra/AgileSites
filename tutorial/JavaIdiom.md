@@ -20,6 +20,7 @@ This static import will include some common static methods that can be used as f
 
 Even if there is no such a thing like a proper function in Java, I will call in this seciont the imported static methods "functions"
 
+
 ### `ifn` and `nn`
 
 In java you have to check often if something is null or not. The `ifn` function does exactly this. For example, the following will check if `l` is null and if it is not the it will converted to 0. 
@@ -61,6 +62,21 @@ e.call("DmSummary", arg("c", id.c), arg("cid", id.cid.toString()))
 ```
 
 The function `arg` actually creates an instance of class `Arg` that is a value class with 2 public fields: `k` and `v`. The call is declared as having a variable number of arguments of type arg (declaration: `Arg...args`)
+
+
+### `range`
+
+A common code pattern, used for example to iterate all the occurrences of a IList (accessibile in the enviroment) is
+
+```java
+for(int i: e.getRange("List"))  {
+  String x = e.getString("List", i, "value"));
+  // use x
+}
+```
+
+Here you can note the range that is an iterator that can  produce a sequence of integers. Since multiple attributes and sequences are accessed by index, it is pretty useful (and easier to use than a classical `for` loop).
+
 
 ### `tmp()`
 

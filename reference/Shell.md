@@ -15,8 +15,9 @@ title: Shell
 
 ## compile
 
+Main compilation method:
 
-- wcs-pacakge-jar
+- wcs-package-jar
 
 to be used in continuos mode (`~ wcs-package-jar`)
 
