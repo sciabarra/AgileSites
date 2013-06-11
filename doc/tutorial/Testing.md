@@ -19,7 +19,6 @@ A test class is automatically created when you use the `wcs-generate` and the cl
 
 ```java
 public class SummaryTest extends TestElement {
-
 	final static Log log = Log.getLog(SummaryTest.class);
 	Summary it;
 
@@ -35,7 +34,7 @@ public class SummaryTest extends TestElement {
 		assertText("h4", "Home");		
 		assertTextContains("div div", "Welcome!");
 	}
-
+	
 	@Test
 	public void testAbout() {
 		parse(it.apply(env("")));

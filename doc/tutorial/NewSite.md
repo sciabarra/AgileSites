@@ -63,7 +63,7 @@ You can then invoke the tester with:
 
 >http://localhost:8080/cs/ContentServer?pagename=mysite-tester
 
-(in general is the lowercase version of your site name with concatenated "-tester").
+(in general the pagename is the lowercase version of your site name with concatenated "-tester").
 
 You should see this screenshot:
 
@@ -77,7 +77,7 @@ You can also select a few tests and run only the selected tests clicking on "Run
 
 ## Importing the project in eclipse
 
-**Note**: you need the eclipse plugin [http://www.scala-ide.org](http://www.scala-ide.org "Scala IDE") to use the default export. Projects are currently Java only, but planned extensions of the framework  will allow also Scala coding. 
+**Note**: you need the eclipse plugin [http://www.scala-ide.org](http://www.scala-ide.org "Scala IDE") to use the generated eclipse project. Projects are currently Java only, but planned extensions of the framework will allow also Scala coding. 
 
 Once the new site and the new project has been created you can generate configuration files for your IDE. Execute the command in the shell:
 
@@ -95,9 +95,9 @@ then selecting the folder where you unzipped AgileSites, you should see 3 projec
 
 ![Import](../img/snap6285.png)
 
-Select all of them. You will work mostly only on the `agilesites-app` project for implementing your application code.  However other projects are required for compilation.
+Select all of them. You will work mostly only on the `agilesites-app` project for implementing your application code. However other projects are required for compilation.
 
-You may change the `agilesites-api` core if you want to extend the framework adding your functionalities. If you do so, consider contribute them to the project. 
+You may change the `agilesites-api` code if you want to extend the framework adding your functionalities. If you do so, consider contribute them to the project. 
 You are not expected to change the `agilesites-core` code except for adding very low level functionality. 
 
 

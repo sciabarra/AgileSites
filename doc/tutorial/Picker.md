@@ -1,6 +1,6 @@
 ##### Prev: [Java Idiom](JavaIdiom.md)
 
-Here we introduce the AgileSites template engine, the picker. Picker is very helpful in keeping the HTML in his original form and place content where is needed. It will result in code much clearer without confusing mix of html and java code.
+Here we introduce the AgileSites template engine, the picker. Picker is very helpful in keeping the HTML in his original form and placing content where is needed. It will result in code much clearer without a confusing mix of html and java code as in JSP.
 
 Here there is a quick introductin to the picker including some samples. Full documentation is [here](../reference/Picker.md).
 
@@ -9,11 +9,11 @@ Here there is a quick introductin to the picker including some samples. Full doc
 The Picker is the template engine of AgileSites.
 
 It is a bit different by other template engines and it differs from traditional JSPs
-because it works using the pure original HTML mockup, and leaves them in the original form, so web designer can update them easily. 
+because it works using the pure original HTML mockup, leaving it in the original form, so web designer can update them easily. 
 
-HTML is then used selecting snippets of HTML inside to build pagelet (see Sites documentation for an introduction to pagelets) then modified by java code. The HTML mockup is the view of our application, the java code is the controller and the content model is managed in Sites. 
+HTML is then used selecting snippets inside to build pagelet (see Sites documentation for an introduction to pagelets) then modified by java code. The HTML mockup is the view of our application, the java code is the controller and the content model is managed in Sites. 
 
-Since most of the work in the CMS implementation requires you extract some content from the CMS and place in specific places in the template it results in simple  code with a logic much cleaner since the developer is not required to follow a sequential order when placing the content inside the HTML.
+Since most of the work in the CMS implementation requires you extract some content from the CMS and place in specific places in the template it results in simple code with a logic much cleaner since the developer is not required to follow a sequential order when placing the content inside the HTML.
 
 The Picker works a in a way similar to the jQuery javascript library (indeed it uses the same css-based selector syntax of jQuery) but the logic is written in java instead of javascript, and it is executed server side, not client side.
 
@@ -48,23 +48,21 @@ With the following command (note the tilde character) we enter in continuous com
 > `~wcs-package-jar`
 
 
-In this mode the shell will monitor source code for changes and when the source change, the code is recompiled, packaged and deployed. 
+In this mode the shell will monitor source code for changes and when any source file changes (because it was edited), the code is recompiled, packaged and deployed. 
 
 Since the amount of code to be compiled is usually pretty small (even for a very large site) the compilation takes just a fraction of second so the compiled code is instantly available when you reload the page to see the results.
 
-In rest of this tutorial we will assume that continuos compilation is enabled, so after any change to the code you can immediately see the results without having to execute manually the compilation command.
+In rest of this tutorial we will assume that continuos compilation is enabled, so after a change to the code you can immediately see the results without having to execute manually the compilation command.
 
 ## The rendering cycle
 
-Before going into the details, we need to understand the [rendering process](../reference/Rendering.md). In the reference the process is describe in larger detail. Here you need to know that after you typed the URL to access the home this is what happens:
+Before going into the details, we need to understand the [rendering process](../reference/Rendering.md). In the reference the process is described in larger detail. Here you need to know that, after you typed the URL to access the home, this is what happens:
 
 1. the router (class `mysite.Router`) is invoked to map page names in page id
 1. the wrapper (class `mysite.element.Wrapper`) is invoked with the id of the Home Page
 1. the wrapper will identify the layout and call it
 
-There will be more steps in future but for now that it is all what happens.
-
-It is important to understand that the `Router` does not generate any HTML, the `Wrapper` generates the html common to every web page in the site (especially css and javascript inclusions), and finally the `HomeLayout` generates the content of the web page.
+It is important to understand that the `Router` does not generate any HTML, the `Wrapper` generates the html common to every web page in the site (especially css and javascript inclusions), and finally the `HomeLayout` generates the specific content of the home page.
 
 Please note that we are picking the internal html from the `HomeLayout` from the file `/blueprint/template.html` but in the `Wrapper` we are still using `/mysite/simple.html` for the html of the wrapper. Let's fix it.
 
@@ -82,9 +80,7 @@ Here we assume you have a `~wcs-package-jar` running so just reloading the home 
 
 ![applied styles](../img/snap7403.png)
 
-A couple of notes on what we did.
-
-Changing the Picker parameter you load a different template. Note that here you selected the full html page of the template, including the headers, while in the layout using the selector "#content" you were selecting only the inner parts. 
+Changing the Picker parameter you load a different template. Note that here you selected the full html page of the template, including the headers, while in the layout using the selector "#content" you are selecting only the inner parts. 
 
 **NOTE** here we assume you are using the Jump Start Kit to follow the tutorial, based on Tomcat with a webapp folder named '/cs'
 
@@ -94,6 +90,6 @@ Html (stored under `app/src/main/static` are included in the jar, so you need to
 
 So to access to the css you need to add the prefix '/cs/blueprint' to the href attribute for link tags.
 
-Code to use javascript template is slightly more complex. Plese check the `demo.Wrapper` class for details.
+Code to use javascript in the template is slightly more complex. Plese check the `demo.Wrapper` class for details.
 
 #####  Next:  [Read Content](ReadContent.md)

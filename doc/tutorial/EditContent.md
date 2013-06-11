@@ -12,7 +12,7 @@ a.editString("Attribute", index,
 "{noValueIndicator: \"Enter Attribute\"}")
 ```
 
-The third parameter is a json string. Parameters are detailed in the Sites Developers Guide, in the example the value is the text that is shown when the field is not initialized.
+The third parameter is a json string. Parameters are detailed in the Sites Developers Guide. In the example the value is the text that is shown when the field is not initialized.
 
 ## Editing a text area
 
@@ -31,6 +31,7 @@ In the previous section we saw how to invoke template on a linked asset. With Si
 
 You have to trasform a call like this:
 
+
 ```java
 a.getAsset("Related", index, "Page").call("DmSummary")
 ```
@@ -39,9 +40,7 @@ into this:
 
 
 ```java
-a.slot("Related", index, 
-"Page", "DmSummary", 
-"Drag a Page Here"));
+a.slot("Related", index, "Page", "DmSummary", "Drag a Page Here"));
 ```
 
 Please note that:
@@ -67,6 +66,6 @@ html.append("#related-container",
 	"Drag a Page here. Save to add more."));
 ```
 
-This code will show an editable list of assets, followed by an empty slot. The user can add new slots to the list dragging in the empty slot, and can then reorder and delete existing assets editing the list that pops up clicking on the list.
+This code shows an editable list of assets, followed by an empty slot. The user can add new slots to the list dragging in the empty slot, and then can reorder and delete existing assets, editing the list that pops up clicking on the list.
 
 ##### Next:  [Navigation](Navigation.md)

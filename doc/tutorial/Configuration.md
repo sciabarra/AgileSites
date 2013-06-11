@@ -4,13 +4,13 @@ In this section we introduce the configuration steps required in order to start 
 
 ## Choose a name and a prefix
 
-The first step is naming your site. Here I am assume your choice was **MySite**. Of course you need to change examples accordingly to your decision.
+The first step is naming your site. Here I am assume your choice was **MySite**. Of course you need to change examples accordingly to your decision if you choose a different name.
 
-Also you need to choose a prefix that you will use consistently to name specific assets of your sites (most notably  types, content definitions, attributes, typese). 
+Also you need to choose a prefix that you will use consistently to name specific assets of your sites (most notably types, content definitions, attributes). 
 
-The prefix is the common conventions used to avoid name clashes. Here I will use the prefix *My*.
+The prefix is a common conventions used to avoid name clashes. Here I will use the prefix *My*.
 
-**NOTE** We experienced problems when Content Definitions or Attributes have the same name in 2 different sites. So we recommend to use always a prefix when naming Attributes, Content and Parent definitions, in order to guarantee the uniqueness of the names. Templates are also automatically named with a prefix when created by the deployer (see later in this tutorial).
+**NOTE** We experienced problems when Content Definitions or Attributes have the same name in 2 different sites. So we recommend to use always a prefix when naming Types, Attributes, Content and Parent definitions, in order to guarantee the uniqueness of the names. Templates are also automatically named with a prefix when created by the deployer (see later in this tutorial).
 
 ## Configure a new site and a virtual host
 
@@ -28,13 +28,13 @@ For example if you have a front-end url `http://www.mysite.com` for the site `My
 wcsVirtualHosts in ThisBuild += ("MySite" -> "http://www.mysite.com")
 ``
 
-You can remove others sites but if they were already installed the installer won't remove configurations for them so they still be available.
+You can remove others sites but if they were already installed the installer won't remove configurations for them so they will be still be available in your instance of the application server.
 
 ## Reinstall to update configurations
 
  After changing the name  of the current site, you **need** to reinstall. Installation is needed in order to create  the appropriate configurations. 
 
-Reinstallation steps:
+Reinstallation steps (check the [Installation Guide](http://www.agilesites.org/install.html) for more details).
 
 On Content Server (Sites):
 
@@ -45,11 +45,9 @@ On Content Server (Sites):
 
 On Satellite Server:
 
-- shut down the application server running Sites,
+- shut down the application server running Sites
 - execute again the ``wcs-setup-offline satellite`` command
 - restart it  
-
-Check the [Installation Guide](http://www.agilesites.org/install.html) for more details.
 
 
 ##### Next: [New Site](NewSite.md)

@@ -4,17 +4,17 @@ In this section we will see how to create content specific for the home page.
 
 In particular we will add a title, an image, a text and a reference to another page.
 
-We will then see how to render those attributes.
+We will see then how to render those attributes.
 
 ## Creating a new attribute
 
-Here is step by step how to create an attribute named `MyTitle`.
+Here is described, step by step, how to create an attribute named `MyTitle`.
 
 First go in the administrative interface, click on **New** and then click on **New Page Attribute**
 
 ![New Page Attribute](../img/snap4806.png)
 
-Create a new Page Attribute name `MyTitle`, but use the name without the prefix in the description (so the user won't see the prefix). Select `string` as attribute type, and `single` as number of values.
+Create a new Page Attribute named `MyTitle`, but use the name without the prefix in the description (so the user won't see the prefix). Select `string` as attribute type, and `single` as number of values.
 
 ![New Page Attribute ](../img/snap4829.png)
 
@@ -22,10 +22,9 @@ Now search for the Page Definition we created before. In the administrative inte
 
 ![Find Page Definition](../img/snap6558.png)
 
-Search for the `MyHome` page definition, edit it and add as a required field the newly created attribute MyTitle.
+Search for the `MyHome` page definition, edit it and add as a required field the newly created attribute `MyTitle`.
 
 ![Add attribute](../img/snap7313.png)
-
 
 ### Add other attributes
 
