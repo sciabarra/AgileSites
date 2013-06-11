@@ -63,7 +63,7 @@ And finally the `Tester` is invoked with `/cs/Satellite?pagename=site-tester` (c
 
 ### `mysite.tests` classes 
 
-TODO
+Default test classes.
 
 ## Scaffold `layout`
 

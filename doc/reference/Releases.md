@@ -2,11 +2,19 @@ Agile development framework for Oracle WebCenter Sites.
 
 Release history.
 
-## [version 0.5.0](...)
+## [version 1.0]
+
+- Changed some internals for better naming
+- Completed the documentation
+- Tons of bug fixes
+
+## [version 0.5]
+
+No tagged releases
 
 - tons of impromevents
 - implemented SitePlan and Insite support
-- documentation
+- some documentation
 - cleaning up
 - dropped (temporarily) scala support 
 

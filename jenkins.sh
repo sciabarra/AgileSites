@@ -1,5 +1,6 @@
 #!/bin/bash
-# jenkins build script
+#  SAMPLE jenkins build script
+# Change for your needs - your mileage may vary
 CS=http://localhost:8080/cs
 TEST=Demo/DmTester
 umask 0
