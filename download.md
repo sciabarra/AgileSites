@@ -13,6 +13,7 @@ group: navigation
 
 ## You can then:
 
-- Install the framework, following [installation instructions](http://www.agilesites.org/install.html)
-- Learn it, reading the [tutorial](http://www.agilesites.org/tutorial.html) 
+- Install the framework, following [installation instructions](http://www.agilesites.org/install.html).
+- If you have issues, check the  [FAQ](http://www.agilesites.org/reference/FAQ.html) as it lists common installation problems.
+- Learn it, reading the [tutorial](http://www.agilesites.org/tutorial.html). 
 - Browse the [documentation](http://www.agilesites.org/documentation.html) for in-depth knowledge.

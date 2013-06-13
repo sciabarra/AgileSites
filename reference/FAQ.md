@@ -83,3 +83,45 @@ Sometimes the compilation system get confused by intensive changes done to the s
 When you start the shell, the script will build the core library if it is not already there. However, if you are not connected to internet (for example you are behind a proxy without direct access to internet) the initial build may file and the core library ends up not being build.
 
 Ensure java can access the internet (for example configuring a proxy for Java), exit the agile shell, execute the `clean` batch/shell script and then run again the `agileshell`.  After those steps the build should rebuild correctly.
+
+##  On Mac OSX (and potentially in other systems) after the installation the JumpStart is broken (I cannot even log in)
+
+JAVA_HOME points to java version or in the path there is a different java version than the one used by JumpStart Kit.
+
+Typical symptom is this exception:
+
+java.lang.NoClassDefFoundError: Could not initialize class COM.FutureTense.Servlet.ServletRequest
+
+This problem happens mostly on  OSX Lion and Mountain Lion: if you install Oracle JDK 1.7, in the path there is java 1.7. But this may happen also in other systems.
+
+ JumpStart up to version 11gR1 on a Mac installs using the existing java 1.6.  As a result, AgileSites build a core with JDK 1.7 but JSK will runs under 1.6 and will be unable to read classes compiled with JDK 1.7.
+
+To solve the issue on Mac OSX, first clean everthing unsing the clean.sh  script, then edit the agilesites.sh script and add this the beginning of the script:
+
+```
+export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home
+export PATH=$JAVA_HOME/bin:$PATH 
+```
+
+Then start the shell again and repeat the installation procedure.
+
+## No Such Resource when importing the Demo site
+
+Before importing, you need to run the `wcs-setup-offline` that will set the CSDT export folder to the export folder in the AgileSites directory.
+
+
+In build.sbt the sites imported is defined by:
+
+```
+wcsSites := "Demo"
+```
+
+The CSDT workspace name is then given by the `wcsSites` name (plus the Sites version number)
+
+Ensure you performed the installation (so in `futuretense.ini` the `csdt.exportfolder` has been changed to /export after wcs-setup-offilne) then check that in the expoort/envision folder there is `Demo-11g`
+
+Note that when you change current sites, you need to repeat the `wcs-setup-offilne` because it has to change some properties.
+
+
+
+
