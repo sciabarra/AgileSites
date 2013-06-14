@@ -5,7 +5,6 @@ title: Tutorial
 Read the following documents in order to learn how to use AgileSites.
 
 1. [Prerequisites](tutorial/Prerequisites.html): before you start
-1. [Configuration](tutorial/Configuration.html): where the implementation goes
 1. [New Site](tutorial/NewSite.html): beginning development
 1. [New Template](tutorial/NewTemplate.html): implementing templates and cselements
 1. [Java Idioms](tutorial/JavaIdiom.html): java code conventions

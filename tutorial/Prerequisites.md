@@ -29,4 +29,4 @@ It is opinion of the author that working on a shared instance is against good de
 
 If your habit is developing directly on the server, on a shared development instance, using Sites Explorer and you want to keep working that way, then AgileSites is probably not fit for your way of working. 
 
-##### Next:  [Configuration](Configuration.html)
+##### Next: [New Site](NewSite.html)
