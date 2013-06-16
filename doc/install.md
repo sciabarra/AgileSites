@@ -62,7 +62,7 @@ Check for this image to confirm successful setup online:
 
 This will complete the installation of the framework.
 
-You can now create a new site following the [tutorial](http://www.agilesites.org/tuttorial.html) or go on this document to learn how to import the demo site.
+You can now create a new site following the [tutorial](http://www.agilesites.org/tutorial.html) or go on this document to learn how to import the demo site.
 
 ##  Importing the Demo site (Optional)
 
@@ -97,7 +97,7 @@ Check the site is up and running with:
 
 Run tests accessing to  
 
-> http://localhost:8080/cs/ContentServer?pagename=Demo/DmTester
+> http://localhost:8080/cs/ContentServer?pagename=demo-tester
 
 then click on "Run All Tests" and expect 0 tests failed.
 

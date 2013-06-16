@@ -1,7 +1,6 @@
 Read the following documents in order to learn how to use AgileSites.
 
 1. [Prerequisites](tutorial/Prerequisites.md): before you start
-1. [Configuration](tutorial/Configuration.md): where the implementation goes
 1. [New Site](tutorial/NewSite.md): beginning development
 1. [New Template](tutorial/NewTemplate.md): implementing templates and cselements
 1. [Java Idioms](tutorial/JavaIdiom.md): java code conventions
