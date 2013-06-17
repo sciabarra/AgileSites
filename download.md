@@ -8,12 +8,24 @@ group: navigation
 
 ## Releases to download:
 
-- [v1.0.0.beta1](https://github.com/sciabarra/AgileSites/archive/v1.0.0.beta1.zip) **Recommended**
-- [branch 0.5](https://github.com/sciabarra/AgileSites/archive/0.5.zip). 
+- [v1.0.0](https://github.com/sciabarra/AgileSites/archive/v1.0.0.zip) **Recommended**
+
+[Previous Releases](../reference/Releases.md)
+
+
+## Installation 
+
+- Install the framework, following [installation instructions](http://www.agilesites.org/install.html).
+
+OR
+
+- If you are in a hurry, watch the installation video.
+
+<iframe width="840" height="630" src="http://www.youtube.com/embed/7gPD0KfzmSw" frameborder="0" allowfullscreen></iframe>
 
 ## You can then:
 
-- Install the framework, following [installation instructions](http://www.agilesites.org/install.html).
+
 - If you have issues, check the  [FAQ](http://www.agilesites.org/reference/FAQ.html) as it lists common installation problems.
 - Learn it, reading the [tutorial](http://www.agilesites.org/tutorial.html). 
 - Browse the [documentation](http://www.agilesites.org/documentation.html) for in-depth knowledge.

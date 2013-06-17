@@ -64,7 +64,7 @@ public String apply(Env e) {
 	Asset a = e.getAsset()
     Picker p = Picker.load("...")
     /* replacements here */
-    return e.html() 
+    return p.html() 
 }
 ```
 
