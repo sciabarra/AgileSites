@@ -1,6 +1,8 @@
 package $site;format="normalize"$.test;
 
+import static wcs.core.Common.arg;
 import $site;format="normalize"$.Config;
+import wcs.java.Asset;
 import wcs.java.Router;
 import wcs.java.util.TestElement;
 import org.junit.Before;
@@ -9,21 +11,35 @@ import org.junit.Test;
 public class RouterTest extends TestElement {
 
 	Router it;
+	Asset home;
 
 	@Before
 	public void setUp() {
 		it = Router.getRouter(Config.site);
+		home = e.findOne("Page", arg("name", "Home"));
 	}
 
 	@Test
 	public void test0() {
 		parse(it.route(env(), url("")));
-		assertAttr("ics-callelement", "error",
-				"Asset not found: type:Page name:Home");
+		if(home==null) {
+			assertAttr("ics-callelement", "error",
+					"Asset not found: type:Page name:Home");
+		} else {
+			assertAttr("ics-callelement", "element", "$site$/$prefix$Wrapper");
+			assertAttr("ics-callelement", "c", "Page");
+			assertAttr("ics-callelement", "cid", home.getCid().toString());
+		}
 
 		parse(it.route(env(), url("?a=1&b=2&c=3")));
-		assertAttr("ics-callelement", "error",
-				"Asset not found: type:Page name:Home");
+		if(home==null) {
+			assertAttr("ics-callelement", "error",
+					"Asset not found: type:Page name:Home");
+		} else {
+			assertAttr("ics-callelement", "element", "$site$/$prefix$Wrapper");
+			assertAttr("ics-callelement", "c", "Page");
+			assertAttr("ics-callelement", "cid", home.getCid().toString());			
+		}
 	}
 
 	@Test
