@@ -117,7 +117,7 @@
     <attribute>
         <name>Summary</name>
         <data>
-            <stringValue>world
+            <stringValue>Hello, world.
 </stringValue>
         </data>
     </attribute>
@@ -132,15 +132,15 @@
     <attribute>
         <name>TeaserTitle</name>
         <data>
-            <stringList>Primo</stringList>
-            <stringList>Secondo</stringList>
+            <stringList>First</stringList>
+            <stringList>Second</stringList>
         </data>
     </attribute>
     <attribute>
         <name>TeaserText</name>
         <data>
-            <stringList>Primo text</stringList>
-            <stringList>Secondo Text</stringList>
+            <stringList>First text</stringList>
+            <stringList>Second text</stringList>
         </data>
     </attribute>
     <attribute>
