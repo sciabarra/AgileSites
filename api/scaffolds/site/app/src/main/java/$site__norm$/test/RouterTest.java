@@ -11,17 +11,16 @@ import org.junit.Test;
 public class RouterTest extends TestElement {
 
 	Router it;
-	Asset home;
 
 	@Before
 	public void setUp() {
 		it = Router.getRouter(Config.site);
-		home = e.findOne("Page", arg("name", "Home"));
 	}
 
 	@Test
 	public void test0() {
 		parse(it.route(env(), url("")));
+		Asset home = asset("Page", "Home");
 		if(home==null) {
 			assertAttr("ics-callelement", "error",
 					"Asset not found: type:Page name:Home");

@@ -9,15 +9,20 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import static wcs.core.Common.*;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.junit.matchers.JUnitMatchers;
 
 import wcs.core.Call;
+import wcs.core.Id;
 import wcs.core.Log;
 import wcs.core.URL;
+import wcs.java.Asset;
 import wcs.java.Router;
+
 
 /**
  * Collection of test helpers for testing elements.
@@ -72,6 +77,28 @@ public class TestElement extends TestCase {
 		}
 		return te;
 	}
+	
+	/**
+	 * Asset by name
+	 */	
+	public Asset asset(String c, String name) {
+		return env().findOne(c, arg("name", name));
+	}
+	
+	/**
+	 * Asset by c/cid
+	 */	
+	public Asset asset(String c, Long cid) {
+		return env().getAsset(c, cid);
+	}
+
+	/**
+	 * Asset by id
+	 */	
+	public Asset asset(Id id) {
+		return env().getAsset(id);
+	}
+
 
 	/**
 	 * Parse a call - special case to test the router.
