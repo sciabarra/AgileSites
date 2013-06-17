@@ -1,18 +1,31 @@
-## How can I delete a template, layout or a cselement created by the generator?
+## Where are the binaries? I see only the sources in the download page
 
-The `wcs-generate` for templates, cselements and layouts generates normally just 2 classes, one is the actual element class and another is the test class. In addition, they add the class name in the list of classes to be deployed and the test name in the list of tests to be run.
+The framework is, by design, source only. The build will create actually 2 jars, one is the core and will be deployed (by the integrated installer) inside the WebCenter Sites webapp. Another jar is built and deployed in the shared folder and contains you application logic. This jar is continously built and deployed by the `wcs-package-jar` command. Both the jar are built automatically by an heavily tested automated build.
 
-So removing a class for example with name SampleLayout for site `mysite` involves removing the 2 files
+The framework creates 3 projects, one (`agilesites-app`) is where you should put your user code. If you want to extend the framework (something in a sense part of the design), you should place your changes in `agilesites-api`. Consider contribuiting your changes if you extend the framework  (you will required to place your changes under the Apache License 2.0). You are not expected to change the `agilesites-core`.
 
-- `app/src/main/java/mysite/element/SampleLayout`
-- `app/src/main/java/mysite/element/SampleLayout`
 
-Then editing the 2 files
+##  On Mac OSX (and potentially in other systems) after the installation the JumpStart is broken (I cannot even log in)
 
-- `app/src/main/resources/mysite/elements.txt`
-- `app/src/main/resources/mysite/tests`
+JAVA_HOME points to java version or in the path there is a different java version than the one used by JumpStart Kit.
 
-and removing the entries for `mysite.element.SampleLatyout` and `mysite.tests.SampleLayoutTest`respectively.
+Typical symptom is this exception:
+
+java.lang.NoClassDefFoundError: Could not initialize class COM.FutureTense.Servlet.ServletRequest
+
+This problem happens mostly on  OSX Lion and Mountain Lion: if you install Oracle JDK 1.7, in the path there is java 1.7. But this may happen also in other systems.
+
+ JumpStart up to version 11gR1 on a Mac installs using the existing java 1.6.  As a result, AgileSites build a core with JDK 1.7 but JSK will runs under 1.6 and will be unable to read classes compiled with JDK 1.7.
+
+To solve the issue on Mac OSX, first clean everthing unsing the clean.sh  script, then edit the agilesites.sh script and add this the beginning of the script:
+
+```
+export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home
+export PATH=$JAVA_HOME/bin:$PATH 
+```
+
+Then start the shell again and repeat the installation procedure.
+
  
 ## How do I add a custom library to the framework?
 
@@ -68,6 +81,22 @@ wcs-setup-offline
 
 Restart the application server, refresh your eclipse project and enjoy using your new library both in the project and in the deployment.
 
+## How can I delete a template, layout or a cselement created by the generator?
+
+The `wcs-generate` for templates, cselements and layouts generates normally just 2 classes, one is the actual element class and another is the test class. In addition, they add the class name in the list of classes to be deployed and the test name in the list of tests to be run.
+
+So removing a class for example with name SampleLayout for site `mysite` involves removing the 2 files
+
+- `app/src/main/java/mysite/element/SampleLayout`
+- `app/src/main/java/mysite/element/SampleLayout`
+
+Then editing the 2 files
+
+- `app/src/main/resources/mysite/elements.txt`
+- `app/src/main/resources/mysite/tests`
+
+and removing the entries for `mysite.element.SampleLatyout` and `mysite.tests.SampleLayoutTest`respectively.
+
 ## The compilation has some wierd behaviours
 
 Sometimes the compilation system get confused by intensive changes done to the source code. If the behavious appears illogical, you can try exiting from the shell cleaning up everything running the `clean.bat` or the `clean.sh` script.
@@ -80,26 +109,6 @@ When you start the shell, the script will build the core library if it is not al
 
 Ensure java can access the internet (for example configuring a proxy for Java), exit the agile shell, execute the `clean` batch/shell script and then run again the `agileshell`.  After those steps the build should rebuild correctly.
 
-##  On Mac OSX (and potentially in other systems) after the installation the JumpStart is broken (I cannot even log in)
-
-JAVA_HOME points to java version or in the path there is a different java version than the one used by JumpStart Kit.
-
-Typical symptom is this exception:
-
-java.lang.NoClassDefFoundError: Could not initialize class COM.FutureTense.Servlet.ServletRequest
-
-This problem happens mostly on  OSX Lion and Mountain Lion: if you install Oracle JDK 1.7, in the path there is java 1.7. But this may happen also in other systems.
-
- JumpStart up to version 11gR1 on a Mac installs using the existing java 1.6.  As a result, AgileSites build a core with JDK 1.7 but JSK will runs under 1.6 and will be unable to read classes compiled with JDK 1.7.
-
-To solve the issue on Mac OSX, first clean everthing unsing the clean.sh  script, then edit the agilesites.sh script and add this the beginning of the script:
-
-```
-export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home
-export PATH=$JAVA_HOME/bin:$PATH 
-```
-
-Then start the shell again and repeat the installation procedure.
 
 ## No Such Resource when importing the Demo site
 
