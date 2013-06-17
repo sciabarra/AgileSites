@@ -10,9 +10,6 @@ group: navigation
 
 - [v1.0.0](https://github.com/sciabarra/AgileSites/archive/v1.0.0.zip) **Recommended**
 
-[Previous Releases](../reference/Releases.md)
-
-
 ## Installation 
 
 - Install the framework, following [installation instructions](http://www.agilesites.org/install.html).

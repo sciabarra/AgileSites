@@ -6,13 +6,13 @@ Agile development framework for Oracle WebCenter Sites.
 
 Release history.
 
-## [version 1.0]
+## branch 1.0
 
 - Changed some internals for better naming
 - Completed the documentation
 - Tons of bug fixes
 
-## [version 0.5]
+## branch 0.5
 
 No tagged releases
 
@@ -22,7 +22,7 @@ No tagged releases
 - cleaning up
 - dropped (temporarily) scala support 
 
-## version 0.3
+## branch 0.3
 
 No formal releases.
 
@@ -32,7 +32,7 @@ No formal releases.
 - catalog manager support 
 - demo site for java and scala
 
-## version 0.2, 
+## branch 0.2, 
 
 No formal releses.
 
@@ -44,7 +44,7 @@ First usable version. Limited api.
 - api accessing tags and list, 
 - initial mock and log  support
 
-## version 0.1 
+## branch 0.1 
 
 No formal releases.
 
