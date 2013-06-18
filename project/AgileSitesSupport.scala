@@ -51,6 +51,9 @@ trait AgileSitesSupport {
         // generate tags
         val tlds = file(srcDir) / "WEB-INF" / "futuretense_cs"
 
+        if(!tlds.isDirectory)
+          throw new RuntimeException("not found files in "+tlds)
+          
         val l = for {
           tld <- tlds.listFiles
           if tld.getName.endsWith(".tld")

@@ -38,7 +38,7 @@ public class TestEnv extends Env {
 	 * @param name
 	 * @param cols
 	 */
-	public TestEnv setList(String name, java.util.List<String>... cols) {
+	public TestEnv setList(String name, @SuppressWarnings("unchecked") java.util.List<String>... cols) {
 		i.setList(name, cols);
 		return this;
 	}

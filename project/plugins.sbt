@@ -13,10 +13,8 @@ libraryDependencies += "org.clapper" % "scalasti_2.9.1" % "0.5.8"
 
 libraryDependencies += "jline" % "jline" % "1.0"
 
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.8.4")
 
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.1.2")
 
-addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.8.4")
-
-
-
+libraryDependencies += "com.stackmob" %% "newman" % "0.14.2"

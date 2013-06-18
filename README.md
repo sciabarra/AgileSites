@@ -1,6 +1,6 @@
-## Note: the project is not yet released. We are close but not yet there - please wait a few days.
+## This is the development branch for AgileSites 1.1 - UNSTABLE
 
-# Welcome to AgileSites 1.0 
+# Welcome to AgileSites 1.1 (codename: Hydra)
 
 Welcome to **AgileSites**, the Open Source framework for Agile development with Oracle WebCenter Sites (formerly Fatwire Content Server).
  

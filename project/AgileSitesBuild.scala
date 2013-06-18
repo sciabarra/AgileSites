@@ -13,12 +13,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
 
   // if you change this 
   // remember to update the agilesites scripts
-  val v = "1.0" 
-
-  // remove then add those jars in setup
-  val addFilterSetup = "scala-library*" || "agilesites-core*" || "junit*" //|| "specs2*"
-
-  val removeFilterSetup = addFilterSetup
+  val v = "1.2"
 
   // configuring WCS jars as unmanaged lib
   val unmanagedFilter = "log4j-*" || "slf4j*" || "spring-*" || "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
@@ -35,23 +30,37 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     jar => Attributed.blank(file(jar))
   }
 
-  /// COMMONS
+  ///  core dependencies - those are used for compiling
   val coreDependencies = Seq(
     "javax.servlet" % "servlet-api" % "2.5",
-    "commons-logging" % "commons-logging" % "1.1.1",
     "junit" % "junit" % "4.8.2",
+    "org.springframework" % "spring" % "2.5.5",
     "com.novocode" % "junit-interface" % "0.8" % "test",
-    //"org.specs2" %% "specs2" % "1.13",
+    "commons-logging" % "commons-logging" % "1.1.1",
     "log4j" % "log4j" % "1.2.16",
     "org.apache.httpcomponents" % "httpclient" % "4.1.2",
     "org.apache.httpcomponents" % "httpcore" % "4.1.2",
     "org.apache.httpcomponents" % "httpmime" % "4.1.2",
-    "org.apache.james" % "apache-mime4j" % "0.5")
+    "org.apache.james" % "apache-mime4j" % "0.5",
+    "rhino" % "js" % "1.7R2",
+    "org.scalatest" %% "scalatest" % "2.0.M5b",
+    "org.scalamock" %% "scalamock-scalatest-support" % "3.0.1")
+
+  /// which jars you actually use at runtime
+  /// that are copied by the wcs-setup-offline  
+  val addFilterSetup = "agilesites-core*" ||
+    "scala-library*" ||
+    "junit*" ||
+    "scalatest*" ||
+    "scalamock*" ||
+    "js-*";
+
+  val removeFilterSetup = addFilterSetup
 
   val coreSettings = Defaults.defaultSettings ++ Seq(
     scalaVersion := "2.10.0",
     organization := "com.sciabarra",
-    version <<= (wcsVersion) { x => v +  "_" + x },
+    version <<= (wcsVersion) { x => v + "_" + x },
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
     unmanagedJarsTask)
@@ -73,6 +82,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       libraryDependencies ++= coreDependencies,
       publishArtifact in packageDoc := false,
       name := "agilesites-core",
+      //EclipseKeys.skipProject := true,
       coreGeneratorTask))
 
   // API
@@ -80,7 +90,15 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     id = "api",
     base = file("api"),
     settings = commonSettings ++ Seq(
-      name := "agilesites-api"))
+      name := "agilesites-api",
+      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
+
+  // Scala API
+  lazy val sapi: Project = Project(
+    id = "sapi",
+    base = file("sapi"),
+    settings = commonSettings ++ Seq(
+      name := "agilesites-sapi")) dependsOn (api)
 
   /// APP 
   lazy val app: Project = Project(
@@ -88,7 +106,16 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("app"),
     settings = commonSettings ++ Seq(
       name := "agilesites-app",
+      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
       wcsCopyHtmlTask)) dependsOn (api)
+
+  /// Scala APP 
+  lazy val sapp: Project = Project(
+    id = "sapp",
+    base = file("sapp"),
+    settings = commonSettings ++ Seq(
+      name := "agilesites-sapp",
+      wcsCopyHtmlTask)) dependsOn (sapi)
 
   /// ALL
   lazy val all: Project = Project(
@@ -106,7 +133,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       wcsUpdateAssetsTask,
       wcsLogTask,
       excludedJars in assembly <<= (fullClasspath in assembly),
-      EclipseKeys.skipProject := true,
-      assembleArtifact in packageScala := false)) dependsOn (app) aggregate (app, api)
+      //EclipseKeys.skipProject := true,
+      assembleArtifact in packageScala := false)) dependsOn (app,sapp) aggregate (app, api, sapp, sapi)
 }
 
