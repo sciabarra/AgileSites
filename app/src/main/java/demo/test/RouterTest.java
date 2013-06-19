@@ -1,11 +1,12 @@
 package demo.test;
 
 import demo.Config;
-import wcs.core.Log;
 import wcs.java.Asset;
 import wcs.java.Env;
 import wcs.java.Router;
 import wcs.java.util.TestElement;
+import wcs.core.Log;
+
 import org.junit.Before;
 import org.junit.Test;
 import static wcs.core.Common.*;

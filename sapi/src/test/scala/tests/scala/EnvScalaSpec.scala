@@ -3,7 +3,7 @@ import org.specs2.mutable.Specification
 import wcs.implx.XmlICS
 import wcs.scala.Env
 import java.text.SimpleDateFormat
-import wcs.scala.Log
+import wcs.core.Log
 import wcs.java.Config
 
 class EnvScalaTest extends Specification with Log {

@@ -1,11 +1,11 @@
 package demo.element;
 
-import wcs.core.Log;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.Element;
 import wcs.java.Env;
 import wcs.java.Picker;
+import wcs.core.Log;
 
 public class Error extends Element {
 

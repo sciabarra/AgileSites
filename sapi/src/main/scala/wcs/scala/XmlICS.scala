@@ -1,19 +1,17 @@
 package wcs.scala
 
-import scala.Array.canBuildFrom
-import scala.collection.JavaConverters.asScalaBufferConverter
-
 import COM.FutureTense.Interfaces.ICS
 import COM.FutureTense.Interfaces.IList
-import wcs.scala.util.MapListIList
 
 /**
  * Mock class simulating (part of) ICS behaviour
  */
 class XmlICS extends wcs.core.ICSProxyJ with Log {
-  
+
   // has ics?
   var x = false
+  import wcs.scala.Log
+  import wcs.scala.MapListIList
 
   def this(ics: ICS) = {
     this()
@@ -35,18 +33,18 @@ class XmlICS extends wcs.core.ICSProxyJ with Log {
   def setVar(k: String, v: String) {
     varMap += k -> v
   }
-  
+
   // set ilist from java
-  def setList(name: String, cols: Array[ java.util.List[String] ] ) {
+  def setList(name: String, cols: Array[java.util.List[String]]) {
     import scala.collection.JavaConverters._
-     val seq = for(col <- cols) yield {
-       //val col2 = col.asInstanceOf[List[String]]
-       col.get(0) -> col.subList(1, col.size).asScala.toList
+    val seq = for (col <- cols) yield {
+      //val col2 = col.asInstanceOf[List[String]]
+      col.get(0) -> col.subList(1, col.size).asScala.toList
     }
     //debug("setList seq=%s", seq)
     addMapList(name, seq.toMap)
   }
- 
+
   // implemented
   override def GetVar(a: String): String = {
     varMap.get(a).getOrElse { if (x) ics.GetVar(a) else null }

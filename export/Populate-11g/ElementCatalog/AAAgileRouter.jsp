@@ -1,9 +1,8 @@
 <%@ taglib prefix="cs" uri="futuretense_cs/ftcs1_0.tld"
 %><%@ taglib prefix="render" uri="futuretense_cs/render.tld"
 %><%@ taglib prefix="ics" uri="futuretense_cs/ics.tld"
-%><%@ page import="wcs.core.*"
-%><cs:ftcs><%! final static Log log = wcs.core.Log.getLog("jsp.wcs.core.Router");
-%><%
+%><%@ page import="wcs.scala.*"
+%><cs:ftcs><%!final static Log log = wcs.scala.Log.getLog("jsp.wcs.core.Router");%><%
   Call c = WCS.route(ics, 
    ics.GetVar("c"), 
    ics.GetVar("cid"),

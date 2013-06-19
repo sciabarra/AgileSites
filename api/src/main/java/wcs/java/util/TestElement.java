@@ -15,9 +15,9 @@ import org.jsoup.select.Elements;
 import org.junit.matchers.JUnitMatchers;
 
 import wcs.core.Call;
-import wcs.core.Log;
 import wcs.core.URL;
 import wcs.java.Router;
+import wcs.core.Log;
 
 /**
  * Collection of test helpers for testing elements.

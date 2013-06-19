@@ -1,10 +1,10 @@
 package wcs.java;
 
 import wcs.core.Id;
-import wcs.core.Log;
 import wcs.core.Common;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.SiteplanTag;
+import wcs.core.Log;
 import COM.FutureTense.Interfaces.ICS;
 
 public class SitePlan {

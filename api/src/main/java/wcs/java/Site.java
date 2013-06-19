@@ -2,8 +2,8 @@ package wcs.java;
 
 import java.util.List;
 
-import wcs.core.Log;
 import wcs.java.util.Util;
+import wcs.core.Log;
 
 import com.fatwire.assetapi.common.SiteAccessException;
 import com.fatwire.assetapi.data.AssetId;

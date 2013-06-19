@@ -1,13 +1,13 @@
 package demo.element;
 
 import wcs.core.Id;
-import wcs.core.Log;
 import wcs.java.Env;
 import wcs.java.Element;
 import wcs.java.CSElement;
 import wcs.java.AssetSetup;
 import wcs.java.Picker;
 import wcs.java.SitePlan;
+import wcs.core.Log;
 import static java.lang.String.format;
 
 public class Topmenu extends Element {

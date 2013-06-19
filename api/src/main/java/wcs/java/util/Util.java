@@ -17,9 +17,9 @@ import java.util.Map;
 import java.util.Properties;
 
 import wcs.core.Call;
-import wcs.core.Log;
 import wcs.core.Sequencer;
 import wcs.java.Config;
+import wcs.core.Log;
 
 import COM.FutureTense.Interfaces.IList;
 

@@ -3,7 +3,7 @@
 %><%@ taglib prefix="ics" uri="futuretense_cs/ics.tld"
 %><%@ taglib prefix="insite" uri="futuretense_cs/insite.tld"
 %><%@ taglib prefix="render" uri="futuretense_cs/render.tld"
-%><%@ page import="wcs.core.*" 
+%><%@ page import="wcs.scala.*" 
 %><%! final static Log log = Log.getLog("jsp.%CLASS%");
 %><cs:ftcs><ics:if condition='<%=ics.GetVar("tid") != null%>'><ics:then><render:logdep cid='<%=ics.GetVar("tid")%>' c="Template" /></ics:then></ics:if><%
 String res = WCS.dispatch(ics, "%CLASS%");

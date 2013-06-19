@@ -13,12 +13,12 @@ import wcs.core.Arg;
 import wcs.core.Common;
 import wcs.core.ICSProxyJ;
 import wcs.core.Id;
-import wcs.core.Log;
 import wcs.core.Range;
 import wcs.core.WCS;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.PublicationTag;
 import wcs.core.tag.RenderTag;
+import wcs.core.Log;
 import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
 

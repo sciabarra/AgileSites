@@ -9,8 +9,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import wcs.core.Log;
 import wcs.java.util.Util;
+import wcs.core.Log;
 import static wcs.core.Common.*;
 
 /**

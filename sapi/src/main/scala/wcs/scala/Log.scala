@@ -3,13 +3,11 @@ package wcs.scala
 import scala.annotation.elidable
 import scala.annotation.elidable._
 
-import java.util.logging.{ Logger => JLogger }
-
 trait Log {
 
   @elidable(FINEST) implicit val _name = this.getClass.getCanonicalName
 
-  @elidable(FINEST) val _handler = new wcs.scala.util.LogHandler
+  @elidable(FINEST) val _handler = new LogHandler
 
   /** Format a string using params, if any, otherwise use the string as-is */
   @inline protected final def format(fmt: String, params: Seq[Any]) = {
@@ -60,5 +58,39 @@ trait Log {
   def nlog[T](msg: String, t: T): T = t
 
   def nlog[T](t: T): T = t
+
+}
+
+
+class LogFormatter {
+
+  private val sdf = new java.text.SimpleDateFormat("HH:mm:ss")
+
+  def format(time: Long, name: String, level: String, message: String): String = {
+    "%s %s: %s - %s".format(sdf.format(time), level, name, message)
+  }
+}
+
+class LogHandler {
+  val fmt = new LogFormatter
+
+  def dump(message: String)(implicit name: String) {
+    Console.err.println(fmt.format(System.currentTimeMillis(), name, " DUMP", message))
+  }
+  def trace(message: String)(implicit name: String) {
+    Console.err.println(fmt.format(System.currentTimeMillis(), name, "TRACE", message))
+  }
+  def debug(message: String)(implicit name: String) {
+    Console.err.println(fmt.format(System.currentTimeMillis(), name, "DEBUG", message))
+  }
+  def info(message: String)(implicit name: String) {
+    Console.err.println(fmt.format(System.currentTimeMillis(), name, " INFO", message))
+  }
+  def warn(message: String)(implicit name: String) {
+    Console.err.println(fmt.format(System.currentTimeMillis(), name, " WARN", message))
+  }
+  def error(message: String)(implicit name: String) {
+    Console.err.println(fmt.format(System.currentTimeMillis(), name, "ERROR", message))
+  }
 
 }

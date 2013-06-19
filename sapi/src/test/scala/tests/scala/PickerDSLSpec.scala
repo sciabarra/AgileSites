@@ -4,7 +4,7 @@ import org.specs2.mutable.Specification
 import wcs.scala.PickerDSL
 import scala.xml.XML
 import scala.xml.Elem
-import wcs.scala.Log
+import wcs.core.Log
 
 class PickerDSLSpec extends Specification with Log with PickerDSL {
   

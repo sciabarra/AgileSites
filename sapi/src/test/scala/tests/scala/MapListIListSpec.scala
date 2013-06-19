@@ -2,7 +2,7 @@ package tests.scala
 
 import org.specs2.mutable._
 import wcs.implx.MapListIList
-import wcs.scala.Log
+import wcs.core.Log
 
 class MapListIListSpec extends Specification with Log {
 

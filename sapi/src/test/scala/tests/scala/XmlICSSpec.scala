@@ -3,6 +3,7 @@ package tests.scala
 import org.specs2.mutable._
 import wcs.implx._
 import wcs.scala._
+import wcs.core.Log
 
 class XmlICSSpec extends Specification with Log {
 

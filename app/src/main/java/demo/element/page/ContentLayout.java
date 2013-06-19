@@ -1,12 +1,12 @@
 package demo.element.page;
 
-import wcs.core.Log;
 import wcs.java.Asset;
 import wcs.java.AssetSetup;
 import wcs.java.Element;
 import wcs.java.Env;
 import wcs.java.Picker;
 import wcs.java.Template;
+import wcs.core.Log;
 
 public class ContentLayout extends Element {
 

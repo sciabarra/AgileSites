@@ -42,7 +42,8 @@ abstract class Setup extends JSetup {
 
   def assets: List[Asset]
 
-  override def getAssets = Array[wcs.java.Asset](
+  /*
+  override def getAssets = Array[Class[_]](
     assets map { a =>
       a match {
         case x: CSElement =>
@@ -55,5 +56,6 @@ abstract class Setup extends JSetup {
           new JAttrTypes(x.name, x.xml.toString)
       }
     }: _*)
+    */
 
 }

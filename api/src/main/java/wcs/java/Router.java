@@ -3,9 +3,9 @@ package wcs.java;
 import wcs.core.Arg;
 import wcs.core.Call;
 import wcs.core.Id;
-import wcs.core.Log;
 import wcs.core.URL;
 import wcs.core.WCS;
+import wcs.core.Log;
 import COM.FutureTense.Interfaces.ICS;
 
 /**
