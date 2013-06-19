@@ -4,10 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import COM.FutureTense.Interfaces.FTValList;
-import COM.FutureTense.Interfaces.ICS;
-import COM.FutureTense.Interfaces.IList;
 import wcs.java.Env;
+import COM.FutureTense.Interfaces.ICS;
 
 /**
  * Testable env - can override variables, lists
@@ -43,7 +41,7 @@ public class TestEnv extends Env {
 	 * @param name
 	 * @param cols
 	 */
-	public TestEnv setList(String name, java.util.List<String>... cols) {
+	public TestEnv setList(String name, @SuppressWarnings("unchecked") java.util.List<String>... cols) {
 		Map<String, List<String>> map = new HashMap<String, List<String>>();
 		for (List<String> col : cols)
 			map.put(col.get(0), col.subList(1, col.size()));

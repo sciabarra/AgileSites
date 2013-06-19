@@ -45,6 +45,7 @@ import org.w3c.dom.Text;
 
 import wcs.core.Log;
 
+
 /**
  * Prints XML output of the test to a specified Writer.
  * 

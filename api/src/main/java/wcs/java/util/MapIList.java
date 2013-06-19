@@ -1,11 +1,13 @@
 package wcs.java.util;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
 import COM.FutureTense.Interfaces.IList;
+
 /**
- * Mocked implementation of an IList useful for adding in the environment for tests
+ * Mocked implementation of an IList useful for adding in the environment for
+ * tests
  * 
  * You can build it easily with a List<String>.
  * 
@@ -13,7 +15,7 @@ import COM.FutureTense.Interfaces.IList;
  * env().setList("List", cols("a", "1", "2"), cols("b", "3", "4")
  * 
  * @author msciab
- *
+ * 
  */
 public class MapIList implements IList {
 
@@ -25,19 +27,20 @@ public class MapIList implements IList {
 	private boolean _hasData = false;
 	private int _numColumns = 1;
 
-	
 	public MapIList(String name, Map<String, List<String>> map) {
 		this.name = name;
 		this.map = map;
 		if (!map.isEmpty()) {
 			columns = map.keySet().toArray(columns);
+			Arrays.sort(columns);
 			_numRows = Integer.MAX_VALUE;
 			for (Object o : map.values()) {
 				List<?> l = (List<?>) o;
 				_numRows = Math.min(_numRows, l.size());
 			}
+			_hasData = true;
+			_numColumns = columns.length;
 		}
-
 	}
 
 	@Override
@@ -89,7 +92,10 @@ public class MapIList implements IList {
 
 	@Override
 	public String getColumnName(int arg0) {
-		return columns[arg0];
+		if (arg0 < 1 || columns.length == 0)
+			return null;
+		//System.out.println(columns.length);
+		return arg0 <= columns.length  ? columns[arg0 - 1] : null;
 	}
 
 	@Override
