@@ -1,4 +1,8 @@
-## This is the development branch for AgileSites 1.1 - UNSTABLE
+**This is the development branch for AgileSites 1.1 - HIGHLY UNSTABLE**
+
+If you want to deal with buggy fresh code that may not even compile, go ahead and get this branch. Otherwise you may play safe and [go here](http://www.agilesites.org/download.html) to download a stable release.
+
+If you want to see what I am doing 
 
 # Welcome to AgileSites 1.1 (codename: Hydra)
 

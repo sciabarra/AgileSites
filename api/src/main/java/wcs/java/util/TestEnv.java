@@ -21,7 +21,7 @@ public class TestEnv extends Env {
 
 	public TestEnv(ICS ics, String site) {
 		super(ics, site);
-		i =  ics;
+		i = ics;
 	}
 
 	/**
@@ -44,14 +44,12 @@ public class TestEnv extends Env {
 	 * @param cols
 	 */
 	public TestEnv setList(String name, java.util.List<String>... cols) {
-		//i.setList(name, cols);
 		Map<String, List<String>> map = new HashMap<String, List<String>>();
-		for(List<String> col: cols) {
-			map.put(col.get(0), col.subList(1, col.size());
-		}
-		i.RegisterList(name, map);
+		for (List<String> col : cols)
+			map.put(col.get(0), col.subList(1, col.size()));
+		i.RegisterList(name, new MapIList(name, map));
 		throw new RuntimeException("not implemented");
-		//return this;
+		// return this;
 	}
 
 }
