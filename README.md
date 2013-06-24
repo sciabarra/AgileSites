@@ -39,7 +39,7 @@ so it can be updated easily by Web Designer without extensive recoding?
 
 possibly less verbose, more consistent and helpful in preventingsilly mistakes?
 
-## Save yourself from a [manual deployment](http://www.agilesites.org/about.html#Deploy) with a build and an installer
+## Save yourself from [manual deployment](http://www.agilesites.org/about.html#Deploy) with a build and an installer
 
 avoiding manual css/javascript to copy, jars to deploy, templates to publish, tables to catalog move, properties to edit and so on?
 

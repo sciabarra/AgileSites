@@ -16,7 +16,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   val v = "1.0" 
 
   // remove then add those jars in setup
-  val addFilterSetup = "scala-library*" || "agilesites-core*" || "junit*" //|| "specs2*"
+  val addFilterSetup = "scala-library*" || "agilesites-core*" || "junit*" 
 
   val removeFilterSetup = addFilterSetup
 
@@ -49,7 +49,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "org.apache.james" % "apache-mime4j" % "0.5")
 
   val coreSettings = Defaults.defaultSettings ++ Seq(
-    scalaVersion := "2.10.0",
+    scalaVersion := "2.10.1",
     organization := "com.sciabarra",
     version <<= (wcsVersion) { x => v +  "_" + x },
     includeFilterUnmanagedJars,
@@ -80,7 +80,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     id = "api",
     base = file("api"),
     settings = commonSettings ++ Seq(
-      name := "agilesites-api"))
+     name := "agilesites-api",
+     EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
+
 
   /// APP 
   lazy val app: Project = Project(
@@ -88,6 +90,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("app"),
     settings = commonSettings ++ Seq(
       name := "agilesites-app",
+      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
       wcsCopyHtmlTask)) dependsOn (api)
 
   /// ALL
