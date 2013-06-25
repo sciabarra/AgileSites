@@ -8,7 +8,7 @@ group: navigation
 
 ## Releases to download:
 
-- [v1.0.0](https://github.com/sciabarra/AgileSites/archive/v1.0.0.zip) **Recommended**
+- [v1.0.0a](https://github.com/sciabarra/AgileSites/archive/v1.0.0a.zip) **Recommended**
 
 ## Installation 
 
