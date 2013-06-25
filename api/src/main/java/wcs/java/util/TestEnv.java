@@ -1,8 +1,11 @@
 package wcs.java.util;
 
-import COM.FutureTense.Interfaces.ICS;
-import wcs.scala.XmlICS;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import wcs.java.Env;
+import COM.FutureTense.Interfaces.ICS;
 
 /**
  * Testable env - can override variables, lists
@@ -12,11 +15,11 @@ import wcs.java.Env;
  */
 public class TestEnv extends Env {
 
-	XmlICS i;
+	ICS i;
 
 	public TestEnv(ICS ics, String site) {
 		super(ics, site);
-		i = (XmlICS) ics;
+		i = ics;
 	}
 
 	/**
@@ -27,7 +30,7 @@ public class TestEnv extends Env {
 	 */
 	public TestEnv setVar(String k, String v) {
 		if (v != null)
-			i.setVar(k, v);
+			i.SetVar(k, v);
 		return this;
 	}
 
@@ -38,8 +41,11 @@ public class TestEnv extends Env {
 	 * @param name
 	 * @param cols
 	 */
-	public TestEnv setList(String name, java.util.List<String>... cols) {
-		i.setList(name, cols);
+	public TestEnv setList(String name, @SuppressWarnings("unchecked") java.util.List<String>... cols) {
+		Map<String, List<String>> map = new HashMap<String, List<String>>();
+		for (List<String> col : cols)
+			map.put(col.get(0), col.subList(1, col.size()));
+		i.RegisterList(name, new MapIList(name, map));
 		return this;
 	}
 
