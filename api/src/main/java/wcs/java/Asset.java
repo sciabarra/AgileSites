@@ -354,7 +354,7 @@ public abstract class Asset {
 	 * @return
 	 */
 	public String editText(String attribute, int n, String params) {
-		return editString(attribute, 1, nn(params), arg("editor", "ckeditor"));
+		return editString(attribute, n, nn(params), arg("editor", "ckeditor"));
 	}
 
 	/**

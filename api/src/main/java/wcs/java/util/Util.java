@@ -15,6 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import wcs.core.Call;
 import wcs.core.Sequencer;
@@ -427,5 +429,24 @@ public class Util {
 		sb.append("\n");
 		return sb.toString();
 
+	}
+
+	static Pattern retrieveTable = Pattern
+			.compile(
+					"(SELECT\\s.*?\\sFROM|DELETE\\s+FROM|INSERT\\s+INTO|UPDATE)\\s+((\\w+)(,\\w+)*)",
+					Pattern.CASE_INSENSITIVE);
+
+	/**
+	 * Hexadecimal dump of a string
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public static String retrieveTable(String query) {
+		Matcher m = retrieveTable.matcher(query.trim());
+		if (m.find())
+			return m.group(2);
+		else
+			return null;
 	}
 }

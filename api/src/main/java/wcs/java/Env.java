@@ -13,12 +13,13 @@ import wcs.core.Arg;
 import wcs.core.Common;
 import wcs.core.ICSProxyJ;
 import wcs.core.Id;
+import wcs.core.Log;
 import wcs.core.Range;
 import wcs.core.WCS;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.PublicationTag;
 import wcs.core.tag.RenderTag;
-import wcs.core.Log;
+import wcs.java.util.Util;
 import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
 
@@ -77,7 +78,7 @@ public class Env extends ICSProxyJ {
 		IList ls = ics.GetList(list);
 		if (ls == null)
 			return null;
-		if(ls.numRows()==0)
+		if (ls.numRows() == 0)
 			return null;
 		try {
 			return ls.getValue(field);
@@ -461,10 +462,59 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
+	 * Execute a sql query.
+	 * 
+	 * Specify the table (or the tables) to cache and the maximum of the number
+	 * of records to retrieve
+	 * 
+	 * Returns the list name to use to retrieve the result or null if not found.
+	 */
+
+	public String sql(String query, int limit, String table, boolean cache) {
+
+		String res = Common.tmp();
+
+		if (table == null) {
+			table = Util.retrieveTable(query);
+			if (table == null)
+				return null;
+		}
+		StringBuffer err = new StringBuffer();
+		ics.SQL(table, query, res, limit, cache, err);
+
+		return res;
+	}
+
+	/**
+	 * Execute a sql query.
+	 * 
+	 * Specify the maximum of the number of records to retrieve.
+	 * 
+	 * Returns the list name to use to retrieve the result or null if not found.
+	 */
+	public String sql(String query, int limit) {
+		return sql(query, limit, null, true);
+	}
+
+	/**
+	 * Execute a sql query.
+	 * 
+	 * 
+	 * Returns the list name to use to retrieve the result or null if not found.
+	 */
+	public String sql(String query) {
+		return sql(query, -1, null, true);
+	}
+
+	/**
 	 * Clear the current error code
 	 */
 	public void clearError() {
 		ics.ClearErrno();
 	}
+
+	/**
+	 * 
+	 */
 
 }

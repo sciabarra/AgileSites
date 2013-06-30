@@ -6,6 +6,7 @@ import java.net.URI;
 
 import org.junit.Test;
 
+
 public class AssemblerTest {
 
 	@Test

@@ -7,3 +7,5 @@ demo.test.TopmenuTest
 demo.test.page.ContentLayoutTest
 demo.test.page.SummaryTest
 demo.test.page.ContentSeeAlsoTest
+demo.test.ExportTest
+demo.test.api.EnvTest

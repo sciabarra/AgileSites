@@ -35,9 +35,10 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "javax.servlet" % "servlet-api" % "2.5",
     "junit" % "junit" % "4.8.2",
     "org.springframework" % "spring" % "2.5.5",
-    "com.novocode" % "junit-interface" % "0.8" % "test",
+    "com.novocode" % "junit-interface" % "0.10-M4" % "test",
     "commons-logging" % "commons-logging" % "1.1.1",
     "log4j" % "log4j" % "1.2.16",
+    "commons-httpclient" % "commons-httpclient" % "3.1",
     "org.apache.httpcomponents" % "httpclient" % "4.1.2",
     "org.apache.httpcomponents" % "httpcore" % "4.1.2",
     "org.apache.httpcomponents" % "httpmime" % "4.1.2",
@@ -91,14 +92,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("api"),
     settings = commonSettings ++ Seq(
       name := "agilesites-api",
+      wcsGenerateIndexTask,
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
-
-  // Scala API
-  lazy val sapi: Project = Project(
-    id = "sapi",
-    base = file("sapi"),
-    settings = commonSettings ++ Seq(
-      name := "agilesites-sapi")) dependsOn (api)
 
   /// APP 
   lazy val app: Project = Project(
@@ -109,13 +104,14 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
       wcsCopyHtmlTask)) dependsOn (api)
 
-  /// Scala APP 
-  lazy val sapp: Project = Project(
-    id = "sapp",
-    base = file("sapp"),
+  // Scala API and APP
+  lazy val scala: Project = Project(
+    id = "scala",
+    base = file("scala"),
     settings = commonSettings ++ Seq(
-      name := "agilesites-sapp",
-      wcsCopyHtmlTask)) dependsOn (sapi)
+      name := "agilesites-scala",
+      wcsCopyHtmlTask,
+      EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala)) dependsOn (api)
 
   /// ALL
   lazy val all: Project = Project(
@@ -132,8 +128,10 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       wcsPackageJarTask,
       wcsUpdateAssetsTask,
       wcsLogTask,
+      wcsImportTask,
+      wcsExportTask,
       excludedJars in assembly <<= (fullClasspath in assembly),
       //EclipseKeys.skipProject := true,
-      assembleArtifact in packageScala := false)) dependsOn (app,sapp) aggregate (app, api, sapp, sapi)
+      assembleArtifact in packageScala := false)) dependsOn (app, scala) aggregate (app, api, scala)
 }
 

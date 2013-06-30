@@ -5,6 +5,7 @@ import wcs.java.{ Element => JElement }
 import scala.xml.NodeSeq
 import scala.xml.NodeBuffer
 import COM.FutureTense.Interfaces.ICS
+import wcs.scala.Log
 
 /**
  * The element implementation
