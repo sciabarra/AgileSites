@@ -14,12 +14,13 @@ trait Utils {
 
   // copy files from a src dir to a target dir recursively 
   // filter files to copy
-  def recursiveCopy(src: File, tgt: File)(sel: File => Boolean) = {
+  def recursiveCopy(src: File, tgt: File, verbose: Boolean = false)(sel: File => Boolean) = {
     val nsrc = src.getPath.length
     val cplist = (src ** "*").get.filterNot(_.isDirectory).filter(sel) map {
       x =>
         val dest = tgt / x.getPath.substring(nsrc)
-        println("+++ " + dest)
+        if(verbose)
+          println("+++ " + dest)
         (x, dest)
     }
     IO.copy(cplist).toSeq
@@ -153,28 +154,32 @@ trait Utils {
 
   }
 
+  def httpCallRaw(req: String) = {
+    val scan = new java.util.Scanner(new URL(req).openStream(), "UTF-8")
+    val res = scan.useDelimiter("\\A").next()
+    scan.close
+    //">>>%s\n%s<<<%s\n" format(req,res,req)
+    res
+  }
+
   // invoking the url (for comma separated options)
   def httpCall(op: String, option: String, url: String, user: String, pass: String, sites: String = null) = {
 
     // create a site list if is is not empty
-    val siteList = if(sites == null) {
+    val siteList = if (sites == null) {
       List("")
     } else {
-      sites split(",") map { s => "&site=" + s } toList
+      sites split (",") map { s => "&site=" + s } toList
     }
 
     //println(siteList)
-    
+
     val out = for (site <- siteList) yield {
       val req = "%s/ContentServer?pagename=AAAgile%s&user=%s&pass=%s%s%s"
         .format(url, op, user, pass, option, site)
       //println(">>> "+req+"")
-      val scan = new java.util.Scanner(new URL(req).openStream(), "UTF-8")
-      val res = scan.useDelimiter("\\A").next()
-      //println(res)
-      //">>>%s\n%s<<<%s\n" format(req,res,req)
-      res
-    } 
+      httpCallRaw(req)
+    }
     out mkString ""
   }
 

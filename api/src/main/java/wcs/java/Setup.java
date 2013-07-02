@@ -82,6 +82,9 @@ abstract public class Setup implements wcs.core.Setup {
 
 		log.debug("created session, adm, sim");
 
+		
+		
+		
 		StringBuilder sb = new StringBuilder();
 		sb.append(">>> Setup BEGIN");
 
