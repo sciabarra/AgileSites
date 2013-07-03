@@ -170,9 +170,10 @@ trait AgileSitesSupport extends Utils {
   val wcsSetupOnlineTask = InputKey[Unit]("wcs-setup-online", "WCS Setup Online") <<= inputTask {
     (argsTask: TaskKey[Seq[String]]) =>
       (argsTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword,
-        wcsPopulate, wcsPackageJar, wcsCopyStatic,
+        wcsPopulate, wcsPackageJar, wcsCopyStatic, 
         fullClasspath in Compile, streams, runner) map {
           (args, version, url, sites, user, pass, ignore, jar, count, classpath, s, runner) =>
+            
             val cmd = if (args.length == 1 && args(0) == "drop") {
               "&drop=%s&sites=%s".format(args.tail.mkString(","), sites)
             } else {
@@ -184,7 +185,6 @@ trait AgileSitesSupport extends Utils {
 
   // package jar task - build the jar and copy it  to destination 
   lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
-
   val wcsPackageJarTask = wcsPackageJar <<=
     (assembly, wcsShared) map {
       (jar, shared) =>

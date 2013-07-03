@@ -1,4 +1,4 @@
-package com.apple.fatwire.assetapi;
+package com.sciabarra.fatwire.assetapi;
 
 import java.util.LinkedList;
 import java.util.List;

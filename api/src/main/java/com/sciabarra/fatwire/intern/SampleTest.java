@@ -1,4 +1,4 @@
-package com.apple.fatwire.intern;
+package com.sciabarra.fatwire.intern;
 
 import static org.junit.Assert.*;
 

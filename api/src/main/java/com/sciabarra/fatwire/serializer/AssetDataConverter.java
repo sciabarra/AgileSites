@@ -1,4 +1,4 @@
-package com.apple.fatwire.serializer;
+package com.sciabarra.fatwire.serializer;
 
 import java.util.ArrayList;
 import java.util.List;

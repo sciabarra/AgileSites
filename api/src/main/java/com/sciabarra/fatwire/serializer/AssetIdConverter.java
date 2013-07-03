@@ -1,4 +1,4 @@
-package com.apple.fatwire.serializer;
+package com.sciabarra.fatwire.serializer;
 
 import com.fatwire.assetapi.data.AssetId;
 import com.openmarket.xcelerate.asset.AssetIdImpl;
