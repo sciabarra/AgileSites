@@ -41,7 +41,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "commons-logging" % "commons-logging" % "1.1.1",
     "junit" % "junit" % "4.8.2",
     "com.novocode" % "junit-interface" % "0.8" % "test",
-    //"org.specs2" %% "specs2" % "1.13",
     "log4j" % "log4j" % "1.2.16",
     "org.apache.httpcomponents" % "httpclient" % "4.1.2",
     "org.apache.httpcomponents" % "httpcore" % "4.1.2",
@@ -73,6 +72,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       libraryDependencies ++= coreDependencies,
       publishArtifact in packageDoc := false,
       name := "agilesites-core",
+      EclipseKeys.skipProject := true,
       coreGeneratorTask))
 
   // API
@@ -80,7 +80,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     id = "api",
     base = file("api"),
     settings = commonSettings ++ Seq(
-      name := "agilesites-api"))
+      name := "agilesites-api",
+      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
 
   /// APP 
   lazy val app: Project = Project(
@@ -88,6 +89,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("app"),
     settings = commonSettings ++ Seq(
       name := "agilesites-app",
+      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
       wcsCopyHtmlTask)) dependsOn (api)
 
   /// ALL

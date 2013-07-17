@@ -20,8 +20,8 @@ goto pause
 echo javac not found. Please install JDK and set JAVA_HOME environment variable. 
 goto pause
 :notfoundbuildsbt
-echo To start, copy build.sbt.sbt to build.sbt and EDIT IT.
-echo Reading the README.md and the documentation does not hurt, too. 
+echo To start, copy build.sbt.dist to build.sbt and EDIT IT.
+echo Check also documentation on http://www.agilesites.org 
 :pause
 pause
 :end

@@ -9,10 +9,9 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
-import wcs.core.Log;
 import wcs.java.Element;
 import wcs.java.Env;
-import wcs.scala.XmlICS;
+import wcs.core.Log;
 
 public abstract class TestRunnerElement extends Element {
 
@@ -187,7 +186,7 @@ public abstract class TestRunnerElement extends Element {
 
 		// create a new, modifiable env, then set it to a threadlocal
 		// so the testelement can find and use it
-		TestEnv te = new TestEnv(new XmlICS(e.ics), e.getString("site"));
+		TestEnv te = new TestEnv(e.ics, e.getString("site"));
 		te.setVar("tid", e.getString("tid"));
 		te.setVar("eid", e.getString("eid"));
 		currTestEnv.set(te);
