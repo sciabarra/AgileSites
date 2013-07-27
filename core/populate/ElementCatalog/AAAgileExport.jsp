@@ -13,6 +13,10 @@
    File outputDir = null;
    File curDir = null;
    File curFile = null;
+   String restricted = ics.GetVar("id");
+   if(restricted!=null) 
+   		restricted = " and assetid="+restricted; 
+   else restricted="";
    if(ics.GetVar("user")!=null && ics.GetVar("pass")!=null) { 
 %><user:login 
   username='<%= ics.GetVar("user") %>' 
@@ -31,7 +35,7 @@
 /><ics:sql  listname="assets" 
  table="AssetPublication" 
  sql='<%= "select assettype, assetid from AssetPublication"
-          +" where pubid="+ics.GetVar("pubid") %>'
+          +" where pubid="+ics.GetVar("pubid") + restricted %>'
 /><% 
   outputDir = new File(ics.GetProperty("cs.csdtfolder"), "stargaze");
   outputDir = new File(outputDir, WCS.normalizeSiteName(ics.GetVar("site")));

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<document>
+<asset id="1351275806258" type="SiteEntry">
+<attribute name="rootelement"><string value="MySite/MyWrapper"/></attribute>
+<attribute name="pagecriteria"><array>
+<string value="c"/><string value="cid"/><string value="context"/><string value="rendermode"/><string value="site"/><string value="ft_ss"/></array>
+</attribute>
+<attribute name="fw_uid"><string value="b3fe1b07-f334-47ae-b4cc-336872a735e7"/></attribute>
+<attribute name="updateddate"><date value="2013-06-13 19:35:43.841"/></attribute>
+<attribute name="status"><string value="PL"/></attribute>
+<attribute name="pagename"><string value="mysite"/></attribute>
+<attribute name="defaultarguments"><array>
+<struct>
+<field name="name"><string value="rendermode"/></field>
+<field name="value"><string value="live"/></field>
+</struct>
+<struct>
+<field name="name"><string value="seid"/></field>
+<field name="value"><string value="1351275806258"/></field>
+</struct>
+<struct>
+<field name="name"><string value="site"/></field>
+<field name="value"><string value="MySite"/></field>
+</struct>
+</array>
+</attribute>
+<attribute name="sscacheinfo"><string value="false"/></attribute>
+<attribute name="pageletonly"><string value="F"/></attribute>
+<attribute name="updatedby"><string value="fwadmin"/></attribute>
+<attribute name="createdby"><string value="fwadmin"/></attribute>
+<attribute name="cscacheinfo"><string value="false"/></attribute>
+<attribute name="createddate"><date value="2013-06-13 19:35:43.841"/></attribute>
+<attribute name="csstatus"><string value="live"/></attribute>
+<attribute name="description"><string value="mysite"/></attribute>
+<attribute name="name"><string value="mysite"/></attribute>
+<attribute name="cs_wrapper"><string value="y"/></attribute>
+</asset>
+</document>

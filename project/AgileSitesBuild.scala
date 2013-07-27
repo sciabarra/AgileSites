@@ -104,15 +104,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
       wcsCopyHtmlTask)) dependsOn (api)
 
-  // Scala API and APP
-  lazy val scala: Project = Project(
-    id = "scala",
-    base = file("scala"),
-    settings = commonSettings ++ Seq(
-      name := "agilesites-scala",
-      wcsCopyHtmlTask,
-      EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala)) dependsOn (api)
-
   /// ALL
   lazy val all: Project = Project(
     id = "all",
@@ -134,7 +125,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       wcsImportTask,
       wcsExportTask,
       excludedJars in assembly <<= (fullClasspath in assembly),
+      watchSources ++= (((file("core") / "populate" ** "*") +++ (file("static") ** "*")).getFiles),
+      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
       //EclipseKeys.skipProject := true,
-      assembleArtifact in packageScala := false)) dependsOn (app, scala) aggregate (app, api, scala)
+      assembleArtifact in packageScala := false)) dependsOn (app) aggregate (app, api)
 }
 

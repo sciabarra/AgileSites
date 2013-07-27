@@ -19,11 +19,40 @@ trait Utils {
     val cplist = (src ** "*").get.filterNot(_.isDirectory).filter(sel) map {
       x =>
         val dest = tgt / x.getPath.substring(nsrc)
-        if(verbose)
+        if (verbose)
           println("+++ " + dest)
         (x, dest)
     }
     IO.copy(cplist).toSeq
+  }
+
+  def httpCallRaw(req: String) = {
+    val scan = new java.util.Scanner(new URL(req).openStream(), "UTF-8")
+    val res = scan.useDelimiter("\\A").next()
+    scan.close
+    //">>>%s\n%s<<<%s\n" format(req,res,req)
+    res
+  }
+
+  // invoking the url (for comma separated options)
+  def httpCall(op: String, option: String, url: String, user: String, pass: String, sites: String = null) = {
+
+    // create a site list if is is not empty
+    val siteList = if (sites == null) {
+      List("")
+    } else {
+      sites split (",") map { s => "&site=" + s } toList
+    }
+
+    //println(siteList)
+
+    val out = for (site <- siteList) yield {
+      val req = "%s/ContentServer?pagename=AAAgile%s&user=%s&pass=%s%s%s"
+        .format(url, op, user, pass, option, site)
+      println(">>> " + req + "")
+      httpCallRaw(req)
+    }
+    out mkString ""
   }
 
   // configure satellite
@@ -154,33 +183,18 @@ trait Utils {
 
   }
 
-  def httpCallRaw(req: String) = {
-    val scan = new java.util.Scanner(new URL(req).openStream(), "UTF-8")
-    val res = scan.useDelimiter("\\A").next()
-    scan.close
-    //">>>%s\n%s<<<%s\n" format(req,res,req)
-    res
-  }
+  def deploy(url: String, user: String, pass: String, args: Seq[String], sites: String, srcFile: File, dir: String, file: String) = {
 
-  // invoking the url (for comma separated options)
-  def httpCall(op: String, option: String, url: String, user: String, pass: String, sites: String = null) = {
+    //val baseEnc = java.net.URLEncoder.encode(base.getAbsolutePath, "UTF-8");
+    val drop = if (args.length > 0 && args(0) == "drop") "yes" else "no"
 
-    // create a site list if is is not empty
-    val siteList = if (sites == null) {
-      List("")
-    } else {
-      sites split (",") map { s => "&site=" + s } toList
-    }
+    //val srcUrl = java.net.URLEncoder.encode(srcFile.getURI.getURL, "UTF-8");
+    val srcUrl = srcFile.toString
+      
+    val cmd = "&sites=%s&drop=%s&url=%s&dir=%s&file=%s".format(sites, drop, srcUrl, dir, file)
 
-    //println(siteList)
+    println(httpCall("Setup", cmd, url, user, pass))
 
-    val out = for (site <- siteList) yield {
-      val req = "%s/ContentServer?pagename=AAAgile%s&user=%s&pass=%s%s%s"
-        .format(url, op, user, pass, option, site)
-      //println(">>> "+req+"")
-      httpCallRaw(req)
-    }
-    out mkString ""
   }
 
 }

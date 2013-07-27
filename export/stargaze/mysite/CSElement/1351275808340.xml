@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<document>
+<asset id="1351275808340" type="CSElement">
+<attribute name="rootelement"><string value="Mah"/></attribute>
+<attribute name="url"><file name="MySite/Mah,0.jsp">
+<![CDATA[PCVAIHRhZ2xpYiBwcmVmaXg9ImNzIiB1cmk9ImZ1dHVyZXRlbnNlX2NzL2Z0Y3MxXzAudGxkIg0KJT48JUAgdGFnbGliIHByZWZpeD0iYXNzZXQiIHVyaT0iZnV0dXJldGVuc2VfY3MvYXNzZXQudGxkIg0KJT48JUAgdGFnbGliIHByZWZpeD0iYXNzZXRzZXQiIHVyaT0iZnV0dXJldGVuc2VfY3MvYXNzZXRzZXQudGxkIg0KJT48JUAgdGFnbGliIHByZWZpeD0iY29tbWVyY2Vjb250ZXh0IiB1cmk9ImZ1dHVyZXRlbnNlX2NzL2NvbW1lcmNlY29udGV4dC50bGQiDQolPjwlQCB0YWdsaWIgcHJlZml4PSJpY3MiIHVyaT0iZnV0dXJldGVuc2VfY3MvaWNzLnRsZCINCiU+PCVAIHRhZ2xpYiBwcmVmaXg9Imxpc3RvYmplY3QiIHVyaT0iZnV0dXJldGVuc2VfY3MvbGlzdG9iamVjdC50bGQiDQolPjwlQCB0YWdsaWIgcHJlZml4PSJyZW5kZXIiIHVyaT0iZnV0dXJldGVuc2VfY3MvcmVuZGVyLnRsZCINCiU+PCVAIHRhZ2xpYiBwcmVmaXg9InNlYXJjaHN0YXRlIiB1cmk9ImZ1dHVyZXRlbnNlX2NzL3NlYXJjaHN0YXRlLnRsZCINCiU+PCVAIHRhZ2xpYiBwcmVmaXg9InNpdGVwbGFuIiB1cmk9ImZ1dHVyZXRlbnNlX2NzL3NpdGVwbGFuLnRsZCINCiU+PCVAIHBhZ2UgaW1wb3J0PSJDT00uRnV0dXJlVGVuc2UuSW50ZXJmYWNlcy4qLA0KICAgICAgICAgICAgICAgICAgIENPTS5GdXR1cmVUZW5zZS5VdGlsLmZ0TWVzc2FnZSwNCiAgICAgICAgICAgICAgICAgICBDT00uRnV0dXJlVGVuc2UuVXRpbC5mdEVycm9ycyINCiU+PGNzOmZ0Y3M+PCUtLSBNYWgNCg0KSU5QVVQNCg0KT1VUUFVUDQoNCi0tJT4NCjwlLS0gUmVjb3JkIGRlcGVuZGVuY2llcyBmb3IgdGhlIFNpdGVFbnRyeSBhbmQgdGhlIENTRWxlbWVudCAtLSU+DQo8aWNzOmlmIGNvbmRpdGlvbj0nPCU9aWNzLkdldFZhcigic2VpZCIpIT1udWxsJT4nPjxpY3M6dGhlbj48cmVuZGVyOmxvZ2RlcCBjaWQ9JzwlPWljcy5HZXRWYXIoInNlaWQiKSU+JyBjPSJTaXRlRW50cnkiLz48L2ljczp0aGVuPjwvaWNzOmlmPg0KPGljczppZiBjb25kaXRpb249JzwlPWljcy5HZXRWYXIoImVpZCIpIT1udWxsJT4nPjxpY3M6dGhlbj48cmVuZGVyOmxvZ2RlcCBjaWQ9JzwlPWljcy5HZXRWYXIoImVpZCIpJT4nIGM9IkNTRWxlbWVudCIvPjwvaWNzOnRoZW4+PC9pY3M6aWY+DQoNCjxpY3M6c3FsIA0KIHNxbD0ic2VsZWN0ICogZnJvbSBTeXN0ZW1Vc2VycyIgDQogdGFibGU9IlN5c3RlbVVzZXJzIiAgDQogbGlzdG5hbWU9ImxzIi8+DQo8aWNzOmxpc3Rsb29wIGxpc3RuYW1lPSJscyI+DQo8aWNzOmxpc3RnZXQgbGlzdG5hbWU9ImxzIiBmaWVsZG5hbWU9InVzZXJuYW1lIi8+PGJyLz4NCjwvaWNzOmxpc3Rsb29wPg0KPC9jczpmdGNzPg==]]></file>
+</attribute>
+<attribute name="resdetails1"><string value="eid=1351275808340"/></attribute>
+<attribute name="fw_uid"><string value="c1f4f459-9fdb-4214-a53d-35ec34f341b2"/></attribute>
+<attribute name="updateddate"><date value="2013-06-20 17:20:36.092"/></attribute>
+<attribute name="status"><string value="ED"/></attribute>
+<attribute name="elementname"><string value="Mah"/></attribute>
+<attribute name="updatedby"><string value="fwadmin"/></attribute>
+<attribute name="createdby"><string value="fwadmin"/></attribute>
+<attribute name="createddate"><date value="2013-06-20 17:16:22.87"/></attribute>
+<attribute name="name"><string value="Mah"/></attribute>
+</asset>
+</document>

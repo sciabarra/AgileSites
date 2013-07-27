@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<document>
+<asset id="1351275814660" type="AttrTypes">
+<attribute name="createdby"><string value="fwadmin"/></attribute>
+<attribute name="description"><string value="CkEditor200x200"/></attribute>
+<attribute name="createddate"><date value="2013-06-28 13:19:50.106"/></attribute>
+<attribute name="updatedby"><string value="fwadmin"/></attribute>
+<attribute name="status"><string value="PL"/></attribute>
+<attribute name="name"><string value="CkEditor200x200"/></attribute>
+<attribute name="updateddate"><date value="2013-06-29 14:47:26.236"/></attribute>
+<attribute name="urlxml"><file name="1351275793617,2.txt">
+<![CDATA[PD9YTUwgVkVSU0lPTj0iMS4wIj8+DQo8UFJFU0VOVEFUSU9OT0JKRUNUIE5BTUU9ImNrZWRpdG9yIj4NCjxDS0VESVRPUiBXSURUSD0iMjAwcHgiIEhFSUdIVD0iMjAwcHgiIC8+IDwvUFJFU0VOVEFUSU9OT0JKRUNUPg==]]></file>
+</attribute>
+<attribute name="fw_uid"><string value="c34deb4f-0be5-47aa-a5d4-ccb86e59794d"/></attribute>
+</asset>
+</document>

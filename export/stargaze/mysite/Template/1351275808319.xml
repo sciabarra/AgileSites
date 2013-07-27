@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<document>
+<asset id="1351275808319" type="Template">
+<attribute name="rootelement"><string value="/Boh"/></attribute>
+<attribute name="pagecriteria"><array>
+<string value="c"/><string value="cid"/><string value="context"/><string value="p"/><string value="rendermode"/><string value="site"/><string value="sitepfx"/><string value="ft_ss"/></array>
+</attribute>
+<attribute name="category"><string value="banr"/></attribute>
+<attribute name="fw_uid"><string value="f54fb76e-8686-4f28-88e6-f2cdb51f25da"/></attribute>
+<attribute name="updateddate"><date value="2013-06-20 17:11:54.806"/></attribute>
+<attribute name="status"><string value="PL"/></attribute>
+<attribute name="updatedby"><string value="fwadmin"/></attribute>
+<attribute name="createdby"><string value="fwadmin"/></attribute>
+<attribute name="element"><array>
+<struct>
+<field name="elementname"><string value="/Boh"/></field>
+<field name="resdetails1"><string value="tid=1351275808319"/></field>
+<field name="url"><file name="Typeless/Boh.jsp">
+<![CDATA[PCVAIHRhZ2xpYiBwcmVmaXg9ImNzIiB1cmk9ImZ1dHVyZXRlbnNlX2NzL2Z0Y3MxXzAudGxkIg0KJT48JUAgdGFnbGliIHByZWZpeD0iYXNzZXQiIHVyaT0iZnV0dXJldGVuc2VfY3MvYXNzZXQudGxkIg0KJT48JUAgdGFnbGliIHByZWZpeD0iYXNzZXRzZXQiIHVyaT0iZnV0dXJldGVuc2VfY3MvYXNzZXRzZXQudGxkIg0KJT48JUAgdGFnbGliIHByZWZpeD0iY29tbWVyY2Vjb250ZXh0IiB1cmk9ImZ1dHVyZXRlbnNlX2NzL2NvbW1lcmNlY29udGV4dC50bGQiDQolPjwlQCB0YWdsaWIgcHJlZml4PSJpY3MiIHVyaT0iZnV0dXJldGVuc2VfY3MvaWNzLnRsZCINCiU+PCVAIHRhZ2xpYiBwcmVmaXg9Imxpc3RvYmplY3QiIHVyaT0iZnV0dXJldGVuc2VfY3MvbGlzdG9iamVjdC50bGQiDQolPjwlQCB0YWdsaWIgcHJlZml4PSJyZW5kZXIiIHVyaT0iZnV0dXJldGVuc2VfY3MvcmVuZGVyLnRsZCINCiU+PCVAIHRhZ2xpYiBwcmVmaXg9InNpdGVwbGFuIiB1cmk9ImZ1dHVyZXRlbnNlX2NzL3NpdGVwbGFuLnRsZCINCiU+PCVAIHRhZ2xpYiBwcmVmaXg9InNlYXJjaHN0YXRlIiB1cmk9ImZ1dHVyZXRlbnNlX2NzL3NlYXJjaHN0YXRlLnRsZCINCiU+PCVAIHBhZ2UgaW1wb3J0PSJDT00uRnV0dXJlVGVuc2UuSW50ZXJmYWNlcy4qLA0KICAgICAgICAgICAgICAgICAgIENPTS5GdXR1cmVUZW5zZS5VdGlsLmZ0TWVzc2FnZSwNCiAgICAgICAgICAgICAgICAgICBDT00uRnV0dXJlVGVuc2UuVXRpbC5mdEVycm9ycyINCiU+PGNzOmZ0Y3M+PCUtLSAvQm9oDQoNCklOUFVUDQoNCk9VVFBVVA0KDQotLSU+DQo8JS0tIFJlY29yZCBkZXBlbmRlbmNpZXMgZm9yIHRoZSBUZW1wbGF0ZSAtLSU+DQo8aWNzOmlmIGNvbmRpdGlvbj0nPCU9aWNzLkdldFZhcigidGlkIikhPW51bGwlPic+PGljczp0aGVuPjxyZW5kZXI6bG9nZGVwIGNpZD0nPCU9aWNzLkdldFZhcigidGlkIiklPicgYz0iVGVtcGxhdGUiLz48L2ljczp0aGVuPjwvaWNzOmlmPg0KDQo8aWNzOnNxbCBzcWw9IlNlbGVjdCAqIGZyb20gU3lzdGVtVXNlcnMiIHRhYmxlPSJTeXN0ZW1Vc2VycyIgIGxpc3RuYW1lPSJMcyIvPg0KPGljczpsaXN0Z2V0IGxpc3RuYW1lPSJMcyIgZmllbGQ9InVzZXJuYW1lIi8+DQo8L2NzOmZ0Y3M+]]></file>
+</field>
+<field name="cscacheinfo"><string value="true,~0"/></field>
+<field name="sscacheinfo"><string value="true,~0"/></field>
+<field name="siteentry"><array>
+<struct>
+<field name="pagename"><string value="MySite/Boh"/></field>
+<field name="defaultarguments"><array>
+<struct>
+<field name="name"><string value="rendermode"/></field>
+<field name="value"><string value="live"/></field>
+</struct>
+<struct>
+<field name="name"><string value="site"/></field>
+<field name="value"><string value="MySite"/></field>
+</struct>
+</array>
+</field>
+</struct>
+</array>
+</field>
+<field name="csstatus"><string value="live"/></field>
+</struct>
+</array>
+</attribute>
+<attribute name="createddate"><date value="2013-06-20 17:11:54.806"/></attribute>
+<attribute name="name"><string value="Boh"/></attribute>
+<attribute name="ttype"><string value="x"/></attribute>
+</asset>
+</document>

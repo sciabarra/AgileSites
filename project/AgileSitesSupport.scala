@@ -1,11 +1,11 @@
 package wcs.build
 
 import sbt._
-import Keys._
+import xsbt.api.Discovery
 import sbtassembly.Plugin._
+import Keys._
 import AssemblyKeys._
 import Dialog._
-import xsbt.api.Discovery
 
 trait AgileSitesSupport extends Utils {
 
@@ -136,19 +136,6 @@ trait AgileSitesSupport extends Utils {
       }
   }
 
-  // deploy sites
-  val wcsDeploy = TaskKey[Unit]("wcs-deploy", "WCS deploy sites")
-  val wcsDeployTask = wcsDeploy <<= (wcsUrl, wcsUser, wcsPassword, wcsSites) map {
-    (url, user, pass, sites) =>
-      println(httpCall("Setup", "&sites=" + sites, url, user, pass))
-  }
-
-  // drop sites
-  val wcsDropSites = TaskKey[Unit]("wcs-drop-sites", "WCS drop existing sites")
-  val wcsDropSitesTask = wcsDropSites <<= (wcsUrl, wcsUser, wcsPassword, wcsSites) map {
-    (url, user, pass, sites) =>
-  }
-
   // package jar task - build the jar and copy it  to destination 
   val wcsPopulate = TaskKey[Unit]("wcs-populate", "WCS catalog manager import")
   val wcsPopulateTask = wcsPopulate <<=
@@ -166,21 +153,27 @@ trait AgileSitesSupport extends Utils {
         ()
     }
 
-  // interface to catalogmover from sbt
+  // all the setup online stuff
   val wcsSetupOnlineTask = InputKey[Unit]("wcs-setup-online", "WCS Setup Online") <<= inputTask {
     (argsTask: TaskKey[Seq[String]]) =>
       (argsTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword,
-        wcsPopulate, wcsPackageJar, wcsCopyStatic, 
-        fullClasspath in Compile, streams, runner) map {
-          (args, version, url, sites, user, pass, ignore, jar, count, classpath, s, runner) =>
-            
-            val cmd = if (args.length == 1 && args(0) == "drop") {
-              "&drop=%s&sites=%s".format(args.tail.mkString(","), sites)
-            } else {
-              "&sites=" + sites
-            }
-            println(httpCall("Setup", cmd, url, user, pass))
+        wcsPopulate, wcsPackageJar, wcsCopyStatic,
+        baseDirectory, fullClasspath in Compile, streams, runner) map {
+          (args, version, url, sites, user, pass,
+          ignorePopulate, jar, count,
+          base, classpath, s, runner) =>
+          deploy(url, user, pass, args, sites, file(jar), "lib", file(jar).getName)
         }
+  }
+
+  // deploy sites
+  val wcsDeploy = InputKey[Unit]("wcs-deploy", "WCS deploy")
+  val wcsDeployTask = wcsDeploy <<= inputTask {
+    (argsTask: TaskKey[Seq[String]]) =>
+      (argsTask, wcsUrl, wcsUser, wcsPassword, wcsSites, wcsPackageJar) map {
+        (args, url, user, pass, sites, jar) =>
+          deploy(url, user, pass, args, sites, file(jar), "lib", file(jar).getName)
+      }
   }
 
   // package jar task - build the jar and copy it  to destination 
@@ -372,8 +365,8 @@ trait AgileSitesSupport extends Utils {
 
           val (collected, uncollected) = imp.orderedDeps
 
-          imp.importAssets(collected)
-
+          imp.importAssets(uncollected)
+  
       }
   }
 

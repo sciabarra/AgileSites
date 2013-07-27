@@ -1,10 +1,7 @@
 package wcs.java;
 
 import java.util.List;
-
 import wcs.java.util.Util;
-import wcs.core.Log;
-
 import com.fatwire.assetapi.common.SiteAccessException;
 import com.fatwire.assetapi.data.AssetId;
 import com.fatwire.assetapi.data.AttributeData;
@@ -21,22 +18,14 @@ import com.fatwire.assetapi.site.SiteManager;
  * 
  */
 public class Site {
-	private static Log log = Log.getLog(Setup.class);
+	
+	//private static Log log = Log.getLog(Setup.class);
 
-	private String name;
+	public com.fatwire.assetapi.site.Site site;
 
-	private com.fatwire.assetapi.site.Site site;
+	public String name;
 
-
-	public Site(String name) {
-		this.name = name;
-	}
-
-	// future use
-	@SuppressWarnings("unused")
-	private Site(final Long id, final String name, final String description,
-			final String[] types, final String[] users, final String[] roles) {
-		super();
+	public Site(String name, final Setup setup) {
 
 		this.name = name;
 
@@ -44,7 +33,7 @@ public class Site {
 
 			@Override
 			public List<String> getAssetTypes() {
-				return Util.array2listString(types);
+				return setup.getAssetTypes();
 			}
 
 			@Override
@@ -64,17 +53,17 @@ public class Site {
 
 			@Override
 			public String getDescription() {
-				return description;
+				return setup.getDescription();
 			}
 
 			@Override
 			public Long getId() {
-				return id;
+				return setup.getId();
 			}
 
 			@Override
 			public String getName() {
-				return name;
+				return setup.getName();
 			}
 
 			@Override
@@ -84,77 +73,84 @@ public class Site {
 
 			@Override
 			public List<String> getUserRoles(String arg0) {
-				return Util.array2listString(roles);
+				return setup.getUserRoles(arg0);
 			}
 
 			@Override
 			public List<String> getUsers() {
-				return Util.array2listString(users);
-
+				return setup.getUsers();
 			}
 
 			@Override
 			public void setAssetTypes(List<String> arg0) {
-
+				// do nothing
 			}
 
 			@Override
 			public void setCSPrefix(String arg0) {
-
+				// do nothing
 			}
 
 			@Override
 			public void setCSPreview(String arg0) {
-
+				// do nothing
 			}
 
 			@Override
 			public void setCSPreviewAsset(AssetId arg0) {
-
+				// do nothing
 			}
 
 			@Override
 			public void setDescription(String arg0) {
-
+				// do nothing
 			}
 
 			@Override
 			public void setId(Long arg0) {
-
+				// do nothing
 			}
 
 			@Override
 			public void setName(String arg0) {
-
+				// do nothing
 			}
 
 			@Override
 			public void setPubroot(String arg0) {
-
+				// do nothing
 			}
 
 			@Override
 			public void setUserRoles(String arg0, List<String> arg1) {
-
+				// do nothing
 			}
 		};
 	}
 
 	// update the site enabling asset types
 	@SuppressWarnings("unchecked")
-	String createOrUpdate(SiteManager sim) throws SiteAccessException {
-		// sim.update(arg0
+	String dropThencreateOrUpdate(boolean drop, SiteManager sim,
+			StringBuilder msg) throws SiteAccessException {
+
+		System.out.println("=======================");
+
 		boolean found = false;
 		for (SiteInfo inf : sim.list()) {
-			// {dbg(inf.getName());
-			if (inf.getName().equals(site.getName()))
-				found = true;
+			if (inf.getName().equals(name)) {
+				if (drop) {
+					msg.append("\nDeleting site " + name);
+					sim.delete(Util.listString(name));
+				} else
+					found = true;
+			}
 		}
+
 		if (!found) {
-			log.info("Creating  " + site);
+			msg.append("\nCreating site " + name);
 			sim.create(Util.list(site));
 		} else {
-			log.info("Updating site " + site);
+			msg.append("\nUpdating site " + name);
 			sim.update(Util.list(site));
 		}
 		return site.getName();
@@ -165,17 +161,11 @@ public class Site {
 	 * 
 	 * @param data
 	 */
-	// FIXME full implementation - for now just fix the current site
 	// @SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setData(MutableAssetData data) {
-
 		AttributeData attrs = data.getAttributeData("Publist");
 		if (attrs != null)
 			attrs.setDataAsList(Util.listString(name));
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public String toString() {

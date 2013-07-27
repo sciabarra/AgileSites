@@ -6,11 +6,11 @@ import scala.Array.fallbackCanBuildFrom
 import scala.collection.immutable.ListSet
 import java.net._
 
-class ImportXml(url: String, sites: String, user: String, pass: String) {
+class ImportXml(url: String, sites: String, user: String, pass: String) extends Utils {
 
   import ImportXml.Aid
   import ImportXml.AidDepMap
-
+  
   val repo = new File(new File(new File("export"), "stargaze"), sites)
 
   // load a specific xml 
@@ -37,7 +37,7 @@ class ImportXml(url: String, sites: String, user: String, pass: String) {
 
   // return a list of dependencies in order and a list of cyclic dependencies
   def orderedDeps: Tuple2[List[Aid], List[Aid]] = {
-    
+
     val alldeps = depsMap
 
     def go(deps: List[Aid], collected: ListSet[Aid], uncollected: AidDepMap): Tuple2[ListSet[Aid], AidDepMap] =
@@ -62,7 +62,7 @@ class ImportXml(url: String, sites: String, user: String, pass: String) {
           (c.toList.reverse, u.keys.toList)
       }
 
-    loop(ListSet(), alldeps )
+    loop(ListSet(), alldeps)
   }
 
   def importAsset(aid: Aid) = {
@@ -74,12 +74,11 @@ class ImportXml(url: String, sites: String, user: String, pass: String) {
 
     println(req)
 
-    val scan = new java.util.Scanner(new URL(req).openStream(), "UTF-8")
-    val res = scan.useDelimiter("\\A").next()
-    scan.close
-
+    val res = httpCallRaw(req)
+    
     //println(res)
 
+    ()
   }
 
   def importAssets(assets: List[Aid]) = {

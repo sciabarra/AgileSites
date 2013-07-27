@@ -8,8 +8,11 @@
                    java.util.*,
                    java.io.*,
                    wcs.core.*"
-%><cs:ftcs>
-<% 
+%><%!
+ String nn(COM.FutureTense.Interfaces.ICS ics, String var) {
+	String s = ics.GetVar(var); 
+	return s==null ? "" : s; 
+} %><cs:ftcs><% 
    boolean verified = false; 
    File inputDir = null;
    File curDir = null;
@@ -25,9 +28,13 @@
   field="name" 
   value='<%= ics.GetVar("site") %>'/>
 <% } %>
-<% if(verified && ics.GetObj("pub")!=null ) { %>
+<% if(verified 
+     && ics.GetObj("pub")!=null 
+     && ics.GetVar("c")!=null 
+     && ics.GetVar("cid")!=null ) { %>
 <%--= ics.GetObj("pub") --%>
-<publication:get name="pub"  
+<publication:get 
+  name="pub"  
   field="id" 
   output="pubid"/><% 
   inputDir = new File(ics.GetProperty("cs.csdtfolder"), "stargaze");
@@ -38,10 +45,13 @@
   String subtype = ics.GetVar("subtype");
   //System.out.println(c+":"+cid+(subtype==null? "" : ":"+subtype));
   System.out.println("Import " +c+":"+cid+ (subtype==null? "" : ":"+subtype));
-%><%= c+":"+cid+ (subtype==null? "" : ":"+subtype) %>
+%><%= c+":"+cid+ (subtype==null? "" : "/"+subtype) %>
 <%// Create a new asset for importing the exported file //%>
 <asset:create name="newasset" 
   type='<%= ics.GetVar("c") %>'/>
+<asset:set name="newasset"
+   field="id" 
+   value='<%= ics.GetVar("c") %>'/>
 <%// Scatter all fields of the XML into Sites variables //%>
 <% if(subtype==null) { %>
 Without Subtype:
@@ -66,16 +76,17 @@ With Subtype:
 <%// Save the asset //%>
 <asset:save name="newasset"/><% 
 } else { %>Bad username, password or site
-<form method="post">
+<form method="get">
 <input type="hidden" name="pagename" value="AAAgileImport">
-User/Pass:<br>
-<input type="text" name="user" value=""><br>
+User:<br>
+<input type="text" name="user" value="<%= nn(ics, "user") %>"><br>
 Pass:<br>
-<input type="text" name="pass" value=""><br>
+<input type="text" name="pass" value="<%= nn(ics, "pass") %>"><br>
 Site:<br>
-<input type="text" name="site" value=""><br>
+<input type="text" name="site" value="<%= nn(ics, "site") %>"><br>
 C/Cid:<br>
-<input type="text" name="c" value=""size="5">:<input type="text" name="cid" value="" size="5"><br>
+<input type="text" name="c" value="<%= nn(ics, "c")%>"><br>
+<input type="text" name="cid" value="<%= nn(ics, "cid") %>"><br>
 <input type="submit">
 </form>
 <% } %>

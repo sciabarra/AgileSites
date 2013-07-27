@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<document>
+<asset id="1351275812155" type="PageDefinition">
+<attribute name="createdby"><string value="fwadmin"/></attribute>
+<attribute name="description"><string value="Content"/></attribute>
+<attribute name="Publist"><array>
+<integer value="1351275793143"/></array>
+</attribute>
+<attribute name="Attributes"><list><row>
+<column name="assetid"><assetreference type="PageAttribute" value="1351275812095"/></column>
+<column name="required"><string value="true"/></column>
+<column name="ordinal"><integer value="1"/></column>
+</row>
+<row>
+<column name="assetid"><assetreference type="PageAttribute" value="1351275812135"/></column>
+<column name="required"><string value="false"/></column>
+<column name="ordinal"><integer value="2"/></column>
+</row>
+<row>
+<column name="assetid"><assetreference type="PageAttribute" value="1351275812090"/></column>
+<column name="required"><string value="false"/></column>
+<column name="ordinal"><integer value="3"/></column>
+</row>
+<row>
+<column name="assetid"><assetreference type="PageAttribute" value="1351275812112"/></column>
+<column name="required"><string value="true"/></column>
+<column name="ordinal"><integer value="4"/></column>
+</row>
+<row>
+<column name="assetid"><assetreference type="PageAttribute" value="1351275812121"/></column>
+<column name="required"><string value="true"/></column>
+<column name="ordinal"><integer value="5"/></column>
+</row>
+<row>
+<column name="assetid"><assetreference type="PageAttribute" value="1351275812140"/></column>
+<column name="required"><string value="false"/></column>
+<column name="ordinal"><integer value="6"/></column>
+</row>
+<row>
+<column name="assetid"><assetreference type="PageAttribute" value="1351275812145"/></column>
+<column name="required"><string value="false"/></column>
+<column name="ordinal"><integer value="7"/></column>
+</row>
+<row>
+<column name="assetid"><assetreference type="PageAttribute" value="1351275812130"/></column>
+<column name="required"><string value="false"/></column>
+<column name="ordinal"><integer value="8"/></column>
+</row>
+<row>
+<column name="assetid"><assetreference type="PageAttribute" value="1351275812150"/></column>
+<column name="required"><string value="false"/></column>
+<column name="ordinal"><integer value="9"/></column>
+</row>
+</list>
+</attribute>
+<attribute name="createddate"><date value="2013-06-28 13:19:50.769"/></attribute>
+<attribute name="updatedby"><string value="fwadmin"/></attribute>
+<attribute name="status"><string value="PL"/></attribute>
+<attribute name="name"><string value="Content"/></attribute>
+<attribute name="updateddate"><date value="2013-06-10 05:28:36.877"/></attribute>
+<attribute name="fw_uid"><string value="5136914e-a0f7-47d6-a014-b3c1ade5319e"/></attribute>
+</asset>
+</document>

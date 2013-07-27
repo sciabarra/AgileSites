@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<document>
+<asset id="1351275814615" type="PageAttribute">
+<attribute name="editing"><string value="L"/></attribute>
+<attribute name="fw_uid"><string value="bd9fde78-f4d8-4768-9732-a25cdd864138"/></attribute>
+<attribute name="updateddate"><date value="2013-06-29 14:45:39.218"/></attribute>
+<attribute name="status"><string value="PL"/></attribute>
+<attribute name="updatedby"><string value="fwadmin"/></attribute>
+<attribute name="createdby"><string value="fwadmin"/></attribute>
+<attribute name="type"><string value="string"/></attribute>
+<attribute name="storage"><string value="L"/></attribute>
+<attribute name="createddate"><date value="2013-06-28 13:19:49.803"/></attribute>
+<attribute name="description"><string value="Title"/></attribute>
+<attribute name="name"><string value="Title"/></attribute>
+<attribute name="valuestyle"><string value="S"/></attribute>
+</asset>
+</document>

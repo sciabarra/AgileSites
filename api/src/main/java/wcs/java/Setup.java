@@ -1,28 +1,29 @@
 package wcs.java;
 
 import java.io.CharArrayWriter;
+import java.io.File;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
-
-import wcs.java.util.Util;
 import wcs.core.Log;
-
-import COM.FutureTense.Interfaces.ICS;
-
+import wcs.java.util.Util;
 import com.fatwire.assetapi.common.AssetAccessException;
+import com.fatwire.assetapi.common.SiteAccessException;
 import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AssetDataManager;
 import com.fatwire.assetapi.data.AssetId;
 import com.fatwire.assetapi.data.MutableAssetData;
+import com.fatwire.assetapi.def.AssetTypeDefManager;
 import com.fatwire.assetapi.query.Condition;
 import com.fatwire.assetapi.query.ConditionFactory;
 import com.fatwire.assetapi.query.OpTypeEnum;
 import com.fatwire.assetapi.query.SimpleQuery;
+import com.fatwire.assetapi.site.SiteManager;
 import com.fatwire.system.Session;
 import com.fatwire.system.SessionFactory;
 import com.openmarket.xcelerate.asset.AssetIdImpl;
+import COM.FutureTense.Interfaces.ICS;
 
 /**
  * The setup class. Invoking the setup method will initialize templates and
@@ -46,20 +47,12 @@ abstract public class Setup implements wcs.core.Setup {
 		return _site;
 	}
 
-	/**
-	 * Return assets to create
-	 * 
-	 * @return
-	 */
-	public abstract Class<?>[] getAssets();
-
 	// implementation
 
 	private Session session;
 	private AssetDataManager adm;
-
-	// future use
-	// private SiteManager sim;
+	private SiteManager sim;
+	private AssetTypeDefManager atdm;
 
 	/**
 	 * Execute the setup creating the assets using the Asset API
@@ -69,50 +62,67 @@ abstract public class Setup implements wcs.core.Setup {
 	 */
 	public String exec(ICS ics, String site, String username, String password) {
 
-		log.debug("site=%s", site);
-
 		session = SessionFactory.newSession(username, password);
 		adm = (AssetDataManager) session.getManager(AssetDataManager.class
 				.getName());
-
-		this._site = new Site(site);
+		sim = (SiteManager) session.getManager(SiteManager.class.getName());
+		atdm = (AssetTypeDefManager) session
+				.getManager(AssetTypeDefManager.class.getName());
 
 		// future use
-		// sim = (SiteManager) session.getManager(SiteManager.class.getName());
-
 		log.debug("created session, adm, sim");
 
-		
-		
-		
-		StringBuilder sb = new StringBuilder();
-		sb.append(">>> Setup BEGIN");
+		StringBuilder msg = new StringBuilder();
+		msg.append(">>> Setup BEGIN");
+		setupStaticType(ics, msg);
+		setupSite(ics, site, msg);
+		msg.append("\n--- Import Assets");
+		setupAssets(msg, ics, site);
+		msg.append("\n--- Import Static");
+		//setupStatic(ics, site, msg);
+		msg.append("\n<<< Setup END\n");
+		return msg.toString();
+	}
 
+	private void setupSite(ICS ics, String siteName, StringBuilder sb) {
+		boolean drop = ics.GetVar("drop") != null
+				&& ics.GetVar("drop").equals("yes");
+		this._site = new Site(siteName, this);
 		try {
+			_site.dropThencreateOrUpdate(drop, sim, sb);
+		} catch (SiteAccessException e) {
+			e.printStackTrace();
+		}
+	}
 
-			// future use
-			// sb.append("\nSite: " + getSite().createOrUpdate(sim));
-
-			for (Class<?> clazz : getAssets()) {
-				log.debug("instantiating " + clazz.getCanonicalName());
-				Method m = clazz.getDeclaredMethod("setup");
-				if (m == null)
-					continue;
-				Object obj = m.invoke("setup");
-				if (obj != null && obj instanceof AssetSetup) {
-					log.debug("found an actual instance");
-					recurse(ics, sb, (AssetSetup) obj, site);
-				}
+	private void setupAssets(StringBuilder sb, ICS ics, String site) {
+		for (Class<?> clazz : getAssets())
+			try {
+				setupAsset(clazz, ics, site, sb);
+			} catch (Exception e) {
+				log.trace(e, "cannot setup %s", clazz.getCanonicalName());
 			}
+	}
 
+	private void setupAsset(Class<?> clazz, ICS ics, String site,
+			StringBuilder sb) {
+		log.debug("instantiating " + clazz.getCanonicalName());
+		Method m = null;
+		try {
+			m = clazz.getDeclaredMethod("setup");
+			if (m == null)
+				return;
+			Object obj = m.invoke("setup");
+			if (obj != null && obj instanceof AssetSetup) {
+				log.debug("found an actual instance");
+				recurse(ics, sb, (AssetSetup) obj, site);
+			}
 		} catch (Exception e) {
 			CharArrayWriter caw = new CharArrayWriter();
 			e.printStackTrace(new PrintWriter(caw));
 			sb.append("\nException: ").append(caw.toString());
 			log.error(e, "Asset creation/update");
 		}
-		sb.append("\n<<< Setup END\n");
-		return sb.toString();
 	}
 
 	// recursive setup to handle the getNextAsset
@@ -124,6 +134,45 @@ abstract public class Setup implements wcs.core.Setup {
 		setup.setSite(site);
 		sb.append("\n" + insertOrUpdate(ics, setup));
 		recurse(ics, sb, setup.getNextSetup(), site);
+	}
+
+	private void setupStaticType(ICS ics, StringBuilder sb) {
+		try {
+			sb.append("\nFound asset type " + atdm.findByName("Static", "").getName());
+		} catch (Exception e) {
+			try {
+				atdm.createAssetMakerAssetType(
+						"Static",
+						"Static.xml",
+						"<ASSET "
+								+ " NAME=\"Static\" "
+								+ " DESCRIPTION=\"Static\" "
+								+ " PROCESSOR=\"4.0\" "
+								+ " DEFDIR=\"$(CS.Property.agilesites.static)\">"
+								+ "<PROPERTIES>" + "<PROPERTY "
+								+ " NAME=\"url\" " + " DESCRIPTION=\"URL\">"
+								+ "<STORAGE " + " TYPE=\"VARCHAR\""
+								+ " LENGTH=\"255\"/>" + "<INPUTFORM "
+								+ " TYPE=\"UPLOAD\" " + " WIDTH=\"255\" "
+								+ " REQUIRED=\"YES\""
+								+ " LINKTEXT=\"UPLOAD\"/>" + "</PROPERTY>"
+								+ "</PROPERTIES>" + "</ASSET>", false, false);
+				sb.append("\nCreated Static");
+			} catch (Exception ex) {
+				sb.append("Exception " + ex.getMessage());
+			}
+		}
+	}
+
+	@SuppressWarnings("unused")
+	private void setupStatic(ICS ics, String site, StringBuilder sb) {
+		sb.append("\njar=").append(ics.GetVar("jar"));
+		File jar = new File(ics.GetVar("jar"));
+		int n = jar.getAbsoluteFile().getParentFile().getAbsolutePath()
+				.length();
+		Static st = new Static(jar, n);
+		st.setSite(site);
+		sb.append("\n" + insertOrUpdate(ics, st));
 	}
 
 	/**
@@ -255,5 +304,19 @@ abstract public class Setup implements wcs.core.Setup {
 		}
 		return "OK";
 	}
+
+	abstract public Long getId();
+
+	abstract public String getName();
+
+	abstract public String getDescription();
+
+	abstract public List<String> getUsers();
+
+	abstract public List<String> getUserRoles(String arg0);
+
+	abstract public List<String> getAssetTypes();
+
+	abstract public Class<?>[] getAssets();
 
 }
