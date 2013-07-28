@@ -6,15 +6,18 @@ import wcs.java.Element;
 import wcs.java.Picker;
 import wcs.java.Template;
 import wcs.java.AssetSetup;
+import wcs.java.util.AddIndex;
 import wcs.core.Log;
 
+@AddIndex("demo/elements.txt")
 public class Summary extends Element {
 
 	final static Log log = Log.getLog(Summary.class);
 
 	public static AssetSetup setup() {
 
-		return new Template("Page", "DmSummary", Template.INTERNAL, // change
+		return new Template(137502363009l, "Page", "DmSummary",
+				Template.INTERNAL, // change
 				demo.element.page.Summary.class) //
 				.cache("false", "false") // change caching here
 				.description("Template DmSummary for type Page ");

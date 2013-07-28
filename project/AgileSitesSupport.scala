@@ -162,7 +162,7 @@ trait AgileSitesSupport extends Utils {
           (args, version, url, sites, user, pass,
           ignorePopulate, jar, count,
           base, classpath, s, runner) =>
-          deploy(url, user, pass, args, sites, file(jar), "lib", file(jar).getName)
+            deploy(url, user, pass, args, sites, file(jar), "lib", file(jar).getName)
         }
   }
 
@@ -217,26 +217,23 @@ trait AgileSitesSupport extends Utils {
       (compile in Compile, resourceManaged in Compile) map {
         (analysis, dstDir) =>
 
-          //println(analysis.apis.internal)
+          val groupIndexed =
+            analysis.apis.allInternalSources. // all the sources
+              map(extractClassAndIndex(_)). // list of Some(index, class) or Nome
+              flatMap(x => x). // remove None
+              groupBy(_._1). // group by (index, (index, List(class)) 
+              map { x => (x._1, x._2 map (_._2)) }; // lift to (index, List(class))
 
-          // TODO COMPLETE
+          //println(groupIndexed)
 
-          /*
-	       val all = Discovery.applications(Tests.allDefs(analysis)) 
-	       for(item <- all) {
-	          println(item)
-	       }
-          */
-          //println("!!! " + compiled.apis.allInternalSources)
-          //for(src <- compiled.apis.allInternalSources) {
-          //  println(src)
-          //}
-          //println(compiled.relations.classes)
-
-          //for(src <- compiled.relations.classes) 
-          //  println(src)
-
-          Seq[File]()
+          val l = for ((subfile, lines) <- groupIndexed) yield {
+            val file = dstDir / subfile
+            val body = lines mkString ("# generated - do not edit\n", "\n", "\n# by AgileSites build\n")
+            writeFile(file, body)
+            file
+          }
+          
+          l.toSeq
       }
 
   // setup offline task
@@ -366,7 +363,7 @@ trait AgileSitesSupport extends Utils {
           val (collected, uncollected) = imp.orderedDeps
 
           imp.importAssets(uncollected)
-  
+
       }
   }
 

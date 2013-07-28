@@ -25,16 +25,17 @@ public class CSElement extends AssetSetup {
 	 * @param name
 	 * @param elementClass
 	 */
-	public CSElement(String name, Class<?> elementClass) {
-		this(name, elementClass, (String) null);
+	public CSElement(long id, String name, Class<?> elementClass) {
+		this(id, name, elementClass, (String) null);
 	}
 
 	/**
 	 * Create invoking the given elementClass with a specifice elementName
 	 * (useful for fixed elements like attribute editors)
 	 */
-	public CSElement(String name, Class<?> elementClass, String elementName) {
-		super("CSElement", "", name);
+	public CSElement(long id, String name, Class<?> elementClass,
+			String elementName) {
+		super(id, "CSElement", "", name);
 		this.elementClass = elementClass;
 		this.elementName = elementName;
 	}
@@ -43,8 +44,9 @@ public class CSElement extends AssetSetup {
 	 * Create a cselement with a chained asset setup
 	 * 
 	 */
-	public CSElement(String name, Class<?> elementClass, AssetSetup nextSetup) {
-		this(name, elementClass);
+	public CSElement(long id, String name, Class<?> elementClass,
+			AssetSetup nextSetup) {
+		this(id, name, elementClass);
 		setNextSetup(nextSetup);
 	}
 
@@ -53,20 +55,16 @@ public class CSElement extends AssetSetup {
 	}
 
 	public List<String> getAttributes() {
-		return Util.listString("name", "description", "elementname",
-				"rootelement", "url", "resdetails1", "resdetails2");
+		return Util.listString("id", "name", "description", "elementname",
+				"rootelement", "url", "resdetails1", "resdetails2",
+				"createdby", "createddate");
 	}
-
-	
 
 	private String template(String clazz) {
 		return Util.getResource("/Streamer.jsp").replaceAll("%CLASS%", clazz);
 	}
 
-	void setData(MutableAssetData data) {
-
-		// data.getAttributeData("createdby").setData("agilesites");
-		// data.getAttributeData("createddate").setData(new Date());
+	public void setData(MutableAssetData data) {
 
 		String elementName = null;
 		String elementJsp = null;
@@ -82,12 +80,11 @@ public class CSElement extends AssetSetup {
 
 		// root element
 		data.getAttributeData("rootelement").setData(elementName);
-		// addAttribute(data, "rootelement", element);
 
 		// element name
 		data.getAttributeData("elementname").setData(elementName);
-		// addAttribute(data, "elementname", element);
-
+		
+		// extra details
 		data.getAttributeData("resdetails1").setData(
 				"eid=" + data.getAssetId().getId());
 		data.getAttributeData("resdetails2").setData(
@@ -98,6 +95,7 @@ public class CSElement extends AssetSetup {
 		BlobObject blob = new BlobObjectImpl(elementJsp, "AgileSites", bytes);
 
 		data.getAttributeData("url").setData(blob);
+
 		// data.getAttributeData("Mapping").setData(new ArrayList());
 		// data.getAttributeData("Mapping").setData(new AttributeMan HashMap());
 	}

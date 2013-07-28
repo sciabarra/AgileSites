@@ -6,15 +6,17 @@ import wcs.java.Element;
 import wcs.java.Picker;
 import wcs.java.Template;
 import wcs.java.AssetSetup;
+import wcs.java.util.AddIndex;
 import wcs.core.Log;
 
+@AddIndex("demo/elements.txt")
 public class ContentSeeAlso extends Element {
 
 	final static Log log = Log.getLog(ContentSeeAlso.class);
 
 	public static AssetSetup setup() {
 
-		return new Template("Page", "DmContentSeeAlso", Template.INTERNAL,
+		return new Template(137502363008l, "Page", "DmContentSeeAlso", Template.INTERNAL,
 				demo.element.page.ContentSeeAlso.class) //
 				.cache("false", "false") // change caching here
 				.description("Template DmContentSeeAlso for type Page Content");

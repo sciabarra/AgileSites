@@ -8,17 +8,18 @@ import wcs.java.Element;
 import wcs.java.Env;
 import wcs.java.Picker;
 import wcs.java.SitePlan;
+import wcs.java.util.AddIndex;
 import wcs.core.Log;
 
+@AddIndex("demo/elements.txt")
 public class Tree extends Element {
 
 	final static Log log = Log.getLog(Tree.class);
-	private SitePlan sp ;
+	private SitePlan sp;
 	private Env e;
-	
 
 	public static AssetSetup setup() {
-		return new CSElement("DmTree", demo.element.Tree.class);
+		return new CSElement(137502363003l, "DmTree", demo.element.Tree.class);
 	}
 
 	/**
@@ -30,7 +31,7 @@ public class Tree extends Element {
 	private void visit(Id parent, StringBuilder result) {
 		sp.goTo(parent);
 		for (Id id : sp.children()) {
-			Asset a = e.getAsset(id); 
+			Asset a = e.getAsset(id);
 			String node = String.format(//
 					"d.add(%d, %d, '%s', '%s');\n", //
 					id.cid, parent.cid, a.getName(), a.getUrl());
@@ -49,7 +50,8 @@ public class Tree extends Element {
 
 		// navigate the siteplan
 		Id parent = sp.current();
-		StringBuilder result = new StringBuilder("d.add("+parent.cid+", -1,'"+e.getConfig().getSite()+"');");
+		StringBuilder result = new StringBuilder("d.add(" + parent.cid
+				+ ", -1,'" + e.getConfig().getSite() + "');");
 		visit(parent, result);
 
 		html.replace("#tree-body", result.toString());

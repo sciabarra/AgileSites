@@ -26,7 +26,7 @@ public class Static extends AssetSetup {
 	 * from the path name
 	 */
 	public Static(File file, int prefixLen) {
-		super("Static", "", file.getAbsolutePath()
+		super(0l, "Static", "", file.getAbsolutePath()
 				.replace(File.separatorChar, '/').substring(1 + prefixLen));
 
 		this.prefixLen = prefixLen;
@@ -47,7 +47,7 @@ public class Static extends AssetSetup {
 		return Util.listString("name", "description", "url");
 	}
 
-	void setData(MutableAssetData data) {
+	public void setData(MutableAssetData data) {
 
 		// blob
 		byte[] bytes = null;

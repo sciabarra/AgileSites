@@ -276,30 +276,34 @@ public class Util {
 	 * @return
 	 */
 	public static Class<?>[] classesFromResource(String site,
-			String resourceName) {
-		String res = "/" + wcs.core.WCS.normalizeSiteName(site) + "/"
-				+ resourceName;
-		log.debug("res=" + res);
+			String... resourceNames) {
 		List<Class<?>> classList = new LinkedList<Class<?>>();
-		try {
-			InputStream is = Util.class.getResourceAsStream(res);
-			InputStreamReader isr = new InputStreamReader(is);
-			BufferedReader br = new BufferedReader(isr);
+		for (String resourceName : resourceNames) {
+			String res = "/" + wcs.core.WCS.normalizeSiteName(site) + "/"
+					+ resourceName;
+			log.debug("res=" + res);
+			try {
+				InputStream is = Util.class.getResourceAsStream(res);
+				InputStreamReader isr = new InputStreamReader(is);
+				BufferedReader br = new BufferedReader(isr);
 
-			String className = br.readLine();
-			while (className != null) {
-				log.debug("read " + className);
-				try {
-					if (className.trim().length() > 0)
-						classList.add(Class.forName(className));
-				} catch (Exception e) {
-					log.warn("oops! cannot create " + className);
+				String className = br.readLine();
+				while (className != null) {
+					log.debug("read " + className);
+					try {
+						className = className.trim();
+						if (className.length() > 0
+								&& !className.startsWith("#"))
+							classList.add(Class.forName(className));
+					} catch (Exception e) {
+						log.warn("oops! cannot create " + className);
+					}
+					className = br.readLine();
 				}
-				className = br.readLine();
+			} catch (Exception e) {
+				log.warn(e.getMessage());
+				// e.printStackTrace();
 			}
-		} catch (Exception e) {
-			log.warn(e.getMessage());
-			// e.printStackTrace();
 		}
 		return classList.toArray(new Class<?>[0]);
 	}

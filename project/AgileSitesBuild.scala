@@ -92,7 +92,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("api"),
     settings = commonSettings ++ Seq(
       name := "agilesites-api",
-      wcsGenerateIndexTask,
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
 
   /// APP 
@@ -101,6 +100,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("app"),
     settings = commonSettings ++ Seq(
       name := "agilesites-app",
+      wcsGenerateIndexTask,
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
       wcsCopyHtmlTask)) dependsOn (api)
 

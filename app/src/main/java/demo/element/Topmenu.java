@@ -7,15 +7,17 @@ import wcs.java.CSElement;
 import wcs.java.AssetSetup;
 import wcs.java.Picker;
 import wcs.java.SitePlan;
+import wcs.java.util.AddIndex;
 import wcs.core.Log;
 import static java.lang.String.format;
 
+@AddIndex("demo/elements.txt")
 public class Topmenu extends Element {
 
 	final static Log log = Log.getLog(Error.class);
 
 	public static AssetSetup setup() {
-		return new CSElement("DmTopmenu", demo.element.Topmenu.class);
+		return new CSElement(137502363002l, "DmTopmenu", demo.element.Topmenu.class);
 	}
 
 	@Override

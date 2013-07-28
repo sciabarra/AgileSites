@@ -9,7 +9,7 @@ if errorlevel 9009 if not errorlevel 9010 goto notfoundjavac
 if not exist build.sbt goto notfoundbuildsbt
 set SCRIPT_DIR=%~dp0
 if exist %HOMEDRIVE%%HOMEPATH%\.ivy2\local\com.sciabarra\1.2_*\nul goto :corebuilt
-java -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=project\boot -jar "%SCRIPT_DIR%bin\sbt-launch.jar" core/publish-local
+java -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=project\boot -jar "%SCRIPT_DIR%bin\sbt-launch.jar" core/publish-local api/publish-local
 :corebuilt
 java -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=project\boot -jar "%SCRIPT_DIR%bin\sbt-launch.jar" %*
 goto end

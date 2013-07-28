@@ -4,6 +4,7 @@ import demo.Config;
 import wcs.java.Asset;
 import wcs.java.Env;
 import wcs.java.Router;
+import wcs.java.util.AddIndex;
 import wcs.java.util.TestElement;
 import wcs.core.Log;
 
@@ -11,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static wcs.core.Common.*;
 
+@AddIndex("demo/tests.txt")
 public class RouterTest extends TestElement {
 
 	final static Log log = Log.getLog(RouterTest.class);

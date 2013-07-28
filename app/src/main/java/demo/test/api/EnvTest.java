@@ -5,19 +5,17 @@ import org.junit.Test;
 
 import wcs.core.Log;
 import wcs.java.Env;
+import wcs.java.util.AddIndex;
 import wcs.java.util.TestElement;
-import demo.element.Export;
 
 // this test must be run by AgileSites TestRunnerElement
+@AddIndex("demo/tests.txt")
 public class EnvTest extends TestElement {
 
 	final static Log log = Log.getLog(EnvTest.class);
 
-	Export it;
-
 	@Before
 	public void setUp() {
-		it = new Export();
 	}
 
 	@Test
@@ -34,6 +32,5 @@ public class EnvTest extends TestElement {
 
 		assertNull(e.sql("select from SystemUsersError"));
 	}
-	
 
 }

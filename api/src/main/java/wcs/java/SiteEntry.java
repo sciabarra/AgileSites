@@ -21,8 +21,8 @@ public class SiteEntry extends AssetSetup {
 	 * @param name
 	 * @param wrapper
 	 */
-	public SiteEntry(String name, boolean wrapper) {
-		this(name, wrapper, (String)null);
+	public SiteEntry(long id, String name, boolean wrapper) {
+		this(id, name, wrapper, (String)null);
 	}
 
 	/**
@@ -31,8 +31,8 @@ public class SiteEntry extends AssetSetup {
 	 * @param name
 	 * @param wrapper
 	 */
-	public SiteEntry(String name, boolean wrapper, AssetSetup nextSetup) {
-		this(name, wrapper, (String)null);
+	public SiteEntry(long id, String name, boolean wrapper, AssetSetup nextSetup) {
+		this(id, name, wrapper, (String)null);
 		setNextSetup(nextSetup);
 	}
 
@@ -44,8 +44,8 @@ public class SiteEntry extends AssetSetup {
 	 * @param wrapper
 	 * @param elementname
 	 */
-	public SiteEntry(String name, boolean wrapper, String elementname) {
-		super("SiteEntry", "", name);
+	public SiteEntry(long id, String name, boolean wrapper, String elementname) {
+		super(id, "SiteEntry", "", name);
 		this.elementname = elementname;
 		this.wrapper = wrapper;
 	}
@@ -66,7 +66,7 @@ public class SiteEntry extends AssetSetup {
 	}
 
 	@Override
-	void setData(MutableAssetData data) {
+	public void setData(MutableAssetData data) {
 
 		String elementname = //
 		(this.elementname == null) //

@@ -10,7 +10,6 @@ import wcs.core.Log;
 import wcs.java.util.Util;
 import com.fatwire.assetapi.common.AssetAccessException;
 import com.fatwire.assetapi.common.SiteAccessException;
-import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AssetDataManager;
 import com.fatwire.assetapi.data.AssetId;
 import com.fatwire.assetapi.data.MutableAssetData;
@@ -36,7 +35,7 @@ abstract public class Setup implements wcs.core.Setup {
 
 	private static Log log = Log.getLog(Setup.class);
 
-	private Site _site = null;
+	private Site site = null;
 
 	/**
 	 * Return the current site - this is set by exec
@@ -44,7 +43,7 @@ abstract public class Setup implements wcs.core.Setup {
 	 * @return
 	 */
 	public Site getSite() {
-		return _site;
+		return site;
 	}
 
 	// implementation
@@ -79,7 +78,7 @@ abstract public class Setup implements wcs.core.Setup {
 		msg.append("\n--- Import Assets");
 		setupAssets(msg, ics, site);
 		msg.append("\n--- Import Static");
-		//setupStatic(ics, site, msg);
+		// setupStatic(ics, site, msg);
 		msg.append("\n<<< Setup END\n");
 		return msg.toString();
 	}
@@ -87,9 +86,9 @@ abstract public class Setup implements wcs.core.Setup {
 	private void setupSite(ICS ics, String siteName, StringBuilder sb) {
 		boolean drop = ics.GetVar("drop") != null
 				&& ics.GetVar("drop").equals("yes");
-		this._site = new Site(siteName, this);
+		this.site = new Site(siteName, this);
 		try {
-			_site.dropThencreateOrUpdate(drop, sim, sb);
+			site.dropThencreateOrUpdate(drop, sim, sb);
 		} catch (SiteAccessException e) {
 			e.printStackTrace();
 		}
@@ -138,7 +137,8 @@ abstract public class Setup implements wcs.core.Setup {
 
 	private void setupStaticType(ICS ics, StringBuilder sb) {
 		try {
-			sb.append("\nFound asset type " + atdm.findByName("Static", "").getName());
+			sb.append("\nFound asset type "
+					+ atdm.findByName("Static", "").getName());
 		} catch (Exception e) {
 			try {
 				atdm.createAssetMakerAssetType(
@@ -183,13 +183,14 @@ abstract public class Setup implements wcs.core.Setup {
 	 * @return
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	AssetData findById(String c, long cid) {
+	MutableAssetData findById(String c, long cid) {
 		AssetId aid = new AssetIdImpl(c, cid);
 		Iterator it;
 		try {
-			it = (Iterator) adm.read(Util.list(aid)).iterator();
+			it = (Iterator) adm.readForUpdate(Util.list(aid)).iterator();
+
 			if (it.hasNext())
-				return (AssetData) it.next();
+				return (MutableAssetData) it.next();
 		} catch (Exception e) {
 			log.warn(e.getMessage());
 			// e.printStackTrace();
@@ -241,14 +242,21 @@ abstract public class Setup implements wcs.core.Setup {
 		String what = setup.toString();
 
 		try {
-
-			MutableAssetData data = findByName(setup.getName(), setup.getC(),
-					null, setup.getAttributes());
+			MutableAssetData data;
+			Long id = setup.getCid();
+			if (id == null)
+				data = findByName(setup.getName(), setup.getC(), null,
+						setup.getAttributes());
+			else
+				data = findById(setup.getC(), id.longValue());
 
 			// inserting
 			if (data == null)
-				return what + " INSERTING: "
-						+ insert(setup, Long.parseLong(ics.genID(true)));
+				return what
+						+ " INSERTING: "
+						+ insert(setup,
+								id == null ? Long.parseLong(ics.genID(true))
+										: id.longValue());
 
 			// updating
 			return what + " UPDATING: " + update(setup, data);
@@ -267,11 +275,11 @@ abstract public class Setup implements wcs.core.Setup {
 		MutableAssetData data = adm.newAssetData(asset.getC(),
 				asset.getSubtype());
 
+		site.setData(data);
 		data.setAssetId(aid);
-
-		_site.setData(data);
 		data.getAttributeData("name").setData(asset.getName());
 		data.getAttributeData("description").setData(asset.getDescription());
+		setTimeStamp(data, asset.getCid().longValue());		
 		asset.setData(data);
 		try {
 			adm.insert(Util.listData(data));
@@ -279,21 +287,18 @@ abstract public class Setup implements wcs.core.Setup {
 			log.error(e, "insert failed");
 			return "ERROR: " + e;
 		}
-		return "INSERT OK";
+		return "INSERT " + aid + " OK ";
 	}
 
 	String update(AssetSetup asset, MutableAssetData data)
 			throws AssetAccessException {
 		log.debug("update " + asset);
+		AssetId aid = data.getAssetId();
 
-		// dump the asset in xml format
-		if (data.getAssetId().getType().equals("AttrTypes")) {
-			String dump = "\nAsset: " + data.getAssetId()
-					+ Util.dumpAssetData(data);
-			log.debug(dump);
-		}
+		site.setData(data);
+		data.getAttributeData("name").setData(asset.getName());
 
-		_site.setData(data);
+		setTimeStamp(data, asset.getCid().longValue());
 		asset.setData(data);
 
 		try {
@@ -302,7 +307,15 @@ abstract public class Setup implements wcs.core.Setup {
 			log.error(e, "update failed");
 			return "ERROR: " + e;
 		}
-		return "OK";
+		return "UPDATE " + aid + " OK";
+	}
+	
+	private void setTimeStamp(MutableAssetData data, long id) {
+		data.getAttributeData("createdby").setData("AgileSites");
+		data.getAttributeData("createddate").setData(
+				new java.util.Date(id));
+		data.getAttributeData("updatedby").setData("AgileSites");
+		data.getAttributeData("updateddate").setData(new java.util.Date());
 	}
 
 	abstract public Long getId();

@@ -24,6 +24,7 @@ public abstract class Asset {
 	private String name;
 	private String description;
 	private String type;
+	private Long id = null;
 	private String subtype;
 	private String site;
 	private String filename;
@@ -36,16 +37,30 @@ public abstract class Asset {
 	}
 
 	/**
-	 * Create an asset with a given type, subtype and name.
+	 * Create an asset with a given type, subtype name and id.
+	 * 
+	 * @param type
+	 * @param subtype
+	 * @param name
+	 * @param id
+	 */
+	public Asset(long id, String type, String subtype, String name) {
+		if (id > 0)
+			this.id = id;
+		this.name = name;
+		this.description = name;
+		setTypeSubtype(type, subtype);
+	}
+
+	/**
+	 * Create an asset with a given type, subtype name and id.
 	 * 
 	 * @param type
 	 * @param subtype
 	 * @param name
 	 */
 	public Asset(String type, String subtype, String name) {
-		this.name = name;
-		this.description = name;
-		setTypeSubtype(type, subtype);
+		this(0l, type, subtype, name);
 	}
 
 	protected void setTypeSubtype(String type, String subtype) {
@@ -77,6 +92,8 @@ public abstract class Asset {
 	 * @return
 	 */
 	public Id getId() {
+		if (id != null)
+			return new Id(type, id);
 		return null;
 	}
 
@@ -95,7 +112,7 @@ public abstract class Asset {
 	 * @return
 	 */
 	public Long getCid() {
-		return null;
+		return id;
 	}
 
 	/**

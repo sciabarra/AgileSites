@@ -14,22 +14,23 @@ public abstract class AssetSetup extends Asset {
 	
 	private AssetSetup nextSetup = null;
 	
-	public AssetSetup(String type, String subtype, String name) {
-		super(type, subtype, name);
+	public AssetSetup(long id, String type, String subtype, String name) {
+		super(id, type, subtype, name);
 	}
+	
 
 	/**
 	 * Return a list of expected attributes
 	 * 
 	 */
-	abstract List<String> getAttributes();
+	public abstract List<String> getAttributes();
 
 	/**
 	 * Define asset data for this asset
 	 * 
 	 * @return
 	 */
-	abstract void setData(MutableAssetData data);
+	public abstract void setData(MutableAssetData data);
 
 	/**
 	 * Chain another asset setup (or null if not chained asset)

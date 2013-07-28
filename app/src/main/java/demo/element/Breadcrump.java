@@ -8,15 +8,17 @@ import wcs.java.CSElement;
 import wcs.java.AssetSetup;
 import wcs.java.Picker;
 import wcs.java.SitePlan;
+import wcs.java.util.AddIndex;
 import wcs.core.Log;
 import static java.lang.String.format;
 
+@AddIndex("demo/elements.txt")
 public class Breadcrump extends Element {
 
 	final static Log log = Log.getLog(Breadcrump.class);
 
 	public static AssetSetup setup() {
-		return new CSElement("DmBreadcrump", demo.element.Breadcrump.class);
+		return new CSElement(137502363000l, "DmBreadcrump", demo.element.Breadcrump.class);
 	}
 
 	@Override

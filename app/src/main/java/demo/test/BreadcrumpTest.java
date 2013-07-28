@@ -2,11 +2,14 @@ package demo.test;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import wcs.java.util.AddIndex;
 import wcs.java.util.TestElement;
 import wcs.core.Log;
 import demo.element.Breadcrump;
 
 // this test must be run by AgileSites TestRunnerElement
+@AddIndex("demo/tests.txt")
 public class BreadcrumpTest extends TestElement {
 
 	static final Log log = Log.getLog(BreadcrumpTest.class);

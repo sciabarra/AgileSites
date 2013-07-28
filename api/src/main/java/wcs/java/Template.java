@@ -22,21 +22,18 @@ public class Template extends AssetSetup {
 	public final static char EXTERNAL = 'x';
 	public final static char LAYOUT = 'l';
 
-	// private final static Log log = new Log(Template.class);
-
 	private String rootelement;
 	private String fileelement;
 	private String folderelement;
-
 	private String clazz;
 	private String cscache;
 	private String sscache;
 	private char ttype;
 	private String forSubtype;
 
-	public Template(String subtype, String name, char ttype,
+	public Template(long id, String subtype, String name, char ttype,
 			Class<?> elementClass) {
-		this(subtype, name, ttype, null, elementClass);
+		this(id, subtype, name, ttype, null, elementClass);
 	}
 
 	/**
@@ -50,10 +47,9 @@ public class Template extends AssetSetup {
 	 * @param description
 	 * @param element
 	 */
-	public Template(String subtype, String name, char ttype, String forSubtype,
+	public Template(long id, String subtype, String name, char ttype, String forSubtype,
 			Class<?> elementClass) {
-
-		super("Template", subtype, name);
+		super(id, "Template", subtype, name);
 		this.clazz = elementClass.getCanonicalName();
 		if (subtype == null || subtype.trim().length() == 0) {
 			subtype = "";
@@ -83,9 +79,9 @@ public class Template extends AssetSetup {
 	 * @param elementClass
 	 * @param nextSetup
 	 */
-	public Template(String subtype, String name, char ttype,
+	public Template(long id, String subtype, String name, char ttype,
 			Class<?> elementClass, AssetSetup nextSetup) {
-		this(subtype, name, ttype, elementClass);
+		this(id, subtype, name, ttype, elementClass);
 		setNextSetup(nextSetup);
 	}
 
@@ -116,7 +112,7 @@ public class Template extends AssetSetup {
 	}
 
 	@Override
-	List<String> getAttributes() {
+	public List<String> getAttributes() {
 		return Util.listString("name", "description", "category",
 				"rootelement", "element", "ttype", "pagecriteria", "acl",
 				"applicablesubtypes", "Thumbnail");
@@ -128,7 +124,7 @@ public class Template extends AssetSetup {
 
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	void setData(MutableAssetData data) {
+	public void setData(MutableAssetData data) {
 
 		// log.info(Util.dump(data));
 		// String rootelement = getSubtype() + "/" + getName();

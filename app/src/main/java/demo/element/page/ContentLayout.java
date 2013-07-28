@@ -6,14 +6,16 @@ import wcs.java.Element;
 import wcs.java.Env;
 import wcs.java.Picker;
 import wcs.java.Template;
+import wcs.java.util.AddIndex;
 import wcs.core.Log;
 
+@AddIndex("demo/elements.txt")
 public class ContentLayout extends Element {
 
 	Log log = Log.getLog(ContentLayout.class);
 
 	public static AssetSetup setup() {
-		return new Template("Page", "DmContentLayout", Template.LAYOUT,
+		return new Template(137502363010l, "Page", "DmContentLayout", Template.LAYOUT,
 				demo.element.page.ContentLayout.class) //
 				.cache("false", "false") // change caching here
 				.description("Layout for type Page Content");

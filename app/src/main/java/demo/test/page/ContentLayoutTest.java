@@ -4,11 +4,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import wcs.java.Env;
+import wcs.java.util.AddIndex;
 import wcs.java.util.TestElement;
 import wcs.core.Log;
 import demo.element.page.ContentLayout;
 
 // this test must be run by AgileSites TestRunnerElement
+@AddIndex("demo/tests.txt")
 public class ContentLayoutTest extends TestElement {
 	
 	final static Log log = Log.getLog(ContentLayoutTest.class);
