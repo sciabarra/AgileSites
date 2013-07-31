@@ -3,25 +3,30 @@ package demo.test;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.springframework.stereotype.Component;
 import wcs.java.util.TestElement;
 import wcs.core.Log;
 import demo.element.Tree;
 
+import javax.annotation.Resource;
+
 // this test must be run by AgileSites TestRunnerElement
+@Component
 public class TreeTest extends TestElement {
 
 	final static Log log = Log.getLog(TreeTest.class);
-	
-	Tree it;
+
+    @Resource
+	Tree tree;
 	
 	@Before
 	public void setUp() {
-		it = new Tree();
+        //tree = new Tree();
 	}
 
 	@Test
 	public void test() {
-		parse(it.apply(env("")));
+		parse(tree.apply());
 		odump(log);		
 		// TODO: test the resuls
 	}

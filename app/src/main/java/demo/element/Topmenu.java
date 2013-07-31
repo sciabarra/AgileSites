@@ -1,5 +1,6 @@
 package demo.element;
 
+import org.springframework.stereotype.Component;
 import wcs.core.Id;
 import wcs.java.Env;
 import wcs.java.Element;
@@ -8,18 +9,28 @@ import wcs.java.AssetSetup;
 import wcs.java.Picker;
 import wcs.java.SitePlan;
 import wcs.core.Log;
+
+import javax.annotation.Resource;
+
 import static java.lang.String.format;
 
+@Component
 public class Topmenu extends Element {
 
 	final static Log log = Log.getLog(Error.class);
+
+    @Resource(name="env")
+    Env e;
+
+    @Resource(name="sitePlan")
+    SitePlan sp;
 
 	public static AssetSetup setup() {
 		return new CSElement("DmTopmenu", demo.element.Topmenu.class);
 	}
 
 	@Override
-	public String apply(Env e) {
+	public String apply() {
 
 		log.debug("Testing Topmenu");
 
@@ -28,7 +39,6 @@ public class Topmenu extends Element {
 
 		html.dump(log);
 
-		SitePlan sp = e.getSitePlan();
 		StringBuilder sb = new StringBuilder();
 		Id me = e.getId();
 		String sep = "&nbsp;|&nbsp;";

@@ -1,5 +1,6 @@
 package demo.element.page;
 
+import org.springframework.stereotype.Component;
 import wcs.java.Asset;
 import wcs.java.AssetSetup;
 import wcs.java.Element;
@@ -8,9 +9,15 @@ import wcs.java.Picker;
 import wcs.java.Template;
 import wcs.core.Log;
 
+import javax.annotation.Resource;
+
+@Component
 public class ContentLayout extends Element {
 
 	Log log = Log.getLog(ContentLayout.class);
+
+    @Resource
+    Env env;
 
 	public static AssetSetup setup() {
 		return new Template("Page", "DmContentLayout", Template.LAYOUT,
@@ -20,9 +27,9 @@ public class ContentLayout extends Element {
 	}
 
 	@Override
-	public String apply(Env e) {
+	public String apply() {
 
-		Asset a = e.getAsset();
+		Asset a = env.getAsset();
 		Picker html = Picker.load("/blueprint/template.html", "#content");
 
 		html.prefixAttrs("img", "src", "/cs/blueprint/");
@@ -58,9 +65,9 @@ public class ContentLayout extends Element {
 
 		
 		
-		html.replace("#tree", e.call("DmTree"));
-		html.replace("#topmenu", e.call("DmTopmenu"));
-		html.replace("#breadcrump", e.call("DmBreadcrump",//
+		html.replace("#tree", env.call("DmTree"));
+		html.replace("#topmenu", env.call("DmTopmenu"));
+		html.replace("#breadcrump", env.call("DmBreadcrump",//
 				arg("c", a.getC()), arg("cid", a.getCid().toString())));
 
 

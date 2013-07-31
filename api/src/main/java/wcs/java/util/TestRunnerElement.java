@@ -9,13 +9,24 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import wcs.java.Element;
 import wcs.java.Env;
 import wcs.core.Log;
 
-public abstract class TestRunnerElement extends Element {
+import javax.annotation.Resource;
+
+public abstract class TestRunnerElement extends Element{
+
+
+    @Autowired
+    private org.springframework.context.ApplicationContext appContext;
 
 	final static Log log = Log.getLog(TestRunnerElement.class);
+
+    @Resource(name="env")
+    Env e;
 
 	abstract public Class<?>[] tests();
 
@@ -31,8 +42,8 @@ public abstract class TestRunnerElement extends Element {
 	private String testform(String pagename) {
 
 		Class<?>[] tests = tests();
-		StringBuffer opts = new StringBuffer();
-		StringBuffer hids = new StringBuffer();
+		StringBuilder opts = new StringBuilder();
+		StringBuilder hids = new StringBuilder();
 		for (int i = 0; i < tests().length; i++) {
 			opts.append("<option>").append(tests[i].getCanonicalName())
 					.append("</option>");
@@ -75,12 +86,14 @@ public abstract class TestRunnerElement extends Element {
 		int runCount = 0;
 		int skipCount = 0;
 
+
+        /*
 		@Override
 		public void testAssumptionFailure(Failure failure) {
 			// sb.append("Assumption").append(failure.getMessage()).append("<br>");
 			super.testAssumptionFailure(failure);
 		}
-
+         */
 		public TestListener append(String msg) {
 			sb.append(msg);
 			return this;
@@ -91,8 +104,8 @@ public abstract class TestRunnerElement extends Element {
 
 			log.trace("testStarted");
 
-			sb.append("<b>").append(description.getClassName()).append(".")
-					.append(description.getMethodName()).append("</b>: ");
+			sb.append("<b>").append(description.getClass().getName()).append(".")
+					.append(description.getDisplayName()).append("</b>: ");
 			lastFailure = null;
 
 			super.testStarted(description);
@@ -157,7 +170,7 @@ public abstract class TestRunnerElement extends Element {
 
 	}
 
-	private static ThreadLocal<TestEnv> currTestEnv = new ThreadLocal<TestEnv>();
+	private static ThreadLocal<TestEnv> currTestEnv = new ThreadLocal<>();
 
 	public static TestEnv getTestEnv() {
 		return currTestEnv.get();
@@ -166,7 +179,7 @@ public abstract class TestRunnerElement extends Element {
 	/**
 	 * Xml Test - run it all from Jenkins
 	 * 
-	 * @return
+	 * @return String
 	 */
 	public String xmlTest() {
 		return "";
@@ -175,18 +188,21 @@ public abstract class TestRunnerElement extends Element {
 	/**
 	 * Html Test - run only selected tests
 	 * 
-	 * @return
+	 * @return String
 	 */
 	public String htmlTest() {
 		return "";
 	}
 
 	@Override
-	public String apply(Env e) {
+	public String apply() {
 
 		// create a new, modifiable env, then set it to a threadlocal
 		// so the testelement can find and use it
 		TestEnv te = new TestEnv(e.ics, e.getString("site"));
+
+        //TestEnv te = (TestEnv)appContext.getBean("testEnv");
+        te.init(e.ics,e.getString("site"));
 		te.setVar("tid", e.getString("tid"));
 		te.setVar("eid", e.getString("eid"));
 		currTestEnv.set(te);
@@ -229,10 +245,14 @@ public abstract class TestRunnerElement extends Element {
 		while (st.hasMoreTokens())
 			try {
 				String testName = st.nextToken();
-				//System.out.println(testName);
-				core.run(Class.forName(testName));
+                String beanName = Class.forName(testName).getSimpleName();
+                //beanName = beanName.substring(0, 1).toLowerCase() + beanName.substring(1);
 
-				skipCount += listener.skipCount;
+                //System.out.println("testing bean: " + beanName);
+                //Test test = (Test) appContext.getBean(beanName);
+                //core.run(test);
+				core.run(Class.forName(testName));
+                skipCount += listener.skipCount;
 				failureCount += listener.failureCount;
 				runCount += listener.runCount;
 			} catch (Throwable ex) {

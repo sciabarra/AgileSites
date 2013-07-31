@@ -9,6 +9,8 @@ import wcs.java.util.Util;
 import wcs.core.Log;
 import COM.FutureTense.Interfaces.ICS;
 
+import javax.annotation.Resource;
+
 /**
  * 
  * This class implements element logic and will be invoked by templates and
@@ -21,8 +23,11 @@ public abstract class Element implements wcs.core.Element {
 
 	static Log log = Log.getLog(Element.class);
 
-	// current site
+    // current site
 	protected String site;
+
+    @Resource(name="env")
+    Env e;
 
 	protected boolean insite = false;
 
@@ -39,8 +44,8 @@ public abstract class Element implements wcs.core.Element {
 			site = ics.GetVar("site");
 			insite = ics.GetVar("rendermode") != null
 					&& ics.GetVar("rendermode").equals("insite");
-			Env env = new Env(ics, site);
-			return apply(env);
+			e.init(ics, site);
+			return apply();
 		} catch (NullPointerException npe) {
 			log.error(npe, "NPE: ");
 			return "NULL <span style='display: none'>" + Util.ex2str(npe)
@@ -69,7 +74,8 @@ public abstract class Element implements wcs.core.Element {
 	/**
 	 * Convenience method for defining args
 	 * 
-	 * @param name
+	 * @param k
+     * @param v
 	 * @return
 	 */
 	public Arg arg(String k, String v) {
@@ -79,7 +85,7 @@ public abstract class Element implements wcs.core.Element {
 	/**
 	 * Convenience method to log in a functional way
 	 * 
-	 * @param name
+	 * @param msg
 	 * @return
 	 */
 	public String log(String msg) {
@@ -90,9 +96,8 @@ public abstract class Element implements wcs.core.Element {
 	/**
 	 * The method to be overriden by an implementing template
 	 * 
-	 * @param env
 	 * @return
 	 */
-	abstract public String apply(Env env);
+	abstract public String apply();
 
 }

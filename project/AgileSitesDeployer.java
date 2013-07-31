@@ -1,4 +1,4 @@
-package wcs.build;
+package wcs.java;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,19 +7,13 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpState;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-import org.apache.commons.httpclient.methods.multipart.Part;
-import org.apache.commons.httpclient.methods.multipart.StringPart;
 
 /**
  * This class is a deployer: it creates 2 temporary entries to invoke the
  * installer, run it then delete them.
- * 
+ *
  * @author msciab
- * 
+ *
  */
 public class AgileSitesDeployer {
 
@@ -41,7 +35,7 @@ public class AgileSitesDeployer {
 
 	/**
 	 * Build the deployer
-	 * 
+	 *
 	 * @param url
 	 * @param username
 	 * @param password
@@ -89,7 +83,7 @@ public class AgileSitesDeployer {
 
 	/**
 	 * Invoke an element by name passing username and password
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 * @throws IOException
@@ -106,7 +100,7 @@ public class AgileSitesDeployer {
 
 	/**
 	 * Return the status
-	 * 
+	 *
 	 * @return
 	 */
 	public String getStatus() {
@@ -116,7 +110,7 @@ public class AgileSitesDeployer {
 	/**
 	 * Perform all the deployment: createa a new element with a random name,
 	 * then run the created element that is supposed
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */
@@ -139,7 +133,7 @@ public class AgileSitesDeployer {
 
 	/**
 	 * Testing main
-	 * 
+	 *
 	 * @param args
 	 * @throws Exception
 	 */

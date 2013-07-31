@@ -47,8 +47,9 @@ public class Template extends AssetSetup {
 	 * 
 	 * @param subtype
 	 * @param name
-	 * @param description
-	 * @param element
+	 * @param ttype
+	 * @param forSubtype
+     * @param elementClass
 	 */
 	public Template(String subtype, String name, char ttype, String forSubtype,
 			Class<?> elementClass) {
@@ -56,7 +57,6 @@ public class Template extends AssetSetup {
 		super("Template", subtype, name);
 		this.clazz = elementClass.getCanonicalName();
 		if (subtype == null || subtype.trim().length() == 0) {
-			subtype = "";
 			rootelement = "/" + name;
 			folderelement = "Typeless";
 		} else {

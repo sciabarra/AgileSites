@@ -33,7 +33,6 @@ public class Loader {
 	/**
 	 * Load jar if modified
 	 * 
-	 * @param jar
 	 * @return
 	 * @throws MalformedURLException
 	 */

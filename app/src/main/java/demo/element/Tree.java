@@ -1,5 +1,6 @@
 package demo.element;
 
+import org.springframework.stereotype.Component;
 import wcs.core.Id;
 import wcs.java.Asset;
 import wcs.java.AssetSetup;
@@ -10,12 +11,19 @@ import wcs.java.Picker;
 import wcs.java.SitePlan;
 import wcs.core.Log;
 
+import javax.annotation.Resource;
+
+@Component
 public class Tree extends Element {
 
 	final static Log log = Log.getLog(Tree.class);
-	private SitePlan sp ;
+
+    @Resource(name="sitePlan")
+    private SitePlan sp ;
+
+    @Resource(name="env")
 	private Env e;
-	
+
 
 	public static AssetSetup setup() {
 		return new CSElement("DmTree", demo.element.Tree.class);
@@ -40,9 +48,8 @@ public class Tree extends Element {
 	}
 
 	@Override
-	public String apply(Env e) {
-		this.e = e;
-		this.sp = e.getSitePlan();
+	public String apply() {
+		//this.sp = e.getSitePlan();
 
 		// get model and view
 		Picker html = Picker.load("/blueprint/template.html", "#tree");

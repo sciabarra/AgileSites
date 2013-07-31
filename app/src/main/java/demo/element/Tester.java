@@ -1,12 +1,15 @@
 package demo.element;
 
 import demo.Config;
+import org.springframework.stereotype.Component;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.SiteEntry;
 import wcs.java.util.TestRunnerElement;
 import wcs.java.util.Util;
 
+
+@Component
 public class Tester extends TestRunnerElement {
 
 	public static AssetSetup setup() {

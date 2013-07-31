@@ -1,15 +1,21 @@
 package wcs.core;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.StringTokenizer;
 
 import COM.FutureTense.Interfaces.ICS;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+
+
 
 public class Dispatcher {
 
 	final static Log log = Log.getLog(Dispatcher.class);
-
 	private Loader loader;
+
+    private Context context;
 
 	private static Dispatcher dispatcher = null;
 
@@ -25,7 +31,7 @@ public class Dispatcher {
 			File jar = new File(jarPath);
 			if (jar.exists()) {
 				log.debug("[Dispatcher.getDispatcher] from " + jar);
-				dispatcher = new Dispatcher(jar);
+				dispatcher = new Dispatcher(jar, ics);
 			} else {
 				log.debug("[Dispatcher.getDispatcher] not found jar " + jar);
 			}
@@ -38,11 +44,22 @@ public class Dispatcher {
 	 * 
 	 * @param jar
 	 */
-	public Dispatcher(File jar) {
-		log.debug("[Dispatcher.<init>] load jar=" + jar);
-		loader = new Loader(jar);
-		log.debug("[Dispatcher.<init>] got loader");
-	}
+	private Dispatcher(File jar, ICS ics) {
+        log.debug("[Dispatcher.<init>] load jar=" + jar);
+        loader = new Loader(jar);
+        log.debug("[Dispatcher.<init>] got loader");
+        try {
+            ClassLoader cl = loader.loadJar();
+            Class clazz = Class.forName("wcs.java.Context", true, cl);
+            context = (Context)clazz.newInstance();
+            context.initContext(cl);
+            ICSProxyJ env = (ICSProxyJ)context.getBean("wcs.java.Env");
+            //TODO pass the correct site
+            env.init(ics, "demo");
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
 
 	/**
 	 * Call the given class after reloading the jar and creating a wrapper for
@@ -55,12 +72,11 @@ public class Dispatcher {
 		try {
 
 			// jar & classname
-			ClassLoader cl = loader.loadJar();
-
+			//ClassLoader cl = loader.loadJar();
 			// instantiate
 			@SuppressWarnings("rawtypes")
-			Class clazz = Class.forName(className, true, cl);
-			Object obj = clazz.newInstance();
+			//Class clazz = Class.forName(className, true, cl);
+			Object obj = context.getBean(className);//clazz.newInstance();
 
 			// cast and execute
 			if (obj instanceof Element) {
@@ -92,12 +108,12 @@ public class Dispatcher {
 		log.debug("[Dispatcher.route] className=" + className);
 		try {
 			// jar & classname
-			ClassLoader cl = loader.loadJar();
+			//ClassLoader cl = loader.loadJar();
 
 			// instantiate
 			@SuppressWarnings("rawtypes")
-			Class clazz = Class.forName(className, true, cl);
-			Object obj = clazz.newInstance();
+			//Class clazz = Class.forName(className, true, cl);
+			Object obj = context.getBean(className);// clazz.newInstance();
 
 			// cast and execute
 			if (obj instanceof Router) {

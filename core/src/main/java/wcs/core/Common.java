@@ -39,8 +39,7 @@ public class Common {
 	/**
 	 * Create an array of Arg from a list of strings in the form key=value
 	 * 
-	 * @param name
-	 * @param value
+	 * @param args
 	 * @return
 	 */
 	public static Arg[] args(String... args) {
@@ -58,8 +57,8 @@ public class Common {
 	/**
 	 * Create an id
 	 * 
-	 * @param name
-	 * @param value
+	 * @param c
+	 * @param cid
 	 * @return
 	 */
 	public static Id id(String c, Long cid) {

@@ -17,8 +17,11 @@ public class TestEnv extends Env {
 
 	ICS i;
 
+    public TestEnv() {
+    }
+
 	public TestEnv(ICS ics, String site) {
-		super(ics, site);
+		super(ics);
 		i = ics;
 	}
 

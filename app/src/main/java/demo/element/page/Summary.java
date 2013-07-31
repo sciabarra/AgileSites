@@ -1,5 +1,6 @@
 package demo.element.page;
 
+import org.springframework.stereotype.Component;
 import wcs.java.Asset;
 import wcs.java.Env;
 import wcs.java.Element;
@@ -8,9 +9,15 @@ import wcs.java.Template;
 import wcs.java.AssetSetup;
 import wcs.core.Log;
 
+import javax.annotation.Resource;
+
+@Component
 public class Summary extends Element {
 
 	final static Log log = Log.getLog(Summary.class);
+
+    @Resource
+    Env env;
 
 	public static AssetSetup setup() {
 
@@ -21,8 +28,8 @@ public class Summary extends Element {
 	}
 
 	@Override
-	public String apply(Env e) {
-		Asset a = e.getAsset();
+	public String apply() {
+		Asset a = env.getAsset();
 		Picker html = Picker.load("/blueprint/template.html", "#related");
 		html.replace("#related-title", a.getString("Title"));
 		html.replace("#related-body", a.getString("Summary"));

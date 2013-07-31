@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import wcs.core.Arg;
 import wcs.core.Common;
 import wcs.core.ICSProxyJ;
@@ -29,6 +31,7 @@ import COM.FutureTense.Interfaces.IList;
  * @author msciab
  * 
  */
+
 public class Env extends ICSProxyJ {
 
 	private static Log log = Log.getLog(Env.class);
@@ -39,25 +42,53 @@ public class Env extends ICSProxyJ {
 	private boolean insite;
 	private boolean preview;
 
-	/**
-	 * Build the env from the ICS
-	 * 
-	 * @param ics
-	 */
-	public Env(ICS ics, String site) {
-		init(ics);
-		if (site != null) {
-			config = Config.getConfig(site);
-			this.site = config.getSite();
-			this.normSite = WCS.normalizeSiteName(site);
-			router = Router.getRouter(site);
-		}
-		String rendermode = ics.GetVar("rendermode");
-		insite = rendermode != null && rendermode.equals("insite");
-		preview = rendermode != null && rendermode.startsWith("preview");
-	}
 
-	/**
+    /*
+    * empty constructor for spring initialization
+     */
+    public Env() {
+    }
+
+    /**
+     * Build the env from the ICS
+     *
+     * @param ics
+     */
+    public Env(ICS ics) {
+        init(ics, null);
+    }
+
+    /**
+     * Build the env from the ICS
+     *
+     * @param ics
+     */
+    public Env(ICS ics, String site) {
+        init(ics, site);
+    }
+
+
+    /**
+     *
+     * @param ics
+     */
+    @Override
+    public void init(ICS ics, String site) {
+        init(ics);
+        if (site == null) {
+            site = ics.GetVar("site");
+        }
+        if (site != null) {
+            config = Config.getConfig(site);
+            this.site = config.getSite();
+            this.normSite = WCS.normalizeSiteName(site);
+            router = Router.getRouter(site, this);
+        }
+        String rendermode = ics.GetVar("rendermode");
+        insite = rendermode != null && rendermode.equals("insite");
+        preview = rendermode != null && rendermode.startsWith("preview");
+    }
+    /**
 	 * Get a variable or null
 	 * 
 	 * @param var
@@ -70,7 +101,8 @@ public class Env extends ICSProxyJ {
 	/**
 	 * Get a variable or null
 	 * 
-	 * @param var
+	 * @param list
+     * @param field
 	 * @return
 	 */
 	public String getString(String list, String field) {
@@ -89,7 +121,9 @@ public class Env extends ICSProxyJ {
 	/**
 	 * Get a variable or null
 	 * 
-	 * @param var
+	 * @param list
+     * @param row
+     * @param field
 	 * @return
 	 */
 	public String getString(String list, int row, String field) {
@@ -357,10 +391,6 @@ public class Env extends ICSProxyJ {
 				.field("name").value(config.getSite()).run(ics);
 		return PublicationTag.get().name(pub)//
 				.field("id").eval(ics, "output");
-	}
-
-	public SitePlan getSitePlan() {
-		return new SitePlan(this);
 	}
 
 	/**

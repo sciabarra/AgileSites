@@ -1,5 +1,9 @@
 package wcs.java;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import wcs.core.Id;
 import wcs.core.Common;
 import wcs.core.tag.AssetTag;
@@ -7,12 +11,13 @@ import wcs.core.tag.SiteplanTag;
 import wcs.core.Log;
 import COM.FutureTense.Interfaces.ICS;
 
+import javax.annotation.Resource;
+
 public class SitePlan {
 
 	final static Log log = Log.getLog(SitePlan.class);
 
-	private Env e;
-	private ICS i;
+    private Env e;
 
 	private Id currentId;
 	private String currentNid;
@@ -20,13 +25,11 @@ public class SitePlan {
 	/**
 	 * Create a siteplan object that points to the root (the publication node)
 	 * 
-	 * @param e
 	 */
-	public SitePlan(Env e) {
-		this.e = e;
-		this.i = e.ics;
-		goTo(new Id("Publication", Long.parseLong(e.getSiteId())));
-	}
+	public SitePlan(Env env) {
+		this.e = env;
+        //goTo(new Id("Publication", Long.parseLong(e.getSiteId())));
+    }
 
 	/**
 	 * Return id of the current page
@@ -37,6 +40,10 @@ public class SitePlan {
 		return currentId;
 	}
 
+    private ICS getIcs() {
+        ICS i=e.ics;
+        return i;
+    }
 	/**
 	 * Move to the page identified by the id
 	 * 
@@ -49,14 +56,14 @@ public class SitePlan {
 		String name = Common.tmp();
 
 		if (id.c.equals("Publication")) {
-			SiteplanTag.root().objectid(id.cid.toString()).list(list).run(i);
+			SiteplanTag.root().objectid(id.cid.toString()).list(list).run(getIcs());
 			currentId = new Id(e.getString(list, "otype"), e.getLong(list,
 					"oid"));
 			currentNid = e.getString(list, "nid");
 		} else {
 			AssetTag.load().name(name).type(id.c).objectid(id.cid.toString())
-					.run(i);
-			currentNid = AssetTag.getsitenode().name(name).eval(i, "output");
+					.run(getIcs());
+			currentNid = AssetTag.getsitenode().name(name).eval(getIcs(), "output");
 		}
 		log.trace("SitePlan.goTo: id=%s nid=%s", currentId.toString(),
 				currentNid);
@@ -73,10 +80,10 @@ public class SitePlan {
 		log.trace("children!");
 		String name = Common.tmp();
 		String list = Common.tmp();
-		SiteplanTag.load().name(name).nodeid(currentNid).run(i);
+		SiteplanTag.load().name(name).nodeid(currentNid).run(getIcs());
 		SiteplanTag.children()//
 				.name(name).code("Placed").order("nrank") //
-				.list(list).run(i);
+				.list(list).run(getIcs());
 		return ilist2aid(list);
 	}
 
@@ -90,10 +97,10 @@ public class SitePlan {
 		log.trace("path");
 		String name = Common.tmp();
 		String list = Common.tmp();
-		SiteplanTag.load().name(name).nodeid(currentNid).run(i);
+		SiteplanTag.load().name(name).nodeid(currentNid).run(getIcs());
 		SiteplanTag.nodepath()//
 				.name(name) //
-				.list(list).run(i);
+				.list(list).run(getIcs());
 		return ilist2aid(list);
 	}
 

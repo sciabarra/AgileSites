@@ -1,5 +1,6 @@
 package demo.element;
 
+import org.springframework.stereotype.Component;
 import wcs.core.Id;
 import wcs.java.Asset;
 import wcs.java.Env;
@@ -9,18 +10,28 @@ import wcs.java.AssetSetup;
 import wcs.java.Picker;
 import wcs.java.SitePlan;
 import wcs.core.Log;
+
+import javax.annotation.Resource;
+
 import static java.lang.String.format;
 
+@Component
 public class Breadcrump extends Element {
 
 	final static Log log = Log.getLog(Breadcrump.class);
+
+    @Resource(name="env")
+    Env e;
+
+    @Resource(name="sitePlan")
+    SitePlan sp;
 
 	public static AssetSetup setup() {
 		return new CSElement("DmBreadcrump", demo.element.Breadcrump.class);
 	}
 
 	@Override
-	public String apply(Env e) {
+	public String apply() {
 
 		log.debug("Testing Breadcrump");
 
@@ -30,7 +41,6 @@ public class Breadcrump extends Element {
 
 		Asset a = e.getAsset();
 		log.trace("id="+a.getId());
-		SitePlan sp = e.getSitePlan().goTo(a.getId());
 
 		Id[] path = sp.path();
 		log.trace("path len=%d", path.length);

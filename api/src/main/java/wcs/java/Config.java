@@ -70,7 +70,7 @@ abstract public class Config {
 	/**
 	 * Return the blob config - ICS needed to get this properly
 	 * 
-	 * @param type
+	 * @param ics
 	 * @return
 	 */
 	public BlobConfig getBlobConfig(ICS ics) {
@@ -133,7 +133,6 @@ abstract public class Config {
 	/**
 	 * Return the full site name
 	 * 
-	 * @param type
 	 * @return
 	 */
 	abstract public String getSite();

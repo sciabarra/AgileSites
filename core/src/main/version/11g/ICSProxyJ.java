@@ -33,6 +33,8 @@ public class ICSProxyJ implements ICS {
 
 	public ICS ics;
 
+    public String site;
+
 	public ICSProxyJ() {
 
 	}
@@ -44,6 +46,11 @@ public class ICSProxyJ implements ICS {
 	public void init(ICS ics) {
 		this.ics = ics;
 	}
+
+    public void init(ICS ics, String site) {
+        this.ics = ics;
+        this.site = site;
+    }
 
 	public boolean AppEvent(String arg0, String arg1, String arg2,
 			FTValList arg3) {

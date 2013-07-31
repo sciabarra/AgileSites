@@ -1,5 +1,6 @@
 package demo.element;
 
+import org.springframework.stereotype.Component;
 import wcs.java.Asset;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
@@ -9,9 +10,15 @@ import wcs.java.Env;
 import wcs.java.Picker;
 import wcs.core.Log;
 
+import javax.annotation.Resource;
+
+@Component
 public class Wrapper extends Element {
 	
 	private final static Log log = Log.getLog(Wrapper.class);
+
+    @Resource(name="env")
+    Env e;
 
 	public static AssetSetup setup() {
 		return new CSElement("DmWrapper", demo.element.Wrapper.class,
@@ -19,7 +26,7 @@ public class Wrapper extends Element {
 	}
 
 	@Override
-	public String apply(Env e) {
+	public String apply() {
 		log.trace("Demo Wrapper");
 		
 		Picker html = Picker.load("/blueprint/template.html");

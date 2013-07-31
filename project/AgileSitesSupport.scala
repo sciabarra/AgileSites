@@ -5,6 +5,7 @@ import Keys._
 import sbtassembly.Plugin._
 import AssemblyKeys._
 import Dialog._
+import wcs.java.AgileSitesDeployer
 
 trait AgileSitesSupport {
 

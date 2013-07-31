@@ -1,5 +1,6 @@
 package wcs.java.util;
 
+import static junit.framework.Assert.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -8,12 +9,14 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import junit.framework.TestCase;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.junit.matchers.JUnitMatchers;
 
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import wcs.core.Call;
 import wcs.core.URL;
 import wcs.java.Router;
@@ -27,7 +30,9 @@ import wcs.core.Log;
  * @author msciab
  * 
  */
-public class TestElement extends TestCase {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:agilesites_context.xml")
+public class TestElement { //extends TestCase {
 
 	static final Log log = Log.getLog(TestElement.class);
 
@@ -63,7 +68,7 @@ public class TestElement extends TestCase {
 			path = "";
 		TestEnv te = env();
 		try {
-			Call call = Router.getRouter(te.getString("site")).route(te,
+			Call call = Router.getRouter(te.getString("site"), te).route(te,
 					URL.parse(new URI(path)));
 			for (String k : call.keysLeft())
 				te.SetVar(k, call.getOnce(k));
@@ -192,7 +197,7 @@ public class TestElement extends TestCase {
 	 * of the selected node.
 	 * 
 	 * @param cssq
-	 * @param html
+	 * @param text
 	 */
 
 	public void assertText(String cssq, String text) {
@@ -208,7 +213,7 @@ public class TestElement extends TestCase {
 	 * substring.
 	 * 
 	 * @param cssq
-	 * @param html
+	 * @param text
 	 */
 
 	public void assertTextContains(String cssq, String text) {
@@ -227,7 +232,8 @@ public class TestElement extends TestCase {
 	 * of the selected node.
 	 * 
 	 * @param cssq
-	 * @param html
+	 * @param attr
+     * @param value
 	 */
 	public void assertAttr(String cssq, String attr, String value) {
 		Elements elem = doc.select(cssq);
@@ -249,7 +255,8 @@ public class TestElement extends TestCase {
 	 * of the selected node.
 	 * 
 	 * @param cssq
-	 * @param html
+     * @param attr
+     * @param value
 	 */
 	public void assertAttrContains(String cssq, String attr, String value) {
 		Elements elem = doc.select(cssq);

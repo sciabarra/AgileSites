@@ -33,9 +33,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   ///  core dependencies - those are used for compiling
   val coreDependencies = Seq(
     "javax.servlet" % "servlet-api" % "2.5",
-    "junit" % "junit" % "4.8.2",
     "org.springframework" % "spring" % "2.5.5",
-    "com.novocode" % "junit-interface" % "0.8" % "test",
+    "org.springframework" % "spring-test" % "2.5.5",
     "commons-logging" % "commons-logging" % "1.1.1",
     "log4j" % "log4j" % "1.2.16",
     "org.apache.httpcomponents" % "httpclient" % "4.1.2",
@@ -44,7 +43,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "org.apache.james" % "apache-mime4j" % "0.5",
     "rhino" % "js" % "1.7R2",
     "org.scalatest" %% "scalatest" % "2.0.M5b",
-    "org.scalamock" %% "scalamock-scalatest-support" % "3.0.1")
+    "org.scalamock" %% "scalamock-scalatest-support" % "3.0.1",
+    "junit" % "junit" % "4.4")
 
   /// which jars you actually use at runtime
   /// that are copied by the wcs-setup-offline  
@@ -53,20 +53,21 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "junit*" ||
     "scalatest*" ||
     "scalamock*" ||
+    "spring-test*" ||
     "js-*";
 
   val removeFilterSetup = addFilterSetup
 
-  val coreSettings = Defaults.defaultSettings ++ Seq(
+  val coreSettings = Defaults.defaultSettings ++  net.virtualvoid.sbt.graph.Plugin.graphSettings ++ Seq(
     scalaVersion := "2.10.0",
     organization := "com.sciabarra",
-    version <<= (wcsVersion) { x => v + "_" + x },
+    version <<= wcsVersion { x => v + "_" + x },
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
     unmanagedJarsTask)
 
   val commonSettings = coreSettings ++ Seq(
-    libraryDependencies <++= (version) {
+    libraryDependencies <++= version {
       x =>
         coreDependencies ++ Seq("com.sciabarra" %% "agilesites-core" % x)
     })
@@ -98,7 +99,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     id = "sapi",
     base = file("sapi"),
     settings = commonSettings ++ Seq(
-      name := "agilesites-sapi")) dependsOn (api)
+      name := "agilesites-sapi")) dependsOn api
 
   /// APP 
   lazy val app: Project = Project(
@@ -107,7 +108,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     settings = commonSettings ++ Seq(
       name := "agilesites-app",
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
-      wcsCopyHtmlTask)) dependsOn (api)
+      wcsCopyHtmlTask)) dependsOn api
 
   /// Scala APP 
   lazy val sapp: Project = Project(
@@ -115,7 +116,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("sapp"),
     settings = commonSettings ++ Seq(
       name := "agilesites-sapp",
-      wcsCopyHtmlTask)) dependsOn (sapi)
+      wcsCopyHtmlTask)) dependsOn sapi
 
   /// ALL
   lazy val all: Project = Project(
