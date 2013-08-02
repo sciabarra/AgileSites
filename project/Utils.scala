@@ -235,6 +235,9 @@ trait Utils {
       Some(t)
     }
 
+    // TODO: rewrite in functional style
+    // maybe this is better for (p <- packageRes; i <- indexRes; c <- classRes) yield { (i, p + "." + c) }
+
   }
 
   def writeFile(file: File, body: String) = {

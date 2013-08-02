@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<document>
+<asset id="1351275812113" type="Page" subtype="Content1">
+<attribute name="Attribute_Summary"><string value="&#60;div&#62;&#10;&#9;This is a SUMMARY.&#60;/div&#62;&#10;"/></attribute>
+<attribute name="flextemplateid"><assetreference type="PageDefinition" value="1351275812156"/></attribute>
+<attribute name="fw_uid"><string value="4adc5be5-d187-4c2b-a299-670a3011382f"/></attribute>
+<attribute name="updateddate"><date value="2013-06-10 05:28:36.169"/></attribute>
+<attribute name="status"><string value="ED"/></attribute>
+<attribute name="subtype"><string value="Content"/></attribute>
+<attribute name="updatedby"><string value="fwadmin"/></attribute>
+<attribute name="createdby"><string value="fwadmin"/></attribute>
+<attribute name="template"><string value="DmContentLayout"/></attribute>
+<attribute name="createddate"><date value="2013-06-28 13:19:51.145"/></attribute>
+<attribute name="description"><string value="Home Page1"/></attribute>
+<attribute name="name"><string value="Home1"/></attribute>
+<attribute name="Publist"><array>
+<integer value="1351275793143"/></array>
+</attribute>
+</asset>
+</document>

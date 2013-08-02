@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import wcs.core.Id;
+
+import com.fatwire.assetapi.data.AssetId;
 import com.fatwire.assetapi.data.MutableAssetData;
 
 /**
@@ -30,6 +33,12 @@ public abstract class AssetSetup extends Asset {
 	 * 
 	 */
 	public abstract List<String> getAttributes();
+
+	/**
+	 * Return a list of references assets
+	 * 
+	 */
+	public abstract List<Id> getReferences();
 
 	/**
 	 * Define asset data for this asset
@@ -99,8 +108,27 @@ public abstract class AssetSetup extends Asset {
 			m.put(kv.k, kv.v);
 		return m;
 	}
+
+	public String blob(String name, String value) {
+		return "";
+	}
+
+	public String base64(String encoded) {
+		return "";
+	}
+
+	public AssetId ref(String c, long cid) {
+		return null;
+	}
+
+	public Id id(String c, long cid) {
+		return new Id(c, cid);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<KV> row(KV... kvs) {
+		return (List<KV>) list((Object[])kvs);
+	}
 	
-	public String blob(String name, String value) { return ""; } 
-	
-	public String base64(String encoded) { return ""; }
+
 }
