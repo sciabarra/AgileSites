@@ -6,7 +6,10 @@ java -version
 if errorlevel 9009 if not errorlevel 9010 goto notfoundjava
 javac -version
 if errorlevel 9009 if not errorlevel 9010 goto notfoundjavac
-if not exist build.sbt goto notfoundbuildsbt
+if exist build.sbt goto foundbuildsbt
+javac -d bin bin\Configurator.java 
+java -cp bin Configurator
+:foundbuildsbt
 set SCRIPT_DIR=%~dp0
 if exist %HOMEDRIVE%%HOMEPATH%\.ivy2\local\com.sciabarra\1.0_*\nul goto :corebuilt
 java -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=project\boot -jar "%SCRIPT_DIR%bin\sbt-launch.jar" core/publish-local
