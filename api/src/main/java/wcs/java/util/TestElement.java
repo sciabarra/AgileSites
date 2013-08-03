@@ -9,20 +9,15 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import static wcs.core.Common.*;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.junit.matchers.JUnitMatchers;
 
 import wcs.core.Call;
-import wcs.core.Id;
-import wcs.core.Log;
 import wcs.core.URL;
-import wcs.java.Asset;
 import wcs.java.Router;
-
+import wcs.core.Log;
 
 /**
  * Collection of test helpers for testing elements.
@@ -77,32 +72,9 @@ public class TestElement extends TestCase {
 		}
 		return te;
 	}
-	
-	/**
-	 * Asset by name
-	 */	
-	public Asset asset(String c, String name) {
-		return env().findOne(c, arg("name", name));
-	}
-	
-	/**
-	 * Asset by c/cid
-	 */	
-	public Asset asset(String c, Long cid) {
-		return env().getAsset(c, cid);
-	}
 
 	/**
-	 * Asset by id
-	 */	
-	public Asset asset(Id id) {
-		return env().getAsset(id);
-	}
-
-
-	/**
-	 * Parse a call - special case to test the router.
-	 * 
+	 * Parse a call
 	 */
 	public void parse(Call call) {
 		parse(call.toString());
@@ -299,7 +271,7 @@ public class TestElement extends TestCase {
 	protected void dump(Log log) {
 		log.debug(Util.dumpStream(doc.html()));
 	}
-
+	
 	/**
 	 * Dump selected inner html
 	 * 
@@ -317,24 +289,14 @@ public class TestElement extends TestCase {
 	protected void odump(Log log) {
 		log.debug(Util.dumpStream(doc.outerHtml()));
 	}
-
+	
 	/**
-	 * Dump outer html of selected element
+	 * Dump outer html of selected element 
 	 * 
 	 * @param log
 	 */
 	protected void odump(Log log, String wh) {
 		log.debug(Util.dumpStream(doc.select(wh).outerHtml()));
-	}
-
-	/**
-	 * Quick debug test helper - shows the message also in the standard output
-	 */
-	public void dbg(String message, Object... args) {
-		if (args.length > 0)
-			System.out.println(String.format(">>>" + message, args));
-		else
-			System.out.println(message);
 	}
 
 }

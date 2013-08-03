@@ -41,7 +41,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "commons-logging" % "commons-logging" % "1.1.1",
     "junit" % "junit" % "4.8.2",
     "com.novocode" % "junit-interface" % "0.8" % "test",
-    //"org.specs2" %% "specs2" % "1.13",
     "log4j" % "log4j" % "1.2.16",
     "org.apache.httpcomponents" % "httpclient" % "4.1.2",
     "org.apache.httpcomponents" % "httpcore" % "4.1.2",
@@ -49,7 +48,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "org.apache.james" % "apache-mime4j" % "0.5")
 
   val coreSettings = Defaults.defaultSettings ++ Seq(
-    scalaVersion := "2.10.1",
+    scalaVersion := "2.10.2",
     organization := "com.sciabarra",
     version <<= (wcsVersion) { x => v +  "_" + x },
     includeFilterUnmanagedJars,
@@ -73,6 +72,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       libraryDependencies ++= coreDependencies,
       publishArtifact in packageDoc := false,
       name := "agilesites-core",
+      EclipseKeys.skipProject := true,
       coreGeneratorTask))
 
   // API

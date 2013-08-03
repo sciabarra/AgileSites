@@ -51,7 +51,9 @@ trait AgileSitesSupport {
         // generate tags
         val tlds = file(srcDir) / "WEB-INF" / "futuretense_cs"
 
-        val l = for {
+        //println("**** looking tlds in "+tlds.getAbsolutePath)
+
+        val l : Seq[File] = for {
           tld <- tlds.listFiles
           if tld.getName.endsWith(".tld")
           val src = tld.getAbsolutePath
@@ -66,7 +68,7 @@ trait AgileSitesSupport {
             println("+++ " + dstj)
           }
           dstj 
-        }
+        } 
 
         // copy versioned class
         val src = base / "src" / "main" / "version" / version
