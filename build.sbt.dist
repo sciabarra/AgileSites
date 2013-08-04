@@ -47,6 +47,3 @@ wcsFlexBlobs in ThisBuild := """^/(\d+)\.(jpg|png|gif)$"""
 // the first group must be the name of the static resource 
 wcsStaticBlobs in ThisBuild := """^(.*\.(css|js|jpg|png|gif))$"""
 
-// debug 
-//javacOptions ++= Seq("-g:vars")
-

@@ -38,8 +38,10 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   /// COMMONS
   val coreDependencies = Seq(
     "javax.servlet" % "servlet-api" % "2.5",
+    "junit" % "junit" % "4.4",
+    "org.springframework" % "spring" % "2.5.5",
+    "org.springframework" % "spring-test" % "2.5.5",
     "commons-logging" % "commons-logging" % "1.1.1",
-    "junit" % "junit" % "4.8.2",
     "com.novocode" % "junit-interface" % "0.8" % "test",
     "log4j" % "log4j" % "1.2.16",
     "org.apache.httpcomponents" % "httpclient" % "4.1.2",
@@ -47,7 +49,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "org.apache.httpcomponents" % "httpmime" % "4.1.2",
     "org.apache.james" % "apache-mime4j" % "0.5")
 
-  val coreSettings = Defaults.defaultSettings ++ Seq(
+  val coreSettings = Defaults.defaultSettings ++ net.virtualvoid.sbt.graph.Plugin.graphSettings ++ Seq(
     scalaVersion := "2.10.2",
     organization := "com.sciabarra",
     version <<= (wcsVersion) { x => v +  "_" + x },
