@@ -428,7 +428,7 @@ public class XmlTestReport extends RunListener {
 	}
 
 	private static String createDescription(Description test) /* throws Exception */{
-		return test.getDisplayName() + "(" + test.getClassName() + ")";
+		return test.getDisplayName() + "(" + test.getClass().getName() + ")";
 	}
 
 	/**
@@ -458,7 +458,7 @@ public class XmlTestReport extends RunListener {
 			currentTest.setAttribute(ATTR_NAME, n == null ? UNKNOWN : n);
 			// a TestSuite can contain Tests from multiple classes,
 			// even tests with the same name - disambiguate them.
-			currentTest.setAttribute(ATTR_CLASSNAME, test.getClassName());
+			currentTest.setAttribute(ATTR_CLASSNAME, test.getClass().getName());
 			rootElement.appendChild(currentTest);
 			testElements.put(createDescription(test), currentTest);
 		} else {

@@ -104,7 +104,7 @@ trait AgileSitesSupport {
     (argTask: TaskKey[Seq[String]]) =>
       (argTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
         (args, version, url, sites, user, password, classpath, s, runner) =>
-          val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d|spring-\\d|commons-logging-|servlet-api).*.jar$".r;
+          val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d|spring-\\d|commons-logging|servlet-api|cs-core|http).*.jar$".r;
           val seljars = classpath.files.filter(f => !re.findAllIn(f.getName).isEmpty)
           val firstArg = if (args.size > 0) args(0) else "listcs"
           var resources = if (args.size > 1) args.drop(1)
@@ -138,23 +138,26 @@ trait AgileSitesSupport {
   // interface to catalogmover from sbt
   val wcsSetupOnlineTask = wcsSetupOnline <<= inputTask {
    (argsTask: TaskKey[Seq[String]]) =>
-    (argsTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
-     (args, version, httpUrl, sites, user, password, classpath, s, runner) =>
+    (argsTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, wcsWebapp, streams, runner) map {
+     (args, version, httpUrl, sites, user, password, classpath, webapp, s, runner) =>
         val seljars = classpath.files
         val url = httpUrl + "/CatalogManager"
 
         //println(url)
 
-        val cp = classpath.files.mkString(java.io.File.pathSeparator)
+        val files = Seq(file("bin").getAbsoluteFile) ++ classpath.files 
+        val owasp = "-Dorg.owasp.esapi.resources=" + (file(webapp) / "WEB-INF" / "classes").getAbsolutePath
+        val cp = files.mkString(java.io.File.pathSeparator)
         val dir = file("export") / "Populate-" + version
-        val cmd = Seq("-cp", cp, "COM.FutureTense.Apps.CatalogMover")
-
+        val cmd = Seq("-cp", cp, owasp, /*"-Dlog4j.debug",*/ "COM.FutureTense.Apps.CatalogMover")
         val opts = Seq("-u", user, "-p", password, "-b", url, "-d", dir.toString, "-x")
         val all = cmd ++ opts ++ Seq("import_all")
 
         if(args.length == 0) messageDialog("Ensure the application server is UP and RUNNING, then press OK")
         Fork.java(None, all, Some(new java.io.File(".")), s.log)
         if(args.length == 0) messageDialog("Setup Complete.\nYou can now create site and templates.\nYou need to deploy them with \"wcs-deploy\".")
+    
+        //println(all.mkString(" "))
     }
 }
 

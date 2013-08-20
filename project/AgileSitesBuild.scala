@@ -16,14 +16,14 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   val v = "1.0" 
 
   // remove then add those jars in setup
-  val addFilterSetup = "scala-library*" || "agilesites-core*" || "junit*" 
+  val addFilterSetup =  "agilesites-core*" || "junit*" 
 
-  val removeFilterSetup = addFilterSetup
+  val removeFilterSetup = addFilterSetup || "scala-library*"
 
   // configuring WCS jars as unmanaged lib
   val unmanagedFilter = "log4j-*" || "slf4j*" || "spring-*" || "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
     "wem-sso-api-*" || "rest-api-*" || "cas-client-*" || "assetapi*" || "xstream*" ||
-    "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar" || "ehcache-*"
+    "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar" || "ehcache-*" || "sites-*" || "esapi-*"
 
   val includeFilterUnmanagedJars = includeFilter in unmanagedJars := unmanagedFilter
 
