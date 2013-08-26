@@ -12,7 +12,7 @@ if ! test -f build.sbt
 then
   javac bin/Configurator.java -d bin
   javac -cp bin Configure.java
-if
+fi
 if ! test -d $HOME/.ivy2/local/com.sciabarra/1.0_*
 then java -Xms256m -Xmx512m -Xss1m -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384m -Dsbt.boot.directory=project/boot/ -jar bin/sbt-launch.jar core/publish-local
 fi
