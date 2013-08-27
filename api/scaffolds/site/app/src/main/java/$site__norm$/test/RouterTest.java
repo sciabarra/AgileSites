@@ -3,6 +3,7 @@ package $site;format="normalize"$.test;
 import static wcs.core.Common.arg;
 import $site;format="normalize"$.Config;
 import wcs.java.Asset;
+import wcs.java.Env;
 import wcs.java.Router;
 import wcs.java.util.TestElement;
 import org.junit.Before;
@@ -19,8 +20,9 @@ public class RouterTest extends TestElement {
 
 	@Test
 	public void test0() {
-		parse(it.route(env(), url("")));
-		Asset home = asset("Page", "Home");
+		Env e = env();
+		parse(it.route(e, url("")));
+		Asset home = e.findOne("Page", arg("name", "Home"));
 		if(home==null) {
 			assertAttr("ics-callelement", "error",
 					"Asset not found: type:Page name:Home");
