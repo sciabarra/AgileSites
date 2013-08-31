@@ -22,7 +22,7 @@ public class Topmenu extends Element {
 	public String apply(Env e) {
 
 		log.debug("Testing Topmenu");
-
+		
 		Picker html = Picker.load("/blueprint/template.html", "#topmenu");
 		log.debug("picker=" + html);
 
