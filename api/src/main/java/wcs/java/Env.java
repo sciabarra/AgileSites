@@ -19,6 +19,7 @@ import wcs.core.WCS;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.PublicationTag;
 import wcs.core.tag.RenderTag;
+import wcs.java.util.AssetDeps;
 import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
 
@@ -77,7 +78,7 @@ public class Env extends ICSProxyJ {
 		IList ls = ics.GetList(list);
 		if (ls == null)
 			return null;
-		if(ls.numRows()==0)
+		if (ls.numRows() == 0)
 			return null;
 		try {
 			return ls.getValue(field);
@@ -465,6 +466,66 @@ public class Env extends ICSProxyJ {
 	 */
 	public void clearError() {
 		ics.ClearErrno();
+	}
+
+	/**
+	 * Add a dependency on anything
+	 * 
+	 * @param c
+	 */
+	public void addDependency() {
+		RenderTag.unknowndeps().run(ics);
+	}
+
+	/**
+	 * Add a dependency on any asset of the given type
+	 * 
+	 * @param c
+	 */
+	public void addDependency(String c) {
+		RenderTag.unknowndeps().assettype(c).run(ics);
+	}
+
+	/**
+	 * Add an EXACT dependency on a given asset
+	 * 
+	 * @param c
+	 * @param cid
+	 */
+	public void addDependency(String c, Long cid) {
+		RenderTag.logdep().c(c).cid(cid.toString()).run(ics);
+	}
+
+	/**
+	 * Add a dependency of the specified type on a given asset
+	 * 
+	 * @param c
+	 * @param cid
+	 */
+	public void addDependency(String c, Long cid, AssetDeps deps) {
+		RenderTag.logdep().c(c).cid(cid.toString()).deptype(deps.toString())
+				.run(ics);
+	}
+
+	/**
+	 * Add an EXACT dependency on a given asset
+	 * 
+	 * @param c
+	 * @param cid
+	 */
+	public void addDependency(Id id) {
+		RenderTag.logdep().c(id.c).cid(id.cid.toString()).run(ics);
+	}
+
+	/**
+	 * Add a dependency of the specified type on a given asset
+	 * 
+	 * @param c
+	 * @param cid
+	 */
+	public void addDependency(Id id, AssetDeps deps) {
+		RenderTag.logdep().c(id.c).cid(id.cid.toString())
+				.deptype(deps.toString()).run(ics);
 	}
 
 }

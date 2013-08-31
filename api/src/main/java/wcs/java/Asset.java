@@ -1,11 +1,13 @@
 package wcs.java;
 
 import static wcs.core.Common.*;
-
 import wcs.core.Arg;
 import wcs.core.Id;
 import wcs.core.Log;
+import wcs.java.util.AssetDeps;
+
 import java.util.Date;
+
 import com.fatwire.assetapi.data.AttributeData;
 import com.fatwire.assetapi.data.MutableAssetData;
 
@@ -248,12 +250,33 @@ public abstract class Asset {
 
 	/**
 	 * Return the related asset pointed by the attribute of the given type if
-	 * not found
+	 * not found.
+	 * 
+	 * Since you are accessing another asset it is mandatory to specify the
+	 * dependency type you are going to use.
 	 * 
 	 * @param asset
 	 * @return
 	 */
+	public Asset getAsset(String attribute, String type, AssetDeps logdep) {
+		throw new RuntimeException("this asset is not bound");
+	}
+
+	/**
+	 * @deprecated use the version that also specify the dependency you want to
+	 *             log
+	 */
+	@Deprecated
 	public Asset getAsset(String attribute, String type) {
+		throw new RuntimeException("this asset is not bound");
+	}
+
+	/**
+	 * @deprecated use the version that also specify the dependency you want to
+	 *             log
+	 */
+	@Deprecated
+	public Asset getAsset(String attribute, String type, int i) {
 		throw new RuntimeException("this asset is not bound");
 	}
 
@@ -261,10 +284,13 @@ public abstract class Asset {
 	 * Return the related asset pointed by the nth attribute of the given type
 	 * if not found
 	 * 
+	 * Since you are accessing another asset it is mandatory to specify the
+	 * dependency type you are going to use.
+	 * 
 	 * @param asset
 	 * @return
 	 */
-	public Asset getAsset(String attribute, int i, String type) {
+	public Asset getAsset(String attribute, int i, String type, AssetDeps logdep) {
 		throw new RuntimeException("this asset is not bound");
 	}
 

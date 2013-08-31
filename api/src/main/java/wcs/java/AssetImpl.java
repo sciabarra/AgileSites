@@ -2,7 +2,6 @@ package wcs.java;
 
 import static wcs.core.Common.*;
 import static wcs.java.util.Util.toDate;
-
 import COM.FutureTense.Interfaces.ICS;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.AssetsetTag;
@@ -12,6 +11,8 @@ import wcs.core.Call;
 import wcs.core.Common;
 import wcs.core.Id;
 import wcs.core.Log;
+import wcs.java.util.AssetDeps;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -242,6 +243,24 @@ class AssetImpl extends wcs.java.Asset {
 	}
 
 	/**
+	 * @deprecated use the version that also specify the dependency you want to
+	 *             log
+	 */
+	@Deprecated
+	public Asset getAsset(String attribute, String type) {
+		return e.getAsset(type, getCid(attribute));
+	}
+
+	/**
+	 * @deprecated use the version that also specify the dependency you want to
+	 *             log
+	 */
+	@Deprecated
+	public Asset getAsset(String attribute, String type, int i) {
+		return e.getAsset(type, getCid(attribute, i));
+	}
+
+	/**
 	 * Return the related asset pointed by the attribute of the given type if
 	 * not found
 	 * 
@@ -249,7 +268,7 @@ class AssetImpl extends wcs.java.Asset {
 	 * @return
 	 */
 	@Override
-	public Asset getAsset(String attribute, String type) {
+	public Asset getAsset(String attribute, String type, AssetDeps deps) {
 		return e.getAsset(type, getCid(attribute));
 	}
 
@@ -257,17 +276,25 @@ class AssetImpl extends wcs.java.Asset {
 	 * Return the related asset pointed by the nth attribute of the given type
 	 * if not found
 	 * 
+	 * Since you are accessing another asset it is mandatory to specify the
+	 * dependency type you are going to use.
+	 * 
 	 * @param asset
 	 * @return
 	 */
 	@Override
-	public Asset getAsset(String attribute, int i, String type) {
-		return e.getAsset(type, getCid(attribute, i));
+	public Asset getAsset(String attribute, int i, String type, AssetDeps deps) {
+		long cid = getCid(attribute, i);
+		e.addDependency(type);
+		return e.getAsset(type, cid);
 	}
 
 	/**
 	 * Return the first attribute of the the attribute rib as a string, or the
 	 * null if not found
+	 * 
+	 * Since you are accessing another asset it is mandatory to specify the
+	 * dependency type you are going to use.
 	 * 
 	 * @param asset
 	 * @return
