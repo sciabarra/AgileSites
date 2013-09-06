@@ -22,12 +22,19 @@ public class Dispatcher {
 	static Dispatcher getDispatcher(ICS ics) {
 		if (dispatcher == null) {
 			String jarPath = ics.GetProperty("agilesites.jar");
+			if(jarPath==null) {
+				log.debug("[Dispatcher.getDispatcher] creating static dispatcher");				
+				dispatcher = new Dispatcher();
+				return dispatcher;
+			}			
 			File jar = new File(jarPath);
 			if (jar.exists()) {
 				log.debug("[Dispatcher.getDispatcher] from " + jar);
 				dispatcher = new Dispatcher(jar);
 			} else {
-				log.debug("[Dispatcher.getDispatcher] not found jar " + jar);
+				log.debug("[Dispatcher.getDispatcher] not found jar, creating static dispatcher");				
+				dispatcher = new Dispatcher();
+				return dispatcher;
 			}
 		}
 		return dispatcher;
@@ -41,6 +48,18 @@ public class Dispatcher {
 	public Dispatcher(File jar) {
 		log.debug("[Dispatcher.<init>] load jar=" + jar);
 		loader = new Loader(jar);
+		log.debug("[Dispatcher.<init>] got loader");
+	}
+
+	
+	/**
+	 * New dispatcher looking for a given jar
+	 * 
+	 * @param jar
+	 */
+	public Dispatcher() {
+		log.debug("[Dispatcher.<init>] static loader" );
+		loader = new Loader();
 		log.debug("[Dispatcher.<init>] got loader");
 	}
 

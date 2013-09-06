@@ -31,6 +31,16 @@ public class Loader {
 	}
 
 	/**
+	 * Build a default loader
+	 * 
+	 * @param file
+	 */
+	public Loader() {
+		jar = null;
+	}
+	
+	
+	/**
 	 * Load jar if modified
 	 * 
 	 * @param jar
@@ -40,8 +50,7 @@ public class Loader {
 	public ClassLoader loadJar() throws MalformedURLException {
 
 		if (jar == null) {
-
-			log.debug("[Loader]: no jar specified");
+			//log.debug("[Loader]: no jar specified");
 			return mycl;
 		}
 

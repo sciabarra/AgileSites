@@ -12,6 +12,7 @@ report.xml
 target/
 tags/
 project/boot/
+project/repo/
 project/plugins/project/
 attic/
 cs

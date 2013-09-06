@@ -13,7 +13,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
 
   // if you change this 
   // remember to update the agilesites scripts
-  val v = "1.0" 
+  val v = "1.0.1" 
 
   // remove then add those jars in setup
   val addFilterSetup =  "agilesites-core*" || "junit*" 
@@ -52,12 +52,15 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   val coreSettings = Defaults.defaultSettings ++ net.virtualvoid.sbt.graph.Plugin.graphSettings ++ Seq(
     scalaVersion := "2.10.2",
     organization := "com.sciabarra",
+    publishTo := Some(Resolver.file("repo",  new File( "project/repo" )) ),
+    publishMavenStyle := true,
     version <<= (wcsVersion) { x => v +  "_" + x },
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
     unmanagedJarsTask)
 
   val commonSettings = coreSettings ++ Seq(
+    resolvers += "Local Maven Repository" at "file:///"+(file("project").absolutePath)+"/repo",
     libraryDependencies <++= (version) {
       x =>
         coreDependencies ++ Seq("com.sciabarra" %% "agilesites-core" % x)

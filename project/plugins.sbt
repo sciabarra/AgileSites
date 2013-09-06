@@ -5,6 +5,8 @@ resolvers += {
   Resolver.url("artifactory", url("http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases"))(Resolver.ivyStylePatterns)
 }
 
+resolvers += "repo" at "file://" + file(".").absolutePath + "/project/repo"
+
 libraryDependencies += "commons-httpclient" % "commons-httpclient" % "3.1"
 
 libraryDependencies += "commons-io" % "commons-io" % "2.4"
@@ -17,7 +19,5 @@ libraryDependencies += "jline" % "jline" % "1.0"
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.1.2")
 
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.8.4")
-
-
 
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.7.4")
