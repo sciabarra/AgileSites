@@ -11,7 +11,6 @@ javac -d bin bin\Configurator.java
 java -cp bin Configurator
 :foundbuildsbt
 set SCRIPT_DIR=%~dp0
-if exist project\repo\com\sciabarra goto :corebuilt
 java -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=project\boot -jar "%SCRIPT_DIR%bin\sbt-launch.jar" core/publish
 :corebuilt
 java -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=project\boot -jar "%SCRIPT_DIR%bin\sbt-launch.jar" %*
