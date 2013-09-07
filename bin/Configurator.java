@@ -109,6 +109,7 @@ public class Configurator extends JFrame implements ActionListener {
 	Properties iniFile = null;
 	String jarFile = null;
 	String webApp = null;
+	String version = "unknown";
 
 	private void selectFolder0() {
 		if (dirChooser.showDialog(this, "Select") != JFileChooser.APPROVE_OPTION)
@@ -161,11 +162,11 @@ public class Configurator extends JFrame implements ActionListener {
 
 	private void enableConfigure() {
     out.println();
-		out.println("CS Home   :" + iniFile.getProperty("CSFTAppServerRoot"));
-		out.println("CS Shared :" + iniFile.getProperty("CSInstallSharedDirectory"));		
-		out.println("CS WebApp :" + webApp);
-		out.println("CSDT jar  :" + jarFile);
-		
+		out.println("CS version: " + version);
+		out.println("CS Home   : " + iniFile.getProperty("CSFTAppServerRoot"));
+		out.println("CS Shared : " + iniFile.getProperty("CSInstallSharedDirectory"));		
+		out.println("CS WebApp : " + webApp);
+		out.println("CSDT jar  : " + jarFile);
 
 		if (iniFile != null && jarFile != null && webApp != null) {
 			buttons[buttons.length - 1].setEnabled(true);
@@ -193,7 +194,17 @@ public class Configurator extends JFrame implements ActionListener {
 				} catch (Exception e) {
 					iniFile = null;
 					e.printStackTrace();
-				}
+				}		    
+			} else if (son.getName().equals("omproduct.ini")) {
+				try {
+					Properties productFile = new Properties();
+					productFile.load(new FileReader(son.getAbsolutePath()));
+					version = productFile.getProperty("Version0");
+				} catch (Exception e) {
+					iniFile = null;
+					e.printStackTrace();
+				}		    
+
 			} else if (son.getName().endsWith(".jar")
 					&& son.getName().startsWith("csdt-client"))
 				jarFile = son.getAbsolutePath();
@@ -250,6 +261,8 @@ public class Configurator extends JFrame implements ActionListener {
 					fw.write("wcsWebapp in ThisBuild := " + q(webApp));
 				} else if (line.startsWith("wcsCsdtJar ")) {
 					fw.write("wcsCsdtJar in ThisBuild := " + q(jarFile));
+				} else if (line.startsWith("wcsVersion ")) {
+					fw.write("wcsVersion in ThisBuild := " + q(version));
 				} else
 					fw.write(line + "\n");
 				line = br.readLine();

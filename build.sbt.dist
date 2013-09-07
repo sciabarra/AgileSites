@@ -15,7 +15,7 @@ wcsUser in ThisBuild := "fwadmin"
 // password to import/export
 wcsPassword in ThisBuild := "xceladmin"
 
-// versions (currently only valid values are 11g or 7.6)
+// underlying version
 wcsVersion in ThisBuild := "11g"
 
 // home directory of WCS - leave it to
