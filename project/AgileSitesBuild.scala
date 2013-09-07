@@ -35,7 +35,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     jar => Attributed.blank(file(jar))
   }
 
-  /// COMMONS
+  ///  core dependencies - those are used for compiling
   val coreDependencies = Seq(
     "javax.servlet" % "servlet-api" % "2.5",
     "junit" % "junit" % "4.4",

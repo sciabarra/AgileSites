@@ -11,5 +11,4 @@ rm -Rvf api/target
 rm -Rvf core/target
 rm -Rvf project/boot
 rm -Rvf project/repo
-rm -Rvf $HOME/.ivy2/local/com.sciabarra
-rm -Rvf $HOME/.ivy2/cache/com.sciabarra
+rm -Rvf project/project

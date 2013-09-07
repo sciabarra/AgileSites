@@ -1,5 +1,8 @@
+build.sbt
+*.build
 *.class
 *.log
+*.bak
 .history
 .DS_Store
 .cache
@@ -14,14 +17,11 @@ tags/
 project/boot/
 project/repo/
 project/plugins/project/
+workspace/
 attic/
+doc/temp/
 cs
 sites
 misc
-build.sbt
 *Old.scala
 *Old.java
-*.bak
-jsk*
-workspace
-doc/temp/

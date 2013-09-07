@@ -10,7 +10,6 @@ rd /s /q app\target
 rd /s /q api\target
 rd /s /q core\target
 rd /s /q project\boot
-rd /s /q %HOMEDRIVE%%HOMEPATH%\.ivy2\local\com.sciabarra
-rd /s /q %HOMEDRIVE%%HOMEPATH%\.ivy2\cache\com.sciabarra
+rd /s /q project\project
 rd /s /q project\repo
 del bin\*.class
