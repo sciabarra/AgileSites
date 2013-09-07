@@ -54,7 +54,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     organization := "com.sciabarra",
     publishTo := Some(Resolver.file("repo",  new File( "project/repo" )) ),
     publishMavenStyle := true,
-    version <<= (wcsVersion) { x => v +  "_" + x },
+    version <<= (wcsVersion) { x => x +  "_" + v },
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
     unmanagedJarsTask)
@@ -63,7 +63,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     resolvers += "Local Maven Repository" at "file:///"+(file("project").absolutePath)+"/repo",
     libraryDependencies <++= (version) {
       x =>
-        coreDependencies ++ Seq("com.sciabarra" %% "agilesites-core" % x)
+        coreDependencies ++ Seq("com.sciabarra" % "agilesites-core" % x)
     })
 
   import javadoc.JavadocPlugin.javadocSettings
@@ -77,6 +77,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       libraryDependencies ++= coreDependencies,
       publishArtifact in packageDoc := false,
       name := "agilesites-core",
+      crossPaths := false,
       EclipseKeys.skipProject := true,
       coreGeneratorTask))
 
