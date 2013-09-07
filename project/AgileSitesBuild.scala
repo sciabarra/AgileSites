@@ -114,7 +114,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       wcsUpdateAssetsTask,
       wcsLogTask,
       excludedJars in assembly <<= (fullClasspath in assembly),
-      EclipseKeys.skipProject := true,
+      EclipseKeys.skipProject := false,
       assembleArtifact in packageScala := false)) dependsOn (app) aggregate (app, api)
 }
 
