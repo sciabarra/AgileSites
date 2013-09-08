@@ -219,7 +219,7 @@ public abstract class Asset {
 	/**
 	 * Check if the attribute exist
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public boolean isAttribute(String attribute) {
@@ -240,7 +240,7 @@ public abstract class Asset {
 	 * Return the first attribute of the attribute list as an id (long), or null
 	 * if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public Long getCid(String attribute) {
@@ -251,7 +251,7 @@ public abstract class Asset {
 	 * Return the related asset pointed by the attribute of the given type if
 	 * not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public Asset getAsset(String attribute, String type) {
@@ -262,7 +262,7 @@ public abstract class Asset {
 	 * Return the related asset pointed by the nth attribute of the given type
 	 * if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public Asset getAsset(String attribute, int i, String type) {
@@ -297,7 +297,7 @@ public abstract class Asset {
 	 * Return the nth attribute of the named attribute as an id (long), or null
 	 * if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public Long getCid(String attribute, int n) {
@@ -308,7 +308,7 @@ public abstract class Asset {
 	 * Return the first attribute of the the named attribute as a string, or
 	 * null if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public String getString(String attribute) {
@@ -318,7 +318,7 @@ public abstract class Asset {
 	/**
 	 * Return the nth named attribute as a string, or null if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public String getString(String attribute, int n) {
@@ -350,7 +350,7 @@ public abstract class Asset {
 	 * Edit (or return if not insite) the nth named attribute as a string, or
 	 * null if not found and pass additional parameters using the CK editor
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public String editText(String attribute, int n, String params) {
@@ -361,7 +361,7 @@ public abstract class Asset {
 	 * Edit (or return if not insite) the first named attribute as a string, or
 	 * null if not found and pass additional parameters
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @param args
 	 * @return
 	 */
@@ -373,7 +373,7 @@ public abstract class Asset {
 	 * Edit (or return if not insite) the first named attribute as a string, or
 	 * null if not found using the CK editor
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public String editText(String attribute, String params) {
@@ -384,7 +384,7 @@ public abstract class Asset {
 	 * Return the first attribute of the the attribute list as an int, or null
 	 * if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public Integer getInt(String attribute) {
@@ -395,7 +395,7 @@ public abstract class Asset {
 	 * Return the nth attribute of the the attribute list as an int, or null if
 	 * not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public Integer getInt(String attribute, int n) {
@@ -406,7 +406,7 @@ public abstract class Asset {
 	 * Return the first attribute of the the attribute list as an int, or null
 	 * if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public Date getDate(String attribute) {
@@ -417,7 +417,7 @@ public abstract class Asset {
 	 * Return the nth attribute of the the attribute list as an int, or null if
 	 * not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public Date getDate(String attribute, int n) {
@@ -452,7 +452,6 @@ public abstract class Asset {
 	 * @param field
 	 * @param template
 	 * @param type
-	 * @param i
 	 * @param args
 	 * @return
 	 */
@@ -476,7 +475,7 @@ public abstract class Asset {
 	 * Slot type is configured in Config. You need a field of the same name of
 	 * the field specifying the type as parameter "c"
 	 * 
-	 * @param field
+	 * @param attribute
 	 * @param template
 	 * @param type
 	 * @param i
@@ -497,7 +496,7 @@ public abstract class Asset {
 	 * 
 	 * @param attribute
 	 * @param template
-	 *            type
+	 * @param type
 	 * @param template
 	 * @param args
 	 * @return

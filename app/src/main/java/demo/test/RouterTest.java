@@ -13,29 +13,27 @@ import org.junit.Test;
 
 import javax.annotation.Resource;
 
+import static demo.Config.*;
 import static wcs.core.Common.*;
 
-@Component
 public class RouterTest extends TestElement {
 
 	final static Log log = Log.getLog(RouterTest.class);
 
-    Router it;
-
+    Router router;
     Env e;
-
-	Asset home;
+    Asset home;
 
 	@Before
 	public void setUp() {
-        it = Router.getRouter(Config.site, e);
-		e = env();
+        e = env();
+        router = Router.getRouter(site, e);
 		home = e.findOne("Page", arg("name", "Home"));
 	}
 
 	@Test
 	public void test0() {
-		parse(it.route(e, url("")));
+		parse(router.route(url("")));
 		dump(log);
 		if (home == null)
 			assertAttr("ics-callelement", "error",
@@ -46,7 +44,7 @@ public class RouterTest extends TestElement {
 			assertAttr("ics-callelement", "cid", home.getCid().toString());
 		}
 
-		parse(it.route(e, url("?a=1&b=2&c=3")));
+		parse(router.route(url("?a=1&b=2&c=3")));
 		if (home == null)
 			assertAttr("ics-callelement", "error",
 					"Asset not found: type:Page name:Home");
@@ -57,28 +55,28 @@ public class RouterTest extends TestElement {
 
 	@Test
 	public void test1() {
-		parse(it.route(e,url("/DoesNotExist")));
+		parse(router.route(url("/DoesNotExist")));
 		assertAttr("ics-callelement", "error",
 				"Asset not found: type:Page name:DoesNotExist");
 
-		parse(it.route(e,url("/DoesNotExist?extra=parameter")));
+		parse(router.route(url("/DoesNotExist?extra=parameter")));
 		assertAttr("ics-callelement", "error",
 				"Asset not found: type:Page name:DoesNotExist");
 	}
 
 	@Test
 	public void test2() {
-		parse(it.route(e,url("/Article/Welcome")));
+		parse(router.route(url("/Article/Welcome")));
 		assertAttr("ics-callelement", "error",
 				"Asset not found: type:Demo_Article name:Welcome");
-		parse(it.route(e,url("/Article/Welcome?with=parameter&other")));
+		parse(router.route(url("/Article/Welcome?with=parameter&other")));
 		assertAttr("ics-callelement", "error",
 				"Asset not found: type:Demo_Article name:Welcome");
 	}
 
 	@Test
 	public void test3() {
-		parse(it.route(e,url("/something/not/supported?with=parameters")));
+		parse(router.route(url("/something/not/supported?with=parameters")));
 		assertAttr("ics-callelement", "error",
 				"Path not found: /something/not/supported");
 	}

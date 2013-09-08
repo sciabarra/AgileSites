@@ -19,8 +19,8 @@ public class Topmenu extends Element {
 
 	final static Log log = Log.getLog(Error.class);
 
-    @Resource(name="env")
-    Env e;
+    //@Resource(name="env")
+    //Env e;
 
     @Resource(name="sitePlan")
     SitePlan sp;

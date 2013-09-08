@@ -11,22 +11,20 @@ import demo.element.Tree;
 import javax.annotation.Resource;
 
 // this test must be run by AgileSites TestRunnerElement
-@Component
 public class TreeTest extends TestElement {
 
 	final static Log log = Log.getLog(TreeTest.class);
 
-    @Resource
 	Tree tree;
 	
 	@Before
 	public void setUp() {
-        //tree = new Tree();
+        tree = new Tree();
 	}
 
 	@Test
 	public void test() {
-		parse(tree.apply());
+		parse(tree.apply(env("")));
 		odump(log);		
 		// TODO: test the resuls
 	}

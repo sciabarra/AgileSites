@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import wcs.core.Arg;
 import wcs.core.Common;
 import wcs.core.ICSProxyJ;
@@ -67,8 +65,7 @@ public class Env extends ICSProxyJ {
         init(ics, site);
     }
 
-
-    /**
+     /**
      *
      * @param ics
      */
@@ -82,7 +79,7 @@ public class Env extends ICSProxyJ {
             config = Config.getConfig(site);
             this.site = config.getSite();
             this.normSite = WCS.normalizeSiteName(site);
-            router = Router.getRouter(site, this);
+            //router = Router.getRouter(site, this);
         }
         String rendermode = ics.GetVar("rendermode");
         insite = rendermode != null && rendermode.equals("insite");
@@ -381,9 +378,18 @@ public class Env extends ICSProxyJ {
 	/**
 	 * Return the current router
 	 */
+
 	public Router getRouter() {
+
+        if (router == null) {
+            router = Router.getRouter(site, this);
+        }
 		return router;
 	}
+
+    public void setRouter(Router router) {
+        this.router = router;
+    }
 
 	public String getSiteId() {
 		String pub = tmp();
@@ -403,7 +409,7 @@ public class Env extends ICSProxyJ {
 					.cid(id.cid.toString()).assembler("query")
 					.eval(ics, "outstr");
 		}
-		String pCid = getRouter().link(this, id, args);
+		String pCid = getRouter().link(id, args);
 		String pC = WCS.normalizeSiteName(getConfig().getSite());
 
 		String res = RenderTag.getpageurl().pagename("AAAgileRouter")//

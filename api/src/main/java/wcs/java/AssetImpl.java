@@ -95,7 +95,8 @@ class AssetImpl extends wcs.java.Asset {
 	/**
 	 * Return the association lazily loading all the attributes on the first
 	 * request request
-	 * 
+	 *
+     * @param assoc
 	 * @return
 	 */
 	private String ass(String assoc) {

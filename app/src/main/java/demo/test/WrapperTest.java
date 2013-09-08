@@ -12,17 +12,16 @@ import javax.annotation.Resource;
 // this test must be run by the test runner
 public class WrapperTest extends TestElement {
 
-    @Resource
 	Wrapper wrapper;
 
 	@Before
 	public void setUp() {
-        //wrapper = new Wrapper();
+        wrapper = new Wrapper();
 	}
 
 	@Test
 	public void test() {
-		parse(wrapper.apply());
+		parse(wrapper.apply(env("")));
 		assertAttr("render-callelement", "error", "Asset not found");
 	}
 

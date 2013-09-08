@@ -46,4 +46,5 @@ public class AttrTypes extends Asset {
 		setDescription(description);
 		return this;
 	}
+
 }

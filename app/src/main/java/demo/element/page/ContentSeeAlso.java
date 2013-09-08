@@ -16,9 +16,6 @@ public class ContentSeeAlso extends Element {
 
 	final static Log log = Log.getLog(ContentSeeAlso.class);
 
-    @Resource
-    Env env;
-
 	public static AssetSetup setup() {
 
 		return new Template("Page", "DmContentSeeAlso", Template.INTERNAL,
@@ -30,7 +27,7 @@ public class ContentSeeAlso extends Element {
 	@Override
 	public String apply() {
 		Picker html = Picker.load("/blueprint/template.html", "#seealso1");
-		Asset a = env.getAsset();
+		Asset a = e.getAsset();
 		html.replace("#seealso-title1", a.getString("Title"));
 		html.replace("#seealso-text1", a.getString("Summary"));
 		html.attr("#seealso-link1", "href", a.getUrl());

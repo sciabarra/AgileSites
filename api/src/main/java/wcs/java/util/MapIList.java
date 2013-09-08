@@ -158,5 +158,4 @@ public class MapIList implements IList {
 	public int currentRow() {
 		return curRow;
 	}
-
 }

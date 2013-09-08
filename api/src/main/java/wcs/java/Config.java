@@ -83,7 +83,9 @@ abstract public class Config {
 
 	/**
 	 * Get property from AgileSites config
-	 * 
+	 *
+     * @param name
+     * @return string
 	 */
 	public String getProperty(String name) {
 		if (properties == null) {

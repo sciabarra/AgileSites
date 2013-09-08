@@ -37,12 +37,21 @@ public class SitePlan {
 	 * @return
 	 */
 	public Id current() {
-		return currentId;
-	}
+        if (currentId == null) {
+            goTo(new Id("Publication", Long.parseLong(e.getSiteId())));
+         }
+        return currentId;
+    }
+
+    public String getCurrentNid() {
+        if (currentNid == null) {
+            goTo(new Id("Publication", Long.parseLong(e.getSiteId())));
+        }
+        return currentNid;
+    }
 
     private ICS getIcs() {
-        ICS i=e.ics;
-        return i;
+        return e.ics;
     }
 	/**
 	 * Move to the page identified by the id
@@ -80,7 +89,7 @@ public class SitePlan {
 		log.trace("children!");
 		String name = Common.tmp();
 		String list = Common.tmp();
-		SiteplanTag.load().name(name).nodeid(currentNid).run(getIcs());
+		SiteplanTag.load().name(name).nodeid(getCurrentNid()).run(getIcs());
 		SiteplanTag.children()//
 				.name(name).code("Placed").order("nrank") //
 				.list(list).run(getIcs());
@@ -97,7 +106,7 @@ public class SitePlan {
 		log.trace("path");
 		String name = Common.tmp();
 		String list = Common.tmp();
-		SiteplanTag.load().name(name).nodeid(currentNid).run(getIcs());
+		SiteplanTag.load().name(name).nodeid(getCurrentNid()).run(getIcs());
 		SiteplanTag.nodepath()//
 				.name(name) //
 				.list(list).run(getIcs());
@@ -120,4 +129,5 @@ public class SitePlan {
 			return new Id[0];
 		}
 	}
+
 }

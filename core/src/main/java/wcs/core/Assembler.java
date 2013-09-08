@@ -67,6 +67,7 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 					continue;
 
 				String site = key.substring("agilesites.site.".length());
+                //String site = key.substring("agilesites.site.".length());
 				String prefix = prp.getProperty(key);
 
 				if (prefix != null)

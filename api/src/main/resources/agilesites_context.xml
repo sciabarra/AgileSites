@@ -8,12 +8,16 @@
     <context:annotation-config/>
     <context:component-scan base-package="demo,wcs" />
 
-    <bean name="env" class="wcs.java.util.TestEnv" lazy-init="true">
+    <bean name="env" class="wcs.java.Env" lazy-init="true">
     </bean>
 
     <bean name="sitePlan" class="wcs.java.SitePlan" lazy-init="true">
         <constructor-arg index="0" ref="env"/>
     </bean>
 
+    <bean name="router" class="demo.Router" lazy-init="true">
+        <constructor-arg index="0" ref="env"/>
+        <constructor-arg index="1" value="demo"/>
+    </bean>
 
 </beans>

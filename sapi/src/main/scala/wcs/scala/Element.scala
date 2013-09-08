@@ -75,6 +75,6 @@ abstract class Element extends JElement with Log {
   /**
    * This method must not be implemented - the apply(e: wcs.scala.Env) should instead
    */
-  def apply(e: wcs.java.Env): String = null
+   override def apply(e: wcs.java.Env): String = null
 
 }

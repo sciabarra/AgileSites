@@ -596,5 +596,4 @@ public class XmlTestReport extends RunListener {
 	public void testStarted(Description description) throws Exception {
 		endTest(description);
 	}
-
 } // XMLJUnitResultFormatter

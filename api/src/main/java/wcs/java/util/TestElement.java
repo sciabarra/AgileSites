@@ -19,8 +19,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import wcs.core.Call;
 import wcs.core.URL;
-import wcs.java.Router;
+import wcs.java.Env;
 import wcs.core.Log;
+import wcs.java.Router;
+
+
+import javax.annotation.Resource;
 
 /**
  * Collection of test helpers for testing elements.
@@ -30,9 +34,7 @@ import wcs.core.Log;
  * @author msciab
  * 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:agilesites_context.xml")
-public class TestElement { //extends TestCase {
+public class TestElement extends TestCase {
 
 	static final Log log = Log.getLog(TestElement.class);
 
@@ -68,8 +70,8 @@ public class TestElement { //extends TestCase {
 			path = "";
 		TestEnv te = env();
 		try {
-			Call call = Router.getRouter(te.getString("site"), te).route(te,
-					URL.parse(new URI(path)));
+            Call call = Router.getRouter(te.getString("site"), te).route(
+                    URL.parse(new URI(path)));
 			for (String k : call.keysLeft())
 				te.SetVar(k, call.getOnce(k));
 		} catch (URISyntaxException e) {
@@ -77,8 +79,7 @@ public class TestElement { //extends TestCase {
 		}
 		return te;
 	}
-
-	/**
+ 	/**
 	 * Parse a call
 	 */
 	public void parse(Call call) {

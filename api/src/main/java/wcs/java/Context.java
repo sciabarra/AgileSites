@@ -12,8 +12,7 @@ public class Context implements wcs.core.Context {
 
     GenericApplicationContext context;
 
-
-    public void initContext(ClassLoader cl) {
+     public void initContext(ClassLoader cl) {
         context = new GenericApplicationContext();
         context.setClassLoader(cl);
         XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(context);
@@ -31,6 +30,4 @@ public class Context implements wcs.core.Context {
         }
         return context.getBean(beanName);
     }
-
-
 }

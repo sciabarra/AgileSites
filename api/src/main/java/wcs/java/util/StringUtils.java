@@ -280,4 +280,5 @@ public final class StringUtils {
 			return string;
 		}
 	}
+
 }

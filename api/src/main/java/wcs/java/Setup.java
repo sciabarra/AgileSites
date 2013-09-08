@@ -177,8 +177,8 @@ abstract public class Setup implements wcs.core.Setup {
 	/**
 	 * Insert or update
 	 * 
-	 * @param adm
-	 * @param helper
+	 * @param ics
+	 * @param setup
 	 */
 	String insertOrUpdate(ICS ics, AssetSetup setup) {
 		log.debug("insertOrUpdate " + setup);

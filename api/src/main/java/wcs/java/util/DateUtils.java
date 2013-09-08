@@ -76,7 +76,6 @@ final class DateUtils {
     private DateUtils() {
     }
 
-
     /**
      * Format a date/time into a specific pattern.
      * @param date the date to format expressed in milliseconds.
@@ -86,7 +85,6 @@ final class DateUtils {
     public static String format(long date, String pattern) {
         return format(new Date(date), pattern);
     }
-
 
     /**
      * Format a date/time into a specific pattern.
@@ -98,7 +96,6 @@ final class DateUtils {
         DateFormat df = createDateFormat(pattern);
         return df.format(date);
     }
-
 
     /**
      * Format an elapsed time into a plurialization correct string.

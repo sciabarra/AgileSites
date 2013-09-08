@@ -26,11 +26,13 @@ abstract public class Router implements wcs.core.Router {
 	/**
 	 * Return a router for the site. You can use both the site name or his
 	 * normalized name to get the router.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param site
 	 * @return
 	 */
+    Env e;
+
 	public static Router getRouter(String site, Env e) {
 		try {
 			String clazz = WCS.normalizeSiteName(site) + ".Router";
@@ -39,16 +41,14 @@ abstract public class Router implements wcs.core.Router {
 			// router site must be initialized here
 			// config is retrieved because the site name can be normalized
 			// to get the full site name
-			router.site = Config.getConfig(site).getSite();
+			router.site = "Demo" ; //Config.getConfig(site).getSite();
             router.e = e;
-			return router;
-		} catch (Exception ex) {
+            return router;
+ 		} catch (Exception ex) {
 			log.error(ex, "cannot get router");
 			return null;
 		}
 	}
-
-	private Env e;
 
 	@Override
 	public Call route(ICS ics, String _site, String _path, String _query) {
@@ -59,7 +59,7 @@ abstract public class Router implements wcs.core.Router {
 			_query = "";
 		else
 			_query = "?" + _query;
-		return route(e, URL.parse(_path, _query));
+		return route(URL.parse(_path, _query));
 	}
 
 	public Call call(String name, Arg... args) {
@@ -76,7 +76,7 @@ abstract public class Router implements wcs.core.Router {
 	 * @param url
 	 * @return
 	 */
-	abstract public Call route(Env env, URL url);
+	abstract public Call route(URL url);
 
 	/**
 	 * Link an asset
@@ -84,5 +84,11 @@ abstract public class Router implements wcs.core.Router {
 	 * @param id
 	 * @return
 	 */
-	abstract public String link(Env env, Id id, Arg... args);
+	abstract public String link(Id id, Arg... args);
+
+    public Call route (Env e, URL url) {
+        this.e = e;
+        return route(url);
+    }
+
 }

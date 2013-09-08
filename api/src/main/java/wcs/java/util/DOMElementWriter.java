@@ -635,4 +635,5 @@ public class DOMElementWriter {
 		}
 		return uri;
 	}
+
 }

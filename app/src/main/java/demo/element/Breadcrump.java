@@ -20,8 +20,8 @@ public class Breadcrump extends Element {
 
 	final static Log log = Log.getLog(Breadcrump.class);
 
-    @Resource(name="env")
-    Env e;
+    //@Resource(name="env")
+    //Env e;
 
     @Resource(name="sitePlan")
     SitePlan sp;

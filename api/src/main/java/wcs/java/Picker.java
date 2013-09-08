@@ -90,8 +90,7 @@ public class Picker {
 	/**
 	 * Get a picker from a string
 	 * 
-	 * @param resource
-	 * @param cssq
+	 * @param html
 	 * @return a new picker
 	 */
 	public static Picker create(String html) {
@@ -101,7 +100,7 @@ public class Picker {
 	/**
 	 * Get a picker from a string and select the given query
 	 * 
-	 * @param resource
+	 * @param html
 	 * @param cssq
 	 * @return a new picker
 	 */

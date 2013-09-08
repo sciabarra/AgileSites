@@ -11,22 +11,20 @@ import demo.element.Topmenu;
 import javax.annotation.Resource;
 
 // this test must be run by AgileSites TestRunnerElement
-@Component
 public class TopmenuTest extends TestElement {
 
 	final static Log log = Log.getLog(TopmenuTest.class);
 
-    @Resource
 	Topmenu topmenu;
 	
 	@Before
 	public void setUp() {
-        //topmenu = new Topmenu();
+        topmenu = new Topmenu();
 	}
 
 	@Test
 	public void test() {
-		parse(topmenu.apply());
+		parse(topmenu.apply(env("")));
 		odump(log);
 		// TODO: test the results
 	}

@@ -11,12 +11,10 @@ import demo.element.page.ContentSeeAlso;
 import javax.annotation.Resource;
 
 // this test must be run by AgileSites TestRunnerElement
-@Component
 public class ContentSeeAlsoTest extends TestElement {
 
 	final static Log log = Log.getLog(ContentSeeAlsoTest.class);
 
-    @Resource
     ContentSeeAlso contentSeeAlso;
 
 	@Before
@@ -26,15 +24,14 @@ public class ContentSeeAlsoTest extends TestElement {
 
 	@Test
 	public void testHome() {
-		parse(contentSeeAlso.apply());
+		parse(contentSeeAlso.apply(env("")));
 		assertText("h6", "Home");
 		assertTextContains("div", "This is a SUMMARY.");
 	}
 
 	@Test
 	public void testAboutLink() {
-		//parse(it.apply(env("/About")));
-        parse(contentSeeAlso.apply());
+		parse(contentSeeAlso.apply(env("/About")));
 		assertAttrContains("a", "href", "/About");
 	}
 }

@@ -16,8 +16,6 @@ public class Summary extends Element {
 
 	final static Log log = Log.getLog(Summary.class);
 
-    @Resource
-    Env env;
 
 	public static AssetSetup setup() {
 
@@ -29,7 +27,7 @@ public class Summary extends Element {
 
 	@Override
 	public String apply() {
-		Asset a = env.getAsset();
+		Asset a = e.getAsset();
 		Picker html = Picker.load("/blueprint/template.html", "#related");
 		html.replace("#related-title", a.getString("Title"));
 		html.replace("#related-body", a.getString("Summary"));

@@ -17,8 +17,8 @@ public class Wrapper extends Element {
 	
 	private final static Log log = Log.getLog(Wrapper.class);
 
-    @Resource(name="env")
-    Env e;
+    //@Resource(name="env")
+    //Env e;
 
 	public static AssetSetup setup() {
 		return new CSElement("DmWrapper", demo.element.Wrapper.class,

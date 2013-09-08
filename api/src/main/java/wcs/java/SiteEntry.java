@@ -110,4 +110,5 @@ public class SiteEntry extends AssetSetup {
 		setDescription(description);
 		return this;
 	}
+
 }

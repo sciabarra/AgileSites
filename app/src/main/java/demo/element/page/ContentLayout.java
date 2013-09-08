@@ -16,9 +16,6 @@ public class ContentLayout extends Element {
 
 	Log log = Log.getLog(ContentLayout.class);
 
-    @Resource
-    Env env;
-
 	public static AssetSetup setup() {
 		return new Template("Page", "DmContentLayout", Template.LAYOUT,
 				demo.element.page.ContentLayout.class) //
@@ -29,7 +26,7 @@ public class ContentLayout extends Element {
 	@Override
 	public String apply() {
 
-		Asset a = env.getAsset();
+		Asset a = e.getAsset();
 		Picker html = Picker.load("/blueprint/template.html", "#content");
 
 		html.prefixAttrs("img", "src", "/cs/blueprint/");
@@ -65,9 +62,9 @@ public class ContentLayout extends Element {
 
 		
 		
-		html.replace("#tree", env.call("DmTree"));
-		html.replace("#topmenu", env.call("DmTopmenu"));
-		html.replace("#breadcrump", env.call("DmBreadcrump",//
+		html.replace("#tree", e.call("DmTree"));
+		html.replace("#topmenu", e.call("DmTopmenu"));
+		html.replace("#breadcrump", e.call("DmBreadcrump",//
 				arg("c", a.getC()), arg("cid", a.getCid().toString())));
 
 

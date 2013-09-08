@@ -11,21 +11,20 @@ import demo.element.page.Summary;
 import javax.annotation.Resource;
 
 // this test must be run by AgileSites TestRunnerElement
-@Component
 public class SummaryTest extends TestElement {
 
 	final static Log log = Log.getLog(SummaryTest.class);
 
-    @Resource
     Summary summary;
 	
 	@Before
 	public void setUp() {
+        summary = new Summary();
 	}
 
 	@Test
 	public void test() {
-		parse(summary.apply());
+		parse(summary.apply(env("")));
 		odump(log);
 		assertText("h4", "Home");		
 		assertTextContains("div div", "This is a SUMMARY.");

@@ -21,8 +21,8 @@ public class Tree extends Element {
     @Resource(name="sitePlan")
     private SitePlan sp ;
 
-    @Resource(name="env")
-	private Env e;
+    //@Resource(name="env")
+	//private Env e;
 
 
 	public static AssetSetup setup() {
@@ -56,7 +56,8 @@ public class Tree extends Element {
 
 		// navigate the siteplan
 		Id parent = sp.current();
-		StringBuilder result = new StringBuilder("d.add("+parent.cid+", -1,'"+e.getConfig().getSite()+"');");
+        String site = e.getConfig().getSite();
+		StringBuilder result = new StringBuilder("d.add("+parent.cid+", -1,'"+site+"');");
 		visit(parent, result);
 
 		html.replace("#tree-body", result.toString());

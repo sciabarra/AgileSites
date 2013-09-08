@@ -27,7 +27,7 @@ public abstract class Element implements wcs.core.Element {
 	protected String site;
 
     @Resource(name="env")
-    Env e;
+    protected Env e;
 
 	protected boolean insite = false;
 
@@ -94,10 +94,15 @@ public abstract class Element implements wcs.core.Element {
 	}
 
 	/**
-	 * The method to be overriden by an implementing template
+	 * The method to be overridden by an implementing template
 	 * 
-	 * @return
+	 * @return string
 	 */
 	abstract public String apply();
+
+    public String apply(Env e) {
+        this.e = e;
+        return apply();
+    }
 
 }

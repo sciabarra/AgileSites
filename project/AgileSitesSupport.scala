@@ -236,6 +236,7 @@ trait AgileSitesSupport {
 
     for ((k, v) <- sitesSeq) {
       prp.setProperty("agilesites.site." + normalizeSiteName(k), v)
+      prp.setProperty("agilesites.name." + normalizeSiteName(k), k)
     }
 
     prp.setProperty("agilesites.blob.flex", flexBlobs)

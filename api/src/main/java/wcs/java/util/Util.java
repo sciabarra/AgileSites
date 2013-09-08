@@ -396,7 +396,7 @@ public class Util {
 	/**
 	 * Read a configuration attribute
 	 * 
-	 * @param name
+	 * @param attribute
 	 * @param config
 	 * @return
 	 */

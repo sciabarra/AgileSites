@@ -11,22 +11,17 @@ import org.junit.runner.notification.RunListener;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import wcs.java.Element;
 import wcs.java.Env;
 import wcs.core.Log;
 
 import javax.annotation.Resource;
 
-public abstract class TestRunnerElement extends Element{
+public abstract class TestRunnerElement extends Element {
 
-
-    @Autowired
-    private org.springframework.context.ApplicationContext appContext;
 
 	final static Log log = Log.getLog(TestRunnerElement.class);
-
-    @Resource(name="env")
-    Env e;
 
 	abstract public Class<?>[] tests();
 
@@ -245,7 +240,7 @@ public abstract class TestRunnerElement extends Element{
 		while (st.hasMoreTokens())
 			try {
 				String testName = st.nextToken();
-                String beanName = Class.forName(testName).getSimpleName();
+                //String beanName = Class.forName(testName).getSimpleName();
                 //beanName = beanName.substring(0, 1).toLowerCase() + beanName.substring(1);
 
                 //System.out.println("testing bean: " + beanName);

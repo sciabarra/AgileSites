@@ -1,11 +1,14 @@
 package demo;
 
+import org.springframework.stereotype.Component;
 import wcs.core.Arg;
 import wcs.core.Log;
 import wcs.core.URL;
 import wcs.core.Call;
 import wcs.core.Id;
 import wcs.java.Env;
+
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.StringTokenizer;
 import static wcs.core.Common.arg;
@@ -16,12 +19,22 @@ import static wcs.core.Common.arg;
  * @author msciab
  * 
  */
+@Component
 public class Router extends wcs.java.Router {
 
-	static final Log log = Log.getLog(Router.class);
+	//static final Log log = Log.getLog(Router.class);
 
-	@Override
-	public Call route(Env e, URL url) {
+    Env e;
+
+    public Router(Env env, String site) {
+        super();
+        Config.getConfig(site).getSite();
+        this.e = env;
+        e.setRouter(this);
+    }
+
+    @Override
+	public Call route( URL url) {
 
 		// split the token
 		String c = null;
@@ -80,7 +93,7 @@ public class Router extends wcs.java.Router {
 	 * Special case: the home page, normalized to just the void string
 	 */
 	@Override
-	public String link(Env e, Id id, Arg... args) {
+	public String link(Id id, Arg... args) {
 		String name = e.getAsset(id).getName();
 		if (id.c.equals("Page"))
 			// home page

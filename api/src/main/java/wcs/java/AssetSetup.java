@@ -47,4 +47,5 @@ public abstract class AssetSetup extends Asset {
 	public void setNextSetup(AssetSetup assetSetup) {
 		nextSetup = assetSetup; 
 	}
+
 }

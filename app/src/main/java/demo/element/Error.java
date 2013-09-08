@@ -15,8 +15,8 @@ public class Error extends Element {
 
 	final static Log log = Log.getLog(Error.class);
 
-    @Resource
-    Env env;
+    //@Resource
+    //Env env;
 
 	public static AssetSetup setup() {
 		return new CSElement("DmError", demo.element.Error.class);
@@ -27,7 +27,7 @@ public class Error extends Element {
 		log.trace("Demo Error");
 		Picker html = Picker.load("/demo/simple.html", "#content");
 		html.replace("#title", "Error");
-		html.replace("#subtitle", env.getString("error"));
+		html.replace("#subtitle", e.getString("error"));
 		return html/*.dump(log)*/.html();
 	}
 }
