@@ -75,11 +75,11 @@ public abstract class TestRunnerElement extends Element {
 		int runCount = 0;
 		int skipCount = 0;
 
-		@Override
+		/*
 		public void testAssumptionFailure(Failure failure) {
 			// sb.append("Assumption").append(failure.getMessage()).append("<br>");
 			super.testAssumptionFailure(failure);
-		}
+		}*/
 
 		public TestListener append(String msg) {
 			sb.append(msg);
@@ -90,9 +90,9 @@ public abstract class TestRunnerElement extends Element {
 		public void testStarted(Description description) throws Exception {
 
 			log.trace("testStarted");
-
-			sb.append("<b>").append(description.getClassName()).append(".")
-					.append(description.getMethodName()).append("</b>: ");
+			
+			sb.append("<b>").append(description.getClass().getName()).append(".")
+					.append(description.getDisplayName()).append("</b>: ");
 			lastFailure = null;
 
 			super.testStarted(description);
