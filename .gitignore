@@ -24,3 +24,4 @@ build.sbt
 jsk*
 workspace
 doc/temp/
+project/repo

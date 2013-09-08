@@ -3,10 +3,12 @@ echo Please exit from Eclipse or any other IDE before.
 echo After the cleanup you may need to repeat the wcs-setup-offline
 echo Press control-c if you are unsure otherwise control-d
 read
+rm bin/*.class
 rm -Rvf target
 rm -Rvf project/target
 rm -Rvf app/target
 rm -Rvf api/target
 rm -Rvf core/target
-rm -Rvf project\boot
-rm -Rvf $HOME/.ivy2/local/com.sciabarra
+rm -Rvf project/boot
+rm -Rvf project/repo
+rm -Rvf project/project

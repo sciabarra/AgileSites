@@ -13,7 +13,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
 
   // if you change this 
   // remember to update the agilesites scripts
-  val v = "1.2"
+  val v = "1.1"
 
   // configuring WCS jars as unmanaged lib
   val unmanagedFilter = "log4j-*" || "slf4j*" || "spring-*" || "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
@@ -33,43 +33,47 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   ///  core dependencies - those are used for compiling
   val coreDependencies = Seq(
     "javax.servlet" % "servlet-api" % "2.5",
-    "junit" % "junit" % "4.8.2",
+    "junit" % "junit" % "4.4",
     "org.springframework" % "spring" % "2.5.5",
-    "com.novocode" % "junit-interface" % "0.10-M4" % "test",
+    "org.springframework" % "spring-test" % "2.5.5",
     "commons-logging" % "commons-logging" % "1.1.1",
+    "com.novocode" % "junit-interface" % "0.8" % "test",
     "log4j" % "log4j" % "1.2.16",
     "commons-httpclient" % "commons-httpclient" % "3.1",
     "org.apache.httpcomponents" % "httpclient" % "4.1.2",
     "org.apache.httpcomponents" % "httpcore" % "4.1.2",
     "org.apache.httpcomponents" % "httpmime" % "4.1.2",
-    "org.apache.james" % "apache-mime4j" % "0.5",
-    "rhino" % "js" % "1.7R2",
-    "org.scalatest" %% "scalatest" % "2.0.M5b",
-    "org.scalamock" %% "scalamock-scalatest-support" % "3.0.1")
+    "org.apache.james" % "apache-mime4j" % "0.5")
+    //"rhino" % "js" % "1.7R2",
+    //"org.scalatest" %% "scalatest" % "2.0.M5b",
+    //"org.scalamock" %% "scalamock-scalatest-support" % "3.0.1"
 
   /// which jars you actually use at runtime
   /// that are copied by the wcs-setup-offline  
   val addFilterSetup = "agilesites-core*" ||
-    "scala-library*" ||
+    "junit*" ;
+
+  val removeFilterSetup = "agilesites-core*" ||
     "junit*" ||
+    "scala-library*" ||
     "scalatest*" ||
     "scalamock*" ||
-    "js-*";
-
-  val removeFilterSetup = addFilterSetup
+    "js-*" ;
 
   val coreSettings = Defaults.defaultSettings ++ Seq(
     scalaVersion := "2.10.0",
     organization := "com.sciabarra",
-    version <<= (wcsVersion) { x => v + "_" + x },
+    publishTo := Some(Resolver.file("repo",  new File( "project/repo" )) ),
+    publishMavenStyle := true,
+    version <<= (wcsVersion) { x => x +  "_" + v },
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
     unmanagedJarsTask)
 
   val commonSettings = coreSettings ++ Seq(
+    resolvers += "Local Maven Repository" at "file:///"+(file("project").absolutePath)+"/repo",
     libraryDependencies <++= (version) {
-      x =>
-        coreDependencies ++ Seq("com.sciabarra" %% "agilesites-core" % x)
+      x => coreDependencies ++ Seq("com.sciabarra" % "agilesites-core" % x)
     })
 
   import javadoc.JavadocPlugin.javadocSettings
@@ -83,7 +87,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       libraryDependencies ++= coreDependencies,
       publishArtifact in packageDoc := false,
       name := "agilesites-core",
-      //EclipseKeys.skipProject := true,
+      crossPaths := false,
+      EclipseKeys.skipProject := true,
       coreGeneratorTask))
 
   // API
@@ -126,8 +131,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       wcsExportTask,
       excludedJars in assembly <<= (fullClasspath in assembly),
       watchSources ++= (((file("core") / "populate" ** "*") +++ (file("static") ** "*")).getFiles),
-      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
-      //EclipseKeys.skipProject := true,
+      EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
+      EclipseKeys.skipProject := false,
       assembleArtifact in packageScala := false)) dependsOn (app) aggregate (app, api)
 }
 
