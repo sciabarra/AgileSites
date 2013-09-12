@@ -31,12 +31,10 @@ import COM.FutureTense.XML.Template.Seed;
 @SuppressWarnings("deprecation")
 public class ICSProxyJ implements ICS {
 
-
-	public String getVersion() { return "7.5.0"; }
-	public int getVersionMajor() { return 7; }
-	public int getVersionMinor() { return 5; }
+	public String getVersion() { return "11.1.1.8.0"; }
+	public int getVersionMajor() { return 11; }
+	public int getVersionMinor() { return 8; }
 	public int getVersionLevel() { return 0; }
-
 
 
 	public ICS ics;
@@ -45,12 +43,12 @@ public class ICSProxyJ implements ICS {
 
 	}
 
-	public void init(ICS ics) {
-		this.ics = ics;
-	}
-
 	public ICSProxyJ(ICS ics) {
 		init(ics);
+	}
+
+	public void init(ICS ics) {
+		this.ics = ics;
 	}
 
 	public boolean AppEvent(String arg0, String arg1, String arg2,
@@ -58,16 +56,14 @@ public class ICSProxyJ implements ICS {
 		return ics.AppEvent(arg0, arg1, arg2, arg3);
 	}
 
-
 	public boolean BlobServer(FTValList arg0, IMIMENotifier arg1,
 			OutputStream arg2) {
 		return ics.BlobServer(arg0, arg1, arg2);
 	}
 
-	/*
 	public boolean BlobServer(FTValList arg0, OutputStream arg1) {
 		return ics.BlobServer(arg0, arg1);
-	}*/
+	}
 
 	public boolean CallElement(String arg0, FTValList arg1) {
 		return ics.CallElement(arg0, arg1);
@@ -211,8 +207,7 @@ public class ICSProxyJ implements ICS {
 	}
 
 	public ISyncHash GetSynchronizedHash(String arg0, boolean arg1, int arg2,
-			int arg3, boolean arg4, boolean arg5,
-			@SuppressWarnings("rawtypes") Collection arg6) {
+			int arg3, boolean arg4, boolean arg5, @SuppressWarnings("rawtypes") Collection arg6) {
 		return ics
 				.GetSynchronizedHash(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
 	}
@@ -283,12 +278,10 @@ public class ICSProxyJ implements ICS {
 		return ics.IsTracked(arg0);
 	}
 
-/*
 	public boolean IsTrackedNewFormat(String arg0) {
 		return ics.IsTrackedNewFormat(arg0);
 	}
-*/
-	
+
 	public boolean LoadProperty(String arg0) {
 		return ics.LoadProperty(arg0);
 	}
@@ -305,34 +298,32 @@ public class ICSProxyJ implements ICS {
 				arg9, arg10, arg11, arg12, arg13, arg14, arg15);
 	}
 
-	public int Mirror(@SuppressWarnings("rawtypes") Vector arg0, String arg1,
-			String arg2, String arg3, String arg4, String arg5, int arg6,
-			boolean arg7, boolean arg8, int arg9, StringBuffer arg10) {
+	public int Mirror(@SuppressWarnings("rawtypes") Vector arg0, String arg1, String arg2, String arg3,
+			String arg4, String arg5, int arg6, boolean arg7, boolean arg8,
+			int arg9, StringBuffer arg10) {
 		return ics.Mirror(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 				arg9, arg10);
 	}
 
-	public int Mirror(@SuppressWarnings("rawtypes") Vector arg0, String arg1,
-			String arg2, String arg3, String arg4, String arg5, int arg6,
-			boolean arg7, String arg8, String arg9, String arg10, String arg11,
-			boolean arg12, int arg13, StringBuffer arg14) {
+	public int Mirror(@SuppressWarnings("rawtypes") Vector arg0, String arg1, String arg2, String arg3,
+			String arg4, String arg5, int arg6, boolean arg7, String arg8,
+			String arg9, String arg10, String arg11, boolean arg12, int arg13,
+			StringBuffer arg14) {
 		return ics.Mirror(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 				arg9, arg10, arg11, arg12, arg13, arg14);
 	}
 
-	public int Mirror(@SuppressWarnings("rawtypes") Vector arg0,
-			@SuppressWarnings("rawtypes") Vector arg1, String arg2,
-			String arg3, String arg4, String arg5, String arg6, int arg7,
-			boolean arg8, boolean arg9, int arg10, StringBuffer arg11) {
+	public int Mirror(@SuppressWarnings("rawtypes") Vector arg0, @SuppressWarnings("rawtypes") Vector arg1, String arg2, String arg3,
+			String arg4, String arg5, String arg6, int arg7, boolean arg8,
+			boolean arg9, int arg10, StringBuffer arg11) {
 		return ics.Mirror(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 				arg9, arg10, arg11);
 	}
 
-	public int Mirror(@SuppressWarnings("rawtypes") Vector arg0,
-			@SuppressWarnings("rawtypes") Vector arg1, String arg2,
-			String arg3, String arg4, String arg5, String arg6, int arg7,
-			boolean arg8, String arg9, String arg10, String arg11,
-			String arg12, boolean arg13, int arg14, StringBuffer arg15) {
+	public int Mirror(@SuppressWarnings("rawtypes") Vector arg0, @SuppressWarnings("rawtypes") Vector arg1, String arg2, String arg3,
+			String arg4, String arg5, String arg6, int arg7, boolean arg8,
+			String arg9, String arg10, String arg11, String arg12,
+			boolean arg13, int arg14, StringBuffer arg15) {
 		return ics.Mirror(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 				arg9, arg10, arg11, arg12, arg13, arg14, arg15);
 	}
@@ -632,8 +623,7 @@ public class ICSProxyJ implements ICS {
 		return ics.diskFileName(arg0, arg1);
 	}
 
-	public String encode(String arg0, @SuppressWarnings("rawtypes") Map arg1,
-			boolean arg2) {
+	public String encode(String arg0, @SuppressWarnings("rawtypes") Map arg1, boolean arg2) {
 		return ics.encode(arg0, arg1, arg2);
 	}
 
@@ -662,12 +652,10 @@ public class ICSProxyJ implements ICS {
 		return ics.getCookie(arg0);
 	}
 
-/*
 	public String getElementArgumentValue(String arg0, String arg1) {
 		return ics.getElementArgumentValue(arg0, arg1);
 	}
-*/
-	
+
 	public IProperties getIProperties() {
 		return ics.getIProperties();
 	}

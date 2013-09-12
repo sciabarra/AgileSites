@@ -31,6 +31,11 @@ import COM.FutureTense.XML.Template.Seed;
 @SuppressWarnings("deprecation")
 public class ICSProxyJ implements ICS {
 
+	public String getVersion() { return "11.1.1.6.0"; }
+	public int getVersionMajor() { return 11; }
+	public int getVersionMinor() { return 6; }
+	public int getVersionLevel() { return 0; }
+
 	public ICS ics;
 
 	public ICSProxyJ() {

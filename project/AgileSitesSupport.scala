@@ -107,31 +107,54 @@ trait AgileSitesSupport {
         (args, version, url, sites, user, password, classpath, s, runner) =>
           val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d|spring-\\d|commons-logging|servlet-api|cs-core|http).*.jar$".r;
           val seljars = classpath.files.filter(f => !re.findAllIn(f.getName).isEmpty)
-          val firstArg = if (args.size > 0) args(0) else "listcs"
-          var resources = if (args.size > 1) args.drop(1)
-          else firstArg match {
-            case "listcs" => Seq("@ALL_ASSETS;@ALL_NONASSETS")
-            case "listds" => Seq("@ALL_ASSETS;@ALL_NONASSETS")
-            case "import" =>
-              Seq("@SITE", "@ASSET_TYPE", "@ALL_ASSETS", "@STARTMENU", "@TREETAB")
-            case "export" =>
-              Seq("@SITE", "@ASSET_TYPE", "@ALL_ASSETS", "@STARTMENU", "@TREETAB")
-            case _ =>
-              println("Unknown command")
-              Seq()
-          }
+          val workspaces = ""
+          if(args.size ==0 ) {
+            println("""usage: wcs-dt <workspace> [<cmd>]  [<selector> ...]
+                       | <workspace> one of %s
+                       | <cmd> one of listcs, listds, import, export, import_all, export_all
+                       |       default to listcs
+                       | <selector> check developer tool documentation for syntax
+                       |    defaults:
+                       |      for listcs to @ALL_ASSETS
+                       |      for listds to @ALL_ASSETS
+                       |      for import to @SITE @ASSET_TYPE @ALL_ASSETS @STARTMENU"
+                       |        (by default imports all)
+                       |      for export to @SITE @ASSET_TYPE
+                       |        (by default it exports only the site structure - need to select what to export)
+                       |""".stripMargin.format(workspaces))
+          } else {
+            
+            val workspace = args.head
+            val args1 = args.tail
+            
+            val firstArg = if (args1.size > 0) args1(0) 
+            else "listcs"
+            
+            var resources = if (args1.size > 1) args1.drop(1)
+            else firstArg match {
+              case "listcs" => Seq("@ALL_ASSETS")
+              case "listds" => Seq("@ALL_ASSETS")
+              case "import" =>
+                Seq("@SITE", "@ASSET_TYPE", "@ALL_ASSETS", "@STARTMENU", "@TREETAB")
+              case "export" =>
+                Seq("@SITE", "@ASSET_TYPE")
+              case _ =>
+                println("Unknown command")
+                Seq()
+            }
 
-          for (res <- resources) {
-            val cmd = Array(url + "/ContentServer",
-              "username=" + user,
-              "password=" + password,
-              "cmd=" + firstArg,
-              "resources=" + res,
-              "fromSites=" + sites,
-              "datastore=" + sites + "-" + version)
+            for (res <- resources) {
+              val cmd = Array(url + "/ContentServer",
+                "username=" + user,
+                "password=" + password,
+                "cmd=" + firstArg,
+                "resources=" + res,
+                //"fromSites=" + sites,
+                "datastore=" + workspace)
 
-            Run.run("com.fatwire.csdt.client.main.CSDT",
-              seljars, cmd, s.log)(runner)
+              Run.run("com.fatwire.csdt.client.main.CSDT",
+                  seljars, cmd, s.log)(runner)
+            }
           }
       }
   }
