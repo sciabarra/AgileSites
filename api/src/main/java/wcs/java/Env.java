@@ -39,6 +39,10 @@ public class Env extends ICSProxyJ {
 	private String normSite;
 	private boolean insite;
 	private boolean preview;
+	
+	private boolean hasInsite =  getVersionMajor()==11;
+	private boolean hasDevices = getVersionMajor()==11 && getVersionMinor()==8;
+
 
 	/**
 	 * Build the env from the ICS
@@ -70,8 +74,9 @@ public class Env extends ICSProxyJ {
 
 	/**
 	 * Get a variable or null
-	 * 
-	 * @param var
+	 *
+	 * @param list
+     * @param field
 	 * @return
 	 */
 	public String getString(String list, String field) {
@@ -90,7 +95,9 @@ public class Env extends ICSProxyJ {
 	/**
 	 * Get a variable or null
 	 * 
-	 * @param var
+	 * @param list
+     * @param row
+     * @param field
 	 * @return
 	 */
 	public String getString(String list, int row, String field) {
@@ -377,8 +384,17 @@ public class Env extends ICSProxyJ {
 		String pCid = getRouter().link(this, id, args);
 		String pC = WCS.normalizeSiteName(getConfig().getSite());
 
-		String res = RenderTag.getpageurl().pagename("AAAgileRouter")//
+		String res; 
+
+		if(hasDevices) {
+		   res = RenderTag.getpageurl().pagename("AAAgileRouter")//
+				.c(pC).cid(pCid).d("Default").assembler("agilesites").eval(ics, "outstr");
+		} else {
+			res = RenderTag.getpageurl().pagename("AAAgileRouter")//
 				.c(pC).cid(pCid).assembler("agilesites").eval(ics, "outstr");
+		}
+
+
 		log.debug("getUrl: outstr=" + res);
 		return res;
 	}
@@ -471,7 +487,6 @@ public class Env extends ICSProxyJ {
 	/**
 	 * Add a dependency on anything
 	 * 
-	 * @param c
 	 */
 	public void addDependency() {
 		RenderTag.unknowndeps().run(ics);
@@ -510,8 +525,7 @@ public class Env extends ICSProxyJ {
 	/**
 	 * Add an EXACT dependency on a given asset
 	 * 
-	 * @param c
-	 * @param cid
+	 * @param id
 	 */
 	public void addDependency(Id id) {
 		RenderTag.logdep().c(id.c).cid(id.cid.toString()).run(ics);
@@ -520,8 +534,8 @@ public class Env extends ICSProxyJ {
 	/**
 	 * Add a dependency of the specified type on a given asset
 	 * 
-	 * @param c
-	 * @param cid
+	 * @param id
+	 * @param deps
 	 */
 	public void addDependency(Id id, AssetDeps deps) {
 		RenderTag.logdep().c(id.c).cid(id.cid.toString())

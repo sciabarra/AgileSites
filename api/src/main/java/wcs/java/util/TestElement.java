@@ -281,7 +281,6 @@ public class TestElement extends TestCase {
 		log.debug(Util.dumpStream(doc.select(wh).html()));
 	}
 
-
 	/**
 	 * Dump outer html
 	 * 

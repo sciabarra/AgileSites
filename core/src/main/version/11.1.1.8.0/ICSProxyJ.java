@@ -27,6 +27,10 @@ import COM.FutureTense.Interfaces.IURLDefinition;
 import COM.FutureTense.Interfaces.PastramiEngine;
 import COM.FutureTense.Util.ftErrors;
 import COM.FutureTense.XML.Template.Seed;
+import COM.FutureTense.Mobility.DeviceHelper;
+import wcs.core.tag.PublicationTag;
+import wcs.core.tag.DeviceTag;
+
 
 @SuppressWarnings("deprecation")
 public class ICSProxyJ implements ICS {
@@ -50,6 +54,28 @@ public class ICSProxyJ implements ICS {
 	public void init(ICS ics) {
 		this.ics = ics;
 	}
+
+
+
+	public String getSiteId() {
+		String pub = Common.tmp();
+		PublicationTag.load().name(pub)//
+				.field("name").value(config.getSite()).run(ics);
+		return PublicationTag.get().name(pub)//
+				.field("id").eval(ics, "output");
+	}
+
+	public Id getSitePlanRoot() {
+	   String d = ics.GetVar("d");
+	   if(d!=null) { 
+	      String siteplanId = DeviceHelper.getSitePlanID(ics, getSiteId(), d);
+	   	  return new Id("SitePlan", Long.parseLong(siteplanId));
+	   } else {
+	   	  return new Id("Publication", Long.parseLong(getSiteId()));
+	   }
+	}
+
+
 
 	public boolean AppEvent(String arg0, String arg1, String arg2,
 			FTValList arg3) {

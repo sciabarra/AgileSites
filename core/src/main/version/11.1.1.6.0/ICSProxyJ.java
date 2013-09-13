@@ -27,6 +27,7 @@ import COM.FutureTense.Interfaces.IURLDefinition;
 import COM.FutureTense.Interfaces.PastramiEngine;
 import COM.FutureTense.Util.ftErrors;
 import COM.FutureTense.XML.Template.Seed;
+import wcs.core.tag.PublicationTag;
 
 @SuppressWarnings("deprecation")
 public class ICSProxyJ implements ICS {
@@ -48,6 +49,18 @@ public class ICSProxyJ implements ICS {
 
 	public void init(ICS ics) {
 		this.ics = ics;
+	}
+
+	public String getSiteId() {
+		String pub = Common.tmp();
+		PublicationTag.load().name(pub)//
+				.field("name").value(config.getSite()).run(ics);
+		return PublicationTag.get().name(pub)//
+				.field("id").eval(ics, "output");
+	}
+
+	public Id getSitePlanRoot() {
+	   return new Id("Publication", Long.parseLong(getSiteId()));
 	}
 
 	public boolean AppEvent(String arg0, String arg1, String arg2,

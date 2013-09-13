@@ -73,7 +73,6 @@ trait AgileSitesSupport {
 
         // copy versioned class
         val src = base / "src" / "main" / "version" / version
-        println(src)
         val ll = for {
           file <- src.listFiles
           dfile = dstDir / file.getName

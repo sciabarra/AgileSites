@@ -78,6 +78,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       publishArtifact in packageDoc := false,
       name := "agilesites-core",
       crossPaths := false,
+	  javacOptions ++= Seq("-encoding", "UTF-8", "-g"),
       EclipseKeys.skipProject := true,
       coreGeneratorTask))
 

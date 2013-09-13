@@ -25,7 +25,7 @@ public class SitePlan {
 	public SitePlan(Env e) {
 		this.e = e;
 		this.i = e.ics;
-		goTo(new Id("Publication", Long.parseLong(e.getSiteId())));
+		goTo(e.getSitePlanRoot());
 	}
 
 	/**
@@ -53,6 +53,10 @@ public class SitePlan {
 			currentId = new Id(e.getString(list, "otype"), e.getLong(list,
 					"oid"));
 			currentNid = e.getString(list, "nid");
+        } else if (id.c.equals("SitePlan")) {
+            AssetTag.load().name(name).type(id.c).objectid(id.cid.toString()).run(i);
+            currentNid = AssetTag.getsitenode().name(name).eval(i, "output");
+            currentId =  id;
 		} else {
 			AssetTag.load().name(name).type(id.c).objectid(id.cid.toString())
 					.run(i);
