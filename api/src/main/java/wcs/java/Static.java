@@ -2,8 +2,10 @@ package wcs.java;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.LinkedList;
 import java.util.List;
 
+import wcs.core.Id;
 import wcs.java.util.Util;
 
 import com.fatwire.assetapi.data.BlobObject;
@@ -41,7 +43,6 @@ public class Static extends AssetSetup {
 		this(file, prefixLen);
 		setNextSetup(nextSetup);
 	}
-
 
 	public List<String> getAttributes() {
 		return Util.listString("name", "description", "url");
@@ -82,6 +83,13 @@ public class Static extends AssetSetup {
 	}
 
 	public String toString() {
-		return "Static(" + getName()+ ")";
+		return "Static(" + getName() + ")";
+	}
+
+	private List<Id> emptyList = new LinkedList<Id>();
+
+	@Override
+	public List<Id> getReferences() {
+		return emptyList;
 	}
 }

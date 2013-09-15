@@ -7,8 +7,10 @@ import static wcs.java.util.Util.attrStruct;
 import static wcs.java.util.Util.attrStructKV;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
+import wcs.core.Id;
 import wcs.java.util.Util;
 
 import com.fatwire.assetapi.data.AttributeData;
@@ -191,5 +193,13 @@ public class Template extends AssetSetup {
 	public AssetSetup description(String description) {
 		setDescription(description);
 		return this;
+	}
+
+	private List<Id> emptyList = new LinkedList<Id>();
+	
+	@Override
+	public List<Id> getReferences() {
+		// TODO Auto-generated method stub
+		return emptyList;
 	}
 }

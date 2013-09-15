@@ -2,8 +2,10 @@ package wcs.java;
 
 import static wcs.java.util.Util.attrStructKV;
 
+import java.util.LinkedList;
 import java.util.List;
 
+import wcs.core.Id;
 import wcs.java.util.Util;
 
 import com.fatwire.assetapi.data.MutableAssetData;
@@ -22,7 +24,7 @@ public class SiteEntry extends AssetSetup {
 	 * @param wrapper
 	 */
 	public SiteEntry(long id, String name, boolean wrapper) {
-		this(id, name, wrapper, (String)null);
+		this(id, name, wrapper, (String) null);
 	}
 
 	/**
@@ -32,7 +34,7 @@ public class SiteEntry extends AssetSetup {
 	 * @param wrapper
 	 */
 	public SiteEntry(long id, String name, boolean wrapper, AssetSetup nextSetup) {
-		this(id, name, wrapper, (String)null);
+		this(id, name, wrapper, (String) null);
 		setNextSetup(nextSetup);
 	}
 
@@ -89,8 +91,8 @@ public class SiteEntry extends AssetSetup {
 		data.getAttributeData("pageletonly").setData("false");
 
 		data.getAttributeData("pagecriteria").setDataAsList(
-				Util.listString("c", "cid", "context",/* "p",*/"rendermode",
-						"site", /*"sitepfx",*/ "ft_ss"));
+				Util.listString("c", "cid", "context",/* "p", */"rendermode",
+						"site", /* "sitepfx", */"ft_ss"));
 
 		data.getAttributeData("defaultarguments").setDataAsList(
 				Util.list(
@@ -109,5 +111,12 @@ public class SiteEntry extends AssetSetup {
 	public AssetSetup description(String description) {
 		setDescription(description);
 		return this;
+	}
+
+	final static List<Id> empty = new LinkedList<Id>();
+
+	@Override
+	public List<Id> getReferences() {
+		return empty;
 	}
 }

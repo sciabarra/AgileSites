@@ -1,7 +1,9 @@
 package wcs.java;
 
+import java.util.LinkedList;
 import java.util.List;
 
+import wcs.core.Id;
 import wcs.java.util.Util;
 
 import com.fatwire.assetapi.data.BlobObject;
@@ -109,5 +111,13 @@ public class CSElement extends AssetSetup {
 	public AssetSetup description(String description) {
 		setDescription(description);
 		return this;
+	}
+
+	final static List<Id> empty = new LinkedList<Id>();
+	
+	@Override
+	public List<Id> getReferences() {
+		// TODO Auto-generated method stub
+		return empty;
 	}
 }

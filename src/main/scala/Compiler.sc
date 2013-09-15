@@ -34,10 +34,10 @@ object AssetCompilerWs {
                                                   //| <attribute name="descripti
                                                   //| Output exceeds cutoff limit.
 
-  doc \ "asset" \ "attribute" flatMap (_.attribute("name"))
+  doc \ "asset" \ "attribute"  flatMap (_.attribute("name")) filter(_.text != "Publist")
                                                   //> res0: scala.collection.immutable.Seq[Seq[scala.xml.Node]] = List(Attribute_S
                                                   //| ummary, flextemplateid, fw_uid, updateddate, status, subtype, updatedby, cre
-                                                  //| atedby, template, createddate, description, name, Publist)
+                                                  //| atedby, template, createddate, description, name)
 
   val attributes /*: List[Tuple2[String, Node]]*/ = (doc \ "asset" \ "attribute").
     flatMap { n => Some(n.attribute("name").get.head.text -> n.child(0)) }.

@@ -1,15 +1,21 @@
 package wcs.java;
 
+import wcs.core.Id;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
-import wcs.core.Id;
-
 import com.fatwire.assetapi.data.AssetId;
+import com.fatwire.assetapi.data.AttributeData;
+import com.fatwire.assetapi.data.AttributeDataImpl;
+import com.fatwire.assetapi.data.BlobObject;
+import com.fatwire.assetapi.data.BlobObjectImpl;
 import com.fatwire.assetapi.data.MutableAssetData;
+import com.fatwire.assetapi.def.AttributeTypeEnum;
+import com.openmarket.xcelerate.asset.AssetIdImpl;
+import com.openmarket.xcelerate.asset.AttributeDefImpl;
 
 /**
  * Extend this class for installing assets
@@ -87,30 +93,37 @@ public abstract class AssetSetup extends Asset {
 		return list;
 	}
 
-	static class KV {
-		String k;
-		Object v;
+	static public class KV {
+		AttributeTypeEnum type;
+		String name;
+		Object value;
 
-		public KV(String k, Object v) {
-			this.k = k;
-			this.v = v;
+		public KV(String k, AttributeTypeEnum t, Object v) {
+			this.type = t;
+			this.name = k;
+			this.value = v;
 		}
 	}
 
-	public KV kv(String k, Object v) {
-		return new KV(k, v);
+	public KV kv(String k, AttributeTypeEnum t, Object v) {
+		return new KV(k, t, v);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes"})
 	public HashMap map(KV... kvs) {
-		HashMap m = new HashMap();
-		for (KV kv : kvs)
-			m.put(kv.k, kv.v);
+		HashMap<String, AttributeData> m = new HashMap<String, AttributeData>();
+		for (KV kv : kvs) 
+			m.put(kv.name, new AttributeDataImpl(new AttributeDefImpl(kv.name,
+					kv.type), kv.name, kv.type, kv.value));
 		return m;
 	}
 
-	public String blob(String name, String value) {
-		return "";
+	public BlobObject blob(String filename, String value) {
+		File file = new File(filename);
+		return new BlobObjectImpl(//
+				file.getParent().toString(), //
+				file.getName(), //
+				value.getBytes());
 	}
 
 	public String base64(String encoded) {
@@ -118,17 +131,13 @@ public abstract class AssetSetup extends Asset {
 	}
 
 	public AssetId ref(String c, long cid) {
-		return null;
+		return new AssetIdImpl(c, cid);
 	}
 
 	public Id id(String c, long cid) {
 		return new Id(c, cid);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<KV> row(KV... kvs) {
-		return (List<KV>) list((Object[])kvs);
-	}
 	
 
 }
