@@ -6,7 +6,7 @@ import sbtassembly.Plugin._
 import AssemblyKeys._
 import Dialog._
 
-trait AgileSitesSupport {
+trait AgileSitesSupport extends Utils {
 
   // new settings
   lazy val wcsHome = SettingKey[String]("wcs-home", "WCS Home Directory")
@@ -58,7 +58,6 @@ trait AgileSitesSupport {
           tld <- tlds.listFiles
           if tld.getName.endsWith(".tld")
           val src = tld.getAbsolutePath
-          val cls = Tld2Tag.tld2class(src)
           val clsj = Tld2Tagj.tld2class(src)
           val dstj = file(dstDir / clsj + ".java")
           //	if tld.getName.equalsIgnoreCase("asset.tld") // select only one for debug generator
@@ -68,7 +67,7 @@ trait AgileSitesSupport {
             IO.write(dstj, bodyj)
             println("+++ " + dstj)
           }
-          dstj 
+          dstj
         }
 
         // copy versioned class
@@ -217,6 +216,34 @@ trait AgileSitesSupport {
           println("*** " + srcDir)
           recursiveCopy(srcDir, dstDir)(isHtml)
       }
+
+
+
+  // generate index classes from sources
+  val wcsGenerateIndexTask =
+    (resourceGenerators in Compile) <+=
+      (compile in Compile, resourceManaged in Compile) map {
+        (analysis, dstDir) =>
+
+          val groupIndexed =
+            analysis.apis.allInternalSources. // all the sources
+              map(extractClassAndIndex(_)). // list of Some(index, class) or Nome
+              flatMap(x => x). // remove None
+              groupBy(_._1). // group by (index, (index, List(class)) 
+              map { x => (x._1, x._2 map (_._2)) }; // lift to (index, List(class))
+
+          //println(groupIndexed)
+
+          val l = for ((subfile, lines) <- groupIndexed) yield {
+            val file = dstDir / subfile
+            val body = lines mkString ("# generated - do not edit\n", "\n", "\n# by AgileSites build\n")
+            writeFile(file, body)
+            file
+          }
+          
+          l.toSeq
+      }
+
 
 
   // copy resources to the webapp task

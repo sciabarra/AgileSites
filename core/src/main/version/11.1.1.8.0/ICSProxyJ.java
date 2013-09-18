@@ -32,6 +32,7 @@ import wcs.core.tag.PublicationTag;
 import wcs.core.tag.DeviceTag;
 
 
+
 @SuppressWarnings("deprecation")
 public class ICSProxyJ implements ICS {
 
@@ -56,22 +57,22 @@ public class ICSProxyJ implements ICS {
 	}
 
 
-
-	public String getSiteId() {
+	public String getSiteId(String siteName) {
 		String pub = Common.tmp();
 		PublicationTag.load().name(pub)//
-				.field("name").value(config.getSite()).run(ics);
+				.field("name").value(siteName).run(ics);
 		return PublicationTag.get().name(pub)//
 				.field("id").eval(ics, "output");
 	}
 
-	public Id getSitePlanRoot() {
+
+	public Id getSitePlanRoot(String siteName) {
 	   String d = ics.GetVar("d");
 	   if(d!=null) { 
-	      String siteplanId = DeviceHelper.getSitePlanID(ics, getSiteId(), d);
+	      String siteplanId = DeviceHelper.getSitePlanID(ics, getSiteId(siteName), d);
 	   	  return new Id("SitePlan", Long.parseLong(siteplanId));
 	   } else {
-	   	  return new Id("Publication", Long.parseLong(getSiteId()));
+	   	  return new Id("Publication", Long.parseLong(getSiteId(siteName)));
 	   }
 	}
 

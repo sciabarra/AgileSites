@@ -55,16 +55,16 @@ public class ICSProxyJ implements ICS {
 	}
 
 
-	public String getSiteId() {
+	public String getSiteId(String siteName) {
 		String pub = Common.tmp();
 		PublicationTag.load().name(pub)//
-				.field("name").value(config.getSite()).run(ics);
+				.field("name").value(siteName).run(ics);
 		return PublicationTag.get().name(pub)//
 				.field("id").eval(ics, "output");
 	}
 
-	public Id getSitePlanRoot() {
-	   return new Id("Publication", Long.parseLong(getSiteId()));
+	public Id getSitePlanRoot(String siteName) {
+	   return new Id("Publication", Long.parseLong(getSiteId(siteName)));
 	}
 
 	public boolean AppEvent(String arg0, String arg1, String arg2,

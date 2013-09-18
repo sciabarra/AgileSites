@@ -25,7 +25,7 @@ public class SitePlan {
 	public SitePlan(Env e) {
 		this.e = e;
 		this.i = e.ics;
-		goTo(e.getSitePlanRoot());
+		goTo(e.getSitePlanRoot(e.getSiteName()));
 	}
 
 	/**

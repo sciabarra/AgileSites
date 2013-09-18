@@ -359,13 +359,20 @@ public class Env extends ICSProxyJ {
 		return router;
 	}
 
-	public String getSiteId() {
-		String pub = tmp();
-		PublicationTag.load().name(pub)//
-				.field("name").value(config.getSite()).run(ics);
-		return PublicationTag.get().name(pub)//
-				.field("id").eval(ics, "output");
+	/**
+	 * The current site name
+	 */
+	public String getSiteName() {
+		return site;
 	}
+
+	/**
+	 * The current site id
+	 */
+	public String getSiteId() {
+		return getSiteId(site);
+	}
+
 
 	public SitePlan getSitePlan() {
 		return new SitePlan(this);
@@ -387,8 +394,8 @@ public class Env extends ICSProxyJ {
 		String res; 
 
 		if(hasDevices) {
-		   res = RenderTag.getpageurl().pagename("AAAgileRouter")//
-				.c(pC).cid(pCid).d("Default").assembler("agilesites").eval(ics, "outstr");
+		   res = RenderTag.getpageurl().pagename("AAAgileRouter")// 
+				.c(pC).cid(pCid).assembler("agilesites").set("d", "Default").eval(ics, "outstr");
 		} else {
 			res = RenderTag.getpageurl().pagename("AAAgileRouter")//
 				.c(pC).cid(pCid).assembler("agilesites").eval(ics, "outstr");
