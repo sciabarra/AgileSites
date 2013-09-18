@@ -6,10 +6,18 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
+
+import wcs.core.Common;
 import wcs.core.Log;
+import wcs.core.tag.AssetTag;
+import wcs.core.tag.UserTag;
 import wcs.java.util.Util;
+import COM.FutureTense.Interfaces.ICS;
+
 import com.fatwire.assetapi.common.AssetAccessException;
+import com.fatwire.assetapi.common.AssetNotExistException;
 import com.fatwire.assetapi.common.SiteAccessException;
+import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AssetDataManager;
 import com.fatwire.assetapi.data.AssetId;
 import com.fatwire.assetapi.data.MutableAssetData;
@@ -22,11 +30,10 @@ import com.fatwire.assetapi.site.SiteManager;
 import com.fatwire.system.Session;
 import com.fatwire.system.SessionFactory;
 import com.openmarket.xcelerate.asset.AssetIdImpl;
-import COM.FutureTense.Interfaces.ICS;
+import static java.lang.System.out;
 
 /**
- * The setup class. Invoking the setup method will initialize templates and
- * cselements.
+ * The setup class. Invoking the setup method will initialize assets
  * 
  * @author msciab
  * 
@@ -52,6 +59,8 @@ abstract public class Setup implements wcs.core.Setup {
 	private AssetDataManager adm;
 	private SiteManager sim;
 	private AssetTypeDefManager atdm;
+	private ICS ics;
+	private String currSite;
 
 	/**
 	 * Execute the setup creating the assets using the Asset API
@@ -61,12 +70,16 @@ abstract public class Setup implements wcs.core.Setup {
 	 */
 	public String exec(ICS ics, String site, String username, String password) {
 
+		this.ics = ics;
+		currSite = site;
+
 		session = SessionFactory.newSession(username, password);
 		adm = (AssetDataManager) session.getManager(AssetDataManager.class
 				.getName());
-		sim = (SiteManager) session.getManager(SiteManager.class.getName());
 		atdm = (AssetTypeDefManager) session
 				.getManager(AssetTypeDefManager.class.getName());
+		sim = (SiteManager) session.getManager(SiteManager.class.getName());
+		UserTag.login().username(username).password(password).run(ics);
 
 		// future use
 		log.debug("created session, adm, sim");
@@ -185,12 +198,42 @@ abstract public class Setup implements wcs.core.Setup {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	MutableAssetData findById(String c, long cid) {
 		AssetId aid = new AssetIdImpl(c, cid);
+
+		// first load the asset to check if it exists
+
+		/*
+		 * String tmp = Common.tmp();
+		 * AssetTag.load().name(tmp).type(c).objectid("" + cid).site(currSite)
+		 * .run(ics); System.out.println("Loading " + c + ":" + cid + "@" +
+		 * currSite + " in " + tmp + "=" + ics.GetObj(tmp) + " err: " +
+		 * ics.GetErrno()); if (ics.GetObj(tmp) == null) return null;
+		 */
+
+		/*
+		 * try { Iterable<AssetData> data = adm.read(Util.list(aid)); if
+		 * (!data.iterator().hasNext()) return null; // atdm.findByName(arg0,
+		 * arg1) } catch (AssetNotExistException e1) { // TODO Auto-generated
+		 * catch block e1.printStackTrace(); } catch (AssetAccessException e1) {
+		 * // TODO Auto-generated catch block e1.printStackTrace(); }
+		 */
+
 		Iterator it;
 		try {
 			it = (Iterator) adm.readForUpdate(Util.list(aid)).iterator();
+			if (it.hasNext()) {
+				MutableAssetData data = (MutableAssetData) it.next();
 
-			if (it.hasNext())
-				return (MutableAssetData) it.next();
+				boolean isFlex = data.getAssetTypeDef().getProperties()
+						.getIsFlexAsset();
+
+				if (!isFlex) 
+					return data;
+				
+				System.out.println("attrdata"+data.getAttributeData());
+
+				return null;
+			} else
+				return null;
 		} catch (Exception e) {
 			log.warn(e.getMessage());
 			// e.printStackTrace();
@@ -241,14 +284,21 @@ abstract public class Setup implements wcs.core.Setup {
 
 		String what = setup.toString();
 
+		System.out.println("* sono qui *");
 		try {
-			MutableAssetData data;
+			MutableAssetData data = null;
 			Long id = setup.getCid();
-			if (id == null)
+			if (id == null) {
+				System.out.println("looking for " + setup.getC() + "@"
+						+ setup.getName());
 				data = findByName(setup.getName(), setup.getC(), null,
 						setup.getAttributes());
-			else
+			} else {
+				System.out.println("looking for " + setup.getC() + ":"
+						+ id.longValue());
 				data = findById(setup.getC(), id.longValue());
+				out.println("found " + data);
+			}
 
 			// inserting
 			if (data == null)
@@ -263,6 +313,7 @@ abstract public class Setup implements wcs.core.Setup {
 
 		} catch (Exception e) {
 			log.error("insertOrUpdate failed", e);
+			e.printStackTrace();
 			return what + " ERROR: " + e.getMessage();
 		}
 	}
@@ -279,7 +330,7 @@ abstract public class Setup implements wcs.core.Setup {
 		data.setAssetId(aid);
 		data.getAttributeData("name").setData(asset.getName());
 		data.getAttributeData("description").setData(asset.getDescription());
-		setTimeStamp(data, asset.getCid().longValue());		
+		setTimeStamp(data, asset.getCid().longValue());
 		asset.setData(data);
 		try {
 			adm.insert(Util.listData(data));
@@ -309,11 +360,10 @@ abstract public class Setup implements wcs.core.Setup {
 		}
 		return "UPDATE " + aid + " OK";
 	}
-	
+
 	private void setTimeStamp(MutableAssetData data, long id) {
 		data.getAttributeData("createdby").setData("AgileSites");
-		data.getAttributeData("createddate").setData(
-				new java.util.Date(id));
+		data.getAttributeData("createddate").setData(new java.util.Date(id));
 		data.getAttributeData("updatedby").setData("AgileSites");
 		data.getAttributeData("updateddate").setData(new java.util.Date());
 	}
