@@ -1,5 +1,7 @@
 package wcs.java;
 
+import static java.lang.System.out;
+
 import java.io.CharArrayWriter;
 import java.io.File;
 import java.io.PrintWriter;
@@ -7,17 +9,12 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
-import wcs.core.Common;
 import wcs.core.Log;
-import wcs.core.tag.AssetTag;
-import wcs.core.tag.UserTag;
 import wcs.java.util.Util;
+//import wcs.core.tag.UserTag;
 import COM.FutureTense.Interfaces.ICS;
-
 import com.fatwire.assetapi.common.AssetAccessException;
-import com.fatwire.assetapi.common.AssetNotExistException;
 import com.fatwire.assetapi.common.SiteAccessException;
-import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AssetDataManager;
 import com.fatwire.assetapi.data.AssetId;
 import com.fatwire.assetapi.data.MutableAssetData;
@@ -30,7 +27,7 @@ import com.fatwire.assetapi.site.SiteManager;
 import com.fatwire.system.Session;
 import com.fatwire.system.SessionFactory;
 import com.openmarket.xcelerate.asset.AssetIdImpl;
-import static java.lang.System.out;
+
 
 /**
  * The setup class. Invoking the setup method will initialize assets
@@ -59,8 +56,9 @@ abstract public class Setup implements wcs.core.Setup {
 	private AssetDataManager adm;
 	private SiteManager sim;
 	private AssetTypeDefManager atdm;
-	private ICS ics;
-	private String currSite;
+
+	// private ICS ics;
+	// private String currSite;
 
 	/**
 	 * Execute the setup creating the assets using the Asset API
@@ -70,8 +68,8 @@ abstract public class Setup implements wcs.core.Setup {
 	 */
 	public String exec(ICS ics, String site, String username, String password) {
 
-		this.ics = ics;
-		currSite = site;
+		// this.ics = ics;
+		// currSite = site;
 
 		session = SessionFactory.newSession(username, password);
 		adm = (AssetDataManager) session.getManager(AssetDataManager.class
@@ -79,7 +77,8 @@ abstract public class Setup implements wcs.core.Setup {
 		atdm = (AssetTypeDefManager) session
 				.getManager(AssetTypeDefManager.class.getName());
 		sim = (SiteManager) session.getManager(SiteManager.class.getName());
-		UserTag.login().username(username).password(password).run(ics);
+
+		//UserTag.login().username(username).password(password).run(ics);
 
 		// future use
 		log.debug("created session, adm, sim");
@@ -226,12 +225,13 @@ abstract public class Setup implements wcs.core.Setup {
 				boolean isFlex = data.getAssetTypeDef().getProperties()
 						.getIsFlexAsset();
 
-				if (!isFlex) 
+				if (!isFlex)
 					return data;
-				
-				System.out.println("attrdata"+data.getAttributeData());
+
+				// System.out.println("attrdata"+data.getAttributeData());
 
 				return null;
+
 			} else
 				return null;
 		} catch (Exception e) {
