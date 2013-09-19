@@ -77,30 +77,29 @@ trait AgileSitesSupport extends Utils {
         (args, version, url, sites, user, password, classpath, s, runner) =>
           val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d|spring-\\d|commons-logging-|servlet-api).*.jar$".r;
           val seljars = classpath.files.filter(f => !re.findAllIn(f.getName).isEmpty)
-          val workspaces = ""
-          if(args.size ==0 ) {
-            println("""usage: wcs-dt <workspace> [<cmd>]  [<selector> ...]
-                       | <workspace> one of %s
-                       | <cmd> one of listcs, listds, import, export, import_all, export_all
-                       |       default to listcs
+          val workspaces = (file("export") / "envision").listFiles.filter(_.isDirectory).map(_.getName).mkString("'", "', '", "'")
+          if (args.size == 0) {
+            println("""usage: wcs-dt  [<cmd>]  [<selector> ...] [#<workspace>]
+                       | <workspace> defaults to 'workspace',
+                       |   must be one of: %s
+                       | <cmd> defaults to 'listcs'
+                       |   must be one of 'listcs', 'listds', 'import', 'export', 
                        | <selector> check developer tool documentation for syntax
-                       |    defaults:
-                       |      for listcs to @ALL_ASSETS
-                       |      for listds to @ALL_ASSETS
-                       |      for import to @SITE @ASSET_TYPE @ALL_ASSETS @STARTMENU"
-                       |        (by default imports all)
-                       |      for export to @SITE @ASSET_TYPE
-                       |        (by default it exports only the site structure - need to select what to export)
+                       |  defaults for commands are
+                       |      listcs: @ALL_ASSETS
+                       |      listds: @ALL_ASSETS
+                       |      import: @SITE @ASSET_TYPE @ALL_ASSETS @STARTMENU @TREETAB
+                       |      export: @SITE @ASSET_TYPE
                        |""".stripMargin.format(workspaces))
           } else {
-            
-            val workspace = args.head
-            val args1 = args.tail
-            
-            val firstArg = if (args1.size > 0) args1(0) 
-            else "listcs"
-            
-            var resources = if (args1.size > 1) args1.drop(1)
+
+            val workspace = ("#workspace" +: args).reverse.filter(_.startsWith("#")).head.substring(1)
+
+            val args1 = args.filter(!_.startsWith("#"))
+
+            val firstArg = if (args1.size > 0) args1(0) else "listcs"
+
+            val resources = if (args1.size > 1) args1.drop(1)
             else firstArg match {
               case "listcs" => Seq("@ALL_ASSETS")
               case "listds" => Seq("@ALL_ASSETS")
@@ -122,12 +121,12 @@ trait AgileSitesSupport extends Utils {
                 //"fromSites=" + sites,
                 "datastore=" + workspace)
 
-              Run.run("com.fatwire.csdt.client.main.CSDT",
-                  seljars, cmd, s.log)(runner)
+              Run.run("com.fatwire.csdt.client.main.CSDT", seljars, cmd, s.log)(runner)
+
             }
           }
-        }
       }
+  }
 
   // hello
   val wcsHello = TaskKey[Option[String]]("wcs-hello", "WCS Hello")
@@ -256,7 +255,7 @@ trait AgileSitesSupport extends Utils {
             writeFile(file, body)
             file
           }
-          
+
           l.toSeq
       }
 
