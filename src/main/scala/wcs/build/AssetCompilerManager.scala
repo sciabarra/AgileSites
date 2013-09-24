@@ -2,14 +2,15 @@ package wcs.build
 
 import java.io.File
 
-class AssetCompilerManager(site: String, base: File) extends Utils {
-
+class AssetCompilerManager(site: String, base: File, xmlDir: Option[File] = None, javaDir: Option[File]= None) extends Utils {
+  
   def file(s: String) = new File(s)
   def file(f: File, s: String) = new File(f, s)
 
   val nsite = normalizeSiteName(site)
-  val xmlBase = file(file(file(base, "export"), "stargaze"), nsite)
-  val javaBase = file(file(file(file(file(file(base, "app"), "src"), "main"), "java"), nsite), "content")
+
+  val xmlBase = xmlDir getOrElse  file(file(file(base, "export"), "stargaze"), nsite)
+  val javaBase = javaDir getOrElse file(file(file(file(file(file(base, "app"), "src"), "main"), "java"), nsite), "content")
 
   def compile(c: String, cid: Long) = {
 
