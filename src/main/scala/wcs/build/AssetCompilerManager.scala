@@ -39,16 +39,4 @@ class AssetCompilerManager(site: String, base: File, xmlDir: Option[File] = None
       compile(c, a.toLong)
     }
   }
-
-
-
-  def compileAll() = {
-    for {
-      dir <- xmlBase.listFiles.filter(_.isDirectory)
-      id <- dir.listFiles.filter(_.getName.endsWith("xml")).map(_.getName.dropRight(4).toLong)
-    } yield compile(dir.getName, id)
-  }
-
-
-
 }
