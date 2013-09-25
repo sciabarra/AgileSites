@@ -26,4 +26,22 @@ class AssetCompilerManager(site: String, base: File) extends Utils {
    
   }
 
+  def compileDir(c:String) = {
+    val xmlDir = file(xmlBase, c)
+    for { a <- xmlDir.list.filter(_.endsWith(".xml")) } yield {
+      compile(c, a.toLong)
+    }
+  }
+
+
+
+  def compileAll() = {
+    for {
+      dir <- xmlBase.listFiles.filter(_.isDirectory)
+      id <- dir.listFiles.filter(_.getName.endsWith("xml")).map(_.getName.dropRight(4).toLong)
+    } yield compile(dir.getName, id)
+  }
+
+
+
 }

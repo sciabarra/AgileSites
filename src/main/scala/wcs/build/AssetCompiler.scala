@@ -14,7 +14,7 @@ class AssetCompiler(site: String, c: String, cid: Long, xmlIn: File, javaOut: Fi
 
   import AssetCompiler._
 
-  val doc = XML.loadFile(xmlIn)
+  val doc = scala.xml.Utility.trim(XML.loadFile(xmlIn))
 
   val name = (doc \\ "attribute").filter(x => (x \ "@name").text == "name") \\ "@value" text
   
@@ -181,13 +181,27 @@ object AssetCompiler {
     "data.getAttributeData(\"" +
     escapeJava(m) +
     "\").setDataAsList(list(" + (
-      n.child.tail map { // get children of <array><xxx value="..."></array> then match for each xxx
-        case n @ <integer/> => (n \\ "@value").text + "L"
-        case n @ <string/> => """"%s"""".format(escapeJava((n \\ "@value").text))
-        case n @ <struct/> => """map(...)"""
-        case n => "???"
-      }).mkString(",") +
-      "));"
+    n.child map { // get children of <array><xxx value="..."></array> then match for each xxx
+      case n @ <integer/> => (n \\ "@value").text + "L"
+      case n @ <string/> => """"%s"""".format((n \\ "@value").text)
+      case <struct>{n @ _*}</struct> => structToMap(n)
+      case n @ <assetreference/> => "ref(\"" + (n \ "@type") + "\"," + (n \ "@value") + "L)"
+      case n => "???"
+    }).mkString(",") +
+    "));"
+
+  def structToMap (n: Seq[Node]): String = (
+    n  map {
+      col =>
+        "\n\t\t\t\tkv(\"" + (col \ "@name") + "\", " + (
+          (col \ "_").head match {
+            case n @ <assetreference/> => "AttributeTypeEnum.ASSET, ref(\"" + (n \ "@type") + "\"," + (n \ "@value") + "L)"
+            case n @ <decimal/> => "AttributeTypeEnum.FLOAT, " + (n \ "@value")
+            case n @ <integer/> => "AttributeTypeEnum.INT, " + (n \ "@value")
+            case x => x.label
+          }) +
+          ")"
+    }).mkString("\n\t\t\tmap(", ",", ")")
 
   def listValue(m: String, n: Node): String = "\t\t" +
     "data.getAttributeData(\"" +
