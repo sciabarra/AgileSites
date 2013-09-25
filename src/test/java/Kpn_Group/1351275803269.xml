@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<document>
+<asset id="1351275803269" type="Kpn_Group" subtype="Group">
+<attribute name="Group_Group"><assetreference type="Kpn_Group" value="1351275803270"/></attribute>
+<attribute name="flexgrouptemplateid"><assetreference type="Kpn_PD" value="1351275803255"/></attribute>
+<attribute name="fw_uid"><string value="8b7ba271-ba0b-4f0b-b2c4-bb25aac9ab6c"/></attribute>
+<attribute name="updateddate"><date value="2013-09-23 09:56:39.357"/></attribute>
+<attribute name="status"><string value="PL"/></attribute>
+<attribute name="subtype"><string value="Group"/></attribute>
+<attribute name="updatedby"><string value="fwadmin"/></attribute>
+<attribute name="createdby"><string value="fwadmin"/></attribute>
+<attribute name="createddate"><date value="2013-09-23 13:50:55.273"/></attribute>
+<attribute name="name"><string value="Factuurinfo"/></attribute>
+<attribute name="description"><string value="Factuurinfo"/></attribute>
+</asset>
+</document>

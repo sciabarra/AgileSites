@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<document>
+<asset id="1351275812112" type="PageAttribute">
+<attribute name="editing"><string value="L"/></attribute>
+<attribute name="fw_uid"><string value="eeff1b67-f704-4bd4-9b6a-1d712dcea3f4"/></attribute>
+<attribute name="updateddate"><date value="2013-06-10 05:28:36.859"/></attribute>
+<attribute name="status"><string value="PL"/></attribute>
+<attribute name="attributetype"><assetreference type="AttrTypes" value="1351275812113"/></attribute>
+<attribute name="updatedby"><string value="fwadmin"/></attribute>
+<attribute name="createdby"><string value="fwadmin"/></attribute>
+<attribute name="type"><string value="text"/></attribute>
+<attribute name="storage"><string value="L"/></attribute>
+<attribute name="createddate"><date value="2013-06-28 13:19:50.168"/></attribute>
+<attribute name="description"><string value="Summary"/></attribute>
+<attribute name="embedtype"><string value="U"/></attribute>
+<attribute name="name"><string value="Summary"/></attribute>
+<attribute name="Publist"><array>
+<integer value="1351275793143"/></array>
+</attribute>
+<attribute name="valuestyle"><string value="S"/></attribute>
+</asset>
+</document>
