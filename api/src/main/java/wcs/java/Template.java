@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.fatwire.assetapi.data.AssetId;
 import wcs.core.Id;
 import wcs.java.util.Util;
 
@@ -46,8 +47,8 @@ public class Template extends AssetSetup {
 	 * 
 	 * @param subtype
 	 * @param name
-	 * @param description
-	 * @param element
+	 * @param id
+	 * @param ttype
 	 */
 	public Template(long id, String subtype, String name, char ttype, String forSubtype,
 			Class<?> elementClass) {
@@ -195,11 +196,16 @@ public class Template extends AssetSetup {
 		return this;
 	}
 
-	private List<Id> emptyList = new LinkedList<Id>();
-	
-	@Override
-	public List<Id> getReferences() {
-		// TODO Auto-generated method stub
-		return emptyList;
-	}
+    @Override
+    public List<Id> getReferences() {
+        return emptyIdList;
+    }
+
+    @Override
+    public List<AssetId> getParents() {
+        // TODO Auto-generated method stub
+        return emptyAssetIdList;
+    }
+
+
 }

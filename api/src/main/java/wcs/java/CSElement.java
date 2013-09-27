@@ -3,6 +3,7 @@ package wcs.java;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.fatwire.assetapi.data.AssetId;
 import wcs.core.Id;
 import wcs.java.util.Util;
 
@@ -113,11 +114,15 @@ public class CSElement extends AssetSetup {
 		return this;
 	}
 
-	final static List<Id> empty = new LinkedList<Id>();
-	
-	@Override
-	public List<Id> getReferences() {
-		// TODO Auto-generated method stub
-		return empty;
-	}
+    @Override
+    public List<Id> getReferences() {
+        return emptyIdList;
+    }
+
+    @Override
+    public List<AssetId> getParents() {
+        // TODO Auto-generated method stub
+        return emptyAssetIdList;
+    }
+
 }

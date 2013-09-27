@@ -30,7 +30,10 @@ public abstract class AssetSetup extends Asset {
 
 	private AssetSetup nextSetup = null;
 
-	public AssetSetup(long id, String type, String subtype, String name) {
+    protected final List<Id> emptyIdList = new LinkedList<Id>();
+    protected final List<AssetId> emptyAssetIdList = new LinkedList<AssetId>();
+
+    public AssetSetup(long id, String type, String subtype, String name) {
 		super(id, type, subtype, name);
 	}
 
@@ -46,6 +49,11 @@ public abstract class AssetSetup extends Asset {
 	 */
 	public abstract List<Id> getReferences();
 
+    /**
+     * Return a list of parents
+     *
+     */
+    public abstract List<AssetId> getParents();
 	/**
 	 * Define asset data for this asset
 	 * 
@@ -138,6 +146,6 @@ public abstract class AssetSetup extends Asset {
 		return new Id(c, cid);
 	}
 
-	
+
 
 }

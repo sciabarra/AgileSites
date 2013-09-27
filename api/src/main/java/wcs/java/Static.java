@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.fatwire.assetapi.data.AssetId;
 import wcs.core.Id;
 import wcs.java.util.Util;
 
@@ -86,10 +87,15 @@ public class Static extends AssetSetup {
 		return "Static(" + getName() + ")";
 	}
 
-	private List<Id> emptyList = new LinkedList<Id>();
-
 	@Override
 	public List<Id> getReferences() {
-		return emptyList;
+		return emptyIdList;
 	}
+
+    @Override
+    public List<AssetId> getParents() {
+        // TODO Auto-generated method stub
+        return emptyAssetIdList;
+    }
+
 }

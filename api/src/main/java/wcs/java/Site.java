@@ -12,7 +12,7 @@ import com.fatwire.assetapi.site.SiteManager;
 /**
  * Represent a site - currently only the name of the site is stored
  * 
- * It will contains much more in future - some private code is already availabe
+ * It will contain much more in future - some private code is already available
  * 
  * @author msciab
  * 

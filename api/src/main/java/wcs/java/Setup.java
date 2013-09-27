@@ -273,8 +273,8 @@ abstract public class Setup implements wcs.core.Setup {
 	/**
 	 * Insert or update
 	 * 
-	 * @param adm
-	 * @param helper
+	 * @param ics
+	 * @param setup
 	 */
 	String insertOrUpdate(ICS ics, AssetSetup setup) {
 		log.debug("insertOrUpdate " + setup);
@@ -284,7 +284,7 @@ abstract public class Setup implements wcs.core.Setup {
 
 		String what = setup.toString();
 
-		System.out.println("* sono qui *");
+		//System.out.println("* sono qui *");
 		try {
 			MutableAssetData data = null;
 			Long id = setup.getCid();
@@ -296,7 +296,7 @@ abstract public class Setup implements wcs.core.Setup {
 			} else {
 				System.out.println("looking for " + setup.getC() + ":"
 						+ id.longValue());
-				data = findById(setup.getC(), id.longValue());
+				data = findById(setup.getC(), id);
 				out.println("found " + data);
 			}
 
@@ -332,6 +332,7 @@ abstract public class Setup implements wcs.core.Setup {
 		data.getAttributeData("description").setData(asset.getDescription());
 		setTimeStamp(data, asset.getCid().longValue());
 		asset.setData(data);
+        data.setParents(asset.getParents());
 		try {
 			adm.insert(Util.listData(data));
 		} catch (Exception e) {
@@ -351,6 +352,7 @@ abstract public class Setup implements wcs.core.Setup {
 
 		setTimeStamp(data, asset.getCid().longValue());
 		asset.setData(data);
+        data.setParents(asset.getParents());
 
 		try {
 			adm.update(Util.listData(data));

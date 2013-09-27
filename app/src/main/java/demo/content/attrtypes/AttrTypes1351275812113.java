@@ -1,6 +1,8 @@
 package demo.content.attrtypes;
     
 import java.util.List;
+
+import com.fatwire.assetapi.data.AssetId;
 import wcs.core.Id;
 import wcs.java.AssetSetup;
 import wcs.java.util.AddIndex;
@@ -46,5 +48,10 @@ public class AttrTypes1351275812113 extends AssetSetup {
 	public List<Id> getReferences() {
   		return (List<Id>) list();
 	}
-    
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<AssetId> getParents() {
+        return (List<AssetId>) list();
+    }
 }

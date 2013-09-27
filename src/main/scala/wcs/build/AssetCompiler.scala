@@ -1,6 +1,5 @@
 package wcs.build
 
-import org.apache.commons.lang.StringEscapeUtils
 import org.apache.commons.codec.binary.Base64
 
 import scala.xml.XML
@@ -20,21 +19,27 @@ class AssetCompiler(site: String, c: String, cid: Long, xmlIn: File, javaOut: Fi
   
   val subtype = doc \\ "asset" \\ "@subtype" text
 
-  val attributeNames = doc \ "asset" \ "attribute" flatMap (_.attribute("name"))
+  val attributeNames = (doc \ "asset" \ "attribute").filter(x => !((x \ "@name").text startsWith "Group_")) flatMap (_.attribute("name"))
 
   val assetReferences = doc \\ "assetreference" map { x =>
     "id(\"" + ((x \ "@type").text) +
       "\"," + ((x \ "@value").text + "L)")
   }
 
-  val attributeData = (doc \ "asset" \ "attribute"). // extract attributes
+  // removed self reference from parents until we implement the two-phase import
+  val assetParents = ((doc \\ "attribute").filter(x => (x \ "@name").text startsWith  "Group_") \\ "assetreference").filter(x => (x \ "@value").text != ""+cid) map { x =>
+    "ref(\"" + ((x \ "@type").text) +
+      "\"," + ((x \ "@value").text + "L)")
+  }
+
+  val attributeData = (doc \ "asset" \ "attribute").filter(x => !((x \ "@name").text startsWith "Group_")).
     flatMap { n =>
       val attr0 = n.attribute("name").get.head.text
 
       val attr1 = if (attr0.startsWith("Attribute_"))
         attr0.substring("Attribute_".length())
       else attr0
-     
+
       if (attr1 != "Publist") Some(attr1 -> n.child(0))
       else None
     }. // List of (String,Node)  
@@ -46,51 +51,61 @@ class AssetCompiler(site: String, c: String, cid: Long, xmlIn: File, javaOut: Fi
         case "string" => stringValue(x._1, x._2)
         case "date" => dateValue(x._1, x._2)
         case "int" => intValue(x._1, x._2)
+        case "integer" => intValue(x._1, x._2)
+        // TODO implement as external reference
         case "file" => fileValue(x._1, x._2)
         case label => "\t\t/* ???? %s %s */".format(x._1, label)
       }
     } toList
 
   def javaClass = """package %nsite%.content.%nc%;
-    
+
 import java.util.List;
 import wcs.core.Id;
 import wcs.java.AssetSetup;
 import wcs.java.util.AddIndex;
 import com.fatwire.assetapi.data.MutableAssetData;
+import com.fatwire.assetapi.data.AssetId;
 import com.fatwire.assetapi.def.AttributeTypeEnum;
 
 @AddIndex("%nsite%/contents.txt")
-public class %c%%cid% extends AssetSetup {
+public class %c%%cid% extends %c%Setup {
 
     @Override
-	public void setData(MutableAssetData data) {
-    	data.getAttributeData("Publist").setDataAsList(list(getSite()));
-%attributeData%
-	}
-    
-	public static AssetSetup setup() {
-		return new %c%%cid%();
-	}
+    public void setAssetData(MutableAssetData data) {
+        this.assetData = data;
+        data.getAttributeData("Publist").setDataAsList(list(getSite()));
+        %attributeData%
+    }
 
-	public %c%%cid%() {
-		super(%cid%l, "%c%", "%subtype%", "%name%");
-	}
+    public static AssetSetup setup() {
+        return new %c%%cid%();
+    }
 
-    @Override
-	@SuppressWarnings("unchecked")
-	public List<String> getAttributes() {
-		return (List<String>)list(%attributeNames%);
-	}
+    public %c%%cid%() {
+        super(%cid%l, "%c%", "%subtype%", "%name%");
+    }
 
     @Override
     @SuppressWarnings("unchecked")
-	public List<Id> getReferences() {
-  		return (List<Id>) %references%
-	}
-    
+    public List<String> getAssetAttributes() {
+        return (List<String>)list(%attributeNames%);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Id> getAssetReferences() {
+        return (List<Id>) %references%
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<AssetId> getAssetParents() {
+        return (List<AssetId>) %parents%
+    }
+
 }
-""".replaceAll("%site%", site).
+                  """.replaceAll("%site%", site).
     replaceAll("%nsite%", normalizeSiteName(site)).
     replaceAll("%c%", c).
     replaceAll("%nc%", normalizeSiteName(c)).
@@ -101,9 +116,69 @@ public class %c%%cid% extends AssetSetup {
     replaceAll("%attributeNames%", attributeNames.mkString("\"", "\",\"", "\"")).
     replaceAll("%subtype%", subtype).
     replaceAll("%references%", assetReferences.mkString("list(", ",", ");")).
+    replaceAll("%parents%", assetParents.mkString("list(", ",", ");")).
     toString();
 
-  def compile = writeFile(javaOut, javaClass)
+  def baseJavaClass = """package %nsite%.content.%nc%;
+
+import java.util.List;
+import wcs.core.Id;
+import wcs.java.AssetSetup;
+import com.fatwire.assetapi.data.MutableAssetData;
+import com.fatwire.assetapi.data.AssetId;
+
+public abstract class %c%Setup extends AssetSetup {
+
+    protected MutableAssetData assetData;
+
+    @Override
+    public void setData(MutableAssetData data) {
+        setAssetData(data);
+    }
+
+    public abstract void setAssetData(MutableAssetData data);
+
+    public %c%Setup(long id, String type, String subtype, String name) {
+        super(id, type, subtype, name);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<String> getAttributes() {
+        return getAssetAttributes();
+    }
+
+    public abstract List<String> getAssetAttributes();
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Id> getReferences() {
+        return getAssetReferences();
+    }
+
+    public abstract List<Id> getAssetReferences();
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<AssetId> getParents() {
+        return getAssetParents();
+    }
+
+    public abstract List<AssetId> getAssetParents();
+}
+                      """.replaceAll("%site%", site).
+    replaceAll("%nsite%", normalizeSiteName(site)).
+    replaceAll("%c%", c).
+    replaceAll("%nc%", normalizeSiteName(c)).
+    toString();
+
+  def compile =  {
+    val baseClassFile = new File(javaOut.getParent(), c+"Setup.java")
+    if (!baseClassFile.exists()) {
+      writeFile(baseClassFile, baseJavaClass)
+    }
+    writeFile(javaOut, javaClass)
+  }
 
   override def toString = javaOut.getName
 }
@@ -168,12 +243,16 @@ object AssetCompiler {
           escapeJava(decoded).split("""\\n""").mkString("\\n\"+\n\"") +
           "\"));"
 
+      //TODO implement reading blobs from external files
+      case name =>  "blob(\"" + escapeJava(name) + "\",\"TODO\"));"
+      /*
       case name =>
         "blob(\"" +
           escapeJava(name) +
           "\",base64(\n" +
           (n.text.trim).grouped(72).toList.mkString("\"", "\"+\n\"", "\"") +
           ")));"
+       */
 
     })
 
@@ -181,14 +260,16 @@ object AssetCompiler {
     "data.getAttributeData(\"" +
     escapeJava(m) +
     "\").setDataAsList(list(" + (
-    n.child map { // get children of <array><xxx value="..."></array> then match for each xxx
-      case n @ <integer/> => (n \\ "@value").text + "L"
-      case n @ <string/> => """"%s"""".format((n \\ "@value").text)
-      case <struct>{n @ _*}</struct> => structToMap(n)
-      case n @ <assetreference/> => "ref(\"" + (n \ "@type") + "\"," + (n \ "@value") + "L)"
-      case n => "???"
-    }).mkString(",") +
-    "));"
+      n.child map { // get children of <array><xxx value="..."></array> then match for each xxx
+        case n @ <integer/> => (n \\ "@value").text + "L"
+        case n @ <string/> => """"%s"""".format((n \\ "@value").text)
+        // assetapi doesn't support ordered lists for attributes
+        //case <struct>{n @ _*}</struct> => structToMap(n)
+        case <struct>{n @ _*}</struct> => "ref(\"" + (n \ "assetreference" \ "@type") + "\"," + (n \ "assetreference" \ "@value") + "L)"
+        case n @ <assetreference/> => "ref(\"" + (n \ "@type") + "\"," + (n \ "@value") + "L)"
+        case x => "???"
+      }).mkString(",") +
+      "));"
 
   def structToMap (n: Seq[Node]): String = (
     n  map {

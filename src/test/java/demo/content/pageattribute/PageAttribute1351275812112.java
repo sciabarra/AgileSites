@@ -1,6 +1,8 @@
 package demo.content.pageattribute;
     
 import java.util.List;
+
+import com.fatwire.assetapi.data.AssetId;
 import wcs.core.Id;
 import wcs.java.AssetSetup;
 import wcs.java.util.AddIndex;
@@ -48,5 +50,10 @@ public class PageAttribute1351275812112 extends AssetSetup {
 	public List<Id> getReferences() {
   		return (List<Id>) list(id("AttrTypes",1351275812113L));
 	}
-    
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<AssetId> getParents() {
+        return (List<AssetId>) list();
+    }
 }

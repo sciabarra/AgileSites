@@ -87,6 +87,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       libraryDependencies ++= coreDependencies,
       publishArtifact in packageDoc := false,
       name := "agilesites-core",
+      javacOptions ++= Seq("-g"),
       crossPaths := false,
       EclipseKeys.skipProject := true,
       coreGeneratorTask))
@@ -97,6 +98,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("api"),
     settings = commonSettings ++ Seq(
       name := "agilesites-api",
+      javacOptions ++= Seq("-g"),
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
 
   /// APP 
@@ -105,6 +107,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("app"),
     settings = commonSettings ++ Seq(
       name := "agilesites-app",
+      javacOptions ++= Seq("-g"),
       wcsGenerateIndexTask,
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
       wcsCopyHtmlTask)) dependsOn (api)
@@ -115,6 +118,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("."),
     settings = commonSettings ++ assemblySettings ++ scaffoldSettings ++ Seq(
       name := "agilesites-all",
+      javacOptions ++= Seq("-g"),
       wcsPackageJarTask,
       wcsCsdtTask,
       wcsVirtualHostsTask,

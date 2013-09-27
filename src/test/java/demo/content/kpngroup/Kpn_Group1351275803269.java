@@ -1,6 +1,8 @@
 package demo.content.kpngroup;
     
 import java.util.List;
+
+import com.fatwire.assetapi.data.AssetId;
 import wcs.core.Id;
 import wcs.java.AssetSetup;
 import wcs.java.util.AddIndex;
@@ -45,5 +47,10 @@ public class Kpn_Group1351275803269 extends AssetSetup {
 	public List<Id> getReferences() {
   		return (List<Id>) list(id("Kpn_Group",1351275803270L),id("Kpn_PD",1351275803255L));
 	}
-    
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<AssetId> getParents() {
+        return (List<AssetId>) list();
+    }
 }

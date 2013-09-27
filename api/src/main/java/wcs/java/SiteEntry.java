@@ -5,6 +5,7 @@ import static wcs.java.util.Util.attrStructKV;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.fatwire.assetapi.data.AssetId;
 import wcs.core.Id;
 import wcs.java.util.Util;
 
@@ -113,10 +114,15 @@ public class SiteEntry extends AssetSetup {
 		return this;
 	}
 
-	final static List<Id> empty = new LinkedList<Id>();
+    @Override
+    public List<Id> getReferences() {
+        return emptyIdList;
+    }
 
-	@Override
-	public List<Id> getReferences() {
-		return empty;
-	}
+    @Override
+    public List<AssetId> getParents() {
+        // TODO Auto-generated method stub
+        return emptyAssetIdList;
+    }
+
 }
