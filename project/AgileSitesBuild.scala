@@ -44,6 +44,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "commons-logging" % "commons-logging" % "1.1.1",
     "com.novocode" % "junit-interface" % "0.8" % "test",
     "log4j" % "log4j" % "1.2.16",
+    "commons-httpclient" % "commons-httpclient" % "3.1",
     "org.apache.httpcomponents" % "httpclient" % "4.1.2",
     "org.apache.httpcomponents" % "httpcore" % "4.1.2",
     "org.apache.httpcomponents" % "httpmime" % "4.1.2",
@@ -97,6 +98,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("app"),
     settings = commonSettings ++ Seq(
       name := "agilesites-app",
+      wcsGenerateIndexTask,
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
       wcsCopyHtmlTask)) dependsOn (api)
 
@@ -116,6 +118,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       wcsUpdateAssetsTask,
       wcsLogTask,
       excludedJars in assembly <<= (fullClasspath in assembly),
+      watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").getFiles),
+      EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
       EclipseKeys.skipProject := false,
       assembleArtifact in packageScala := false)) dependsOn (app) aggregate (app, api)
 }

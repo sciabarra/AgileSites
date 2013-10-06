@@ -293,7 +293,7 @@ public abstract class Asset {
 	public Asset getAsset(String attribute, int i, String type, AssetDeps logdep) {
 		throw new RuntimeException("this asset is not bound");
 	}
-
+	
 	/**
 	 * String get blob url of the first attribute, with optional args
 	 * 
@@ -501,7 +501,7 @@ public abstract class Asset {
 	 * Slot type is configured in Config. You need a field of the same name of
 	 * the field specifying the type as parameter "c"
 	 * 
-	 * @param field
+	 * @param attribute
 	 * @param template
 	 * @param type
 	 * @param i

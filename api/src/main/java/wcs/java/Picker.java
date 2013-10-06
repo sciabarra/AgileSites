@@ -404,4 +404,21 @@ public class Picker {
 		return this;
 	}
 
+	/**
+	 * Replace tag selected by "where" with String "What"
+	 * @param where Selection criteria (placeholder)
+	 * @param what The string to replace the "where" with, this must be valid HTML
+	 * @return This picker
+	 */
+	public Picker replaceWith(String where, String what) {
+		Document newTag = Jsoup.parse(what);
+		Elements elements = top.select(where);
+		for (Element element : elements){
+			log.trace("Replace with: %s",newTag.childNode(0).childNode(1).childNode(0));
+			element.replaceWith(newTag.childNode(0).childNode(1).childNode(0));
+		}
+		return this;
+
+	}
+
 }

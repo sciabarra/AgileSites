@@ -10,21 +10,21 @@ import wcs.java.util.Util;
 import COM.FutureTense.Interfaces.ICS;
 
 /**
- * 
+ *
  * This class implements element logic and will be invoked by templates and
  * cselements
- * 
+ *
  * @author msciab
- * 
+ *
  */
 public abstract class Element implements wcs.core.Element {
 
-	static Log log = Log.getLog(Element.class);
+    static Log log = Log.getLog(Element.class);
 
-	// current site
-	protected String site;
+    // current site
+    protected String site;
 
-	protected boolean insite = false;
+    protected boolean insite = false;
 
 	/**
 	 * Execute the element

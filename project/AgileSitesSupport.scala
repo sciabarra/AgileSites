@@ -103,32 +103,31 @@ trait AgileSitesSupport extends Utils {
     (argTask: TaskKey[Seq[String]]) =>
       (argTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
         (args, version, url, sites, user, password, classpath, s, runner) =>
-          val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d|spring-\\d|commons-logging|servlet-api|cs-core|http).*.jar$".r;
+          val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d|spring-\\d|commons-logging-|servlet-api|sites-security|esapi-|cs-|http(client|core|mime)-).*.jar$".r;
           val seljars = classpath.files.filter(f => !re.findAllIn(f.getName).isEmpty)
-          val workspaces = ""
-          if(args.size ==0 ) {
-            println("""usage: wcs-dt <workspace> [<cmd>]  [<selector> ...]
-                       | <workspace> one of %s
-                       | <cmd> one of listcs, listds, import, export, import_all, export_all
-                       |       default to listcs
+          val workspaces = (file("export") / "envision").listFiles.filter(_.isDirectory).map(_.getName).mkString("'", "', '", "'")
+          if (args.size == 0) {
+            println("""usage: wcs-dt  [<cmd>]  [<selector> ...] [#<workspace>]
+                       | <workspace> defaults to 'workspace',
+                       |   must be one of: %s
+                       | <cmd> defaults to 'listcs'
+                       |   must be one of 'listcs', 'listds', 'import', 'export', 
                        | <selector> check developer tool documentation for syntax
-                       |    defaults:
-                       |      for listcs to @ALL_ASSETS
-                       |      for listds to @ALL_ASSETS
-                       |      for import to @SITE @ASSET_TYPE @ALL_ASSETS @STARTMENU"
-                       |        (by default imports all)
-                       |      for export to @SITE @ASSET_TYPE
-                       |        (by default it exports only the site structure - need to select what to export)
+                       |  defaults for commands are
+                       |      listcs: @ALL_ASSETS
+                       |      listds: @ALL_ASSETS
+                       |      import: @SITE @ASSET_TYPE @ALL_ASSETS @STARTMENU @TREETAB
+                       |      export: @SITE @ASSET_TYPE
                        |""".stripMargin.format(workspaces))
           } else {
-            
-            val workspace = args.head
-            val args1 = args.tail
-            
-            val firstArg = if (args1.size > 0) args1(0) 
-            else "listcs"
-            
-            var resources = if (args1.size > 1) args1.drop(1)
+
+            val workspace = ("#workspace" +: args).reverse.filter(_.startsWith("#")).head.substring(1)
+
+            val args1 = args.filter(!_.startsWith("#"))
+
+            val firstArg = if (args1.size > 0) args1(0) else "listcs"
+
+            val resources = if (args1.size > 1) args1.drop(1)
             else firstArg match {
               case "listcs" => Seq("@ALL_ASSETS")
               case "listds" => Seq("@ALL_ASSETS")
@@ -150,8 +149,10 @@ trait AgileSitesSupport extends Utils {
                 //"fromSites=" + sites,
                 "datastore=" + workspace)
 
-              Run.run("com.fatwire.csdt.client.main.CSDT",
-                  seljars, cmd, s.log)(runner)
+              println(seljars.mkString("\n"))
+
+              Run.run("com.fatwire.csdt.client.main.CSDT", seljars, cmd, s.log)(runner)
+
             }
           }
       }
@@ -170,7 +171,7 @@ trait AgileSitesSupport extends Utils {
         val files = Seq(file("bin").getAbsoluteFile) ++ classpath.files 
         val owasp = "-Dorg.owasp.esapi.resources=" + (file(webapp) / "WEB-INF" / "classes").getAbsolutePath
         val cp = files.mkString(java.io.File.pathSeparator)
-        val dir = file("export") / "Populate-" + version
+        val dir = file("export") / "Populate" 
         val cmd = Seq("-cp", cp, owasp, /*"-Dlog4j.debug",*/ "COM.FutureTense.Apps.CatalogMover")
         val opts = Seq("-u", user, "-p", password, "-b", url, "-d", dir.toString, "-x")
         val all = cmd ++ opts ++ Seq("import_all")
@@ -243,8 +244,6 @@ trait AgileSitesSupport extends Utils {
           
           l.toSeq
       }
-
-
 
   // copy resources to the webapp task
   val wcsUpdateAssetsTask = wcsUpdateAssets <<=
@@ -346,11 +345,11 @@ trait AgileSitesSupport extends Utils {
   def setupMkdirs(shared: String, version: String, sites: String) {
     // create local export dir for csdt
     (file("export")).mkdir
-    (file("export") / "xmlpub").mkdir
-    (file("export") / "xmlpub" / (sites + "-" + version)).mkdir
+    //(file("export") / "xmlpub").mkdir
+    //(file("export") / "xmlpub" / (sites + "-" + version)).mkdir
     (file("export") / "envision").mkdir
     (file("export") / "envision" / (sites + "-" + version)).mkdir
-    (file("export") / ("Populate-" + version)).mkdir
+    (file("export") / ("Populate")).mkdir
     (file(shared) / "Storage").mkdir
     (file(shared) / "Storage" / "Static").mkdir
   }
@@ -457,7 +456,8 @@ trait AgileSitesSupport extends Utils {
           }
 
           def usage {
-            println("""|usage:
+            println("""
+                  |usage:
                   | wcs-log view
             	    |    start the log viewer
                   | wcs-log list
@@ -486,17 +486,17 @@ trait AgileSitesSupport extends Utils {
               }.start
               None
             case "start" :: Nil =>
-              Some("op=start&level=DEBUG&%s" format parse(Nil))
+              Some("&op=start&level=DEBUG&%s" format parse(Nil))
             case "stop" :: rest =>
-              Some("op=stop&%s" format parse(rest))
+              Some("&op=stop&%s" format parse(rest))
             case "list" :: rest =>
-              Some("op=list")
+              Some("&op=list")
             case level :: rest =>
               if ("ERROR|WARN|DEBUG|INFO|TRACE".r findAllIn level.toUpperCase isEmpty) {
                 println("Invalid level " + level)
                 None
               } else
-                Some("op=start&level=%s&%s" format (level.toUpperCase, parse(rest)))
+                Some("&op=start&level=%s&%s" format (level.toUpperCase, parse(rest)))
             case _ =>
               usage
               None
