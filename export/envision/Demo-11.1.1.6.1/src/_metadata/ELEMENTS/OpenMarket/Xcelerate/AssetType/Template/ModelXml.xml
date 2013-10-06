@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- XXXX
+
+INPUT
+
+OUTPUT
+
+-->
+<!-- Record dependencies for the Template -->
+<IF COND="IsVariable.tid=true"><THEN><RENDER.LOGDEP cid="Variables.tid" c="Template"/></THEN></IF>
+
+</FTCS>

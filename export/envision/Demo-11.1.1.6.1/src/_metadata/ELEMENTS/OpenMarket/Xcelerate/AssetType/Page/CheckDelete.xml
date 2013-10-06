@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/Page/CheckDelete
+-
+- INPUT
+-
+- OUTPUT
+-	Variables.candelete = true or false
+-	Variables.errormsg = false
+-->
+
+<SETVAR NAME="candelete" VALUE="true"/>
+
+<!-- if this page is under the node of a tree which is 'Placed' then it must be unplaced first -->
+<ASSET.GETSITENODE NAME="theAsset" OUTPUT="nodeid"/>
+<SITEPLAN.LOAD NAME="node" NODEID="Variables.nodeid"/>
+<SITEPLAN.NODEPATH NAME="node" LIST="myAncestors"/>
+<IF COND="IsList.myAncestors=true">
+<THEN>
+	<GOTOROW LIST="myAncestors" ROWNUM="myAncestors.#numRows"/>
+	<SETROW LIST="myAncestors" ACTION="PREV"/>
+	<!-- under a placed node -->
+	<if COND="myAncestors.#numRows!=1">
+	<then>
+		<IF COND="myAncestors.ncode=Placed">
+		<THEN>
+			<SETVAR NAME="candelete" VALUE="false"/>
+			<SETVAR NAME="parent" VALUE="Page"/>
+		</THEN>
+		</IF>
+	</then>
+	<!-- or at top level and is placed itself -->
+	<else>
+		<SITEPLAN.GET NAME="node" FIELD="ncode"/>
+		<if COND="Variables.ncode=Placed">
+		<then>
+			<SETVAR NAME="candelete" VALUE="false"/>
+			<SETVAR NAME="parent" VALUE="Publication"/>
+		</then>
+		</if>
+	</else>
+	</if>
+</THEN>
+</IF>
+
+<!-- handle the error -->
+<if COND="Variables.candelete=false">
+<then>
+	<ASSET.SITEPARENT NAME="theAsset" OUTNAME="parent"/>
+	<IF COND="Variables.errno=0">
+	<THEN>
+		<ASSET.GET NAME="parent" FIELD="id" OUTPUT="parentid"/>
+	</THEN>
+	</IF>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+		<ARGUMENT NAME="elem" VALUE="UnplacePageBeforeDelete"/>
+		<ARGUMENT NAME="severity" VALUE="error"/>
+		<ARGUMENT NAME="parentid" VALUE="Variables.parentid"/>
+	</CALLELEMENT>
+	<setvar NAME="errorhandled" VALUE="true"/>
+</then>
+</if>
+
+</FTCS>

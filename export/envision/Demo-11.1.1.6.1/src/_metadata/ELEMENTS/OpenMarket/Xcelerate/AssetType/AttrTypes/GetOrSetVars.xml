@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/AttrTypes/GetOrSetVars.xml $ 
+$Revision: 21 $ 
+$Modtime: 12/19/02 9:15a $ 
+-->
+<!-- OpenMarket/Xcelerate/AssetType/AttrTypes/GetOrSetVars
+--
+- INPUT
+		Variables.SetOrGet (defaults to get)
+		Variables.AttrTypes:... has the variables. (AttrTypes is the prefix)
+		
+- OUTPUT
+		"Gather" called.
+
+-->
+<setvar NAME="FieldsOnForm" VALUE="name,status,workflowid,description,urlxml,urlxml_file,urlxml_type,valuetype"/>
+<if COND="Variables.GetOrSet=set">
+	<then>
+   <!--If file not specified, then if there is text use it-->
+		<if COND="IsVariable.AttrTypes:urlxml_file=false">
+			<then>
+				<if COND="IsVariable.AttrTypeText=true">
+					<then>
+						<setvar NAME="AttrTypes:urlxml" VALUE="Variables.AttrTypeText"/>
+                         <ASSET.GET NAME="theCurrentAsset" FIELD="id"/>
+                        <IF COND="IsVariable.id=true">
+                         <THEN>
+                              <setvar NAME="AttrTypes:urlxml_file" VALUE="Variables.id.txt"/>
+                         </THEN>
+                         <ELSE>
+                             <setvar NAME="AttrTypes:urlxml_file" VALUE="Variables.AttrTypes:name.txt"/>
+                         </ELSE>
+                        </IF>
+					</then>
+				</if>
+			</then>
+		</if>
+		<!--   
+		   replace semicolon present in the value of AttrTypes:valuetype variable (because of the mutiple select box)
+		   with comma before inserting the value into the database
+			-->
+		<if COND="IsVariable.AttrTypes:valuetype=true">
+		<then>
+			<SUBSTITUTE STR="Variables.AttrTypes:valuetype" WHAT=";" WITH="&#44;" OUTSTR="AttrTypes:valuetype"/>
+		</then>
+		</if>
+		<ASSET.GATHER NAME="theCurrentAsset" PREFIX="AttrTypes" FIELDLIST="Variables.FieldsOnForm"/>
+		<if COND="Variables.errno!=0">
+			<then>
+				<br/><XLAT.STREAM KEY="dvin/AT/AttrTypes/AGatherFailForAttrTypes" errno="Variables.errno" EVALALL="false"/>
+				<throwexception/>
+			</then>
+		</if>
+	</then>
+
+<!--"gets"-->
+	<else>
+		<br/>In GetOrSet - option get - SHOULD NOT BE HERE		
+	</else>
+</if>
+</FTCS>
+
+

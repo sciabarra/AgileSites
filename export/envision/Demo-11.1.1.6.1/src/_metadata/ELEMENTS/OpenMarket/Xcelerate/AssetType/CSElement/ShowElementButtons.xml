@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/CSElement/ShowElementButtons
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+	<tr>
+		<td class="form-label-text"> <XLAT.STREAM KEY="dvin/Common/AT/CreateElementQ"/> </td>
+		<td></td>
+		<td class="form-inset"> 
+			<table><tr><td>
+			<a href="javascript:void(0);" onClick="setXmlString()" REPLACEALL="Variables.currentElement"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Xml"/></CALLELEMENT></a>
+			</td><td>
+			<a href="javascript:void(0);" onClick="setJspString()" REPLACEALL="Variables.currentElement"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Jsp"/></CALLELEMENT></a>	
+			</td><td>			
+			<a href="javascript:void(0);" onClick="setHtmlString()" REPLACEALL="Variables.currentElement"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Html"/></CALLELEMENT></a>	
+			</td></tr></table>
+		</td>					
+	</tr>
+</FTCS> 
+

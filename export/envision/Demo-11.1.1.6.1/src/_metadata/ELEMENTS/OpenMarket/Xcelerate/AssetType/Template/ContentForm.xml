@@ -1,0 +1,340 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!--
+$Logfile: /VerticalApps/XcelerateD/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Template/ContentForm.xml $
+$Revision: 93 $
+$Modtime: 9/22/04 3:54p $
+-->
+
+<!--
+- Confidential and Proprietary Information of Open Market, Inc.
+-					All Rights Reserved.
+-
+- DESCRIPTION
+-
+-    Note: you must
+-    ensure that there is no more than one
+-    occurence of a form field that refers
+-    to one of these input fields. Else, browsers
+-    will concatenate all values found, surely
+-    leading to unexpected results
+-
+-    Note: dates are dealt with a little differently
+
+- HISTORY 
+	5/18/00 - Convert to standard UI layout - Jeff Sokolov
+    [2007-09-10 KG]
+    * added XSS scripting fixes (adapted from 6.3 fixes); search for isCleanString
+    * changed definitions of 'obj' to just forms[0] (not .elements[0])
+    [2007-10-09 KG] XSS revision:
+    * changed locale string used for isclean error alert
+    * added & to list of characters checked (jeez, how'd I miss that?)
+-->
+<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/ValidateInputForXSS" />
+<SCRIPT LANGUAGE="JavaScript">
+
+<![CDATA[
+
+var obj = document.forms[0];
+
+function getAssetName()
+{
+	return obj.elements['Template:name'].value;
+}
+
+function submitForm()
+{
+	return checkfields();
+}
+
+function isblank(s) {
+	for(var i=0;i<s.length;i++){
+		var c = s.charAt(i);
+		if( (c!=' ') && (c != '\n') && ( c!='\t') && (c!='\r') ) 
+			return false;
+	}
+	return true;
+}
+
+function checkfields() {
+      
+	var obj = document.forms[0];
+
+	var templateName=obj.elements['Template:name'];
+	if (isblank(templateName.value)) {
+	      ]]>
+	      alert("<XLAT.STREAM KEY="dvin/UI/Error/specifyanameforthistemplate" ESCAPE="true" ENCODE="false"/>");
+	      <![CDATA[
+		return false;
+	}
+	
+	var isclean = isCleanString(templateName.value, '#=&');
+	if (!isclean) {
+		var replacestr=/\bVariables.name\b/ ;
+        var xlatstr= ']]><XLAT.STREAM KEY="dvin/AT/Common/Invalidcharacterinname2" ENCODE="false" ESCAPE="true"/><![CDATA[' ;
+        alert(xlatstr.replace(replacestr,obj.elements['Template:name'].value));
+		templateName.focus();
+		return false;
+	}
+	/* old code:
+ 	if (obj.elements['Template:name'].value.search(/['"?;:#&=]/) != -1)
+	{
+		 var replacestr=/\bVariables.name\b/ ;
+         var xlatstr= ']]><XLAT.STREAM KEY="dvin/AT/Common/Invalidcharacterinname2" ENCODE="false" ESCAPE="true"/><![CDATA[' ;
+         alert(xlatstr.replace(replacestr,obj.elements['Template:name'].value));
+		return false;
+	}
+	*/	
+	var stype = document.forms[0].elements['Template:subtype'];
+	var stypeVal, stypeWidget = dijit.getEnclosingWidget(stype);
+	/* duck typing to identify thts its a filtering select */
+	if (stypeWidget && stypeWidget.hasOwnProperty('hasDownArrow')) {
+		var si = stypeWidget.get("value");
+		if (si == "illegal") {
+			]]>
+			alert("<XLAT.STREAM KEY="dvin/UI/Error/selectanassettypeforthistemplate" ESCAPE="true" ENCODE="false"/>");
+			<![CDATA[
+			obj.elements['Template:subtype'].focus();
+			return false;
+		}
+		stypeVal = si;
+	} else if (stype.type == "hidden") {
+		stypeVal=stype.value;
+	} else {
+		stypeVal="";
+	}
+	var sroot = obj.elements['Template:rootelement'];
+	if ( isblank(sroot.value) ){
+		if ( obj.elements['Template:element:Total'].value!=0 ) {
+			]]>
+			alert("<XLAT.STREAM KEY="dvin/UI/Error/nositeentrycontinue" ESCAPE="true" ENCODE="false"/>");
+			<![CDATA[
+			return false;
+		}
+	}
+ 	else if (sroot.value.search(/['"?;:#&=]/) != -1)
+	{
+		 var replacestr=/\bVariables.name\b/ ;
+         var xlatstr= ']]><XLAT.STREAM KEY="dvin/AT/Common/Invalidcharacterinname2" ENCODE="false" ESCAPE="true"/><![CDATA[' ;
+         alert(xlatstr.replace(replacestr,obj.elements['Template:rootelement'].value));
+		return false;
+	}
+	if ( obj.elements['Template:element:Total'].value!=0 )
+	{
+		var elemdescription = obj.elements['Template:element:0:elementdescription'];
+		var elemname = obj.elements['Template:element:0:elementname'];
+		var elemurlspec = obj.elements['Template:element:0:urlspec'];
+		var elemurl = obj.elements['Template:element:0:url'];
+		var elemresdetails1 = obj.elements['Template:element:0:resdetails1'];
+		var elemresdetails2 = obj.elements['Template:element:0:resdetails2'];
+		if ( isblank(elemname.value) || isblank(elemurlspec.value) )
+		{
+			if (!isblank(elemdescription.value) || !isblank(elemresdetails1.value) || !isblank(elemresdetails2.value) ) {
+				]]>
+				alert( "<XLAT.STREAM KEY="dvin/AT/Template/specifylogicandstorage" ESCAPE="true" ENCODE="false"/>" );
+				<![CDATA[
+				return false;
+			}
+		}
+		if ( isblank(elemurlspec.value) )
+		{ ]]>
+			alert( "<XLAT.STREAM KEY="dvin/AT/Template/specifyelementstorage" ESCAPE="true" ENCODE="false"/>" );
+			<![CDATA[
+			return false;
+		}
+		else if ( elemurlspec.value.search(/['"?;:]/) != -1) {
+		 	var replacestr=/\bVariables.filename\b/ ;
+			var xlatstr= ']]><XLAT.STREAM KEY="dvin/AT/Template/FilenameContainsIllegalCharacters" ENCODE="false" ESCAPE="true"/><![CDATA[' ;
+			alert(xlatstr.replace(replacestr,elemurlspec.value));
+			return false;
+		}
+		else if ( elemurlspec.value.indexOf(".") == -1 ) {
+		 	var replacestr=/\bVariables.filename\b/ ;
+			var xlatstr= ']]><XLAT.STREAM KEY="dvin/AT/Template/FilenameHasNoExtension" ENCODE="false" ESCAPE="true"/><![CDATA[' ;
+			alert(xlatstr.replace(replacestr,elemurlspec.value));
+			return false;
+		}
+		if ( isblank(elemurl.value) )
+		{ ]]>
+			alert( "<XLAT.STREAM KEY="dvin/AT/Template/specifyelementlogic" ESCAPE="true" ENCODE="false"/>" );
+			<![CDATA[
+			return false;
+		}
+	}
+	var TotalElement=obj.elements['Template:Mapping:Total'];
+    var i, j;
+	if ( TotalElement != null )
+	{
+	   total = TotalElement.value;
+	   for ( i = 0; i < total; i ++ )
+	   {
+	      for ( j = 1+i; j < total; j ++ )
+	      {
+	         var ikey = 'Template:Mapping:' + i + ':key';
+	         var jkey = 'Template:Mapping:' + j + ':key';
+	         var ivalue = obj.elements[ ikey ].value;
+	         var jvalue = obj.elements[ jkey ].value;
+	         var iskey = 'Template:Mapping:' + i + ':siteid';
+	         var jskey = 'Template:Mapping:' + j + ':siteid';
+	         var isvalue = obj.elements[ iskey ].value;
+	         var jsvalue = obj.elements[ jskey ].value;
+	         if ( !isblank(ivalue) && !isblank(jvalue) && ivalue == jvalue && !isblank(isvalue) && !isblank(jsvalue) && isvalue == jsvalue )
+	         {
+               ]]>
+      	      alert("<XLAT.STREAM KEY="dvin/UI/Error/UniqueKeyViolation" ESCAPE="true" ENCODE="false"/>");
+      	      <![CDATA[
+	            return false;
+	         }
+	      } 
+	   }
+	}		
+	obj.submit();
+	return false;
+}
+
+
+function SetCancelFlag () {
+	var obj = document.forms[0];
+
+	if(confirm("]]><XLAT.STREAM KEY="dvin/Common/CancelClicked" ESCAPE="true" ENCODE="false"/><![CDATA[")){
+		obj.elements['upcommand'].value="cancel";
+		obj.submit();
+		return false;
+	}
+}
+
+function Fixpagename(ourPage,nextstep)
+{
+	var obj = document.forms[0];
+	
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	if(ourPage=="CopyFront")
+	   ourPage="NewContentFront";
+
+	var	newpage = basePage + ourPage;
+	obj.pagename.value = newpage;
+	
+	obj.NextStep.value = nextstep;
+
+	obj.submit();
+	return false;
+}
+
+function FixpagenameWithCheck(ourPage,nextstep)
+{
+	var obj = document.forms[0];
+	var templateName=obj.elements['Template:name'];
+  
+	if (isblank(templateName.value)) {
+      ]]>
+      alert("<XLAT.STREAM KEY="dvin/UI/Error/specifyanameforthistemplate" ESCAPE="true" ENCODE="false"/>");
+      <![CDATA[
+		templateName.focus();
+		return false;
+	}
+	var isclean = isCleanString(templateName.value, '#=&');
+	if (!isclean) {
+		var replacestr=/\bVariables.name\b/ ;
+        var xlatstr= ']]><XLAT.STREAM KEY="dvin/AT/Common/Invalidcharacterinname2" ENCODE="false" ESCAPE="true"/><![CDATA[' ;
+        alert(xlatstr.replace(replacestr,obj.elements['Template:name'].value));
+		templateName.focus();
+		return false;
+	}
+	
+	var stype = obj.elements['Template:subtype'];
+	var stypeVal, stypeWidget = dijit.getEnclosingWidget(stype);
+	/* duck typing to identify thts its a filtering select */
+	if (stypeWidget && stypeWidget.hasOwnProperty('hasDownArrow')) {
+		var si = stypeWidget.get("value");
+		if (si =="illegal") {
+			]]>
+			alert("<XLAT.STREAM KEY="dvin/UI/Error/selectanassettypeforthistemplate" ESCAPE="true" ENCODE="false"/>");
+			<![CDATA[
+			return false;
+		}
+	}
+	var TotalElement=obj.elements['Template:Mapping:Total'];
+	var i, j;
+	if ( TotalElement != null )
+	{
+	   total = TotalElement.value;
+	   for ( i = 0; i < total; i ++ )
+	   {
+	      for ( j = 1+i; j < total; j ++ )
+	      {
+	         var ikey = 'Template:Mapping:' + i + ':key';
+	         var jkey = 'Template:Mapping:' + j + ':key';
+	         var ivalue = obj.elements[ ikey ].value;
+	         var jvalue = obj.elements[ jkey ].value;
+	         var iskey = 'Template:Mapping:' + i + ':siteid';
+	         var jskey = 'Template:Mapping:' + j + ':siteid';
+	         var isvalue = obj.elements[ iskey ].value;
+	         var jsvalue = obj.elements[ jskey ].value;
+	         if ( !isblank(ivalue) && !isblank(jvalue) && ivalue == jvalue && !isblank(isvalue) && !isblank(jsvalue) && isvalue == jsvalue )
+	         {
+               ]]>
+      	      alert("<XLAT.STREAM KEY="dvin/UI/Error/UniqueKeyViolation" ESCAPE="true" ENCODE="false"/>");
+      	      <![CDATA[
+	            return false;
+	         }
+	      } 
+	   }
+	}	
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	if(ourPage=="CopyFront")
+	   ourPage="NewContentFront";
+
+	var	newpage = basePage + ourPage;
+  	obj.pagename.value = newpage;
+	
+	obj.NextStep.value = nextstep;
+
+	obj.submit();
+	return false;
+}]]>
+</SCRIPT>
+<INPUT TYPE="HIDDEN" NAME="NextStep" VALUE=""/>
+<INPUT TYPE="hidden" NAME="upcommand" VALUE="submit"/>
+
+<!-- check whther user is allowed to edit SiteCatalog or ElementCatalog -->
+<USERISMEMBER GROUP="PageEditor"/>
+<if COND="Variables.errno=0">
+<then>
+	<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at"/>
+	<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description"/>
+	<setvar NAME="doproceed" VALUE="WrongACLToEditAsset"/>
+</then>
+<else>
+	<USERISMEMBER GROUP="ElementEditor"/>
+	<if COND="Variables.errno=0">
+	<then>
+		<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at"/>
+		<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description"/>
+		<setvar NAME="doproceed" VALUE="WrongACLToEditAsset"/>
+	</then>
+	</if>
+</else>
+</if>
+ 
+<if COND="Variables.doproceed=true">
+<then>
+
+	<IF COND="IsVariable.NextStep!=true">
+		<THEN>
+			<SETVAR NAME="NextStep" VALUE="ContentFormName"/>
+		</THEN>
+	</IF>
+
+	<!-- form buttons -->
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+		<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
+	</CALLELEMENT>
+	<div dojoType="dijit.layout.ContentPane" region="center">
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Template/Variables.NextStep"/>
+	</div>
+</then>
+</if>
+</div>
+</FTCS>

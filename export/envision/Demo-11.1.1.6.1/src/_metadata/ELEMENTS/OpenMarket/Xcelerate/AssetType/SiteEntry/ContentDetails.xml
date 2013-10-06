@@ -1,0 +1,340 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!--
+$Logfile: /VerticalApps/XcelerateD/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/SiteEntry/ContentDetails.xml $
+$Revision: 22 $
+$Modtime: 8/04/04 4:42p $
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- Variables.ContentDetails:xml
+-
+- DESCRIPTION
+-	Show SiteEntry Details
+-
+- HISTORY
+
+-->
+<SCRIPT LANGUAGE="JavaScript">
+function openSiteEntryPreview(purl)
+{
+     PreviewWindow = window.open(purl, "InspectSiteEntryAssetFront", "width=700,height=480,scrollbars=yes,toolbar=yes,location=no,status=yes,menubar=yes,resizable=yes,directories=no");
+     PreviewWindow.focus();
+ }
+</SCRIPT>
+<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
+<!-- Action bar -->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ActionsBar">
+<ARGUMENT NAME="Screen" VALUE="Inspect"/>
+</CALLELEMENT>
+<div dojoType="dijit.layout.ContentPane" region="center">
+<TABLE class="width70BottomExMargin" border="0" cellpadding="0" cellspacing="0">
+
+<!-- SiteEntry page title with asset name -->
+<TR>
+<TD><span class="title-text"><XLAT.STREAM KEY="dvin/UI/SiteEntry"/>: </span><span class="title-value-text"><STRING.STREAM VARIABLE="ContentDetails:name"/></span></TD>
+</TR>
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+<ARGUMENT NAME="SpaceBelow" VALUE="No"/>
+</CALLELEMENT>
+
+<!-- SiteEntry attribute inspection form -->
+<TR>
+<TD>
+<TABLE class="width-inner-100" border="0" cellpadding="0" cellspacing="0">
+
+<!-- The beginning of Group 1 -->
+<!--<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar">
+<ARGUMENT NAME="SpaceAbove" VALUE="No"/>
+</CALLELEMENT>-->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<TR>
+<TD class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/Name"/>:</TD>
+<TD><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></TD>
+<TD class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:name"/></TD>
+</TR>
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<TR>
+<TD class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Description"/>:</TD>
+<TD><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></TD>
+<TD class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:description"/></TD>
+</TR>
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<TR>
+<TD class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/ID"/>:</TD>
+<TD></TD>
+<TD class="form-inset"><STRING.STREAM VALUE="Variables.ContentDetails:id"/></TD>
+</TR>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<TR>
+		<callelement NAME="OpenMarket/Xcelerate/Actions/Util/ShowStatusCode"/>
+</TR>
+
+<!-- The beginning of Group 2 -->
+
+
+<!--<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>-->
+
+<setvar NAME="assettype" VALUE="Variables.AssetType"/>
+<selectto LIST="Category" FROM="Category" WHERE="assettype"/>
+<IF COND="Category.#numRows!=0">
+<THEN>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/UI/Admin/Category"/>:</td>
+		<setvar NAME="category" VALUE="Variables.ContentDetails:category"/>
+		<selectto LIST="CategoryDescription" FROM="Category" WHAT="description" WHERE="category,assettype"/>
+		<td></td>
+		<td class="form-inset"><STRING.STREAM LIST="CategoryDescription" COLUMN="description"/>
+		</td>
+	</tr>
+</THEN>
+</IF>
+
+<!-- The beginning of Group 3 -->
+<!--<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>-->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<TR>
+<TD class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/Pagename"/>:</TD>
+<TD><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></TD>
+<TD class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:pagename"/></TD>
+</TR>
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<TR>
+<TD class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/Rootelement"/>:</TD>
+<TD></TD>
+<TD class="form-inset">
+	<ASSET.LOAD TYPE="CSElement" NAME="SE_RootElement" FIELD="name" VALUE="Variables.ContentDetails:rootelement"/>
+	<IF COND="IsError.Variables.errno!=true">
+	<THEN>
+		<ASSET.GET NAME="SE_RootElement" FIELD="id" OUTPUT="reid"/>
+		<XLAT.LOOKUP KEY="dvin/Common/InspectThisItem" VARNAME="_XLAT_"/>
+		<XLAT.LOOKUP KEY="dvin/Common/InspectThisItem" VARNAME="mouseover" ESCAPE="true"/>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateLink">
+			<ARGUMENT NAME="assettype" VALUE="CSElement"/>
+			<ARGUMENT NAME="assetid" VALUE="Variables.reid"/>
+			<ARGUMENT NAME="varname" VALUE="urlInspectItem"/>
+			<ARGUMENT NAME="function" VALUE="inspect"/>
+		</CALLELEMENT>
+		<A href="Variables.urlInspectItem" OnMouseOver="window.status='Variables.mouseover'; return true" OnMouseOut="return window.status='';" REPLACEALL="Variables.urlInspectItem,Variables.mouseover"><img align="absmiddle" style="margin-right : 5px"  src="Variables.cs_imagedir/graphics/common/icon/iconInspectContent.gif" border="0" title="Variables._XLAT_" alt="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,Variables._XLAT_"/>
+			<STRING.STREAM VARIABLE="ContentDetails:rootelement"/>
+		</A>
+	</THEN>
+	<ELSE>
+		<STRING.STREAM VARIABLE="ContentDetails:rootelement"/>
+	</ELSE>
+	</IF>
+	<br/>
+</TD>
+</TR>
+
+<!-- wrapper page -->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<TR>
+<TD class="form-label-text"><XLAT.STREAM KEY="dvin/AT/SiteEntry/wrapperpage"/></TD>
+<TD></TD>
+<TD class="form-inset">
+	<IF COND="Variables.ContentDetails:cs_wrapper=y">
+	<THEN>
+		<XLAT.STREAM KEY="dvin/Common/Yes"/>
+	</THEN>
+	<ELSE>
+		<XLAT.STREAM KEY="dvin/Common/No"/>
+	</ELSE>
+	</IF>
+	<br/>
+</TD>
+</TR>
+
+<!--pageletonly -->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<TR>
+<TD class="form-label-text"><XLAT.STREAM KEY="dvin/AT/SiteEntry/pageletonly"/></TD>
+<TD></TD>
+<TD class="form-inset">
+    <IF COND="Variables.ContentDetails:pageletonly=T">
+    <THEN>
+        <XLAT.STREAM KEY="dvin/Common/True"/>
+    </THEN>
+    <ELSE>
+        <XLAT.STREAM KEY="dvin/Common/False"/>
+    </ELSE>
+    </IF>
+    <br/>
+</TD>
+</TR>
+
+<!-- default arguments -->
+<!--<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>-->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<TR>
+	<TD class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/Pagelevelparameters"/>:</TD>
+	<TD></TD>
+     <TD class="form-inset">
+     	<!-- if seid is not a default argument we will display an error message -->
+     	<SETVAR NAME="foundSeid" VALUE="false"/>
+     	<SETVAR NAME="args" VALUE="Variables.empty"/>
+		<SETVAR NAME="numArgs" VALUE="Variables.ContentDetails:defaultarguments:Total"/>
+		<SETCOUNTER NAME="nthArg" VALUE="0"/>
+		<IF COND="Variables.numArgs!=0">
+		<THEN>
+			<table style="padding : 0 5px 5px 0" cellspacing="0" cellpadding="0">
+			<tr ><td ><span style="font-weight : bold">Name</span></td><td></td><td ><span style="font-weight : bold">Value</span></td></tr>
+			<LOOP COUNT="Variables.numArgs">
+				<ICS.RESOLVEVARIABLES NAME="$(Variables.ContentDetails:defaultarguments:$(Counters.nthArg):name)" OUTPUT="argname" DELIMITED="true"/>
+				<ICS.RESOLVEVARIABLES NAME="$(Variables.ContentDetails:defaultarguments:$(Counters.nthArg):value)" OUTPUT="argvalue" DELIMITED="true"/>
+				<IF COND="Variables.argname=seid">
+				<THEN>
+	     			<SETVAR NAME="foundSeid" VALUE="true"/>
+	     		</THEN>
+	     		</IF>
+				<tr><td align="left"><STRING.STREAM VARIABLE="argname"/></td>
+			    	<td><div style="padding : 0 5px 0 5px">:</div></td><td><STRING.STREAM VARIABLE="argvalue"/></td>
+			    </tr>
+				<INCCOUNTER NAME="nthArg" VALUE="1"/>
+			</LOOP>
+			</table>
+		</THEN>
+		</IF>
+		<IF COND="Variables.foundSeid=false">  <!-- missing seid (siteentry asset id)-->
+		<THEN>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowCellMessage">
+			<ARGUMENT NAME="severity" VALUE="warning"/>
+			<ARGUMENT NAME="elem" VALUE="SEidMissingInElement"/>
+			</CALLELEMENT>
+		</THEN>
+		</IF>
+
+</TD>
+</TR>
+<!--<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>-->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<TR>
+<TD class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/PageletCacheCriteria"/>:</TD>
+<TD></TD>
+<TD class="form-inset">
+	<SETVAR NAME="pagecriteria" VALUE="Variables.empty"/>
+	<SETVAR NAME="numCrit" VALUE="Variables.ContentDetails:pagecriteria:Total"/>
+	<IF COND="Variables.numCrit!=0">
+	<THEN>
+		<SETCOUNTER NAME="nthCrit" VALUE="0"/>
+		<LOOP COUNT="Variables.numCrit">
+			<IF COND="Counters.nthCrit=0">
+			<THEN>
+				<SETVAR NAME="pagecriteria" VALUE="Variables.ContentDetails:pagecriteria:Counters.nthCrit"/>
+			</THEN>
+			<ELSE>
+				<SETVAR NAME="pagecriteria" VALUE="Variables.pagecriteria, Variables.ContentDetails:pagecriteria:Counters.nthCrit"/>
+			</ELSE>
+			</IF>
+			<INCCOUNTER NAME="nthCrit" VALUE="1"/>
+		</LOOP>
+	</THEN>
+	</IF>
+	<STRING.STREAM VARIABLE="pagecriteria"/>
+</TD>
+</TR>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+
+<TR>
+<TD class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/ContentServerCacheInfo"/>:</TD>
+<TD></TD>
+<TD class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:cscacheinfo"/></TD>
+</TR>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<TR>
+<TD class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/SatelliteCacheInfo"/>:</TD>
+<TD></TD>
+<TD class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:sscacheinfo"/></TD>
+</TR>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+
+<TR>
+<TD class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/AccessControlLists"/>:</TD>
+<TD></TD>
+<TD class="form-inset">		                  <IF COND="Variables.ContentDetails:acl=Variables.empty">
+		                  <THEN>
+		                  <em><XLAT.STREAM KEY="dvin/Common/Any"/></em>
+		                  </THEN>
+		                  <ELSE>
+		                  <SUBSTITUTE STR="Variables.ContentDetails:acl" WHAT="," WITH=",%20" OUTSTR="spacedACLs"/>
+		                  <STRING.STREAM VARIABLE="spacedACLs"/></ELSE></IF>
+	</TD>
+</TR>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+
+<!-- The beginning of Group 4 -->
+<!--<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>-->
+<tr>
+<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/DefaultArgumentsforPreview"/>:</td>
+<td></td>
+<td class="form-inset">
+<XLAT.LOOKUP KEY="dvin/Common/Preview" ESCAPE="true" VARNAME="_XLAT_"/>
+<XLAT.LOOKUP KEY="dvin/Common/Preview" VARNAME="_ALT_"/>
+<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Actions/InspectSiteEntryAssetFront" outstring="urlinspSEastfront">
+	<SATELLITE.ARGUMENT name="cs_environment" value="Variables.cs_environment"/>
+	<SATELLITE.ARGUMENT name="cs_formmode" value="Variables.cs_formmode"/>
+	<SATELLITE.ARGUMENT name="id" value="Variables.id"/>
+</SATELLITE.LINK>
+<A HREF="javascript:void(0)" onclick="openSiteEntryPreview('Variables.urlinspSEastfront');" onmouseover="window.status='Variables._XLAT_';return true;" onmouseout="window.status='';return true" REPLACEALL="Variables.urlinspSEastfront,Variables._XLAT_"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Preview_"/></CALLELEMENT></A>
+</td>
+</tr>
+
+<ASSOCNAMEDMANAGER.LIST  LISTVARNAME="associations" TYPE="Variables.AssetType" SUBTYPE="Variables.ContentDetails:subtype"/>
+<IF COND="associations.#numRows!=0">
+<THEN>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/ShowAssociations">
+		<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+        <ARGUMENT NAME="revision" VALUE="Variables.revision"/>
+                    <ARGUMENT NAME="revisionInspect" VALUE="Variables.revisionInspect"/>
+	</CALLELEMENT>
+</THEN>
+</IF>
+
+<!-- The beginning of Group 5 -->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/IReferencesAndSharing"/>
+<!-- Analyics Performance indicator -->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/ShowAnalyticsKPI"/>
+<!-- The beginning of Group 6 -->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<tr>
+	<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Created"/>:</td>
+	<td></td>
+	<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:createddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:createddate"/>
+	<td class="form-inset"><XLAT.STREAM ENCODE="false" KEY="dvin/FlexibleAssets/FlexAssets/Bycreatedby"/> 
+			 </td>
+</tr>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+<TR>
+<TD class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Modified"/>:</TD>
+<TD></TD>
+<TD class="form-inset">
+    <DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:updateddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:updateddate"/>
+    <XLAT.STREAM KEY="dvin/UI/ContentDetailsupdateddatebyupdatedby"/>
+</TD>
+</TR>
+
+</TABLE>
+<!-- End of body -->
+</TD>
+</TR>
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+<TR>
+<TD><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></TD>
+</TR>
+</TABLE>
+</div>
+</div>
+</FTCS>
+
+
+

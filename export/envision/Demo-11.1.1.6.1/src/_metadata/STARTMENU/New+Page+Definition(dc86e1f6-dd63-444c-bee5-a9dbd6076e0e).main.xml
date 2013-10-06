@@ -1,0 +1,82 @@
+<object-stream>
+  <com.fatwire.realtime.ResourceDataImpl>
+    <id class="string">1351275803406</id>
+    <resourceType>STARTMENU</resourceType>
+    <deps class="empty-set"/>
+    <data class="com.openmarket.xcelerate.startmenu.StartMenuItem">
+      <id>1351275803406</id>
+      <uid>dc86e1f6-dd63-444c-bee5-a9dbd6076e0e</uid>
+      <name>New Page Definition</name>
+      <assetType>PageDefinition</assetType>
+      <menuType>ContentForm</menuType>
+      <legalSites class="com.openmarket.xcelerate.common.SiteList">
+        <hashtable>
+          <entry>
+            <long>1351275793143</long>
+            <long>1351275793143</long>
+          </entry>
+        </hashtable>
+      </legalSites>
+      <legalRoles class="com.openmarket.xcelerate.common.RoleList"/>
+      <processInputForm>0</processInputForm>
+      <participantInputForm>0</participantInputForm>
+      <siteAffinityInputForm>0</siteAffinityInputForm>
+      <legalArguments class="com.openmarket.xcelerate.startmenu.InputArgList">
+        <hashtable/>
+      </legalArguments>
+      <workflowChoices class="com.openmarket.xcelerate.startmenu.ProcessList">
+        <hashtable/>
+      </workflowChoices>
+      <participantChoices class="com.openmarket.xcelerate.startmenu.ParticipantList">
+        <required class="com.openmarket.xcelerate.workflow.Participants">
+          <rolesHash class="java.util.Collections$SynchronizedMap" serialization="custom">
+            <java.util.Collections_-SynchronizedMap>
+              <default>
+                <m class="tree-map"/>
+                <mutex class="java.util.Collections$SynchronizedMap" reference="../../.."/>
+              </default>
+            </java.util.Collections_-SynchronizedMap>
+          </rolesHash>
+          <usersHash/>
+        </required>
+        <optional class="com.openmarket.xcelerate.workflow.Participants">
+          <rolesHash class="java.util.Collections$SynchronizedMap" serialization="custom">
+            <java.util.Collections_-SynchronizedMap>
+              <default>
+                <m class="tree-map"/>
+                <mutex class="java.util.Collections$SynchronizedMap" reference="../../.."/>
+              </default>
+            </java.util.Collections_-SynchronizedMap>
+          </rolesHash>
+          <usersHash/>
+        </optional>
+      </participantChoices>
+      <siteChoices class="com.openmarket.xcelerate.common.SiteList">
+        <hashtable>
+          <entry>
+            <long>1351275793143</long>
+            <long>1351275793143</long>
+          </entry>
+        </hashtable>
+      </siteChoices>
+      <arguments class="com.openmarket.xcelerate.startmenu.InputArgListMv" serialization="custom">
+        <com.openmarket.xcelerate.common.ArgumentList>
+          <int>1</int>
+          <int>0</int>
+        </com.openmarket.xcelerate.common.ArgumentList>
+      </arguments>
+    </data>
+  </com.fatwire.realtime.ResourceDataImpl>
+</object-stream>
+<!--==================___ METADATA ___================
+<dependencies>
+  <list/>
+</dependencies>
+==================______________________==================
+#
+#Sat Jun 01 21:29:24 UTC 2013
+key=@STARTMENU-dc86e1f6-dd63-444c-bee5-a9dbd6076e0e
+type=STARTMENU
+sites=Demo
+
+==================___ END METADATA ___==================-->

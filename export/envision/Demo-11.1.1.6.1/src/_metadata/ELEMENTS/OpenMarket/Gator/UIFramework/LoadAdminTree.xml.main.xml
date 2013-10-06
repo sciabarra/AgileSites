@@ -1,0 +1,32 @@
+<object-stream>
+  <com.fatwire.realtime.ResourceDataImpl>
+    <id class="string">OpenMarket/Gator/UIFramework/LoadAdminTree</id>
+    <resourceType>ELEMENTCATALOG</resourceType>
+    <deps class="empty-set"/>
+    <data class="com.openmarket.xcelerate.common.ElementCatalogEntry" serialization="custom">
+      <com.openmarket.xcelerate.common.ElementCatalogEntry>
+        <int>1</int>
+        <string>OpenMarket/Gator/UIFramework/LoadAdminTree</string>
+        <string>Admin Tree Loader</string>
+        <string></string>
+        <string></string>
+        <string>OpenMarket\Gator\UIFramework\LoadAdminTree.xml</string>
+        <string></string>
+        <string></string>
+      </com.openmarket.xcelerate.common.ElementCatalogEntry>
+    </data>
+  </com.fatwire.realtime.ResourceDataImpl>
+</object-stream>
+<!--==================___ METADATA ___================
+<dependencies>
+  <list/>
+</dependencies>
+==================______________________==================
+#
+#Sat Jun 01 21:29:25 UTC 2013
+storable0=/ELEMENTS/OpenMarket/Gator/UIFramework/LoadAdminTree.xml|null|_storable_type\=%2FELEMENTS%2FOpenMarket%2FGator%2FUIFramework%2FLoadAdminTree.xml
+@hashval=1646724466
+key=@ELEMENTCATALOG-OpenMarket/Gator/UIFramework/LoadAdminTree
+type=ELEMENTCATALOG
+
+==================___ END METADATA ___==================-->

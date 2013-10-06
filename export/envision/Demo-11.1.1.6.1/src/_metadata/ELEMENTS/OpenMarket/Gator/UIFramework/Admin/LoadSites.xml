@@ -1,0 +1,677 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<SETVAR NAME="cs.contenttype" VALUE="text/html; charset=UTF-8"/>
+
+<!-- OpenMarket/Gator/UIFramework/Admin/LoadSites
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/BasicEnvironment"/>
+
+<!-- This element handles all children of the Sites root node -->
+<!-- Variables.Depth=1 means 'Add New' and all Site Nodes -->
+<!-- Variables.Depth=2 means 'Users', 'Asset Types' and Word Integration for Variables.currentPubid -->
+<!-- Variables.Depth=3 means 'Enable', 'Disable' and all enabled types for Variables.currentPubid -->
+<!-- Variables.Depth=4 means all subtypes for an asset type for MS Word Integration  -->
+
+
+<IF COND="Variables.command!=GetTypes">
+<THEN>
+	<PROPERTY.GET PARAM="xcelelem.manageuserpub" INIFILE="futuretense_xcel.ini" VARNAME="propmanageuserpub"/>
+	<IF COND="Variables.op=init">
+	<THEN>
+		<SETVAR NAME="errno" VALUE="0"/>
+		<USERISMEMBER GROUP="xceladmin"/>
+		<IF COND="Variables.errno=0">
+		<THEN>
+			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/TreePermissionError"/>
+		</THEN>
+		<ELSE>
+			<SETVAR NAME="Depth" VALUE="2"/>
+			<SETVAR NAME="currentPubid" VALUE="SessionVariables.pubid"/>
+
+			<PUBLICATION.LOAD NAME="publication" FIELD="id" VALUE="SessionVariables.pubid"/>
+            <!-- pubname is used inside "dvin/TreeApplet/PubnameSite" -->
+			<PUBLICATION.GET NAME="publication" FIELD="name" OUTPUT="pubname"/>
+			<PUBLICATION.GET NAME="publication" FIELD="description" OUTPUT="pubdesc"/>
+
+			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+				<ARGUMENT NAME="AdHoc" VALUE="SiteName"/>
+				<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+			</CALLELEMENT>
+
+			<REMOVEVAR NAME="LoadURL"/>
+			  <REMOVEVAR NAME="ExecuteURL"/>
+
+            <XLAT.LOOKUP KEY="dvin/TreeApplet/PubnameSite" ENCODE="false" VARNAME="_XLAT_"/>
+			<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+				<satellite.argument name="AssetType" value="Variables.AssetType"/>
+			</SATELLITE.LINK>
+
+			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+				<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+				<ARGUMENT NAME="Description" VALUE="Variables.pubdesc"/>
+				<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+				<!-- LoadURL,ExecuteURL implicitly passed in -->
+				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+				<ARGUMENT NAME="OKActions" VALUE="refresh"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/siteplan.png"/>
+			</CALLELEMENT>
+		</ELSE>
+		</IF>
+
+	</THEN>
+	</IF>
+
+	<IF COND="Variables.Depth=1">
+	<THEN>
+		<!-- always display the 'Add New' node as the first child -->
+		<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+			<ARGUMENT NAME="AdHoc" VALUE="Sites:New"/>
+			<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+		</CALLELEMENT>
+
+		<REMOVEVAR NAME="OKActions"/>
+		<REMOVEVAR NAME="LoadURL"/>
+		<PUBLICATION.ALLOWEDTOADD VARNAME="mypermission"/>
+		<IF COND="Variables.mypermission=true">
+		<THEN>
+		        <XLAT.LOOKUP KEY="dvin/TreeApplet/AddNew" ENCODE="false" VARNAME="_XLAT_"/>
+        		<XLAT.LOOKUP KEY="dvin/TreeApplet/AddANewSite" ENCODE="false" VARNAME="_XLAT1_"/>
+
+			<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/SiteFront" outstring="ExecuteURL">
+				<satellite.argument name="action" value="new"/>
+			</SATELLITE.LINK>
+
+			<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+				<satellite.argument name="AssetType" value="Variables.AssetType"/>
+			</SATELLITE.LINK>
+
+			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+				<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+				<ARGUMENT NAME="Description" VALUE="Variables._XLAT1_"/>
+				<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+				<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+			</CALLELEMENT>
+		</THEN>
+		</IF>
+
+		<!-- Add all site nodes -->
+			<SETVAR NAME="errno" VALUE="0"/>
+		<CALLELEMENT NAME="Variables.propmanageuserpub">
+			<ARGUMENT NAME="upcommand" VALUE="GetManager"/>
+		</CALLELEMENT>
+		<IF COND="Variables.errno=0">
+		<THEN>
+			<!-- Attempt to get a list of all publications -->
+
+			<PUBLICATION.LIST LIST="ActivePub" ORDER="name"/>
+			<IF COND="IsError.Variables.errno=true">
+			<THEN>
+				<IF COND="Variables.errno!=-101">
+				<THEN>
+					<LOGMSG STR="Xcelerate error Variables.errno on attempt to load publications"/>
+				</THEN>
+				</IF>
+			</THEN>
+			</IF>
+
+			<!-- Attempt to get a list of all asset types -->
+
+			<ASSETTYPE.LIST LIST="AssetType" ORDER="description"/>
+			<IF COND="IsError.Variables.errno=true">
+			<THEN>
+				<IF COND="Variables.errno!=-101">
+				<THEN>
+					<LOGMSG STR="Xcelerate error Variables.errno on attempt to load asset types"/>
+				</THEN>
+				</IF>
+			</THEN>
+			</IF>
+
+			<!-- If there are some publications... -->
+			<IF COND="IsList.ActivePub=true">
+			<THEN>
+				<!-- loop through the list of defined publications -->
+				<LOOP LIST="ActivePub">
+					<PUBLICATION.LOAD NAME="publication" OBJECTID="ActivePub.id"/>
+					<REMOVEVAR NAME="LoadURL"/>
+					<!-- display users if managed by SQL -->
+					<IF COND="Variables.UserManager=SQL">
+					<THEN>
+						<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadAdminTree" outstring="LoadURL">
+							<satellite.argument name="op" value="load"/>
+							<satellite.argument name="NodeType" value="Sites"/>
+							<satellite.argument name="Depth" value="2"/>
+							<satellite.argument name="currentPubid" value="ActivePub.id"/>
+						</SATELLITE.LINK>
+					</THEN>
+					</IF>
+
+					<IF COND="IsList.AssetType=true">
+					<THEN>
+						<IF COND="AssetType.#numRows!=0">
+						<THEN>
+							<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadAdminTree" outstring="LoadURL">
+								<satellite.argument name="op" value="load"/>
+								<satellite.argument name="NodeType" value="Sites"/>
+								<satellite.argument name="Depth" value="2"/>
+								<satellite.argument name="currentPubid" value="ActivePub.id"/>
+							</SATELLITE.LINK>
+						</THEN>
+						</IF>
+					</THEN>
+					</IF>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+						<ARGUMENT NAME="SiteID" VALUE="ActivePub.id"/>
+						<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+
+					<REMOVEVAR NAME="OKActions"/>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/SiteFront" outstring="ExecuteURL">
+						<satellite.argument name="action" value="details"/>
+						<satellite.argument name="pubid" value="ActivePub.id"/>
+					</SATELLITE.LINK>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+						<ARGUMENT NAME="Label" VALUE="ActivePub.name"/>
+						<ARGUMENT NAME="Description" VALUE="ActivePub.description"/>
+						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+						<!-- LoadURL implicitly set -->
+						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Home.png"/>
+					</CALLELEMENT>
+
+				</LOOP>
+			</THEN>
+			</IF>
+		</THEN>
+		</IF>
+	</THEN> <!-- Done Depth=1 -->
+	<ELSE>
+		<IF COND="Variables.Depth=2">
+		<THEN>
+			<SETVAR NAME="errno" VALUE="0"/>
+			<CALLELEMENT NAME="Variables.propmanageuserpub">
+				<ARGUMENT NAME="upcommand" VALUE="GetManager"/>
+			</CALLELEMENT>
+			<IF COND="Variables.errno=0">
+			<THEN>
+				<IF COND="Variables.UserManager=SQL">
+				<THEN>
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+						<ARGUMENT NAME="AdHoc" VALUE="Users"/>
+						<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+
+					<REMOVEVAR NAME="OKActions"/>
+					<REMOVEVAR NAME="LoadURL"/>
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/Users" ENCODE="false" VARNAME="_XLAT_"/>
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/User/List" outstring="ExecuteURL">
+						<satellite.argument name="action" value="ask"/>
+						<satellite.argument name="pubid" value="Variables.currentPubid"/>
+					</SATELLITE.LINK>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+						<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+						<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+						<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+						<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+						<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+						<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Personal.png"/>
+					</CALLELEMENT>
+				</THEN>
+				</IF>
+			</THEN>
+			</IF>
+
+			<!-- Attempt to get a list of all asset types -->
+
+			<ASSETTYPE.LIST LIST="AssetType" ORDER="description"/>
+			<IF COND="IsError.Variables.errno=true">
+			<THEN>
+				<IF COND="Variables.errno!=-101">
+				<THEN>
+					<LOGMSG STR="Xcelerate error Variables.errno on attempt to load asset types"/>
+				</THEN>
+				</IF>
+			</THEN>
+			</IF>
+
+			<IF COND="IsList.AssetType=true">
+			<THEN>
+				<IF COND="AssetType.#numRows!=0">
+				<THEN>
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadAdminTree" outstring="LoadURL">
+						<satellite.argument name="op" value="load"/>
+						<satellite.argument name="NodeType" value="Sites"/>
+						<satellite.argument name="Depth" value="3"/>
+						<satellite.argument name="currentPubid" value="Variables.currentPubid"/>
+						<satellite.argument name="Type" value="Plain"/>
+					</SATELLITE.LINK>
+				</THEN>
+				<ELSE>
+					<REMOVEVAR NAME="LoadURL"/>
+				</ELSE>
+						</IF>
+			</THEN>
+			</IF>
+
+			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+				<ARGUMENT NAME="AdHoc" VALUE="AssetTypes"/>
+				<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+			</CALLELEMENT>
+
+			<REMOVEVAR NAME="ExecuteURL"/>
+			<REMOVEVAR NAME="OKActions"/>
+
+            <XLAT.LOOKUP KEY="dvin/TreeApplet/AssetTypes" ENCODE="false" VARNAME="_XLAT_"/>
+			<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+				<satellite.argument name="AssetType" value="Variables.AssetType"/>
+				<satellite.argument name="Type" value="Plain"/>
+			</SATELLITE.LINK>
+
+			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+				<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+				<ARGUMENT NAME="Description" VALUE="Variables._XLAT_"/>
+				<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+				<!-- LoadURL implicitly set -->
+				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Memo.png"/>
+				<ARGUMENT NAME="RefreshKeys" VALUE="Variables.currentPubid_ATs"/>
+			</CALLELEMENT>
+
+			<!-- display links to WordIntegration Admin Controls   -->
+
+			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+				<ARGUMENT NAME="AdHoc" VALUE="WordIntegration"/>
+				<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+			</CALLELEMENT>
+
+			<REMOVEVAR NAME="ExecuteURL"/>
+			<REMOVEVAR NAME="OKActions"/>
+			<REMOVEVAR NAME="LoadURL"/>
+
+			<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadAdminTree" outstring="LoadURL">
+				<satellite.argument name="op" value="load"/>
+				<satellite.argument name="NodeType" value="Sites"/>
+				<satellite.argument name="Depth" value="3"/>
+				<satellite.argument name="currentPubid" value="Variables.currentPubid"/>
+				<satellite.argument name="Type" value="MSWord"/>
+			</SATELLITE.LINK>
+
+			<XLAT.LOOKUP KEY="dvin/TreeApplet/CSDesktop" ENCODE="false" VARNAME="_XLAT_"/>
+            <XLAT.LOOKUP KEY="dvin/TreeApplet/CSDesktopIntegrationForAssetTypes" ENCODE="false" VARNAME="_XLAT1_"/>
+
+			<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/AssetTypeClientFront" outstring="ExecuteURL">
+				<satellite.argument name="action" value="list"/>
+				<satellite.argument name="pubid" value="Variables.currentPubid"/>
+				<satellite.argument name="clientapp" value="MSWord"/>
+			</SATELLITE.LINK>
+
+			<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+				<satellite.argument name="AssetType" value="Variables.AssetType"/>
+				<satellite.argument name="Type" value="Variables.Type"/>
+			</SATELLITE.LINK>
+
+            <CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+				<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+				<ARGUMENT NAME="Description" VALUE="Variables._XLAT1_"/>
+				<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+				<!-- LoadURL implicitly set -->
+				<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/Memo.png"/>
+				<ARGUMENT NAME="RefreshKeys" VALUE="Variables.currentPubid_MSWord"/>
+			</CALLELEMENT>
+
+			<REMOVEVAR NAME="RefreshKeys"/>
+
+			<!-- display links to CS DocLink Admin Controls   -->
+
+			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+				<ARGUMENT NAME="AdHoc" VALUE="DocLink"/>
+				<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+			</CALLELEMENT>
+
+			<REMOVEVAR NAME="ExecuteURL"/>
+			<REMOVEVAR NAME="OKActions"/>
+			<REMOVEVAR NAME="LoadURL"/>
+
+			<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadAdminTree" outstring="LoadURL">
+				<satellite.argument name="op" value="load"/>
+				<satellite.argument name="NodeType" value="Sites"/>
+				<satellite.argument name="Depth" value="3"/>
+				<satellite.argument name="currentPubid" value="Variables.currentPubid"/>
+				<satellite.argument name="Type" value="CSDocLink"/>
+			</SATELLITE.LINK>
+
+			<XLAT.LOOKUP KEY="dvin/TreeApplet/CSDocLink" ENCODE="false" VARNAME="_XLAT_"/>
+			<XLAT.LOOKUP KEY="dvin/TreeApplet/CSDocLinkIntegrationForAssetTypes" ENCODE="false" VARNAME="_XLAT1_"/>
+
+			<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/AssetTypeClientFront" outstring="ExecuteURL">
+				<satellite.argument name="action" value="list"/>
+				<satellite.argument name="pubid" value="Variables.currentPubid"/>
+				<satellite.argument name="clientapp" value="CSDocLink"/>
+			</SATELLITE.LINK>
+
+			<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+				<satellite.argument name="AssetType" value="Variables.AssetType"/>
+				<satellite.argument name="Type" value="CSDocLink"/>
+			</SATELLITE.LINK>
+
+			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+				<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+				<ARGUMENT NAME="Description" VALUE="Variables._XLAT1_"/>
+				<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+				<!-- LoadURL implicitly set -->
+				<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+				<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/folder.png"/>
+				<ARGUMENT NAME="RefreshKeys" VALUE="Variables.currentPubid_CSDocLink"/>
+			</CALLELEMENT>
+
+			<REMOVEVAR NAME="RefreshKeys"/>
+
+		</THEN> <!-- Done Depth=2 -->
+		<ELSE>
+			<IF COND="Variables.Depth=3">
+			<THEN>
+			<!-- Do this if we are here because of AssetTypes enable/disable  -->
+
+				<IF COND="Variables.Type=Plain">
+				<THEN>
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/EnableAssetTypePub">
+					<ARGUMENT NAME="upcommand" VALUE="ListEnabledAssetTypes"/>
+					<ARGUMENT NAME="list" VALUE="EnabledAssetTypes"/>
+					<ARGUMENT NAME="pubid" VALUE="Variables.currentPubid"/>
+					</CALLELEMENT>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+					<ARGUMENT NAME="AdHoc" VALUE="Enable"/>
+					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+
+					<REMOVEVAR NAME="OKActions"/>
+					<REMOVEVAR NAME="LoadURL"/>
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/Enable" ENCODE="false" VARNAME="_XLAT_"/>
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/EnableAssetTypes" ENCODE="false" VARNAME="_XLAT1_"/>
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/AssetTypePubFront" outstring="ExecuteURL">
+						<satellite.argument name="action" value="grant"/>
+						<satellite.argument name="pubid" value="Variables.currentPubid"/>
+					</SATELLITE.LINK>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="Description" VALUE="Variables._XLAT1_"/>
+					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+					</CALLELEMENT>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID">
+					<ARGUMENT NAME="AdHoc" VALUE="Disable"/>
+					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+
+					<REMOVEVAR NAME="OKActions"/>
+					<REMOVEVAR NAME="LoadURL"/>
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/Disable" ENCODE="false" VARNAME="_XLAT_"/>
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/DisableAssetType" ENCODE="false" VARNAME="_XLAT1_"/>
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/AssetTypePubFront" outstring="ExecuteURL">
+						<satellite.argument name="action" value="revoke"/>
+						<satellite.argument name="pubid" value="Variables.currentPubid"/>
+					</SATELLITE.LINK>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="Description" VALUE="Variables._XLAT1_"/>
+					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/remove.png"/>
+					</CALLELEMENT>
+
+					<IF COND="IsList.EnabledAssetTypes=true">
+					<THEN>
+						<REMOVEVAR NAME="OKActions"/>
+						<REMOVEVAR NAME="LoadURL"/>
+						<REMOVEVAR NAME="ExecuteURL"/>
+						<LOOP LIST="EnabledAssetTypes">
+							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+							<ARGUMENT NAME="AdHoc" VALUE="AssetTypes:Enable:EnabledAssetTypes.assettype"/>
+							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+							</CALLELEMENT>
+
+							<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+								<satellite.argument name="AssetType" value="Variables.AssetType"/>
+							</SATELLITE.LINK>
+
+							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+							<ARGUMENT NAME="Label" VALUE="EnabledAssetTypes.assettype"/>
+							<ARGUMENT NAME="Description" VALUE="EnabledAssetTypes.description"/>
+							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/EnabledAssetTypes.assettype.png"/>
+							</CALLELEMENT>
+						</LOOP>
+					</THEN>  <!-- IsList -->
+				</IF>    <!-- IsList -->
+				</THEN>  <!-- if Type== Plain  -->
+				<ELSE>   <!-- Show MS Word Integration Controls -->
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/EnableAssetTypeForClient">
+					<ARGUMENT NAME="upcommand" VALUE="ListEnabledAssetTypes"/>
+					<ARGUMENT NAME="list" VALUE="EnabledAssetTypesForWord"/>
+					<ARGUMENT NAME="pubid" VALUE="Variables.currentPubid"/>
+					<ARGUMENT NAME="clientapp" VALUE="Variables.Type"/>
+					</CALLELEMENT>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+					<ARGUMENT NAME="AdHoc" VALUE="Enable:Variables.Type"/>
+					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+
+					<REMOVEVAR NAME="OKActions"/>
+					<REMOVEVAR NAME="LoadURL"/>
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/EnableVariables.Type" ENCODE="false" VARNAME="_XLAT_"/>
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/EnableAssetTypesForVariables.Type" ENCODE="false" VARNAME="_XLAT1_"/>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/AssetTypeClientFront" outstring="ExecuteURL">
+						<satellite.argument name="action" value="grant"/>
+						<satellite.argument name="pubid" value="Variables.currentPubid"/>
+						<satellite.argument name="clientapp" value="Variables.Type"/>
+					</SATELLITE.LINK>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="Description" VALUE="Variables._XLAT1_"/>
+					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/plus.png"/>
+					</CALLELEMENT>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+					<ARGUMENT NAME="AdHoc" VALUE="Disable:Variables.Type"/>
+					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+					</CALLELEMENT>
+
+					<REMOVEVAR NAME="OKActions"/>
+					<REMOVEVAR NAME="LoadURL"/>
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/DisableVariables.Type" ENCODE="false" VARNAME="_XLAT_"/>
+                    <XLAT.LOOKUP KEY="dvin/TreeApplet/DisableAssetTypesForVariables.Type" ENCODE="false" VARNAME="_XLAT1_"/>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/AssetTypeClientFront" outstring="ExecuteURL">
+						<satellite.argument name="action" value="revoke"/>
+						<satellite.argument name="pubid" value="Variables.currentPubid"/>
+						<satellite.argument name="clientapp" value="Variables.Type"/>
+					</SATELLITE.LINK>
+
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+						<satellite.argument name="AssetType" value="Variables.AssetType"/>
+					</SATELLITE.LINK>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+					<ARGUMENT NAME="Description" VALUE="Variables._XLAT1_"/>
+					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+					<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+					<ARGUMENT NAME="ExecuteURL" VALUE="Variables.ExecuteURL"/>
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/remove.png"/>
+					</CALLELEMENT>
+
+					<IF COND="IsList.EnabledAssetTypesForWord=true">
+					<THEN>
+						<REMOVEVAR NAME="OKActions"/>
+						<REMOVEVAR NAME="LoadURL"/>
+						<REMOVEVAR NAME="ExecuteURL"/>
+						<LOOP LIST="EnabledAssetTypesForWord">
+							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+							<ARGUMENT NAME="AdHoc" VALUE="EnabledAssetTypesForWord.assettype"/>
+							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+							</CALLELEMENT>
+
+							<!-- if there are any subtypes set the loadurl -->
+							<ASSET.GETLEGALSUBTYPES TYPE="EnabledAssetTypesForWord.assettype" LIST="subList" PUBID="Variables.currentPubid"/>
+							<IF COND="IsList.subList=true">
+							<THEN>
+								<IF COND="subList.#numRows!=0">
+								<THEN>
+									<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadAdminTree" outstring="LoadURL">
+										<satellite.argument name="op" value="load"/>
+										<satellite.argument name="NodeType" value="Sites"/>
+										<satellite.argument name="Depth" value="4"/>
+										<satellite.argument name="currentPubid" value="Variables.currentPubid"/>
+										<satellite.argument name="clientid" value="EnabledAssetTypesForWord.id"/>
+										<satellite.argument name="assettype" value="EnabledAssetTypesForWord.assettype"/>
+										<satellite.argument name="clientapp" value="Variables.Type"/>
+									</SATELLITE.LINK>
+								</THEN>
+								<ELSE>
+									<REMOVEVAR NAME="LoadURL"/>
+								</ELSE>
+								</IF>
+							</THEN>
+							</IF>
+
+							<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+								<satellite.argument name="AssetType" value="Variables.AssetType"/>
+							</SATELLITE.LINK>
+
+							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+							<ARGUMENT NAME="Label" VALUE="EnabledAssetTypesForWord.assettype"/>
+							<ARGUMENT NAME="Description" VALUE="EnabledAssetTypesForWord.description"/>
+							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+							<!-- ARGUMENT NAME="ExecuteURL" VALUE="ContentServer?pagename=OpenMarket/Xcelerate/Admin/AssetTypeClientConfigFront&#38;action=list&#38;clientid=EnabledAssetTypesForWord.id"/   -->
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/EnabledAssetTypesForWord.assettype.png"/>
+							</CALLELEMENT>
+						</LOOP>
+					</THEN>  <!-- IsList -->
+					</IF>    <!-- IsList -->
+				</ELSE>  <!-- MS WORD -->
+				</IF>    <!-- Type=Plain -->
+			</THEN>   <!-- if depth==3 -->
+			<ELSE>
+				<IF COND="Variables.Depth=4">
+				<THEN>
+					<ASSET.GETLEGALSUBTYPES TYPE="Variables.assettype" LIST="subList" PUBID="Variables.currentPubid"/>
+					<SETVAR NAME="errno" VALUE="0"/>
+					<IF COND="IsList.subList=true">
+					<THEN>
+						<IF COND="subList.#numRows!=0">
+						<THEN>
+						<LOOP LIST="subList">
+							<REMOVEVAR NAME="OKActions"/>
+							<REMOVEVAR NAME="LoadURL"/>
+							<IF COND="Variables.clientapp=CSDocLink">
+							<THEN>
+								<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/AssetTypeDocLinkConfigFront" outstring="ExecuteURL">
+									<satellite.argument name="action" value="list"/>
+									<satellite.argument name="clientid" value="Variables.clientid"/>
+									<satellite.argument name="subtype" value="subList.subtype"/>
+								</SATELLITE.LINK>
+							</THEN>
+							<ELSE>
+								<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Admin/AssetTypeClientConfigFront" outstring="ExecuteURL">
+									<satellite.argument name="action" value="list"/>
+									<satellite.argument name="clientid" value="Variables.clientid"/>
+									<satellite.argument name="subtype" value="subList.subtype"/>
+								</SATELLITE.LINK>
+							</ELSE>
+							</IF>
+
+							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+							<ARGUMENT NAME="AdHoc" VALUE="subList.subtype"/>
+							<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+							</CALLELEMENT>
+							<if COND="subList.subtype=Variables.empty">
+							<then>
+								<XLAT.LOOKUP KEY="dvin/UI/Util/Standardnosubtype" ENCODE="false" VARNAME="subtypedescription"/>
+							</then>
+							<else>
+								<setvar NAME="subtypedescription" VALUE="subList.subtype"/>
+							</else>
+							</if>
+
+							<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/TreeOpURL" outstring="OpURL">
+								<satellite.argument name="AssetType" value="Variables.AssetType"/>
+							</SATELLITE.LINK>
+
+							<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+							<ARGUMENT NAME="Label" VALUE="Variables.subtypedescription"/>
+							<ARGUMENT NAME="Description" VALUE="Variables.subtypedescription"/>
+							<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+							<ARGUMENT NAME="OpURL" VALUE="Variables.OpURL"/>
+							<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/subtype.png"/>
+							</CALLELEMENT>
+						</LOOP>
+						</THEN>
+						</IF>
+					</THEN>
+					</IF>
+				</THEN> <!-- if depth == 4 -->
+				</IF>
+			</ELSE>   <!-- if depth==3 -->
+			</IF>
+		</ELSE>  <!-- if depth==2 -->
+		</IF>
+	</ELSE>  <!-- if depth==1 -->
+	</IF>
+</THEN>
+<ELSE>
+	<SETVAR NAME="Variables.popupVar" VALUE="false"/>
+</ELSE>
+</IF>
+</FTCS>

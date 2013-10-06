@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>CSElement:1351275803155</id>
+    <name>DmBreadcrump</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2013-06-01T18:01:38.137Z</createddate>
+    <description>DmBreadcrump</description>
+    <publist>Demo</publist>
+    <status>ED</status>
+    <subtype></subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2013-06-01T19:11:59.115Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>1c2d1529-3dbe-497a-94bc-d4bc8828b2b3</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1351275803155</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Composition</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Mapping</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Arguments</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>category</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>rootelement</name>
+        <data>
+            <stringValue>Demo/DmBreadcrump</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>elementname</name>
+        <data>
+            <stringValue>Demo/DmBreadcrump</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>resdetails1</name>
+        <data>
+            <stringValue>eid=1351275803155</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>resdetails2</name>
+        <data>
+            <stringValue>timestamp=1370113919102</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>url</name>
+        <data>
+            <blobValue>
+                <filename>Demo\DmBreadcrump_demo.element.Breadcrump.jsp</filename>
+                <foldername></foldername>
+                <filedata></filedata>
+            </blobValue>
+        </data>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <list>
+    <dependency>
+      <depType>N</depType>
+      <resType>CSElement</resType>
+      <resId>1351275803155</resId>
+      <uid>1c2d1529-3dbe-497a-94bc-d4bc8828b2b3</uid>
+    </dependency>
+  </list>
+</dependencies>
+==================______________________==================
+#
+#Sat Jun 01 21:29:23 UTC 2013
+storable0=/ELEMENTS/JSP/Demo/DmBreadcrump.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FDemo%2FDmBreadcrump.jsp
+@hashval=-1989679227
+key=CSElement-1c2d1529-3dbe-497a-94bc-d4bc8828b2b3
+type=ASSETDATA
+sites=Demo
+
+==================___ END METADATA ___==================-->

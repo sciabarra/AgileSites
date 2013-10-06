@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>AttrTypes:1351275793617</id>
+    <name>CkEditor200x200</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2013-04-17T19:48:46.030Z</createddate>
+    <description>CkEditor200x200</description>
+    <publist>Demo</publist>
+    <status>PL</status>
+    <subtype></subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2013-04-17T19:48:46.030Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>c34deb4f-0be5-47aa-a5d4-ccb86e59794d</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1351275793617</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>urlxml</name>
+        <data>
+            <blobValue>
+                <filename>CkEditor200x200.urlxml(c34deb4f-0be5-47aa-a5d4-ccb86e59794d).1351275793617.txt</filename>
+                <foldername></foldername>
+                <filedata></filedata>
+            </blobValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>valuetype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <linked-hash-set>
+    <dependency>
+      <depType>N</depType>
+      <resType>AttrTypes</resType>
+      <resId>1351275793617</resId>
+      <uid>c34deb4f-0be5-47aa-a5d4-ccb86e59794d</uid>
+    </dependency>
+  </linked-hash-set>
+</dependencies>
+==================______________________==================
+#
+#Mon Apr 22 08:52:13 UTC 2013
+storable0=ASSET/AttrTypes/5/65/CkEditor200x200.urlxml(c34deb4f-0be5-47aa-a5d4-ccb86e59794d).1351275793617.txt||_storable_type\=CkEditor200x200.urlxml%28c34deb4f-0be5-47aa-a5d4-ccb86e59794d%29.1351275793617.txt&_blob_prop\=urlxml&_value_count\=S
+key=AttrTypes-c34deb4f-0be5-47aa-a5d4-ccb86e59794d
+type=ASSETDATA
+sites=Demo
+
+==================___ END METADATA ___==================-->

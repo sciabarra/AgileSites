@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateB/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/CSElement/AppendSelectDetailsSE.xml $ 
+$Revision: 2 $ 
+$Modtime: 7/03/02 6:09p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- AppendSelectDetailsSE.xml
+-
+- DESCRIPTION
+-	Add to search engine query for CSElement-specific search parameters 
+-	(as defined by CSElement/SearchForm.xml).
+-
+- ARGUMENTS
+-   seQuery
+-       SEARCH WHAT query string.  Append to this.
+-   seType
+-       SEARCH TYPE value.  Change it or leave it alone.
+-   seRelevance
+-       SEARCH RELEVANCE value.  Change it or leave it alone.
+-   sqlQueryend
+-       Tail end of WHERE expression for secondary SQL query.
+-   (FORM fields)
+-       All form fields defined by SearchForm.xml
+-   seLeft, seRight
+-       Left and right strings.  Used as 
+-		fieldname Variables.seLeft fieldvalue Variables.seRight
+-
+- HISTORY 
+-->
+
+
+<IF COND="IsVariable.Name=true">
+	<THEN>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+		<ARGUMENT NAME="seFieldname" VALUE="name"/>
+		<ARGUMENT NAME="seValue" VALUE="Variables.Name"/>
+	</CALLELEMENT>
+ 	</THEN>
+</IF>
+
+<IF COND="IsVariable.Description=true">
+	<THEN>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+		<ARGUMENT NAME="seFieldname" VALUE="description"/>
+		<ARGUMENT NAME="seValue" VALUE="Variables.Description"/>
+	</CALLELEMENT>
+ 	</THEN>
+</IF>
+
+<if COND="IsVariable.Status=true">
+    <then>
+	<SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND CSElement.status='Variables.Status'"/>
+    </then>
+</if>
+
+<IF COND="IsVariable.Rootelement=true">
+  <THEN>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+		<ARGUMENT NAME="seFieldname" VALUE="rootelement"/>
+		<ARGUMENT NAME="seValue" VALUE="Variables.Rootelement"/>
+	</CALLELEMENT>
+   </THEN>
+</IF>
+
+
+<callelement NAME="OpenMarket/Xcelerate/Actions/Search/BuildFilterString"/>
+
+</FTCS>

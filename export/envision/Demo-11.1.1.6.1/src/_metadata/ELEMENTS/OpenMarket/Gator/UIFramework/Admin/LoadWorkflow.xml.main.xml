@@ -1,0 +1,32 @@
+<object-stream>
+  <com.fatwire.realtime.ResourceDataImpl>
+    <id class="string">OpenMarket/Gator/UIFramework/Admin/LoadWorkflow</id>
+    <resourceType>ELEMENTCATALOG</resourceType>
+    <deps class="empty-set"/>
+    <data class="com.openmarket.xcelerate.common.ElementCatalogEntry" serialization="custom">
+      <com.openmarket.xcelerate.common.ElementCatalogEntry>
+        <int>1</int>
+        <string>OpenMarket/Gator/UIFramework/Admin/LoadWorkflow</string>
+        <string></string>
+        <string></string>
+        <string></string>
+        <string>OpenMarket\Gator\UIFramework\Admin\LoadWorkflow.xml</string>
+        <string></string>
+        <string></string>
+      </com.openmarket.xcelerate.common.ElementCatalogEntry>
+    </data>
+  </com.fatwire.realtime.ResourceDataImpl>
+</object-stream>
+<!--==================___ METADATA ___================
+<dependencies>
+  <list/>
+</dependencies>
+==================______________________==================
+#
+#Sat Jun 01 21:29:25 UTC 2013
+storable0=/ELEMENTS/OpenMarket/Gator/UIFramework/Admin/LoadWorkflow.xml|null|_storable_type\=%2FELEMENTS%2FOpenMarket%2FGator%2FUIFramework%2FAdmin%2FLoadWorkflow.xml
+@hashval=740217299
+key=@ELEMENTCATALOG-OpenMarket/Gator/UIFramework/Admin/LoadWorkflow
+type=ELEMENTCATALOG
+
+==================___ END METADATA ___==================-->
