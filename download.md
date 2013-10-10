@@ -10,6 +10,12 @@ group: navigation
 
 - [v1.0.0a](https://github.com/sciabarra/AgileSites/archive/v1.0.0a.zip) **Recommended**
 
+**This release is tested with 11.1.1.6.1* 
+
+The upcoming 1.0.8 (scheduled for november 2013) will support also 11.1.1.8.0. 
+
+We have plans to support also 7.6.2, if you are interested please let us know.
+
 ## Installation 
 
 - Install the framework, following [installation instructions](http://www.agilesites.org/install.html).
