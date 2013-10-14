@@ -98,7 +98,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("app"),
     settings = commonSettings ++ Seq(
       name := "agilesites-app",
-      wcsGenerateIndexTask,
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
       wcsCopyHtmlTask)) dependsOn (api)
 
@@ -117,6 +116,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       wcsPackageJarTask,
       wcsUpdateAssetsTask,
       wcsLogTask,
+      wcsGenerateIndexTask,
       excludedJars in assembly <<= (fullClasspath in assembly),
       watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").getFiles),
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,

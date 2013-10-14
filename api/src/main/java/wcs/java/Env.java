@@ -17,7 +17,6 @@ import wcs.core.Log;
 import wcs.core.Range;
 import wcs.core.WCS;
 import wcs.core.tag.AssetTag;
-import wcs.core.tag.PublicationTag;
 import wcs.core.tag.RenderTag;
 import wcs.java.util.AssetDeps;
 import COM.FutureTense.Interfaces.ICS;
@@ -33,16 +32,15 @@ import COM.FutureTense.Interfaces.IList;
 public class Env extends ICSProxyJ {
 
 	private static Log log = Log.getLog(Env.class);
+	private boolean hasInsite = getVersionMajor() == 11;
+	private boolean hasDevices = getVersionMajor() == 11
+			&& getVersionMinor() == 8;
 	private Config config;
 	private Router router;
 	private String site;
 	private String normSite;
 	private boolean insite;
 	private boolean preview;
-	
-	private boolean hasInsite =  getVersionMajor()==11;
-	private boolean hasDevices = getVersionMajor()==11 && getVersionMinor()==8;
-
 
 	/**
 	 * Build the env from the ICS
@@ -74,9 +72,9 @@ public class Env extends ICSProxyJ {
 
 	/**
 	 * Get a variable or null
-	 *
+	 * 
 	 * @param list
-     * @param field
+	 * @param field
 	 * @return
 	 */
 	public String getString(String list, String field) {
@@ -96,8 +94,8 @@ public class Env extends ICSProxyJ {
 	 * Get a variable or null
 	 * 
 	 * @param list
-     * @param row
-     * @param field
+	 * @param row
+	 * @param field
 	 * @return
 	 */
 	public String getString(String list, int row, String field) {
@@ -373,7 +371,6 @@ public class Env extends ICSProxyJ {
 		return getSiteId(site);
 	}
 
-
 	public SitePlan getSitePlan() {
 		return new SitePlan(this);
 	}
@@ -391,16 +388,19 @@ public class Env extends ICSProxyJ {
 		String pCid = getRouter().link(this, id, args);
 		String pC = WCS.normalizeSiteName(getConfig().getSite());
 
-		String res; 
+		String res;
 
-		if(hasDevices) {
-		   res = RenderTag.getpageurl().pagename("AAAgileRouter")// 
-				.c(pC).cid(pCid).assembler("agilesites").set("d", "Default").eval(ics, "outstr");
+		if (hasDevices) {
+			res = RenderTag.getpageurl().pagename("AAAgileRouter")
+					//
+					.c(pC).cid(pCid).assembler("agilesites")
+					.set("d", "Default").eval(ics, "outstr");
 		} else {
-			res = RenderTag.getpageurl().pagename("AAAgileRouter")//
-				.c(pC).cid(pCid).assembler("agilesites").eval(ics, "outstr");
+			res = RenderTag.getpageurl().pagename("AAAgileRouter")
+					//
+					.c(pC).cid(pCid).assembler("agilesites")
+					.eval(ics, "outstr");
 		}
-
 
 		log.debug("getUrl: outstr=" + res);
 		return res;

@@ -218,14 +218,12 @@ trait AgileSitesSupport extends Utils {
           recursiveCopy(srcDir, dstDir)(isHtml)
       }
 
-
-
   // generate index classes from sources
   val wcsGenerateIndexTask =
     (resourceGenerators in Compile) <+=
       (compile in Compile, resourceManaged in Compile) map {
         (analysis, dstDir) =>
-
+          
           val groupIndexed =
             analysis.apis.allInternalSources. // all the sources
               map(extractClassAndIndex(_)). // list of Some(index, class) or Nome
