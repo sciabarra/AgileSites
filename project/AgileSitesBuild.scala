@@ -79,7 +79,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       publishArtifact in packageDoc := false,
       name := "agilesites-core",
       crossPaths := false,
-	  javacOptions ++= Seq("-encoding", "UTF-8", "-g"),
+	    javacOptions ++= Seq("-encoding", "UTF-8", "-g"),
       EclipseKeys.skipProject := true,
       coreGeneratorTask))
 
@@ -88,8 +88,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     id = "api",
     base = file("api"),
     settings = commonSettings ++ Seq(
-     name := "agilesites-api",
-     EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
+      name := "agilesites-api",
+      scalacOptions ++= Seq("-deprecation"),
+      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
 
 
   /// APP 
@@ -98,6 +99,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("app"),
     settings = commonSettings ++ Seq(
       name := "agilesites-app",
+      scalacOptions ++= Seq("-deprecation"),
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
       wcsCopyHtmlTask)) dependsOn (api)
 

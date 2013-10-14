@@ -6,7 +6,10 @@ import Dialog._
 
 trait Utils {
 
- 
+ // name says it all  
+  def normalizeSiteName(s: String) = s.toLowerCase.replaceAll("""[^a-z0-9]+""", "")
+
+
   /**
    * Look for a java source file
    */
@@ -57,5 +60,8 @@ trait Utils {
     w.write(body)
     w.close
   }
+
+  // find the default workspace from sites
+  def defaultWorkspace(sites: String) =  normalizeSiteName(sites.split(",").head)
 	
 }

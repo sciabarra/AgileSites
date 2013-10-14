@@ -110,6 +110,7 @@ public class Configurator extends JFrame implements ActionListener {
 	String jarFile = null;
 	String webApp = null;
 	String version = "unknown";
+	String site = null;
 
 	private void selectFolder0() {
 		if (dirChooser.showDialog(this, "Select") != JFileChooser.APPROVE_OPTION)
@@ -233,6 +234,20 @@ public class Configurator extends JFrame implements ActionListener {
 		if (pw == null)
 			return;
 
+		site = JOptionPane.showInputDialog(this,
+				"Input your custom site name here.\n"+
+				"Leave blank if you plan to add a custom site later.",
+				"Your Custom Site", 1);
+
+		if(site!=null)
+		 	JOptionPane.showMessageDialog(null, "The site "+site
+				+" will be configured in the framework.\n"
+				+"However you still need to create this site in Sites,\n" 
+				+"then generate the code for the site in AgileSites,"
+				+"\nas described in the tutorial, section New Site.", 
+				"IMPORTANT", JOptionPane.INFORMATION_MESSAGE);
+
+
 		String url = iniFile.getProperty("CSConnectString");
 		if(url.endsWith("/")) url = url.substring(0, url.length()-1);
 
@@ -263,6 +278,8 @@ public class Configurator extends JFrame implements ActionListener {
 					fw.write("wcsCsdtJar in ThisBuild := " + q(jarFile));
 				} else if (line.startsWith("wcsVersion ")) {
 					fw.write("wcsVersion in ThisBuild := " + q(version));
+				} else if (line.startsWith("wcsSites ") && site !=null) {
+					fw.write("wcsSites in ThisBuild := \""+site+",Demo\"\n");
 				} else
 					fw.write(line + "\n");
 				line = br.readLine();

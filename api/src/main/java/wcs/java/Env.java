@@ -32,6 +32,7 @@ import COM.FutureTense.Interfaces.IList;
 public class Env extends ICSProxyJ {
 
 	private static Log log = Log.getLog(Env.class);
+	@SuppressWarnings("unused")
 	private boolean hasInsite = getVersionMajor() == 11;
 	private boolean hasDevices = getVersionMajor() == 11
 			&& getVersionMinor() == 8;
