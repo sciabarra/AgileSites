@@ -42,7 +42,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "org.springframework" % "spring" % "2.5.5",
     "org.springframework" % "spring-test" % "2.5.5",
     "commons-logging" % "commons-logging" % "1.1.1",
-    "com.novocode" % "junit-interface" % "0.8" % "test",
+    "com.novocode" % "junit-interface" % "0.8" % "test->default",
     "log4j" % "log4j" % "1.2.16",
     "commons-httpclient" % "commons-httpclient" % "3.1",
     "org.apache.httpcomponents" % "httpclient" % "4.1.2",
@@ -78,8 +78,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       libraryDependencies ++= coreDependencies,
       publishArtifact in packageDoc := false,
       name := "agilesites-core",
+      javacOptions ++= Seq("-g"),
       crossPaths := false,
-	    javacOptions ++= Seq("-encoding", "UTF-8", "-g"),
+	  javacOptions ++= Seq("-encoding", "UTF-8", "-g"),
       EclipseKeys.skipProject := true,
       coreGeneratorTask))
 
@@ -88,9 +89,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     id = "api",
     base = file("api"),
     settings = commonSettings ++ Seq(
-      name := "agilesites-api",
-      scalacOptions ++= Seq("-deprecation"),
-      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
+     name := "agilesites-api",
+     javacOptions ++= Seq("-g"),
+     EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
 
 
   /// APP 
@@ -98,8 +99,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     id = "app",
     base = file("app"),
     settings = commonSettings ++ Seq(
+      javacOptions ++= Seq("-g"), 
       name := "agilesites-app",
-      scalacOptions ++= Seq("-deprecation"),
+      wcsGenerateIndexTask,
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
       wcsCopyHtmlTask)) dependsOn (api)
 
@@ -108,6 +110,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     id = "all",
     base = file("."),
     settings = commonSettings ++ assemblySettings ++ scaffoldSettings ++ Seq(
+      javacOptions ++= Seq("-g"), 
       name := "agilesites-all",
       wcsCsdtTask,
       wcsVirtualHostsTask,
@@ -118,7 +121,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       wcsPackageJarTask,
       wcsUpdateAssetsTask,
       wcsLogTask,
-      wcsGenerateIndexTask,
       excludedJars in assembly <<= (fullClasspath in assembly),
       watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").getFiles),
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,

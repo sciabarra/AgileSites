@@ -11,7 +11,7 @@ fi
 if ! test -f build.sbt
 then
   javac bin/Configurator.java -d bin
-  javac -cp bin Configure.java
+  java -cp bin Configurator
 fi
 java -Xms256m -Xmx512m -Xss1m -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384m -Dsbt.boot.directory=project/boot/ -jar bin/sbt-launch.jar core/publish
 java -Xms256m -Xmx512m -Xss1m -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384m -Dsbt.boot.directory=project/boot/ -jar bin/sbt-launch.jar "$@"
