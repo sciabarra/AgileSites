@@ -1,25 +1,34 @@
 package wcs.build
 
+import org.apache.commons.lang.StringEscapeUtils
 import org.apache.commons.codec.binary.Base64
 
 import scala.xml.XML
 import scala.xml.Node
 import java.io.File
+import sun.misc.BASE64Decoder
 
 /**
  * Compile
  */
-class AssetCompiler(site: String, c: String, cid: Long, xmlIn: File, javaOut: File) extends Utils {
+class AssetCompiler(site: String, c: String, cid: Long, xmlIn: File, javaOut: File, basePackage: String) extends Utils {
 
   import AssetCompiler._
 
   val doc = scala.xml.Utility.trim(XML.loadFile(xmlIn))
 
   val name = (doc \\ "attribute").filter(x => (x \ "@name").text == "name") \\ "@value" text
-  
+
   val subtype = doc \\ "asset" \\ "@subtype" text
 
-  val attributeNames = (doc \ "asset" \ "attribute").filter(x => !((x \ "@name").text startsWith "Group_")) flatMap (_.attribute("name"))
+  val attributeNames = (doc \ "asset" \ "attribute").filter(x => !((x \ "@name").text startsWith "Group_")) flatMap { n =>
+    val attr0 = n.attribute("name").get.head.text
+
+    val attr1 = if (attr0.startsWith("Attribute_"))
+      attr0.substring("Attribute_".length())
+    else attr0
+    Some(attr1)
+  }
 
   val assetReferences = doc \\ "assetreference" map { x =>
     "id(\"" + ((x \ "@type").text) +
@@ -34,36 +43,41 @@ class AssetCompiler(site: String, c: String, cid: Long, xmlIn: File, javaOut: Fi
 
   val attributeData = (doc \ "asset" \ "attribute").filter(x => !((x \ "@name").text startsWith "Group_")).
     flatMap { n =>
-      val attr0 = n.attribute("name").get.head.text
+    val attr0 = n.attribute("name").get.head.text
 
-      val attr1 = if (attr0.startsWith("Attribute_"))
-        attr0.substring("Attribute_".length())
-      else attr0
+    val attr1 = if (attr0.startsWith("Attribute_"))
+      attr0.substring("Attribute_".length())
+    else attr0
 
-      if (attr1 != "Publist") Some(attr1 -> n.child(0))
-      else None
-    }. // List of (String,Node)  
+    if (attr1 != "Publist") Some(attr1 -> n.child(0))
+    else None
+  }. // List of (String,Node)
     map { x => // convert a tuple in code
-      x._2.label match {
-        case "array" => arrayValue(x._1, x._2)
-        case "list" => listValue(x._1, x._2)
-        case "assetreference" => refValue(x._1, x._2)
-        case "string" => stringValue(x._1, x._2)
-        case "date" => dateValue(x._1, x._2)
-        case "int" => intValue(x._1, x._2)
-        case "integer" => intValue(x._1, x._2)
-        // TODO implement as external reference
-        case "file" => fileValue(x._1, x._2)
-        case label => "\t\t/* ???? %s %s */".format(x._1, label)
-      }
-    } toList
+    x._2.label match {
+      case "array" => arrayValue(x._1, x._2)
+      case "list" => listValue(x._1, x._2)
+      case "assetreference" => refValue(x._1, x._2)
+      case "string" => stringValue(x._1, x._2)
+      case "date" => dateValue(x._1, x._2)
+      case "int" => intValue(x._1, x._2)
+      case "integer" => intValue(x._1, x._2)
+      // TODO implement as external reference
+      case "file" => fileValue(x._1, x._2)
+      case label => "\t\t/* ???? %s %s */".format(x._1, label)
+    }
+  } toList
 
-  def javaClass = """package %nsite%.content.%nc%;
+  def binaryData =  (doc \ "asset" \ "attribute" \ "file").map { file =>
+    ((file \\ "@name").text, new BASE64Decoder().decodeBuffer(file.text))
+  }
+
+  def javaClass = """package %nsite%.%package%.%nc%;
 
 import java.util.List;
 import wcs.core.Id;
 import wcs.java.AssetSetup;
 import wcs.java.util.AddIndex;
+import wcs.java.util.AssetReferences;
 import com.fatwire.assetapi.data.MutableAssetData;
 import com.fatwire.assetapi.data.AssetId;
 import com.fatwire.assetapi.def.AttributeTypeEnum;
@@ -109,6 +123,7 @@ public class %c%%cid% extends %c%Setup {
     replaceAll("%nsite%", normalizeSiteName(site)).
     replaceAll("%c%", c).
     replaceAll("%nc%", normalizeSiteName(c)).
+    replaceAll("%package%", basePackage).
     replaceAll("%name%", name).
     replaceAll("%c%", c).
     replaceAll("%cid%", cid.toString()).
@@ -119,7 +134,7 @@ public class %c%%cid% extends %c%Setup {
     replaceAll("%parents%", assetParents.mkString("list(", ",", ");")).
     toString();
 
-  def baseJavaClass = """package %nsite%.content.%nc%;
+  def baseJavaClass = """package %nsite%.%package%.%nc%;
 
 import java.util.List;
 import wcs.core.Id;
@@ -168,6 +183,7 @@ public abstract class %c%Setup extends AssetSetup {
 }
                       """.replaceAll("%site%", site).
     replaceAll("%nsite%", normalizeSiteName(site)).
+    replaceAll("%package%", basePackage).
     replaceAll("%c%", c).
     replaceAll("%nc%", normalizeSiteName(c)).
     toString();
@@ -178,12 +194,22 @@ public abstract class %c%Setup extends AssetSetup {
       writeFile(baseClassFile, baseJavaClass)
     }
     writeFile(javaOut, javaClass)
+    for(data <- binaryData){
+      val binFileName = new File(normalizeFilename(data._1)).getPath
+      writeFile(xmlIn.getParentFile.getParentFile.getParentFile + "/bin", binFileName, data._2)
+
+    }
   }
+
 
   override def toString = javaOut.getName
 }
 
 object AssetCompiler {
+
+  def normalizeFilename (filename: String) = {
+    filename.replace("\\","/").split("/").takeRight(3).mkString("","/","")
+  }
 
   def toHex(c: Char) = {
     val i = c.asInstanceOf[Int]
@@ -212,19 +238,19 @@ object AssetCompiler {
 
   def stringValue(m: String, n: Node): String = "\t\t" +
     """data.getAttributeData("%s").setData("%s");""".
-    format(escapeJava(m), escapeJava(n.attribute("value").get.head.text))
+      format(escapeJava(m), escapeJava(n.attribute("value").get.head.text))
 
   def dateValue(m: String, n: Node): String = "\t\t" +
     """data.getAttributeData("%s").setData(date("%s"));""".
-    format(escapeJava(m), escapeJava(n.attribute("value").get.head.text))
+      format(escapeJava(m), escapeJava(n.attribute("value").get.head.text))
 
   def intValue(m: String, n: Node): String = "\t\t" +
     """data.getAttributeData("%s").setData(Integer.valueOf(%s));""".
-    format(escapeJava(m), escapeJava(n.attribute("value").get.head.text))
+      format(escapeJava(m), escapeJava(n.attribute("value").get.head.text))
 
   def refValue(m: String, n: Node): String = "\t\t" +
     """data.getAttributeData("%s").setData(ref("%s",%sl));""".
-    format(escapeJava(m),
+      format(escapeJava(m),
       escapeJava(n.attribute("type").get.head.text),
       escapeJava(n.attribute("value").get.head.text))
 
@@ -234,7 +260,6 @@ object AssetCompiler {
     """data.getAttributeData("""" + m +
     """").setData(""" +
     ((n \\ "@name").text match {
-
       case name @ isTextRe(ext) =>
         val decoded = new String(Base64.decodeBase64(n.text.trim.getBytes))
         "blob(\"" +
@@ -243,33 +268,33 @@ object AssetCompiler {
           escapeJava(decoded).split("""\\n""").mkString("\\n\"+\n\"") +
           "\"));"
 
-      //TODO implement reading blobs from external files
-      case name =>  "blob(\"" + escapeJava(name) + "\",\"TODO\"));"
-      /*
+      //TODO implement writing blobs to external files
+      //case name =>  "blob(\"" + escapeJava(name) + "\",\"TODO\"));"
       case name =>
+        "file(\"" + escapeJava(normalizeFilename(name)) + "\"));"
+      /*
         "blob(\"" +
           escapeJava(name) +
           "\",base64(\n" +
           (n.text.trim).grouped(72).toList.mkString("\"", "\"+\n\"", "\"") +
           ")));"
        */
-
     })
 
   def arrayValue(m: String, n: Node): String = "\t\t" +
     "data.getAttributeData(\"" +
     escapeJava(m) +
     "\").setDataAsList(list(" + (
-      n.child map { // get children of <array><xxx value="..."></array> then match for each xxx
-        case n @ <integer/> => (n \\ "@value").text + "L"
-        case n @ <string/> => """"%s"""".format((n \\ "@value").text)
-        // assetapi doesn't support ordered lists for attributes
-        //case <struct>{n @ _*}</struct> => structToMap(n)
-        case <struct>{n @ _*}</struct> => "ref(\"" + (n \ "assetreference" \ "@type") + "\"," + (n \ "assetreference" \ "@value") + "L)"
-        case n @ <assetreference/> => "ref(\"" + (n \ "@type") + "\"," + (n \ "@value") + "L)"
-        case x => "???"
-      }).mkString(",") +
-      "));"
+    n.child map { // get children of <array><xxx value="..."></array> then match for each xxx
+      case n @ <integer/> => (n \\ "@value").text + "L"
+      case n @ <string/> => """"%s"""".format((n \\ "@value").text)
+      // assetapi doesn't support ordered lists for attributes
+      //case <struct>{n @ _*}</struct> => structToMap(n)
+      case <struct>{n @ _*}</struct> => "ref(\"" + (n \ "assetreference" \ "@type") + "\"," + (n \ "assetreference" \ "@value") + "L)"
+      case n @ <assetreference/> => "ref(\"" + (n \ "@type") + "\"," + (n \ "@value") + "L)"
+      case x => "???"
+    }).mkString(",") +
+    "));"
 
   def structToMap (n: Seq[Node]): String = (
     n  map {
@@ -288,17 +313,17 @@ object AssetCompiler {
     "data.getAttributeData(\"" +
     escapeJava(m) +
     "\").setDataAsList(" + (
-      ((n \ "row").map { row =>
-        ((row \ "column") map { col =>
-          "\n\t\t\t\tkv(\"" + (col \ "@name") + "\", " + (
-            (col \ "_").head match {
-              case n @ <assetreference/> => "AttributeTypeEnum.ASSET, ref(\"" + (n \ "@type") + "\"," + (n \ "@value") + "L)"
-              case n @ <string/> => "AttributeTypeEnum.STRING, \"" + (n \ "@value") + "\""
-              case n @ <integer/> => "AttributeTypeEnum.INT, " + (n \ "@value") + "L"
-              case x => x.label
-            }) +
-            ")"
-        }).mkString("\n\t\t\tmap(", ",", ")")
-      }).mkString("list(", ",", ")")) + ");"
+    ((n \ "row").map { row =>
+      ((row \ "column") map { col =>
+        "\n\t\t\t\tkv(\"" + (col \ "@name") + "\", " + (
+          (col \ "_").head match {
+            case n @ <assetreference/> => "AttributeTypeEnum.ASSET, ref(\"" + (n \ "@type") + "\"," + (n \ "@value") + "L)"
+            case n @ <string/> => "AttributeTypeEnum.STRING, \"" + (n \ "@value") + "\""
+            case n @ <integer/> => "AttributeTypeEnum.INT, " + (n \ "@value") + "L"
+            case x => x.label
+          }) +
+          ")"
+      }).mkString("\n\t\t\tmap(", ",", ")")
+    }).mkString("list(", ",", ")")) + ");"
 
 }

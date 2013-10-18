@@ -71,8 +71,9 @@ public class Env extends ICSProxyJ {
 	/**
 	 * Get a variable or null
 	 * 
-	 * @param var
-	 * @return
+	 * @param list
+     * @param field
+	 * @return String
 	 */
 	public String getString(String list, String field) {
 		IList ls = ics.GetList(list);
@@ -90,7 +91,9 @@ public class Env extends ICSProxyJ {
 	/**
 	 * Get a variable or null
 	 * 
-	 * @param var
+	 * @param list
+     * @param field
+     * @param row
 	 * @return
 	 */
 	public String getString(String list, int row, String field) {

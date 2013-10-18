@@ -1,7 +1,8 @@
 package wcs.java;
 
+import org.apache.commons.io.FileUtils;
 import wcs.core.Id;
-import java.io.File;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -36,6 +37,12 @@ public abstract class AssetSetup extends Asset {
     public AssetSetup(long id, String type, String subtype, String name) {
 		super(id, type, subtype, name);
 	}
+
+    public void setBinaryFilesPath(String binaryFilesPath) {
+        this.binaryFilesPath = binaryFilesPath;
+    }
+
+    protected String binaryFilesPath;
 
 	/**
 	 * Return a list of expected attributes
@@ -146,6 +153,22 @@ public abstract class AssetSetup extends Asset {
 		return new Id(c, cid);
 	}
 
+    public BlobObject file(String filename) {
+        System.out.println("reading data from binary file : " + filename);
 
+        File file = new File(filename);
 
+        try {
+            byte[] data = FileUtils.readFileToByteArray(new File(binaryFilesPath, filename));
+            //byte[] data = Files.readAllBytes(Paths.get(binaryFilesPath, filename));
+            return new BlobObjectImpl(
+                    file.getName(),
+                    file.getParent(),
+                    data
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -2,8 +2,8 @@ package wcs.build
 
 import java.io.File
 
-class AssetCompilerManager(site: String, base: File, xmlDir: Option[File] = None, javaDir: Option[File]= None) extends Utils {
-  
+class AssetCompilerManager(site: String, base: File, xmlDir: Option[File] = None, javaDir: Option[File]= None, basePackage: Option[String] = None) extends Utils {
+
   def file(s: String) = new File(s)
   def file(f: File, s: String) = new File(f, s)
 
@@ -21,7 +21,7 @@ class AssetCompilerManager(site: String, base: File, xmlDir: Option[File] = None
     val javaFile = "%s%d.java".format(c, cid)
 
     javaDir.mkdirs()
-    val ac = new AssetCompiler(site, c, cid, file(xmlDir, xmlFile), file(javaDir, javaFile))
+    val ac = new AssetCompiler(site, c, cid, file(xmlDir, xmlFile), file(javaDir, javaFile), basePackage getOrElse "content" )
     ac.compile
 
   }

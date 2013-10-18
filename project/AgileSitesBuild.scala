@@ -98,6 +98,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("api"),
     settings = commonSettings ++ Seq(
       name := "agilesites-api",
+      compileOrder := CompileOrder.JavaThenScala,
       javacOptions ++= Seq("-g"),
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
 
@@ -107,6 +108,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("app"),
     settings = commonSettings ++ Seq(
       name := "agilesites-app",
+      compileOrder := CompileOrder.JavaThenScala,
       javacOptions ++= Seq("-g"),
       wcsGenerateIndexTask,
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,

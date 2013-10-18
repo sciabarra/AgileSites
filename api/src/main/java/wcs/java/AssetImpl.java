@@ -182,7 +182,7 @@ class AssetImpl extends wcs.java.Asset {
 	/**
 	 * Check if the attribute exist
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public boolean isAttribute(String attribute) {
@@ -222,7 +222,7 @@ class AssetImpl extends wcs.java.Asset {
 	 * Return the first attribute of the attribute list as an id (long), or null
 	 * if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -234,7 +234,8 @@ class AssetImpl extends wcs.java.Asset {
 	 * Return the nth attribute of the attribute list as an id (long), or null
 	 * if not found
 	 * 
-	 * @param asset
+	 * @param attribute
+     * @param n
 	 * @return
 	 */
 	@Override
@@ -246,7 +247,8 @@ class AssetImpl extends wcs.java.Asset {
 	 * Return the related asset pointed by the attribute of the given type if
 	 * not found
 	 * 
-	 * @param asset
+	 * @param attribute
+     * @param type
 	 * @return
 	 */
 	@Override
@@ -258,7 +260,9 @@ class AssetImpl extends wcs.java.Asset {
 	 * Return the related asset pointed by the nth attribute of the given type
 	 * if not found
 	 * 
-	 * @param asset
+	 * @param attribute
+     * @param i
+     * @param type
 	 * @return
 	 */
 	@Override
@@ -270,7 +274,7 @@ class AssetImpl extends wcs.java.Asset {
 	 * Return the first attribute of the the attribute rib as a string, or the
 	 * null if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -281,8 +285,9 @@ class AssetImpl extends wcs.java.Asset {
 	/**
 	 * Return the nth attribute of the the attribute as a string, or the void
 	 * string if not found
-	 * 
-	 * @param asset
+	 *
+     * @param attribute
+     * @param n
 	 * @return
 	 */
 	@Override
@@ -294,7 +299,9 @@ class AssetImpl extends wcs.java.Asset {
 	 * Edit (or return if not insite) the first named attribute as a string, or
 	 * null if not found and pass additional parameters
 	 * 
-	 * @param asset
+	 * @param attribute
+     * @param n
+     * @param params
 	 * @return
 	 */
 	@Override
@@ -309,7 +316,7 @@ class AssetImpl extends wcs.java.Asset {
 	 * Return the first attribute of the the attribute list as an int, or null
 	 * if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -321,7 +328,8 @@ class AssetImpl extends wcs.java.Asset {
 	 * Return the nth attribute of the the attribute list as an int, or null if
 	 * not found
 	 * 
-	 * @param asset
+	 * @param attribute
+     * @param n
 	 * @return
 	 */
 	@Override
@@ -333,7 +341,7 @@ class AssetImpl extends wcs.java.Asset {
 	 * Return the first attribute of the the attribute list as a date, or null
 	 * if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -385,7 +393,8 @@ class AssetImpl extends wcs.java.Asset {
 	 * Return the nth attribute of the the attribute list as a date, or null if
 	 * not found
 	 * 
-	 * @param asset
+	 * @param attribute
+     * @param n
 	 * @return
 	 */
 	@Override
@@ -502,7 +511,7 @@ class AssetImpl extends wcs.java.Asset {
 	 * Call the template by name with current c/cid, specifiying a slot name and
 	 * eventually some extra optional args.
 	 * 
-	 * @param name
+	 * @param template
 	 * @param args
 	 * @return
 	 */
@@ -528,10 +537,9 @@ class AssetImpl extends wcs.java.Asset {
 	 * Slot type is configured in Config. You need a field of the same name of
 	 * the field specifying the type as parameter "c"
 	 * 
-	 * @param field
+	 * @param attribute
 	 * @param template
 	 * @param type
-	 * @param i
 	 * @param args
 	 * @return
 	 */
@@ -544,11 +552,10 @@ class AssetImpl extends wcs.java.Asset {
 	/**
 	 * Render an empty slot to drag additional content to a list.
 	 * 
-	 * @param field
+	 * @param attribute
 	 * @param template
 	 * @param type
-	 * @param i
-	 * @param args
+	 * @param emptyText
 	 * @return
 	 */
 	@Override
@@ -565,10 +572,11 @@ class AssetImpl extends wcs.java.Asset {
 	 * Slot type is configured in Config. You need a field of the same name of
 	 * the field specifying the type as parameter "c"
 	 * 
-	 * @param field
+	 * @param attribute
 	 * @param template
 	 * @param type
 	 * @param i
+     * @param emptyText
 	 * @param args
 	 * @return
 	 */
@@ -585,8 +593,10 @@ class AssetImpl extends wcs.java.Asset {
 	 * Slot type is configured in Config. You need a field of the same name of
 	 * the field specifying the type as parameter "c"
 	 * 
-	 * @param field
+	 * @param attribute
 	 * @param template
+     * @param type
+     * @param emptyText
 	 * @param args
 	 * @return
 	 */

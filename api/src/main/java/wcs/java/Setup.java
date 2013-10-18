@@ -6,18 +6,16 @@ import java.io.CharArrayWriter;
 import java.io.File;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
+import com.fatwire.assetapi.data.*;
+import wcs.core.Id;
 import wcs.core.Log;
 import wcs.java.util.Util;
 //import wcs.core.tag.UserTag;
 import COM.FutureTense.Interfaces.ICS;
 import com.fatwire.assetapi.common.AssetAccessException;
 import com.fatwire.assetapi.common.SiteAccessException;
-import com.fatwire.assetapi.data.AssetDataManager;
-import com.fatwire.assetapi.data.AssetId;
-import com.fatwire.assetapi.data.MutableAssetData;
 import com.fatwire.assetapi.def.AssetTypeDefManager;
 import com.fatwire.assetapi.query.Condition;
 import com.fatwire.assetapi.query.ConditionFactory;
@@ -107,13 +105,74 @@ abstract public class Setup implements wcs.core.Setup {
 	}
 
 	private void setupAssets(StringBuilder sb, ICS ics, String site) {
-		for (Class<?> clazz : getAssets())
+        Class<?>[] orderedAssets = orderClasses(getAssets());
+        for (Class<?> clazz : orderedAssets)
 			try {
-				setupAsset(clazz, ics, site, sb);
+                setupAsset(clazz, ics, site, sb);
 			} catch (Exception e) {
 				log.trace(e, "cannot setup %s", clazz.getCanonicalName());
 			}
 	}
+
+    private Class<?>[] orderClasses(Class<?>[] allAssets)  {
+        List <Class<?>> allAssetsList = new ArrayList(Arrays.asList(allAssets));
+        List<String> allAssetNames = getAllAssetNames(allAssets);
+        int totalAssets = allAssetNames.size();
+        Map<String, Class<?>> orderedClasses = new LinkedHashMap<String, Class<?>>();
+        int processed = 0;
+        while(processed < totalAssets) {
+            Iterator<Class<?>> i = allAssetsList.iterator();
+            while (i.hasNext()) {
+                Class<?> clazz = i.next();
+                Object obj = null;
+                try {
+                    Object instance = clazz.newInstance();
+                    if (instance instanceof AssetSetup)  {
+                        Method m = clazz.getMethod("getReferences");
+                        obj = m.invoke(instance);
+                    }
+                } catch (Exception e) {
+                    //e.printStackTrace();
+                }
+                if (obj == null || obj instanceof List && ((List)obj).isEmpty()) {
+                    orderedClasses.put(clazz.getSimpleName(), clazz);
+                    i.remove();
+
+                }
+                else {
+                    boolean allRefs = false;
+                    List<Id> refs = (List)obj;
+                    for (Id refId : refs) {
+                        String ref = refId.c + refId.cid;
+                        if (!orderedClasses.containsKey(ref) && allAssetNames.contains(ref) && !ref.equals(clazz.getSimpleName())) {
+                            allRefs = false;
+                            break;
+                        }
+                        else {
+                            allRefs = true;
+                        }
+                    }
+                    if (allRefs) {
+                        orderedClasses.put(clazz.getSimpleName(), clazz);
+                        i.remove();
+                    }
+                }
+            }
+            if (processed != orderedClasses.size()) {
+                processed = orderedClasses.size();
+            }
+            else {
+                // found cyclic dependency;
+                break;
+            }
+
+        }
+
+        for (Class<?> aClass : allAssetsList) {
+            orderedClasses.put(aClass.getName(), aClass);
+        }
+        return orderedClasses.values().toArray(new Class<?>[totalAssets]);
+    }
 
 	private void setupAsset(Class<?> clazz, ICS ics, String site,
 			StringBuilder sb) {
@@ -141,7 +200,8 @@ abstract public class Setup implements wcs.core.Setup {
 			String site) {
 		if (setup == null)
 			return;
-		log.debug("installing " + setup.getName());
+        setup.setBinaryFilesPath(ics.GetProperty("cs.csdtfolder") + "/stargaze/bin");
+        log.debug("installing " + setup.getName());
 		setup.setSite(site);
 		sb.append("\n" + insertOrUpdate(ics, setup));
 		recurse(ics, sb, setup.getNextSetup(), site);
@@ -195,7 +255,7 @@ abstract public class Setup implements wcs.core.Setup {
 	 * @return
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	MutableAssetData findById(String c, long cid) {
+	MutableAssetData findById(String c, long cid, List<String> attributes) {
 		AssetId aid = new AssetIdImpl(c, cid);
 
 		// first load the asset to check if it exists
@@ -225,13 +285,21 @@ abstract public class Setup implements wcs.core.Setup {
 				boolean isFlex = data.getAssetTypeDef().getProperties()
 						.getIsFlexAsset();
 
-				if (!isFlex)
-					return data;
+				if (!isFlex)  {
+                    return data;
+                }
+                else {
+                    AssetData attributesData = adm.readAttributes(aid, attributes);
 
+                   for (AttributeData attributeData : attributesData.getAttributeData()) {
+                        if (data.getAttributeData(attributeData.getAttributeName()) == null) {
+                            data.addAttributeData(attributeData);
+                        }
+                    }
+                    return data;
+
+                }
 				// System.out.println("attrdata"+data.getAttributeData());
-
-				return null;
-
 			} else
 				return null;
 		} catch (Exception e) {
@@ -295,8 +363,8 @@ abstract public class Setup implements wcs.core.Setup {
 						setup.getAttributes());
 			} else {
 				System.out.println("looking for " + setup.getC() + ":"
-						+ id.longValue());
-				data = findById(setup.getC(), id);
+						+ id);
+				data = findById(setup.getC(), id, setup.getAttributes());
 				out.println("found " + data);
 			}
 
@@ -306,7 +374,7 @@ abstract public class Setup implements wcs.core.Setup {
 						+ " INSERTING: "
 						+ insert(setup,
 								id == null ? Long.parseLong(ics.genID(true))
-										: id.longValue());
+										: id);
 
 			// updating
 			return what + " UPDATING: " + update(setup, data);
@@ -369,6 +437,14 @@ abstract public class Setup implements wcs.core.Setup {
 		data.getAttributeData("updatedby").setData("AgileSites");
 		data.getAttributeData("updateddate").setData(new java.util.Date());
 	}
+
+    private List<String> getAllAssetNames(Class<?>[] assetClasses ) {
+        List<String> assetnames = new ArrayList<>();
+        for (Class<?> assetClass : assetClasses) {
+            assetnames.add(assetClass.getSimpleName());
+        }
+        return assetnames;
+    }
 
 	abstract public Long getId();
 
