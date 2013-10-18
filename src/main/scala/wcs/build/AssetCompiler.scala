@@ -61,7 +61,6 @@ class AssetCompiler(site: String, c: String, cid: Long, xmlIn: File, javaOut: Fi
       case "date" => dateValue(x._1, x._2)
       case "int" => intValue(x._1, x._2)
       case "integer" => intValue(x._1, x._2)
-      // TODO implement as external reference
       case "file" => fileValue(x._1, x._2)
       case label => "\t\t/* ???? %s %s */".format(x._1, label)
     }
@@ -268,17 +267,8 @@ object AssetCompiler {
           escapeJava(decoded).split("""\\n""").mkString("\\n\"+\n\"") +
           "\"));"
 
-      //TODO implement writing blobs to external files
-      //case name =>  "blob(\"" + escapeJava(name) + "\",\"TODO\"));"
       case name =>
         "file(\"" + escapeJava(normalizeFilename(name)) + "\"));"
-      /*
-        "blob(\"" +
-          escapeJava(name) +
-          "\",base64(\n" +
-          (n.text.trim).grouped(72).toList.mkString("\"", "\"+\n\"", "\"") +
-          ")));"
-       */
     })
 
   def arrayValue(m: String, n: Node): String = "\t\t" +
