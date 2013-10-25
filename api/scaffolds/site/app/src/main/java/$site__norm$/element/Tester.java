@@ -7,6 +7,7 @@ import wcs.java.SiteEntry;
 import wcs.java.util.TestRunnerElement;
 import wcs.java.util.Util;
 
+@AddIndex("$site;format="normalize"$/elements.txt")
 public class Tester extends TestRunnerElement {
 
 	public static AssetSetup setup() {

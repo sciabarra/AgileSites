@@ -9,6 +9,7 @@ import wcs.java.Element;
 import wcs.java.Env;
 import wcs.java.Picker;
 
+@AddIndex("$site;format="normalize"$/elements.txt")
 public class Wrapper extends Element {
 	
 	private final static Log log = Log.getLog(Wrapper.class);

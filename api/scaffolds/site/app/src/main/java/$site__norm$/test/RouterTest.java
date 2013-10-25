@@ -9,6 +9,7 @@ import wcs.java.util.TestElement;
 import org.junit.Before;
 import org.junit.Test;
 
+@AddIndex("$site;format="normalize"$/tests.txt")
 public class RouterTest extends TestElement {
 
 	Router it;
