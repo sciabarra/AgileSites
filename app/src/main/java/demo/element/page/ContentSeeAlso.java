@@ -8,6 +8,7 @@ import wcs.java.Picker;
 import wcs.java.Template;
 import wcs.java.AssetSetup;
 
+@AddIndex("demo/elements.txt")
 public class ContentSeeAlso extends Element {
 
 	final static Log log = Log.getLog(ContentSeeAlso.class);

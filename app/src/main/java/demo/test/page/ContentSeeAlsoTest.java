@@ -8,6 +8,7 @@ import wcs.java.util.TestElement;
 import demo.element.page.ContentSeeAlso;
 
 // this test must be run by AgileSites TestRunnerElement
+@AddIndex("demo/tests.txt")
 public class ContentSeeAlsoTest extends TestElement {
 
 	final static Log log = Log.getLog(ContentSeeAlsoTest.class);

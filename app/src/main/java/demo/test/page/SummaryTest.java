@@ -8,6 +8,7 @@ import wcs.java.util.TestElement;
 import demo.element.page.Summary;
 
 // this test must be run by AgileSites TestRunnerElement
+@AddIndex("demo/tests.txt")
 public class SummaryTest extends TestElement {
 
 	final static Log log = Log.getLog(SummaryTest.class);

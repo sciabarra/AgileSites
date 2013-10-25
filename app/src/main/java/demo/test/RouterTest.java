@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static wcs.core.Common.*;
 
+@AddIndex("demo/tests.txt")
 public class RouterTest extends TestElement {
 
 	final static Log log = Log.getLog(RouterTest.class);

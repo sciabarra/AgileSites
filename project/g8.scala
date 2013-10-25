@@ -76,10 +76,10 @@ object G8 {
   def snakeCase(s: String) = s.replaceAll("""\s+""", "_")
   def packageDir(s: String) = s.replace(".", System.getProperty("file.separator"))
   def addRandomId(s: String) = s + "-" + new java.math.BigInteger(256, new java.security.SecureRandom).toString(32)
-  def deprefix(s: String) = { 
-      val l = ("[A-Z][^A-Z]*".r findAllIn s).toList
-      if(l.size > 1) l.tail.mkString("") else s
-  }
+  def deprefix(s: String) = if(s contains "_")
+        s.split("_").tail.mkString("_")
+      else s
+  def ndeprefix(s: String) = normalize(deprefix(s))
 }
 
 object G8Helpers {
@@ -315,6 +315,7 @@ class StringRenderer extends org.clapper.scalasti.AttributeRenderer[String] {
     case "packaged" | "package-dir" => packageDir(value)
     case "random" | "generate-random" => addRandomId(value)
     case "deprefix" => deprefix(value)
+    case "ndeprefix" => ndeprefix(value)
     case _ => value
   }
 }

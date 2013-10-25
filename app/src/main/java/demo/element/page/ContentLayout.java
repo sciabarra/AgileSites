@@ -8,6 +8,7 @@ import wcs.java.Env;
 import wcs.java.Picker;
 import wcs.java.Template;
 
+@AddIndex("demo/elements.txt")
 public class ContentLayout extends Element {
 
 	Log log = Log.getLog(ContentLayout.class);

@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 // this test must be run by the test runner
+@AddIndex("demo/tests.txt")
 public class WrapperTest extends TestElement {
 
 	Wrapper it;

@@ -9,6 +9,7 @@ import wcs.java.util.TestElement;
 import demo.element.page.ContentLayout;
 
 // this test must be run by AgileSites TestRunnerElement
+@AddIndex("demo/tests.txt")
 public class ContentLayoutTest extends TestElement {
 	
 	final static Log log = Log.getLog(ContentLayoutTest.class);

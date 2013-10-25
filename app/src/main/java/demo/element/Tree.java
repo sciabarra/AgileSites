@@ -10,6 +10,7 @@ import wcs.java.Env;
 import wcs.java.Picker;
 import wcs.java.SitePlan;
 
+@AddIndex("demo/elements.txt")
 public class Tree extends Element {
 
 	final static Log log = Log.getLog(Tree.class);

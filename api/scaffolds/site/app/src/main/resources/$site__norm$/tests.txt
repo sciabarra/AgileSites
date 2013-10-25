@@ -1,3 +1,0 @@
-$site;format="normalize"$.test.RouterTest
-$site;format="normalize"$.test.WrapperTest
-$site;format="normalize"$.test.ErrorTest

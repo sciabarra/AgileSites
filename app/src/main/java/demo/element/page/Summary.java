@@ -8,6 +8,7 @@ import wcs.java.Picker;
 import wcs.java.Template;
 import wcs.java.AssetSetup;
 
+@AddIndex("demo/elements.txt")
 public class Summary extends Element {
 
 	final static Log log = Log.getLog(Summary.class);

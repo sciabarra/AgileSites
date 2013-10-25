@@ -1,3 +1,0 @@
-$site;format="normalize"$.element.Tester
-$site;format="normalize"$.element.Error
-$site;format="normalize"$.element.Wrapper

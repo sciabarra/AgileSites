@@ -11,6 +11,7 @@ import wcs.java.Picker;
 import wcs.java.SitePlan;
 import static java.lang.String.format;
 
+@AddIndex("demo/elements.txt")
 public class Breadcrump extends Element {
 
 	final static Log log = Log.getLog(Breadcrump.class);
