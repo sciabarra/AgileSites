@@ -8,6 +8,7 @@ import wcs.java.SiteEntry;
 import wcs.java.Element;
 import wcs.java.Env;
 import wcs.java.Picker;
+import wcs.java.util.AddIndex;
 
 @AddIndex("demo/elements.txt")
 public class Wrapper extends Element {

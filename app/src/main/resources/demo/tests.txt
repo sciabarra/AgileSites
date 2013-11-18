@@ -1,9 +1,0 @@
-demo.test.RouterTest
-demo.test.WrapperTest
-demo.test.ErrorTest
-demo.test.TreeTest
-demo.test.BreadcrumpTest
-demo.test.TopmenuTest
-demo.test.page.ContentLayoutTest
-demo.test.page.SummaryTest
-demo.test.page.ContentSeeAlsoTest

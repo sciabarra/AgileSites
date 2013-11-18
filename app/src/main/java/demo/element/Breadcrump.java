@@ -9,6 +9,7 @@ import wcs.java.CSElement;
 import wcs.java.AssetSetup;
 import wcs.java.Picker;
 import wcs.java.SitePlan;
+import wcs.java.util.AddIndex;
 import static java.lang.String.format;
 
 @AddIndex("demo/elements.txt")

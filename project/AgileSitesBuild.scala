@@ -80,7 +80,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       name := "agilesites-core",
       javacOptions ++= Seq("-g"),
       crossPaths := false,
-	  javacOptions ++= Seq("-encoding", "UTF-8", "-g"),
+	    javacOptions ++= Seq("-encoding", "UTF-8", "-g"),
       EclipseKeys.skipProject := true,
       coreGeneratorTask))
 

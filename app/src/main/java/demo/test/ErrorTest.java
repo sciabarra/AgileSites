@@ -1,6 +1,7 @@
 package demo.test;
 
 import demo.element.Error;
+import wcs.java.util.AddIndex;
 import wcs.java.util.TestElement;
 import org.junit.Before;
 import org.junit.Test;

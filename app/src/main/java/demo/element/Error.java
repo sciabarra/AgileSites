@@ -6,6 +6,7 @@ import wcs.java.CSElement;
 import wcs.java.Element;
 import wcs.java.Env;
 import wcs.java.Picker;
+import wcs.java.util.AddIndex;
 
 @AddIndex("demo/elements.txt")
 public class Error extends Element {

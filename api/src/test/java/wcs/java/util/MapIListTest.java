@@ -21,14 +21,13 @@ public class MapIListTest {
 		return ls;
 	}
 
-	private Map<String, List<String>> map(String keys,
-			@SuppressWarnings("unchecked") List<String>... lists) {
+	private Map<String, List<String>> map(String keys, List<String>... lists) {
 		Map<String, List<String>> map = new HashMap<String, List<String>>();
 		int n = 0;
 		StringTokenizer st = new StringTokenizer(keys, ",");
-		while (st.hasMoreTokens()) 
+		while (st.hasMoreTokens())
 			map.put(st.nextToken(), lists[n++]);
-		//System.out.println(map.toString());
+		// System.out.println(map.toString());
 		return map;
 	}
 
@@ -86,7 +85,7 @@ public class MapIListTest {
 	@Test
 	public void test22() throws NoSuchFieldException {
 		assertTrue(l22.numRows() == 2);
-		//System.out.println(l22.numColumns());
+		// System.out.println(l22.numColumns());
 		assertTrue(l22.numColumns() == 2);
 		assertTrue(l22.hasData());
 

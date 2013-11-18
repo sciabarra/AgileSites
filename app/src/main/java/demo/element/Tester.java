@@ -4,6 +4,7 @@ import demo.Config;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.SiteEntry;
+import wcs.java.util.AddIndex;
 import wcs.java.util.TestRunnerElement;
 import wcs.java.util.Util;
 

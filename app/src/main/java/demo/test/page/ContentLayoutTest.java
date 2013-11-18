@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import wcs.core.Log;
 import wcs.java.Env;
+import wcs.java.util.AddIndex;
 import wcs.java.util.TestElement;
 import demo.element.page.ContentLayout;
 

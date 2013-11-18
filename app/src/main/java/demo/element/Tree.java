@@ -9,6 +9,7 @@ import wcs.java.Element;
 import wcs.java.Env;
 import wcs.java.Picker;
 import wcs.java.SitePlan;
+import wcs.java.util.AddIndex;
 
 @AddIndex("demo/elements.txt")
 public class Tree extends Element {

@@ -5,6 +5,7 @@ import wcs.core.Log;
 import wcs.java.Asset;
 import wcs.java.Env;
 import wcs.java.Router;
+import wcs.java.util.AddIndex;
 import wcs.java.util.TestElement;
 import org.junit.Before;
 import org.junit.Test;

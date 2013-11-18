@@ -7,6 +7,7 @@ import wcs.java.Element;
 import wcs.java.Env;
 import wcs.java.Picker;
 import wcs.java.Template;
+import wcs.java.util.AddIndex;
 
 @AddIndex("demo/elements.txt")
 public class ContentLayout extends Element {
