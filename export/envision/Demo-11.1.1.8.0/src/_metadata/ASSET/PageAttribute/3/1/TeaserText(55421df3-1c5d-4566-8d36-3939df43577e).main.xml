@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>PageAttribute:1351275803268</id>
+    <id>PageAttribute:1374097570308</id>
     <name>TeaserText</name>
     <createdby>fwadmin</createdby>
     <createddate>2013-06-01T18:01:55.401Z</createddate>
@@ -9,7 +9,7 @@
     <status>PL</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-06-01T17:58:43.256Z</updateddate>
+    <updateddate>2013-09-12T19:05:42.151Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,11 +59,15 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275803268</longValue>
+            <longValue>1374097570308</longValue>
         </data>
     </attribute>
     <attribute>
         <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Webreference</name>
         <data/>
     </attribute>
     <attribute>
@@ -177,7 +181,7 @@
     <attribute>
         <name>attributetype</name>
         <data>
-            <stringValue>AttrTypes:1351275803236</stringValue>
+            <stringValue>AttrTypes:1374097570230</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -197,20 +201,19 @@
     <dependency>
       <depType>E</depType>
       <resType>AttrTypes</resType>
-      <resId>1351275803236</resId>
+      <resId>1374097570230</resId>
       <uid>c34deb4f-0be5-47aa-a5d4-ccb86e59794d</uid>
     </dependency>
     <dependency>
       <depType>N</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803268</resId>
+      <resId>1374097570308</resId>
       <uid>55421df3-1c5d-4566-8d36-3939df43577e</uid>
     </dependency>
   </linked-hash-set>
 </dependencies>
 ==================______________________==================
 #
-#Sat Jun 01 21:29:21 UTC 2013
 key=PageAttribute-55421df3-1c5d-4566-8d36-3939df43577e
 type=ASSETDATA
 sites=Demo

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>Template:1351275803146</id>
+    <id>Template:1374097570221</id>
     <name>DmSummary</name>
     <createdby>fwadmin</createdby>
     <createddate>2013-06-01T18:01:38.000Z</createddate>
@@ -9,7 +9,7 @@
     <status>ED</status>
     <subtype>Page</subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-06-01T19:11:58.971Z</updateddate>
+    <updateddate>2013-11-18T11:57:30.225Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,11 +59,15 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275803146</longValue>
+            <longValue>1374097570221</longValue>
         </data>
     </attribute>
     <attribute>
         <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Webreference</name>
         <data/>
     </attribute>
     <attribute>
@@ -142,7 +146,7 @@
                 <item>
                     <name>resdetails2</name>
                     <data>
-                        <stringValue>agilesites=1370113918961</stringValue>
+                        <stringValue>agilesites=1384775850215</stringValue>
                     </data>
                 </item>
                 <item>
@@ -232,7 +236,7 @@
                 <item>
                     <name>resdetails1</name>
                     <data>
-                        <stringValue>tid=1351275803146</stringValue>
+                        <stringValue>tid=1374097570221</stringValue>
                     </data>
                 </item>
                 <item>
@@ -267,18 +271,17 @@
 
 <!--==================___ METADATA ___================
 <dependencies>
-  <list>
+  <linked-hash-set>
     <dependency>
       <depType>N</depType>
       <resType>Template</resType>
-      <resId>1351275803146</resId>
+      <resId>1374097570221</resId>
       <uid>435a4907-825a-4a9c-a9d6-19d608ade4a0</uid>
     </dependency>
-  </list>
+  </linked-hash-set>
 </dependencies>
 ==================______________________==================
 #
-#Sat Jun 01 21:29:20 UTC 2013
 storable0=/ELEMENTS/JSP/Page/DmSummary.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FPage%2FDmSummary.jsp
 @hashval=-603284539
 key=Template-435a4907-825a-4a9c-a9d6-19d608ade4a0

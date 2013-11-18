@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>CSElement:1351275803218</id>
+    <id>CSElement:1374097570269</id>
     <name>DmTopmenu</name>
     <createdby>fwadmin</createdby>
     <createddate>2013-06-01T18:01:54.682Z</createddate>
     <description>DmTopmenu</description>
     <publist>Demo</publist>
-    <status>PL</status>
+    <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-06-01T17:58:45.132Z</updateddate>
+    <updateddate>2013-11-18T11:57:30.017Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,11 +59,15 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275803218</longValue>
+            <longValue>1374097570269</longValue>
         </data>
     </attribute>
     <attribute>
         <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Webreference</name>
         <data/>
     </attribute>
     <attribute>
@@ -99,20 +103,20 @@
     <attribute>
         <name>resdetails1</name>
         <data>
-            <stringValue>eid=1351275803159</stringValue>
+            <stringValue>eid=1374097570269</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>resdetails2</name>
         <data>
-            <stringValue>timestamp=1370113919177</stringValue>
+            <stringValue>timestamp=1384775850003</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>url</name>
         <data>
             <blobValue>
-                <filename>Demo\DmTopmenu_demo.element.Topmenu,0.jsp</filename>
+                <filename>Demo\DmTopmenu_demo.element.Topmenu.jsp</filename>
                 <foldername></foldername>
                 <filedata></filedata>
             </blobValue>
@@ -125,18 +129,17 @@
 
 <!--==================___ METADATA ___================
 <dependencies>
-  <list>
+  <linked-hash-set>
     <dependency>
       <depType>N</depType>
       <resType>CSElement</resType>
-      <resId>1351275803218</resId>
+      <resId>1374097570269</resId>
       <uid>b47c7ded-99f2-47e9-82b9-bb1c3897d45c</uid>
     </dependency>
-  </list>
+  </linked-hash-set>
 </dependencies>
 ==================______________________==================
 #
-#Sat Jun 01 21:29:23 UTC 2013
 storable0=/ELEMENTS/JSP/Demo/DmTopmenu.jsp|UTF-8|_storable_type\=%2FELEMENTS%2FJSP%2FDemo%2FDmTopmenu.jsp
 @hashval=-1149183801
 key=CSElement-b47c7ded-99f2-47e9-82b9-bb1c3897d45c

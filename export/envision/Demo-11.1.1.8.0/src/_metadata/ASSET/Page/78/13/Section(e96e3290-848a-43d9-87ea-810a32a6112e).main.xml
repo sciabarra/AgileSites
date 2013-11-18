@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>Page:1351275803305</id>
+    <id>Page:1374097570277</id>
     <name>Section</name>
     <createdby>fwadmin</createdby>
     <createddate>2013-06-01T18:01:55.883Z</createddate>
     <description></description>
     <publist>Demo</publist>
-    <status>PL</status>
+    <status>ED</status>
     <subtype>Content</subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-06-01T18:03:38.324Z</updateddate>
+    <updateddate>2013-11-18T11:44:23.062Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275803305</longValue>
+            <longValue>1374097570277</longValue>
         </data>
     </attribute>
     <attribute>
@@ -83,7 +83,7 @@
     <attribute>
         <name>SPTParent</name>
         <data>
-            <stringValue>Page:1351275803232</stringValue>
+            <stringValue>Page:1374097570276</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -101,7 +101,7 @@
     <attribute>
         <name>flextemplateid</name>
         <data>
-            <stringValue>PageDefinition:1351275803278</stringValue>
+            <stringValue>PageDefinition:1374097570318</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -151,7 +151,7 @@
     <attribute>
         <name>SeeAlso</name>
         <data>
-            <stringList>Page:1351275803233</stringList>
+            <stringList>Page:1374097570275</stringList>
         </data>
     </attribute>
     <associations>
@@ -165,68 +165,67 @@
     <dependency>
       <depType>E</depType>
       <resType>Page</resType>
-      <resId>1351275803233</resId>
+      <resId>1374097570275</resId>
       <uid>83ee131a-608e-4ef5-a7df-79d76a0ffb7e</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>Page</resType>
-      <resId>1351275803306</resId>
+      <resId>1374097570387</resId>
       <uid>2d346e77-ba6f-4344-b0cd-421de865b855</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803227</resId>
-      <uid>bd9fde78-f4d8-4768-9732-a25cdd864138</uid>
-    </dependency>
-    <dependency>
-      <depType>E</depType>
-      <resType>PageAttribute</resType>
-      <resId>1351275803235</resId>
+      <resId>1374097570234</resId>
       <uid>eeff1b67-f704-4bd4-9b6a-1d712dcea3f3</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803244</resId>
+      <resId>1374097570283</resId>
+      <uid>bd9fde78-f4d8-4768-9732-a25cdd864138</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1374097570288</resId>
       <uid>0af911fc-942b-473a-af83-bc038e03bfe2</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803258</resId>
+      <resId>1374097570298</resId>
       <uid>f7a19b42-b7b4-4f52-b574-1afb01083e11</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803273</resId>
+      <resId>1374097570313</resId>
       <uid>96a78f25-3d32-47ef-80fb-c8560c8ed816</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageDefinition</resType>
-      <resId>1351275803278</resId>
+      <resId>1374097570318</resId>
       <uid>5136914e-a0f7-47d6-a014-b3c1ade5319e</uid>
     </dependency>
     <dependency>
       <depType>N</depType>
       <resType>Page</resType>
-      <resId>1351275803305</resId>
+      <resId>1374097570277</resId>
       <uid>e96e3290-848a-43d9-87ea-810a32a6112e</uid>
     </dependency>
     <dependency>
       <depType>N</depType>
       <resType>Page</resType>
-      <resId>1351275803232</resId>
+      <resId>1374097570276</resId>
       <uid>4adc5be5-d187-4c2b-a299-670a3011382e</uid>
     </dependency>
   </linked-hash-set>
 </dependencies>
 ==================______________________==================
 #
-#Sat Jun 01 21:29:22 UTC 2013
 key=Page-e96e3290-848a-43d9-87ea-810a32a6112e
 type=ASSETDATA
 sites=Demo

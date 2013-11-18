@@ -1,10 +1,10 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
-    <id class="string">1374098063623</id>
+    <id class="string">1374097566803</id>
     <resourceType>TREETAB</resourceType>
     <deps class="empty-set"/>
     <data class="com.openmarket.xcelerate.treetab.TreeTab">
-      <id>1374098063623</id>
+      <id>1374097566803</id>
       <uid>CSSystem:TreeTabs:Site Admin</uid>
       <globalItems class="com.openmarket.xcelerate.treetab.TreeItems">
         <hashtable>
@@ -49,16 +49,8 @@
       <sites class="com.openmarket.xcelerate.common.SiteList">
         <hashtable>
           <entry>
-            <long>1322052581735</long>
-            <long>1322052581735</long>
-          </entry>
-          <entry>
             <long>1253041378564</long>
             <long>1253041378564</long>
-          </entry>
-          <entry>
-            <long>1112198287026</long>
-            <long>1112198287026</long>
           </entry>
           <entry>
             <long>1351275793143</long>
@@ -86,16 +78,8 @@
             <sites class="com.openmarket.xcelerate.common.SiteList">
               <hashtable>
                 <entry>
-                  <long>1322052581735</long>
-                  <long>1322052581735</long>
-                </entry>
-                <entry>
                   <long>1253041378564</long>
                   <long>1253041378564</long>
-                </entry>
-                <entry>
-                  <long>1112198287026</long>
-                  <long>1112198287026</long>
                 </entry>
                 <entry>
                   <long>1351275793143</long>

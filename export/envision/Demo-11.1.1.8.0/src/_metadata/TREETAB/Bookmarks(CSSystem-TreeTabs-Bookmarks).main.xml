@@ -1,10 +1,10 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
-    <id class="string">1374098063641</id>
+    <id class="string">1374097566821</id>
     <resourceType>TREETAB</resourceType>
     <deps class="empty-set"/>
     <data class="com.openmarket.xcelerate.treetab.TreeTab">
-      <id>1374098063641</id>
+      <id>1374097566821</id>
       <uid>CSSystem:TreeTabs:Bookmarks</uid>
       <globalItems class="com.openmarket.xcelerate.treetab.TreeItems">
         <hashtable>
@@ -41,73 +41,13 @@
       <roles class="com.openmarket.xcelerate.common.RoleList">
         <hashtable>
           <entry>
-            <string>ContentAuthor</string>
-            <string>ContentAuthor</string>
-          </entry>
-          <entry>
-            <string>MarketingEditor</string>
-            <string>MarketingEditor</string>
-          </entry>
-          <entry>
-            <string>Approver</string>
-            <string>Approver</string>
-          </entry>
-          <entry>
             <string>GeneralAdmin</string>
             <string>GeneralAdmin</string>
-          </entry>
-          <entry>
-            <string>ArtworkAuthor</string>
-            <string>ArtworkAuthor</string>
-          </entry>
-          <entry>
-            <string>DocumentAuthor</string>
-            <string>DocumentAuthor</string>
-          </entry>
-          <entry>
-            <string>ContentEditor</string>
-            <string>ContentEditor</string>
-          </entry>
-          <entry>
-            <string>ArtworkEditor</string>
-            <string>ArtworkEditor</string>
-          </entry>
-          <entry>
-            <string>ProductAuthor</string>
-            <string>ProductAuthor</string>
-          </entry>
-          <entry>
-            <string>SitesUser</string>
-            <string>SitesUser</string>
-          </entry>
-          <entry>
-            <string>DocumentEditor</string>
-            <string>DocumentEditor</string>
-          </entry>
-          <entry>
-            <string>Designer</string>
-            <string>Designer</string>
-          </entry>
-          <entry>
-            <string>ProductEditor</string>
-            <string>ProductEditor</string>
-          </entry>
-          <entry>
-            <string>MarketingAuthor</string>
-            <string>MarketingAuthor</string>
           </entry>
         </hashtable>
       </roles>
       <sites class="com.openmarket.xcelerate.common.SiteList">
         <hashtable>
-          <entry>
-            <long>1322052581735</long>
-            <long>1322052581735</long>
-          </entry>
-          <entry>
-            <long>1112198287026</long>
-            <long>1112198287026</long>
-          </entry>
           <entry>
             <long>1351275793143</long>
             <long>1351275793143</long>
@@ -118,8 +58,8 @@
           </entry>
         </hashtable>
       </sites>
-      <nodeOpenedPic>Xcelerate/OMTree/TreeImages/minus.gif</nodeOpenedPic>
-      <nodeClosedPic>Xcelerate/OMTree/TreeImages/plus.gif</nodeClosedPic>
+      <nodeOpenedPic>Xcelerate/OMTree/TreeImages/minus.png</nodeOpenedPic>
+      <nodeClosedPic>Xcelerate/OMTree/TreeImages/plus.png</nodeClosedPic>
       <sections class="com.openmarket.xcelerate.treetab.SectionList">
         <sections>
           <entry>
@@ -134,14 +74,6 @@
             <sites class="com.openmarket.xcelerate.common.SiteList">
               <hashtable>
                 <entry>
-                  <long>1322052581735</long>
-                  <long>1322052581735</long>
-                </entry>
-                <entry>
-                  <long>1112198287026</long>
-                  <long>1112198287026</long>
-                </entry>
-                <entry>
                   <long>1351275793143</long>
                   <long>1351275793143</long>
                 </entry>
@@ -152,64 +84,7 @@
               </hashtable>
             </sites>
             <roles class="com.openmarket.xcelerate.common.RoleList">
-              <hashtable>
-                <entry>
-                  <string>ContentAuthor</string>
-                  <string>ContentAuthor</string>
-                </entry>
-                <entry>
-                  <string>MarketingEditor</string>
-                  <string>MarketingEditor</string>
-                </entry>
-                <entry>
-                  <string>Approver</string>
-                  <string>Approver</string>
-                </entry>
-                <entry>
-                  <string>GeneralAdmin</string>
-                  <string>GeneralAdmin</string>
-                </entry>
-                <entry>
-                  <string>ArtworkAuthor</string>
-                  <string>ArtworkAuthor</string>
-                </entry>
-                <entry>
-                  <string>DocumentAuthor</string>
-                  <string>DocumentAuthor</string>
-                </entry>
-                <entry>
-                  <string>ContentEditor</string>
-                  <string>ContentEditor</string>
-                </entry>
-                <entry>
-                  <string>ArtworkEditor</string>
-                  <string>ArtworkEditor</string>
-                </entry>
-                <entry>
-                  <string>ProductAuthor</string>
-                  <string>ProductAuthor</string>
-                </entry>
-                <entry>
-                  <string>SitesUser</string>
-                  <string>SitesUser</string>
-                </entry>
-                <entry>
-                  <string>DocumentEditor</string>
-                  <string>DocumentEditor</string>
-                </entry>
-                <entry>
-                  <string>Designer</string>
-                  <string>Designer</string>
-                </entry>
-                <entry>
-                  <string>ProductEditor</string>
-                  <string>ProductEditor</string>
-                </entry>
-                <entry>
-                  <string>MarketingAuthor</string>
-                  <string>MarketingAuthor</string>
-                </entry>
-              </hashtable>
+              <hashtable/>
             </roles>
           </com.openmarket.xcelerate.treetab.Section>
         </sectionVector>

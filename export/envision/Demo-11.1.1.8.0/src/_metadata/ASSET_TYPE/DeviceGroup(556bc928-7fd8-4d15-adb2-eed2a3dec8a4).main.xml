@@ -11,7 +11,7 @@
         <description>Device Group</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>E:\devel\WebCenterSites-11.1.1.8.0\Sites\11.1.1.8.0\Shared\Storage\AssetType\DeviceGroup.xml</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\Sites\11.1.1.8.0\Shared\Storage\AssetType\DeviceGroup.xml</urldescriptorspec>
         <urldescriptordata>PEFTU0VUIE5BTUU9IkRldmljZUdyb3VwIiBERVNDUklQVElPTj0iRGV2aWNlIEdyb3VwIiBNQVJL
 RVJURVhUPSIqIiBQUk9DRVNTT1I9IjUuMCIgIERFRkRJUj0iYzpcRGV2aWNlQ2F0ZWdvcmllcyIg
 IFJFTkRFUlVTSU5HVEVNUExBVEU9Im5vIiA+CiAgICAKCTxQUk9QRVJUSUVTPiAKICAgIAoJPFBS
@@ -110,7 +110,7 @@ QVNTRVQ+</urldescriptordata>
             <null/>
             <null/>
             <null/>
-            <string>E:/devel/WebCenterSites-11.1.1.8.0/Sites/11.1.1.8.0/Shared/Storage/DeviceGroup/</string>
+            <string>z:/AgileSitesJSK/1.0/11.8.0/Sites/11.1.1.8.0/Shared/Storage/DeviceGroup/</string>
             <null/>
             <null/>
             <null/>
@@ -295,7 +295,7 @@ QVNTRVQ+</urldescriptordata>
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/DeviceGroup/SelectSummary_NoCat.sql</string>
+            <string>OpenMarket\Xcelerate\AssetType\DeviceGroup\SelectSummary_NoCat.sql</string>
             <null/>
             <null/>
             <null/>
@@ -621,9 +621,7 @@ Ymxlcy5Bc3NldFR5cGUuc3RhdHVzIT0nVk8nIFZhcmlhYmxlcy5xdWVyeWVuZA==</byte-array>
       </categoryIList>
       <associations/>
       <siteNames class="list">
-        <string>avisports</string>
         <string>Demo</string>
-        <string>FirstSiteII</string>
       </siteNames>
     </data>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -859,6 +857,6 @@ Ymxlcy5Bc3NldFR5cGUuc3RhdHVzIT0nVk8nIFZhcmlhYmxlcy5xdWVyeWVuZA==</byte-array>
 #
 key=@ASSET_TYPE-556bc928-7fd8-4d15-adb2-eed2a3dec8a4
 type=ASSET_TYPE
-sites=avisports,Demo,FirstSiteII
+sites=Demo
 
 ==================___ END METADATA ___==================-->

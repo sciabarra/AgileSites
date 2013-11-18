@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>SiteEntry:1351275803132</id>
+    <id>SiteEntry:1374097570424</id>
     <name>demo</name>
     <createdby>fwadmin</createdby>
     <createddate>2013-06-01T18:01:37.820Z</createddate>
@@ -9,7 +9,7 @@
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-06-01T19:11:58.786Z</updateddate>
+    <updateddate>2013-11-18T11:57:29.599Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,11 +59,15 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275803132</longValue>
+            <longValue>1374097570424</longValue>
         </data>
     </attribute>
     <attribute>
         <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Webreference</name>
         <data/>
     </attribute>
     <attribute>
@@ -133,7 +137,7 @@
                 <item>
                     <name>value</name>
                     <data>
-                        <stringValue>1351275803132</stringValue>
+                        <stringValue>1374097570424</stringValue>
                     </data>
                 </item>
             </structList>
@@ -193,14 +197,13 @@
     <dependency>
       <depType>N</depType>
       <resType>SiteEntry</resType>
-      <resId>1351275803132</resId>
+      <resId>1374097570424</resId>
       <uid>9f76537f-f87c-4575-8c81-f393a624ee0b</uid>
     </dependency>
   </linked-hash-set>
 </dependencies>
 ==================______________________==================
 #
-#Sat Jun 01 21:29:23 UTC 2013
 key=SiteEntry-9f76537f-f87c-4575-8c81-f393a624ee0b
 type=ASSETDATA
 sites=Demo

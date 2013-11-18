@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>AttrTypes:1351275793612</id>
+    <id>AttrTypes:1374097570226</id>
     <name>CkEditor500x300</name>
     <createdby>fwadmin</createdby>
     <createddate>2013-04-17T19:47:06.034Z</createddate>
@@ -9,7 +9,7 @@
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-04-17T19:47:21.121Z</updateddate>
+    <updateddate>2013-09-12T19:05:42.125Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,11 +59,15 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275793612</longValue>
+            <longValue>1374097570226</longValue>
         </data>
     </attribute>
     <attribute>
         <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Webreference</name>
         <data/>
     </attribute>
     <attribute>
@@ -93,14 +97,13 @@
     <dependency>
       <depType>N</depType>
       <resType>AttrTypes</resType>
-      <resId>1351275793612</resId>
+      <resId>1374097570226</resId>
       <uid>78db3444-e9e6-4531-8873-5a8e3966f9cf</uid>
     </dependency>
   </linked-hash-set>
 </dependencies>
 ==================______________________==================
 #
-#Mon Apr 22 08:52:13 UTC 2013
 storable0=ASSET/AttrTypes/72/8/CkEditor500x300.urlxml(78db3444-e9e6-4531-8873-5a8e3966f9cf).1351275793612.txt||_storable_type\=CkEditor500x300.urlxml%2878db3444-e9e6-4531-8873-5a8e3966f9cf%29.1351275793612.txt&_blob_prop\=urlxml&_value_count\=S
 key=AttrTypes-78db3444-e9e6-4531-8873-5a8e3966f9cf
 type=ASSETDATA
