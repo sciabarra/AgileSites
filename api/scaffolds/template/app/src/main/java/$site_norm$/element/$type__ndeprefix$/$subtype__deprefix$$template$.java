@@ -7,6 +7,7 @@ import wcs.java.Env;
 import wcs.java.Element;
 import wcs.java.Template;
 import wcs.java.AssetSetup;
+import wcs.java.util.AddIndex;
 
 public class $subtype;format="deprefix"$$template$ extends Element {
 

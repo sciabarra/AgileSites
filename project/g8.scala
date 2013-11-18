@@ -343,7 +343,7 @@ object ScaffoldPlugin extends sbt.Plugin {
          |
          |You have 3 different generations available.
          |
-         |To generate a new template, just type `wcs-gen <scaffold>`.
+         |To generate a new template, just type `wcs-generate <scaffold>`.
          |It will ask for the variable values, and generate the correct code.
          |""".stripMargin)
   }

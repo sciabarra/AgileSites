@@ -9,6 +9,7 @@ import wcs.java.Template;
 import wcs.java.Asset;
 import wcs.java.AssetSetup;
 import wcs.java.Picker;
+import wcs.java.util.AddIndex;
 
 @AddIndex("$site;format="normalize"$/elements.txt")
 public class $subtype;format="deprefix"$Layout extends Element {

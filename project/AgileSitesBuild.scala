@@ -13,7 +13,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
 
   // if you change this 
   // remember to update the agilesites scripts
-  val v = "1.0.1" 
+  val v = "1.0.8" 
 
   // remove then add those jars in setup
   val addFilterSetup =  "agilesites-core*" || "junit*" 
@@ -116,13 +116,14 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       wcsVirtualHostsTask,
       wcsSetupOnlineTask,
       wcsSetupOfflineTask,
+      wcsSetupSatelliteTask,
       wcsDeployTask,
       wcsCopyStaticTask,
       wcsPackageJarTask,
       wcsUpdateAssetsTask,
       wcsLogTask,
       excludedJars in assembly <<= (fullClasspath in assembly),
-      watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").getFiles),
+      watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").get),
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
       EclipseKeys.skipProject := false,
       assembleArtifact in packageScala := false)) dependsOn (app) aggregate (app, api)

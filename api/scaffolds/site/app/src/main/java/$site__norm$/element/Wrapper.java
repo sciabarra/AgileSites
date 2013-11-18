@@ -8,6 +8,7 @@ import wcs.java.SiteEntry;
 import wcs.java.Element;
 import wcs.java.Env;
 import wcs.java.Picker;
+import wcs.java.util.AddIndex;
 
 @AddIndex("$site;format="normalize"$/elements.txt")
 public class Wrapper extends Element {
@@ -15,8 +16,8 @@ public class Wrapper extends Element {
 	private final static Log log = Log.getLog(Wrapper.class);
 
 	public static AssetSetup setup() {
-		return new CSElement("$prefix$Wrapper", $site;format="normalize"$.element.Wrapper.class,
-				new SiteEntry("$site;format="normalize"$", true, "$site$/$prefix$Wrapper"));
+		return new CSElement("$site$_Wrapper", $site;format="normalize"$.element.Wrapper.class,
+				new SiteEntry("$site;format="normalize"$", true, "$site$/$site$_Wrapper"));
 	}
 
 	@Override
@@ -31,13 +32,13 @@ public class Wrapper extends Element {
 
 		// handle errors
 		if (e.isVar("error"))
-			return html.replace("#content", e.call("$prefix$Error",// 
+			return html.replace("#content", e.call("$site$_Error",// 
 							arg("error", e.getString("error"))))//
 					/*.dump(log)*/.outerHtml();
 
 		Asset a = e.getAsset();
 		if (a == null)
-			return html.replace("#content", e.call("$prefix$Error",//
+			return html.replace("#content", e.call("$site$_Error",//
 				    		arg("error", "Asset not found")))//
 					/*.dump(log)*/.outerHtml();
 

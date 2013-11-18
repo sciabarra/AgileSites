@@ -6,13 +6,14 @@ import wcs.java.CSElement;
 import wcs.java.SiteEntry;
 import wcs.java.util.TestRunnerElement;
 import wcs.java.util.Util;
+import wcs.java.util.AddIndex;
 
 @AddIndex("$site;format="normalize"$/elements.txt")
 public class Tester extends TestRunnerElement {
 
 	public static AssetSetup setup() {
-		return new CSElement("$prefix$Tester", $site;format="normalize"$.element.Tester.class, //
-				new SiteEntry("$site;format="normalize"$-tester", false, "$site$/$prefix$Tester"));
+		return new CSElement("$site$_Tester", $site;format="normalize"$.element.Tester.class, //
+				new SiteEntry("$site;format="normalize"$-tester", false, "$site$/$site$_Tester"));
 	}
 
 	@Override

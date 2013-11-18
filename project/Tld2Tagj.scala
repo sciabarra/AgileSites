@@ -53,7 +53,7 @@ public class %s  {
   def body(lib: String, name: String, parArgs: List[String]): String = {
 
     val uname = if (javaKeywords.contains(name)) name + "_" else name
-    val cname = uname(0).toUpperCase + uname.substring(1)
+    val cname = uname(0).toUpper + uname.substring(1)
     val lname = uname.toLowerCase;
     val tname = lib.toUpperCase + "." + uname.toUpperCase
 

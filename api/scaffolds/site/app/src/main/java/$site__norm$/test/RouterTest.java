@@ -8,6 +8,7 @@ import wcs.java.Router;
 import wcs.java.util.TestElement;
 import org.junit.Before;
 import org.junit.Test;
+import wcs.java.util.AddIndex;
 
 @AddIndex("$site;format="normalize"$/tests.txt")
 public class RouterTest extends TestElement {
@@ -28,7 +29,7 @@ public class RouterTest extends TestElement {
 			assertAttr("ics-callelement", "error",
 					"Asset not found: type:Page name:Home");
 		} else {
-			assertAttr("ics-callelement", "element", "$site$/$prefix$Wrapper");
+			assertAttr("ics-callelement", "element", "$site$/$site$_Wrapper");
 			assertAttr("ics-callelement", "c", "Page");
 			assertAttr("ics-callelement", "cid", home.getCid().toString());
 		}
@@ -38,7 +39,7 @@ public class RouterTest extends TestElement {
 			assertAttr("ics-callelement", "error",
 					"Asset not found: type:Page name:Home");
 		} else {
-			assertAttr("ics-callelement", "element", "$site$/$prefix$Wrapper");
+			assertAttr("ics-callelement", "element", "$site$/$site$_Wrapper");
 			assertAttr("ics-callelement", "c", "Page");
 			assertAttr("ics-callelement", "cid", home.getCid().toString());			
 		}

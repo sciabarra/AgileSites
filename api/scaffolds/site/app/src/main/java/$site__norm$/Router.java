@@ -56,7 +56,7 @@ public class Router extends wcs.java.Router {
 
 		// path not split in pieces
 		if (c == null || name == null) {
-			return call("$prefix$Wrapper",
+			return call("$site$_Wrapper",
 					arg("error", "Path not found: " + url.getPath()));
 		}
 
@@ -64,13 +64,13 @@ public class Router extends wcs.java.Router {
 		List<Id> list = e.find(c, arg("name", name));
 		if (list.size() > 0) {
 			// found
-			return call("$site$/$prefix$Wrapper", //
+			return call("$site$/$site$_Wrapper", //
 					arg("c", list.get(0).c), //
 					arg("cid", list.get(0).cid.toString()));
 		} else {
 			// not found
 			String error = "Asset not found: type:" + c + " name:" + name;
-			return call("$site$/$prefix$Wrapper", arg("error", error));
+			return call("$site$/$site$_Wrapper", arg("error", error));
 		}
 	}
 	

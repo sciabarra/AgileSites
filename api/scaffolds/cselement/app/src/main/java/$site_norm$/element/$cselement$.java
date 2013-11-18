@@ -8,6 +8,7 @@ import wcs.java.Element;
 import wcs.java.CSElement;
 import wcs.java.AssetSetup;
 import wcs.java.Picker;
+import wcs.java.util.AddIndex;
 
 @AddIndex("$site;format="normalize"$/elements.txt")
 public class $cselement$ extends Element {
@@ -15,7 +16,7 @@ public class $cselement$ extends Element {
 	final static Log log = Log.getLog($cselement$.class);
 	
 	public static AssetSetup setup() {
-		return new CSElement("$prefix$$cselement$", $site;format="normalize"$.element.$cselement$.class);
+		return new CSElement("$site$_$cselement$", $site;format="normalize"$.element.$cselement$.class);
 	}
 
 	@Override

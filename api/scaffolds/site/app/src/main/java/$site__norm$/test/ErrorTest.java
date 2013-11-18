@@ -4,6 +4,7 @@ import $site;format="normalize"$.element.Error;
 import wcs.java.util.TestElement;
 import org.junit.Before;
 import org.junit.Test;
+import wcs.java.util.AddIndex;
 
 // this test must be run by the test runner
 @AddIndex("$site;format="normalize"$/tests.txt")
