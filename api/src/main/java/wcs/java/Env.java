@@ -18,7 +18,10 @@ import wcs.core.Range;
 import wcs.core.WCS;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.RenderTag;
+import wcs.core.tag.SatelliteTag;
 import wcs.java.util.AssetDeps;
+import COM.FutureTense.Interfaces.FTVAL;
+import COM.FutureTense.Interfaces.FTValList;
 import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
 
@@ -381,26 +384,34 @@ public class Env extends ICSProxyJ {
 	 * we are in insite/preview mode or in live mode
 	 */
 	public String getUrl(Id id, Arg... args) {
+		System.out.println("getUrl:" + id);
+
 		if (insite || preview) {
 			return RenderTag.getpageurl().pagename(normSite).c(id.c)
 					.cid(id.cid.toString()).assembler("query")
 					.eval(ics, "outstr");
 		}
-		String pCid = getRouter().link(this, id, args);
-		String pC = WCS.normalizeSiteName(getConfig().getSite());
+
+		String nsite = WCS.normalizeSiteName(site);
+		String url = getRouter().link(this, id, args);
 
 		String res;
 
 		if (hasDevices) {
-			res = RenderTag.getpageurl().pagename("AAAgileRouter")
-					//
-					.c(pC).cid(pCid).assembler("agilesites")
-					.set("d", "Default").eval(ics, "outstr");
+
+			String rendermode = ics.GetVar("rendermode");
+			if (rendermode == null)
+				rendermode = "live";
+
+			res = SatelliteTag.link().pagename("AAAgileRouter")
+					.set("rendermode", rendermode).set("url", url)
+					.set("site", nsite).assembler("agilesites")
+					.eval(ics, "outstring");
+
 		} else {
-			res = RenderTag.getpageurl().pagename("AAAgileRouter")
-					//
-					.c(pC).cid(pCid).assembler("agilesites")
-					.eval(ics, "outstr");
+			res = RenderTag.getpageurl().pagename("AAAgileRouter").c(id.c)
+					.cid(id.cid.toString()).assembler("agilesites")
+					.set("site", nsite).set("url", url).eval(ics, "outstr");
 		}
 
 		log.debug("getUrl: outstr=" + res);

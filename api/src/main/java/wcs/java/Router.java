@@ -52,7 +52,6 @@ abstract public class Router implements wcs.core.Router {
 	public Call route(ICS ics, String _site, String _path, String _query) {
 		log.debug("site=" + _site + " path=" + _path + " query=" + _query);
 		this.i = ics;
-		site = Config.getConfig(_site).getSite();
 		this.e = new Env(i, site);
 		if (_query == null || _query.trim().length() == 0)
 			_query = "";

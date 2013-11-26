@@ -5,8 +5,8 @@
 %><cs:ftcs><%! final static Log log = wcs.core.Log.getLog("jsp.wcs.core.Router");
 %><%
   Call c = WCS.route(ics, 
-   ics.GetVar("c"), 
-   ics.GetVar("cid"),
+   ics.GetVar("site"), 
+   ics.GetVar("url"),
    request.getQueryString());
    log.trace(c.toString());
 %><ics:callelement  element='<%= c.getOnce("element") %>'><%

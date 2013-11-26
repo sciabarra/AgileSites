@@ -1,14 +1,16 @@
 package demo;
 
-import wcs.core.Arg;
-import wcs.core.Log;
-import wcs.core.URL;
-import wcs.core.Call;
-import wcs.core.Id;
-import wcs.java.Env;
+import static wcs.core.Common.arg;
+
 import java.util.List;
 import java.util.StringTokenizer;
-import static wcs.core.Common.arg;
+
+import wcs.core.Arg;
+import wcs.core.Call;
+import wcs.core.Id;
+import wcs.core.Log;
+import wcs.core.URL;
+import wcs.java.Env;
 
 /**
  * Simple router invoking the tester only
@@ -22,6 +24,13 @@ public class Router extends wcs.java.Router {
 
 	@Override
 	public Call route(Env e, URL url) {
+
+		//for (int i = 0; i < 10; i++) {
+		//	System.out
+		//			.println(AssemblerEngine.getAssemblerClassnamePropName(i));
+		//	System.out
+		//			.println(AssemblerEngine.getAssemblerShortFormPropName(i));
+		//}
 
 		// split the token
 		String c = null;

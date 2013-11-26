@@ -48,6 +48,6 @@ public class Wrapper extends Element {
 		html.attr("meta[name=description]", "content", a.getDescription());	
 		html.replace("#content", a.call(a.getTemplate()));
 
-		return html/*.dump(log)*/.outerHtml();
+		return html.dump(log).outerHtml();
 	}
 }

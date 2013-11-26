@@ -19,8 +19,8 @@ import com.fatwire.cs.core.uri.Simple;
 public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 
 	public static URI buildUri(String prefix, String suffix) {
+		log.debug("buildUri: %s / %s", prefix, suffix);
 		try {
-
 			URI uri = new URI(prefix);
 			uri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
 					uri.getPort(), uri.getPath() + Common.nn(suffix), null,
@@ -35,6 +35,7 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 
 	private QueryAssembler qa = new QueryAssembler();
 	private Map<String, String> sitePrefix = new HashMap<String, String>();
+	private Map<String, String> siteName = new HashMap<String, String>();
 	private Pattern sitePattern = Pattern
 			.compile("^.*?/(ContentServer|BlobServer|Satellite)/([a-z0-9]+)(/(.*))?$");
 	private Pattern staticBlobs = null;
@@ -63,16 +64,23 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 			while (keys.hasMoreElements()) {
 
 				String key = keys.nextElement().toString();
-				if (!key.startsWith("agilesites.site."))
+				if (!(key.startsWith("agilesites.site.") || key
+						.startsWith("agilesites.name.")))
 					continue;
 
-				String site = key.substring("agilesites.site.".length());
-				String prefix = prp.getProperty(key);
+				String site = key.substring("agilesites.1234.".length());
+				String value = prp.getProperty(key);
+				log.debug(key + ": " + value);
 
-				if (prefix != null)
-					sitePrefix.put(site, prefix);
-				else
-					log.debug("no site prefix for " + site);
+				if (value != null) {
+					if (key.startsWith("agilesites.site")) {
+						sitePrefix.put(site, value);
+					}
+					if (key.startsWith("agilesites.name")) {
+						siteName.put(site, value);
+					}
+				} else
+					log.debug("no site name or prefix for " + site);
 
 			}
 		} catch (Exception ex) {
@@ -99,14 +107,14 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 
 		def.setQueryStringParameter("pagename", "AAAgileRouter");
 		if (path != null)
-			def.setQueryStringParameter("cid", path);
-		def.setQueryStringParameter("c", site);
+			def.setQueryStringParameter("url", path);
+		def.setQueryStringParameter("site", site);
 		String q = uri.getRawQuery();
 		if (q != null)
 			def.setQueryStringParameter("q", q);
 
-		log.debug("c=" + site);
-		log.debug("cid=" + path);
+		log.debug("site=" + site);
+		log.debug("url=" + path);
 		log.debug("q=" + q);
 
 		return def;
@@ -210,19 +218,20 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		if (match.find()) {
 			String site = match.group(2);
 			String subpath = match.group(4);
-			log.debug("site=" + site + " subpath=" + subpath);
-			if (sitePrefix.containsKey(site)) {
+			if (siteName.containsKey(site) && sitePrefix.containsKey(site)) {
 				// check if it is one of the blobs
+				site = siteName.get(site);
+				log.debug("site=" + site + " subpath=" + subpath);
 				result = disassembleBlob(uri, site, subpath);
 				if (result == null) {
-					log.debug("*** asset found");
+					log.debug("**** asset found");
 					return assetDef(uri, site, subpath);
 				} else {
 					log.debug("*** blob found");
 					return result;
 				}
 			} else {
-				log.debug("no known site " + site);
+				log.debug("no prefix for site " + site);
 			}
 		}
 		return qa.disassemble(uri, type);
@@ -230,24 +239,25 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 
 	@Override
 	public URI assemble(Definition def) throws URISyntaxException {
-
-		String site = def.getParameter("c");
-		String suffix = def.getParameter("cid");
-		String mode = def.getParameter("rendermode");
-		String prefix = sitePrefix.get(site);
-
-		if (mode != null && !mode.equals("live"))
+		
+		String site = def.getParameter("site");
+		String url = def.getParameter("url");
+		String rendermode = def.getParameter("rendermode");
+				
+		log.debug("assemble: d=%s site=%s url=%s rendermode=%s", d, site, url, rendermode);
+		
+		if (rendermode != null && !rendermode.equals("live"))
 			return qa.assemble(def);
 
+		String prefix = sitePrefix.get(site);
 		if (prefix != null) {
 			try {
 				// the prefix is supposed to be already properly encoded...
-				return buildUri(prefix, suffix);
+				return buildUri(prefix, url);
 			} catch (Exception ex) {
 				log.trace("unencodable url!", ex);
 			}
 		}
 		return qa.assemble(def);
-
 	}
 }

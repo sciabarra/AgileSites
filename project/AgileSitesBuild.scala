@@ -42,13 +42,14 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "org.springframework" % "spring" % "2.5.5",
     "org.springframework" % "spring-test" % "2.5.5",
     "commons-logging" % "commons-logging" % "1.1.1",
-    "com.novocode" % "junit-interface" % "0.8" % "test->default",
     "log4j" % "log4j" % "1.2.16",
     "commons-httpclient" % "commons-httpclient" % "3.1",
     "org.apache.httpcomponents" % "httpclient" % "4.1.2",
     "org.apache.httpcomponents" % "httpcore" % "4.1.2",
     "org.apache.httpcomponents" % "httpmime" % "4.1.2",
-    "org.apache.james" % "apache-mime4j" % "0.5")
+    "org.apache.james" % "apache-mime4j" % "0.5",
+    "com.novocode" % "junit-interface" % "0.8" % "test->default",
+    "org.hamcrest" % "hamcrest-all" % "1.3" % "test->default")
 
   val coreSettings = Defaults.defaultSettings ++ net.virtualvoid.sbt.graph.Plugin.graphSettings ++ Seq(
     scalaVersion := "2.10.2",

@@ -535,15 +535,16 @@ class AssetImpl extends wcs.java.Asset {
 	@Override
 	public String call(String template, Arg... args) {
 		// let's start with the common parameters
+		String tid = i.GetVar("tid") != null ? i.GetVar("tid") : i.GetVar("eid");
+		String ttype = i.GetVar("tid") != null ? "Template" : "CSElement";
+		log.trace("ttype/tid=", ttype, tid);
 		List<Arg> list = new ArrayList<Arg>();
 		list.add(arg("SITE", i.GetVar("site")));
 		list.add(arg("TNAME", template));
 		list.add(arg("C", c));
 		list.add(arg("CID", cid.toString()));
-		list.add(arg("TTYPE", i.GetVar("tid") != null ? "Template"
-				: "CSElement"));
-		list.add(arg("TID",
-				i.GetVar("tid") != null ? i.GetVar("tid") : i.GetVar("eid")));
+		list.add(arg("TTYPE", ttype));
+		list.add(arg("TID", tid));
 		return Common.call("RENDER:CALLTEMPLATE", list);
 	}
 

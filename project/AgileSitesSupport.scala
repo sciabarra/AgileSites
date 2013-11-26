@@ -274,7 +274,15 @@ trait AgileSitesSupport extends Utils {
       val p1c = prp.getProperty("uri.assembler.1.classname")
       val p2s = prp.getProperty("uri.assembler.2.shortform")
       val p2c = prp.getProperty("uri.assembler.2.classname")
+      val p3s = prp.getProperty("uri.assembler.3.shortform")
+      val p3c = prp.getProperty("uri.assembler.3.classname")
+      val p4s = prp.getProperty("uri.assembler.4.shortform")
+      val p4c = prp.getProperty("uri.assembler.4.classname")
 
+      if(p4s!=null && p4s!="") prp.setProperty("uri.assembler.5.shortform", p4s)
+      if(p4c!=null && p4c!="") prp.setProperty("uri.assembler.5.classname", p4c)
+      if(p3s!=null && p4s!="") prp.setProperty("uri.assembler.4.shortform", p3s)
+      if(p3s!=null && p4s!="") prp.setProperty("uri.assembler.4.classname", p3c)
       prp.setProperty("uri.assembler.3.shortform", p2s)
       prp.setProperty("uri.assembler.3.classname", p2c)
       prp.setProperty("uri.assembler.2.shortform", p1s)
@@ -285,6 +293,7 @@ trait AgileSitesSupport extends Utils {
 
     for ((k, v) <- sitesSeq) {
       prp.setProperty("agilesites.site." + normalizeSiteName(k), v)
+      prp.setProperty("agilesites.name." + normalizeSiteName(k), k)
     }
 
     prp.setProperty("agilesites.blob.flex", flexBlobs)
@@ -496,17 +505,17 @@ trait AgileSitesSupport extends Utils {
               }.start
               None
             case "start" :: Nil =>
-              Some("&op=start&level=DEBUG&%s" format parse(Nil))
+              Some("op=start&level=DEBUG&%s" format parse(Nil))
             case "stop" :: rest =>
-              Some("&op=stop&%s" format parse(rest))
+              Some("op=stop&%s" format parse(rest))
             case "list" :: rest =>
-              Some("&op=list")
+              Some("op=list")
             case level :: rest =>
               if ("ERROR|WARN|DEBUG|INFO|TRACE".r findAllIn level.toUpperCase isEmpty) {
                 println("Invalid level " + level)
                 None
               } else
-                Some("&op=start&level=%s&%s" format (level.toUpperCase, parse(rest)))
+                Some("op=start&level=%s&%s" format (level.toUpperCase, parse(rest)))
             case _ =>
               usage
               None
