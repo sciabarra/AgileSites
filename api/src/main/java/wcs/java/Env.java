@@ -20,8 +20,6 @@ import wcs.core.tag.AssetTag;
 import wcs.core.tag.RenderTag;
 import wcs.core.tag.SatelliteTag;
 import wcs.java.util.AssetDeps;
-import COM.FutureTense.Interfaces.FTVAL;
-import COM.FutureTense.Interfaces.FTValList;
 import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
 

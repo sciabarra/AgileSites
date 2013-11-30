@@ -244,7 +244,7 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		String url = def.getParameter("url");
 		String rendermode = def.getParameter("rendermode");
 				
-		log.debug("assemble: d=%s site=%s url=%s rendermode=%s", d, site, url, rendermode);
+		log.debug("assemble: d=%s site=%s url=%s rendermode=%s", site, url, rendermode);
 		
 		if (rendermode != null && !rendermode.equals("live"))
 			return qa.assemble(def);
