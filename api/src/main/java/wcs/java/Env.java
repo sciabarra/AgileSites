@@ -30,7 +30,7 @@ import COM.FutureTense.Interfaces.IList;
  * @author msciab
  * 
  */
-public class Env extends ICSProxyJ {
+public class Env extends ICSProxyJ implements Content {
 
 	private static Log log = Log.getLog(Env.class);
 	@SuppressWarnings("unused")
@@ -73,7 +73,7 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
-	 * Get a variable or null
+	 * Get the field of a list or null
 	 * 
 	 * @param list
 	 * @param field
@@ -93,7 +93,7 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
-	 * Get a variable or null
+	 * Get the nth field of a list or null
 	 * 
 	 * @param list
 	 * @param row
@@ -113,6 +113,18 @@ public class Env extends ICSProxyJ {
 		} catch (NoSuchFieldException e) {
 			return null;
 		}
+	}
+
+	/**
+	 * Get the field "value" of a list or null
+	 * 
+	 * @param list
+	 * @param row
+	 * @param field
+	 * @return
+	 */
+	public String getString(String list, int row) {
+		return getString(list, row, "value");
 	}
 
 	/**
@@ -217,6 +229,18 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
+	 * Get the field value at given position as a date, or null
+	 * 
+	 * @param ls
+	 * @param field
+	 * @param pos
+	 * @return
+	 */
+	public java.util.Date getDate(String ls, int pos) {
+		return toDate(getString(ls, pos, "value"));
+	}
+
+	/**
 	 * Get field at given position as a long, or null
 	 * 
 	 * @param ls
@@ -229,7 +253,19 @@ public class Env extends ICSProxyJ {
 	}
 
 	/**
-	 * Get field at given position as a long, or null
+	 * Get field "value" at given position as a long, or null
+	 * 
+	 * @param ls
+	 * @param field
+	 * @param pos
+	 * @return
+	 */
+	public Long getLong(String ls, int pos) {
+		return toLong(getString(ls, pos, "value"));
+	}
+
+	/**
+	 * Get field at given position as an int, or null
 	 * 
 	 * @param ls
 	 * @param field
@@ -238,6 +274,18 @@ public class Env extends ICSProxyJ {
 	 */
 	public Integer getInt(String ls, int pos, String field) {
 		return toInt(getString(ls, pos, field));
+	}
+
+	/**
+	 * Get the field "value" at given position as an int, or null
+	 * 
+	 * @param ls
+	 * @param field
+	 * @param pos
+	 * @return
+	 */
+	public Integer getInt(String ls, int pos) {
+		return toInt(getString(ls, pos, "value"));
 	}
 
 	/**
@@ -266,6 +314,13 @@ public class Env extends ICSProxyJ {
 	 */
 	public boolean isList(String list) {
 		return ics.GetList(list) != null;
+	}
+
+	/**
+	 * Check if it is a list with enough rows
+	 */
+	public boolean isList(String list, int n) {
+		return ics.GetList(list) != null && ics.GetList(list).numRows() > n;
 	}
 
 	/**
@@ -557,6 +612,28 @@ public class Env extends ICSProxyJ {
 	public void addDependency(Id id, AssetDeps deps) {
 		RenderTag.logdep().c(id.c).cid(id.cid.toString())
 				.deptype(deps.toString()).run(ics);
+	}
+
+	/**
+	 * Check if the given attribute is a valid value
+	 * 
+	 * @param attribute
+	 * @return
+	 */
+	@Override
+	public boolean exists(String attribute) {
+		return isVar(attribute);
+	}
+
+	/**
+	 * Check if the given attribute at the given position is a valid value
+	 * 
+	 * @param attribute
+	 * @return
+	 */
+	@Override
+	public boolean exists(String attribute, int pos) {
+		return isList(attribute, pos);
 	}
 
 }

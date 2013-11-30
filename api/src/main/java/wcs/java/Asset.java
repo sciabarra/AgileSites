@@ -18,7 +18,7 @@ import com.fatwire.assetapi.data.MutableAssetData;
  * @author msciab
  * 
  */
-public abstract class Asset {
+public abstract class Asset implements Content {
 
 	private static Log log = Log.getLog(Asset.class);
 
@@ -293,7 +293,7 @@ public abstract class Asset {
 	public Asset getAsset(String attribute, int i, String type, AssetDeps logdep) {
 		throw new RuntimeException("this asset is not bound");
 	}
-	
+
 	/**
 	 * String get blob url of the first attribute, with optional args
 	 * 
@@ -424,6 +424,28 @@ public abstract class Asset {
 	 * @return
 	 */
 	public Integer getInt(String attribute, int n) {
+		throw new RuntimeException("this is not a bound asset");
+	}
+
+	/**
+	 * Return the first attribute of the the attribute list as a long, or null
+	 * if not found
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public Long getLong(String attribute) {
+		throw new RuntimeException("this is not a bound asset");
+	}
+
+	/**
+	 * Return the nth attribute of the the attribute list as an int, or null if
+	 * not found
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public Long getLong(String attribute, int n) {
 		throw new RuntimeException("this is not a bound asset");
 	}
 
@@ -567,4 +589,13 @@ public abstract class Asset {
 		}
 	}
 
+	@Override
+	public boolean exists(String attribute) {
+		return false;
+	}
+
+	@Override
+	public boolean exists(String attribute, int pos) {
+		return false;
+	}
 }

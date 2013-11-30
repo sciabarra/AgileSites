@@ -188,6 +188,16 @@ class AssetImpl extends wcs.java.Asset {
 	public boolean isAttribute(String attribute) {
 		return e.isList(at(attribute)) && e.getSize(at(attribute)) > 0;
 	}
+	
+	/**
+	 * Check if the attribute at the given position exists
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public boolean isAttribute(String attribute, int n) {
+		return e.isList(at(attribute)) && e.getSize(at(attribute)) >= n;
+	}
 
 	/**
 	 * Return if we are in insite editing
@@ -662,5 +672,16 @@ class AssetImpl extends wcs.java.Asset {
 		log.trace("edit: %s", call.encode());
 
 		return call.encode();
+	}
+
+	@Override
+	public boolean exists(String attribute) {
+		return isAttribute(attribute);
+	}
+
+	@Override
+	public boolean exists(String attribute, int pos) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

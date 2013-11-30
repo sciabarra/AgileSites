@@ -3,6 +3,8 @@ package wcs.java;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -67,7 +69,7 @@ public class Picker {
 	 * 
 	 * @param resource
 	 * @param cssq
-	 * @return a new picker 
+	 * @return a new picker
 	 */
 	public static Picker load(String resource, String cssq) {
 		return new Picker(Picker.class.getResourceAsStream(resource), null,
@@ -275,18 +277,39 @@ public class Picker {
 		return top.toString();
 	}
 
+	private static Pattern moupat = Pattern.compile("\\{\\{(\\w+)\\}\\}");
+
+	private static String moustache(String s, Content... contents) {
+		StringBuffer sb = new StringBuffer();
+		Matcher m = moupat.matcher(s);
+		next: while (m.find()) {
+			String rep = m.group(1);
+			//System.out.println("looking for "+rep);
+			for (Content c : contents) {
+				if (c.exists(rep)) {
+					//System.out.println("found "+c.getString(rep));
+					m.appendReplacement(sb, c.getString(rep));
+					continue next;
+				}
+			}
+		}
+		m.appendTail(sb);
+		return sb.toString();
+	}
+
 	/**
-	 * Return the inner html of the selected node
+	 * Return the inner html of the selected nod. Replace the content of all the
+	 * variables between {{ }}
 	 */
-	public String html() {
-		return bottom.html() + warnings();
+	public String html(Content... content) {
+		return moustache(bottom.html(), content) + warnings();
 	}
 
 	/**
 	 * Return the html of the selected node including the node itself
 	 */
-	public String outerHtml() {
-		return bottom.outerHtml() + warnings();
+	public String outerHtml(Content... content) {
+		return moustache(bottom.outerHtml(), content) + warnings();
 	}
 
 	/**
@@ -406,15 +429,20 @@ public class Picker {
 
 	/**
 	 * Replace tag selected by "where" with String "What"
-	 * @param where Selection criteria (placeholder)
-	 * @param what The string to replace the "where" with, this must be valid HTML
+	 * 
+	 * @param where
+	 *            Selection criteria (placeholder)
+	 * @param what
+	 *            The string to replace the "where" with, this must be valid
+	 *            HTML
 	 * @return This picker
 	 */
 	public Picker replaceWith(String where, String what) {
 		Document newTag = Jsoup.parse(what);
 		Elements elements = top.select(where);
-		for (Element element : elements){
-			log.trace("Replace with: %s",newTag.childNode(0).childNode(1).childNode(0));
+		for (Element element : elements) {
+			log.trace("Replace with: %s", newTag.childNode(0).childNode(1)
+					.childNode(0));
 			element.replaceWith(newTag.childNode(0).childNode(1).childNode(0));
 		}
 		return this;

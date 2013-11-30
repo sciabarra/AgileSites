@@ -48,8 +48,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "org.apache.httpcomponents" % "httpcore" % "4.1.2",
     "org.apache.httpcomponents" % "httpmime" % "4.1.2",
     "org.apache.james" % "apache-mime4j" % "0.5",
-    "com.novocode" % "junit-interface" % "0.8" % "test->default",
-    "org.hamcrest" % "hamcrest-all" % "1.3" % "test->default")
+    "junit" % "junit" % "4.11" % "test",
+    "com.novocode" % "junit-interface" % "0.10" % "test",
+    "org.hamcrest" % "hamcrest-all" % "1.3" % "test")
 
   val coreSettings = Defaults.defaultSettings ++ net.virtualvoid.sbt.graph.Plugin.graphSettings ++ Seq(
     scalaVersion := "2.10.2",
