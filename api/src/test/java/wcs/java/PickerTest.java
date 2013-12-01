@@ -128,5 +128,6 @@ public class PickerTest {
 		assertEquals(log(two2.html(c0, c1, c2, c3)), "Some [first] then [second] then [first]");
 		assertEquals(log(two2.html(c1, c2, c0)), "Some [first] then [second] then [first]");
 		assertEquals(log(two2.html(c3, c2, c1, c0)), "Some [firstbis] then [secondbis] then [firstbis]");
+		assertEquals(log(two2.html(c3)), "Some [firstbis] then [secondbis] then [firstbis]");
 	}
 }

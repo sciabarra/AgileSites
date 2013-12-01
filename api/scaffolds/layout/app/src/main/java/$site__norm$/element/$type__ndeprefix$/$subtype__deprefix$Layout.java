@@ -30,6 +30,6 @@ public class $subtype;format="deprefix"$Layout extends Element {
 		Picker html = Picker.load("/$site;format="normalize"$/simple.html" , "#content");		
 		html.replace("#title", a.getName());
 		html.replace("#subtitle", a.getDescription());
-		return html/*.dump(log)*/.html();
+		return html/*.dump(log)*/.html(a, e);
 	}
 }

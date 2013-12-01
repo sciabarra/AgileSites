@@ -13,6 +13,7 @@ import COM.FutureTense.Interfaces.ICS;
  * @author msciab
  * 
  */
+@SuppressWarnings("unchecked")
 public class TestEnv extends Env {
 
 	ICS i;

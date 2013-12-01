@@ -29,7 +29,7 @@ public class $subtype;format="deprefix"$$template$ extends Element {
 		// sample logic with the html picker
 		//Picker html = Picker.load("/$site;format="normalize"$/index.html" , "#content");
 		//html.replace("#title", e.getString("Title"));
-		//return html/*.dump(log)*/.html();
+		//return html/*.dump(log)*/.html(a, e);
 
 	}
 

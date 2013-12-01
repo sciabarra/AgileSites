@@ -21,14 +21,14 @@ public class $cselement$ extends Element {
 
 	@Override
 	public String apply(Env e) {
-		log.debug("Testing $cselement$");
+		log.debug("$cselement$");
 		
 		return "<h1>$cselement$</h1>";
 		
 		// sample logic with the html picker
 		//Picker html = Picker.load("/$site;format="normalize"$/index.html" , "#content");
 		//html.replace("#title", e.getString("Title"));
-		//return html/*.dump(log)*/.html();
+		//return html/*.dump(log)*/.html(e);
 	}
 
 }

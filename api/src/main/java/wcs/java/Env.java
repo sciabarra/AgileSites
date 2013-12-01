@@ -71,7 +71,7 @@ public class Env extends ICSProxyJ implements Content {
 	public String getString(String var) {
 		return ics.GetVar(var);
 	}
-
+	
 	/**
 	 * Get the field of a list or null
 	 * 
@@ -91,7 +91,7 @@ public class Env extends ICSProxyJ implements Content {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * Get the nth field of a list or null
 	 * 

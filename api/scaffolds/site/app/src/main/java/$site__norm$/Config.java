@@ -19,12 +19,13 @@ public class Config extends wcs.java.Config {
 			return "PageAttribute";
 
 		// sample configuration for flex family
-		// assuming the types in the flex family
-		// shares a common prefix
-		/**
-		 * if(type.startsWith("MySite_")) return "MySite_A";
-		 */
-
+		// assuming it follows the convention that 
+		// types in the flex family
+		// uses the sitename as a common prefix
+		
+		 if(type.startsWith("$site$_")) 
+			 return "$site$_A";
+		 
 		return null;
 	}
 
