@@ -21,9 +21,7 @@ import COM.FutureTense.Interfaces.IList;
 import COM.FutureTense.Interfaces.IMIMENotifier;
 import COM.FutureTense.Interfaces.IProperties;
 import COM.FutureTense.Interfaces.ISearchEngine;
-import COM.FutureTense.Interfaces.IServlet;
 import COM.FutureTense.Interfaces.ISyncHash;
-import COM.FutureTense.Interfaces.IURLDefinition;
 import COM.FutureTense.Interfaces.PastramiEngine;
 import COM.FutureTense.Util.ftErrors;
 import COM.FutureTense.XML.Template.Seed;
@@ -696,7 +694,8 @@ public class ICSProxyJ implements ICS {
 		return ics.getIProperties();
 	}
 
-	public IServlet getIServlet() {
+	@SuppressWarnings("deprecation")
+	public COM.FutureTense.Interfaces.IServlet getIServlet() {
 		return ics.getIServlet();
 	}
 
@@ -732,7 +731,8 @@ public class ICSProxyJ implements ICS {
 		return ics.getURL(arg0, arg1);
 	}
 
-	public String getURL(IURLDefinition arg0) {
+	@SuppressWarnings("deprecation")
+	public String getURL(COM.FutureTense.Interfaces.IURLDefinition arg0) {
 		return ics.getURL(arg0);
 	}
 

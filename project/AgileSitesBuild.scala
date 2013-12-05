@@ -13,7 +13,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
 
   // if you change this 
   // remember to update the agilesites scripts
-  val v = "1.0.8" 
+  val v = "1.8.0" 
 
   // remove then add those jars in setup
   val addFilterSetup =  "agilesites-core*" || "junit*" 

@@ -1,15 +1,11 @@
 package wcs.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 import static java.lang.System.out;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Properties;
 
 import org.junit.Before;

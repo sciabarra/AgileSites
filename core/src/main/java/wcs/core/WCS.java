@@ -3,6 +3,13 @@ package wcs.core;
 import java.util.Properties;
 import COM.FutureTense.Interfaces.ICS;
 
+/**
+ * 
+ * Main class of the framework, mostly used by JSP to invoke extension methods.
+ * 
+ * @author msciab
+ * 
+ */
 public class WCS {
 
 	final static Log log = Log.getLog(WCS.class);
@@ -98,6 +105,36 @@ public class WCS {
 			log.debug("[WCS.route] Not found jar.");
 		}
 		return null;
+	}
+
+	/**
+	 * Return a config, eventually cached. You can use both the site name or his
+	 * normalized name for to get the config.
+	 * 
+	 * 
+	 * @param site
+	 * @return
+	 */
+	public static Config getConfig(String site) {
+		try {
+			return (Config) Class.forName(
+					WCS.normalizeSiteName(site) + ".Config").newInstance();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	private static long tmpVarCounter = System.currentTimeMillis();
+
+	/**
+	 * Generate an unique temporary var name.
+	 * 
+	 * @return
+	 */
+	public synchronized static String tmp() {
+		++tmpVarCounter;
+		return "_" + Long.toHexString(tmpVarCounter);
 	}
 
 }

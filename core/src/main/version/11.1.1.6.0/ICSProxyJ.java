@@ -684,7 +684,8 @@ public class ICSProxyJ implements ICS {
 		return ics.getIProperties();
 	}
 
-	public IServlet getIServlet() {
+	@SuppressWarnings("deprecation")
+	public COM.FutureTense.Interfaces.IServlet getIServlet() {
 		return ics.getIServlet();
 	}
 
@@ -720,7 +721,8 @@ public class ICSProxyJ implements ICS {
 		return ics.getURL(arg0, arg1);
 	}
 
-	public String getURL(IURLDefinition arg0) {
+	@SuppressWarnings("deprecation")
+	public String getURL(COM.FutureTense.Interfaces.IURLDefinition arg0) {
 		return ics.getURL(arg0);
 	}
 

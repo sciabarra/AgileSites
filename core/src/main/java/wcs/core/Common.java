@@ -1,7 +1,12 @@
 package wcs.core;
 
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import COM.FutureTense.Interfaces.IList;
+
 
 /**
  * Collections of utils supporting common idioms.
@@ -12,7 +17,6 @@ import java.util.List;
  * 
  */
 public class Common {
-
 	private static long tmpVarCounter = System.currentTimeMillis();
 
 	/**
@@ -37,13 +41,38 @@ public class Common {
 	}
 
 	/**
+	 * Create list of args
+	 * 
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	public static Args args(String name, String... values) {
+		return new Args(name, values);
+	}
+
+	/**
+	 * Create a Model
+	 */
+	public static Model model(Arg... args) {
+		return new Model(args);
+	}
+
+	/**
+	 * Create a Model
+	 */
+	public static Model model(Model m, Arg... args) {
+		return new Model(m, args);
+	}
+
+	/**
 	 * Create an array of Arg from a list of strings in the form key=value
 	 * 
 	 * @param name
 	 * @param value
 	 * @return
 	 */
-	public static Arg[] args(String... args) {
+	public static Arg[] argv(String... args) {
 		List<Arg> ls = new ArrayList<Arg>();
 		for (String arg : args) {
 			int pos = arg.indexOf("=");
@@ -100,6 +129,112 @@ public class Common {
 	 */
 	public static Object ifn(Object obj, Object alt) {
 		return obj == null ? alt : obj;
+	}
+
+	// formatter for fatwire format
+	private static SimpleDateFormat fmt = new SimpleDateFormat(
+			"yyyy-MM-dd HH:mm:ss");
+
+	/**
+	 * Convert as a date, eventually the day 0 of the epoch if you cannot
+	 * convert
+	 */
+	public static java.util.Date toDate(String s) {
+		if (s != null) {
+			try {
+				return fmt.parse(s);
+			} catch (Exception e) {
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * Convert in a long, 0l if errors
+	 * 
+	 * @param l
+	 * @return
+	 */
+	public static Long toLong(String l) {
+		if (l == null)
+			return null;
+		try {
+			long ll = Long.parseLong(l);
+			return new Long(ll);
+		} catch (NumberFormatException ex) {
+			return null;
+		} catch (Exception ex) {
+			// log.warn(ex, "unexpected");
+		}
+		return null;
+	}
+
+	/**
+	 * Convert in a int, 0 if erros
+	 * 
+	 * @param l
+	 * @return
+	 */
+	public static Integer toInt(String l) {
+		if (l == null)
+			return null;
+		try {
+			int ll = Integer.parseInt(l);
+			return new Integer(ll);
+		} catch (NumberFormatException ex) {
+		} catch (Exception ex) {
+			// log.warn(ex, "unexpected");
+		}
+		return null;
+	}
+
+	/**
+	 * Convenience method to dump the stream resulting of the picker
+	 */
+	public static String dumpStream(String html) {
+		Sequencer seq = new Sequencer(html);
+		StringBuilder sb = new StringBuilder(seq.header());
+		while (seq.hasNext()) {
+			Call call = seq.next();
+			sb.append(call.toString());
+			sb.append(seq.header());
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Convenience method to dump an IList
+	 */
+	public static String dumpIList(IList ilist) {
+		if (ilist == null)
+			return "NULL ILIST!";
+		StringBuffer sb = new StringBuffer("*****\n");
+		for (int i = 1; i <= ilist.numRows(); i++) {
+			sb.append(i + ") ");
+			for (int j = 0; j < ilist.numColumns(); j++) {
+				String k = ilist.getColumnName(j);
+				sb.append(k).append("=");
+				try {
+					sb.append(ilist.getValue(k).toString()).append(" ");
+				} catch (NoSuchFieldException e) {
+					// e.printStackTrace();
+				}
+			}
+			ilist.moveTo(i);
+			sb.append("\n");
+		}
+		sb.append("*****");
+		return sb.toString();
+	}
+
+	/**
+	 * Stream an exceptions in a string
+	 */
+	public static String ex2str(Throwable ex) {
+		CharArrayWriter caw = new CharArrayWriter();
+		ex.printStackTrace(new PrintWriter(caw));
+		return caw.toString();
 	}
 
 }
