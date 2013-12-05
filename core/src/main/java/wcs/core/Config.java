@@ -1,5 +1,7 @@
 package wcs.core;
 
+import COM.FutureTense.Interfaces.ICS;
+
 public interface Config {
 
 	/**
@@ -7,21 +9,21 @@ public interface Config {
 	 * 
 	 * @return
 	 */
-	public abstract String getBlobId();
+	public abstract String getBlobId(ICS ics);
 
 	/**
 	 * Return blob id field
 	 * 
 	 * @return
 	 */
-	public abstract String getBlobUrl();
+	public abstract String getBlobUrl(ICS ics);
 
 	/**
 	 * Return blob table
 	 * 
 	 * @return
 	 */
-	public abstract String getBlobTable();
+	public abstract String getBlobTable(ICS ics);
 
 	/**
 	 * Get property from AgileSites config

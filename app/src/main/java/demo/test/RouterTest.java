@@ -1,17 +1,17 @@
 package demo.test;
 
 import demo.Config;
+import wcs.core.Index;
+import wcs.core.Asset;
+import wcs.core.Env;
 import wcs.core.Log;
-import wcs.java.Asset;
-import wcs.java.Env;
 import wcs.java.Router;
-import wcs.java.util.AddIndex;
 import wcs.java.util.TestElement;
 import org.junit.Before;
 import org.junit.Test;
 import static wcs.core.Common.*;
 
-@AddIndex("demo/tests.txt")
+@Index("demo/tests.txt")
 public class RouterTest extends TestElement {
 
 	final static Log log = Log.getLog(RouterTest.class);

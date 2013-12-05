@@ -9,7 +9,7 @@ import $site;format="normalize"$.element.$cselement$;
 import wcs.java.util.AddIndex;
 
 // this test must be run by AgileSites TestRunnerElement
-@AddIndex("$site;format="normalize"$/tests.txt")
+@Index("$site;format="normalize"$/tests.txt")
 public class $cselement$Test extends TestElement {
 
 	final static Log log = Log.getLog($cselement$Test.class);

@@ -2,6 +2,7 @@ package wcs.java;
 
 import wcs.core.Arg;
 import wcs.core.Call;
+import wcs.core.Env;
 import wcs.core.Id;
 import wcs.core.Log;
 import wcs.core.URL;
@@ -37,7 +38,7 @@ abstract public class Router implements wcs.core.Router {
 			// router site must be initialized here
 			// config is retrieved because the site name can be normalized
 			// to get the full site name
-			router.site = Config.getConfig(site).getSite();
+			router.site = WCS.getConfig(site).getSite();
 			return router;
 		} catch (Exception ex) {
 			log.error(ex, "cannot get router");
@@ -52,7 +53,7 @@ abstract public class Router implements wcs.core.Router {
 	public Call route(ICS ics, String _site, String _path, String _query) {
 		log.debug("site=" + _site + " path=" + _path + " query=" + _query);
 		this.i = ics;
-		this.e = new Env(i, site);
+		this.e = new wcs.java.Env(i, site);
 		if (_query == null || _query.trim().length() == 0)
 			_query = "";
 		else

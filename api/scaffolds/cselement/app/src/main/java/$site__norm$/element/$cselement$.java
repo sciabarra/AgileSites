@@ -10,7 +10,7 @@ import wcs.java.AssetSetup;
 import wcs.java.Picker;
 import wcs.java.util.AddIndex;
 
-@AddIndex("$site;format="normalize"$/elements.txt")
+@Index("$site;format="normalize"$/elements.txt")
 public class $cselement$ extends Element {
 
 	final static Log log = Log.getLog($cselement$.class);
@@ -23,12 +23,9 @@ public class $cselement$ extends Element {
 	public String apply(Env e) {
 		log.debug("$cselement$");
 		
-		return "<h1>$cselement$</h1>";
-		
-		// sample logic with the html picker
-		//Picker html = Picker.load("/$site;format="normalize"$/index.html" , "#content");
-		//html.replace("#title", e.getString("Title"));
-		//return html/*.dump(log)*/.html(e);
+		Picker html = Picker.load("/$site;format="normalize"$/index.html" , "#footer");
+		html.replace("#title", e.getString("Title"));
+		return html/*.dump(log)*/.html(e);
 	}
 
 }

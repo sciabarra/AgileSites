@@ -1,219 +1,223 @@
 package wcs.java;
 
-import static wcs.core.Common.*;
-import wcs.core.Arg;
-import wcs.core.Id;
-import wcs.core.Log;
-import wcs.java.util.AssetDeps;
+import static wcs.core.Common.arg;
+import static wcs.core.Common.ifn;
+import static wcs.core.Common.nn;
+import static wcs.core.Common.tmp;
+import static wcs.core.Common.toDate;
+import static wcs.core.Common.toInt;
+import static wcs.core.Common.toLong;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import com.fatwire.assetapi.data.AttributeData;
-import com.fatwire.assetapi.data.MutableAssetData;
+import wcs.core.Arg;
+import wcs.core.AssetDeps;
+import wcs.core.Call;
+import wcs.core.Common;
+import wcs.core.Log;
+import wcs.core.tag.AssetTag;
+import wcs.core.tag.AssetsetTag;
+import wcs.core.tag.RenderTag;
+import COM.FutureTense.Interfaces.ICS;
 
-/**
- * Main asset abstraction. You get an asset from an Env then use this class to
- * generate code.
- * 
- * @author msciab
- * 
- */
-public abstract class Asset implements Content {
+class Asset extends AssetBase implements wcs.core.Asset {
 
-	private static Log log = Log.getLog(Asset.class);
+	private static Log log = Log.getLog(Env.class);
 
-	private String name;
-	private String description;
-	private String type;
-	private String subtype;
-	private String site;
-	private String filename;
-	private String path;
-	private Date startDate;
-	private Date endDate;
-	private String template;
+	// the name of the asset
+	private String a = tmp();
+	// name of the assetset (and the list prefix) initially null - set on
 
-	public Asset() {
+	// request
+	private String as = null;
+
+	// the env
+	private Env e;
+
+	// the ICS from the env
+	private ICS i;
+
+	boolean insite = false;
+
+	public Asset(Env env, String c, Long cid) {
+		this.e = env;
+		this.i = e.ics;
+		this.c = c;
+		this.cid = cid;
+		insite = env.isInsite();
+
+		AssetTag.load().name(a).type(c).objectid(cid.toString()).run(i);
+		String subtype = AssetTag.getsubtype().name(a).eval(i, "OUTPUT");
+		this.subtype = subtype == null ? "" : subtype;
 	}
 
 	/**
-	 * Create an asset with a given type, subtype and name.
+	 * Return the assetset name, lazily loading all the attributes on the first
+	 * request
 	 * 
-	 * @param type
-	 * @param subtype
+	 * @return
+	 */
+	private String as() {
+		if (as == null) {
+			as = tmp() + "_";
+			AssetsetTag.setasset().name(as).type(getC()).id(cid.toString())
+					.run(i);
+		}
+		return as;
+	}
+
+	/**
+	 * Return the asset list name associated to an attribute
+	 * 
+	 * @param attribute
+	 * @return
+	 */
+
+	/**
+	 * Lazily load in a list the attribute
+	 * 
+	 * @param attribute
+	 * @return
+	 */
+	private String at(String attribute) {
+		log.debug("extracting attribute " + attribute);
+		String attrList = as() + attribute.toUpperCase();
+		if (i.GetList(attrList) == null) {
+			String attrType = e.getConfig().getAttributeType(getC());
+			AssetsetTag.getattributevalues().name(as).attribute(attribute)
+					.listvarname(attrList).typename(attrType).run(i);
+		}
+		return attrList;
+	}
+
+	/**
+	 * Return the association lazily loading all the attributes on the first
+	 * request request
+	 * 
+	 * @return
+	 */
+	private String ass(String assoc) {
+		String assocList = as() + "_ASS_" + assoc.toUpperCase();
+		if (i.GetList(assocList) == null) {
+			AssetTag.children().code(assocList).type(getC())
+					.assetid(cid.toString()).code(assoc).order("nrank").run(i);
+		}
+		return assocList;
+	}
+
+	/**
+	 * Return a named field from the asset as a string.
+	 * 
 	 * @param name
-	 */
-	public Asset(String type, String subtype, String name) {
-		this.name = name;
-		this.description = name;
-		setTypeSubtype(type, subtype);
-	}
-
-	protected void setTypeSubtype(String type, String subtype) {
-		this.type = type;
-		this.subtype = subtype;
-	}
-
-	/**
-	 * Return the current site name
-	 * 
 	 * @return
 	 */
-	public String getSite() {
-		return site;
+	@Override
+	public String getFieldString(String name) {
+		return AssetTag.get().name(a).field("name").eval(i, "output");
 	}
 
 	/**
-	 * Set the current site
+	 * Return a named field from the asset as a date.
 	 * 
-	 * @param site
-	 */
-	void setSite(String site) {
-		this.site = site;
-	}
-
-	/**
-	 * The current asset id
-	 * 
+	 * @param name
 	 * @return
 	 */
-	public Id getId() {
-		return null;
+	@Override
+	public Date getFieldDate(String name) {
+		return toDate(AssetTag.get().name(a).field("name").eval(i, "output"));
 	}
 
 	/**
-	 * The current asset type
+	 * Return a named field from the asset as an int.
 	 * 
+	 * @param name
 	 * @return
 	 */
-	public String getC() {
-		return type;
+	@Override
+	public int getFieldInt(String name) {
+		return toInt(AssetTag.get().name(a).field("name").eval(i, "output"));
 	}
 
 	/**
-	 * The current id, or null if undefined
+	 * Return a named field from the asset as a long.
 	 * 
+	 * @param name
 	 * @return
 	 */
-	public Long getCid() {
-		return null;
+	@Override
+	public long getFieldLong(String name) {
+		return toLong(AssetTag.get().name(a).field("name").eval(i, "output"));
 	}
 
 	/**
-	 * The current template or null if undefined
-	 * 
-	 * @return
+	 * Return the name field of the asset
 	 */
-	public String getTemplate() {
-		return template;
-	}
-
-	/**
-	 * Range of an asset association
-	 */
-	public Iterable<Integer> getAssocRange(String assoc) {
-		return new wcs.core.Range(0);
-	}
-
-	/**
-	 * Id of the first associated asset
-	 */
-	public Long getAssocId(String assoc) {
-		return null;
-	}
-
-	/**
-	 * Id of the nth associated asset
-	 */
-	public Long getAssocId(String assoc, int pos) {
-		return null;
-	}
-
-	/**
-	 * Type of the first associated asset
-	 */
-	public String getAssocType(String assoc) {
-		return null;
-	}
-
-	/**
-	 * Type of the nth associated asset
-	 */
-	public String getAssocType(String assoc, int pos) {
-		return null;
-	}
-
-	/**
-	 * The current asset subtype, or the void string if no subtype
-	 * 
-	 * @return
-	 */
-	public String getSubtype() {
-		if (subtype == null)
-			return "";
-		else
-			return subtype;
-	}
-
-	/**
-	 * The current asset name
-	 * 
-	 * @return
-	 */
+	@Override
 	public String getName() {
+		if (name == null)
+			name = getFieldString("name");
 		return name;
 	}
 
 	/**
-	 * The current asset description, or the name if the description is
-	 * undefined
-	 * 
-	 * @return
+	 * Return the description field of the asset
 	 */
+	@Override
 	public String getDescription() {
+		if (description == null)
+			description = getFieldString("description");
 		return description;
 	}
 
-	public void setDescription(String description) {
-		if (description == null)
-			this.description = name;
-		else
-			this.description = description;
+	/**
+	 * Return the description field of the asset
+	 */
+	@Override
+	public String getTemplate() {
+		if (template == null)
+			template = getFieldString("template");
+		return template;
 	}
 
 	/**
-	 * Current asset file
-	 * 
-	 * @return
+	 * Return the file field of the asset
 	 */
+	@Override
 	public String getFilename() {
+		if (filename == null)
+			filename = getFieldString("filename");
 		return filename;
 	}
 
 	/**
-	 * Current asset path
-	 * 
-	 * @return
+	 * Return the path field of the asset
 	 */
+	@Override
 	public String getPath() {
+		if (path == null)
+			path = getFieldString("path");
 		return path;
 	}
 
 	/**
-	 * Current asset start date or null if undefined
-	 * 
-	 * @return
+	 * Return the start date field of the asset
 	 */
+	@Override
 	public Date getStartDate() {
+		if (startDate == null)
+			startDate = getFieldDate("startdate");
 		return startDate;
 	}
 
 	/**
-	 * Current asset end date or null if undefined
-	 * 
-	 * @return
+	 * Return the end date field of the asset
 	 */
+	@Override
 	public Date getEndDate() {
+		if (endDate == null)
+			endDate = getFieldDate("enddate");
 		return endDate;
 	}
 
@@ -224,7 +228,35 @@ public abstract class Asset implements Content {
 	 * @return
 	 */
 	public boolean isAttribute(String attribute) {
-		return false;
+		return e.isList(at(attribute)) && e.getSize(at(attribute)) > 0;
+	}
+
+	/**
+	 * Check if the attribute at the given position exists
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public boolean isAttribute(String attribute, int n) {
+		return e.isList(at(attribute)) && e.getSize(at(attribute)) >= n;
+	}
+
+	/**
+	 * Return if we are in insite editing
+	 */
+	public boolean isInsite() {
+		return insite;
+	}
+
+	/**
+	 * Return an iterable of the attribute list
+	 * 
+	 * @param attribute
+	 * @return
+	 */
+	@Override
+	public Iterable<Integer> getRange(String attribute) {
+		return e.getRange(at(attribute));
 	}
 
 	/**
@@ -233,8 +265,9 @@ public abstract class Asset implements Content {
 	 * @param attribute
 	 * @return
 	 */
+	@Override
 	public int getSize(String attribute) {
-		throw new RuntimeException("this asset is not bound");
+		return e.getSize(at(attribute));
 	}
 
 	/**
@@ -244,40 +277,52 @@ public abstract class Asset implements Content {
 	 * @param asset
 	 * @return
 	 */
+	@Override
 	public Long getCid(String attribute) {
-		throw new RuntimeException("this asset is not bound");
+		return e.getLong(at(attribute), "value");
 	}
 
 	/**
-	 * Return the related asset pointed by the attribute of the given type if
-	 * not found.
-	 * 
-	 * Since you are accessing another asset it is mandatory to specify the
-	 * dependency type you are going to use.
+	 * Return the nth attribute of the attribute list as an id (long), or null
+	 * if not found
 	 * 
 	 * @param asset
 	 * @return
 	 */
-	public Asset getAsset(String attribute, String type, AssetDeps logdep) {
-		throw new RuntimeException("this asset is not bound");
+	@Override
+	public Long getCid(String attribute, int n) {
+		return e.getLong(at(attribute), n, "value");
 	}
 
 	/**
-	 * @deprecated use the version that also specify the dependency you want to
-	 *             log
+	 * Return the specified asset. It does not log any dependencies - use this
+	 * when you just need to get an url.
+	 * 
 	 */
-	@Deprecated
-	public Asset getAsset(String attribute, String type) {
-		throw new RuntimeException("this asset is not bound");
+	public wcs.core.Asset getAsset(String attribute, String type) {
+		return e.getAsset(type, getCid(attribute));
 	}
 
 	/**
-	 * @deprecated use the version that also specify the dependency you want to
-	 *             log
+	 * Return the specified asset at the nth position. It does not log any
+	 * dependencies - use this when you just need to get an url.
 	 */
-	@Deprecated
-	public Asset getAsset(String attribute, String type, int i) {
-		throw new RuntimeException("this asset is not bound");
+	public wcs.core.Asset getAsset(String attribute, String type, int i) {
+		return e.getAsset(type, getCid(attribute, i));
+	}
+
+	/**
+	 * Return the related asset pointed by the attribute of the given type if
+	 * not found
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	@Override
+	public wcs.core.Asset getAsset(String attribute, String type, AssetDeps deps) {
+		Long cid = getCid(attribute);
+		e.addDependency(type, cid, deps);
+		return e.getAsset(type, cid);
 	}
 
 	/**
@@ -290,96 +335,69 @@ public abstract class Asset implements Content {
 	 * @param asset
 	 * @return
 	 */
-	public Asset getAsset(String attribute, int i, String type, AssetDeps logdep) {
-		throw new RuntimeException("this asset is not bound");
+	@Override
+	public wcs.core.Asset getAsset(String attribute, int i, String type,
+			AssetDeps deps) {
+		long cid = getCid(attribute, i);
+		e.addDependency(type, cid);
+		return e.getAsset(type, cid);
 	}
 
 	/**
-	 * String get blob url of the first attribute, with optional args
-	 * 
-	 */
-	public String getBlobUrl(String attribute, Arg... args) {
-		throw new RuntimeException("this asset is not bound");
-	}
-
-	/**
-	 * String get blob url of the first attribute, with optional args
-	 * 
-	 */
-	public String getBlobUrl(String attribute, String mimeType, Arg... args) {
-		throw new RuntimeException("this asset is not bound");
-	}
-
-	/**
-	 * String get blob url of the nth attribute, with optional args
-	 */
-	public String getBlobUrl(String attribute, int pos, String mimeType,
-			Arg... args) {
-		throw new RuntimeException("this asset is not bound");
-	}
-
-	/**
-	 * Return the nth attribute of the named attribute as an id (long), or null
-	 * if not found
-	 * 
-	 * @param asset
-	 * @return
-	 */
-	public Long getCid(String attribute, int n) {
-		throw new RuntimeException("this asset is not bound");
-	}
-
-	/**
-	 * Return the first attribute of the the named attribute as a string, or
+	 * Return the first attribute of the the attribute rib as a string, or the
 	 * null if not found
 	 * 
-	 * @param asset
-	 * @return
-	 */
-	public String getString(String attribute) {
-		throw new RuntimeException("this asset is not bound");
-	}
-
-	/**
-	 * Return the nth named attribute as a string, or null if not found
+	 * Since you are accessing another asset it is mandatory to specify the
+	 * dependency type you are going to use.
 	 * 
 	 * @param asset
 	 * @return
 	 */
-	public String getString(String attribute, int n) {
-		throw new RuntimeException("this asset is not bound");
+	@Override
+	public String getString(String attribute) {
+		return e.getString(at(attribute), "value");
 	}
 
+	/**
+	 * Return the nth attribute of the the attribute as a string, or the void
+	 * string if not found
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	@Override
+	public String getString(String attribute, int n) {
+		return e.getString(at(attribute), n, "value");
+	}
+
+	/**
+	 * Edit (or return the value if not insite) the first named attribute as a
+	 * string, or null if not found and pass additional parameters
+	 * 
+	 */
+	@Override
+	public String editString(String attribute, int n, String params,
+			Arg... args) {
+		if (insite)
+			return edit(attribute, n, params, args);
+		return getString(attribute, n);
+	}
+
+	/**
+	 * Edit (or return the value if not insite) the attribute as a string, or
+	 * 
+	 */
 	public String editString(String attribute) {
 		return editString(attribute, 1);
 	}
 
+	/**
+	 * Edit (or return the value if not insite) the nth attribute as a string,
+	 * or
+	 * 
+	 */
 	public String editString(String attribute, int n) {
 		return editString(attribute, n, "");
-	}
-
-	/**
-	 * Edit the n-th element of the given attribute, using the given parameters.
-	 * 
-	 * @param attribute
-	 * @param n
-	 * @param args
-	 * @return
-	 */
-	public String editString(String attribute, int n, String params,
-			Arg... args) {
-		throw new RuntimeException("this is not a bound asset");
-	}
-
-	/**
-	 * Edit (or return if not insite) the nth named attribute as a string, or
-	 * null if not found and pass additional parameters using the CK editor
-	 * 
-	 * @param asset
-	 * @return
-	 */
-	public String editText(String attribute, int n, String params) {
-		return editString(attribute, n, nn(params), arg("editor", "ckeditor"));
 	}
 
 	/**
@@ -395,14 +413,25 @@ public abstract class Asset implements Content {
 	}
 
 	/**
-	 * Edit (or return if not insite) the first named attribute as a string, or
-	 * null if not found using the CK editor
+	 * Edit (or return if not insite) the nth named attribute as a string, or
+	 * null if not found and pass additional parameters using the CK editor
 	 * 
 	 * @param asset
 	 * @return
 	 */
-	public String editText(String attribute, String params) {
-		return editText(attribute, 1, params);
+	public String editText(String attribute, int n, String params) {
+		return editString(attribute, n, nn(params), arg("editor", "ckeditor"));
+	}
+	
+	/**
+	 * Edit (or return if not insite) the named attribute as a string, or
+	 * null if not found and pass additional parameters using the CK editor
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public String editText(String attribute,  String params) {
+		return editString(attribute, 1, nn(params), arg("editor", "ckeditor"));
 	}
 
 	/**
@@ -412,8 +441,9 @@ public abstract class Asset implements Content {
 	 * @param asset
 	 * @return
 	 */
+	@Override
 	public Integer getInt(String attribute) {
-		throw new RuntimeException("this is not a bound asset");
+		return e.getInt(at(attribute), "value");
 	}
 
 	/**
@@ -423,8 +453,9 @@ public abstract class Asset implements Content {
 	 * @param asset
 	 * @return
 	 */
+	@Override
 	public Integer getInt(String attribute, int n) {
-		throw new RuntimeException("this is not a bound asset");
+		return e.getInt(at(attribute), n, "value");
 	}
 
 	/**
@@ -434,6 +465,7 @@ public abstract class Asset implements Content {
 	 * @param asset
 	 * @return
 	 */
+	@Override
 	public Long getLong(String attribute) {
 		throw new RuntimeException("this is not a bound asset");
 	}
@@ -445,48 +477,204 @@ public abstract class Asset implements Content {
 	 * @param asset
 	 * @return
 	 */
+	@Override
 	public Long getLong(String attribute, int n) {
 		throw new RuntimeException("this is not a bound asset");
 	}
 
 	/**
-	 * Return the first attribute of the the attribute list as an int, or null
+	 * Return the first attribute of the the attribute list as a date, or null
 	 * if not found
 	 * 
 	 * @param asset
 	 * @return
 	 */
+	@Override
 	public Date getDate(String attribute) {
-		throw new RuntimeException("this is not a bound asset");
+		return e.getDate(at(attribute), "value");
 	}
 
 	/**
-	 * Return the nth attribute of the the attribute list as an int, or null if
+	 * Range of an asset association
+	 */
+	@Override
+	public Iterable<Integer> getAssocRange(String assoc) {
+		return e.getRange(ass(assoc));
+	}
+
+	/**
+	 * Id of the first associated asset
+	 */
+	@Override
+	public Long getAssocId(String assoc) {
+		return e.getLong(ass(assoc), "oid");
+	}
+
+	/**
+	 * Id of the nth associated asset
+	 */
+	@Override
+	public Long getAssocId(String assoc, int pos) {
+		return e.getLong(ass(assoc), pos, "oid");
+	}
+
+	/**
+	 * Type of the first associated asset
+	 */
+	@Override
+	public String getAssocType(String assoc) {
+		return e.getString(ass(assoc), "otype");
+	}
+
+	/**
+	 * Type of the nth associated asset
+	 */
+	@Override
+	public String getAssocType(String assoc, int pos) {
+		return e.getString(ass(assoc), pos, "otype");
+	}
+
+	/**
+	 * Return the nth attribute of the the attribute list as a date, or null if
 	 * not found
 	 * 
 	 * @param asset
 	 * @return
 	 */
+	@Override
 	public Date getDate(String attribute, int n) {
-		throw new RuntimeException("this is not a bound asset");
+		return e.getDate(at(attribute), n, "value");
 	}
 
 	/**
-	 * Return an iterable of the attribute list
+	 * String get blob url of the first attribute
 	 * 
+	 */
+	@Override
+	public String getBlobUrl(String attribute, Arg... args) {
+		return getBlobUrl(attribute, 1, "application/octet-stream", args);
+	}
+
+	/**
+	 * String get blob url of the first attribute
+	 * 
+	 */
+	@Override
+	public String getBlobUrl(String attribute, String mimeType, Arg... args) {
+		return getBlobUrl(attribute, 1, mimeType, args);
+	}
+
+	/**
+	 * String get blob url of the nth attribute
+	 */
+	@Override
+	public String getBlobUrl(String attribute, int pos, String mimeType,
+			Arg... args) {
+
+		Long blobWhere = this.getCid(attribute, pos);
+		if (blobWhere == null)
+			return null;
+
+		wcs.core.Config bcfg = e.getConfig();
+
+		// invoke tag
+		RenderTag.Getbloburl tag = RenderTag.getbloburl()
+				.blobtable(bcfg.getBlobTable(e.ics()))
+				.blobcol(bcfg.getBlobUrl(e.ics()))
+				.blobkey(bcfg.getBlobId(e.ics()))
+				.blobwhere(blobWhere.toString());
+		// set mime type
+		if (mimeType != null & mimeType.trim().length() > 0)
+			tag.blobheader(mimeType);
+
+		// pass parameters
+		for (Arg arg : args) {
+			tag.set(arg.name.toUpperCase(), arg.value);
+		}
+
+		// run the tag
+		return tag.eval(i, "outstr");
+	}
+
+	/**
+	 * Invoke the actual slot call
+	 * 
+	 * if pos <0 it is a list otherwise it is a slot call.
+	 * 
+	 * 
+	 * @param template
 	 * @param attribute
+	 * @param n
+	 * @param args
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	private String insiteCall(String type, String template, String attribute,
+			int n, String emptyText, Arg... args) {
+
+		try {
+			// let's start with the common parameters
+			List<Arg> list = new ArrayList<Arg>();
+			list.add(arg("SITE", i.GetVar("site")));
+			list.add(arg("TNAME", template));
+
+			list.add(arg("TTYPE", //
+					i.GetVar("tid") != null ? "Template" : "CSElement"));
+			list.add(arg("TID", //
+					i.GetVar("tid") != null ? i.GetVar("tid") : i.GetVar("eid")));
+
+			list.add(arg("ASSETTYPE", c));
+			list.add(arg("ASSETID", cid.toString()));
+			list.add(arg("FIELD", attribute));
+
+			if (emptyText != null)
+				list.add(arg("EMPTYTEXT", emptyText));
+
+			// copy additional args
+			for (Arg arg : args) {
+				// System.out.println(arg.toString());
+				list.add(arg);
+			}
+
+			list.add(arg("CHILDTYPE", type));
+			if (n < 0) {
+				list.add(arg("LISTNAME", at(attribute)));
+				return Common.call("INSITE:CALLTEMPLATELOOP", list);
+			} else {
+				Long icid = (Long) ifn(getCid(attribute, n), 0l);
+				list.add(arg("CHILDID", icid.toString()));
+				list.add(arg("INDEX", Integer.toString(n)));
+				return Common.call("INSITE:CALLTEMPLATE", list);
+			}
+		} catch (Exception ex) {
+			log.error(ex, "exception in insiteCall");
+			return "ERROR " + ex.getMessage();
+		}
+	}
+
+	/**
+	 * Call the template by name with current c/cid, specifiying a slot name and
+	 * eventually some extra optional args.
+	 * 
+	 * @param name
+	 * @param args
 	 * @return
 	 */
-	public Iterable<Integer> getRange(String attribute) {
-		return new wcs.core.Range(0);
-	}
-
-	/**
-	 * Call the template by name with current c/cid and extra some optional args
-	 * 
-	 */
-	public String call(String name, Arg... args) {
-		throw new RuntimeException("this is not a bound asset");
+	@Override
+	public String call(String template, Arg... args) {
+		// let's start with the common parameters
+		String tid = i.GetVar("tid") != null ? i.GetVar("tid") : i
+				.GetVar("eid");
+		String ttype = i.GetVar("tid") != null ? "Template" : "CSElement";
+		log.trace("ttype/tid=", ttype, tid);
+		List<Arg> list = new ArrayList<Arg>();
+		list.add(arg("SITE", i.GetVar("site")));
+		list.add(arg("TNAME", template));
+		list.add(arg("C", c));
+		list.add(arg("CID", cid.toString()));
+		list.add(arg("TTYPE", ttype));
+		list.add(arg("TID", tid));
+		return Common.call("RENDER:CALLTEMPLATE", list);
 	}
 
 	/**
@@ -503,17 +691,27 @@ public abstract class Asset implements Content {
 	 * @param args
 	 * @return
 	 */
-	public String slotList(String field, String type, String template,
+	@Override
+	public String slotList(String attribute, String type, String template,
 			Arg... args) throws IllegalArgumentException {
-		throw new RuntimeException("this is not a bound asset");
+		return insiteCall(type, template, attribute, -1, null, args);
 	}
 
 	/**
-	 * Render an empty slot.
+	 * Render an empty slot to drag additional content to a list.
+	 * 
+	 * @param field
+	 * @param template
+	 * @param type
+	 * @param i
+	 * @param args
+	 * @return
 	 */
+	@Override
 	public String slotEmpty(String attribute, String type, String template,
 			String emptyText) throws IllegalArgumentException {
-		throw new RuntimeException("this is not a bound asset");
+		return insite ? insiteCall(type, template, attribute,
+				getSize(attribute) + 1, emptyText) : "";
 	}
 
 	/**
@@ -523,16 +721,17 @@ public abstract class Asset implements Content {
 	 * Slot type is configured in Config. You need a field of the same name of
 	 * the field specifying the type as parameter "c"
 	 * 
-	 * @param attribute
+	 * @param field
 	 * @param template
 	 * @param type
 	 * @param i
 	 * @param args
 	 * @return
 	 */
+	@Override
 	public String slot(String attribute, int i, String type, String template,
 			String emptyText, Arg... args) throws IllegalArgumentException {
-		throw new RuntimeException("this is not a bound asset");
+		return insiteCall(type, template, attribute, i, emptyText, args);
 	}
 
 	/**
@@ -542,60 +741,65 @@ public abstract class Asset implements Content {
 	 * Slot type is configured in Config. You need a field of the same name of
 	 * the field specifying the type as parameter "c"
 	 * 
-	 * @param attribute
-	 * @param template
-	 *            type
+	 * @param field
 	 * @param template
 	 * @param args
 	 * @return
 	 */
+	@Override
 	public String slot(String attribute, String type, String template,
 			String emptyText, Arg... args) throws IllegalArgumentException {
-		throw new RuntimeException("this is not a bound asset");
+		return insiteCall(type, template, attribute, 1, emptyText, args);
 	}
 
 	/**
 	 * Return the URL to render this asset
 	 */
+	@Override
 	public String getUrl(Arg... args) {
-		throw new RuntimeException("this is not a bound asset");
+		return e.getUrl(getId(), args);
 	}
 
 	/**
-	 * Print it
-	 */
-	public String toString() {
-		return name
-				+ "("
-				+ type
-				+ ((subtype != null && subtype.trim().length() > 0) ? "/"
-						+ subtype : "") + ")";
-	}
-
-	/**
-	 * Return the attribute
 	 * 
-	 * @param data
-	 * @param key
-	 * @param value
+	 * Edit a field with parameters
+	 * 
+	 * @param attribute
+	 * @param index
+	 * @param args
+	 * @return
 	 */
-	void addAttribute(MutableAssetData data, String key, Object value) {
-		log.debug(key + "=" + value);
-		AttributeData attr = data.getAttributeData(key);
-		if (attr != null)
-			attr.setData(value);
-		else {
-			log.warn("no attribute for " + key);
-		}
+	private String edit(String attribute, int index, String params, Arg... args) {
+
+		// read a call or create a new call with no parameters
+		String value = e.getString(at(attribute), index, "value");
+
+		Call call = new Call("INSITE:EDIT");
+
+		call.addArg("ASSETTYPE", e.getC());
+		call.addArg("ASSETID", e.getCid().toString());
+		call.addArg("FIELD", attribute);
+		call.addArg("VALUE", value);
+		call.addArg("INDEX", Integer.toString(index));
+
+		if (params != null)
+			call.addArg("PARAMS", params);
+
+		for (Arg arg : args)
+			call.addArg(arg.name.toUpperCase(), arg.value);
+
+		log.trace("edit: %s", call.encode());
+
+		return call.encode();
 	}
 
 	@Override
 	public boolean exists(String attribute) {
-		return false;
+		return isAttribute(attribute);
 	}
 
 	@Override
 	public boolean exists(String attribute, int pos) {
-		return false;
+		return isAttribute(attribute, pos);
 	}
 }

@@ -57,8 +57,6 @@ public class CSElement extends AssetSetup {
 				"rootelement", "url", "resdetails1", "resdetails2");
 	}
 
-	
-
 	private String template(String clazz) {
 		return Util.getResource("/Streamer.jsp").replaceAll("%CLASS%", clazz);
 	}

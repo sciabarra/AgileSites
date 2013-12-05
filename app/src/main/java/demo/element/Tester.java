@@ -1,14 +1,14 @@
 package demo.element;
 
 import demo.Config;
+import wcs.core.Index;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.SiteEntry;
-import wcs.java.util.AddIndex;
 import wcs.java.util.TestRunnerElement;
 import wcs.java.util.Util;
 
-@AddIndex("demo/elements.txt")
+@Index("demo/elements.txt")
 public class Tester extends TestRunnerElement {
 
 	public static AssetSetup setup() {

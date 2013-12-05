@@ -22,7 +22,7 @@ trait Utils {
     var indexRes: Option[String] = None;
     var classRes: Option[String] = None;
     val packageRe = """.*package\s+([\w\.]+)\s*;.*""".r;
-    val indexRe = """.*@AddIndex\(\"(.*?)\"\).*""".r;
+    val indexRe = """.*@Index\(\"(.*?)\"\).*""".r;
     val classRe = """.*class\s+(\w+).*""".r;
 
     if (file.getName.endsWith(".java") || file.getName.endsWith(".scala"))

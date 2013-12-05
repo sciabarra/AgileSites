@@ -43,6 +43,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
+import wcs.core.Common;
 import wcs.core.Log;
 
 /**
@@ -538,7 +539,7 @@ public class XmlTestReport extends RunListener {
 		nested.setAttribute(ATTR_TYPE, t.getClass().getName());
 
 		// String strace = JUnitTestRunner.getFilteredTrace(t);
-		String strace = Util.ex2str(t);
+		String strace = Common.ex2str(t);
 		Text trace = doc.createTextNode(strace);
 		nested.appendChild(trace);
 	}

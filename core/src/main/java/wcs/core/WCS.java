@@ -1,6 +1,9 @@
 package wcs.core;
 
+import java.io.IOException;
 import java.util.Properties;
+
+import wcs.core.Config;
 import COM.FutureTense.Interfaces.ICS;
 
 /**
@@ -16,8 +19,6 @@ public class WCS {
 
 	final static boolean debug = System.getProperty("wcs.core.debug") != null;
 
-	final static Properties properties = new Properties();
-
 	/**
 	 * Normalize Site name
 	 */
@@ -25,13 +26,25 @@ public class WCS {
 		return site.toLowerCase().replaceAll("[^a-z0-9]+", "");
 	}
 
+	private static Properties properties = null;
+	
 	/**
 	 * Return a property configured in setup
 	 * 
 	 * @param name
 	 * @return
 	 */
-	public static String getProperty(String name) {
+	public static String getProperty(String name) {		
+		if (properties == null) {
+			properties = new Properties();
+			try {
+				properties.load(Config.class
+						.getResourceAsStream("/agilesites.properties"));
+				System.out.println(properties.toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		return properties.getProperty(name);
 	}
 

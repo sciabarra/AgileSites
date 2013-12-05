@@ -2,9 +2,11 @@ package wcs.java.util;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static wcs.core.Common.arg;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.LinkedList;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -14,7 +16,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.junit.matchers.JUnitMatchers;
 
+import wcs.core.Arg;
 import wcs.core.Call;
+import wcs.core.Common;
 import wcs.core.URL;
 import wcs.java.Router;
 import wcs.core.Log;
@@ -39,7 +43,7 @@ public class TestElement extends TestCase {
 	 * @param html
 	 */
 	public void parse(String html) {
-		doc = Jsoup.parse(Util.dumpStream(html));
+		doc = Jsoup.parse(Common.dumpStream(html));
 		log.trace("parse:\n" + doc.toString());
 	}
 
@@ -48,9 +52,18 @@ public class TestElement extends TestCase {
 	 * 
 	 * @return
 	 */
-	public TestEnv env() {
-		return TestRunnerElement.getTestEnv();
+	public TestEnv env(Arg... args) {
+		TestEnv env = TestRunnerElement.getTestEnv();
+		if (args.length > 0) {
+			env = new TestEnv(env, args);
+		}
+		return env;
 	}
+	
+	
+	// only used in  List.toArray conversions 
+	final private static Arg[] args0 = new Arg[0];
+
 
 	/**
 	 * Return the current env routed (so variables coming from router are
@@ -58,19 +71,21 @@ public class TestElement extends TestCase {
 	 * 
 	 * @return
 	 */
-	public TestEnv env(String path) {
+	public TestEnv env(String path, Arg... args) {
 		if (path == null)
 			path = "";
-		TestEnv te = env();
+		TestEnv te = env(args);
+		List<Arg> list = new LinkedList<Arg>();
+		for(Arg arg: args) list.add(arg);
 		try {
 			Call call = Router.getRouter(te.getString("site")).route(te,
 					URL.parse(new URI(path)));
 			for (String k : call.keysLeft())
-				te.SetVar(k, call.getOnce(k));
+				list.add(arg(k, call.getOnce(k)));
 		} catch (URISyntaxException e) {
 			log.warn(e, "parsing %s", path);
 		}
-		return te;
+		return env(list.toArray(args0));
 	}
 
 	/**
@@ -269,16 +284,16 @@ public class TestElement extends TestCase {
 	 * @param log
 	 */
 	protected void dump(Log log) {
-		log.debug(Util.dumpStream(doc.html()));
+		log.debug(Common.dumpStream(doc.html()));
 	}
-	
+
 	/**
 	 * Dump selected inner html
 	 * 
 	 * @param log
 	 */
 	protected void dump(Log log, String wh) {
-		log.debug(Util.dumpStream(doc.select(wh).html()));
+		log.debug(Common.dumpStream(doc.select(wh).html()));
 	}
 
 	/**
@@ -287,16 +302,16 @@ public class TestElement extends TestCase {
 	 * @param log
 	 */
 	protected void odump(Log log) {
-		log.debug(Util.dumpStream(doc.outerHtml()));
+		log.debug(Common.dumpStream(doc.outerHtml()));
 	}
-	
+
 	/**
-	 * Dump outer html of selected element 
+	 * Dump outer html of selected element
 	 * 
 	 * @param log
 	 */
 	protected void odump(Log log, String wh) {
-		log.debug(Util.dumpStream(doc.select(wh).outerHtml()));
+		log.debug(Common.dumpStream(doc.select(wh).outerHtml()));
 	}
 
 }

@@ -9,9 +9,9 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
+import wcs.core.Log;
 import wcs.java.Element;
 import wcs.java.Env;
-import wcs.core.Log;
 
 public abstract class TestRunnerElement extends Element {
 
@@ -76,10 +76,10 @@ public abstract class TestRunnerElement extends Element {
 		int skipCount = 0;
 
 		/*
-		public void testAssumptionFailure(Failure failure) {
-			// sb.append("Assumption").append(failure.getMessage()).append("<br>");
-			super.testAssumptionFailure(failure);
-		}*/
+		 * public void testAssumptionFailure(Failure failure) { //
+		 * sb.append("Assumption").append(failure.getMessage()).append("<br>");
+		 * super.testAssumptionFailure(failure); }
+		 */
 
 		public TestListener append(String msg) {
 			sb.append(msg);
@@ -90,9 +90,8 @@ public abstract class TestRunnerElement extends Element {
 		public void testStarted(Description description) throws Exception {
 
 			log.trace("testStarted");
-			
-			sb.append("<b>").append(description.getClass().getName()).append(".")
-					.append(description.getDisplayName()).append("</b>: ");
+
+			sb.append("<b>").append(description).append("</b>: ");
 			lastFailure = null;
 
 			super.testStarted(description);
@@ -186,9 +185,9 @@ public abstract class TestRunnerElement extends Element {
 
 		// create a new, modifiable env, then set it to a threadlocal
 		// so the testelement can find and use it
-		TestEnv te = new TestEnv(e.ics, e.getString("site"));
-		te.setVar("tid", e.getString("tid"));
-		te.setVar("eid", e.getString("eid"));
+		TestEnv te = new TestEnv(e.ics, e.getString("site"), //
+				arg("tid", e.getString("tid")), //
+				arg("eid", e.getString("eid")));
 		currTestEnv.set(te);
 
 		// System.out.println(Thread.currentThread());
@@ -229,7 +228,7 @@ public abstract class TestRunnerElement extends Element {
 		while (st.hasMoreTokens())
 			try {
 				String testName = st.nextToken();
-				//System.out.println(testName);
+				// System.out.println(testName);
 				core.run(Class.forName(testName));
 
 				skipCount += listener.skipCount;

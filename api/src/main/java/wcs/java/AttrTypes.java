@@ -1,9 +1,7 @@
 package wcs.java;
 
 import java.util.List;
-
 import wcs.java.util.Util;
-
 import com.fatwire.assetapi.data.BlobObject;
 import com.fatwire.assetapi.data.BlobObjectImpl;
 import com.fatwire.assetapi.data.MutableAssetData;
@@ -14,7 +12,7 @@ import com.fatwire.assetapi.data.MutableAssetData;
  * @author msciab
  * 
  */
-public class AttrTypes extends Asset {
+public class AttrTypes extends AssetSetup {
 
 	private String urlxml;
 
@@ -42,7 +40,7 @@ public class AttrTypes extends Asset {
 	 * @param description
 	 * @return
 	 */
-	public Asset description(String description) {
+	public AttrTypes description(String description) {
 		setDescription(description);
 		return this;
 	}

@@ -18,9 +18,19 @@ public class WrapperTest extends TestElement {
 	}
 
 	@Test
-	public void test() {
+	public void testError() {
 		parse(it.apply(env()));
+		assertText("title", "Error");
+		assertAttr("meta[description]", "content", "Hello, world");
 		assertAttr("render-callelement", "error", "Asset not found");
 	}
-
+	
+	// uncomment this when you have a Page named Home with description Home Page 
+	//@Test 
+	public void testError() {
+		parse(it.apply(env("/Home")));
+		assertText("title", "Home");
+		assertAttr("meta[description]", "content", "Home Page");		 
+		assertAttr("render-callelement", "c", "Page");
+	}
 }

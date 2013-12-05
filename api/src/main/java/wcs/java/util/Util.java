@@ -1,27 +1,18 @@
 package wcs.java.util;
 
 import java.io.BufferedReader;
-import java.io.CharArrayWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import wcs.core.Call;
 import wcs.core.Log;
-import wcs.core.Sequencer;
-import wcs.java.Config;
-
-import COM.FutureTense.Interfaces.IList;
 
 import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AttributeDataImpl;
@@ -208,64 +199,6 @@ public class Util {
 
 	}
 
-	// formatter for fatwire format
-	private static SimpleDateFormat fmt = new SimpleDateFormat(
-			"yyyy-MM-dd HH:mm:ss");
-
-	/**
-	 * Convert as a date, eventually the day 0 of the epoch if you cannot
-	 * convert
-	 */
-	public static java.util.Date toDate(String s) {
-		if (s != null) {
-			try {
-				return fmt.parse(s);
-			} catch (Exception e) {
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * 
-	 * Convert in a long, 0l if errors
-	 * 
-	 * @param l
-	 * @return
-	 */
-	public static Long toLong(String l) {
-		if (l == null)
-			return null;
-		try {
-			long ll = Long.parseLong(l);
-			return new Long(ll);
-		} catch (NumberFormatException ex) {
-			return null;
-		} catch (Exception ex) {
-			log.warn(ex, "unexpected");
-		}
-		return null;
-	}
-
-	/**
-	 * Convert in a int, 0 if erros
-	 * 
-	 * @param l
-	 * @return
-	 */
-	public static Integer toInt(String l) {
-		if (l == null)
-			return null;
-		try {
-			int ll = Integer.parseInt(l);
-			return new Integer(ll);
-		} catch (NumberFormatException ex) {
-		} catch (Exception ex) {
-			log.warn(ex, "unexpected");
-		}
-		return null;
-	}
-
 	/**
 	 * Return a class list read from a list of resources
 	 * 
@@ -345,53 +278,6 @@ public class Util {
 		return prp;
 	}
 
-	/**
-	 * Convenience method to dump the stream resulting of the picker
-	 */
-	public static String dumpStream(String html) {
-		Sequencer seq = new Sequencer(html);
-		StringBuilder sb = new StringBuilder(seq.header());
-		while (seq.hasNext()) {
-			Call call = seq.next();
-			sb.append(call.toString());
-			sb.append(seq.header());
-		}
-		return sb.toString();
-	}
-
-	/**
-	 * Convenience method to dump an IList
-	 */
-	public static String dumpIList(IList ilist) {
-		if (ilist == null)
-			return "NULL ILIST!";
-		StringBuffer sb = new StringBuffer("*****\n");
-		for (int i = 1; i <= ilist.numRows(); i++) {
-			sb.append(i + ") ");
-			for (int j = 0; j < ilist.numColumns(); j++) {
-				String k = ilist.getColumnName(j);
-				sb.append(k).append("=");
-				try {
-					sb.append(ilist.getValue(k).toString()).append(" ");
-				} catch (NoSuchFieldException e) {
-					// e.printStackTrace();
-				}
-			}
-			ilist.moveTo(i);
-			sb.append("\n");
-		}
-		sb.append("*****");
-		return sb.toString();
-	}
-
-	/**
-	 * Stream an exceptions in a string
-	 */
-	public static String ex2str(Throwable ex) {
-		CharArrayWriter caw = new CharArrayWriter();
-		ex.printStackTrace(new PrintWriter(caw));
-		return caw.toString();
-	}
 
 	/**
 	 * Read a configuration attribute
@@ -400,7 +286,7 @@ public class Util {
 	 * @param config
 	 * @return
 	 */
-	public static Object readAttributeConfig(String attribute, Config config) {
+	public static Object readAttributeConfig(String attribute, wcs.core.Config config) {
 		try {
 			Field field = config.getClass().getField(attribute);
 			return field.get(config);

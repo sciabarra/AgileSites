@@ -5,18 +5,34 @@ import java.util.List;
 import com.fatwire.assetapi.data.MutableAssetData;
 
 /**
- * Extend this class for installing assets
+ * Extend this class for creating assets in setup
  * 
  * @author msciab
  * 
  */
-public abstract class AssetSetup extends Asset {
-	
+public abstract class AssetSetup extends AssetBase {
+
 	private AssetSetup nextSetup = null;
-	
+
 	public AssetSetup(String type, String subtype, String name) {
 		super(type, subtype, name);
 	}
+
+	public void setTypeSubtype(String type, String subtype) {
+		this.c = type;
+		this.subtype = subtype;
+		id = null;
+	}
+
+	public void setCid(long cid) {
+		this.cid = cid;
+		id = null;
+	}
+
+	public void setSite(String site) {
+		this.site = site;
+	}
+
 
 	/**
 	 * Return a list of expected attributes
@@ -42,9 +58,11 @@ public abstract class AssetSetup extends Asset {
 
 	/**
 	 * Set next asset setup
+	 * 
 	 * @param assetSetup
 	 */
 	public void setNextSetup(AssetSetup assetSetup) {
-		nextSetup = assetSetup; 
+		nextSetup = assetSetup;
 	}
+
 }

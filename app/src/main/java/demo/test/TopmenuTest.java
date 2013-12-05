@@ -3,13 +3,13 @@ package demo.test;
 import org.junit.Before;
 import org.junit.Test;
 
+import wcs.core.Index;
 import wcs.core.Log;
-import wcs.java.util.AddIndex;
 import wcs.java.util.TestElement;
 import demo.element.Topmenu;
 
 // this test must be run by AgileSites TestRunnerElement
-@AddIndex("demo/tests.txt")
+@Index("demo/tests.txt")
 public class TopmenuTest extends TestElement {
 
 	final static Log log = Log.getLog(TopmenuTest.class);

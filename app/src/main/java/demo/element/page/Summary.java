@@ -1,15 +1,15 @@
 package demo.element.page;
 
+import wcs.core.Index;
+import wcs.core.Asset;
 import wcs.core.Log;
-import wcs.java.Asset;
+import wcs.core.Picker;
 import wcs.java.Env;
 import wcs.java.Element;
-import wcs.java.Picker;
 import wcs.java.Template;
 import wcs.java.AssetSetup;
-import wcs.java.util.AddIndex;
 
-@AddIndex("demo/elements.txt")
+@Index("demo/elements.txt")
 public class Summary extends Element {
 
 	final static Log log = Log.getLog(Summary.class);

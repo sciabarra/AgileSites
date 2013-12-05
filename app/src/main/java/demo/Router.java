@@ -7,10 +7,10 @@ import java.util.StringTokenizer;
 
 import wcs.core.Arg;
 import wcs.core.Call;
+import wcs.core.Env;
 import wcs.core.Id;
 import wcs.core.Log;
 import wcs.core.URL;
-import wcs.java.Env;
 
 /**
  * Simple router invoking the tester only

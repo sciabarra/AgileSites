@@ -1,16 +1,19 @@
 package wcs.java;
 
 import static wcs.core.Common.tmp;
-import static wcs.java.util.Util.toDate;
-import static wcs.java.util.Util.toInt;
-import static wcs.java.util.Util.toLong;
+import static wcs.core.Common.toDate;
+import static wcs.core.Common.toInt;
+import static wcs.core.Common.toLong;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import wcs.core.Arg;
+import wcs.core.Asset;
+import wcs.core.AssetDeps;
 import wcs.core.Common;
+import wcs.core.Content;
 import wcs.core.ICSProxyJ;
 import wcs.core.Id;
 import wcs.core.Log;
@@ -19,7 +22,6 @@ import wcs.core.WCS;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.RenderTag;
 import wcs.core.tag.SatelliteTag;
-import wcs.java.util.AssetDeps;
 import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
 
@@ -30,14 +32,14 @@ import COM.FutureTense.Interfaces.IList;
  * @author msciab
  * 
  */
-public class Env extends ICSProxyJ implements Content {
+public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 
 	private static Log log = Log.getLog(Env.class);
 	@SuppressWarnings("unused")
 	private boolean hasInsite = getVersionMajor() == 11;
 	private boolean hasDevices = getVersionMajor() == 11
 			&& getVersionMinor() == 8;
-	private Config config;
+	private wcs.core.Config config;
 	private Router router;
 	private String site;
 	private String normSite;
@@ -52,7 +54,7 @@ public class Env extends ICSProxyJ implements Content {
 	public Env(ICS ics, String site) {
 		init(ics);
 		if (site != null) {
-			config = Config.getConfig(site);
+			config = wcs.core.WCS.getConfig(site);
 			this.site = config.getSite();
 			this.normSite = WCS.normalizeSiteName(site);
 			router = Router.getRouter(site);
@@ -62,23 +64,18 @@ public class Env extends ICSProxyJ implements Content {
 		preview = rendermode != null && rendermode.startsWith("preview");
 	}
 
-	/**
-	 * Get a variable or null
-	 * 
-	 * @param var
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getString(java.lang.String)
 	 */
+	@Override
 	public String getString(String var) {
 		return ics.GetVar(var);
 	}
 	
-	/**
-	 * Get the field of a list or null
-	 * 
-	 * @param list
-	 * @param field
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getString(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public String getString(String list, String field) {
 		IList ls = ics.GetList(list);
 		if (ls == null)
@@ -92,14 +89,10 @@ public class Env extends ICSProxyJ implements Content {
 		}
 	}
 	
-	/**
-	 * Get the nth field of a list or null
-	 * 
-	 * @param list
-	 * @param row
-	 * @param field
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getString(java.lang.String, int, java.lang.String)
 	 */
+	@Override
 	public String getString(String list, int row, String field) {
 		IList ls = ics.GetList(list);
 		if (ls == null)
@@ -115,24 +108,18 @@ public class Env extends ICSProxyJ implements Content {
 		}
 	}
 
-	/**
-	 * Get the field "value" of a list or null
-	 * 
-	 * @param list
-	 * @param row
-	 * @param field
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getString(java.lang.String, int)
 	 */
+	@Override
 	public String getString(String list, int row) {
 		return getString(list, row, "value");
 	}
 
-	/**
-	 * Return size of a list
-	 * 
-	 * @param list
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getSize(java.lang.String)
 	 */
+	@Override
 	public int getSize(String list) {
 		IList ls = ics.GetList(list);
 		if (ls == null)
@@ -140,12 +127,10 @@ public class Env extends ICSProxyJ implements Content {
 		return ls.numRows();
 	}
 
-	/**
-	 * Return an iterable sequence of integers to loop a list
-	 * 
-	 * @param list
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getRange(java.lang.String)
 	 */
+	@Override
 	public Iterable<Integer> getRange(String list) {
 		IList ls = ics.GetList(list);
 		if (ls == null)
@@ -153,200 +138,170 @@ public class Env extends ICSProxyJ implements Content {
 		return new Range(ls.numRows());
 	}
 
-	/**
-	 * Get variable as a date (or null)
-	 * 
-	 * @param var
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getDate(java.lang.String)
 	 */
+	@Override
 	public java.util.Date getDate(String var) {
 		return toDate(getString(var));
 	}
 
-	/**
-	 * Get variable as Long or null
-	 * 
-	 * @param var
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getInt(java.lang.String)
 	 */
+	@Override
 	public Integer getInt(String var) {
 		return toInt(getString(var));
 	}
 
-	/**
-	 * Get variable as Long or null
-	 * 
-	 * @param var
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getLong(java.lang.String)
 	 */
+	@Override
 	public Long getLong(String var) {
 		return toLong(getString(var));
 	}
 
-	/**
-	 * Get field as date or null
-	 * 
-	 * @param ls
-	 * @param field
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getDate(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public java.util.Date getDate(String ls, String field) {
 		return toDate(getString(ls, field));
 	}
 
-	/**
-	 * Get field as long or null
-	 * 
-	 * @param ls
-	 * @param field
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getInt(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public Integer getInt(String ls, String field) {
 		return toInt(getString(ls, field));
 	}
 
-	/**
-	 * Get field as long or null
-	 * 
-	 * @param ls
-	 * @param field
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getLong(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public Long getLong(String ls, String field) {
 		return toLong(getString(ls, field));
 	}
 
-	/**
-	 * Get field at given position as a date, or null
-	 * 
-	 * @param ls
-	 * @param field
-	 * @param pos
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getDate(java.lang.String, int, java.lang.String)
 	 */
+	@Override
 	public java.util.Date getDate(String ls, int pos, String field) {
 		return toDate(getString(ls, pos, field));
 	}
 
-	/**
-	 * Get the field value at given position as a date, or null
-	 * 
-	 * @param ls
-	 * @param field
-	 * @param pos
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getDate(java.lang.String, int)
 	 */
+	@Override
 	public java.util.Date getDate(String ls, int pos) {
 		return toDate(getString(ls, pos, "value"));
 	}
 
-	/**
-	 * Get field at given position as a long, or null
-	 * 
-	 * @param ls
-	 * @param field
-	 * @param pos
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getLong(java.lang.String, int, java.lang.String)
 	 */
+	@Override
 	public Long getLong(String ls, int pos, String field) {
 		return toLong(getString(ls, pos, field));
 	}
 
-	/**
-	 * Get field "value" at given position as a long, or null
-	 * 
-	 * @param ls
-	 * @param field
-	 * @param pos
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getLong(java.lang.String, int)
 	 */
+	@Override
 	public Long getLong(String ls, int pos) {
 		return toLong(getString(ls, pos, "value"));
 	}
 
-	/**
-	 * Get field at given position as an int, or null
-	 * 
-	 * @param ls
-	 * @param field
-	 * @param pos
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getInt(java.lang.String, int, java.lang.String)
 	 */
+	@Override
 	public Integer getInt(String ls, int pos, String field) {
 		return toInt(getString(ls, pos, field));
 	}
 
-	/**
-	 * Get the field "value" at given position as an int, or null
-	 * 
-	 * @param ls
-	 * @param field
-	 * @param pos
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getInt(java.lang.String, int)
 	 */
+	@Override
 	public Integer getInt(String ls, int pos) {
 		return toInt(getString(ls, pos, "value"));
 	}
 
-	/**
-	 * Get Error nummber
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getError()
 	 */
+	@Override
 	public int getError() {
 		return ics.GetErrno();
 	}
 
-	/**
-	 * Check if in error state
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#isError()
 	 */
+	@Override
 	public boolean isError() {
 		return getError() != 0;
 	}
 
-	/**
-	 * Check if is a variable
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#isVar(java.lang.String)
 	 */
+	@Override
 	public boolean isVar(String variable) {
 		return ics.GetVar(variable) != null;
 	}
 
-	/**
-	 * Check if it is a list
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#isList(java.lang.String)
 	 */
+	@Override
 	public boolean isList(String list) {
 		return ics.GetList(list) != null;
 	}
 
-	/**
-	 * Check if it is a list with enough rows
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#isList(java.lang.String, int)
 	 */
+	@Override
 	public boolean isList(String list, int n) {
 		return ics.GetList(list) != null && ics.GetList(list).numRows() > n;
 	}
 
-	/**
-	 * Check if exists as a list column
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#isListCol(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public boolean isListCol(String list, String field) {
 		return getString(list, field) != null;
 	}
 
-	/**
-	 * Check if exists as an object
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#isObj(java.lang.String)
 	 */
+	@Override
 	public boolean isObj(String object) {
 		return ics.GetObj(object) != null;
 	}
 
-	/**
-	 * Check if we are in the insite editing mode
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#isInsite()
 	 */
+	@Override
 	public boolean isInsite() {
 		return insite;
 	}
 
-	/**
-	 * Get an object
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getObject(java.lang.String)
 	 */
+	@Override
 	public Object getObject(String object) {
 		return ics.GetObj(object);
 	}
@@ -355,9 +310,10 @@ public class Env extends ICSProxyJ implements Content {
 	 * Return the asset identified by c/cid (or null if not possible)
 	 * 
 	 */
-	public Asset getAsset(String c, Long cid) {
+	@Override
+	public wcs.core.Asset getAsset(String c, Long cid) {
 		if (c != null && cid != null)
-			return new AssetImpl(this, c, cid);
+			return new wcs.java.Asset(this, c, cid);
 		else
 			return null;
 	}
@@ -366,6 +322,7 @@ public class Env extends ICSProxyJ implements Content {
 	 * Return the asset identified by and Id (or null if not found)
 	 * 
 	 */
+	@Override
 	public Asset getAsset(Id id) {
 		return getAsset(id.c, id.cid);
 	}
@@ -373,69 +330,80 @@ public class Env extends ICSProxyJ implements Content {
 	/**
 	 * Return the asset identified by the current c/cid
 	 */
+	@Override
 	public Asset getAsset() {
 		return getAsset(getC(), getCid());
 	}
 
-	/**
-	 * Return current "c" (content type)
-	 * 
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getC()
 	 */
+	@Override
 	public String getC() {
 		return getString("c");
 	}
 
-	/**
-	 * Return current "cid" (content id)
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getCid()
 	 */
+	@Override
 	public Long getCid() {
 		return getLong("cid");
 	}
 
-	/**
-	 * Return current asset id
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getId()
 	 */
+	@Override
 	public Id getId() {
 		return new Id(getC(), getCid());
 	}
 
-	/**
-	 * Return the current config
+	/* (non-Javadoc)
+	 * @see wcs.core.Env#getConfig()
 	 */
-	public Config getConfig() {
+	@Override
+	public wcs.core.Config getConfig() {
 		return config;
 	}
 
-	/**
-	 * Return the current router
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getRouter()
 	 */
+	@Override
 	public Router getRouter() {
 		return router;
 	}
 
-	/**
-	 * The current site name
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getSiteName()
 	 */
+	@Override
 	public String getSiteName() {
 		return site;
 	}
 
-	/**
-	 * The current site id
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getSiteId()
 	 */
+	@Override
 	public String getSiteId() {
 		return getSiteId(site);
 	}
+	
 
-	public SitePlan getSitePlan() {
-		return new SitePlan(this);
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getSitePlan()
+	 */
+	@Override
+	public wcs.core.SitePlan getSitePlan() {
+		return new wcs.java.SitePlan(this);
 	}
 
-	/**
-	 * Return the URL to render this asset - note that rendering is different if
-	 * we are in insite/preview mode or in live mode
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getUrl(wcs.core.Id, wcs.core.Arg)
 	 */
+	@Override
 	public String getUrl(Id id, Arg... args) {
 		System.out.println("getUrl:" + id);
 
@@ -471,16 +439,18 @@ public class Env extends ICSProxyJ implements Content {
 		return res;
 	}
 
-	/**
-	 * Return the URL to render this asset
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#getUrl(java.lang.String, java.lang.Long, wcs.core.Arg)
 	 */
+	@Override
 	public String getUrl(String c, Long cid, Arg... args) {
 		return getUrl(new Id(c, cid), args);
 	}
 
-	/**
-	 * Find assets
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#find(java.lang.String, wcs.core.Arg)
 	 */
+	@Override
 	public List<Id> find(String type, Arg... args) {
 		// load all the pages with a given name
 		AssetTag.List list = AssetTag.list();
@@ -527,6 +497,7 @@ public class Env extends ICSProxyJ implements Content {
 	/**
 	 * Find one assets
 	 */
+	@Override
 	public Asset findOne(String type, Arg... args) {
 		List<Id> result = find(type, args);
 		if (result.size() != 1)
@@ -534,13 +505,10 @@ public class Env extends ICSProxyJ implements Content {
 		return getAsset(result.get(0).c, result.get(0).cid);
 	}
 
-	/**
-	 * Call a CS Element in current site
-	 * 
-	 * @param name
-	 * @param args
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#call(java.lang.String, wcs.core.Arg)
 	 */
+	@Override
 	public String call(String name, Arg... args) {
 		List<Arg> list = new LinkedList<Arg>();
 		for (Arg arg : args)
@@ -549,91 +517,83 @@ public class Env extends ICSProxyJ implements Content {
 		return Common.call("RENDER:CALLELEMENT", list);
 	}
 
-	/**
-	 * Clear the current error code
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#clearError()
 	 */
+	@Override
 	public void clearError() {
 		ics.ClearErrno();
 	}
 
-	/**
-	 * Add a dependency on anything
-	 * 
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#addDependency()
 	 */
+	@Override
 	public void addDependency() {
 		RenderTag.unknowndeps().run(ics);
 	}
 
-	/**
-	 * Add a dependency on any asset of the given type
-	 * 
-	 * @param c
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#addDependency(java.lang.String)
 	 */
+	@Override
 	public void addDependency(String c) {
 		RenderTag.unknowndeps().assettype(c).run(ics);
 	}
 
-	/**
-	 * Add an EXACT dependency on a given asset
-	 * 
-	 * @param c
-	 * @param cid
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#addDependency(java.lang.String, java.lang.Long)
 	 */
+	@Override
 	public void addDependency(String c, Long cid) {
 		RenderTag.logdep().c(c).cid(cid.toString()).run(ics);
 	}
 
-	/**
-	 * Add a dependency of the specified type on a given asset
-	 * 
-	 * @param c
-	 * @param cid
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#addDependency(java.lang.String, java.lang.Long, wcs.java.util.AssetDeps)
 	 */
+	@Override
 	public void addDependency(String c, Long cid, AssetDeps deps) {
 		RenderTag.logdep().c(c).cid(cid.toString()).deptype(deps.toString())
 				.run(ics);
 	}
 
-	/**
-	 * Add an EXACT dependency on a given asset
-	 * 
-	 * @param id
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#addDependency(wcs.core.Id)
 	 */
+	@Override
 	public void addDependency(Id id) {
 		RenderTag.logdep().c(id.c).cid(id.cid.toString()).run(ics);
 	}
 
-	/**
-	 * Add a dependency of the specified type on a given asset
-	 * 
-	 * @param id
-	 * @param deps
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#addDependency(wcs.core.Id, wcs.java.util.AssetDeps)
 	 */
+	@Override
 	public void addDependency(Id id, AssetDeps deps) {
 		RenderTag.logdep().c(id.c).cid(id.cid.toString())
 				.deptype(deps.toString()).run(ics);
 	}
 
-	/**
-	 * Check if the given attribute is a valid value
-	 * 
-	 * @param attribute
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#exists(java.lang.String)
 	 */
 	@Override
 	public boolean exists(String attribute) {
 		return isVar(attribute);
 	}
 
-	/**
-	 * Check if the given attribute at the given position is a valid value
-	 * 
-	 * @param attribute
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IEnv#exists(java.lang.String, int)
 	 */
 	@Override
 	public boolean exists(String attribute, int pos) {
 		return isList(attribute, pos);
+	}
+
+	@Override
+	public ICS ics() {
+		return ics;
 	}
 
 }

@@ -2,11 +2,27 @@ package wcs.core;
 
 import java.util.List;
 
+
 import wcs.core.Config;
 import wcs.core.Router;
 import wcs.core.AssetDeps;
+import COM.FutureTense.Interfaces.ICS;
 
 public interface Env {
+	
+	/**
+	 * Return the underlying ICS
+	 */
+	
+	public ICS ics();
+	
+	
+	/**
+	 * Return the siteplan root of the given site
+	 */
+	public Id getSitePlanRoot(String siteName);
+
+
 
 	/**
 	 * Get a variable or null

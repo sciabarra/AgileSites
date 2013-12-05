@@ -1,14 +1,14 @@
 package demo.element;
 
+import wcs.core.Index;
 import wcs.core.Log;
+import wcs.core.Picker;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.Element;
 import wcs.java.Env;
-import wcs.java.Picker;
-import wcs.java.util.AddIndex;
 
-@AddIndex("demo/elements.txt")
+@Index("demo/elements.txt")
 public class Error extends Element {
 
 	final static Log log = Log.getLog(Error.class);

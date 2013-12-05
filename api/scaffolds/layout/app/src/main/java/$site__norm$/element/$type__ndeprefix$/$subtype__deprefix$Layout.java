@@ -4,14 +4,15 @@ import static wcs.core.Common.*;
 
 import wcs.core.Log;
 import wcs.java.Env;
-import wcs.java.Element;
-import wcs.java.Template;
+import wcs.java.Model;
 import wcs.java.Asset;
 import wcs.java.AssetSetup;
+import wcs.java.Element;
+import wcs.java.Template;
 import wcs.java.Picker;
 import wcs.java.util.AddIndex;
 
-@AddIndex("$site;format="normalize"$/elements.txt")
+@Index("$site;format="normalize"$/elements.txt")
 public class $subtype;format="deprefix"$Layout extends Element {
 	
 	final static Log log = Log.getLog($subtype;format="deprefix"$Layout.class); 
@@ -27,9 +28,9 @@ public class $subtype;format="deprefix"$Layout extends Element {
 	@Override
 	public String apply(Env e) {
 		Asset a = e.getAsset();
-		Picker html = Picker.load("/$site;format="normalize"$/simple.html" , "#content");		
-		html.replace("#title", a.getName());
-		html.replace("#subtitle", a.getDescription());
+		Picker html = Picker.load("/$site;format="normalize"$/simple.html" , "#content");	    
+	    //html.replace("#detail", a.call("$site$_Detail"));
+	    //html.replace("#footer", e.call("$site$_Footer"));
 		return html/*.dump(log)*/.html(a, e);
 	}
 }

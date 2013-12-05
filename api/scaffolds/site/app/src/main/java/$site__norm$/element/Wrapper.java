@@ -4,6 +4,7 @@ import wcs.core.Log;
 import wcs.java.Asset;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
+import wcs.java.Model;
 import wcs.java.SiteEntry;
 import wcs.java.Element;
 import wcs.java.Env;
@@ -31,22 +32,24 @@ public class Wrapper extends Element {
 		html.prefixAttrs("script", "src", "/cs/$site;format="normalize"$/");
 
 		// handle errors
-		if (e.isVar("error"))
+		if (e.isVar("error")) {			
+			Model m = new Model(arg("name", "Error"), arg("description", e.getString("error"))); 
 			return html.replace("#content", e.call("$site$_Error",// 
 							arg("error", e.getString("error"))))//
-					/*.dump(log)*/.outerHtml();
+					/*.dump(log)*/.outerHtml(m);
+		}
 
 		Asset a = e.getAsset();
-		if (a == null)
+		if (a == null) {
+			Model m = new Model(arg("name", "Error"), arg("description", e.getString("error"))); 
 			return html.replace("#content", e.call("$site$_Error",//
 				    		arg("error", "Asset not found")))//
-					/*.dump(log)*/.outerHtml();
+					/*.dump(log)*/.outerHtml(m);
+		}
 
 		// render the asset using his default template
-		html.replace("title", a.getName());
-		html.attr("meta[name=description]", "content", a.getDescription());	
+		Model m = new Model(arg("name",a.getName()), arg("description", a.getDescription())); 
 		html.replace("#content", a.call(a.getTemplate()));
-
-		return html/*.dump(log)*/.outerHtml();
+		return html/*.dump(log)*/.outerHtml(m);
 	}
 }

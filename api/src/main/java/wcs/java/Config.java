@@ -1,10 +1,5 @@
 package wcs.java;
 
-import java.io.IOException;
-import java.util.Properties;
-
-import wcs.core.Arg;
-import wcs.core.WCS;
 import wcs.core.tag.BlobserviceTag;
 import COM.FutureTense.Interfaces.ICS;
 
@@ -14,128 +9,65 @@ import COM.FutureTense.Interfaces.ICS;
  * @author msciab
  * 
  */
-abstract public class Config {
+abstract public class Config implements wcs.core.Config {
 
-	public Arg arg(String k, String v) {
-		return new Arg(k.toUpperCase(),v);
-	}
+	private String blobId = null;
+	private String blobUrl = null;
+	private String blobTable = null;
 
-	static class BlobConfig {
 
-		private String blobId;
-		private String blobUrl;
-		private String blobTable;
-
-		/**
-		 * Initialize a config
-		 * 
-		 * @param ics
-		 */
-		BlobConfig(ICS ics) {
+	/* (non-Javadoc)
+	 * @see wcs.java.IConfig#getBlobId()
+	 */
+	@Override
+	public String getBlobId(ICS ics) {
+		if (blobId == null)
 			blobId = BlobserviceTag.getidcolumn().eval(ics, "VARNAME");
+		
+		return blobId;
+	}
+
+	/* (non-Javadoc)
+	 * @see wcs.java.IConfig#getBlobUrl()
+	 */
+	@Override
+	public String getBlobUrl(ICS ics) {
+		if (blobUrl == null)
 			blobUrl = BlobserviceTag.geturlcolumn().eval(ics, "VARNAME");
+		return blobUrl;
+	}
+
+	/* (non-Javadoc)
+	 * @see wcs.java.IConfig#getBlobTable()
+	 */
+	@Override
+	public String getBlobTable(ICS ics) {
+		if (blobTable == null)
 			blobTable = BlobserviceTag.gettablename().eval(ics, "VARNAME");
-		}
-
-		/**
-		 * Return blob id field
-		 * 
-		 * @return
-		 */
-		public String getBlobId() {
-			return blobId;
-		}
-
-		/**
-		 * Return blob id field
-		 * 
-		 * @return
-		 */
-		public String getBlobUrl() {
-			return blobUrl;
-		}
-
-		/**
-		 * Return blob table
-		 * 
-		 * @return
-		 */
-		public String getBlobTable() {
-			return blobTable;
-		}
+		return blobTable;
 	}
 
-	private BlobConfig blobConfig;
 
-	/**
-	 * Return the blob config - ICS needed to get this properly
-	 * 
-	 * @param type
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IConfig#getProperty(java.lang.String)
 	 */
-	public BlobConfig getBlobConfig(ICS ics) {
-		if (blobConfig == null)
-			blobConfig = new BlobConfig(ics);
-		return blobConfig;
-	}
-
-	private Properties properties = null;
-
-	/**
-	 * Get property from AgileSites config
-	 * 
-	 */
+	@Override
 	public String getProperty(String name) {
-		if (properties == null) {
-			properties = new Properties();
-			try {
-				properties.load(Config.class
-						.getResourceAsStream("/agilesites.properties"));
-				System.out.println(properties.toString());
-			} catch (IOException e) {
-				e.printStackTrace();
-
-			}
-		}
-		return properties.getProperty(name);
-	}
-	
-	// // STATIC PART ////
-
-	/**
-	 * Return a config, eventually cached. You can use both the site name or his
-	 * normalized name for to get the config.
-	 * 
-	 * 
-	 * @param site
-	 * @return
-	 */
-	public static Config getConfig(String site) {
-		try {
-			return (Config) Class.forName(
-					WCS.normalizeSiteName(site) + ".Config").newInstance();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return null;
-		}
+		return wcs.core.WCS.getProperty(name);
 	}
 
 	// // ABSTRACT PART ////
 
-	/**
-	 * Return the attribute type for a given type.
-	 * 
-	 * @param type
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IConfig#getAttributeType(java.lang.String)
 	 */
+	@Override
 	abstract public String getAttributeType(String type);
 
-	/**
-	 * Return the full site name
-	 * 
-	 * @param type
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.IConfig#getSite()
 	 */
+	@Override
 	abstract public String getSite();
 
 }

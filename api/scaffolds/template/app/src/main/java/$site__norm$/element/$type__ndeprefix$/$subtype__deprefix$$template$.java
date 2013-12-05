@@ -9,6 +9,7 @@ import wcs.java.Template;
 import wcs.java.AssetSetup;
 import wcs.java.util.AddIndex;
 
+@Index("$site;format="normalize"$/elements.txt")
 public class $subtype;format="deprefix"$$template$ extends Element {
 
 	final static Log log = Log.getLog($subtype;format="deprefix"$$template$.class); 
@@ -23,14 +24,7 @@ public class $subtype;format="deprefix"$$template$ extends Element {
 
 	@Override
 	public String apply(Env e) {
-		return "<h1>$subtype$$template$</h1>";
-
-		// TODO: implement here the logic
-		// sample logic with the html picker
-		//Picker html = Picker.load("/$site;format="normalize"$/index.html" , "#content");
-		//html.replace("#title", e.getString("Title"));
-		//return html/*.dump(log)*/.html(a, e);
-
+		Picker html = Picker.load("/$site;format="normalize"$/index.html" , "#detail");
+		return html/*.dump(log)*/.html(a, e);
 	}
-
 }

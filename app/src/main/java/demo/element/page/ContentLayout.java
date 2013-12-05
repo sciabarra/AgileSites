@@ -1,15 +1,15 @@
 package demo.element.page;
 
+import wcs.core.Index;
+import wcs.core.Asset;
 import wcs.core.Log;
-import wcs.java.Asset;
+import wcs.core.Picker;
 import wcs.java.AssetSetup;
 import wcs.java.Element;
 import wcs.java.Env;
-import wcs.java.Picker;
 import wcs.java.Template;
-import wcs.java.util.AddIndex;
 
-@AddIndex("demo/elements.txt")
+@Index("demo/elements.txt")
 public class ContentLayout extends Element {
 
 	Log log = Log.getLog(ContentLayout.class);

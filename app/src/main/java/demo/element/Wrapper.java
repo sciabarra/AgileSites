@@ -1,16 +1,16 @@
 package demo.element;
 
+import wcs.core.Index;
+import wcs.core.Asset;
 import wcs.core.Log;
-import wcs.java.Asset;
+import wcs.core.Picker;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.SiteEntry;
 import wcs.java.Element;
 import wcs.java.Env;
-import wcs.java.Picker;
-import wcs.java.util.AddIndex;
 
-@AddIndex("demo/elements.txt")
+@Index("demo/elements.txt")
 public class Wrapper extends Element {
 	
 	private final static Log log = Log.getLog(Wrapper.class);

@@ -23,7 +23,8 @@ public class Error extends Element {
 	public String apply(Env e) {
 		log.error("$site$ Error: ", e.getString("error"));
 		Picker p = Picker.load("/$site;format="normalize"$/simple.html", "#content");
-		Model m = new Model(arg("Text", e.getString("error")), arg("Title", "Error"));
+		Model m = new Model(arg("Title", "Error"),
+				            arg("Text", e.getString("error")) );
 		return p/*.dump(log)*/.html(m);
 	}
 }

@@ -1,53 +1,55 @@
 package wcs.java.util;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import wcs.core.Arg;
+import wcs.core.Content;
+import wcs.core.Model;
 import wcs.java.Env;
 import COM.FutureTense.Interfaces.ICS;
 
 /**
- * Testable env - can override variables, lists
+ * Testable env - it can be built with a content who can override variables and
+ * lists
  * 
  * @author msciab
  * 
  */
-@SuppressWarnings("unchecked")
-public class TestEnv extends Env {
+public class TestEnv extends Env implements Content {
 
-	ICS i;
+	private Model content;
+	private ICS ics;
+	private String site;
 
-	public TestEnv(ICS ics, String site) {
+	public TestEnv(ICS ics, String site, Arg... args) {
 		super(ics, site);
-		i = ics;
+		this.ics = ics;
+		this.site = site;
+		this.content = new Model(args);
+	}
+	
+	public TestEnv(TestEnv env, Arg...args) {
+		super(env.ics, env.site);
+		this.content = new Model(content, args);
+	}
+	
+	@Override
+	public boolean exists(String attribute) {
+		return content.exists(attribute) || exists(attribute);
 	}
 
-	/**
-	 * Set a variable
-	 * 
-	 * @param k
-	 * @param v
-	 */
-	public TestEnv setVar(String k, String v) {
-		if (v != null)
-			i.SetVar(k, v);
-		return this;
+	@Override
+	public boolean exists(String attribute, int pos) {
+		return content.exists(attribute, pos) || exists(attribute, pos);
 	}
 
-	/**
-	 * Set an IList (that is basically a table), each java list is a column and
-	 * the first element is the field name is the first element
-	 * 
-	 * @param name
-	 * @param cols
-	 */
-	public TestEnv setList(String name, java.util.List<String>... cols) {
-		Map<String, List<String>> map = new HashMap<String, List<String>>();
-		for (List<String> col : cols)
-			map.put(col.get(0), col.subList(1, col.size()));
-		i.RegisterList(name, new MapIList(name, map));
-		return this;
+	@Override
+	public String getString(String attribute) {
+		String s = content.getString(attribute);
+		return s == null ? super.getString(attribute) : s;
 	}
 
+	@Override
+	public String getString(String attribute, int n) {
+		String s = content.getString(attribute, n);
+		return s == null ? super.getString(attribute, n) : s;
+	}
 }

@@ -1,5 +1,6 @@
 package wcs.java;
 
+import wcs.core.Env;
 import wcs.core.Id;
 import wcs.core.Log;
 import wcs.core.Common;
@@ -7,7 +8,7 @@ import wcs.core.tag.AssetTag;
 import wcs.core.tag.SiteplanTag;
 import COM.FutureTense.Interfaces.ICS;
 
-public class SitePlan {
+public class SitePlan implements wcs.core.SitePlan {
 
 	final static Log log = Log.getLog(SitePlan.class);
 
@@ -24,25 +25,22 @@ public class SitePlan {
 	 */
 	public SitePlan(Env e) {
 		this.e = e;
-		this.i = e.ics;
+		this.i = e.ics();
 		goTo(e.getSitePlanRoot(e.getSiteName()));
 	}
 
-	/**
-	 * Return id of the current page
-	 * 
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.ISitePlan#current()
 	 */
+	@Override
 	public Id current() {
 		return currentId;
 	}
 
-	/**
-	 * Move to the page identified by the id
-	 * 
-	 * @param id
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.ISitePlan#goTo(wcs.core.Id)
 	 */
+	@Override
 	public SitePlan goTo(Id id) {
 
 		String list = Common.tmp();
@@ -67,12 +65,10 @@ public class SitePlan {
 		return this;
 	}
 
-	/**
-	 * 
-	 * Get the children of a page
-	 * 
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.ISitePlan#children()
 	 */
+	@Override
 	public Id[] children() {
 		log.trace("children!");
 		String name = Common.tmp();
@@ -84,12 +80,10 @@ public class SitePlan {
 		return ilist2aid(list);
 	}
 
-	/**
-	 * 
-	 * Get the path of a page up to the root
-	 * 
-	 * @return
+	/* (non-Javadoc)
+	 * @see wcs.java.ISitePlan#path()
 	 */
+	@Override
 	public Id[] path() {
 		log.trace("path");
 		String name = Common.tmp();
