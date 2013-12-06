@@ -3,7 +3,7 @@ package demo.element;
 import wcs.core.Index;
 import wcs.core.Asset;
 import wcs.core.Log;
-import wcs.core.Picker;
+import wcs.java.Picker;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.SiteEntry;

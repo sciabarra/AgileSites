@@ -5,7 +5,7 @@ import wcs.core.Asset;
 import wcs.core.SitePlan;
 import wcs.core.Id;
 import wcs.core.Log;
-import wcs.core.Picker;
+import wcs.java.Picker;
 import wcs.java.Env;
 import wcs.java.Element;
 import wcs.java.CSElement;

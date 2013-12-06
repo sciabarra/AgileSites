@@ -1,16 +1,16 @@
-
 package $site;format="normalize"$.element;
-
+import static wcs.core.Common.*;
 import wcs.core.Log;
+import wcs.core.Model;
+import wcs.core.Index;
 import wcs.java.Env;
-import wcs.java.Model;
 import wcs.java.Picker;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.Element;
-import wcs.java.util.AddIndex;
 
-@AddIndex("$site;format="normalize"$/elements.txt")
+
+@Index("$site;format="normalize"$/elements.txt")
 public class Error extends Element {
 
 	final static Log log = Log.getLog(Error.class);
@@ -23,8 +23,9 @@ public class Error extends Element {
 	public String apply(Env e) {
 		log.error("$site$ Error: ", e.getString("error"));
 		Picker p = Picker.load("/$site;format="normalize"$/simple.html", "#content");
-		Model m = new Model(arg("Title", "Error"),
-				            arg("Text", e.getString("error")) );
+		Model m = model(arg("Title", "Error"),
+				        arg("Text", e.getString("error")), 
+				        arg("Footer","") );
 		return p/*.dump(log)*/.html(m);
 	}
 }

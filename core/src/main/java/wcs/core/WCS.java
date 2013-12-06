@@ -120,23 +120,7 @@ public class WCS {
 		return null;
 	}
 
-	/**
-	 * Return a config, eventually cached. You can use both the site name or his
-	 * normalized name for to get the config.
-	 * 
-	 * 
-	 * @param site
-	 * @return
-	 */
-	public static Config getConfig(String site) {
-		try {
-			return (Config) Class.forName(
-					WCS.normalizeSiteName(site) + ".Config").newInstance();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return null;
-		}
-	}
+	
 
 	private static long tmpVarCounter = System.currentTimeMillis();
 

@@ -4,10 +4,11 @@ import static wcs.core.Common.*;
 
 import wcs.core.Log;
 import wcs.java.Env;
+import wcs.java.Picker;
 import wcs.java.Element;
 import wcs.java.Template;
 import wcs.java.AssetSetup;
-import wcs.java.util.AddIndex;
+import wcs.java.util.Index;
 
 @Index("$site;format="normalize"$/elements.txt")
 public class $subtype;format="deprefix"$$template$ extends Element {

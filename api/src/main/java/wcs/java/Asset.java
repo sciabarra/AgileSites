@@ -22,7 +22,7 @@ import wcs.core.tag.AssetsetTag;
 import wcs.core.tag.RenderTag;
 import COM.FutureTense.Interfaces.ICS;
 
-class Asset extends AssetBase implements wcs.core.Asset {
+public class Asset extends AssetBase implements wcs.core.Asset, wcs.core.Content {
 
 	private static Log log = Log.getLog(Env.class);
 

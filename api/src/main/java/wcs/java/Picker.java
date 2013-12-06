@@ -1,4 +1,4 @@
-package wcs.core;
+package wcs.java;
 import static wcs.core.Common.*;
 
 import java.io.InputStream;
@@ -12,6 +12,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import wcs.core.Common;
 import wcs.core.Content;
 import wcs.core.Log;
 
@@ -284,11 +285,12 @@ public class Picker {
 		Matcher m = moupat.matcher(s);
 		next: while (m.find()) {
 			String rep = m.group(1);
-			//System.out.println("looking for "+rep);
+			log.trace("looking for %s", rep);
 			for (Content c : contents) {
 				if (c.exists(rep)) {
-					//System.out.println("found "+c.getString(rep));
-					m.appendReplacement(sb, c.getString(rep));
+					String val = c.getString(rep);
+					log.trace("found %s=%s", rep, val);
+					m.appendReplacement(sb, val);
 					continue next;
 				}
 			}

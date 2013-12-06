@@ -38,7 +38,7 @@ abstract public class Router implements wcs.core.Router {
 			// router site must be initialized here
 			// config is retrieved because the site name can be normalized
 			// to get the full site name
-			router.site = WCS.getConfig(site).getSite();
+			router.site = wcs.java.Env.getConfig(site).getSite();
 			return router;
 		} catch (Exception ex) {
 			log.error(ex, "cannot get router");

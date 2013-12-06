@@ -23,12 +23,16 @@ public class Model implements Content {
 	// initialize the map from the arguments
 	private void init(Arg... args) {
 		for (Arg arg : args) {
+			if (arg.value == null)
+				continue;
 			List<String> list = map.get(arg.name);
 			if (list == null)
 				map.put(arg.name, list = new LinkedList<String>());
 			if (arg instanceof Args) {
 				Args arglist = (Args) arg;
-				list.addAll(arglist.values);
+				for (String value : arglist.values)
+					if (value != null)
+						list.add(value);
 			} else {
 				list.add(arg.value);
 			}

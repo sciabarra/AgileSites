@@ -42,10 +42,9 @@ public abstract class AssetBase {
 		this.subtype = subtype == null ? "" : subtype;
 	}
 
-	
-	protected AssetBase() { }
-	
-	
+	protected AssetBase() {
+	}
+
 	/**
 	 * Retun current site
 	 * 
@@ -159,4 +158,15 @@ public abstract class AssetBase {
 	public Date getEndDate() {
 		return endDate;
 	}
+
+	/**
+	 * Print it
+	 */
+	public String toString() {
+		return name
+				+ "(" + c
+				+ ((subtype != null && subtype.trim().length() > 0) ? "/"
+						+ subtype : "") + ")";
+	}
+
 }

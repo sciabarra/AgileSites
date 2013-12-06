@@ -54,7 +54,7 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 	public Env(ICS ics, String site) {
 		init(ics);
 		if (site != null) {
-			config = wcs.core.WCS.getConfig(site);
+			config = getConfig(site);
 			this.site = config.getSite();
 			this.normSite = WCS.normalizeSiteName(site);
 			router = Router.getRouter(site);
@@ -64,15 +64,19 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		preview = rendermode != null && rendermode.startsWith("preview");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getString(java.lang.String)
 	 */
 	@Override
 	public String getString(String var) {
 		return ics.GetVar(var);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getString(java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -88,8 +92,10 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 			return null;
 		}
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getString(java.lang.String, int, java.lang.String)
 	 */
 	@Override
@@ -108,7 +114,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getString(java.lang.String, int)
 	 */
 	@Override
@@ -116,7 +124,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return getString(list, row, "value");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getSize(java.lang.String)
 	 */
 	@Override
@@ -127,7 +137,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return ls.numRows();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getRange(java.lang.String)
 	 */
 	@Override
@@ -138,7 +150,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return new Range(ls.numRows());
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getDate(java.lang.String)
 	 */
 	@Override
@@ -146,7 +160,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return toDate(getString(var));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getInt(java.lang.String)
 	 */
 	@Override
@@ -154,7 +170,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return toInt(getString(var));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getLong(java.lang.String)
 	 */
 	@Override
@@ -162,7 +180,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return toLong(getString(var));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getDate(java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -170,7 +190,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return toDate(getString(ls, field));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getInt(java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -178,7 +200,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return toInt(getString(ls, field));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getLong(java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -186,7 +210,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return toLong(getString(ls, field));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getDate(java.lang.String, int, java.lang.String)
 	 */
 	@Override
@@ -194,7 +220,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return toDate(getString(ls, pos, field));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getDate(java.lang.String, int)
 	 */
 	@Override
@@ -202,7 +230,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return toDate(getString(ls, pos, "value"));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getLong(java.lang.String, int, java.lang.String)
 	 */
 	@Override
@@ -210,7 +240,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return toLong(getString(ls, pos, field));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getLong(java.lang.String, int)
 	 */
 	@Override
@@ -218,7 +250,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return toLong(getString(ls, pos, "value"));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getInt(java.lang.String, int, java.lang.String)
 	 */
 	@Override
@@ -226,7 +260,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return toInt(getString(ls, pos, field));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getInt(java.lang.String, int)
 	 */
 	@Override
@@ -234,7 +270,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return toInt(getString(ls, pos, "value"));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getError()
 	 */
 	@Override
@@ -242,7 +280,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return ics.GetErrno();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#isError()
 	 */
 	@Override
@@ -250,7 +290,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return getError() != 0;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#isVar(java.lang.String)
 	 */
 	@Override
@@ -258,7 +300,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return ics.GetVar(variable) != null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#isList(java.lang.String)
 	 */
 	@Override
@@ -266,7 +310,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return ics.GetList(list) != null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#isList(java.lang.String, int)
 	 */
 	@Override
@@ -274,7 +320,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return ics.GetList(list) != null && ics.GetList(list).numRows() > n;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#isListCol(java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -282,7 +330,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return getString(list, field) != null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#isObj(java.lang.String)
 	 */
 	@Override
@@ -290,7 +340,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return ics.GetObj(object) != null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#isInsite()
 	 */
 	@Override
@@ -298,7 +350,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return insite;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getObject(java.lang.String)
 	 */
 	@Override
@@ -335,7 +389,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return getAsset(getC(), getCid());
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getC()
 	 */
 	@Override
@@ -343,7 +399,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return getString("c");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getCid()
 	 */
 	@Override
@@ -351,7 +409,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return getLong("cid");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getId()
 	 */
 	@Override
@@ -359,7 +419,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return new Id(getC(), getCid());
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.core.Env#getConfig()
 	 */
 	@Override
@@ -367,7 +429,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return config;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getRouter()
 	 */
 	@Override
@@ -375,7 +439,25 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return router;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Load the config by site
+	 * 
+	 * @param site
+	 * @return
+	 */
+	public static Config getConfig(String site) {
+		try {
+			return (Config) Class.forName(
+					WCS.normalizeSiteName(site) + ".Config").newInstance();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getSiteName()
 	 */
 	@Override
@@ -383,16 +465,19 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return site;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getSiteId()
 	 */
 	@Override
 	public String getSiteId() {
 		return getSiteId(site);
 	}
-	
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getSitePlan()
 	 */
 	@Override
@@ -400,7 +485,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return new wcs.java.SitePlan(this);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getUrl(wcs.core.Id, wcs.core.Arg)
 	 */
 	@Override
@@ -439,7 +526,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return res;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#getUrl(java.lang.String, java.lang.Long, wcs.core.Arg)
 	 */
 	@Override
@@ -447,7 +536,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return getUrl(new Id(c, cid), args);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#find(java.lang.String, wcs.core.Arg)
 	 */
 	@Override
@@ -505,7 +596,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return getAsset(result.get(0).c, result.get(0).cid);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#call(java.lang.String, wcs.core.Arg)
 	 */
 	@Override
@@ -517,7 +610,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return Common.call("RENDER:CALLELEMENT", list);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#clearError()
 	 */
 	@Override
@@ -525,7 +620,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		ics.ClearErrno();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#addDependency()
 	 */
 	@Override
@@ -533,7 +630,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		RenderTag.unknowndeps().run(ics);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#addDependency(java.lang.String)
 	 */
 	@Override
@@ -541,7 +640,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		RenderTag.unknowndeps().assettype(c).run(ics);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#addDependency(java.lang.String, java.lang.Long)
 	 */
 	@Override
@@ -549,8 +650,11 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		RenderTag.logdep().c(c).cid(cid.toString()).run(ics);
 	}
 
-	/* (non-Javadoc)
-	 * @see wcs.java.IEnv#addDependency(java.lang.String, java.lang.Long, wcs.java.util.AssetDeps)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see wcs.java.IEnv#addDependency(java.lang.String, java.lang.Long,
+	 * wcs.java.util.AssetDeps)
 	 */
 	@Override
 	public void addDependency(String c, Long cid, AssetDeps deps) {
@@ -558,7 +662,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 				.run(ics);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#addDependency(wcs.core.Id)
 	 */
 	@Override
@@ -566,7 +672,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		RenderTag.logdep().c(id.c).cid(id.cid.toString()).run(ics);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#addDependency(wcs.core.Id, wcs.java.util.AssetDeps)
 	 */
 	@Override
@@ -575,7 +683,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 				.deptype(deps.toString()).run(ics);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#exists(java.lang.String)
 	 */
 	@Override
@@ -583,7 +693,9 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return isVar(attribute);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.IEnv#exists(java.lang.String, int)
 	 */
 	@Override

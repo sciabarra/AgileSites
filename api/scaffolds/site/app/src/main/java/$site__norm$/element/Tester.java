@@ -1,14 +1,14 @@
 package $site;format="normalize"$.element;
 
 import $site;format="normalize"$.Config;
+import wcs.core.Index;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.SiteEntry;
-import wcs.java.util.TestRunnerElement;
 import wcs.java.util.Util;
-import wcs.java.util.AddIndex;
+import wcs.java.util.TestRunnerElement;
 
-@AddIndex("$site;format="normalize"$/elements.txt")
+@Index("$site;format="normalize"$/elements.txt")
 public class Tester extends TestRunnerElement {
 
 	public static AssetSetup setup() {

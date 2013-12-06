@@ -2,7 +2,7 @@ package wcs.core;
 
 import java.util.Date;
 
-public interface Asset {
+public interface Asset extends Content {
 
 	/**
 	 * Return the current site name

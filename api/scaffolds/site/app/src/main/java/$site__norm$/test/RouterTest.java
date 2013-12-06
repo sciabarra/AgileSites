@@ -1,16 +1,16 @@
 package $site;format="normalize"$.test;
 
-import static wcs.core.Common.arg;
-import $site;format="normalize"$.Config;
-import wcs.java.Asset;
+import static wcs.core.Common.*;
+import wcs.core.Asset;
+import wcs.core.Index;
 import wcs.java.Env;
 import wcs.java.Router;
 import wcs.java.util.TestElement;
 import org.junit.Before;
 import org.junit.Test;
-import wcs.java.util.AddIndex;
+import $site;format="normalize"$.Config;
 
-@AddIndex("$site;format="normalize"$/tests.txt")
+@Index("$site;format="normalize"$/tests.txt")
 public class RouterTest extends TestElement {
 
 	Router it;

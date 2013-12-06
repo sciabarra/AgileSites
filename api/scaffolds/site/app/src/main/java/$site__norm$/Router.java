@@ -5,7 +5,7 @@ import wcs.core.Log;
 import wcs.core.URL;
 import wcs.core.Call;
 import wcs.core.Id;
-import wcs.java.Env;
+import wcs.core.Env;
 import java.util.List;
 import java.util.StringTokenizer;
 import static wcs.core.Common.arg;

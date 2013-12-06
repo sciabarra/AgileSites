@@ -1,17 +1,18 @@
 package $site;format="normalize"$.element;
 
+import static wcs.core.Common.*;
 import wcs.core.Log;
-import wcs.java.Asset;
+import wcs.core.Index;
+import wcs.core.Asset;
+import wcs.core.Model;
+import wcs.java.Picker;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
-import wcs.java.Model;
 import wcs.java.SiteEntry;
 import wcs.java.Element;
 import wcs.java.Env;
-import wcs.java.Picker;
-import wcs.java.util.AddIndex;
 
-@AddIndex("$site;format="normalize"$/elements.txt")
+@Index("$site;format="normalize"$/elements.txt")
 public class Wrapper extends Element {
 	
 	private final static Log log = Log.getLog(Wrapper.class);
@@ -31,24 +32,26 @@ public class Wrapper extends Element {
 		html.prefixAttrs("link[rel=stylesheet]", "href", "/cs/$site;format="normalize"$/");
 		html.prefixAttrs("script", "src", "/cs/$site;format="normalize"$/");
 
-		// handle errors
+		// handle generic errors
 		if (e.isVar("error")) {			
-			Model m = new Model(arg("name", "Error"), arg("description", e.getString("error"))); 
+			Model m = model(arg("name", "Error"), arg("description", e.getString("error"))); 
 			return html.replace("#content", e.call("$site$_Error",// 
 							arg("error", e.getString("error"))))//
 					/*.dump(log)*/.outerHtml(m);
 		}
 
+		// handle asset not found
 		Asset a = e.getAsset();
 		if (a == null) {
-			Model m = new Model(arg("name", "Error"), arg("description", e.getString("error"))); 
-			return html.replace("#content", e.call("$site$_Error",//
-				    		arg("error", "Asset not found")))//
+			String error = "Asset not found";
+			Model m = model(arg("name", "Error"), arg("description", error));
+			return html.replace("#content", //
+					e.call("$site$_Error",arg("error", error)))//
 					/*.dump(log)*/.outerHtml(m);
 		}
 
 		// render the asset using his default template
-		Model m = new Model(arg("name",a.getName()), arg("description", a.getDescription())); 
+		Model m = model(arg("name",a.getName()), arg("description", a.getDescription())); 
 		html.replace("#content", a.call(a.getTemplate()));
 		return html/*.dump(log)*/.outerHtml(m);
 	}

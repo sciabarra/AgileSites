@@ -1,4 +1,4 @@
-package wcs.core;
+package wcs.java;
 
 import static org.junit.Assert.assertEquals;
 import static wcs.core.Common.arg;
@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import wcs.core.Arg;
 import wcs.core.Content;
-import wcs.core.Picker;
+import wcs.java.Picker;
 
 public class PickerTest {
 
