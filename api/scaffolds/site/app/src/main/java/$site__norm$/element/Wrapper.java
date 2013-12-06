@@ -14,9 +14,7 @@ import wcs.java.Env;
 
 @Index("$site;format="normalize"$/elements.txt")
 public class Wrapper extends Element {
-	
 	private final static Log log = Log.getLog(Wrapper.class);
-
 	public static AssetSetup setup() {
 		return new CSElement("$site$_Wrapper", $site;format="normalize"$.element.Wrapper.class,
 				new SiteEntry("$site;format="normalize"$", true, "$site$/$site$_Wrapper"));
@@ -24,7 +22,7 @@ public class Wrapper extends Element {
 
 	@Override
 	public String apply(Env e) {
-		log.trace("$site$ Wrapper");
+		// log.trace("$site$ Wrapper");
 
 		Picker html = Picker.load("/$site;format="normalize"$/simple.html");
 
@@ -36,8 +34,8 @@ public class Wrapper extends Element {
 		if (e.isVar("error")) {			
 			Model m = model(arg("name", "Error"), arg("description", e.getString("error"))); 
 			return html.replace("#content", e.call("$site$_Error",// 
-							arg("error", e.getString("error"))))//
-					/*.dump(log)*/.outerHtml(m);
+							arg("error", e.getString("error"))))
+							.outerHtml(m);
 		}
 
 		// handle asset not found
@@ -47,12 +45,12 @@ public class Wrapper extends Element {
 			Model m = model(arg("name", "Error"), arg("description", error));
 			return html.replace("#content", //
 					e.call("$site$_Error",arg("error", error)))//
-					/*.dump(log)*/.outerHtml(m);
+					.outerHtml(m);
 		}
 
 		// render the asset using his default template
 		Model m = model(arg("name",a.getName()), arg("description", a.getDescription())); 
 		html.replace("#content", a.call(a.getTemplate()));
-		return html/*.dump(log)*/.outerHtml(m);
+		return html.outerHtml(m);
 	}
 }

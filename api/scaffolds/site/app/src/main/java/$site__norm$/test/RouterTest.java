@@ -12,7 +12,7 @@ import $site;format="normalize"$.Config;
 
 @Index("$site;format="normalize"$/tests.txt")
 public class RouterTest extends TestElement {
-
+	// final static Log log = Log.getLog(TestElement.class);
 	Router it;
 
 	@Before
@@ -47,11 +47,9 @@ public class RouterTest extends TestElement {
 
 	@Test
 	public void test1() {
-
 		parse(it.route(env(), url("/Hello")));
 		assertAttr("ics-callelement", "error",
 				"Asset not found: type:Page name:Hello");
-
 		parse(it.route(env(), url("/Hello?extra=parameter")));
 		assertAttr("ics-callelement", "error",
 				"Asset not found: type:Page name:Hello");
@@ -59,11 +57,9 @@ public class RouterTest extends TestElement {
 
 	@Test
 	public void test2() {
-
 		parse(it.route(env(), url("/Article/Welcome")));
 		assertAttr("ics-callelement", "error",
 				"Asset not found: type:$site$_Article name:Welcome");
-
 		parse(it.route(env(), url("/Article/Welcome?with=parameter&other")));
 		assertAttr("ics-callelement", "error",
 				"Asset not found: type:$site$_Article name:Welcome");
@@ -71,10 +67,8 @@ public class RouterTest extends TestElement {
 
 	@Test
 	public void test3() {
-		
 		parse(it.route(env(), url("/something/not/supported?with=parameters")));
 		assertAttr("ics-callelement", "error",
 				"Path not found: /something/not/supported");
-
 	}
 }

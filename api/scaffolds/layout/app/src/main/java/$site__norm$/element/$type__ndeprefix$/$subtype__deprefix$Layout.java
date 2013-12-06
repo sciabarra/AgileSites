@@ -13,9 +13,7 @@ import wcs.java.Picker;
 
 @Index("$site;format="normalize"$/elements.txt")
 public class $subtype;format="deprefix"$Layout extends Element {
-	
 	final static Log log = Log.getLog($subtype;format="deprefix"$Layout.class); 
-
 	public static AssetSetup setup() {		
 		return new Template("$type$", "$subtype$Layout", 
 			Template.LAYOUT, // change template type here
@@ -26,11 +24,11 @@ public class $subtype;format="deprefix"$Layout extends Element {
 
 	@Override
 	public String apply(Env e) {
-		Asset a = e.getAsset();
+		// log.trace("$subtype$Layout");
 		Picker html = Picker.load("/$site;format="normalize"$/simple.html" , "#content");	    
+		Asset a = e.getAsset();
 	    //html.replace("#detail", a.call("$site$_Detail"));
 	    //html.replace("#footer", e.call("$site$_Footer"));
-		return html
-				/*dump(log)*/.html(a, e);
+		return html.html(a, e);
 	}
 }

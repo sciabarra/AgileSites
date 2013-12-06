@@ -1,12 +1,11 @@
 package $site;format="normalize"$.test.$type;format="normalize"$;
-
 import static wcs.core.Common.*;
+import wcs.core.Index;
+import wcs.core.Log;
 import org.junit.Before;
 import org.junit.Test;
-import wcs.core.Log;
 import wcs.java.util.TestElement;
 import $site;format="normalize"$.element.$type;format="normalize"$.$subtype;format="deprefix"$$template$;
-import wcs.java.util.AddIndex;
 
 // this test must be run by AgileSites TestRunnerElement
 @Index("$site;format="normalize"$/tests.txt")

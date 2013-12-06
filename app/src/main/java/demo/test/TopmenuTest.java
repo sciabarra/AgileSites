@@ -24,7 +24,7 @@ public class TopmenuTest extends TestElement {
 	@Test
 	public void test() {
 		parse(it.apply(env("")));
-		odump(log);
+		//dump(log);
 		// TODO: test the results
 	}
 

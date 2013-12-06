@@ -308,6 +308,13 @@ public class Picker {
 	}
 
 	/**
+	 * Alias for html(...)
+	 */
+	public String innerHtml(Content ... content) {
+		return html(content);
+	}
+	
+	/**
 	 * Return the html of the selected node including the node itself
 	 */
 	public String outerHtml(Content... content) {

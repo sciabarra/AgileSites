@@ -1,5 +1,4 @@
 package $site;format="normalize"$.test;
-
 import $site;format="normalize"$.element.Wrapper;
 import wcs.java.util.TestElement;
 import org.junit.Before;
@@ -10,9 +9,7 @@ import wcs.core.Log;
 // this test must be run by the test runner
 @Index("$site;format="normalize"$/tests.txt")
 public class WrapperTest extends TestElement {
-	
 	static final Log log = Log.getLog(WrapperTest.class);
-
 	Wrapper it;
 
 	@Before
@@ -23,7 +20,7 @@ public class WrapperTest extends TestElement {
 	@Test
 	public void testError() {
 		parse(it.apply(env()));
-		// odump(log); // dump the result of the parsing
+		// dump(log); 
 		assertText("title", "Error");
 		assertAttr("meta[name=description]", "content", "Asset not found");
 		assertAttr("render-callelement", "error", "Asset not found");
@@ -33,7 +30,7 @@ public class WrapperTest extends TestElement {
 	/*@Test 
 	public void testHome() {
 		parse(it.apply(env("/Home")));
-		// odump(log); // dump the result of the parsing
+		// dump(log); // dump the result of the parsing
 		assertText("title", "Home");
 		assertAttr("meta[name=description]", "content", "Home Page");		 
 		assertAttr("render-callelement", "c", "Page");

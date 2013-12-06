@@ -23,7 +23,7 @@ public class WrapperTest extends TestElement {
 	@Test
 	public void test() {
 		parse(it.apply(env()));
-		odump(log);
+		dump(log);
 		assertAttr("render-callelement", "error", "Asset not found");
 	}
 

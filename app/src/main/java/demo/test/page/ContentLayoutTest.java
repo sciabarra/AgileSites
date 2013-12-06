@@ -11,8 +11,7 @@ import demo.element.page.ContentLayout;
 
 // this test must be run by AgileSites TestRunnerElement
 @Index("demo/tests.txt")
-public class ContentLayoutTest extends TestElement {
-	
+public class ContentLayoutTest extends TestElement {	
 	final static Log log = Log.getLog(ContentLayoutTest.class);
 	ContentLayout it;
 	
@@ -26,7 +25,7 @@ public class ContentLayoutTest extends TestElement {
 		
 		Env e = env(""); // route the home page
 		parse(it.apply(e));
-		odump(log);
+		dump(log);
 
 		assertText("#title", "Home");
 		assertText("#subtitle", "Home Page");

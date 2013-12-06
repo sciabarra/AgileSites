@@ -33,12 +33,12 @@ public class TestEnv extends Env implements Content {
 	
 	@Override
 	public boolean exists(String attribute) {
-		return content.exists(attribute) || exists(attribute);
+		return content.exists(attribute) || super.exists(attribute);
 	}
 
 	@Override
 	public boolean exists(String attribute, int pos) {
-		return content.exists(attribute, pos) || exists(attribute, pos);
+		return content.exists(attribute, pos) || super.exists(attribute, pos);
 	}
 
 	@Override

@@ -279,39 +279,31 @@ public class TestElement extends TestCase {
 	}
 
 	/**
-	 * Dump inner html
+	 * Dump generated outer html
 	 * 
 	 * @param log
 	 */
 	protected void dump(Log log) {
-		log.debug(Common.dumpStream(doc.html()));
+		log.debug(Common.dumpStream(doc.outerHtml()));
 	}
 
+
 	/**
-	 * Dump selected inner html
+	 * Dump generated outer html
 	 * 
 	 * @param log
 	 */
-	protected void dump(Log log, String wh) {
-		log.debug(Common.dumpStream(doc.select(wh).html()));
-	}
-
-	/**
-	 * Dump outer html
-	 * 
-	 * @param log
-	 */
-	protected void odump(Log log) {
+	protected void dumpOuter(Log log) {
 		log.debug(Common.dumpStream(doc.outerHtml()));
 	}
 
 	/**
-	 * Dump outer html of selected element
+	 * Dump generated inner html
 	 * 
 	 * @param log
 	 */
-	protected void odump(Log log, String wh) {
-		log.debug(Common.dumpStream(doc.select(wh).outerHtml()));
+	protected void dumpInner(Log log) {
+		log.debug(Common.dumpStream(doc.html()));
 	}
 
 }

@@ -9,12 +9,9 @@ import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.Element;
 
-
 @Index("$site;format="normalize"$/elements.txt")
 public class Error extends Element {
-
 	final static Log log = Log.getLog(Error.class);
-	
 	public static AssetSetup setup() {
 		return new CSElement("$site$_Error", $site;format="normalize"$.element.Error.class);
 	}
@@ -26,6 +23,6 @@ public class Error extends Element {
 		Model m = model(arg("Title", "Error"),
 				        arg("Text", e.getString("error")), 
 				        arg("Footer","") );
-		return p/*.dump(log)*/.html(m);
+		return p.innerHtml(m);
 	}
 }
