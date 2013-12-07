@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import COM.FutureTense.Interfaces.IList;
 
-
 /**
  * Collections of utils supporting common idioms.
  * 

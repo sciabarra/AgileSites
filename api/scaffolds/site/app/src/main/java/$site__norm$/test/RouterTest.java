@@ -1,6 +1,7 @@
 package $site;format="normalize"$.test;
-
 import static wcs.core.Common.*;
+import static wcs.core.Log.*;
+import wcs.core.Log;
 import wcs.core.Asset;
 import wcs.core.Index;
 import wcs.java.Env;
@@ -12,7 +13,7 @@ import $site;format="normalize"$.Config;
 
 @Index("$site;format="normalize"$/tests.txt")
 public class RouterTest extends TestElement {
-	// final static Log log = Log.getLog(TestElement.class);
+	final static Log log = getLog(TestElement.class);
 	Router it;
 
 	@Before

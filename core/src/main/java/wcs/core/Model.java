@@ -1,7 +1,7 @@
 package wcs.core;
 
-import static wcs.core.Common.toInt;
 import static wcs.core.Common.toDate;
+import static wcs.core.Common.toInt;
 import static wcs.core.Common.toLong;
 
 import java.util.Date;
@@ -152,6 +152,56 @@ public class Model implements Content {
 	@Override
 	public Date getDate(String name, int n) {
 		return toDate(getString(name, n));
+	}
+
+	/**
+	 * Return the size of the attribute
+	 */
+	@Override
+	public int getSize(String attribute) {
+		if (exists(attribute))
+			return map.get(attribute).size();
+		else
+			return 0;
+	}
+
+	/**
+	 * Return the range of the attribute: an iterator returning the valid values
+	 * 
+	 * for(int i: m.getRange("attr")) { doSometing(m.getString("attr", i)); }
+	 */
+	@Override
+	public Iterable<Integer> getRange(String attribute) {
+		return new Range(getSize(attribute));
+	}
+
+	/**
+	 * Dump the model
+	 */
+	@Override
+	public String dump() {
+		StringBuilder sb = new StringBuilder();
+		for (String k : map.keySet()) {
+			sb.append(dump(k));
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Dump an attribute
+	 */
+	@Override
+	public String dump(String attribute) {
+		List<String> list = map.get(attribute);
+		if (list == null)
+			return "";
+		StringBuilder sb = new StringBuilder();
+		sb.append(attribute).append("=");
+		for (String s : list) {
+			sb.append(s).append(",");
+		}
+		sb.setCharAt(sb.length()-1, '\n');
+		return sb.toString();
 	}
 
 }

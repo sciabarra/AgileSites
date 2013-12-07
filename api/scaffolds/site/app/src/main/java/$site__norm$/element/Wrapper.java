@@ -1,16 +1,16 @@
 package $site;format="normalize"$.element;
-
 import static wcs.core.Common.*;
+import static wcs.core.Log.*;
 import wcs.core.Log;
 import wcs.core.Index;
 import wcs.core.Asset;
 import wcs.core.Model;
+import wcs.java.Env;
 import wcs.java.Picker;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.SiteEntry;
 import wcs.java.Element;
-import wcs.java.Env;
 
 @Index("$site;format="normalize"$/elements.txt")
 public class Wrapper extends Element {

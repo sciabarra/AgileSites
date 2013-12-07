@@ -1,5 +1,6 @@
 package $site;format="normalize"$.element;
 import static wcs.core.Common.*;
+import static wcs.core.Log.*;
 import wcs.core.Log;
 import wcs.core.Model;
 import wcs.core.Index;
@@ -11,7 +12,8 @@ import wcs.java.Element;
 
 @Index("$site;format="normalize"$/elements.txt")
 public class Error extends Element {
-	final static Log log = Log.getLog(Error.class);
+	final static Log log = getLog(Error.class);
+	
 	public static AssetSetup setup() {
 		return new CSElement("$site$_Error", $site;format="normalize"$.element.Error.class);
 	}

@@ -4,6 +4,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static wcs.core.Common.arg;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
@@ -19,9 +21,10 @@ import org.junit.matchers.JUnitMatchers;
 import wcs.core.Arg;
 import wcs.core.Call;
 import wcs.core.Common;
+import wcs.core.Content;
+import wcs.core.Log;
 import wcs.core.URL;
 import wcs.java.Router;
-import wcs.core.Log;
 
 /**
  * Collection of test helpers for testing elements.
@@ -59,11 +62,9 @@ public class TestElement extends TestCase {
 		}
 		return env;
 	}
-	
-	
-	// only used in  List.toArray conversions 
-	final private static Arg[] args0 = new Arg[0];
 
+	// only used in List.toArray conversions
+	final private static Arg[] args0 = new Arg[0];
 
 	/**
 	 * Return the current env routed (so variables coming from router are
@@ -76,7 +77,8 @@ public class TestElement extends TestCase {
 			path = "";
 		TestEnv te = env(args);
 		List<Arg> list = new LinkedList<Arg>();
-		for(Arg arg: args) list.add(arg);
+		for (Arg arg : args)
+			list.add(arg);
 		try {
 			Call call = Router.getRouter(te.getString("site")).route(te,
 					URL.parse(new URI(path)));
@@ -287,23 +289,63 @@ public class TestElement extends TestCase {
 		log.debug(Common.dumpStream(doc.outerHtml()));
 	}
 
+	/**
+	 * Dump generated outer html to a print writer (System.out for example)
+	 * 
+	 * @param log
+	 */
+	protected void dump(PrintStream out) {
+		out.println(Common.dumpStream(doc.outerHtml()));
+	}
+
 
 	/**
 	 * Dump generated outer html
 	 * 
 	 * @param log
 	 */
-	protected void dumpOuter(Log log) {
-		log.debug(Common.dumpStream(doc.outerHtml()));
+	protected void dump(Log log, Content c) {
+		if (c == null)
+			log.debug("NULL");
+		else
+			log.debug(c.dump());
 	}
 
 	/**
-	 * Dump generated inner html
+	 * Dump generated outer html
 	 * 
 	 * @param log
 	 */
-	protected void dumpInner(Log log) {
-		log.debug(Common.dumpStream(doc.html()));
+	protected void dump(PrintStream out, Content c) {
+		if (c == null)
+			out.println("NULL");
+		else
+			out.println(c.dump());
 	}
 
+	/**
+	 * Dump a content attribute in a logger
+	 * 
+	 * @param log
+	 */
+	protected void dump(Log log, Content c, String name) {
+		if (c.exists(name)) {
+			log.debug("%s=%s", name, c.dump(name));
+		} else {
+			log.debug("not found: %s", name);
+		}
+	}
+
+	/**
+	 * Dump a content attribute to a System.out
+	 * 
+	 * @param log
+	 */
+	protected void dump(PrintStream out, Content c, String name) {
+		if (c.exists(name)) {
+			out.println(name + "=" + c.dump(name));
+		} else {
+			out.println("not found:" + name);
+		}
+	}
 }

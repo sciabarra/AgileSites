@@ -1,10 +1,8 @@
 package demo;
 
-import static wcs.core.Common.arg;
-
+import static wcs.core.Common.*;
 import java.util.List;
 import java.util.StringTokenizer;
-
 import wcs.core.Arg;
 import wcs.core.Call;
 import wcs.core.Env;

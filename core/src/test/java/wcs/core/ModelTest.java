@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import wcs.core.Model;
@@ -26,7 +27,9 @@ public class ModelTest {
 	public void testNewModel() {
 
 		Model m = model(arg("a", "1"));
+		System.out.println(m.dump());
 		Model n = model(m, args("b", "10", "20"));
+		System.out.println(n.dump());
 
 		assertTrue(m.exists("a"));
 		assertTrue(m.exists("a", 1));
@@ -51,7 +54,33 @@ public class ModelTest {
 		assertFalse(n.exists("b", 0));
 		assertFalse(n.exists("b", 3));
 
+		assertEquals(n.getSize("a"), 1);
+		assertEquals(n.getSize("b"), 2);
+		assertEquals(n.getSize("c"), 0);
+		assertEquals(m.getSize("b"), 0);
+
+		for (int i : n.getRange("a")) {
+			switch (i) {
+			case 1:
+				assertEquals(n.getString("a", i), "1");
+				break;
+			default:
+				fail("should not happen");
+			}
+		}
+
+		for (int i : n.getRange("b")) {
+			switch (i) {
+			case 1:
+				assertEquals(n.getString("b", i), "10");
+				break;
+			case 2:
+				assertEquals(n.getString("b", i), "20");
+				break;
+			default:
+				fail("should not happen");
+			}
+		}
 	}
-	
-	
+
 }

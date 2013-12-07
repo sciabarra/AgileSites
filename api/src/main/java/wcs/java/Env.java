@@ -6,6 +6,7 @@ import static wcs.core.Common.toInt;
 import static wcs.core.Common.toLong;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -706,6 +707,34 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 	@Override
 	public ICS ics() {
 		return ics;
+	}
+
+	/**
+	 * Dump all the variables (NOT the lists...)
+	 */
+	@Override
+	public String dump() {
+		StringBuilder sb = new StringBuilder();
+		@SuppressWarnings("unchecked")
+		Enumeration<String> en = ics.GetVars();
+		while (en.hasMoreElements()) {
+			String v = en.nextElement();
+			sb.append(v).append("=").append(getString(v)).append("\n");
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Dump the list with the given name
+	 */
+	@Override
+	public String dump(String name) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(name).append("=");
+		for (int i : getRange(name))
+			sb.append(getString(name, i)).append(",");
+		sb.setCharAt(sb.length() - 1, '\n');
+		return sb.toString();
 	}
 
 }

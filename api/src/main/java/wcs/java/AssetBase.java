@@ -160,13 +160,35 @@ public abstract class AssetBase {
 	}
 
 	/**
-	 * Print it
+	 * String representation of the asset
 	 */
 	public String toString() {
 		return name
-				+ "(" + c
+				+ "("
+				+ c
 				+ ((subtype != null && subtype.trim().length() > 0) ? "/"
 						+ subtype : "") + ")";
+	}
+
+	/**
+	 * Print it
+	 */
+	public String dump() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("name=").append(name);
+		sb.append("\ndescription=").append(description);
+		sb.append("\ncid=").append(cid);
+		sb.append("\nc=").append(c);
+		sb.append("\nsubtype=").append(subtype);
+		sb.append("\nsite=").append(site);
+		sb.append("\ntemplate=").append(template);
+		sb.append("\nstartDate=").append(
+				startDate == null ? "" : startDate.toString());
+		sb.append("\nendDate=").append(
+				endDate == null ? "" : endDate.toString());
+		sb.append("\npath=").append(path);
+		sb.append("\nfilename=").append(filename);
+		return sb.toString();
 	}
 
 }

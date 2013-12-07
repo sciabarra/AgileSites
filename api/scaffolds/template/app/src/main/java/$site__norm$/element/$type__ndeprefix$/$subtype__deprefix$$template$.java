@@ -1,5 +1,6 @@
 package $site;format="normalize"$.element.$type;format="normalize"$;
 import static wcs.core.Common.*;
+import static wcs.core.Log.*;
 import wcs.core.Log;
 import wcs.core.Index;
 import wcs.core.Asset;
@@ -11,7 +12,7 @@ import wcs.java.AssetSetup;
 
 @Index("$site;format="normalize"$/elements.txt")
 public class $subtype;format="deprefix"$$template$ extends Element {
-	final static Log log = Log.getLog($subtype;format="deprefix"$$template$.class);
+	final static Log log = getLog($subtype;format="deprefix"$$template$.class);
 	public static AssetSetup setup() {	
 		return new Template("$type$", "$subtype$$template$", 
 			Template.INTERNAL, // change template type here
@@ -22,7 +23,7 @@ public class $subtype;format="deprefix"$$template$ extends Element {
 
 	@Override
 	public String apply(Env e) {
-		Picker html = Picker.load("/$site;format="normalize"$/index.html" , "#detail");
+		Picker html = Picker.load("/$site;format="normalize"$/simple.html" , "#detail");
 		Asset a = e.getAsset();
 		return html.html(a, e);
 	}

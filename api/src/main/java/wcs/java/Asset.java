@@ -22,7 +22,8 @@ import wcs.core.tag.AssetsetTag;
 import wcs.core.tag.RenderTag;
 import COM.FutureTense.Interfaces.ICS;
 
-public class Asset extends AssetBase implements wcs.core.Asset, wcs.core.Content {
+public class Asset extends AssetBase implements wcs.core.Asset,
+		wcs.core.Content {
 
 	private static Log log = Log.getLog(Env.class);
 
@@ -115,7 +116,7 @@ public class Asset extends AssetBase implements wcs.core.Asset, wcs.core.Content
 	 */
 	@Override
 	public String getFieldString(String name) {
-		return AssetTag.get().name(a).field("name").eval(i, "output");
+		return AssetTag.get().name(a).field(name).eval(i, "output");
 	}
 
 	/**
@@ -422,15 +423,15 @@ public class Asset extends AssetBase implements wcs.core.Asset, wcs.core.Content
 	public String editText(String attribute, int n, String params) {
 		return editString(attribute, n, nn(params), arg("editor", "ckeditor"));
 	}
-	
+
 	/**
-	 * Edit (or return if not insite) the named attribute as a string, or
-	 * null if not found and pass additional parameters using the CK editor
+	 * Edit (or return if not insite) the named attribute as a string, or null
+	 * if not found and pass additional parameters using the CK editor
 	 * 
 	 * @param asset
 	 * @return
 	 */
-	public String editText(String attribute,  String params) {
+	public String editText(String attribute, String params) {
 		return editString(attribute, 1, nn(params), arg("editor", "ckeditor"));
 	}
 
@@ -801,5 +802,26 @@ public class Asset extends AssetBase implements wcs.core.Asset, wcs.core.Content
 	@Override
 	public boolean exists(String attribute, int pos) {
 		return isAttribute(attribute, pos);
+	}
+
+	/**
+	 * Dump the core fields of the asset
+	 */
+	@Override
+	public String dump() {
+		return super.dump();
+	}
+
+	/**
+	 * Dump the attribute with the given name
+	 */
+	@Override
+	public String dump(String name) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(name).append("=");
+		for (int i : getRange(name))
+			sb.append(getString(name, i)).append(",");
+		sb.setCharAt(sb.length() - 1, '\n');
+		return sb.toString();
 	}
 }

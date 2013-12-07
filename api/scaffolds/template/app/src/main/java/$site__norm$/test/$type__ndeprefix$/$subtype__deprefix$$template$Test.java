@@ -1,7 +1,8 @@
 package $site;format="normalize"$.test.$type;format="normalize"$;
 import static wcs.core.Common.*;
-import wcs.core.Index;
+import static wcs.core.Log.*;
 import wcs.core.Log;
+import wcs.core.Index;
 import org.junit.Before;
 import org.junit.Test;
 import wcs.java.util.TestElement;
@@ -10,8 +11,7 @@ import $site;format="normalize"$.element.$type;format="normalize"$.$subtype;form
 // this test must be run by AgileSites TestRunnerElement
 @Index("$site;format="normalize"$/tests.txt")
 public class $subtype;format="deprefix"$$template$Test extends TestElement {
-
-	final static Log log = Log.getLog($subtype;format="deprefix"$$template$Test.class);
+	final static Log log = getLog($subtype;format="deprefix"$$template$Test.class);
 	$subtype;format="deprefix"$$template$ it;
 	
 	@Before
@@ -22,6 +22,6 @@ public class $subtype;format="deprefix"$$template$Test extends TestElement {
 	@Test
 	public void test() {
 		parse(it.apply(env("/Home")));
-		assertText("#detail p", "Home Page Text");
+		assertText("p", "Home Page Text");
 	}
 }

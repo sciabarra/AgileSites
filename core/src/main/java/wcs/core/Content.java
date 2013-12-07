@@ -9,7 +9,7 @@ import java.util.Date;
  * 
  */
 public interface Content {
-	
+
 	/**
 	 * Check if the give attribute is a valid value
 	 * 
@@ -17,7 +17,7 @@ public interface Content {
 	 * @return
 	 */
 	public boolean exists(String attribute);
-	
+
 	/**
 	 * Check if the given attribute at the given position is a valid value
 	 * 
@@ -26,8 +26,6 @@ public interface Content {
 	 */
 	public boolean exists(String attribute, int pos);
 
-	
-	
 	/**
 	 * Return the first attribute of the the named attribute as a string, or
 	 * null if not found
@@ -96,5 +94,37 @@ public interface Content {
 	 * @return
 	 */
 	public Date getDate(String attribute, int n);
+
+	/**
+	 * Return the number of elements in the attribute
+	 * 
+	 * @param attribute
+	 * @return
+	 */
+	public abstract int getSize(String attribute);
+
+	/**
+	 * Return an iterable of the indexes of the attribute
+	 * 
+	 * @param attribute
+	 * @return
+	 */
+	public abstract Iterable<Integer> getRange(String attribute);
+
+	/**
+	 * Return a string dump of this content
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public String dump();
+
+	/**
+	 * Return a string dump of an attriute
+	 * 
+	 * @param asset
+	 * @return
+	 */
+	public String dump(String attribute);
 
 }

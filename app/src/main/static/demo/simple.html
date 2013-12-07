@@ -2,17 +2,21 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Title</title>
-<meta name="description" content="Error">
+<title>{{name}}</title>
+<meta name="description" content="{{description}}">
 <link rel="stylesheet" href="css/normalize.min.css">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-	<div id="content">
-		<h1 id="title">Welcome</h1>
-		<h2 id="subtitle">SubTitle</h2>
-	</div>
-	<div id="detail"></div>
-	<script src="js/main.js"></script>
+ <div id="content">
+  <div id="header">
+   <h1>{{Title}}</h1>
+  </div>
+  <div id="detail">
+   <p>{{Text}}</p>
+  </div>
+  <div id="footer">{{Footer}}</div>
+ </div>
+ <script src="js/main.js"></script>
 </body>
 </html>

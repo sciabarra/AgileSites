@@ -33,7 +33,6 @@ public abstract class AssetSetup extends AssetBase {
 		this.site = site;
 	}
 
-
 	/**
 	 * Return a list of expected attributes
 	 * 

@@ -99,4 +99,45 @@ public class Log {
 	public static Log getLog(Class<?> clazz) {
 		return getLog(clazz == null ? null : clazz.getCanonicalName());
 	}
+
+	/**
+	 * Print on standard output
+	 */
+	public static void out(String message, Object... args) {
+		System.out.println(args.length > 0 ? String.format(message, args)
+				: message);
+	}
+
+	/**
+	 * Print on standard output some contents
+	 */
+	public static void out(String message, Content... contents) {
+		System.out.println(message);
+		for (Content c : contents) {
+			System.out.println(c.dump());
+		}
+	}
+
+	/**
+	 * Print on standard output some contents
+	 */
+	public static void out(Content... contents) {
+		for (Content c : contents) {
+			System.out.println(c.dump());
+		}
+	}
+
+	/**
+	 * Print on standard output a content attributes
+	 */
+	public static void out(String message, Content content, String name) {
+		System.out.println(message + ": " + content.dump(name));
+	}
+
+	/**
+	 * Print on standard output a content attributes
+	 */
+	public static void out(Content content, String name) {
+		System.out.println(content.dump(name));
+	}
 }

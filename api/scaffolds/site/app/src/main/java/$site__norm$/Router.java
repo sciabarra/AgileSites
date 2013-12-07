@@ -1,5 +1,7 @@
 package $site;format="normalize"$;
-
+import static wcs.core.Common.*;
+import static wcs.core.Log.*;
+import wcs.core.Log;
 import wcs.core.Arg;
 import wcs.core.Log;
 import wcs.core.URL;
@@ -8,7 +10,7 @@ import wcs.core.Id;
 import wcs.core.Env;
 import java.util.List;
 import java.util.StringTokenizer;
-import static wcs.core.Common.arg;
+
 
 /**
  * Simple router invoking the tester only
@@ -18,11 +20,12 @@ import static wcs.core.Common.arg;
  */
 public class Router extends wcs.java.Router {
 
-	static final Log log = Log.getLog(Router.class);
+	static final Log log = getLog(Router.class);
 
 	@Override
 	public Call route(Env e, URL url) {
-
+		// log.trace("Router url=", router);
+		
 		// split the token
 		String c = null;
 		String name = null;
