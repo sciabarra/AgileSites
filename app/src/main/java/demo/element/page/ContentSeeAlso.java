@@ -1,8 +1,9 @@
 package demo.element.page;
-
+import static wcs.core.Common.*;
+import static wcs.core.Log.*;
+import wcs.core.Log;
 import wcs.core.Index;
 import wcs.core.Asset;
-import wcs.core.Log;
 import wcs.java.Picker;
 import wcs.java.Env;
 import wcs.java.Element;

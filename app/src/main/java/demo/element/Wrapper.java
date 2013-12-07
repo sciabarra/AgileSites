@@ -1,5 +1,6 @@
 package demo.element;
-
+import static wcs.core.Common.*;
+import static wcs.core.Log.*;
 import wcs.core.Index;
 import wcs.core.Asset;
 import wcs.core.Log;

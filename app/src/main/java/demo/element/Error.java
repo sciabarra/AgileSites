@@ -1,12 +1,13 @@
 package demo.element;
-
-import wcs.core.Index;
+import static wcs.core.Common.*;
+import static wcs.core.Log.*;
 import wcs.core.Log;
+import wcs.core.Index;
+import wcs.java.Env;
 import wcs.java.Picker;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.Element;
-import wcs.java.Env;
 
 @Index("demo/elements.txt")
 public class Error extends Element {

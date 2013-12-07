@@ -1,12 +1,14 @@
 package demo.element;
-
-import demo.Config;
+import static wcs.core.Common.*;
+import static wcs.core.Log.*;
+import wcs.core.Log;
 import wcs.core.Index;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.SiteEntry;
 import wcs.java.util.TestRunnerElement;
 import wcs.java.util.Util;
+import demo.Config;
 
 @Index("demo/elements.txt")
 public class Tester extends TestRunnerElement {

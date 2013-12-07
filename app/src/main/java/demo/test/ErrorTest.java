@@ -1,11 +1,12 @@
 package demo.test;
-
-import demo.element.Error;
+import static wcs.core.Common.*;
+import static wcs.core.Log.*;
+import wcs.core.Log;
 import wcs.core.Index;
 import wcs.java.util.TestElement;
 import org.junit.Before;
+import demo.element.Error;
 import org.junit.Test;
-import static wcs.core.Common.arg;
 
 
 // this test must be run by the test runner

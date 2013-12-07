@@ -1,10 +1,10 @@
 package demo.test;
-
+import static wcs.core.Common.*;
+import static wcs.core.Log.*;
+import wcs.core.Log;
+import wcs.core.Index;
 import org.junit.Before;
 import org.junit.Test;
-
-import wcs.core.Index;
-import wcs.core.Log;
 import wcs.java.util.TestElement;
 import demo.element.Breadcrump;
 

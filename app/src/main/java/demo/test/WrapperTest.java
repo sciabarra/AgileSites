@@ -1,8 +1,9 @@
 package demo.test;
-
-import demo.element.Wrapper;
+import static wcs.core.Common.*;
+import static wcs.core.Log.*;
 import wcs.core.Index;
 import wcs.core.Log;
+import demo.element.Wrapper;
 import wcs.java.util.TestElement;
 import org.junit.Before;
 import org.junit.Test;

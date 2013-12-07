@@ -1,14 +1,14 @@
 package demo;
-
 import static wcs.core.Common.*;
-import java.util.List;
-import java.util.StringTokenizer;
+import static wcs.core.Log.*;
+import wcs.core.Log;
 import wcs.core.Arg;
 import wcs.core.Call;
 import wcs.core.Env;
 import wcs.core.Id;
-import wcs.core.Log;
 import wcs.core.URL;
+import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Simple router invoking the tester only
