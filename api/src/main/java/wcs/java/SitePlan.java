@@ -8,6 +8,9 @@ import wcs.core.tag.AssetTag;
 import wcs.core.tag.SiteplanTag;
 import COM.FutureTense.Interfaces.ICS;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class SitePlan implements wcs.core.SitePlan {
 
 	final static Log log = Log.getLog(SitePlan.class);
@@ -95,20 +98,26 @@ public class SitePlan implements wcs.core.SitePlan {
 		return ilist2aid(list);
 	}
 
-	private Id[] ilist2aid(String list) {
-		try {
-			Id[] id = new Id[e.getSize(list)];
-			log.trace("children #%d", id.length);
-			for (int i : e.getRange(list)) {
-				String c = e.getString(list, i, "otype");
-				Long cid = e.getLong(list, i, "oid");
-				id[i - 1] = new Id(c, cid);
-				log.trace("%s", id[i - 1].toString());
-			}
-			return id;
-		} catch (Exception ex) {
-			log.trace(ex, "ops");
-			return new Id[0];
-		}
-	}
+    private Id[] ilist2aid(String list) {
+        try {
+            List<Id> nodes = new LinkedList<Id>();
+            //Id[] id = new Id[e.getSize(list)];
+            log.trace("children #%d", e.getSize(list));
+            for (int i : e.getRange(list)) {
+                String c = e.getString(list, i, "otype");
+                Long cid = e.getLong(list, i, "oid");
+                //id[i - 1] = new Id(c, cid);
+                // stop at the SitePlan node
+                if (c.equalsIgnoreCase("SitePlan")) {
+                    break;
+                }
+                nodes.add(i -1,  new Id(c, cid));
+                log.trace("%s", nodes.get(i - 1).toString());
+            }
+            return nodes.toArray(new Id[nodes.size()]);
+        } catch (Exception ex) {
+            log.trace(ex, "ops");
+            return new Id[0];
+        }
+    }
 }

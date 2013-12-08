@@ -259,4 +259,20 @@ public final class StringUtils {
             return string;
         }
     }
+
+
+    /**
+     * converts the string to lowercase and with the first character in uppercase
+     * @param string String to capitalize
+     * @return the capitalized <i>string</i>
+     */
+    public static String capitalize (String string) {
+        if (string == null || string.length() == 0) {
+            return string;
+        }
+        string = string.toLowerCase();
+        char c = string.charAt(0);
+        return (""+c).toUpperCase() + string.substring(1);
+
+    }
 }

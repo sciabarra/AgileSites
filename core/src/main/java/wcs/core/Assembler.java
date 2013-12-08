@@ -96,7 +96,7 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 	}
 
 	// create an asset definition that will bring into the path
-	private Definition assetDef(URI uri, String site, String path) {
+	private Definition assetDef(URI uri, String site, String path, String d) {
 		Simple def = new Simple(false, //
 				Definition.SatelliteContext.SATELLITE_SERVER, //
 				Definition.ContainerType.SERVLET, //
@@ -112,6 +112,8 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		String q = uri.getRawQuery();
 		if (q != null)
 			def.setQueryStringParameter("q", q);
+        if (d != null)
+            def.setQueryStringParameter("d", d);
 
 		log.debug("site=" + site);
 		log.debug("url=" + path);
@@ -225,7 +227,7 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 				result = disassembleBlob(uri, site, subpath);
 				if (result == null) {
 					log.debug("**** asset found");
-					return assetDef(uri, site, subpath);
+					return assetDef(uri, site, subpath, getDeviceParam(uri));
 				} else {
 					log.debug("*** blob found");
 					return result;
@@ -260,4 +262,19 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		}
 		return qa.assemble(def);
 	}
+
+    private String getDeviceParam (URI uri) {
+        String query = uri.getRawQuery();
+        if (query == null) {
+            return null;
+        }
+        Pattern p = Pattern.compile("(^d=|\\&d=)(.+$)");
+        Matcher m = p.matcher(query);
+        if (m.find()) {
+            String val = m.group(2);
+            return val.substring(0,val.indexOf('&'));
+        }
+        return null;
+    }
+
 }

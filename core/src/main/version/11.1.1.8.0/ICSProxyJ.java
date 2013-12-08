@@ -74,13 +74,9 @@ public class ICSProxyJ implements ICS {
 
 
 	public Id getSitePlanRoot(String siteName) {
-	   String d = ics.GetVar("d");
-	   if(d!=null) { 
-	      String siteplanId = DeviceHelper.getSitePlanID(ics, getSiteId(siteName), d);
-	   	  return new Id("SitePlan", Long.parseLong(siteplanId));
-	   } else {
-	   	  return new Id("Publication", Long.parseLong(getSiteId(siteName)));
-	   }
+        String d = ics.GetVar("d");
+        String siteplanId = DeviceHelper.getSitePlanID(ics, getSiteId(siteName), d);
+        return new Id("SitePlan", Long.parseLong(siteplanId));
 	}
 
 

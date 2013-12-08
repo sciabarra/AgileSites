@@ -1,5 +1,6 @@
 package wcs.java;
 
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import wcs.core.Arg;
 import wcs.core.Common;
 import wcs.core.Log;
 import COM.FutureTense.Interfaces.ICS;
+import wcs.java.util.StringUtils;
 
 /**
  *
@@ -25,7 +27,7 @@ public abstract class Element implements wcs.core.Element {
 
     protected boolean insite = false;
 
-	/**
+    /**
 	 * Execute the element
 	 * 
 	 * The bulk of the method is streaming the result and invoking embedded
@@ -38,8 +40,14 @@ public abstract class Element implements wcs.core.Element {
 			site = ics.GetVar("site");
 			insite = ics.GetVar("rendermode") != null
 					&& ics.GetVar("rendermode").equals("insite");
-			Env env = new Env(ics, site);
-			return apply(env);
+            Env env = new Env(ics, site);
+            String device = ics.GetVar("d");
+            if (device == null) {
+                String packedargs = env.getString("packedargs");
+                env.unpackVar("d", packedargs);
+                device = ics.GetVar("d");
+            }
+			return callApply(env, device);
 		} catch (NullPointerException npe) {
 			log.error(npe, "NPE: ");
 			return "NULL <span style='display: none'>" + Common.ex2str(npe)
@@ -68,7 +76,8 @@ public abstract class Element implements wcs.core.Element {
 	/**
 	 * Convenience method for defining args
 	 * 
-	 * @param name
+	 * @param k
+     * @param v
 	 * @return
 	 */
 	public Arg arg(String k, String v) {
@@ -78,7 +87,7 @@ public abstract class Element implements wcs.core.Element {
 	/**
 	 * Convenience method to log in a functional way
 	 * 
-	 * @param name
+	 * @param msg
 	 * @return
 	 */
 	public String log(String msg) {
@@ -92,6 +101,20 @@ public abstract class Element implements wcs.core.Element {
 	 * @param env
 	 * @return
 	 */
-	abstract public String apply(Env env);
+	public String callApply(Env env, String device) {
+        if (device == null || device.length() == 0) {
+            return apply(env);
+        }
+        try {
+            Method method = this.getClass().getMethod("apply" + StringUtils.capitalize(device), Env.class);
+            return (String) method.invoke(this,env);
+
+        } catch (Exception ex) {
+            log.error("could not call method apply" + StringUtils.capitalize(device) + "(). Calling default apply() method instead");
+            return apply(env);
+        }
+    }
+
+    abstract public String apply (Env e);
 
 }

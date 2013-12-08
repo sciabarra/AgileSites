@@ -5,10 +5,7 @@ import static wcs.core.Common.toDate;
 import static wcs.core.Common.toInt;
 import static wcs.core.Common.toLong;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import wcs.core.Arg;
 import wcs.core.Asset;
@@ -56,7 +53,7 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		init(ics);
 		if (site != null) {
 			config = getConfig(site);
-			this.site = config.getSite();
+			this.site = site;
 			this.normSite = WCS.normalizeSiteName(site);
 			router = Router.getRouter(site);
 		}
@@ -737,4 +734,16 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		return sb.toString();
 	}
 
+    /**
+     * unpacks a var and puts it in ICS.
+     * temporary workaround for the render:unpagkargs tag wrapper that's not working
+     * @param var
+     * @param packed
+     */
+    public void unpackVar(String var, String packed) {
+        Map<String, String> m = new HashMap<String, String>();
+        ics.decode(packed, m);
+        String value = m.get(var);
+        ics.SetVar(var, value);
+    }
 }
