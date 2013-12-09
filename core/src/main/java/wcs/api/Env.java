@@ -5,7 +5,7 @@ import java.util.List;
 
 import COM.FutureTense.Interfaces.ICS;
 
-public interface Env {
+public interface Env extends Content {
 	
 	/**
 	 * Return the underlying ICS

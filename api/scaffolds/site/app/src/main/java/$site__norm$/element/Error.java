@@ -1,5 +1,5 @@
 package $site;format="normalize"$.element;
-import static wcs.api.Common.*;
+import static wcs.Api.*;
 import wcs.api.Log;
 import wcs.api.Model;
 import wcs.api.Index;

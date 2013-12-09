@@ -5,6 +5,7 @@ import wcs.api.Args;
 import wcs.api.Call;
 import wcs.api.Content;
 import wcs.api.Id;
+import wcs.api.Log;
 import wcs.api.Model;
 import wcs.core.Sequencer;
 
@@ -13,6 +14,8 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import COM.FutureTense.Interfaces.IList;
 
@@ -285,4 +288,25 @@ public class Api {
 	public static void out(Content content, String name) {
 		System.out.println(content.dump(name));
 	}
+	
+	/**
+	 * Get a logger by name
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	public static Log getLog(String className) {
+		return Log.getLog(className);
+	}
+
+	/**
+	 * Get a logger by class
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	public static Log getLog(Class<?> clazz) {
+		return Log.getLog(clazz);
+	}
+
 }
