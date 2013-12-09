@@ -27,10 +27,10 @@ object Tld2Tagj {
     val cl = tld2class(s)
     """package wcs.core.tag;
     
+import static wcs.Api.*;
+import wcs.api.Arg;
+import wcs.api.Log;
 import COM.FutureTense.Interfaces.*;
-import wcs.core.Common;
-import wcs.core.Arg;
-import wcs.core.Log;
     
 public class %s  {    
   private static Log log = Log.getLog(%s.class);  
@@ -75,7 +75,7 @@ public class %s  {
       return ics.GetErrno(); 
   }
   public String eval(ICS ics, String output) {
-	  String tmp = Common.tmp();
+	  String tmp = tmp();
 	  args.setValString(output.toUpperCase(), tmp);
 	  run(ics);
 	  String res = ics.GetVar(tmp);

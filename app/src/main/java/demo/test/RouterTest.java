@@ -1,15 +1,10 @@
 package demo.test;
-import static wcs.core.Log.*;
-import wcs.core.Log;
-import wcs.core.Index;
-import demo.Config;
-import wcs.core.Asset;
-import wcs.core.Env;
-import wcs.java.Router;
+import static wcs.Api.*;
+import wcs.api.*;
 import wcs.java.util.TestElement;
 import org.junit.Before;
 import org.junit.Test;
-import static wcs.core.Common.*;
+import demo.Config;
 
 @Index("demo/tests.txt")
 public class RouterTest extends TestElement {
@@ -21,7 +16,7 @@ public class RouterTest extends TestElement {
 
 	@Before
 	public void setUp() {
-		it = Router.getRouter(Config.site);
+		it = wcs.core.WCS.getRouter(Config.site);
 		e = env();
 		home = e.findOne("Page", arg("name", "Home"));
 	}

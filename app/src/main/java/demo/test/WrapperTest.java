@@ -1,12 +1,10 @@
 package demo.test;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Index;
-import wcs.core.Log;
-import demo.element.Wrapper;
-import wcs.java.util.TestElement;
 import org.junit.Before;
 import org.junit.Test;
+import wcs.api.Index;
+import wcs.api.Log;
+import wcs.java.util.TestElement;
+import demo.element.Wrapper;
 
 // this test must be run by the test runner
 @Index("demo/tests.txt")

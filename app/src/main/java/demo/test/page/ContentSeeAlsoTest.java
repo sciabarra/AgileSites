@@ -1,10 +1,8 @@
 package demo.test.page;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Index;
-import wcs.core.Log;
 import org.junit.Before;
 import org.junit.Test;
+import wcs.api.Index;
+import wcs.api.Log;
 import wcs.java.util.TestElement;
 import demo.element.page.ContentSeeAlso;
 

@@ -1,14 +1,12 @@
 package $site;format="normalize"$.test.$type;format="normalize"$;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Log;
-import org.junit.Before;
-import org.junit.Test;
-import wcs.core.Index;
-import wcs.core.Log;
-import wcs.java.Env;
+import static wcs.Api.*;
+import wcs.api.Log;
+import wcs.api.Index;
+import wcs.api.Env;
 import wcs.java.Asset;
 import wcs.java.util.TestElement;
+import org.junit.Before;
+import org.junit.Test;
 import $site;format="normalize"$.element.$type;format="normalize"$.$subtype;format="deprefix"$Layout;
 
 // this test must be run by AgileSites TestRunnerElement

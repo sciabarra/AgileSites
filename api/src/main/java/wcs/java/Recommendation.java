@@ -1,14 +1,12 @@
 package wcs.java;
 
-import static wcs.core.Common.tmp;
-
+import static wcs.Api.*;
+import wcs.api.Arg;
+import wcs.api.Id;
+import wcs.api.Log;
+import wcs.core.tag.CommercecontextTag;
 import java.util.ArrayList;
 import java.util.List;
-
-import wcs.core.Arg;
-import wcs.core.Id;
-import wcs.core.Log;
-import wcs.core.tag.CommercecontextTag;
 import COM.FutureTense.Interfaces.ICS;
 
 /**

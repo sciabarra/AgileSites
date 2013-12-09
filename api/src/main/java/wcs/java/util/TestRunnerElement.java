@@ -1,19 +1,15 @@
 package wcs.java.util;
-
-import java.io.ByteArrayOutputStream;
-import java.util.StringTokenizer;
-
+import wcs.api.Log;
+import wcs.api.Env;
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
+import java.io.ByteArrayOutputStream;
+import java.util.StringTokenizer;
 
-import wcs.core.Log;
-import wcs.java.Element;
-import wcs.java.Env;
-
-public abstract class TestRunnerElement extends Element {
+public abstract class TestRunnerElement extends wcs.java.Element {
 
 	final static Log log = Log.getLog(TestRunnerElement.class);
 
@@ -185,7 +181,7 @@ public abstract class TestRunnerElement extends Element {
 
 		// create a new, modifiable env, then set it to a threadlocal
 		// so the testelement can find and use it
-		TestEnv te = new TestEnv(e.ics, e.getString("site"), //
+		TestEnv te = new TestEnv(e.ics(), //
 				arg("tid", e.getString("tid")), //
 				arg("eid", e.getString("eid")));
 		currTestEnv.set(te);

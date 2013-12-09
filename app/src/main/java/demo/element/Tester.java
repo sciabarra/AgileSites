@@ -1,8 +1,5 @@
 package demo.element;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Log;
-import wcs.core.Index;
+import wcs.api.Index;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
 import wcs.java.SiteEntry;
@@ -14,8 +11,8 @@ import demo.Config;
 public class Tester extends TestRunnerElement {
 
 	public static AssetSetup setup() {
-		return new CSElement("DmTester", demo.element.Tester.class, //
-				new SiteEntry("demo-tester", false, "Demo/DmTester"));
+		return new CSElement("Tester", demo.element.Tester.class, //
+				new SiteEntry("demo-tester", false, "Tester"));
 	}
 
 	@Override

@@ -1,14 +1,13 @@
 package wcs.java;
-
-import wcs.core.Env;
-import wcs.core.Id;
-import wcs.core.Log;
-import wcs.core.Common;
+import static wcs.Api.*;
+import wcs.api.Env;
+import wcs.api.Id;
+import wcs.api.Log;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.SiteplanTag;
 import COM.FutureTense.Interfaces.ICS;
 
-public class SitePlan implements wcs.core.SitePlan {
+public class SitePlan implements wcs.api.SitePlan {
 
 	final static Log log = Log.getLog(SitePlan.class);
 
@@ -43,8 +42,8 @@ public class SitePlan implements wcs.core.SitePlan {
 	@Override
 	public SitePlan goTo(Id id) {
 
-		String list = Common.tmp();
-		String name = Common.tmp();
+		String list = tmp();
+		String name = tmp();
 
 		if (id.c.equals("Publication")) {
 			SiteplanTag.root().objectid(id.cid.toString()).list(list).run(i);
@@ -71,8 +70,8 @@ public class SitePlan implements wcs.core.SitePlan {
 	@Override
 	public Id[] children() {
 		log.trace("children!");
-		String name = Common.tmp();
-		String list = Common.tmp();
+		String name = tmp();
+		String list = tmp();
 		SiteplanTag.load().name(name).nodeid(currentNid).run(i);
 		SiteplanTag.children()//
 				.name(name).code("Placed").order("nrank") //
@@ -86,8 +85,8 @@ public class SitePlan implements wcs.core.SitePlan {
 	@Override
 	public Id[] path() {
 		log.trace("path");
-		String name = Common.tmp();
-		String list = Common.tmp();
+		String name = tmp();
+		String list = tmp();
 		SiteplanTag.load().name(name).nodeid(currentNid).run(i);
 		SiteplanTag.nodepath()//
 				.name(name) //

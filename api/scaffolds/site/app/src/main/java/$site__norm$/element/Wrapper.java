@@ -1,11 +1,10 @@
 package $site;format="normalize"$.element;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Log;
-import wcs.core.Index;
-import wcs.core.Asset;
-import wcs.core.Model;
-import wcs.java.Env;
+import static wcs.Api.*;
+import wcs.api.Log;
+import wcs.api.Index;
+import wcs.api.Asset;
+import wcs.api.Model;
+import wcs.api.Env;
 import wcs.java.Picker;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;

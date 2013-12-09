@@ -1,30 +1,24 @@
 package wcs.java;
 
-import static wcs.core.Common.tmp;
-import static wcs.core.Common.toDate;
-import static wcs.core.Common.toInt;
-import static wcs.core.Common.toLong;
-
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.List;
-
-import wcs.core.Arg;
-import wcs.core.Asset;
-import wcs.core.AssetDeps;
-import wcs.core.Common;
-import wcs.core.Content;
-import wcs.core.ICSProxyJ;
-import wcs.core.Id;
-import wcs.core.Log;
-import wcs.core.Range;
+import static wcs.Api.*;
+import wcs.Api;
+import wcs.api.Arg;
+import wcs.api.Asset;
+import wcs.api.AssetDeps;
+import wcs.api.Content;
+import wcs.api.Id;
+import wcs.api.Log;
+import wcs.api.Range;
 import wcs.core.WCS;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.RenderTag;
 import wcs.core.tag.SatelliteTag;
 import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Facade to the Sites services. It is passed as the main argument to element
@@ -33,15 +27,15 @@ import COM.FutureTense.Interfaces.IList;
  * @author msciab
  * 
  */
-public class Env extends ICSProxyJ implements Content, wcs.core.Env {
+public class Env extends wcs.core.ICSProxyJ implements Content, wcs.api.Env {
 
 	private static Log log = Log.getLog(Env.class);
 	@SuppressWarnings("unused")
 	private boolean hasInsite = getVersionMajor() == 11;
 	private boolean hasDevices = getVersionMajor() == 11
 			&& getVersionMinor() == 8;
-	private wcs.core.Config config;
-	private Router router;
+	private wcs.api.Config config;
+	private wcs.api.Router router;
 	private String site;
 	private String normSite;
 	private boolean insite;
@@ -52,14 +46,12 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 	 * 
 	 * @param ics
 	 */
-	public Env(ICS ics, String site) {
+	public Env(ICS ics) {
 		init(ics);
-		if (site != null) {
-			config = getConfig(site);
-			this.site = config.getSite();
-			this.normSite = WCS.normalizeSiteName(site);
-			router = Router.getRouter(site);
-		}
+		this.site = ics.GetVar("site");
+		this.normSite = WCS.normalizeSiteName(site);
+		config = wcs.core.WCS.getConfig(site);
+		router = wcs.core.WCS.getRouter(site);
 		String rendermode = ics.GetVar("rendermode");
 		insite = rendermode != null && rendermode.equals("insite");
 		preview = rendermode != null && rendermode.startsWith("preview");
@@ -366,7 +358,7 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 	 * 
 	 */
 	@Override
-	public wcs.core.Asset getAsset(String c, Long cid) {
+	public wcs.api.Asset getAsset(String c, Long cid) {
 		if (c != null && cid != null)
 			return new wcs.java.Asset(this, c, cid);
 		else
@@ -426,7 +418,7 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 	 * @see wcs.core.Env#getConfig()
 	 */
 	@Override
-	public wcs.core.Config getConfig() {
+	public wcs.api.Config getConfig() {
 		return config;
 	}
 
@@ -436,25 +428,11 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 	 * @see wcs.java.IEnv#getRouter()
 	 */
 	@Override
-	public Router getRouter() {
+	public wcs.api.Router getRouter() {
 		return router;
 	}
 
-	/**
-	 * Load the config by site
-	 * 
-	 * @param site
-	 * @return
-	 */
-	public static Config getConfig(String site) {
-		try {
-			return (Config) Class.forName(
-					WCS.normalizeSiteName(site) + ".Config").newInstance();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return null;
-		}
-	}
+	
 
 	/*
 	 * (non-Javadoc)
@@ -482,7 +460,7 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 	 * @see wcs.java.IEnv#getSitePlan()
 	 */
 	@Override
-	public wcs.core.SitePlan getSitePlan() {
+	public wcs.api.SitePlan getSitePlan() {
 		return new wcs.java.SitePlan(this);
 	}
 
@@ -607,8 +585,8 @@ public class Env extends ICSProxyJ implements Content, wcs.core.Env {
 		List<Arg> list = new LinkedList<Arg>();
 		for (Arg arg : args)
 			list.add(arg);
-		list.add(Common.arg("ELEMENTNAME", site + "/" + name));
-		return Common.call("RENDER:CALLELEMENT", list);
+		list.add(arg("ELEMENTNAME", site + "/" + name));
+		return Api.call("RENDER:CALLELEMENT", list);
 	}
 
 	/*

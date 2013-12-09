@@ -1,9 +1,8 @@
 package $site;format="normalize"$.element;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Log;
-import wcs.core.Index;
-import wcs.java.Env;
+import static wcs.Api.*;
+import wcs.api.Log;
+import wcs.api.Index;
+import wcs.api.Env;
 import wcs.java.Picker;
 import wcs.java.Element;
 import wcs.java.CSElement;

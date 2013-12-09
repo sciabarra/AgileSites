@@ -9,7 +9,7 @@ import COM.FutureTense.Interfaces.ICS;
  * @author msciab
  * 
  */
-abstract public class Config implements wcs.core.Config {
+abstract public class Config implements wcs.api.Config {
 
 	private String blobId = null;
 	private String blobUrl = null;

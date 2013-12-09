@@ -1,16 +1,11 @@
 package wcs.java;
-
+import wcs.api.Log;
+import wcs.java.util.Util;
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
-
-import wcs.core.Log;
-import wcs.java.util.Util;
-
-import COM.FutureTense.Interfaces.ICS;
-
 import com.fatwire.assetapi.common.AssetAccessException;
 import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AssetDataManager;
@@ -23,6 +18,7 @@ import com.fatwire.assetapi.query.SimpleQuery;
 import com.fatwire.system.Session;
 import com.fatwire.system.SessionFactory;
 import com.openmarket.xcelerate.asset.AssetIdImpl;
+import COM.FutureTense.Interfaces.ICS;
 
 /**
  * The setup class. Invoking the setup method will initialize templates and

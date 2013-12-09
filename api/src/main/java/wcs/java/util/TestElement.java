@@ -1,30 +1,26 @@
 package wcs.java.util;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static wcs.core.Common.arg;
-
+import static wcs.Api.*;
+import wcs.Api;
+import wcs.api.Arg;
+import wcs.api.Call;
+import wcs.api.Content;
+import wcs.api.Log;
+import wcs.api.URL;
+import wcs.java.Router;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.junit.matchers.JUnitMatchers;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
-import wcs.core.Arg;
-import wcs.core.Call;
-import wcs.core.Common;
-import wcs.core.Content;
-import wcs.core.Log;
-import wcs.core.URL;
-import wcs.java.Router;
 
 /**
  * Collection of test helpers for testing elements.
@@ -46,7 +42,7 @@ public class TestElement extends TestCase {
 	 * @param html
 	 */
 	public void parse(String html) {
-		doc = Jsoup.parse(Common.dumpStream(html));
+		doc = Jsoup.parse(Api.dumpStream(html));
 		log.trace("parse:\n" + doc.toString());
 	}
 
@@ -80,7 +76,7 @@ public class TestElement extends TestCase {
 		for (Arg arg : args)
 			list.add(arg);
 		try {
-			Call call = Router.getRouter(te.getString("site")).route(te,
+			Call call = wcs.core.WCS.getRouter(te.getString("site")).route(te,
 					URL.parse(new URI(path)));
 			for (String k : call.keysLeft())
 				list.add(arg(k, call.getOnce(k)));
@@ -286,7 +282,7 @@ public class TestElement extends TestCase {
 	 * @param log
 	 */
 	protected void dump(Log log) {
-		log.debug(Common.dumpStream(doc.outerHtml()));
+		log.debug(dumpStream(doc.outerHtml()));
 	}
 
 	/**
@@ -295,7 +291,7 @@ public class TestElement extends TestCase {
 	 * @param log
 	 */
 	protected void dump(PrintStream out) {
-		out.println(Common.dumpStream(doc.outerHtml()));
+		out.println(dumpStream(doc.outerHtml()));
 	}
 
 

@@ -1,10 +1,8 @@
 package demo.test.page;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Index;
-import wcs.core.Log;
 import org.junit.Before;
 import org.junit.Test;
+import wcs.api.Index;
+import wcs.api.Log;
 import wcs.java.util.TestElement;
 import demo.element.page.Summary;
 
@@ -13,7 +11,7 @@ import demo.element.page.Summary;
 public class SummaryTest extends TestElement {
 	final static Log log = Log.getLog(SummaryTest.class);
 	Summary it;
-	
+
 	@Before
 	public void setUp() {
 		it = new Summary();
@@ -23,7 +21,7 @@ public class SummaryTest extends TestElement {
 	public void test() {
 		parse(it.apply(env("")));
 		dump(log);
-		assertText("h4", "Home");		
+		assertText("h4", "Home");
 		assertTextContains("div div", "This is a SUMMARY.");
 	}
 }

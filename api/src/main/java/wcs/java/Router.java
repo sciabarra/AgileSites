@@ -1,12 +1,10 @@
 package wcs.java;
-
-import wcs.core.Arg;
-import wcs.core.Call;
-import wcs.core.Env;
-import wcs.core.Id;
-import wcs.core.Log;
-import wcs.core.URL;
-import wcs.core.WCS;
+import wcs.api.Arg;
+import wcs.api.Call;
+import wcs.api.Env;
+import wcs.api.Id;
+import wcs.api.Log;
+import wcs.api.URL;
 import COM.FutureTense.Interfaces.ICS;
 
 /**
@@ -16,44 +14,19 @@ import COM.FutureTense.Interfaces.ICS;
  * @author msciab
  * 
  */
-abstract public class Router implements wcs.core.Router {
+abstract public class Router implements wcs.api.Router {
 
 	private static Log log = Log.getLog(Router.class);
-
-	private String site;
-
-	/**
-	 * Return a router for the site. You can use both the site name or his
-	 * normalized name for to get the router.
-	 * 
-	 * 
-	 * @param site
-	 * @return
-	 */
-	public static Router getRouter(String site) {
-		try {
-			String clazz = WCS.normalizeSiteName(site) + ".Router";
-			log.info("router=" + clazz);
-			Router router = (Router) Class.forName(clazz).newInstance();
-			// router site must be initialized here
-			// config is retrieved because the site name can be normalized
-			// to get the full site name
-			router.site = wcs.java.Env.getConfig(site).getSite();
-			return router;
-		} catch (Exception ex) {
-			log.error(ex, "cannot get router");
-			return null;
-		}
-	}
-
 	private ICS i;
 	private Env e;
+	private String site;
 
 	@Override
 	public Call route(ICS ics, String _site, String _path, String _query) {
 		log.debug("site=" + _site + " path=" + _path + " query=" + _query);
 		this.i = ics;
-		this.e = new wcs.java.Env(i, site);
+		this.e = new wcs.java.Env(i);
+		this.site = ics.GetVar("site");
 		if (_query == null || _query.trim().length() == 0)
 			_query = "";
 		else
@@ -77,7 +50,7 @@ abstract public class Router implements wcs.core.Router {
 	 * @return
 	 */
 	abstract public Call route(Env env, URL url);
-
+	
 	/**
 	 * Link an asset
 	 * 

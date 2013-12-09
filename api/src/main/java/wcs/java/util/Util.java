@@ -1,5 +1,5 @@
 package wcs.java.util;
-
+import wcs.api.Log;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,8 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import wcs.core.Log;
-
 import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AttributeDataImpl;
 import com.fatwire.assetapi.data.BlobObject;
@@ -286,7 +284,7 @@ public class Util {
 	 * @param config
 	 * @return
 	 */
-	public static Object readAttributeConfig(String attribute, wcs.core.Config config) {
+	public static Object readAttributeConfig(String attribute, wcs.api.Config config) {
 		try {
 			Field field = config.getClass().getField(attribute);
 			return field.get(config);

@@ -1,11 +1,10 @@
 package wcs.java;
-
+import static wcs.Api.*;
+import wcs.Api;
+import wcs.api.Arg;
+import wcs.api.Log;
 import java.util.LinkedList;
 import java.util.List;
-
-import wcs.core.Arg;
-import wcs.core.Common;
-import wcs.core.Log;
 import COM.FutureTense.Interfaces.ICS;
 
 /**
@@ -16,7 +15,7 @@ import COM.FutureTense.Interfaces.ICS;
  * @author msciab
  *
  */
-public abstract class Element implements wcs.core.Element {
+public abstract class Element implements wcs.api.Element {
 
     static Log log = Log.getLog(Element.class);
 
@@ -35,14 +34,14 @@ public abstract class Element implements wcs.core.Element {
 	@Override
 	public String exec(ICS ics) {
 		try {
+			Env env = new Env(ics);
 			site = ics.GetVar("site");
 			insite = ics.GetVar("rendermode") != null
 					&& ics.GetVar("rendermode").equals("insite");
-			Env env = new Env(ics, site);
 			return apply(env);
 		} catch (NullPointerException npe) {
 			log.error(npe, "NPE: ");
-			return "NULL <span style='display: none'>" + Common.ex2str(npe)
+			return "NULL <span style='display: none'>" + ex2str(npe)
 					+ "</span>";
 		} catch (Exception ex) {
 			log.error(ex, "exception in element");
@@ -61,8 +60,8 @@ public abstract class Element implements wcs.core.Element {
 		List<Arg> list = new LinkedList<Arg>();
 		for (Arg arg : args)
 			list.add(arg);
-		list.add(Common.arg("ELEMENT", name));
-		return Common.call("ICS:CALLELEMENT", list);
+		list.add(arg("ELEMENT", name));
+		return Api.call("ICS:CALLELEMENT", list);
 	}
 
 	/**
@@ -72,7 +71,7 @@ public abstract class Element implements wcs.core.Element {
 	 * @return
 	 */
 	public Arg arg(String k, String v) {
-		return Common.arg(k, v);
+		return arg(k, v);
 	}
 
 	/**
@@ -92,6 +91,6 @@ public abstract class Element implements wcs.core.Element {
 	 * @param env
 	 * @return
 	 */
-	abstract public String apply(Env env);
+	abstract public String apply(wcs.api.Env env);
 
 }

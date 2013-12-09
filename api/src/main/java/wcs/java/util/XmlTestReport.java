@@ -18,6 +18,8 @@ package wcs.java.util;
  *
  */
 
+import static wcs.Api.*;
+import wcs.api.Log;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -28,14 +30,11 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.Hashtable;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 import junit.framework.TestCase;
-
 import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
@@ -43,8 +42,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
-import wcs.core.Common;
-import wcs.core.Log;
 
 /**
  * Prints XML output of the test to a specified Writer.
@@ -539,7 +536,7 @@ public class XmlTestReport extends RunListener {
 		nested.setAttribute(ATTR_TYPE, t.getClass().getName());
 
 		// String strace = JUnitTestRunner.getFilteredTrace(t);
-		String strace = Common.ex2str(t);
+		String strace = ex2str(t);
 		Text trace = doc.createTextNode(strace);
 		nested.appendChild(trace);
 	}

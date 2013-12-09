@@ -1,8 +1,7 @@
 package wcs.java;
 
+import wcs.api.Id;
 import java.util.Date;
-
-import wcs.core.Id;
 
 /**
  * Main asset abstraction. You get an asset from an Env then use this class to
@@ -16,17 +15,17 @@ public abstract class AssetBase {
 	// private static Log log = Log.getLog(AssetCore.class);
 
 	protected Id id;
-	protected String c;
 	protected Long cid;
-	protected String name;
-	protected String description;
+	protected String c;
 	protected String subtype;
 	protected String site;
+	protected String name;
+	protected String description;
 	protected String filename;
 	protected String path;
+	protected String template;
 	protected Date startDate;
 	protected Date endDate;
-	protected String template;
 
 	/**
 	 * Create an asset with a given type, subtype and name.

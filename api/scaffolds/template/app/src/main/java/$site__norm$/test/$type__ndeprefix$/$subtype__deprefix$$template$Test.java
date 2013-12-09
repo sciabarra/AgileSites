@@ -1,8 +1,7 @@
 package $site;format="normalize"$.test.$type;format="normalize"$;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Log;
-import wcs.core.Index;
+import static wcs.Api.*;
+import wcs.api.Log;
+import wcs.api.Index;
 import org.junit.Before;
 import org.junit.Test;
 import wcs.java.util.TestElement;

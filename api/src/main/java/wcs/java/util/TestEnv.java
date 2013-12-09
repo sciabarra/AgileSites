@@ -1,8 +1,8 @@
 package wcs.java.util;
 
-import wcs.core.Arg;
-import wcs.core.Content;
-import wcs.core.Model;
+import wcs.api.Arg;
+import wcs.api.Content;
+import wcs.api.Model;
 import wcs.java.Env;
 import COM.FutureTense.Interfaces.ICS;
 
@@ -17,17 +17,15 @@ public class TestEnv extends Env implements Content {
 
 	private Model content;
 	private ICS ics;
-	private String site;
 
-	public TestEnv(ICS ics, String site, Arg... args) {
-		super(ics, site);
+	public TestEnv(ICS ics, Arg... args) {
+		super(ics);
 		this.ics = ics;
-		this.site = site;
 		this.content = new Model(args);
 	}
 	
 	public TestEnv(TestEnv env, Arg...args) {
-		super(env.ics, env.site);
+		super(env.ics);
 		this.content = new Model(content, args);
 	}
 	

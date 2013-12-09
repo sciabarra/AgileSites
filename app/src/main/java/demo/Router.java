@@ -1,12 +1,6 @@
 package demo;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Log;
-import wcs.core.Arg;
-import wcs.core.Call;
-import wcs.core.Env;
-import wcs.core.Id;
-import wcs.core.URL;
+import static wcs.Api.*;
+import wcs.api.*;
 import java.util.List;
 import java.util.StringTokenizer;
 
