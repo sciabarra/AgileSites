@@ -6,6 +6,7 @@ import static wcs.java.util.Util.attrString;
 import static wcs.java.util.Util.attrStruct;
 import static wcs.java.util.Util.attrStructKV;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class Template extends AssetSetup {
 	private String sscache;
 	private char ttype;
 	private String forSubtype;
+    private List<String> cacheCriteria = Util.listString("c", "cid", "context", "p", "rendermode", "site", /* "sitepfx", */"ft_ss");
 
 	public Template(String subtype, String name, char ttype,
 			Class<?> elementClass) {
@@ -102,6 +104,11 @@ public class Template extends AssetSetup {
 		this.sscache = sscache;
 		return this;
 	}
+
+    public Template cacheCriteria(String criteria) {
+        this.cacheCriteria.add(criteria);
+        return this;
+    }
 
 	public String getElement() {
 		return rootelement;
@@ -173,10 +180,9 @@ public class Template extends AssetSetup {
 		data.getAttributeData("element").setData(
 				Util.list(attrStruct("Structure Element", mapElement)));
 
-		// default page criteria
-		data.getAttributeData("pagecriteria").setDataAsList(
-				Util.listString("c", "cid", "context", /* "p", */"rendermode",
-						"site", /* "sitepfx", */"ft_ss"));
+        // default page criteria
+        Collections.sort(cacheCriteria);
+        data.getAttributeData("pagecriteria").setDataAsList(cacheCriteria);
 
 		data.getAttributeData("acl").setDataAsList(Util.listString(""));
 

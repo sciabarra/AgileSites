@@ -1,25 +1,25 @@
 package wcs.java.util;
-
-import static wcs.Api.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static wcs.Api.arg;
+import static wcs.Api.dumpStream;
 import wcs.Api;
 import wcs.api.Arg;
 import wcs.api.Call;
 import wcs.api.Content;
 import wcs.api.Log;
 import wcs.api.URL;
-import wcs.java.Router;
 import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
-import junit.framework.TestCase;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.junit.matchers.JUnitMatchers;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import junit.framework.TestCase;
+
 
 
 /**

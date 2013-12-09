@@ -17,8 +17,10 @@ import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Facade to the Sites services. It is passed as the main argument to element
@@ -432,8 +434,6 @@ public class Env extends wcs.core.ICSProxyJ implements Content, wcs.api.Env {
 		return router;
 	}
 
-	
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -715,4 +715,17 @@ public class Env extends wcs.core.ICSProxyJ implements Content, wcs.api.Env {
 		return sb.toString();
 	}
 
+	/**
+	 * unpacks a var and puts it in ICS. temporary workaround for the
+	 * render:unpagkargs tag wrapper that's not working
+	 * 
+	 * @param var
+	 * @param packed
+	 */
+	public void unpackVar(String var, String packed) {
+		Map<String, String> m = new HashMap<String, String>();
+		ics.decode(packed, m);
+		String value = m.get(var);
+		ics.SetVar(var, value);
+	}
 }

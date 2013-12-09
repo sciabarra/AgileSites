@@ -1,28 +1,31 @@
 package wcs.java;
+
 import static wcs.Api.*;
 import wcs.Api;
 import wcs.api.Arg;
 import wcs.api.Log;
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 import COM.FutureTense.Interfaces.ICS;
+import wcs.java.util.StringUtils;
 
 /**
- *
+ * 
  * This class implements element logic and will be invoked by templates and
  * cselements
- *
+ * 
  * @author msciab
- *
+ * 
  */
 public abstract class Element implements wcs.api.Element {
 
-    static Log log = Log.getLog(Element.class);
+	static Log log = Log.getLog(Element.class);
 
-    // current site
-    protected String site;
+	// current site
+	protected String site;
 
-    protected boolean insite = false;
+	protected boolean insite = false;
 
 	/**
 	 * Execute the element
@@ -38,7 +41,14 @@ public abstract class Element implements wcs.api.Element {
 			site = ics.GetVar("site");
 			insite = ics.GetVar("rendermode") != null
 					&& ics.GetVar("rendermode").equals("insite");
-			return apply(env);
+
+			String device = ics.GetVar("d");
+			if (device == null) {
+				String packedargs = env.getString("packedargs");
+				env.unpackVar("d", packedargs);
+				device = ics.GetVar("d");
+			}
+			return callApply(env, device);
 		} catch (NullPointerException npe) {
 			log.error(npe, "NPE: ");
 			return "NULL <span style='display: none'>" + ex2str(npe)
@@ -67,7 +77,8 @@ public abstract class Element implements wcs.api.Element {
 	/**
 	 * Convenience method for defining args
 	 * 
-	 * @param name
+	 * @param k
+	 * @param v
 	 * @return
 	 */
 	public Arg arg(String k, String v) {
@@ -77,12 +88,29 @@ public abstract class Element implements wcs.api.Element {
 	/**
 	 * Convenience method to log in a functional way
 	 * 
-	 * @param name
+	 * @param msg
 	 * @return
 	 */
 	public String log(String msg) {
 		log.debug(msg);
 		return msg;
+	}
+
+	public String callApply(Env env, String device) {
+		if (device == null || device.length() == 0) {
+			return apply(env);
+		}
+		try {
+			Method method = this.getClass().getMethod(
+					"apply" + StringUtils.capitalize(device), Env.class);
+			return (String) method.invoke(this, env);
+
+		} catch (Exception ex) {
+			log.error("could not call method apply"
+					+ StringUtils.capitalize(device)
+					+ "(). Calling default apply() method instead");
+			return apply(env);
+		}
 	}
 
 	/**
@@ -91,6 +119,6 @@ public abstract class Element implements wcs.api.Element {
 	 * @param env
 	 * @return
 	 */
-	abstract public String apply(wcs.api.Env env);
+	abstract public String apply(wcs.api.Env e);
 
 }
