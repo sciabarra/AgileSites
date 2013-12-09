@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import wcs.api.Log;
+
 /**
  * Load a jar using a networked classloader. It caches the classloader and check
  * if the underlying jar file changes then reload it.
@@ -69,7 +71,6 @@ public class Loader {
 			ucl = new URLClassLoader(new URL[] { url }, mycl);
 		}
 		return ucl;
-
 	}
 
 }

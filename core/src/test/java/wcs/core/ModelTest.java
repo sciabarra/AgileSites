@@ -1,6 +1,6 @@
 package wcs.core;
 
-import static wcs.core.Common.*;
+import static wcs.Api.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -8,7 +8,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
-import wcs.core.Model;
+
+import wcs.api.Model;
 
 public class ModelTest {
 

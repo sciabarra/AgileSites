@@ -3,7 +3,10 @@ package wcs.core;
 import java.io.IOException;
 import java.util.Properties;
 
-import wcs.core.Config;
+import wcs.api.Call;
+import wcs.api.Config;
+import wcs.api.Log;
+import wcs.api.Router;
 import COM.FutureTense.Interfaces.ICS;
 
 /**
@@ -121,7 +124,42 @@ public class WCS {
 	}
 
 	
-
+	/**
+	 * Return a router for the site. You can use both the site name or his
+	 * normalized name for to get the router.
+	 * 
+	 * 
+	 * @param site
+	 * @return
+	 */
+	public static Router getRouter(String site) {
+		try {
+			String clazz = WCS.normalizeSiteName(site) + ".Router";
+			log.info("router=" + clazz);
+			Router router = (Router) Class.forName(clazz).newInstance();
+			return router;
+		} catch (Exception ex) {
+			log.error(ex, "cannot get router");
+			return null;
+		}
+	}
+	
+	/**
+	 * Load the config by site
+	 * 
+	 * @param site
+	 * @return
+	 */
+	public static Config getConfig(String site) {
+		try {
+			return (Config) Class.forName(
+					WCS.normalizeSiteName(site) + ".Config").newInstance();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
 	private static long tmpVarCounter = System.currentTimeMillis();
 
 	/**

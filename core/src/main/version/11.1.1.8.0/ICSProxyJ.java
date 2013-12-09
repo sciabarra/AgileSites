@@ -1,15 +1,14 @@
 package wcs.core;
 
+import static wcs.Api.*;
+import wcs.api.Id;
+
 import java.io.OutputStream;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Vector;
-
-import com.fatwire.cs.core.db.PreparedStmt;
-import com.fatwire.cs.core.db.StatementParam;
-import com.fatwire.cs.core.uri.Definition;
 
 import COM.FutureTense.Cache.Satellite;
 import COM.FutureTense.ContentServer.PageData;
@@ -26,6 +25,9 @@ import COM.FutureTense.Interfaces.PastramiEngine;
 import COM.FutureTense.Util.ftErrors;
 import COM.FutureTense.XML.Template.Seed;
 import COM.FutureTense.Mobility.DeviceHelper;
+import com.fatwire.cs.core.db.PreparedStmt;
+import com.fatwire.cs.core.db.StatementParam;
+import com.fatwire.cs.core.uri.Definition;
 
 
 @SuppressWarnings("deprecation")
@@ -54,8 +56,8 @@ public class ICSProxyJ implements ICS {
 
 	public String getSiteId(String siteName) {
 		
-		String pub = Common.tmp();
-		String out = Common.tmp();
+		String pub = tmp();
+		String out = tmp();
 					
 		FTValList attrs = new FTValList();
 		attrs.setValString("NAME", pub);

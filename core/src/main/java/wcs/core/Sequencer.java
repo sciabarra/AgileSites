@@ -2,6 +2,8 @@ package wcs.core;
 
 import java.util.Iterator;
 
+import wcs.api.Call;
+
 /**
  * Return a sequence of Calls intermixed with in a sequence of non-Calls (
  * 

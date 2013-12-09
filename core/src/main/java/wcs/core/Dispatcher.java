@@ -3,6 +3,11 @@ package wcs.core;
 import java.io.File;
 import java.util.StringTokenizer;
 
+import wcs.api.Call;
+import wcs.api.Element;
+import wcs.api.Log;
+import wcs.api.Router;
+
 import COM.FutureTense.Interfaces.ICS;
 
 public class Dispatcher {
