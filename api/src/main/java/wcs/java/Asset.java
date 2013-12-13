@@ -1,24 +1,17 @@
 package wcs.java;
 
-import static wcs.core.Common.arg;
-import static wcs.core.Common.ifn;
-import static wcs.core.Common.nn;
-import static wcs.core.Common.tmp;
-import static wcs.core.Common.toDate;
-import static wcs.core.Common.toInt;
-import static wcs.core.Common.toLong;
+import static wcs.core.Common.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import wcs.core.Arg;
-import wcs.core.AssetDeps;
-import wcs.core.Call;
-import wcs.core.Common;
-import wcs.core.Log;
+import COM.FutureTense.Interfaces.IList;
+import wcs.core.*;
+import wcs.core.Config;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.AssetsetTag;
+import wcs.core.tag.BlobserviceTag;
 import wcs.core.tag.RenderTag;
 import COM.FutureTense.Interfaces.ICS;
 
@@ -553,7 +546,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 */
 	@Override
 	public String getBlobUrl(String attribute, Arg... args) {
-		return getBlobUrl(attribute, 1, "application/octet-stream", args);
+		return getBlobUrl(attribute, 1, null, args);
 	}
 
 	/**
@@ -565,37 +558,89 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 		return getBlobUrl(attribute, 1, mimeType, args);
 	}
 
-	/**
-	 * String get blob url of the nth attribute
-	 */
-	@Override
-	public String getBlobUrl(String attribute, int pos, String mimeType,
-			Arg... args) {
+    /**
+     * String get blob url of the nth attribute
+     */
+    @Override
+    public String getBlobUrl(String attribute, int pos, String mimeType,
+                             Arg... args) {
 
-		Long blobWhere = this.getCid(attribute, pos);
-		if (blobWhere == null)
-			return null;
+        Long blobWhere = this.getCid(attribute, pos);
+        if (blobWhere == null)
+            return null;
 
-		wcs.core.Config bcfg = e.getConfig();
+        Config bcfg = e.getConfig();
 
-		// invoke tag
-		RenderTag.Getbloburl tag = RenderTag.getbloburl()
-				.blobtable(bcfg.getBlobTable(e.ics()))
-				.blobcol(bcfg.getBlobUrl(e.ics()))
-				.blobkey(bcfg.getBlobId(e.ics()))
-				.blobwhere(blobWhere.toString());
-		// set mime type
-		if (mimeType != null & mimeType.trim().length() > 0)
-			tag.blobheader(mimeType);
+        //read the filename
+        String filename = getBlobFilename(attribute, pos);
 
-		// pass parameters
-		for (Arg arg : args) {
-			tag.set(arg.name.toUpperCase(), arg.value);
-		}
+        // invoke tag
+        RenderTag.Getbloburl tag = RenderTag.getbloburl()
+                .blobtable(bcfg.getBlobTable(e.ics()))
+                .blobcol(filename)
+                .blobkey(WCS.normalizeSiteName(bcfg.getSite()))
+                .blobwhere(blobWhere.toString());
+        // if the mymetype is not passed it is read from the mimetypes table using the filename extension
+        if (mimeType == null || mimeType.trim().length() == 0)
+            mimeType = getBlobMimetype(filename);
 
-		// run the tag
-		return tag.eval(i, "outstr");
-	}
+        tag.blobheader(mimeType);
+        // pass parameters
+        for (Arg arg : args) {
+            tag.set(arg.name.toUpperCase(), arg.value);
+        }
+        // run the tag
+        return tag.eval(i, "outstr");
+    }
+
+    private String getBlobFilename(String attribute, int pos) {
+        Long blobWhere = this.getCid(attribute, pos);
+        if (blobWhere == null)
+            return null;
+        // invoke tag
+        BlobserviceTag.readdata().id(blobWhere.toString()).listvarname("outlist").run(i);
+        IList blobData = i.GetList("outlist");
+        String filename;
+        String folder;
+        try {
+            filename = blobData.getValue("urldata");
+            folder = blobData.getValue("folder");
+        } catch (NoSuchFieldException e1) {
+            return null;
+        }
+        return normalizeFilename(filename, folder);
+    }
+
+    private String normalizeFilename(String filepath, String folder) {
+        String filename = filepath.substring(folder.length() +1);
+        int version = filename.lastIndexOf(",");
+        int extensionPos = filename.lastIndexOf(".", filename.length()) ;
+        if (version > 0) {
+            String extension = "";
+            if (extensionPos > 0)
+                extension = filename.substring(extensionPos, filename.length());
+            return filename.substring(0,version) + extension;
+        }
+        return filename;
+    }
+
+    private String getBlobMimetype(String filename) {
+        if (filename == null || filename.length() < 3)
+            return null;
+        String mimeType = null;
+        String ext = filename.substring(filename.lastIndexOf('.') + 1);
+        i.SetVar("extension", ext);
+        wcs.core.tag.IcsTag.selectto().table("mimetype").what("mimetype").listname("types").where("extension").run(i);
+        IList mimetypes = i.GetList("types");
+        if (mimetypes != null && mimetypes.hasData()) {
+            try {
+                mimeType = mimetypes.getValue("mimetype");
+            } catch (NoSuchFieldException e1) {
+                return null;
+            }
+        }
+        return mimeType;
+    }
 
 	/**
 	 * Invoke the actual slot call

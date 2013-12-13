@@ -31,7 +31,19 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		}
 	}
 
-	final static Log log = Log.getLog(Assembler.class);
+    private URI buildBlobUri(String prefix, String filename, String blobId) {
+        try {
+            URI uri = new URI(prefix);
+            uri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
+                    uri.getPort(), uri.getPath() +"/" + blobId + "/" +  filename,  null,
+                    null);
+            return uri;
+        } catch (URISyntaxException e) {
+            return null;
+        }
+    }
+
+    final static Log log = Log.getLog(Assembler.class);
 
 	private QueryAssembler qa = new QueryAssembler();
 	private Map<String, String> sitePrefix = new HashMap<String, String>();
@@ -160,16 +172,22 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 				uri.getFragment());
 
 		String blobcol = isSt ? "urldata" : "url";
-		String blobkey = isSt ? "name" : "id";
-		String blobwhere = subpath;
+		String blobkey = isSt ? "id" : "name";
+		String blobwhere = subpath.substring(0, subpath.indexOf("/"));
 		String blobtable = isSt ? "MungoBlobs" : "Static";
+        String filename = subpath.substring(subpath.lastIndexOf("/") + 1);
 
 		def.setQueryStringParameter("blobcol", blobcol);
 		def.setQueryStringParameter("blobkey", blobkey);
 		def.setQueryStringParameter("blobwhere", blobwhere);
 		def.setQueryStringParameter("blobtable", blobtable);
 
-		log.debug("blobcol=" + blobcol);
+        def.setQueryStringParameter("blobheadername1", "Content-Disposition");
+        def.setQueryStringParameter("blobheadervalue1", "attachment; filename=" + filename);
+        //def.setQueryStringParameter("blobheadername2", "Content-Type");
+        //def.setQueryStringParameter("blobheadervalue2", mimeType);
+
+        log.debug("blobcol=" + blobcol);
 		log.debug("blobkey=" + blobkey);
 		log.debug("blobwhere=" + blobwhere);
 		log.debug("blobtable=" + blobtable);
@@ -245,8 +263,12 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		String site = def.getParameter("site");
 		String url = def.getParameter("url");
 		String rendermode = def.getParameter("rendermode");
-				
-		log.debug("assemble: d=%s site=%s url=%s rendermode=%s", site, url, rendermode);
+        if ("BlobServer".equalsIgnoreCase(def.getAppType().toString())) {
+            site = def.getParameter("blobkey");
+            String prefix = sitePrefix.get(site);
+            return buildBlobUri(prefix, def.getParameter("blobcol"), def.getParameter("blobwhere"));
+        }
+    	log.debug("assemble: d=%s site=%s url=%s rendermode=%s", site, url, rendermode);
 		
 		if (rendermode != null && !rendermode.equals("live"))
 			return qa.assemble(def);
