@@ -31,11 +31,11 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		}
 	}
 
-    private URI buildBlobUri(String prefix, String filename, String blobId) {
+    private URI buildBlobUri(String prefix, String blobId) {
         try {
             URI uri = new URI(prefix);
             uri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
-                    uri.getPort(), uri.getPath() +"/" + blobId + "/" +  filename,  null,
+                    uri.getPort(), uri.getPath() +"/" + blobId,  null,
                     null);
             return uri;
         } catch (URISyntaxException e) {
@@ -175,15 +175,14 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		String blobkey = isSt ? "id" : "name";
 		String blobwhere = subpath.substring(0, subpath.indexOf("/"));
 		String blobtable = isSt ? "MungoBlobs" : "Static";
-        String filename = subpath.substring(subpath.lastIndexOf("/") + 1);
 
 		def.setQueryStringParameter("blobcol", blobcol);
 		def.setQueryStringParameter("blobkey", blobkey);
 		def.setQueryStringParameter("blobwhere", blobwhere);
 		def.setQueryStringParameter("blobtable", blobtable);
 
-        def.setQueryStringParameter("blobheadername1", "Content-Disposition");
-        def.setQueryStringParameter("blobheadervalue1", "attachment; filename=" + filename);
+        //def.setQueryStringParameter("blobheadername1", "Content-Disposition");
+        //def.setQueryStringParameter("blobheadervalue1", "attachment; filename=" + filename);
         //def.setQueryStringParameter("blobheadername2", "Content-Type");
         //def.setQueryStringParameter("blobheadervalue2", mimeType);
 
@@ -266,7 +265,7 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
         if ("BlobServer".equalsIgnoreCase(def.getAppType().toString())) {
             site = def.getParameter("blobkey");
             String prefix = sitePrefix.get(site);
-            return buildBlobUri(prefix, def.getParameter("blobcol"), def.getParameter("blobwhere"));
+            return buildBlobUri(prefix, def.getParameter("blobwhere"));
         }
     	log.debug("assemble: d=%s site=%s url=%s rendermode=%s", site, url, rendermode);
 		

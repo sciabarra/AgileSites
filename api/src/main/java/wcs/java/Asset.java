@@ -218,7 +218,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	/**
 	 * Check if the attribute exist
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public boolean isAttribute(String attribute) {
@@ -228,7 +228,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	/**
 	 * Check if the attribute at the given position exists
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public boolean isAttribute(String attribute, int n) {
@@ -268,7 +268,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Return the first attribute of the attribute list as an id (long), or null
 	 * if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -280,7 +280,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Return the nth attribute of the attribute list as an id (long), or null
 	 * if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -309,7 +309,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Return the related asset pointed by the attribute of the given type if
 	 * not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -326,7 +326,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Since you are accessing another asset it is mandatory to specify the
 	 * dependency type you are going to use.
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -344,7 +344,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Since you are accessing another asset it is mandatory to specify the
 	 * dependency type you are going to use.
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -356,7 +356,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Return the nth attribute of the the attribute as a string, or the void
 	 * string if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -398,7 +398,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Edit (or return if not insite) the first named attribute as a string, or
 	 * null if not found and pass additional parameters
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @param args
 	 * @return
 	 */
@@ -410,7 +410,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Edit (or return if not insite) the nth named attribute as a string, or
 	 * null if not found and pass additional parameters using the CK editor
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public String editText(String attribute, int n, String params) {
@@ -421,7 +421,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Edit (or return if not insite) the named attribute as a string, or null
 	 * if not found and pass additional parameters using the CK editor
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	public String editText(String attribute, String params) {
@@ -432,7 +432,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Return the first attribute of the the attribute list as an int, or null
 	 * if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -444,7 +444,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Return the nth attribute of the the attribute list as an int, or null if
 	 * not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -456,7 +456,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Return the first attribute of the the attribute list as a long, or null
 	 * if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -468,7 +468,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Return the nth attribute of the the attribute list as an int, or null if
 	 * not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -480,7 +480,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Return the first attribute of the the attribute list as a date, or null
 	 * if not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -532,7 +532,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Return the nth attribute of the the attribute list as a date, or null if
 	 * not found
 	 * 
-	 * @param asset
+	 * @param attribute
 	 * @return
 	 */
 	@Override
@@ -577,7 +577,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
         // invoke tag
         RenderTag.Getbloburl tag = RenderTag.getbloburl()
                 .blobtable(bcfg.getBlobTable(e.ics()))
-                .blobcol(filename)
+                .blobcol(bcfg.getBlobUrl(e.ics()))
                 .blobkey(WCS.normalizeSiteName(bcfg.getSite()))
                 .blobwhere(blobWhere.toString());
         // if the mymetype is not passed it is read from the mimetypes table using the filename extension
@@ -585,12 +585,16 @@ public class Asset extends AssetBase implements wcs.core.Asset,
             mimeType = getBlobMimetype(filename);
 
         tag.blobheader(mimeType);
+        tag.set(new Arg("blobheadername1", "Content-Disposition"),
+                new Arg("blobheadervalue1", "attachment; filename="+filename));
+
         // pass parameters
         for (Arg arg : args) {
             tag.set(arg.name.toUpperCase(), arg.value);
         }
         // run the tag
-        return tag.eval(i, "outstr");
+        String blobUrl =  tag.eval(i, "outstr");
+        return blobUrl + "/" + filename;
     }
 
     private String getBlobFilename(String attribute, int pos) {
@@ -612,7 +616,10 @@ public class Asset extends AssetBase implements wcs.core.Asset,
     }
 
     private String normalizeFilename(String filepath, String folder) {
-        String filename = filepath.substring(folder.length() +1);
+        String filename = filepath;
+        if (filepath.startsWith(folder)) {
+            filename = filepath.substring(folder.length() +1);
+        }
         int version = filename.lastIndexOf(",");
         int extensionPos = filename.lastIndexOf(".", filename.length()) ;
         if (version > 0) {
@@ -702,7 +709,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Call the template by name with current c/cid, specifiying a slot name and
 	 * eventually some extra optional args.
 	 * 
-	 * @param name
+	 * @param template
 	 * @param args
 	 * @return
 	 */
@@ -730,10 +737,10 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Slot type is configured in Config. You need a field of the same name of
 	 * the field specifying the type as parameter "c"
 	 * 
-	 * @param field
+	 * @param attribute
 	 * @param template
 	 * @param type
-	 * @param i
+	 * @param template
 	 * @param args
 	 * @return
 	 */
@@ -746,11 +753,11 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	/**
 	 * Render an empty slot to drag additional content to a list.
 	 * 
-	 * @param field
+	 * @param attribute
 	 * @param template
 	 * @param type
-	 * @param i
-	 * @param args
+	 * @param template
+	 * @param emptyText
 	 * @return
 	 */
 	@Override
@@ -767,7 +774,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Slot type is configured in Config. You need a field of the same name of
 	 * the field specifying the type as parameter "c"
 	 * 
-	 * @param field
+	 * @param attribute
 	 * @param template
 	 * @param type
 	 * @param i
@@ -787,7 +794,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Slot type is configured in Config. You need a field of the same name of
 	 * the field specifying the type as parameter "c"
 	 * 
-	 * @param field
+	 * @param attribute
 	 * @param template
 	 * @param args
 	 * @return
