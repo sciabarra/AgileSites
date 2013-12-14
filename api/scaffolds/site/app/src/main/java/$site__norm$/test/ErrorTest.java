@@ -1,10 +1,9 @@
 package $site;format="normalize"$.test;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Log;
+import static wcs.Api.*;
+import wcs.api.Log;
+import wcs.api.Index;
 import org.junit.Before;
 import org.junit.Test;
-import wcs.core.Index;
 import wcs.java.util.TestElement;
 import $site;format="normalize"$.element.Error;
 

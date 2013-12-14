@@ -1,20 +1,17 @@
 package wcs.java;
-import static wcs.core.Common.*;
-
+import static wcs.Api.*;
+import wcs.api.Content;
+import wcs.api.Log;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import wcs.core.Common;
-import wcs.core.Content;
-import wcs.core.Log;
 
 /**
  * Picker is a template engine building html pages or snippets using
@@ -41,7 +38,7 @@ public class Picker {
 	private void warn(Exception ex, String warning) {
 		warnings.append("<li>").append(warning); //
 		if (ex != null)
-			warnings.append("<blockquote><pre>").append(Common.ex2str(ex))//
+			warnings.append("<blockquote><pre>").append(ex2str(ex))//
 					.append("</pre></blockquote>");
 		warnings.append("</li>");
 		log.warn(warning);
@@ -408,7 +405,7 @@ public class Picker {
 	 */
 	public Picker dump(Log log) {
 		if (log != null)
-			log.trace(Common.dumpStream(html()));
+			log.trace(dumpStream(html()));
 		return this;
 	}
 
@@ -420,7 +417,7 @@ public class Picker {
 	 */
 	public static void dump(Log log, String html) {
 		if (log != null)
-			log.trace(Common.dumpStream(html));
+			log.trace(dumpStream(html));
 	}
 
 	/**
@@ -432,7 +429,7 @@ public class Picker {
 	 */
 	public Picker odump(Log log) {
 		if (log != null)
-			log.trace(Common.dumpStream(outerHtml()));
+			log.trace(dumpStream(outerHtml()));
 		return this;
 	}
 

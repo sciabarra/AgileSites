@@ -1,11 +1,10 @@
 package $site;format="normalize"$.test;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Log;
-import wcs.core.Asset;
-import wcs.core.Index;
-import wcs.java.Env;
-import wcs.java.Router;
+import static wcs.Api.*;
+import wcs.api.Log;
+import wcs.api.Asset;
+import wcs.api.Index;
+import wcs.api.Env;
+import wcs.api.Router;
 import wcs.java.util.TestElement;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +17,7 @@ public class RouterTest extends TestElement {
 
 	@Before
 	public void setUp() {
-		it = Router.getRouter(Config.site);
+		it = wcs.core.WCS.getRouter(Config.site);
 	}
 
 	@Test

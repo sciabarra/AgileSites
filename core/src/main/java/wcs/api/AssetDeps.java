@@ -1,4 +1,4 @@
-package wcs.core;
+package wcs.api;
 
 public enum AssetDeps {
 	NONE("none"), EXACT("exact"), EXISTS("exists");

@@ -1,13 +1,11 @@
 package demo.element.page;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Index;
-import wcs.core.Asset;
-import wcs.core.Log;
-import wcs.java.Picker;
+import wcs.api.Asset;
+import wcs.api.Env;
+import wcs.api.Index;
+import wcs.api.Log;
 import wcs.java.AssetSetup;
 import wcs.java.Element;
-import wcs.java.Env;
+import wcs.java.Picker;
 import wcs.java.Template;
 
 @Index("demo/elements.txt")
@@ -16,7 +14,7 @@ public class ContentLayout extends Element {
 	Log log = Log.getLog(ContentLayout.class);
 
 	public static AssetSetup setup() {
-		return new Template("Page", "DmContentLayout", Template.LAYOUT,
+		return new Template("Page", "ContentLayout", Template.LAYOUT,
 				demo.element.page.ContentLayout.class) //
 				.cache("false", "false") // change caching here
 				.description("Layout for type Page Content");
@@ -35,16 +33,20 @@ public class ContentLayout extends Element {
 		html.replace("#summary", a.editString("Summary"));
 		html.replace("#detail", a.editText("Detail", ""));
 
-		html.replace("#teaser-title1", a.editString("TeaserTitle", 1, "{noValueIndicator: \"Enter Teaser Title\"}"));
-		html.replace("#teaser-body1", a.editString("TeaserText", 1, "{noValueIndicator: \"Enter Teaser Text\"}"));
-		html.replace("#teaser-title2", a.editString("TeaserTitle", 2, "{noValueIndicator: \"Enter Teaser\"}"));
-		html.replace("#teaser-body2", a.editString("TeaserText", 2, "{noValueIndicator: \"Enter Teaser Text\"}"));
+		html.replace("#teaser-title1", a.editString("TeaserTitle", 1,
+				"{noValueIndicator: \"Enter Teaser Title\"}"));
+		html.replace("#teaser-body1", a.editString("TeaserText", 1,
+				"{noValueIndicator: \"Enter Teaser Text\"}"));
+		html.replace("#teaser-title2", a.editString("TeaserTitle", 2,
+				"{noValueIndicator: \"Enter Teaser\"}"));
+		html.replace("#teaser-body2", a.editString("TeaserText", 2,
+				"{noValueIndicator: \"Enter Teaser Text\"}"));
 
 		html.remove("div.related");
 		html.append("#related-container",
-				a.slotList("Related", "Page", "DmSummary"));
+				a.slotList("Related", "Page", "Summary"));
 		html.append("#related-container", a.slotEmpty("Related", "Page",
-				"DmSummary", "Drag a Page here. Save to add more."));
+				"Summary", "Drag a Page here. Save to add more."));
 
 		String image = a.getBlobUrl("Image");
 		if (image == null)
@@ -53,15 +55,15 @@ public class ContentLayout extends Element {
 			html.attr("#image-main", "src", image);
 
 		html.replace("#seealso1", a.slot("SeeAlso", 1, "Page",
-				"DmContentSeeAlso", "Drag a Page Here"));
+				"ContentSeeAlso", "Drag a Page Here"));
 		html.replace("#seealso2", a.slot("SeeAlso", 2, "Page",
-				"DmContentSeeAlso", "Drag a Page Here"));
+				"ContentSeeAlso", "Drag a Page Here"));
 		html.replace("#seealso3", a.slot("SeeAlso", 3, "Page",
-				"DmContentSeeAlso", "Drag a Page Here"));
+				"ContentSeeAlso", "Drag a Page Here"));
 
-		html.replace("#tree", e.call("DmTree"));
-		html.replace("#topmenu", e.call("DmTopmenu"));
-		html.replace("#breadcrump", e.call("DmBreadcrump",//
+		html.replace("#tree", e.call("Tree"));
+		html.replace("#topmenu", e.call("Topmenu"));
+		html.replace("#breadcrump", e.call("Breadcrump",//
 				arg("c", a.getC()), arg("cid", a.getCid().toString())));
 
 		return html.html();

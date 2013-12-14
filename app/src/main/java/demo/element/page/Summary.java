@@ -1,15 +1,12 @@
 package demo.element.page;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Log;
-import wcs.core.Index;
-import wcs.core.Asset;
-import wcs.java.Picker;
-import wcs.java.Env;
-import wcs.java.Element;
-import wcs.java.Template;
+import wcs.api.Asset;
+import wcs.api.Env;
+import wcs.api.Index;
+import wcs.api.Log;
 import wcs.java.AssetSetup;
-
+import wcs.java.Element;
+import wcs.java.Picker;
+import wcs.java.Template;
 @Index("demo/elements.txt")
 public class Summary extends Element {
 
@@ -17,10 +14,10 @@ public class Summary extends Element {
 
 	public static AssetSetup setup() {
 
-		return new Template("Page", "DmSummary", Template.INTERNAL, // change
+		return new Template("Page", "Summary", Template.INTERNAL, // change
 				demo.element.page.Summary.class) //
 				.cache("false", "false") // change caching here
-				.description("Template DmSummary for type Page ");
+				.description("Template Summary for type Page ");
 	}
 
 	@Override

@@ -1,12 +1,12 @@
 package wcs.java;
 
 import static org.junit.Assert.assertEquals;
-import static wcs.core.Common.arg;
-import static wcs.core.Common.model;
+import static wcs.Api.*;
+import wcs.java.Picker;
+import wcs.api.Content;
 
 import org.junit.Test;
 
-import wcs.core.Content;
 
 public class PickerTest {
 

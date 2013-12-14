@@ -1,11 +1,10 @@
 package $site;format="normalize"$.test;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Log;
+import static wcs.Api.*;
+import wcs.api.Log;
+import wcs.api.Index;
 import wcs.java.util.TestElement;
 import org.junit.Before;
 import org.junit.Test;
-import wcs.core.Index;
 import $site;format="normalize"$.element.Wrapper;
 
 // this test must be run by the test runner
@@ -35,6 +34,6 @@ public class WrapperTest extends TestElement {
 		// dump(log); // dump the result of the parsing
 		assertText("title", "Home");
 		assertAttr("meta[name=description]", "content", "Home Page");		 
-		assertAttr("render-calltemplate", "c", "Page");
+		assertAttr("render-callt", "c", "Page");
 	}*/
 }

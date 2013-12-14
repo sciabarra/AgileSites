@@ -66,7 +66,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     resolvers += "Local Maven Repository" at "file:///"+(file("project").absolutePath)+"/repo",
     libraryDependencies <++= (version) {
       x =>
-        coreDependencies ++ Seq("com.sciabarra" % "agilesites-core" % x)
+        coreDependencies ++ Seq(
+          "com.sciabarra" % "agilesites-core" % x)
     })
 
   import javadoc.JavadocPlugin.javadocSettings
@@ -92,9 +93,11 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("api"),
     settings = commonSettings ++ Seq(
      name := "agilesites-api",
+     publishArtifact in packageDoc := false,
      javacOptions ++= Seq("-g"),
+     crossPaths := false,
+     EclipseKeys.skipProject := true,
      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
-
 
   /// APP 
   lazy val app: Project = Project(
@@ -103,9 +106,11 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     settings = commonSettings ++ Seq(
       javacOptions ++= Seq("-g"), 
       name := "agilesites-app",
+      libraryDependencies <++= (version) {
+        x => Seq("com.sciabarra" % "agilesites-api" % x)},
       wcsGenerateIndexTask,
-      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
-      wcsCopyHtmlTask)) dependsOn (api)
+      wcsCopyHtmlTask,
+      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
 
   /// ALL
   lazy val all: Project = Project(

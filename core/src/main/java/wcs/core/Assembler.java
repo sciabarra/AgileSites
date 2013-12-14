@@ -1,5 +1,8 @@
 package wcs.core;
 
+import wcs.Api;
+import wcs.api.Log;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -10,6 +13,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 import com.fatwire.cs.core.uri.Definition;
 import com.fatwire.cs.core.uri.Definition.ContainerType;
@@ -23,7 +27,7 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		try {
 			URI uri = new URI(prefix);
 			uri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
-					uri.getPort(), uri.getPath() + Common.nn(suffix), null,
+					uri.getPort(), uri.getPath() + Api.nn(suffix), null,
 					null);
 			return uri;
 		} catch (URISyntaxException e) {

@@ -1,22 +1,30 @@
 package wcs.java;
 
-import static wcs.core.Common.*;
+import static wcs.Api.arg;
+import static wcs.Api.ifn;
+import static wcs.Api.nn;
+import static wcs.Api.tmp;
+import static wcs.Api.toDate;
+import static wcs.Api.toInt;
+import static wcs.Api.toLong;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import COM.FutureTense.Interfaces.IList;
-import wcs.core.*;
-import wcs.core.Config;
+import wcs.Api;
+import wcs.api.Arg;
+import wcs.api.AssetDeps;
+import wcs.api.Call;
+import wcs.api.Log;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.AssetsetTag;
 import wcs.core.tag.BlobserviceTag;
 import wcs.core.tag.RenderTag;
 import COM.FutureTense.Interfaces.ICS;
 
-public class Asset extends AssetBase implements wcs.core.Asset,
-		wcs.core.Content {
+public class Asset extends AssetBase implements wcs.api.Asset,
+		wcs.api.Content {
 
 	private static Log log = Log.getLog(Env.class);
 
@@ -293,7 +301,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * when you just need to get an url.
 	 * 
 	 */
-	public wcs.core.Asset getAsset(String attribute, String type) {
+	public wcs.api.Asset getAsset(String attribute, String type) {
 		return e.getAsset(type, getCid(attribute));
 	}
 
@@ -301,7 +309,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * Return the specified asset at the nth position. It does not log any
 	 * dependencies - use this when you just need to get an url.
 	 */
-	public wcs.core.Asset getAsset(String attribute, String type, int i) {
+	public wcs.api.Asset getAsset(String attribute, String type, int i) {
 		return e.getAsset(type, getCid(attribute, i));
 	}
 
@@ -313,7 +321,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * @return
 	 */
 	@Override
-	public wcs.core.Asset getAsset(String attribute, String type, AssetDeps deps) {
+	public wcs.api.Asset getAsset(String attribute, String type, AssetDeps deps) {
 		Long cid = getCid(attribute);
 		e.addDependency(type, cid, deps);
 		return e.getAsset(type, cid);
@@ -330,7 +338,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 	 * @return
 	 */
 	@Override
-	public wcs.core.Asset getAsset(String attribute, int i, String type,
+	public wcs.api.Asset getAsset(String attribute, int i, String type,
 			AssetDeps deps) {
 		long cid = getCid(attribute, i);
 		e.addDependency(type, cid);
@@ -569,7 +577,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
         if (blobWhere == null)
             return null;
 
-        Config bcfg = e.getConfig();
+		wcs.api.Config bcfg = e.getConfig();
 
         //read the filename
         String filename = getBlobFilename(attribute, pos);
@@ -692,12 +700,12 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 			list.add(arg("CHILDTYPE", type));
 			if (n < 0) {
 				list.add(arg("LISTNAME", at(attribute)));
-				return Common.call("INSITE:CALLTEMPLATELOOP", list);
+				return Api.call("INSITE:CALLTEMPLATELOOP", list);
 			} else {
 				Long icid = (Long) ifn(getCid(attribute, n), 0l);
 				list.add(arg("CHILDID", icid.toString()));
 				list.add(arg("INDEX", Integer.toString(n)));
-				return Common.call("INSITE:CALLTEMPLATE", list);
+				return Api.call("INSITE:CALLTEMPLATE", list);
 			}
 		} catch (Exception ex) {
 			log.error(ex, "exception in insiteCall");
@@ -727,7 +735,7 @@ public class Asset extends AssetBase implements wcs.core.Asset,
 		list.add(arg("CID", cid.toString()));
 		list.add(arg("TTYPE", ttype));
 		list.add(arg("TID", tid));
-		return Common.call("RENDER:CALLTEMPLATE", list);
+		return Api.call("RENDER:CALLTEMPLATE", list);
 	}
 
 	/**

@@ -1,4 +1,4 @@
-package wcs.core;
+package wcs.api;
 
 /**
  * Simple Unique id (c & cid) holder class

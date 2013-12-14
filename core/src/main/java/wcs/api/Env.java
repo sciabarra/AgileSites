@@ -1,14 +1,11 @@
-package wcs.core;
+package wcs.api;
 
 import java.util.List;
 
 
-import wcs.core.Config;
-import wcs.core.Router;
-import wcs.core.AssetDeps;
 import COM.FutureTense.Interfaces.ICS;
 
-public interface Env {
+public interface Env extends Content {
 	
 	/**
 	 * Return the underlying ICS

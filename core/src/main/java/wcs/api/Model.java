@@ -1,14 +1,15 @@
-package wcs.core;
+package wcs.api;
 
-import static wcs.core.Common.toDate;
-import static wcs.core.Common.toInt;
-import static wcs.core.Common.toLong;
+import static wcs.Api.toDate;
+import static wcs.Api.toInt;
+import static wcs.Api.toLong;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Model class to pass data around (mostly to the picker)

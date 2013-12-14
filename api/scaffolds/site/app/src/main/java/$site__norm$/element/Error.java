@@ -1,14 +1,13 @@
 package $site;format="normalize"$.element;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Log;
-import wcs.core.Model;
-import wcs.core.Index;
-import wcs.java.Env;
+import static wcs.Api.*;
+import wcs.api.Log;
+import wcs.api.Model;
+import wcs.api.Index;
+import wcs.api.Env;
+import wcs.java.Element;
 import wcs.java.Picker;
 import wcs.java.AssetSetup;
 import wcs.java.CSElement;
-import wcs.java.Element;
 
 @Index("$site;format="normalize"$/elements.txt")
 public class Error extends Element {

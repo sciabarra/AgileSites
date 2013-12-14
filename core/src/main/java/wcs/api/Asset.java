@@ -1,6 +1,7 @@
-package wcs.core;
+package wcs.api;
 
 import java.util.Date;
+
 
 public interface Asset extends Content {
 

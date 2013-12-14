@@ -1,6 +1,5 @@
-package wcs.core;
+package wcs.api;
 
-import wcs.core.Id;
 
 public interface SitePlan {
 

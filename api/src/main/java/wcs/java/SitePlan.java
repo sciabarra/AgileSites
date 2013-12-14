@@ -1,17 +1,16 @@
 package wcs.java;
 
-import wcs.core.Env;
-import wcs.core.Id;
-import wcs.core.Log;
-import wcs.core.Common;
+import static wcs.Api.*;
+import wcs.api.Env;
+import wcs.api.Id;
+import wcs.api.Log;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.SiteplanTag;
 import COM.FutureTense.Interfaces.ICS;
-
 import java.util.LinkedList;
 import java.util.List;
 
-public class SitePlan implements wcs.core.SitePlan {
+public class SitePlan implements wcs.api.SitePlan {
 
 	final static Log log = Log.getLog(SitePlan.class);
 
@@ -32,7 +31,9 @@ public class SitePlan implements wcs.core.SitePlan {
 		goTo(e.getSitePlanRoot(e.getSiteName()));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.ISitePlan#current()
 	 */
 	@Override
@@ -40,24 +41,27 @@ public class SitePlan implements wcs.core.SitePlan {
 		return currentId;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.ISitePlan#goTo(wcs.core.Id)
 	 */
 	@Override
 	public SitePlan goTo(Id id) {
 
-		String list = Common.tmp();
-		String name = Common.tmp();
+		String list = tmp();
+		String name = tmp();
 
 		if (id.c.equals("Publication")) {
 			SiteplanTag.root().objectid(id.cid.toString()).list(list).run(i);
 			currentId = new Id(e.getString(list, "otype"), e.getLong(list,
 					"oid"));
 			currentNid = e.getString(list, "nid");
-        } else if (id.c.equals("SitePlan")) {
-            AssetTag.load().name(name).type(id.c).objectid(id.cid.toString()).run(i);
-            currentNid = AssetTag.getsitenode().name(name).eval(i, "output");
-            currentId =  id;
+		} else if (id.c.equals("SitePlan")) {
+			AssetTag.load().name(name).type(id.c).objectid(id.cid.toString())
+					.run(i);
+			currentNid = AssetTag.getsitenode().name(name).eval(i, "output");
+			currentId = id;
 		} else {
 			AssetTag.load().name(name).type(id.c).objectid(id.cid.toString())
 					.run(i);
@@ -68,14 +72,16 @@ public class SitePlan implements wcs.core.SitePlan {
 		return this;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.ISitePlan#children()
 	 */
 	@Override
 	public Id[] children() {
 		log.trace("children!");
-		String name = Common.tmp();
-		String list = Common.tmp();
+		String name = tmp();
+		String list = tmp();
 		SiteplanTag.load().name(name).nodeid(currentNid).run(i);
 		SiteplanTag.children()//
 				.name(name).code("Placed").order("nrank") //
@@ -83,14 +89,16 @@ public class SitePlan implements wcs.core.SitePlan {
 		return ilist2aid(list);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.ISitePlan#path()
 	 */
 	@Override
 	public Id[] path() {
 		log.trace("path");
-		String name = Common.tmp();
-		String list = Common.tmp();
+		String name = tmp();
+		String list = tmp();
 		SiteplanTag.load().name(name).nodeid(currentNid).run(i);
 		SiteplanTag.nodepath()//
 				.name(name) //
@@ -98,26 +106,26 @@ public class SitePlan implements wcs.core.SitePlan {
 		return ilist2aid(list);
 	}
 
-    private Id[] ilist2aid(String list) {
-        try {
-            List<Id> nodes = new LinkedList<Id>();
-            //Id[] id = new Id[e.getSize(list)];
-            log.trace("children #%d", e.getSize(list));
-            for (int i : e.getRange(list)) {
-                String c = e.getString(list, i, "otype");
-                Long cid = e.getLong(list, i, "oid");
-                //id[i - 1] = new Id(c, cid);
-                // stop at the SitePlan node
-                if (c.equalsIgnoreCase("SitePlan")) {
-                    break;
-                }
-                nodes.add(i -1,  new Id(c, cid));
-                log.trace("%s", nodes.get(i - 1).toString());
-            }
-            return nodes.toArray(new Id[nodes.size()]);
-        } catch (Exception ex) {
-            log.trace(ex, "ops");
-            return new Id[0];
-        }
-    }
+	private Id[] ilist2aid(String list) {
+		try {
+			List<Id> nodes = new LinkedList<Id>();
+			// Id[] id = new Id[e.getSize(list)];
+			log.trace("children #%d", e.getSize(list));
+			for (int i : e.getRange(list)) {
+				String c = e.getString(list, i, "otype");
+				Long cid = e.getLong(list, i, "oid");
+				// id[i - 1] = new Id(c, cid);
+				// stop at the SitePlan node
+				if (c.equalsIgnoreCase("SitePlan")) {
+					break;
+				}
+				nodes.add(i - 1, new Id(c, cid));
+				log.trace("%s", nodes.get(i - 1).toString());
+			}
+			return nodes.toArray(new Id[nodes.size()]);
+		} catch (Exception ex) {
+			log.trace(ex, "ops");
+			return new Id[0];
+		}
+	}
 }

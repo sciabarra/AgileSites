@@ -1,4 +1,4 @@
-package wcs.core;
+package wcs.api;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.StringTokenizer;
+
+
 
 public class Call {
 

@@ -1,10 +1,22 @@
-package wcs.core;
+package wcs;
+
+import wcs.api.Arg;
+import wcs.api.Args;
+import wcs.api.Call;
+import wcs.api.Content;
+import wcs.api.Id;
+import wcs.api.Log;
+import wcs.api.Model;
+import wcs.core.Sequencer;
 
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import COM.FutureTense.Interfaces.IList;
 
 /**
@@ -15,7 +27,7 @@ import COM.FutureTense.Interfaces.IList;
  * @author msciab
  * 
  */
-public class Common {
+public class Api {
 	private static long tmpVarCounter = System.currentTimeMillis();
 
 	/**
@@ -234,6 +246,67 @@ public class Common {
 		CharArrayWriter caw = new CharArrayWriter();
 		ex.printStackTrace(new PrintWriter(caw));
 		return caw.toString();
+	}
+
+	/**
+	 * Print on standard output
+	 */
+	public static void out(String message, Object... args) {
+		System.out.println(args.length > 0 ? String.format(message, args)
+				: message);
+	}
+
+	/**
+	 * Print on standard output some contents
+	 */
+	public static void out(String message, Content... contents) {
+		System.out.println(message);
+		for (Content c : contents) {
+			System.out.println(c.dump());
+		}
+	}
+
+	/**
+	 * Print on standard output some contents
+	 */
+	public static void out(Content... contents) {
+		for (Content c : contents) {
+			System.out.println(c.dump());
+		}
+	}
+
+	/**
+	 * Print on standard output a content attributes
+	 */
+	public static void out(String message, Content content, String name) {
+		System.out.println(message + ": " + content.dump(name));
+	}
+
+	/**
+	 * Print on standard output a content attributes
+	 */
+	public static void out(Content content, String name) {
+		System.out.println(content.dump(name));
+	}
+	
+	/**
+	 * Get a logger by name
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	public static Log getLog(String className) {
+		return Log.getLog(className);
+	}
+
+	/**
+	 * Get a logger by class
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	public static Log getLog(Class<?> clazz) {
+		return Log.getLog(clazz);
 	}
 
 }

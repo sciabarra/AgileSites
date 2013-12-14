@@ -1,14 +1,12 @@
 package demo.element.page;
-import static wcs.core.Common.*;
-import static wcs.core.Log.*;
-import wcs.core.Log;
-import wcs.core.Index;
-import wcs.core.Asset;
-import wcs.java.Picker;
-import wcs.java.Env;
-import wcs.java.Element;
-import wcs.java.Template;
+import wcs.api.Asset;
+import wcs.api.Env;
+import wcs.api.Index;
+import wcs.api.Log;
 import wcs.java.AssetSetup;
+import wcs.java.Element;
+import wcs.java.Picker;
+import wcs.java.Template;
 
 @Index("demo/elements.txt")
 public class ContentSeeAlso extends Element {
@@ -17,10 +15,10 @@ public class ContentSeeAlso extends Element {
 
 	public static AssetSetup setup() {
 
-		return new Template("Page", "DmContentSeeAlso", Template.INTERNAL,
+		return new Template("Page", "ContentSeeAlso", Template.INTERNAL,
 				demo.element.page.ContentSeeAlso.class) //
 				.cache("false", "false") // change caching here
-				.description("Template DmContentSeeAlso for type Page Content");
+				.description("Template ContentSeeAlso for type Page subtype Content");
 	}
 
 	@Override
@@ -33,5 +31,4 @@ public class ContentSeeAlso extends Element {
 		html.removeAttrs("*[id^=seealso]", "id");
 		return html.html();
 	}
-
 }

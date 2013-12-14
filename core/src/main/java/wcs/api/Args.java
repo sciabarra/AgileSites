@@ -1,7 +1,8 @@
-package wcs.core;
+package wcs.api;
 
 import java.util.LinkedList;
 import java.util.List;
+
 
 /**
  * Holder of a list of args
@@ -14,7 +15,7 @@ public class Args extends Arg {
 	public List<String> values = new LinkedList<String>();
 
 	// must be invoked with at least ONE argument and that is not controlled
-	Args(String name, String... args) {
+	public Args(String name, String... args) {
 		super(name, args[0]);
 		for (String arg : args)
 			values.add(arg);

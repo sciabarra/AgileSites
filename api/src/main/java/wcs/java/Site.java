@@ -1,16 +1,13 @@
 package wcs.java;
-
+import wcs.api.Log;
 import java.util.List;
-
-import wcs.core.Log;
 import wcs.java.util.Util;
-
-import com.fatwire.assetapi.common.SiteAccessException;
 import com.fatwire.assetapi.data.AssetId;
 import com.fatwire.assetapi.data.AttributeData;
 import com.fatwire.assetapi.data.MutableAssetData;
 import com.fatwire.assetapi.site.SiteInfo;
 import com.fatwire.assetapi.site.SiteManager;
+import com.fatwire.assetapi.common.SiteAccessException;
 
 /**
  * Represent a site - currently only the name of the site is stored
