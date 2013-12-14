@@ -6,15 +6,12 @@ import wcs.api.Index;
 import wcs.api.Env;
 import wcs.api.Router;
 import wcs.java.util.TestElement;
-import org.junit.Before;
 import org.junit.Test;
-import $site;format="normalize"$.Config;
 
 @Index("$site;format="normalize"$/tests.txt")
 public class RouterTest extends TestElement {
 	final static Log log = getLog(TestElement.class);
 	Router it;
-
 
 	@Test
 	public void test0() {

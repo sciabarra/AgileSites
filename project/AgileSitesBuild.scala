@@ -93,6 +93,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
      publishArtifact in packageDoc := false,
      javacOptions ++= Seq("-g"),
      crossPaths := false,
+     wcsPackageJarTask,
      EclipseKeys.skipProject := true,
      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
 
@@ -123,7 +124,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       wcsSetupSatelliteTask,
       wcsDeployTask,
       wcsCopyStaticTask,
-      wcsPackageJarTask,
+      wcsAssemblyJarTask,
       wcsUpdateAssetsTask,
       wcsLogTask,
       libraryDependencies <++= (version) {

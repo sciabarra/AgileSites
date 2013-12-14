@@ -20,8 +20,6 @@ public class WCS {
 
 	final static Log log = Log.getLog(WCS.class);
 
-	final static boolean debug = System.getProperty("wcs.core.debug") != null;
-
 	/**
 	 * Normalize Site name
 	 */

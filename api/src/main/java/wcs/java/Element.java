@@ -74,27 +74,6 @@ public abstract class Element implements wcs.api.Element {
 		return Api.call("ICS:CALLELEMENT", list);
 	}
 
-	/**
-	 * Convenience method for defining args
-	 * 
-	 * @param k
-	 * @param v
-	 * @return
-	 */
-	public Arg arg(String k, String v) {
-		return arg(k, v);
-	}
-
-	/**
-	 * Convenience method to log in a functional way
-	 * 
-	 * @param msg
-	 * @return
-	 */
-	public String log(String msg) {
-		log.debug(msg);
-		return msg;
-	}
 
 	public String callApply(Env env, String device) {
 		if (device == null || device.length() == 0) {

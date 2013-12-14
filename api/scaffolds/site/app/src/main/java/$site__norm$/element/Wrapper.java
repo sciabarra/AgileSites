@@ -21,11 +21,11 @@ public class Wrapper extends Element {
 
 	@Override
 	public String apply(Env e) {
-		// log.trace("$site$ Wrapper");
-
-		Picker html = Picker.load("/$site;format="normalize"$/simple.html");
-
+		if(log.trace())
+			log.trace("$site$ Wrapper");
+		
 		// change relative references to absolute
+		Picker html = Picker.load("/$site;format="normalize"$/simple.html");
 		html.prefixAttrs("link[rel=stylesheet]", "href", "/cs/$site;format="normalize"$/");
 		html.prefixAttrs("script", "src", "/cs/$site;format="normalize"$/");
 

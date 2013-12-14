@@ -11,8 +11,9 @@ Sequencer seq = new Sequencer(res);
 %><%=seq.header()%><%
 while (seq.hasNext()) {
 	Call c = seq.next();
-	String name = c.getName();	
-	//log.trace("CALL: %s", c.toString());
+	String name = c.getName();
+	if(log.trace())
+		log.trace("CALL: %s", c.toString());
 %><% // -----------------------------------------------------
 if (name.equalsIgnoreCase("ICS:CALLELEMENT")) {
 	String element = c.getOnce("ELEMENT");

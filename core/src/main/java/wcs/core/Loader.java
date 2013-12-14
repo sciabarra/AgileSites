@@ -26,9 +26,6 @@ import wcs.api.Log;
  */
 public class Loader {
 
-	// static debugging
-	final static boolean DEBUG = true;
-
 	final static Log log = Log.getLog(Loader.class);
 
 	private File jarDir;
@@ -64,11 +61,6 @@ public class Loader {
 		currentClassLoader = parentClassLoader;
 		reloadInterval = interval;
 		nextCheck = System.currentTimeMillis();
-
-		// for(String s:
-		// System.getProperty("java.class.path").split(File.pathSeparator))
-		// System.out.println(s);
-
 	}
 
 	/**
@@ -121,22 +113,18 @@ public class Loader {
 							spoolDir.mkdirs();
 						Files.copy(source.toPath(), dest.toPath(),
 								StandardCopyOption.COPY_ATTRIBUTES);
-						if (DEBUG)
-							System.out.println("cp " + source + " " + dest);
+						if (log.trace())
+							log.trace("spooling (copy) %s", source.getName());
 					} catch (Exception ex) {
-						if (DEBUG)
-							ex.printStackTrace();
 						log.error(ex, "trying to copy jar on target");
 					}
 				} else if (dest.lastModified() < source.lastModified())
 					try {
-						if (DEBUG)
-							System.out.println("cp " + source + " " + dest);
+						if (log.trace())
+							log.trace("spooling (update) %s", source.getName());
 						Files.copy(source.toPath(), dest.toPath(),
 								StandardCopyOption.REPLACE_EXISTING);
 					} catch (IOException e) {
-						if (DEBUG)
-							e.printStackTrace();
 						log.error(e, "trying to replace existing jar");
 					}
 			}
@@ -156,12 +144,9 @@ public class Loader {
 				}
 				currentClassLoader = new URLClassLoader(urlls.toArray(URL0),
 						parentClassLoader);
-				if (DEBUG)
-					System.out.println(sb.toString());
-				log.debug(sb.toString());
+				if (log.debug())
+					log.debug(sb.toString());
 			} catch (Exception ex) {
-				if (DEBUG)
-					ex.printStackTrace();
 				log.error(ex, "[Loader.getClassLoader]");
 			}
 			return currentClassLoader;
@@ -215,16 +200,11 @@ public class Loader {
 			// set next check time
 			nextCheck = nextCheck + reloadInterval;
 
-			// if (DEBUG)
-			// System.out.println("nextCheck=" + nextCheck);
-
 			// get the more recent lastmodified timestamp
 			long curTimeStamp = 0;
 
 			File[] jars = jarDir.listFiles();
 			if (jars.length == 0) {
-				if (DEBUG)
-					System.out.println("no jars in the folder");
 				log.warn("no jars in the jar folder");
 				return null;
 			}
@@ -239,15 +219,13 @@ public class Loader {
 			// log.trace("curTimestamp=%d jarTimestamp=%d", curTimestamp,
 			// jarTimestamp);
 			if (curTimeStamp > jarTimeStamp) {
-				if (DEBUG)
-					System.out
-							.println("jar changed, timestamp=" + curTimeStamp);
-				log.debug("jar changed, timestamp=%d", curTimeStamp);
+				if (log.debug())
+					log.debug("jar changed, timestamp=%d", curTimeStamp);
 				jarTimeStamp = curTimeStamp;
 				return jars;
 			} else {
-				// if (DEBUG)
-				// System.out.println("no changes");
+				if (log.trace())
+					log.trace("no changes detected");
 			}
 			return null;
 		}
@@ -267,10 +245,10 @@ public class Loader {
 			 * URLClassLoader) { for (URL u : ((URLClassLoader) cl).getURLs())
 			 * System.out.println(u.toString()); }
 			 */
+			if (log.trace())
+				log.trace("loading %s", classname);
 			return Class.forName(classname, true, cl);
 		} catch (ClassNotFoundException ex) {
-			if (DEBUG)
-				ex.printStackTrace();
 			log.error(ex, "[Loader.loadClass]");
 			return null;
 		}

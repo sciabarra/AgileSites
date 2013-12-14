@@ -2,7 +2,6 @@ package $site;format="normalize"$;
 import static wcs.Api.*;
 import wcs.api.Log;
 import wcs.api.Arg;
-import wcs.api.Log;
 import wcs.api.URL;
 import wcs.api.Call;
 import wcs.api.Id;

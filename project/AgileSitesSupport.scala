@@ -34,7 +34,11 @@ trait AgileSitesSupport extends Utils {
   lazy val wcsCsdt = InputKey[Unit]("wcs-dt", "WCS Development Tool")
 
   lazy val wcsCopyStatic = TaskKey[Unit]("wcs-copy-static", "WCS copy static resources")
+ 
+  // note the same name - but assembly to be used in top level, package to be used in subprojects
+  lazy val wcsAssemblyJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
   lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
+ 
   lazy val wcsUpdateAssets = TaskKey[String]("wcs-update-assets", "WCS update assets")
   lazy val wcsLog = InputKey[Unit]("wcs-log", "WCS log manager")
 
@@ -186,14 +190,13 @@ trait AgileSitesSupport extends Utils {
 
           if (args.length == 0) messageDialog("Setup Complete.\nYou can now create site and templates.\nYou need to deploy them with \"wcs-deploy\".")
 
-
-
         //println(all.mkString(" "))
       }
   }
 
+ 
   // package jar task - build the jar and copy it  to destination 
-  val wcsPackageJarTask = wcsPackageJar <<=
+  val wcsAssemblyJarTask = wcsAssemblyJar <<=
     (assembly, wcsShared) map {
       (jar, shared) =>
 
@@ -205,6 +208,21 @@ trait AgileSitesSupport extends Utils {
         println("+++ " + destjar.getAbsolutePath)
         destjar.getAbsolutePath.toString
     }
+
+ // package jar task - build the jar and copy it  to destination 
+  val wcsPackageJarTask = wcsPackageJar <<=
+    (Keys.`package` in Compile, wcsShared) map {
+      (jar, shared) =>
+
+        val destdir = file(shared) / "agilesites"
+        val destjar = file(shared) / "agilesites" / jar.getName
+
+        destdir.mkdir
+        IO.copyFile(jar, destjar)
+        println("+++ " + destjar.getAbsolutePath)
+        destjar.getAbsolutePath.toString
+    }
+
 
   def isHtml(f: File) = !("\\.html?$".r findFirstIn f.getName.toLowerCase isEmpty)
 

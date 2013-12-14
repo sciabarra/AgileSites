@@ -1,4 +1,5 @@
 package demo.element;
+import static wcs.Api.*;
 import wcs.api.Asset;
 import wcs.api.Env;
 import wcs.api.Index;
