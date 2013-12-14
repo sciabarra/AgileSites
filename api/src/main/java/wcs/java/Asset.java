@@ -12,11 +12,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import COM.FutureTense.Interfaces.IList;
 import wcs.Api;
 import wcs.api.Arg;
 import wcs.api.AssetDeps;
 import wcs.api.Call;
 import wcs.api.Log;
+import wcs.core.WCS;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.AssetsetTag;
 import wcs.core.tag.BlobserviceTag;
