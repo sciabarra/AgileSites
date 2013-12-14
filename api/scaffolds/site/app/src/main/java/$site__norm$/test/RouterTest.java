@@ -15,14 +15,11 @@ public class RouterTest extends TestElement {
 	final static Log log = getLog(TestElement.class);
 	Router it;
 
-	@Before
-	public void setUp() {
-		it = wcs.core.WCS.getRouter(Config.site);
-	}
 
 	@Test
 	public void test0() {
 		Env e = env();
+		it = e.getRouter();
 		parse(it.route(e, url("")));
 		Asset home = e.findOne("Page", arg("name", "Home"));
 		if(home==null) {

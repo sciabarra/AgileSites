@@ -30,14 +30,14 @@ public class WCS {
 	}
 
 	private static Properties properties = null;
-	
+
 	/**
 	 * Return a property configured in setup
 	 * 
 	 * @param name
 	 * @return
 	 */
-	public static String getProperty(String name) {		
+	public static String getProperty(String name) {
 		if (properties == null) {
 			properties = new Properties();
 			try {
@@ -123,43 +123,56 @@ public class WCS {
 		return null;
 	}
 
-	
 	/**
-	 * Return a router for the site. You can use both the site name or his
-	 * normalized name for to get the router.
-	 * 
+	 * Return a router for the site. It uses the current site variable
 	 * 
 	 * @param site
 	 * @return
 	 */
-	public static Router getRouter(String site) {
+	public static Router getRouter(ICS ics) {
 		try {
-			String clazz = WCS.normalizeSiteName(site) + ".Router";
-			log.info("router=" + clazz);
-			Router router = (Router) Class.forName(clazz).newInstance();
-			return router;
+			return (Router) Dispatcher.getDispatcher(ics)
+					.loadSiteClass(ics, "Router").newInstance();
 		} catch (Exception ex) {
-			log.error(ex, "cannot get router");
+			log.error(ex, "[WCS.getRouter]");
 			return null;
 		}
 	}
-	
+
 	/**
-	 * Load the config by site
+	 * Load the config for the current site
 	 * 
 	 * @param site
 	 * @return
 	 */
-	public static Config getConfig(String site) {
+	public static Config getConfig(ICS ics) {
 		try {
-			return (Config) Class.forName(
-					WCS.normalizeSiteName(site) + ".Config").newInstance();
+			return (Config) Dispatcher.getDispatcher(ics)
+					.loadSiteClass(ics, "Config").newInstance();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error(ex, "[WCS.getConfig]");
 			return null;
 		}
 	}
-	
+
+	/**
+	 * Load an env class initializing it with an ICS
+	 * 
+	 * @param site
+	 * @return
+	 */
+	public static wcs.api.Env getEnv(ICS ics, String className) {
+		try {
+			wcs.api.Env env = (wcs.api.Env) Dispatcher.getDispatcher(ics)
+					.loadClass(className).newInstance();
+			env.init(ics);
+			return env;
+		} catch (Exception ex) {
+			log.error(ex, "[WCS.getEnv]");
+			return null;
+		}
+	}
+
 	private static long tmpVarCounter = System.currentTimeMillis();
 
 	/**

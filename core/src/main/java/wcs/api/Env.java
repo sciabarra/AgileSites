@@ -8,17 +8,19 @@ import COM.FutureTense.Interfaces.ICS;
 public interface Env extends Content {
 	
 	/**
+	 * Initialize the class with the ICS
+	 */
+	public void init(ICS ics);
+
+	/**
 	 * Return the underlying ICS
 	 */
-	
 	public ICS ics();
-	
 	
 	/**
 	 * Return the siteplan root of the given site
 	 */
 	public Id getSitePlanRoot(String siteName);
-
 
 
 	/**

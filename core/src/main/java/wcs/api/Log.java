@@ -2,7 +2,6 @@ package wcs.api;
 
 import org.apache.log4j.Logger;
 
-
 /**
  * Log class that logs to a socket if available. This class is a layer on top of
  * Log4J but it is used in order to change implementation if needed at some
@@ -20,20 +19,66 @@ public class Log {
 		// this.className = logger.getName();
 	}
 
+	/**
+	 * Log a trace level message - Use message as a format string for the other
+	 * args.
+	 * 
+	 * @param message
+	 * @param args
+	 */
 	public void trace(String message, Object... args) {
 		trace(null, message, args);
 	}
 
+	/**
+	 * Check if trace level is enabled
+	 * 
+	 * @return
+	 */
+	public boolean trace() {
+		return logger.isTraceEnabled();
+	}
+
+	/**
+	 * Log an exception then a trace level message - Use message as a format
+	 * string for the other args.
+	 * 
+	 * @param message
+	 * @param args
+	 */
 	public void trace(Exception ex, String message, Object... args) {
-		if (logger != null && logger.isTraceEnabled())
+		if (logger != null)
 			logger.trace(args.length > 0 ? String.format(message, args)
 					: message, ex);
 	}
 
+	/**
+	 * Check if trace level is enabled
+	 * 
+	 * @return
+	 */
+	public boolean debug() {
+		return logger.isDebugEnabled();
+	}
+
+	/**
+	 * Write a debug message - Use message as a format string for the other
+	 * args.
+	 * 
+	 * @param message
+	 * @param args
+	 */
 	public void debug(String message, Object... args) {
 		debug(null, message, args);
 	}
 
+	/**
+	 * Log an exception then a debug level message - Use message as a format
+	 * string for the other args.
+	 * 
+	 * @param message
+	 * @param args
+	 */
 	public void debug(Exception ex, String message, Object... args) {
 		// System.out.println("[DEBUG]" + className + message + e2s(ex));
 		if (logger != null && logger.isDebugEnabled())
@@ -41,21 +86,58 @@ public class Log {
 					: message, ex);
 	}
 
+	/**
+	 * Log an info level message - Use message as a format string for the other
+	 * args.
+	 * 
+	 * @param message
+	 * @param args
+	 */
 	public void info(String message, Object... args) {
 		info(null, message, args);
 	}
 
+	/**
+	 * Log an exception then an info level message - Use message as a format
+	 * string for the other args.
+	 * 
+	 * @param message
+	 * @param args
+	 */
 	public void info(Exception ex, String message, Object... args) {
 		// System.out.println("[ INFO]" + className + message + e2s(ex));
-		if (logger != null && logger.isInfoEnabled())
+		if (logger != null)
 			logger.info(args.length > 0 ? String.format(message, args)
 					: message, ex);
 	}
 
+	/**
+	 * Check if info level is enabled
+	 * 
+	 * @return
+	 */
+	public boolean info() {
+		return logger.isInfoEnabled();
+	}
+
+	/**
+	 * Log a warn level message - Use message as a format string for the other
+	 * args.
+	 * 
+	 * @param message
+	 * @param args
+	 */
 	public void warn(String message, Object... args) {
 		warn(null, message, args);
 	}
 
+	/**
+	 * Log an exception then a warn level message - Use message as a format
+	 * string for the other args.
+	 * 
+	 * @param message
+	 * @param args
+	 */
 	public void warn(Exception ex, String message, Object... args) {
 		// System.out.println("[WARN ]" + className + String.format(message,
 		// args) + e2s(ex));
@@ -64,10 +146,25 @@ public class Log {
 					: message, ex);
 	}
 
+	/**
+	 * Log an error level message - Use message as a format string for the other
+	 * args.
+	 * 
+	 * @param message
+	 * @param args
+	 */
+
 	public void error(String message, Object... args) {
 		error(null, message, args);
 	}
 
+	/**
+	 * Log an exception then a error level message - Use message as a format
+	 * string for the other args.
+	 * 
+	 * @param message
+	 * @param args
+	 */
 	public void error(Exception ex, String message, Object... args) {
 		// System.out.print("[ERROR]" + className + String.format(message, args)
 		// + e2s(ex));
@@ -100,4 +197,5 @@ public class Log {
 	public static Log getLog(Class<?> clazz) {
 		return getLog(clazz == null ? null : clazz.getCanonicalName());
 	}
+
 }

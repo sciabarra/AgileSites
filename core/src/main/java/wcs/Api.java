@@ -1,5 +1,11 @@
 package wcs;
 
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 import wcs.api.Arg;
 import wcs.api.Args;
 import wcs.api.Call;
@@ -8,15 +14,6 @@ import wcs.api.Id;
 import wcs.api.Log;
 import wcs.api.Model;
 import wcs.core.Sequencer;
-
-import java.io.CharArrayWriter;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import COM.FutureTense.Interfaces.IList;
 
 /**

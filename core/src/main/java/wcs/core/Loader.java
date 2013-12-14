@@ -1,9 +1,19 @@
 package wcs.core;
 
+// **** DANGER ZONE ****
+// This file is critical and difficult to test
+// change it at your own risk.
+// **********************
+
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 
 import wcs.api.Log;
 
@@ -16,20 +26,49 @@ import wcs.api.Log;
  */
 public class Loader {
 
+	// static debugging
+	final static boolean DEBUG = true;
+
 	final static Log log = Log.getLog(Loader.class);
 
-	private long jarTimestamp = 0;
-	private URLClassLoader ucl;
-	private ClassLoader mycl = getClass().getClassLoader();
-	private File jar;
+	private File jarDir;
+	private File spoolDir;
+	private long nextCheck = 0;
+	private long jarTimeStamp;
+	private int reloadInterval = 0;
+
+	private ClassLoader parentClassLoader;
+	private ClassLoader currentClassLoader;
 
 	/**
 	 * Build a loader
 	 * 
-	 * @param file
+	 * @param interval
+	 *            for polling
+	 * @param dir
+	 *            where locate the jars
+	 * @param cl
+	 *            parent classloader
 	 */
-	public Loader(File file) {
-		jar = file;
+	public Loader(File dir, int interval, ClassLoader cl) {
+		jarDir = dir;
+		spoolDir = new File(dir, "spool");
+		// reset spool dir to a known state
+		if (!spoolDir.exists())
+			spoolDir.mkdirs();
+		else
+			for (File file : spoolDir.listFiles())
+				file.delete();
+
+		parentClassLoader = cl;
+		currentClassLoader = parentClassLoader;
+		reloadInterval = interval;
+		nextCheck = System.currentTimeMillis();
+
+		// for(String s:
+		// System.getProperty("java.class.path").split(File.pathSeparator))
+		// System.out.println(s);
+
 	}
 
 	/**
@@ -38,39 +77,202 @@ public class Loader {
 	 * @param file
 	 */
 	public Loader() {
-		jar = null;
+		jarDir = null;
+		reloadInterval = 0;
 	}
-	
-	
+
 	/**
-	 * Load jar if modified
+	 * Return the parent classloader
+	 */
+	public ClassLoader getParentClassLoader() {
+		return parentClassLoader;
+	}
+
+	private final static URL[] URL0 = new URL[0];
+
+	/**
+	 * Return a class loader allowing to access new jars. It copies jars to a
+	 * spool dir before loading them.
+	 * 
+	 * @return
+	 */
+	public ClassLoader getClassLoader() {
+
+		// get jars if somehing changed
+		File[] jars = getJarsIfSomeIsModifiedAfterInterval();
+		if (jars == null)
+			return currentClassLoader;
+
+		// update classloader
+		synchronized (this) {
+
+			// close current classloader in order to be able to load jars
+			close();
+
+			// copy changed files in the spool dir
+			for (File source : jars) {
+				if (source.isDirectory()
+						|| !source.getName().toLowerCase().endsWith(".jar"))
+					continue;
+				File dest = new File(spoolDir, source.getName());
+				if (!dest.exists()) {
+					try {
+						if (!spoolDir.exists())
+							spoolDir.mkdirs();
+						Files.copy(source.toPath(), dest.toPath(),
+								StandardCopyOption.COPY_ATTRIBUTES);
+						if (DEBUG)
+							System.out.println("cp " + source + " " + dest);
+					} catch (Exception ex) {
+						if (DEBUG)
+							ex.printStackTrace();
+						log.error(ex, "trying to copy jar on target");
+					}
+				} else if (dest.lastModified() < source.lastModified())
+					try {
+						if (DEBUG)
+							System.out.println("cp " + source + " " + dest);
+						Files.copy(source.toPath(), dest.toPath(),
+								StandardCopyOption.REPLACE_EXISTING);
+					} catch (IOException e) {
+						if (DEBUG)
+							e.printStackTrace();
+						log.error(e, "trying to replace existing jar");
+					}
+			}
+
+			// create the classloading array
+			try {
+				File[] newjars = spoolDir.listFiles();
+				List<URL> urlls = new ArrayList<URL>();
+				StringBuilder sb = new StringBuilder("[Loader] reloading ");
+				for (int i = 0; i < newjars.length; i++) {
+					File file = newjars[i];
+					if (file.isDirectory()
+							|| !file.getName().toLowerCase().endsWith(".jar"))
+						continue;
+					sb.append(file.getName()).append(" ");
+					urlls.add(file.toURI().toURL());
+				}
+				currentClassLoader = new URLClassLoader(urlls.toArray(URL0),
+						parentClassLoader);
+				if (DEBUG)
+					System.out.println(sb.toString());
+				log.debug(sb.toString());
+			} catch (Exception ex) {
+				if (DEBUG)
+					ex.printStackTrace();
+				log.error(ex, "[Loader.getClassLoader]");
+			}
+			return currentClassLoader;
+		}
+	}
+
+	public void close() {
+		// close current classloader
+		if (currentClassLoader instanceof URLClassLoader) {
+			try {
+				((URLClassLoader) currentClassLoader).close();
+			} catch (IOException e) {
+				log.error(e, "[Loader.getClassLoader]");
+			}
+			currentClassLoader = parentClassLoader;
+		}
+	}
+
+	/**
+	 * Return the jars to use only for the classloader if some of them has been
+	 * modified Check only once in a given interval.
 	 * 
 	 * @param jar
 	 * @return
 	 * @throws MalformedURLException
 	 */
-	public ClassLoader loadJar() throws MalformedURLException {
+	public File[] getJarsIfSomeIsModifiedAfterInterval() {
 
-		if (jar == null) {
-			//log.debug("[Loader]: no jar specified");
-			return mycl;
-		}
+		// ********************
+		// DO NOT CHANGE THIS METHOD WITHOUT CAREFUL TESTING
+		// IT IS ACCESSED HEAVILY CONCURRENTLY
+		// ********************
 
-		if (!jar.exists()) {
-			log.debug("[Loader]: jar not found!!!");
-			return mycl;
-		}
+		// check it is is time to check
+		// do it in an unsychronized way
+		long now = System.currentTimeMillis();
+		if (now < nextCheck)
+			return null;
 
-		// reloading jar if modified
-		long curTimestamp = jar.lastModified();
-		log.trace("curTimestamp=%d jarTimestamp=%d", curTimestamp, jarTimestamp);
-		if (curTimestamp > jarTimestamp) {
-			URL url = jar.toURI().toURL();
-			log.debug("[Loader] reloading " + url);
-			jarTimestamp = curTimestamp;
-			ucl = new URLClassLoader(new URL[] { url }, mycl);
+		synchronized (this) {
+
+			// some time was spent trying to acquire the lock
+			// someone else may have updated the time to check
+			// checkiung again what is the time
+			// if someone updated the nextCheckTime
+			// update time for the next check
+			now = System.currentTimeMillis();
+			if (now < nextCheck)
+				return null;
+
+			// set next check time
+			nextCheck = nextCheck + reloadInterval;
+
+			// if (DEBUG)
+			// System.out.println("nextCheck=" + nextCheck);
+
+			// get the more recent lastmodified timestamp
+			long curTimeStamp = 0;
+
+			File[] jars = jarDir.listFiles();
+			if (jars.length == 0) {
+				if (DEBUG)
+					System.out.println("no jars in the folder");
+				log.warn("no jars in the jar folder");
+				return null;
+			}
+
+			for (File file : jars) {
+				if (file.isDirectory()
+						|| !file.getName().toLowerCase().endsWith(".jar"))
+					continue;
+				curTimeStamp = Math.max(curTimeStamp, file.lastModified());
+			}
+
+			// log.trace("curTimestamp=%d jarTimestamp=%d", curTimestamp,
+			// jarTimestamp);
+			if (curTimeStamp > jarTimeStamp) {
+				if (DEBUG)
+					System.out
+							.println("jar changed, timestamp=" + curTimeStamp);
+				log.debug("jar changed, timestamp=%d", curTimeStamp);
+				jarTimeStamp = curTimeStamp;
+				return jars;
+			} else {
+				// if (DEBUG)
+				// System.out.println("no changes");
+			}
+			return null;
 		}
-		return ucl;
 	}
 
+	/**
+	 * Load a class for name from current class loaders
+	 * 
+	 * @param classname
+	 * @return
+	 */
+	public Class<?> loadClass(String classname) {
+		try {
+			ClassLoader cl = getClassLoader();
+			/*
+			 * // print jars in the path if (DEBUG) if (cl instanceof
+			 * URLClassLoader) { for (URL u : ((URLClassLoader) cl).getURLs())
+			 * System.out.println(u.toString()); }
+			 */
+			return Class.forName(classname, true, cl);
+		} catch (ClassNotFoundException ex) {
+			if (DEBUG)
+				ex.printStackTrace();
+			log.error(ex, "[Loader.loadClass]");
+			return null;
+		}
+	}
 }

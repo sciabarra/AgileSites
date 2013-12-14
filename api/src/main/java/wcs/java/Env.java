@@ -44,16 +44,31 @@ public class Env extends wcs.core.ICSProxyJ implements Content, wcs.api.Env {
 	private boolean preview;
 
 	/**
-	 * Build the env from the ICS
+	 * Build the env - with this costructor still needs to be initialized with
+	 * init to be usable
+	 */
+	public Env() { }
+
+	/**
+	 * Build the env from the ICS and initialize it
 	 * 
 	 * @param ics
 	 */
 	public Env(ICS ics) {
 		init(ics);
+	}
+
+	/**
+	 * Initialize the env
+	 * 
+	 * @param ics
+	 */
+	public void init(ICS ics) {
+		super.init(ics);
 		this.site = ics.GetVar("site");
 		this.normSite = WCS.normalizeSiteName(site);
-		config = wcs.core.WCS.getConfig(site);
-		router = wcs.core.WCS.getRouter(site);
+		config = wcs.core.WCS.getConfig(ics);
+		router = wcs.core.WCS.getRouter(ics);
 		String rendermode = ics.GetVar("rendermode");
 		insite = rendermode != null && rendermode.equals("insite");
 		preview = rendermode != null && rendermode.startsWith("preview");

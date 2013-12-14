@@ -1,23 +1,23 @@
 package demo.test;
+
 import static wcs.Api.*;
 import wcs.api.*;
 import wcs.java.util.TestElement;
 import org.junit.Before;
 import org.junit.Test;
-import demo.Config;
 
 @Index("demo/tests.txt")
 public class RouterTest extends TestElement {
 
 	final static Log log = Log.getLog(RouterTest.class);
-	Router it;
 	Env e;
 	Asset home;
+	Router it;
 
 	@Before
 	public void setUp() {
-		it = wcs.core.WCS.getRouter(Config.site);
 		e = env();
+		it = e.getRouter();
 		home = e.findOne("Page", arg("name", "Home"));
 	}
 

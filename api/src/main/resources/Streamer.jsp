@@ -3,7 +3,7 @@
 %><%@ taglib prefix="ics" uri="futuretense_cs/ics.tld"
 %><%@ taglib prefix="insite" uri="futuretense_cs/insite.tld"
 %><%@ taglib prefix="render" uri="futuretense_cs/render.tld"
-%><%@ page import="wcs.core.*" 
+%><%@ page import="wcs.core.*,wcs.api.*,wcs.Api" 
 %><%! final static Log log = Log.getLog("jsp.%CLASS%");
 %><cs:ftcs><ics:if condition='<%=ics.GetVar("tid") != null%>'><ics:then><render:logdep cid='<%=ics.GetVar("tid")%>' c="Template" /></ics:then></ics:if><%
 String res = WCS.dispatch(ics, "%CLASS%");
@@ -55,7 +55,7 @@ if (name.equalsIgnoreCase("INSITE:CALLTEMPLATE")) {
 	String field = c.getOnce("FIELD");
 	String site = c.getOnce("SITE"); 
 	String index = c.getOnce("INDEX");
-	String empty = Common.nn(c.getOnce("EMPTYTEXT"));
+	String empty = Api.nn(c.getOnce("EMPTYTEXT"));
 if(childid!=null && childid.equals("0")) {
   %><insite:calltemplate  
     site='<%=site%>'
@@ -93,7 +93,7 @@ String assetid = c.getOnce("ASSETID");
 String childtype = c.getOnce("CHILDTYPE");
 String field = c.getOnce("FIELD");
 String listname = c.getOnce("LISTNAME");
-String output = Common.tmp();
+String output = Api.tmp();
 String site = c.getOnce("SITE");
 String tname = c.getOnce("TNAME");
 String ttype = c.getOnce("TTYPE");
@@ -125,9 +125,9 @@ if (name.equalsIgnoreCase("INSITE:EDIT")) {
 	String field = c.getOnce("FIELD");
 	String value = c.getOnce("VALUE");
 	String index = c.getOnce("INDEX");
-	String editor = Common.nn(c.getOnce("EDITOR"));
-	String params = Common.ifn(c.getOnce("PARAMS"), "{}").toString();
-	String mode = Common.ifn(c.getOnce("MODE"), "html").toString();
+	String editor = Api.nn(c.getOnce("EDITOR"));
+	String params = Api.ifn(c.getOnce("PARAMS"), "{}").toString();
+	String mode = Api.ifn(c.getOnce("MODE"), "html").toString();
 %><insite:edit 
     assettype='<%= assettype %>'
     assetid='<%= assetid %>'

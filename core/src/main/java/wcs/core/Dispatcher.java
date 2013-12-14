@@ -7,7 +7,6 @@ import wcs.api.Call;
 import wcs.api.Element;
 import wcs.api.Log;
 import wcs.api.Router;
-
 import COM.FutureTense.Interfaces.ICS;
 
 public class Dispatcher {
@@ -19,25 +18,32 @@ public class Dispatcher {
 	private static Dispatcher dispatcher = null;
 
 	/**
-	 * Load the dispatcher singleton
+	 * Load the dispatcher singleton using parameters from the futuretense.ini
 	 * 
 	 * @param ics
 	 * @return
 	 */
 	static Dispatcher getDispatcher(ICS ics) {
 		if (dispatcher == null) {
-			String jarPath = ics.GetProperty("agilesites.jar");
-			if(jarPath==null) {
-				log.debug("[Dispatcher.getDispatcher] creating static dispatcher");				
+			String jarDir = ics.GetProperty("agilesites.dir");
+			if (jarDir == null) {
+				log.debug("[Dispatcher.getDispatcher] creating static dispatcher");
 				dispatcher = new Dispatcher();
 				return dispatcher;
-			}			
-			File jar = new File(jarPath);
-			if (jar.exists()) {
-				log.debug("[Dispatcher.getDispatcher] from " + jar);
-				dispatcher = new Dispatcher(jar);
+			}
+
+			int poll = 100;
+			try {
+				poll = Integer.parseInt(ics.GetProperty("agilesites.poll"));
+			} catch (Exception e) {
+			}
+			File jarDirFile = new File(jarDir);
+			if (jarDirFile.exists()) {
+				log.debug("[Dispatcher.getDispatcher] dir=%s poll=%d", jarDir,
+						poll);
+				dispatcher = new Dispatcher(jarDirFile, poll);
 			} else {
-				log.debug("[Dispatcher.getDispatcher] not found jar, creating static dispatcher");				
+				log.debug("[Dispatcher.getDispatcher] not found jar dir, creating static dispatcher");
 				dispatcher = new Dispatcher();
 				return dispatcher;
 			}
@@ -50,20 +56,19 @@ public class Dispatcher {
 	 * 
 	 * @param jar
 	 */
-	public Dispatcher(File jar) {
-		log.debug("[Dispatcher.<init>] load jar=" + jar);
-		loader = new Loader(jar);
+	public Dispatcher(File jarDir, int reload) {
+		log.debug("[Dispatcher.<init>] jarDir=%s reload=%d", jarDir, reload);
+		loader = new Loader(jarDir, reload, getClass().getClassLoader());
 		log.debug("[Dispatcher.<init>] got loader");
 	}
 
-	
 	/**
 	 * New dispatcher looking for a given jar
 	 * 
 	 * @param jar
 	 */
 	public Dispatcher() {
-		log.debug("[Dispatcher.<init>] static loader" );
+		log.debug("[Dispatcher.<init>] static loader");
 		loader = new Loader();
 		log.debug("[Dispatcher.<init>] got loader");
 	}
@@ -79,7 +84,7 @@ public class Dispatcher {
 		try {
 
 			// jar & classname
-			ClassLoader cl = loader.loadJar();
+			ClassLoader cl = loader.getClassLoader();
 
 			// instantiate
 			@SuppressWarnings("rawtypes")
@@ -104,6 +109,30 @@ public class Dispatcher {
 	}
 
 	/**
+	 * Load a class from the classloader
+	 * 
+	 * @param ics
+	 * @param name
+	 * @return
+	 */
+	public Class<?> loadClass(String className) {
+		return loader.loadClass(className);
+	}
+
+	/**
+	 * Load a site specific class from the classloader
+	 * 
+	 * @param ics
+	 * @param name
+	 * @return
+	 */
+	public Class<?> loadSiteClass(ICS ics, String name) {
+		String site = ics.GetVar("site");
+		String className = WCS.normalizeSiteName(site) + "." + name;
+		return loadClass(className);
+	}
+
+	/**
 	 * Route a call from the url assembler
 	 * 
 	 * @param ics
@@ -112,18 +141,9 @@ public class Dispatcher {
 	 */
 	public Call route(ICS ics, String site, String path, String query)
 			throws Exception {
-		String className = WCS.normalizeSiteName(site) + ".Router";
-		log.debug("[Dispatcher.route] className=" + className);
 		try {
-			// jar & classname
-			ClassLoader cl = loader.loadJar();
-
-			// instantiate
-			@SuppressWarnings("rawtypes")
-			Class clazz = Class.forName(className, true, cl);
-			Object obj = clazz.newInstance();
-
-			// cast and execute
+			// get and extecute the router
+			Object obj = loadSiteClass(ics, "Router").newInstance();
 			if (obj instanceof Router) {
 				Router router = (Router) obj;
 				return router.route(ics, site, path, query);
@@ -131,9 +151,7 @@ public class Dispatcher {
 				throw new Exception("Router not found");
 			}
 		} catch (Exception e) {
-			log.debug("[Dispacher.dispach] exception " + e.getMessage()
-					+ " loading " + className);
-			e.printStackTrace();
+			log.error(e, "[Dispatcher.route]");
 			throw e;
 		}
 	}
@@ -149,42 +167,18 @@ public class Dispatcher {
 	public String deploy(ICS ics, String sites, String user, String pass) {
 
 		if (sites == null) {
-			log.debug("site is null !!!");
 			return "Cannot Setup, no sites specified!";
-		}
-
-		ClassLoader cl = null;
-		try {
-			// jar & classname
-			log.debug("[Dispatcher.deploy] loading jar");
-			cl = loader.loadJar();
-			log.debug("[Dispatcher.deploy] loaded classloader " + cl);
-		} catch (Exception ex) {
-			log.debug("[Dispacher.deploy] exception loading jar: "
-					+ ex.getMessage());
-			ex.printStackTrace();
-			return "<h1>Exception</h1><p>Loading Jar: " //
-					+ "</p>\n<p>Message: " + ex.getMessage() + "</p>\n";
 		}
 
 		StringTokenizer st = new StringTokenizer(sites, ",");
 		StringBuilder msg = new StringBuilder();
-
 		while (st.hasMoreTokens()) {
-
 			// next setup to run...
 			String site = st.nextToken().trim();
 			String className = WCS.normalizeSiteName(site) + ".Setup";
 			try {
-				// instantiate
-
-				log.debug("[Dispatcher.deploy] loading class " + className);
-				Class<?> clazz = Class.forName(className, true, cl);
-				log.debug("[Dispatcher.deploy] loaded class " + clazz);
-				Object obj = clazz.newInstance();
-				log.debug("[Dispatcher.deploy] loaded instance " + obj);
-
 				// cast to Setup and execute
+				Object obj = loadClass(className).newInstance();
 				if (obj instanceof wcs.core.Setup) {
 					log.debug("[Dispatcher.deploy] obj is a wcs.core.Setup");
 					Setup setup = (wcs.core.Setup) obj;
@@ -193,18 +187,12 @@ public class Dispatcher {
 					log.debug("[Dispatcher.deploy] obj is NOT a wcs.core.Setup");
 					msg.append("<h1>Not Found Setup for " + site + "<h1>");
 				}
-			} catch (ClassNotFoundException cnfe) {
-				log.debug("[Dispacher.deploy] not found " + className);
 			} catch (Exception e) {
-				// logging errors and returning the message
-				log.debug("[Dispacher.deploy] exception loading " + className
-						+ " : " + e.getMessage());
-				e.printStackTrace();
+				log.error(e, "[Dispatcher.deploy]");
 				msg.append("<h1>Exception</h1><p>Class: " + className
 						+ "</p>\n<p>Message: " + e.getMessage() + "</p>\n");
 			}
 		}
-
 		return msg.toString();
 	}
 }

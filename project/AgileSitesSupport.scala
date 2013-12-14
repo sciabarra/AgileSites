@@ -57,7 +57,7 @@ trait AgileSitesSupport extends Utils {
           val src = tld.getAbsolutePath
           val clsj = Tld2Tagj.tld2class(src)
           val dstj = file(dstDir / clsj + ".java")
-          //	if tld.getName.equalsIgnoreCase("asset.tld") // select only one for debug generator
+          //if tld.getName.equalsIgnoreCase("asset.tld") // select only one for debug generator
         } yield {
           if (!dstj.exists) {
             val bodyj = Tld2Tagj(src)
@@ -164,8 +164,9 @@ trait AgileSitesSupport extends Utils {
   // interface to catalogmover from sbt
   val wcsSetupOnlineTask = wcsSetupOnline <<= inputTask {
     (argsTask: TaskKey[Seq[String]]) =>
-      (argsTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, wcsWebapp, streams, runner) map {
-        (args, version, httpUrl, sites, user, password, classpath, webapp, s, runner) =>
+      (argsTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, wcsWebapp, wcsShared, streams, runner) map {
+        (args, version, httpUrl, sites, user, password, classpath, webapp, shared, s, runner) =>
+          
           val seljars = classpath.files
           val url = httpUrl + "/CatalogManager"
 
@@ -178,10 +179,14 @@ trait AgileSitesSupport extends Utils {
           val cmd = Seq("-cp", cp, owasp, /*"-Dlog4j.debug",*/ "COM.FutureTense.Apps.CatalogMover")
           val opts = Seq("-u", user, "-p", password, "-b", url, "-d", dir.toString, "-x")
           val all = cmd ++ opts ++ Seq("import_all")
-
           if (args.length == 0) messageDialog("Ensure the application server is UP and RUNNING, then press OK")
           Fork.java(None, all, Some(new java.io.File(".")), s.log)
+
+          setupCopyJarsOnline(shared, classpath.files)
+
           if (args.length == 0) messageDialog("Setup Complete.\nYou can now create site and templates.\nYou need to deploy them with \"wcs-deploy\".")
+
+
 
         //println(all.mkString(" "))
       }
@@ -225,6 +230,7 @@ trait AgileSitesSupport extends Utils {
     (resourceGenerators in Compile) <+=
       (compile in Compile, resourceManaged in Compile) map {
         (analysis, dstDir) =>
+
 
           val groupIndexed =
             analysis.apis.allInternalSources. // all the sources
@@ -306,19 +312,18 @@ trait AgileSitesSupport extends Utils {
   }
 
   // configure futurentense.ini
-  def setupFutureTenseIni(home: String, static: String, appjar: String, sites: String, version: String) {
+  def setupFutureTenseIni(home: String, shared: String, sites: String, static: String, version: String) {
 
     val prpFile = file(home) / "futuretense.ini"
     val prp = new java.util.Properties
     prp.load(new java.io.FileReader(prpFile))
 
-    //prp.setProperty("agilesites.sites", sites); // not used for now
+    val jardir = file(shared) / "agilesites"
 
-    prp.setProperty("agilesites.jar", appjar);
+    prp.setProperty("agilesites.dir", jardir.getAbsolutePath);
+    prp.setProperty("agilesites.poll", "100");
     prp.setProperty("agilesites.static", file(static).getAbsolutePath);
-
     prp.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
-    prp.setProperty("cs.pgexportfolder", (file("export") / "xmlpub" / (sites + "-" + version)).getAbsolutePath)
 
     println("~ " + prpFile)
     prp.store(new java.io.FileWriter(prpFile),
@@ -326,7 +331,7 @@ trait AgileSitesSupport extends Utils {
 
   }
 
-  def setupAgileSitesPrp(dir: String, sites: String, static: String, appjar: String, flexBlobs: String, staticBlobs: String) {
+  def setupAgileSitesPrp(dir: String, shared: String, sites: String, static: String, flexBlobs: String, staticBlobs: String) {
     val prpFile = file(dir) / "WEB-INF" / "classes" / "agilesites.properties"
     val prp = new java.util.Properties
 
@@ -334,7 +339,8 @@ trait AgileSitesSupport extends Utils {
       prpFile.delete
 
     prp.setProperty("agilesites.sites", sites);
-    prp.setProperty("agilesites.jar", appjar);
+    prp.setProperty("agilesites.webapp", dir);
+    prp.setProperty("agilesites.dir", (file(shared) / "agilesites").getAbsolutePath );
     prp.setProperty("agilesites.static", file(static).getAbsolutePath);
     prp.setProperty("agilesites.blob.flex", flexBlobs)
     prp.setProperty("agilesites.blob.static", staticBlobs)
@@ -342,18 +348,11 @@ trait AgileSitesSupport extends Utils {
     println("~ " + prpFile)
     prp.store(new java.io.FileWriter(prpFile),
       "created by AgileSites setup")
-
-    //otherConfig.setProperty("agilesites.user", username);
-    //otherConfig.setProperty("agilesites.password", password);
-    //otherConfig.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
-    //otherConfig.setProperty("cs.pgexportfolder", file("export").getAbsolutePath)
   }
 
   def setupMkdirs(shared: String, version: String, sites: String) {
     // create local export dir for csdt
     (file("export")).mkdir
-    //(file("export") / "xmlpub").mkdir
-    //(file("export") / "xmlpub" / (sites + "-" + version)).mkdir
     (file("export") / "envision").mkdir
     (file("export") / "envision" / defaultWorkspace(sites)).mkdir
     (file("export") / ("Populate")).mkdir
@@ -361,21 +360,33 @@ trait AgileSitesSupport extends Utils {
     (file(shared) / "Storage" / "Static").mkdir
   }
 
-  // classpath.files
-  // destlib.listFiles
-  def setupCopyJars(webapp: String, classpathFiles: Seq[File]) {
+  def setupCopyJarsOffline(webapp: String, classpathFiles: Seq[File]) {
 
     val destlib = file(webapp) / "WEB-INF" / "lib"
 
-    // jars to include when performing a setup
+    val addJars = classpathFiles.filter( _.getName.startsWith("agilesites-core") )
+    
+    val removeJars = destlib.listFiles.filter(_.getName.toLowerCase.startsWith("agilesites-core"))
 
-    val addJars = classpathFiles filter
-      (AgileSitesBuild.addFilterSetup accept _)
+    setupCopyJars(destlib, addJars, removeJars)
+  }
+
+  def setupCopyJarsOnline(shared: String, classpathFiles: Seq[File]) {
+
+    val destlib = file(shared) / "agilesites"
+
+    // jars to include when performing a setup
+    val addJars = classpathFiles filter(AgileSitesBuild.setupFilter accept _)
 
     // jars to remove when performing a setup
+    val removeJars = destlib.listFiles
+    
+    setupCopyJars(destlib, addJars, removeJars)
+  } 
 
-    val removeJars = destlib.listFiles filter
-      (AgileSitesBuild.removeFilterSetup accept _)
+  // classpath.files
+  // destlib.listFiles
+  def setupCopyJars(destlib: File, addJars: Seq[File], removeJars: Seq[File]) {
 
     // remove jars
     println("** removing old version of files");
@@ -400,12 +411,11 @@ trait AgileSitesSupport extends Utils {
   val wcsSetupOfflineTask = wcsSetupOffline <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
       (argTask,
-        wcsPackageJar, managedClasspath in Runtime, classDirectory in Compile,
+        managedClasspath in Runtime, classDirectory in Compile,
         wcsSites, wcsVersion, wcsHome, wcsShared, wcsWebapp, wcsUrl,
          wcsFlexBlobs, wcsStaticBlobs, wcsVirtualHosts) map {
-          (args,
-          appjar, classpath, classes,
-          sites, version, home, shared, webapp, url,
+          (args, classpath, classes,
+           sites, version, home, shared, webapp, url,
            flexBlobs, staticBlobs, virtualHosts) =>
 
             val static = (file(shared) / "Storage" / "Static") getAbsolutePath
@@ -422,15 +432,15 @@ trait AgileSitesSupport extends Utils {
             } toSeq
 
             setupMkdirs(shared, version, sites)
-
-            setupCopyJars(webapp, classpath.files)
+            setupCopyJarsOffline(webapp, classpath.files)
             setupServletRequest(webapp, sites, vhosts, flexBlobs, staticBlobs)
-            setupAgileSitesPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs)
-            setupFutureTenseIni(home, static, appjar, sites, version)
+            setupAgileSitesPrp(webapp, shared, sites, static, flexBlobs, staticBlobs)
+            setupFutureTenseIni(home, shared, static,  sites, version)
 
             if (!silent)
-              messageDialog("Installation Complete. Please restart your application server.\nYou need to complete with \"wcs-setup-online\".")
-
+              messageDialog("""Installation Complete.
+                |\nPlease restart your application server.
+                |\nYou need to complete with "wcs-setup-online".""".stripMargin)
         }
   }
 
@@ -451,7 +461,7 @@ trait AgileSitesSupport extends Utils {
 
             println("*** Installing AgileSites for Satellite  ***");
 
-            setupCopyJars(webapp, classpath.files)
+            setupCopyJarsOffline(webapp, classpath.files)
             setupServletRequest(webapp, sites, virtualHosts, flexBlobs, staticBlobs)
 
             //setupAgileSitesPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs) //not used for now

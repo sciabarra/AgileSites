@@ -17,13 +17,6 @@ public class Router extends wcs.java.Router {
 	@Override
 	public Call route(Env e, URL url) {
 
-		//for (int i = 0; i < 10; i++) {
-		//	System.out
-		//			.println(AssemblerEngine.getAssemblerClassnamePropName(i));
-		//	System.out
-		//			.println(AssemblerEngine.getAssemblerShortFormPropName(i));
-		//}
-
 		// split the token
 		String c = null;
 		String name = null;

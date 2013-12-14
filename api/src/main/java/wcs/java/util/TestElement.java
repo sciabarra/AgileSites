@@ -1,4 +1,5 @@
 package wcs.java.util;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static wcs.Api.arg;
@@ -19,8 +20,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.junit.matchers.JUnitMatchers;
 import junit.framework.TestCase;
-
-
 
 /**
  * Collection of test helpers for testing elements.
@@ -76,7 +75,7 @@ public class TestElement extends TestCase {
 		for (Arg arg : args)
 			list.add(arg);
 		try {
-			Call call = wcs.core.WCS.getRouter(te.getString("site")).route(te,
+			Call call = wcs.core.WCS.getRouter(te.ics()).route(te,
 					URL.parse(new URI(path)));
 			for (String k : call.keysLeft())
 				list.add(arg(k, call.getOnce(k)));
@@ -293,7 +292,6 @@ public class TestElement extends TestCase {
 	protected void dump(PrintStream out) {
 		out.println(dumpStream(doc.outerHtml()));
 	}
-
 
 	/**
 	 * Dump generated outer html

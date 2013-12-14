@@ -15,10 +15,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   // remember to update the agilesites scripts
   val v = "1.8.0" 
 
-  // remove then add those jars in setup
-  val addFilterSetup =  "agilesites-core*" || "junit*" 
-
-  val removeFilterSetup = addFilterSetup || "scala-library*"
+  // jars to be added to the library setup
+  val setupFilter =  "agilesites-api*" || "junit*" 
 
   // configuring WCS jars as unmanaged lib
   val unmanagedFilter = "log4j-*" || "slf4j*" || "spring-*" || "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
@@ -52,6 +50,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "com.novocode" % "junit-interface" % "0.10" % "test",
     "org.hamcrest" % "hamcrest-all" % "1.3" % "test")
 
+
   val coreSettings = Defaults.defaultSettings ++ net.virtualvoid.sbt.graph.Plugin.graphSettings ++ Seq(
     scalaVersion := "2.10.2",
     organization := "com.sciabarra",
@@ -65,9 +64,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   val commonSettings = coreSettings ++ Seq(
     resolvers += "Local Maven Repository" at "file:///"+(file("project").absolutePath)+"/repo",
     libraryDependencies <++= (version) {
-      x =>
-        coreDependencies ++ Seq(
-          "com.sciabarra" % "agilesites-core" % x)
+      x => coreDependencies ++ Seq("com.sciabarra" % "agilesites-core" % x)
     })
 
   import javadoc.JavadocPlugin.javadocSettings
@@ -84,8 +81,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       javacOptions ++= Seq("-g"),
       crossPaths := false,
 	    javacOptions ++= Seq("-encoding", "UTF-8", "-g"),
-      EclipseKeys.skipProject := true,
-      coreGeneratorTask))
+      coreGeneratorTask,
+      EclipseKeys.skipProject := true))
 
   // API
   lazy val api: Project = Project(
@@ -129,6 +126,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       wcsPackageJarTask,
       wcsUpdateAssetsTask,
       wcsLogTask,
+      libraryDependencies <++= (version) {
+        x => Seq("com.sciabarra" % "agilesites-api" % x)},
       excludedJars in assembly <<= (fullClasspath in assembly),
       watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").get),
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
