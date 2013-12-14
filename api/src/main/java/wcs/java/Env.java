@@ -486,7 +486,7 @@ public class Env extends wcs.core.ICSProxyJ implements Content, wcs.api.Env {
 	 */
 	@Override
 	public String getUrl(Id id, Arg... args) {
-		System.out.println("getUrl:" + id);
+		//System.out.println("getUrl:" + id);
 
 		if (insite || preview) {
 			return RenderTag.getpageurl().pagename(normSite).c(id.c)
