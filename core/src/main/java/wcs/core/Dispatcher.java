@@ -146,7 +146,8 @@ public class Dispatcher {
 			Object obj = loadSiteClass(ics, "Router").newInstance();
 			if (obj instanceof Router) {
 				Router router = (Router) obj;
-				return router.route(ics, site, path, query);
+				router.init(site);
+				return router.route(ics, path, query);
 			} else {
 				throw new Exception("Router not found");
 			}

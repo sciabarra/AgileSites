@@ -18,7 +18,7 @@ public class Tree extends Element {
 	private Env e;
 
 	public static AssetSetup setup() {
-		return new CSElement("Tree", demo.element.Tree.class);
+		return new CSElement("Demo_Tree", demo.element.Tree.class);
 	}
 
 	/**
@@ -54,6 +54,6 @@ public class Tree extends Element {
 		visit(parent, result);
 
 		html.replace("#tree-body", result.toString());
-		return html/* .dump(log) */.html();
+		return html/*.dump(log)*/.html();
 	}
 }

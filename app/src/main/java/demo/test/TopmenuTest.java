@@ -1,4 +1,5 @@
 package demo.test;
+
 import org.junit.Before;
 import org.junit.Test;
 import wcs.api.Index;
@@ -13,7 +14,7 @@ public class TopmenuTest extends TestElement {
 	final static Log log = Log.getLog(TopmenuTest.class);
 
 	Topmenu it;
-	
+
 	@Before
 	public void setUp() {
 		it = new Topmenu();
@@ -22,7 +23,6 @@ public class TopmenuTest extends TestElement {
 	@Test
 	public void test() {
 		parse(it.apply(env("")));
-		//dump(log);
 		// TODO: test the results
 	}
 

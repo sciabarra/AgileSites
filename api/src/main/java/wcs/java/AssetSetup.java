@@ -2,6 +2,8 @@ package wcs.java;
 
 import java.util.List;
 
+import wcs.java.util.Util;
+
 import com.fatwire.assetapi.data.MutableAssetData;
 
 /**
@@ -18,6 +20,11 @@ public abstract class AssetSetup extends AssetBase {
 		super(type, subtype, name);
 	}
 
+	@Override
+	public String getName() {
+		return Util.normalizedName(getSite(), super.getName());
+	}
+
 	public void setTypeSubtype(String type, String subtype) {
 		this.c = type;
 		this.subtype = subtype;
@@ -27,10 +34,6 @@ public abstract class AssetSetup extends AssetBase {
 	public void setCid(long cid) {
 		this.cid = cid;
 		id = null;
-	}
-
-	public void setSite(String site) {
-		this.site = site;
 	}
 
 	/**

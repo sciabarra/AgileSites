@@ -1,7 +1,6 @@
 package $site;format="normalize"$.element;
 import static wcs.Api.*;
 import wcs.api.Log;
-import wcs.api.Model;
 import wcs.api.Index;
 import wcs.api.Env;
 import wcs.java.Element;
@@ -14,16 +13,15 @@ public class Error extends Element {
 	final static Log log = getLog(Error.class);
 	
 	public static AssetSetup setup() {
-		return new CSElement("$site$_Error", $site;format="normalize"$.element.Error.class);
+		return new CSElement("Error", $site;format="normalize"$.element.Error.class);
 	}
 
 	@Override
 	public String apply(Env e) {
 		log.error("$site$ Error: ", e.getString("error"));
 		Picker p = Picker.load("/$site;format="normalize"$/simple.html", "#content");
-		Model m = model(arg("Title", "Error"),
+		return p.innerHtml(model(arg("Title", "Error"),
 				        arg("Text", e.getString("error")), 
-				        arg("Footer","") );
-		return p.innerHtml(m);
+				        arg("Footer","")));
 	}
 }

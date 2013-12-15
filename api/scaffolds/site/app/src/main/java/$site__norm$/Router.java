@@ -21,7 +21,8 @@ public class Router extends wcs.java.Router {
 
 	@Override
 	public Call route(Env e, URL url) {
-		// log.trace("Router url=", router);
+		if(log.trace())
+		  log.trace("Router url=%s", url);
 		
 		// split the token
 		String c = null;
@@ -56,7 +57,7 @@ public class Router extends wcs.java.Router {
 
 		// path not split in pieces
 		if (c == null || name == null) {
-			return call("$site$_Wrapper",
+			return call("Wrapper",
 					arg("error", "Path not found: " + url.getPath()));
 		}
 
@@ -64,16 +65,17 @@ public class Router extends wcs.java.Router {
 		List<Id> list = e.find(c, arg("name", name));
 		if (list.size() > 0) {
 			// found
-			return call("$site$/$site$_Wrapper", //
+			return call("Wrapper", //
 					arg("c", list.get(0).c), //
 					arg("cid", list.get(0).cid.toString()));
 		} else {
 			// not found
 			String error = "Asset not found: type:" + c + " name:" + name;
-			return call("$site$/$site$_Wrapper", arg("error", error));
+			return call("Wrapper", arg("error", error));
 		}
 	}
 	
+	final static int len = "$site$".length()+1;
 	
 	/**
 	 * Create a link with just the page name
@@ -90,8 +92,8 @@ public class Router extends wcs.java.Router {
 			else
 				return "/" + name;
 		else
-			// assuming all the types starts with Demo_, remove the prefix
-			return "/" + id.c.substring(6) + "/" + name;
+			// assumme all the types except Page starts with $site$, 
+			// remove the prefix
+			return "/" + id.c.substring(len) + "/" + name;
 	}
-
 }

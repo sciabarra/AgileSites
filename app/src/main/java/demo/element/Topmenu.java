@@ -1,4 +1,5 @@
 package demo.element;
+
 import static java.lang.String.format;
 import wcs.api.Env;
 import wcs.api.Id;
@@ -16,14 +17,14 @@ public class Topmenu extends Element {
 	final static Log log = Log.getLog(Error.class);
 
 	public static AssetSetup setup() {
-		return new CSElement("Topmenu", demo.element.Topmenu.class);
+		return new CSElement("Demo_Topmenu", demo.element.Topmenu.class);
 	}
 
 	@Override
 	public String apply(Env e) {
 
 		log.debug("Testing Topmenu");
-		
+
 		Picker html = Picker.load("/blueprint/template.html", "#topmenu");
 		log.debug("picker=" + html);
 

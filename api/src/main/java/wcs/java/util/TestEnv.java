@@ -7,7 +7,7 @@ import wcs.java.Env;
 import COM.FutureTense.Interfaces.ICS;
 
 /**
- * Testable env - it can be built with a content who can override variables and
+ * Testable env - it can be built with a content that can override variables and
  * lists
  * 
  * @author msciab
@@ -18,17 +18,29 @@ public class TestEnv extends Env implements Content {
 	private Model content;
 	private ICS ics;
 
+	/**
+	 * Create a test env using ics and additional arguments
+	 * 
+	 * @param ics
+	 * @param args
+	 */
 	public TestEnv(ICS ics, Arg... args) {
 		super(ics);
 		this.ics = ics;
 		this.content = new Model(args);
 	}
-	
-	public TestEnv(TestEnv env, Arg...args) {
+
+	/**
+	 * Create a test env using anothers env and additional arguments
+	 * 
+	 * @param ics
+	 * @param args
+	 */
+	public TestEnv(TestEnv env, Arg... args) {
 		super(env.ics);
 		this.content = new Model(content, args);
 	}
-	
+
 	@Override
 	public boolean exists(String attribute) {
 		return content.exists(attribute) || super.exists(attribute);

@@ -9,8 +9,8 @@ import wcs.java.util.TestRunnerElement;
 @Index("$site;format="normalize"$/elements.txt")
 public class Tester extends TestRunnerElement {
 	public static AssetSetup setup() {
-		return new CSElement("$site$_Tester", $site;format="normalize"$.element.Tester.class, //
-				new SiteEntry("$site;format="normalize"$-tester", false, "$site$/$site$_Tester"));
+		return new CSElement("Tester", $site;format="normalize"$.element.Tester.class, //
+				new SiteEntry("Tester", false));
 	}
 
 	@Override

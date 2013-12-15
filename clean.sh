@@ -12,3 +12,6 @@ rm -Rvf core/target
 rm -Rvf project/boot
 rm -Rvf project/repo
 rm -Rvf project/project
+rm -Rvf project/ivy2/cache/com.sciabarra
+rm -Rvf project/ivy2/local/com.sciabarra
+

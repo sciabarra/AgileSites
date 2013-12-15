@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import COM.FutureTense.Interfaces.IList;
 import wcs.Api;
 import wcs.api.Arg;
 import wcs.api.AssetDeps;
@@ -23,7 +22,10 @@ import wcs.core.tag.AssetTag;
 import wcs.core.tag.AssetsetTag;
 import wcs.core.tag.BlobserviceTag;
 import wcs.core.tag.RenderTag;
+import wcs.java.util.Util;
+
 import COM.FutureTense.Interfaces.ICS;
+import COM.FutureTense.Interfaces.IList;
 
 public class Asset extends AssetBase implements wcs.api.Asset,
 		wcs.api.Content {
@@ -51,10 +53,10 @@ public class Asset extends AssetBase implements wcs.api.Asset,
 		this.c = c;
 		this.cid = cid;
 		insite = env.isInsite();
-
 		AssetTag.load().name(a).type(c).objectid(cid.toString()).run(i);
 		String subtype = AssetTag.getsubtype().name(a).eval(i, "OUTPUT");
 		this.subtype = subtype == null ? "" : subtype;
+		setSite(i.GetVar("site"));
 	}
 
 	/**
@@ -732,7 +734,7 @@ public class Asset extends AssetBase implements wcs.api.Asset,
 		log.trace("ttype/tid=", ttype, tid);
 		List<Arg> list = new ArrayList<Arg>();
 		list.add(arg("SITE", i.GetVar("site")));
-		list.add(arg("TNAME", template));
+		list.add(arg("TNAME", Util.normalizedName(site,template)));
 		list.add(arg("C", c));
 		list.add(arg("CID", cid.toString()));
 		list.add(arg("TTYPE", ttype));

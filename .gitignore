@@ -16,5 +16,6 @@ target/
 tags/
 project/boot/
 project/repo/
+project/ivy2/
 project/plugins/project/
 doc/temp/

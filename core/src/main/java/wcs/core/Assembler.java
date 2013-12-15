@@ -37,6 +37,8 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 
     private URI buildBlobUri(String prefix, String blobId) {
         try {
+        	if(prefix==null)
+        		return null;
             URI uri = new URI(prefix);
             uri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
                     uri.getPort(), uri.getPath() +"/" + blobId,  null,

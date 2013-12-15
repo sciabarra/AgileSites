@@ -1,5 +1,5 @@
 package $site;format="normalize"$.test;
-import static wcs.Api.*;
+//import static wcs.Api.*;
 import wcs.api.Index;
 import wcs.api.Log;
 import org.junit.Before;

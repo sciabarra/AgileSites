@@ -58,7 +58,7 @@ public class Router extends wcs.java.Router {
 		List<Id> list = e.find(c, arg("name", name));
 		if (list.size() > 0) {
 			// found
-			return call("Demo/DmWrapper", //
+			return call("Demo/Demo_Wrapper", //
 					arg("c", list.get(0).c), //
 					arg("cid", list.get(0).cid.toString()));
 		} else {

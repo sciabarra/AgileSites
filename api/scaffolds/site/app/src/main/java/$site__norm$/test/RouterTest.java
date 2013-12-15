@@ -41,7 +41,9 @@ public class RouterTest extends TestElement {
 
 	@Test
 	public void test1() {
-		parse(it.route(env(), url("/Hello")));
+		Env e = env();
+		it = e.getRouter();
+		parse(it.route(e, url("/Hello")));
 		assertAttr("ics-callelement", "error",
 				"Asset not found: type:Page name:Hello");
 		parse(it.route(env(), url("/Hello?extra=parameter")));
@@ -51,7 +53,9 @@ public class RouterTest extends TestElement {
 
 	@Test
 	public void test2() {
-		parse(it.route(env(), url("/Article/Welcome")));
+		Env e = env();
+		it = e.getRouter();
+		parse(it.route(e, url("/Article/Welcome")));
 		assertAttr("ics-callelement", "error",
 				"Asset not found: type:$site$_Article name:Welcome");
 		parse(it.route(env(), url("/Article/Welcome?with=parameter&other")));
@@ -61,7 +65,9 @@ public class RouterTest extends TestElement {
 
 	@Test
 	public void test3() {
-		parse(it.route(env(), url("/something/not/supported?with=parameters")));
+		Env e = env();
+		it = e.getRouter();
+		parse(it.route(e, url("/something/not/supported?with=parameters")));
 		assertAttr("ics-callelement", "error",
 				"Path not found: /something/not/supported");
 	}

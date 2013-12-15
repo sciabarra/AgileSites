@@ -1,4 +1,5 @@
 package demo.element.page;
+
 import static wcs.Api.*;
 import wcs.api.Asset;
 import wcs.api.Env;
@@ -15,7 +16,7 @@ public class ContentLayout extends Element {
 	Log log = Log.getLog(ContentLayout.class);
 
 	public static AssetSetup setup() {
-		return new Template("Page", "ContentLayout", Template.LAYOUT,
+		return new Template("Page", "Demo_ContentLayout", Template.LAYOUT,
 				demo.element.page.ContentLayout.class) //
 				.cache("false", "false") // change caching here
 				.description("Layout for type Page Content");

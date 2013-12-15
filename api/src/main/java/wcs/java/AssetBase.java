@@ -121,6 +121,11 @@ public abstract class AssetBase {
 		else
 			this.description = description;
 	}
+	
+	protected void setSite(String site) {
+		this.site = site;
+	}
+
 
 	/**
 	 * Return the filename of the asset

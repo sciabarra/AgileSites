@@ -22,7 +22,7 @@ public class TreeTest extends TestElement {
 	@Test
 	public void test() {
 		parse(it.apply(env("")));
-		dump(log);		
+		// dump(log);		
 		// TODO: test the resuls
 	}
 

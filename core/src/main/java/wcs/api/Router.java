@@ -10,8 +10,23 @@ import COM.FutureTense.Interfaces.ICS;
  */
 
 public interface Router {
+	
+	/**
+	 * Initialize the router with the site
+	 * @param site
+	 */
+	public void init(String site);
 
-	public Call route(ICS ics, String site, String path, String query);
+	/**
+	 * Route requests
+	 * 
+	 * @param ics
+	 * @param site
+	 * @param path
+	 * @param query
+	 * @return
+	 */
+	public Call route(ICS ics, String path, String query);
 
 	/**
 	 * Route an asset
@@ -23,7 +38,7 @@ public interface Router {
 	public Call route(Env env, URL url);
 
 	/**
-	 * Link an asset
+	 * Generate the link to an asset
 	 * 
 	 * @param env
 	 * @param id

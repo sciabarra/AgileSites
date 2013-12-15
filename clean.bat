@@ -4,8 +4,8 @@ echo Please exit from Eclipse or any other IDE before.
 echo After the cleanup you may need to repeat the wcs-setup-offline
 echo Press control-c if you are unsure otherwise press any key.
 pause
-rd /s /q %HOMEDRIVE%%HOMEPATH%\.ivy2\cache\com.sciabarra
-rd /s /q %HOMEDRIVE%%HOMEPATH%\.ivy2\local\com.sciabarra
+rd /s /q project\ivy2\cache\com.sciabarra
+rd /s /q project\ivy2\local\com.sciabarra
 rd /s /q target 
 rd /s /q project\target
 rd /s /q app\target

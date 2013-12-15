@@ -12,7 +12,7 @@ import wcs.java.AssetSetup;
 public class $cselement$ extends Element {
 	final static Log log = getLog($cselement$.class);
 	public static AssetSetup setup() {
-		return new CSElement("$site$_$cselement$", $site;format="normalize"$.element.$cselement$.class);
+		return new CSElement("$cselement$", $site;format="normalize"$.element.$cselement$.class);
 	}
 
 	@Override

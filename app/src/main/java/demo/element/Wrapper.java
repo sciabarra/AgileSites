@@ -1,4 +1,5 @@
 package demo.element;
+
 import static wcs.Api.*;
 import wcs.api.Asset;
 import wcs.api.Env;
@@ -12,18 +13,19 @@ import wcs.java.SiteEntry;
 
 @Index("demo/elements.txt")
 public class Wrapper extends Element {
-	
+
 	private final static Log log = Log.getLog(Wrapper.class);
 
 	public static AssetSetup setup() {
-		return new CSElement("Wrapper", demo.element.Wrapper.class,
-				new SiteEntry("demo", true, "Wrapper"));
+		return new CSElement("Demo_Wrapper", demo.element.Wrapper.class,
+				new SiteEntry("demo", true, "Demo_Wrapper"));
 	}
 
 	@Override
 	public String apply(Env e) {
-		log.trace("Demo Wrapper");
-		
+		if (log.trace())
+			log.trace("Demo Wrapper");
+
 		Picker html = Picker.load("/blueprint/template.html");
 
 		// change relative references to absolute
@@ -33,21 +35,21 @@ public class Wrapper extends Element {
 
 		// handle errors
 		if (e.isVar("error"))
-			return html.replace("#content", e.call("Error",// 
-							arg("error", e.getString("error"))))//
-					/*.dump(log)*/.outerHtml();
+			return html.replace("#content", e.call("Error",//
+					arg("error", e.getString("error"))))//
+					/* .dump(log) */.outerHtml();
 
 		Asset a = e.getAsset();
 		if (a == null)
 			return html.replace("#content", e.call("Error",//
-				    		arg("error", "Asset not found")))//
-					/*.dump(log)*/.outerHtml();
+					arg("error", "Asset not found")))//
+					/* .dump(log) */.outerHtml();
 
 		// render the asset using his default template
 		html.replace("title", a.getName());
-		html.attr("meta[name=description]", "content", a.getDescription());	
+		html.attr("meta[name=description]", "content", a.getDescription());
 		html.replace("#content", a.call(a.getTemplate()));
 
-		return html.dump(log).outerHtml();
+		return html/*.dump(log)*/.outerHtml();
 	}
 }

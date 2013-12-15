@@ -13,6 +13,7 @@ import wcs.core.WCS;
 import wcs.core.tag.AssetTag;
 import wcs.core.tag.RenderTag;
 import wcs.core.tag.SatelliteTag;
+import wcs.java.util.Util;
 import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class Env extends wcs.core.ICSProxyJ implements Content, wcs.api.Env {
 	private boolean preview;
 
 	/**
-	 * Build the env - with this costructor still needs to be initialized with
+	 * Build the env - with this costructor you have an invalid env that still needs to be initialized with
 	 * init to be usable
 	 */
 	public Env() { }
@@ -59,7 +60,7 @@ public class Env extends wcs.core.ICSProxyJ implements Content, wcs.api.Env {
 	}
 
 	/**
-	 * Initialize the env
+	 * Initialize the env - second step constructor
 	 * 
 	 * @param ics
 	 */
@@ -486,7 +487,7 @@ public class Env extends wcs.core.ICSProxyJ implements Content, wcs.api.Env {
 	 */
 	@Override
 	public String getUrl(Id id, Arg... args) {
-		//System.out.println("getUrl:" + id);
+		// System.out.println("getUrl:" + id);
 
 		if (insite || preview) {
 			return RenderTag.getpageurl().pagename(normSite).c(id.c)
@@ -600,7 +601,8 @@ public class Env extends wcs.core.ICSProxyJ implements Content, wcs.api.Env {
 		List<Arg> list = new LinkedList<Arg>();
 		for (Arg arg : args)
 			list.add(arg);
-		list.add(arg("ELEMENTNAME", site + "/" + name));
+		list.add(arg("ELEMENTNAME",
+				site + "/" + Util.normalizedName(site, name)));
 		return Api.call("RENDER:CALLELEMENT", list);
 	}
 

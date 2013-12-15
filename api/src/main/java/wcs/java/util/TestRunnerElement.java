@@ -159,23 +159,6 @@ public abstract class TestRunnerElement extends wcs.java.Element {
 		return currTestEnv.get();
 	}
 
-	/**
-	 * Xml Test - run it all from Jenkins
-	 * 
-	 * @return
-	 */
-	public String xmlTest() {
-		return "";
-	}
-
-	/**
-	 * Html Test - run only selected tests
-	 * 
-	 * @return
-	 */
-	public String htmlTest() {
-		return "";
-	}
 
 	@Override
 	public String apply(Env e) {

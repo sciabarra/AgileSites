@@ -15,8 +15,8 @@ import wcs.java.Element;
 public class Wrapper extends Element {
 	private final static Log log = Log.getLog(Wrapper.class);
 	public static AssetSetup setup() {
-		return new CSElement("$site$_Wrapper", $site;format="normalize"$.element.Wrapper.class,
-				new SiteEntry("$site;format="normalize"$", true, "$site$/$site$_Wrapper"));
+		return new CSElement("Wrapper", $site;format="normalize"$.element.Wrapper.class,
+				new SiteEntry("", true));
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class Wrapper extends Element {
 		// handle generic errors
 		if (e.isVar("error")) {			
 			Model m = model(arg("name", "Error"), arg("description", e.getString("error"))); 
-			return html.replace("#content", e.call("$site$_Error",// 
+			return html.replace("#content", e.call("Error",// 
 							arg("error", e.getString("error"))))
 							.outerHtml(m);
 		}
@@ -43,7 +43,7 @@ public class Wrapper extends Element {
 			String error = "Asset not found";
 			Model m = model(arg("name", "Error"), arg("description", error));
 			return html.replace("#content", //
-					e.call("$site$_Error",arg("error", error)))//
+					e.call("Error",arg("error", error)))//
 					.outerHtml(m);
 		}
 

@@ -62,10 +62,6 @@ public class CSElement extends AssetSetup {
 	}
 
 	void setData(MutableAssetData data) {
-
-		// data.getAttributeData("createdby").setData("agilesites");
-		// data.getAttributeData("createddate").setData(new Date());
-
 		String elementName = null;
 		String elementJsp = null;
 		String className = elementClass.getCanonicalName();
@@ -94,8 +90,10 @@ public class CSElement extends AssetSetup {
 		// blob
 		byte[] bytes = template(elementClass.getCanonicalName()).getBytes();
 		BlobObject blob = new BlobObjectImpl(elementJsp, "AgileSites", bytes);
-
 		data.getAttributeData("url").setData(blob);
+		
+		// data.getAttributeData("createdby").setData("agilesites");
+		// data.getAttributeData("createddate").setData(new Date());
 		// data.getAttributeData("Mapping").setData(new ArrayList());
 		// data.getAttributeData("Mapping").setData(new AttributeMan HashMap());
 	}

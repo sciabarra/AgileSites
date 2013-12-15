@@ -13,7 +13,7 @@ import wcs.java.AssetSetup;
 public class $subtype;format="deprefix"$$template$ extends Element {
 	final static Log log = getLog($subtype;format="deprefix"$$template$.class);
 	public static AssetSetup setup() {	
-		return new Template("$type$", "$subtype$$template$", 
+		return new Template("$type$", "$subtype;format="deprefix"$$template$", 
 			Template.INTERNAL, // change template type here
 			"$subtype$", $site;format="normalize"$.element.$type;format="normalize"$.$subtype;format="deprefix"$$template$.class) //
 			.cache("false", "false") // change caching here

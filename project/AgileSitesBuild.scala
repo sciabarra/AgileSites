@@ -50,7 +50,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "com.novocode" % "junit-interface" % "0.10" % "test",
     "org.hamcrest" % "hamcrest-all" % "1.3" % "test")
 
-
   val coreSettings = Defaults.defaultSettings ++ net.virtualvoid.sbt.graph.Plugin.graphSettings ++ Seq(
     scalaVersion := "2.10.2",
     organization := "com.sciabarra",
@@ -105,7 +104,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       javacOptions ++= Seq("-g"), 
       name := "agilesites-app",
       libraryDependencies <++= (version) {
-        x => Seq("com.sciabarra" % "agilesites-api" % x)},
+        x => Seq("com.sciabarra" % "agilesites-api" % x withSources())},
       wcsGenerateIndexTask,
       wcsCopyHtmlTask,
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))

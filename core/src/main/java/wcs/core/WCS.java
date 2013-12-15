@@ -129,8 +129,10 @@ public class WCS {
 	 */
 	public static Router getRouter(ICS ics) {
 		try {
-			return (Router) Dispatcher.getDispatcher(ics)
+			Router router =  (Router) Dispatcher.getDispatcher(ics)
 					.loadSiteClass(ics, "Router").newInstance();
+			router.init(ics.GetVar("site"));
+			return router;
 		} catch (Exception ex) {
 			log.error(ex, "[WCS.getRouter]");
 			return null;

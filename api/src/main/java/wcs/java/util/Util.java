@@ -1,4 +1,5 @@
 package wcs.java.util;
+
 import wcs.api.Log;
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -276,7 +277,6 @@ public class Util {
 		return prp;
 	}
 
-
 	/**
 	 * Read a configuration attribute
 	 * 
@@ -284,7 +284,8 @@ public class Util {
 	 * @param config
 	 * @return
 	 */
-	public static Object readAttributeConfig(String attribute, wcs.api.Config config) {
+	public static Object readAttributeConfig(String attribute,
+			wcs.api.Config config) {
 		try {
 			Field field = config.getClass().getField(attribute);
 			return field.get(config);
@@ -310,6 +311,20 @@ public class Util {
 		}
 		sb.append("\n");
 		return sb.toString();
+	}
 
+	/**
+	 * Normalize Asset Name: ensure there is the site prefix in the name, and
+	 * only once. Handle corner cases where the name has already the prefix, or
+	 * name or site are null or empty.
+	 */
+	public static String normalizedName(String site, String name) {
+		if (name == null || name.trim().length() == 0)
+			return site;
+		if (site == null || site.trim().length() == 0)
+			return name;
+		if (name.startsWith(site))
+			return name;
+		return site + "_" + name;
 	}
 }
