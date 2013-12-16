@@ -18,7 +18,7 @@ public class Tree extends Element {
 	private Env e;
 
 	public static AssetSetup setup() {
-		return new CSElement("Demo_Tree", demo.element.Tree.class);
+		return new CSElement("Tree", demo.element.Tree.class);
 	}
 
 	/**

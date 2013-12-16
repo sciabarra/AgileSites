@@ -15,8 +15,8 @@ public class Summary extends Element {
 	final static Log log = Log.getLog(Summary.class);
 
 	public static AssetSetup setup() {
-		return new Template("Page", "Demo_Summary", Template.INTERNAL, // change
-				demo.element.page.Summary.class) //
+		return new Template("Page", "Summary", Template.INTERNAL, // change
+				"Demo_Content", demo.element.page.Summary.class) //
 				.cache("false", "false") // change caching here
 				.description("Template Summary for type Page ");
 	}

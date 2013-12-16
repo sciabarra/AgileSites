@@ -18,7 +18,7 @@ public class Breadcrump extends Element {
 	final static Log log = Log.getLog(Breadcrump.class);
 
 	public static AssetSetup setup() {
-		return new CSElement("Demo_Breadcrump", demo.element.Breadcrump.class);
+		return new CSElement("Breadcrump", demo.element.Breadcrump.class);
 	}
 
 	@Override

@@ -114,7 +114,7 @@ abstract public class Setup implements wcs.core.Setup {
 		if (setup == null)
 			return;
 		log.debug("installing " + setup.getName());
-		setup.setSite(site);
+		setup.init(site);
 		sb.append("\n" + insertOrUpdate(ics, setup));
 		recurse(ics, sb, setup.getNextSetup(), site);
 	}

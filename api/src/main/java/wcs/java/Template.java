@@ -34,7 +34,8 @@ public class Template extends AssetSetup {
 	private String sscache;
 	private char ttype;
 	private String forSubtype;
-    private List<String> cacheCriteria = Util.listString("c", "cid", "context", "p", "rendermode", "site", /* "sitepfx", */"ft_ss");
+	private List<String> cacheCriteria = Util.listString("c", "cid", "context",
+			"p", "rendermode", "site", /* "sitepfx", */"ft_ss");
 
 	public Template(String subtype, String name, char ttype,
 			Class<?> elementClass) {
@@ -57,23 +58,29 @@ public class Template extends AssetSetup {
 
 		super("Template", subtype, name);
 		this.clazz = elementClass.getCanonicalName();
-		if (subtype == null || subtype.trim().length() == 0) {
-			subtype = "";
-			rootelement = "/" + name;
-			folderelement = "Typeless";
-		} else {
-			subtype = subtype.trim();
-			rootelement = subtype + "/" + name;
-			folderelement = subtype;
-		}
-		fileelement = name + "_" + clazz + ".jsp";
-
+		this.subtype = subtype;
+		this.name = name;
 		this.ttype = ttype;
 		if (forSubtype == null || forSubtype.trim().length() == 0)
 			this.forSubtype = "*";
 		else
 			this.forSubtype = forSubtype;
 		cache("false", "false");
+	}
+
+	@Override
+	public void init(String site) {
+		super.init(site);
+		if (subtype == null || subtype.trim().length() == 0) {
+			subtype = "";
+			rootelement = "/" + getName();
+			folderelement = "Typeless";
+		} else {
+			subtype = subtype.trim();
+			rootelement = subtype + "/" + getName();
+			folderelement = subtype;
+		}
+		fileelement = getName() + "_" + clazz + ".jsp";
 	}
 
 	/**
@@ -105,10 +112,10 @@ public class Template extends AssetSetup {
 		return this;
 	}
 
-    public Template cacheCriteria(String criteria) {
-        this.cacheCriteria.add(criteria);
-        return this;
-    }
+	public Template cacheCriteria(String criteria) {
+		this.cacheCriteria.add(criteria);
+		return this;
+	}
 
 	public String getElement() {
 		return rootelement;
@@ -180,9 +187,9 @@ public class Template extends AssetSetup {
 		data.getAttributeData("element").setData(
 				Util.list(attrStruct("Structure Element", mapElement)));
 
-        // default page criteria
-        Collections.sort(cacheCriteria);
-        data.getAttributeData("pagecriteria").setDataAsList(cacheCriteria);
+		// default page criteria
+		Collections.sort(cacheCriteria);
+		data.getAttributeData("pagecriteria").setDataAsList(cacheCriteria);
 
 		data.getAttributeData("acl").setDataAsList(Util.listString(""));
 

@@ -10,10 +10,12 @@ import wcs.api.Arg;
 import wcs.api.Args;
 import wcs.api.Call;
 import wcs.api.Content;
+import wcs.api.Env;
 import wcs.api.Id;
 import wcs.api.Log;
 import wcs.api.Model;
 import wcs.core.Sequencer;
+import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
 
 /**
@@ -27,6 +29,12 @@ import COM.FutureTense.Interfaces.IList;
 public class Api {
 	private static long tmpVarCounter = System.currentTimeMillis();
 
+	/**
+	 * Access to the env in a JSP
+	 */
+	public static Env env(ICS ics) {
+		return wcs.core.WCS.getEnv(ics, "wcs.java.Env");
+	}
 	/**
 	 * Generate an unique temporary var name.
 	 * 

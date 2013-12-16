@@ -15,8 +15,8 @@ public class ContentSeeAlso extends Element {
 
 	public static AssetSetup setup() {
 
-		return new Template("Page", "Demo_ContentSeeAlso", Template.INTERNAL,
-				demo.element.page.ContentSeeAlso.class) //
+		return new Template("Page", "ContentSeeAlso", Template.INTERNAL,
+				"Demo_Content", demo.element.page.ContentSeeAlso.class) //
 				.cache("false", "false") // change caching here
 				.description("Template ContentSeeAlso for type Page subtype Content");
 	}
