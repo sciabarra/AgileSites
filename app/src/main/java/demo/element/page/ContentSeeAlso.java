@@ -23,6 +23,9 @@ public class ContentSeeAlso extends Element {
 
 	@Override
 	public String apply(Env e) {
+		if (log.debug())
+			log.debug("Demo ContentSeeAlso");
+
 		Picker html = Picker.load("/blueprint/template.html", "#seealso1");
 		Asset a = e.getAsset();
 		html.replace("#seealso-title1", a.getString("Title"));

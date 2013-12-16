@@ -23,7 +23,7 @@ public class Wrapper extends Element {
 
 	@Override
 	public String apply(Env e) {
-		if (log.trace())
+		if (log.debug())
 			log.trace("Demo Wrapper");
 
 		Picker html = Picker.load("/blueprint/template.html");

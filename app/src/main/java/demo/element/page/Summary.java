@@ -23,6 +23,9 @@ public class Summary extends Element {
 
 	@Override
 	public String apply(Env e) {
+		if (log.debug())
+			log.debug("Demo ContentSeeAlso");
+
 		Asset a = e.getAsset();
 		Picker html = Picker.load("/blueprint/template.html", "#related");
 		html.replace("#related-title", a.getString("Title"));

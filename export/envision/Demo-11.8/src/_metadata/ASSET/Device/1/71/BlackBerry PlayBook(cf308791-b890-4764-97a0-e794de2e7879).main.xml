@@ -8,10 +8,11 @@
     <publist>0</publist>
     <publist>AdminSite</publist>
     <publist>Demo</publist>
+    <publist>MySite</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-02-26T14:57:51.557Z</updateddate>
+    <updateddate>2013-12-16T11:33:22.463Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>

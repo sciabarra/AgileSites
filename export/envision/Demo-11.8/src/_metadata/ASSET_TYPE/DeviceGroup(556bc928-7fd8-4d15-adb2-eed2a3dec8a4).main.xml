@@ -622,6 +622,7 @@ Ymxlcy5Bc3NldFR5cGUuc3RhdHVzIT0nVk8nIFZhcmlhYmxlcy5xdWVyeWVuZA==</byte-array>
       <associations/>
       <siteNames class="list">
         <string>Demo</string>
+        <string>MySite</string>
       </siteNames>
     </data>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -857,6 +858,6 @@ Ymxlcy5Bc3NldFR5cGUuc3RhdHVzIT0nVk8nIFZhcmlhYmxlcy5xdWVyeWVuZA==</byte-array>
 #
 key=@ASSET_TYPE-556bc928-7fd8-4d15-adb2-eed2a3dec8a4
 type=ASSET_TYPE
-sites=Demo
+sites=Demo,MySite
 
 ==================___ END METADATA ___==================-->

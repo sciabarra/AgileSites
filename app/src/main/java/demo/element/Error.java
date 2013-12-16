@@ -19,7 +19,8 @@ public class Error extends Element {
 
 	@Override
 	public String apply(Env e) {
-		log.trace("Demo Error");
+		if (log.debug())
+			log.debug("Demo Error");
 
 		Picker html = Picker.load("/demo/simple.html", "#content");
 		html.replace("#title", "Error");

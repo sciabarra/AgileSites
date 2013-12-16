@@ -11,7 +11,7 @@
         <description>Page Attribute</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp6\dcs7414130170769172236.tmp</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp6741\dcs7048414521258202466.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-PageAttribute</uid>
         <useDimension></useDimension>
@@ -250,7 +250,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket\Xcelerate\AssetType\PageAttribute\SelectSummary,0.sql</string>
+            <string>OpenMarket\Xcelerate\AssetType\PageAttribute\SelectSummary.sql</string>
             <null/>
             <null/>
             <null/>
@@ -400,6 +400,7 @@ cnllbmQKICAgICAgICAKCgo=</byte-array>
       <associations/>
       <siteNames class="list">
         <string>Demo</string>
+        <string>MySite</string>
       </siteNames>
     </data>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -557,6 +558,6 @@ cnllbmQKICAgICAgICAKCgo=</byte-array>
 #
 key=@ASSET_TYPE-CSSystem-AssetType-PageAttribute
 type=ASSET_TYPE
-sites=Demo
+sites=Demo,MySite
 
 ==================___ END METADATA ___==================-->

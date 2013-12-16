@@ -11,7 +11,7 @@
         <description>Page</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp6\dcs4923988744695961461.tmp</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp6741\dcs1879974758307128142.tmp</urldescriptorspec>
         <canbechild>T</canbechild>
         <uid>CSSystem-AssetType-Page</uid>
         <useDimension></useDimension>
@@ -250,10 +250,10 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket\Xcelerate\AssetType\Page\SelectSummary,0.sql</string>
+            <string>OpenMarket\Xcelerate\AssetType\Page\SelectSummary.sql</string>
             <null/>
             <null/>
-            <string>OpenMarket\Xcelerate\AssetType\Page\UnplacedPages,0.sql</string>
+            <string>OpenMarket\Xcelerate\AssetType\Page\UnplacedPages.sql</string>
             <null/>
             <null/>
             <null/>
@@ -582,7 +582,7 @@ Lm9pZCBBTkQgU2l0ZVBsYW5UcmVlLm5jb2RlPSdVblBsYWNlZCcNCg==</byte-array>
       </categoryIList>
       <associations>
         <com.openmarket.xcelerate.association.AssocNamed>
-          <id>1374097567740</id>
+          <id>1374097568920</id>
           <name>AssociatedItems</name>
           <description>Associated Items</description>
           <assettype>Page</assettype>
@@ -608,7 +608,7 @@ Lm9pZCBBTkQgU2l0ZVBsYW5UcmVlLm5jb2RlPSdVblBsYWNlZCcNCg==</byte-array>
           <hashstrs/>
         </com.openmarket.xcelerate.association.AssocNamed>
         <com.openmarket.xcelerate.association.AssocNamed>
-          <id>1374097567747</id>
+          <id>1374097568927</id>
           <name>contentList1</name>
           <description>Primary content</description>
           <assettype>Page</assettype>
@@ -624,7 +624,7 @@ Lm9pZCBBTkQgU2l0ZVBsYW5UcmVlLm5jb2RlPSdVblBsYWNlZCcNCg==</byte-array>
           <hashstrs/>
         </com.openmarket.xcelerate.association.AssocNamed>
         <com.openmarket.xcelerate.association.AssocNamed>
-          <id>1374097567749</id>
+          <id>1374097568929</id>
           <name>contentList2</name>
           <description>Secondary content</description>
           <assettype>Page</assettype>
@@ -998,6 +998,7 @@ Lm9pZCBBTkQgU2l0ZVBsYW5UcmVlLm5jb2RlPSdVblBsYWNlZCcNCg==</byte-array>
       </patternIList>
       <siteNames class="list">
         <string>Demo</string>
+        <string>MySite</string>
       </siteNames>
     </data>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -1269,6 +1270,6 @@ Lm9pZCBBTkQgU2l0ZVBsYW5UcmVlLm5jb2RlPSdVblBsYWNlZCcNCg==</byte-array>
 #
 key=@ASSET_TYPE-CSSystem-AssetType-Page
 type=ASSET_TYPE
-sites=Demo
+sites=Demo,MySite
 
 ==================___ END METADATA ___==================-->

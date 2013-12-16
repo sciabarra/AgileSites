@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
     <id>PageDefinition:1374097570318</id>
-    <name>Content</name>
+    <name>Demo_Content</name>
     <createdby>fwadmin</createdby>
     <createddate>2013-04-15T21:56:41.196Z</createddate>
-    <description>Content</description>
+    <description>Demo Content</description>
     <publist>Demo</publist>
     <status>ED</status>
     <subtype></subtype>

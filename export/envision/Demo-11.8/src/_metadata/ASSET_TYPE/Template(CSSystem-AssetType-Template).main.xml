@@ -11,7 +11,7 @@
         <description>Template</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp6\dcs334775202074213527.tmp</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp6741\dcs3403091798173227903.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-Template</uid>
         <useDimension></useDimension>
@@ -250,7 +250,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket\Xcelerate\AssetType\Template\SelectSummary,0.sql</string>
+            <string>OpenMarket\Xcelerate\AssetType\Template\SelectSummary.sql</string>
             <null/>
             <null/>
             <null/>
@@ -703,6 +703,7 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA==</byte-array>
       <associations/>
       <siteNames class="list">
         <string>Demo</string>
+        <string>MySite</string>
       </siteNames>
     </data>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -986,6 +987,6 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA==</byte-array>
 #
 key=@ASSET_TYPE-CSSystem-AssetType-Template
 type=ASSET_TYPE
-sites=Demo
+sites=Demo,MySite
 
 ==================___ END METADATA ___==================-->
