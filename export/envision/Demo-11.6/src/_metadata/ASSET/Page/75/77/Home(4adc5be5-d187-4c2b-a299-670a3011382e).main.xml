@@ -33,7 +33,7 @@
     <attribute>
         <name>template</name>
         <data>
-            <stringValue>DmContentLayout</stringValue>
+            <stringValue>Demo_ContentLayout</stringValue>
         </data>
     </attribute>
     <attribute>

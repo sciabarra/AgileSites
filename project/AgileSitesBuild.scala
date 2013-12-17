@@ -118,6 +118,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       name := "agilesites-all",
       wcsCsdtTask,
       wcsVirtualHostsTask,
+      wcsCopyJarsOfflineTask,
+      wcsCopyJarsOnlineTask,
       wcsSetupOnlineTask,
       wcsSetupOfflineTask,
       wcsSetupSatelliteTask,

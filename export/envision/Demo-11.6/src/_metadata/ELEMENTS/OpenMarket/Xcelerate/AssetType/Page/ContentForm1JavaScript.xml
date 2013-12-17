@@ -350,7 +350,34 @@ function SelectFromTreeAndTypeAhead(nextstep,where,widgetName )
 			'subtype':subtype,
 			'type':type
 		};
-		typeWidgetIns.setSelectedValue(selValue);	
+		
+		var acceptedAT = "";
+		for (var x in typeWidgetIns._source.accept) {
+			acceptedAT = acceptedAT + acceptedAT ? ", " : "" + x;
+		}
+		acceptedAT = acceptedAT === "*" ? "]]><XLAT.STREAM KEY="dvin/UI/Any" ENCODE="false" ESCAPE="true"/><![CDATA[" : acceptedAT;
+		var acceptedST = "";
+		for (var y in typeWidgetIns._source.accept_definition) {
+			acceptedST = acceptedST + acceptedST ? ", " : "" + y;
+		}
+		acceptedST = acceptedST === "*" ? "]]><XLAT.STREAM KEY="dvin/UI/Any" ENCODE="false" ESCAPE="true"/><![CDATA[" : acceptedST;
+		if (typeWidgetIns._source.accept['*'] || typeWidgetIns._source.accept[type]) {
+			if (typeWidgetIns._source.accept_definition['*'] || typeWidgetIns._source.accept_definition.hasOwnProperty(subtype)) {				
+				typeWidgetIns.setSelectedValue(selValue);
+			}
+			else {
+				]]>
+				alert("<XLAT.STREAM KEY="dvin/UI/PleaseSelectAssetFromTree" ENCODE="false" ESCAPE="true"/> AssetType: " + acceptedAT + ", Subtype: " + acceptedST);
+				<![CDATA[
+				return false;
+			}	
+		}
+		else {
+			]]>
+			alert("<XLAT.STREAM KEY="dvin/UI/PleaseSelectAssetFromTree" ENCODE="false" ESCAPE="true"/> AssetType: " + acceptedAT + ", Subtype: " + acceptedST);
+			<![CDATA[
+			return false;
+		}
 		
         var DecodedString = unescape(EncodedString); 
        // obj.elements[where].value = DecodedString;

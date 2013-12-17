@@ -65,7 +65,16 @@
 				<ARGUMENT NAME="okFunctions" VALUE="edit;delete;treerefresh" />				
 				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/children.otype.png"/>
 				<ARGUMENT NAME="RefreshKeys" VALUE="children.oid;children.nid"/>
-				<ARGUMENT NAME="executeFunction" VALUE="inspect" />							
+				<ARGUMENT NAME="executeFunction" VALUE="inspect" />	
+				<!--  
+						  SitePlanTree SPN Node Record identifier  
+						  Used to detect, track and manage 
+					      spn dnd stale nodes 
+				-->					
+				<ARGUMENT NAME="nid" VALUE="children.nid"/>
+				<ARGUMENT NAME="oid" VALUE="children.oid"/>
+				<ARGUMENT NAME="otype" VALUE="children.otype"/>
+				<ARGUMENT NAME="oversion" VALUE="children.oversion"/>						
 			</CALLELEMENT>
 		</LOOP>
 	</THEN>

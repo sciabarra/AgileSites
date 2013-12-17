@@ -26,20 +26,26 @@ $Modtime: 7/03/02 6:30p $
 
 <if COND="IsVariable.Name=true">
 	<then>
-		        
-        <TOLOWER OUTSTR="literal" STR="Variables.Name"/>
-        <ics.sqlexp output="queryappend" type="OR" verb="LIKE"  table="CSElement"
-        string="Variables.literal" column="name" expression="lower(CSElement.name)"/>         
-		<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)"/>
- 	</then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Name"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>        
+        	<TOLOWER OUTSTR="literal" STR="Variables.Name"/>
+        	<ics.sqlexp output="queryappend" type="OR" verb="LIKE"  table="CSElement"
+        	string="Variables.literal" column="name" expression="lower(CSElement.name)"/>         
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)"/>
+ 		</then>
+ 		</if>
+ 	</then>	
 </if>
 
 <if COND="IsVariable.Category=true">
     <then>
   		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
 			<argument NAME="columnvalue" VALUE="Variables.Category"/>
-			<argument NAME="type" VALUE="Length"/>
-			<argument NAME="wordcounts" VALUE="4"/>
+			<argument NAME="type" VALUE="String"/>
 		</callelement>
 		<if cond="Variables.validatedstatus=true">
 		<then>
@@ -52,17 +58,29 @@ $Modtime: 7/03/02 6:30p $
 
 <if COND="IsVariable.Description=true">
 	<then>
-    <!-- support case insensitive search for description field -- 3780 -->         
-        <TOLOWER OUTSTR="literal" STR="Variables.Description"/>
-        <ics.sqlexp output="queryappend" type="OR" verb="LIKE"   table="CSElement"
-        string="Variables.literal" column="description" expression="lower(CSElement.description)"/>
-         
-     	<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)"/>
- 	</then>
+	<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Description"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>         
+        	<TOLOWER OUTSTR="literal" STR="Variables.Description"/>
+        	<ics.sqlexp output="queryappend" type="OR" verb="LIKE"   table="CSElement"
+        	string="Variables.literal" column="description" expression="lower(CSElement.description)"/>    
+     		<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)"/>
+ 		</then>
+ 		</if>
+ 	</then>	
 </if>
 
 <if COND="IsVariable.Status=true">
     <then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Status"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
 		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
 			<argument NAME="columnvalue" VALUE="Variables.Status"/>
 			<argument NAME="type" VALUE="Length"/>
@@ -70,11 +88,13 @@ $Modtime: 7/03/02 6:30p $
 		</callelement>
 		<if cond="Variables.validatedstatus=true">
 		<then>
-		<SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.status='Variables.Status'"/>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.status='Variables.Status'"/>
 		 </then>
 		</if>
-    </then>
-</if>
+		</then>
+		</if>
+	</then>
+</if>	
 
 
 	
@@ -83,22 +103,38 @@ $Modtime: 7/03/02 6:30p $
     <then>
     <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
 			<argument NAME="columnvalue" VALUE="Variables.Subtype"/>
+			<argument NAME="type" VALUE="String"/>
+	</callelement>
+	<if cond="Variables.validatedstatus=true">
+	<then>
+	<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Subtype"/>
 			<argument NAME="type" VALUE="Nospace"/>
 	</callelement>
 	<if cond="Variables.validatedstatus=true">
 	<then>
-    <ics.literal  table="CSElement" column="subtype" string="Variables.Subtype"  output="literal"/>
-	<SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.subtype=Variables.literal"/>
-	 </then>
+		<ics.literal  table="CSElement" column="subtype" string="Variables.Subtype"  output="literal"/>
+		<SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.subtype=Variables.literal"/>
+	</then>
 	</if> 
-     </then>
-</if>
+    </then>
+	</if>
+	</then>
+</if>	
 
 
 <if COND="IsVariable.Rootelement=true">
 	<then>
+	<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Rootelement"/>
+			<argument NAME="type" VALUE="string"/>
+	</callelement>
+	<if cond="Variables.validatedstatus=true">
+	<then>
 		<SQLEXP OUTSTR="queryappend" TYPE="OR" VERB="LIKE" STR="Variables.Rootelement" COLNAME="CSElement.rootelement"/>
 		<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)"/>
+ 	</then>
+ 	</if>
  	</then>
 </if>
 
@@ -120,10 +156,17 @@ $Modtime: 7/03/02 6:30p $
 
 <if COND="IsVariable.uId=true">
     <then>
-    <SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.fw_uid = 'Variables.uId'"/>
-    <XLAT.LOOKUP KEY="dvin/UI/Search/FWUIDis" VARNAME="_XLAT_"/>
-
-    <SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.uId'"/>
+     <CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<ARGUMENT NAME="columnvalue" VALUE="Variables.uId"/>
+			<ARGUMENT NAME="type" VALUE="String"/>
+	 </CALLELEMENT>
+	<IF COND="Variables.validatedstatus=true">
+		<THEN>
+    		<SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.fw_uid = 'Variables.uId'"/>
+    		<XLAT.LOOKUP KEY="dvin/UI/Search/FWUIDis" VARNAME="_XLAT_"/>
+    		<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.uId'"/>
+		</THEN>
+	</IF>	     
      </then>
 </if>
 
@@ -169,15 +212,23 @@ $Modtime: 7/03/02 6:30p $
     <then>
     <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
 			<argument NAME="columnvalue" VALUE="Variables.UpdatedBy"/>
-			<argument NAME="type" VALUE="Nospace"/>
+			<argument NAME="type" VALUE="String"/>
 	</callelement>
 	<if cond="Variables.validatedstatus=true">
 	<then>
-	<SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.updatedby='Variables.UpdatedBy'"/>
-	 </then>
-	</if> 
-     </then>
-</if>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+	<ARGUMENT NAME="columnvalue" VALUE="Variables.UpdatedBy"/>
+	<ARGUMENT NAME="type" VALUE="Nospace"/>
+	</CALLELEMENT>
+	<IF COND="Variables.validatedstatus=true">
+	<THEN>
+		<SETVAR NAME="queryend" VALUE="Variables.queryend AND CSElement.updatedby='Variables.UpdatedBy'"/>
+	</THEN>
+	</IF> 
+    </then>
+	</if>
+	</then>
+</if>	
 
 
 <callelement NAME="OpenMarket/Xcelerate/Actions/Search/BuildFilterString"/>

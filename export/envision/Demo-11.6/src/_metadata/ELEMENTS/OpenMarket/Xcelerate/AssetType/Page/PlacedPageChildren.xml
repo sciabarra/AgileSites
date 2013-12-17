@@ -14,7 +14,6 @@
 <SETVAR NAME="loadexecuted" VALUE="true"/>
 	
 <SITEPLAN.ROOT LIST="PubRoot" OBJECTID="SessionVariables.pubid"/>
-<LOGMSG  STR="$ PlacedPageChildren  [Entered]" /> 
 				
 <setvar NAME="nodecount" VALUE="0"/>
 <setvar NAME="tablename" VALUE="SitePlanTree"/>
@@ -42,8 +41,6 @@
 				
 <SITEPLAN.LOAD NAME="thePubNode" NODEID="PubRoot.nid"/>
 <SITEPLAN.CHILDREN NAME="thePubNode" LIST="children" CODE="Placed" ORDER="nrank"/>
-
-<LOGMSG  STR="$ PlacedPageChildren  [Entered]" /> 
 								
 <IF COND="IsList.children=true">
 <THEN>
@@ -125,6 +122,15 @@
 				<ARGUMENT NAME="executeFunction" VALUE="Variables.cs_defaultFunctionChild" />
 				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/children.otype.png"/>
 				<ARGUMENT NAME="RefreshKeys" VALUE="children.oid;children.nid"/> 
+				<!--  
+						  SitePlanTree SPN Node Record identifier  
+						  Used to detect, track and manage 
+					      spn dnd stale nodes 
+				-->
+				<ARGUMENT NAME="nid" VALUE="children.nid"/>
+				<ARGUMENT NAME="oid" VALUE="children.oid"/>
+				<ARGUMENT NAME="otype"  VALUE="children.otype"/>
+				<ARGUMENT NAME="oversion" VALUE="children.oversion"/>
 			</CALLELEMENT>
 		</LOOP>
 	</THEN>

@@ -10,7 +10,7 @@
         <string></string>
         <string></string>
         <string></string>
-        <string>OpenMarket\Xcelerate\AssetType\Page\PlacedPageChildren.xml</string>
+        <string>OpenMarket\Xcelerate\AssetType\Page\PlacedPageChildren,0.xml</string>
         <string></string>
         <string></string>
       </com.openmarket.xcelerate.common.ElementCatalogEntry>
@@ -23,9 +23,9 @@
 </dependencies>
 ==================______________________==================
 #
-#Sat Jun 01 21:29:17 UTC 2013
+#Mon Dec 16 23:39:35 UTC 2013
 storable0=/ELEMENTS/OpenMarket/Xcelerate/AssetType/Page/PlacedPageChildren.xml|null|_storable_type\=%2FELEMENTS%2FOpenMarket%2FXcelerate%2FAssetType%2FPage%2FPlacedPageChildren.xml
-@hashval=434300055
+@hashval=1233778711
 key=@ELEMENTCATALOG-OpenMarket/Xcelerate/AssetType/Page/PlacedPageChildren
 type=ELEMENTCATALOG
 
