@@ -683,7 +683,7 @@ public class Asset extends AssetBase implements wcs.api.Asset,
 			List<Arg> list = new ArrayList<Arg>();
             String site =  i.GetVar("site");
 			list.add(arg("SITE", site));
-			list.add(arg("TNAME", site + "/" + template));
+			list.add(arg("TNAME", site + "_" + template));
 
 			list.add(arg("TTYPE", //
 					i.GetVar("tid") != null ? "Template" : "CSElement"));

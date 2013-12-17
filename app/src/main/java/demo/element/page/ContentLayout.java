@@ -65,10 +65,10 @@ public class ContentLayout extends Element {
 		html.replace("#seealso3", a.slot("SeeAlso", 3, "Page",
 				"ContentSeeAlso", "Drag a Page Here"));
 
-		//html.replace("#tree", e.call("Tree"));
-		//html.replace("#topmenu", e.call("Topmenu"));
-		//html.replace("#breadcrump", e.call("Breadcrump",//
-		//		arg("c", a.getC()), arg("cid", a.getCid().toString())));
+		html.replace("#tree", e.call("Tree"));
+		html.replace("#topmenu", e.call("Topmenu"));
+		html.replace("#breadcrump", e.call("Breadcrump",//
+				arg("c", a.getC()), arg("cid", a.getCid().toString())));
 
 		return html.html();
 	}
