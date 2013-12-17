@@ -629,6 +629,7 @@ public class Asset extends AssetBase implements wcs.api.Asset,
 
     private String normalizeFilename(String filepath, String folder) {
         String filename = filepath;
+        filepath = filepath.replace("\\","/");
         if (filepath.startsWith(folder)) {
             filename = filepath.substring(folder.length() +1);
         }
@@ -680,8 +681,9 @@ public class Asset extends AssetBase implements wcs.api.Asset,
 		try {
 			// let's start with the common parameters
 			List<Arg> list = new ArrayList<Arg>();
-			list.add(arg("SITE", i.GetVar("site")));
-			list.add(arg("TNAME", template));
+            String site =  i.GetVar("site");
+			list.add(arg("SITE", site));
+			list.add(arg("TNAME", site + "/" + template));
 
 			list.add(arg("TTYPE", //
 					i.GetVar("tid") != null ? "Template" : "CSElement"));

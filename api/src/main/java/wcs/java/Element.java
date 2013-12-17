@@ -81,7 +81,7 @@ public abstract class Element implements wcs.api.Element {
 		}
 		try {
 			Method method = this.getClass().getMethod(
-					"apply" + StringUtils.capitalize(device), Env.class);
+					"apply" + StringUtils.capitalize(device), wcs.api.Env.class);
 			return (String) method.invoke(this, env);
 
 		} catch (Exception ex) {

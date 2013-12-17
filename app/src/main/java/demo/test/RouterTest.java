@@ -29,7 +29,7 @@ public class RouterTest extends TestElement {
 			assertAttr("ics-callelement", "error",
 					"Asset not found: type:Page name:Home");
 		else {
-			assertAttr("ics-callelement", "element", "Demo/DmWrapper");
+			assertAttr("ics-callelement", "element", "Demo/Demo_Wrapper");
 			assertAttr("ics-callelement", "c", "Page");
 			assertAttr("ics-callelement", "cid", home.getCid().toString());
 		}

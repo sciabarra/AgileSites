@@ -31,4 +31,14 @@ public class ContentSeeAlso extends Element {
 		html.removeAttrs("*[id^=seealso]", "id");
 		return html.html();
 	}
+
+    public String applyTouch(Env e) {
+        Picker html = Picker.load("/blueprint/template.html", "#seealso1");
+        Asset a = e.getAsset();
+        html.replace("#seealso-title1", a.getString("Title"));
+        html.replace("#seealso-text1", a.getString("Summary"));
+        html.attr("#seealso-link1", "href", a.getUrl());
+        html.removeAttrs("*[id^=seealso]", "id");
+        return html.html();
+    }
 }

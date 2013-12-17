@@ -31,4 +31,14 @@ public class Summary extends Element {
 		return html.outerHtml();
 	}
 
+
+    public String applyTouch(Env e) {
+        Asset a = e.getAsset();
+        Picker html = Picker.load("/blueprint/template.html", "#related");
+        html.replace("#related-title", a.getString("Title"));
+        html.replace("#related-body", a.getString("Summary"));
+        html.removeAttrs("*[id^=related]", "id");
+        return html.outerHtml();
+    }
+
 }
