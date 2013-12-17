@@ -1,0 +1,99 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/LoadDiscProductInfo
+--
+-- INPUT
+--	discrulesethintobject set up
+--	theDiscMap in place
+-- OUTPUT
+--  DiscAssetList - list with columns, assetid, assetname, assettype
+--	Also - DiscDescription, DiscAmount, DiscStyle, DiscType
+--	Also - ShipDescription, ShipAmount, ShipStyle, ShipType
+--  Also - ProductType
+--
+-->
+<setvar NAME="DiscAmount" VALUE="Variables.empty"/>
+<setvar NAME="DiscType" VALUE="Variables.empty"/>
+<setvar NAME="DiscDescription" VALUE="Variables.empty"/>
+<setvar NAME="DiscStyle" VALUE="Variables.empty"/>
+<setvar NAME="ShipStyle" VALUE="Variables.empty"/>
+
+<NVOBJECT.GETVALUE NAME="discrulesethintobject" VALUENAME="DISCOUNT0" VARNAME="ldpRule0String"/>
+<NVOBJECT.CREATE NAME="ldpRule0Obj"/>
+<NVOBJECT.FROMSTRING NAME="ldpRule0Obj" VALUE="Variables.ldpRule0String"/>
+<NVOBJECT.GETVALUE NAME="ldpRule0Obj" VALUENAME="NUMASSETS" VARNAME="NumAssets"/>		
+
+<listobject.create  NAME="DiscAssetListObject" COLUMNS="assettype,assetid,assetname"/>
+
+<if COND="Variables.NumAssets!=0">
+<then>
+	<SETCOUNTER  NAME="mycounter"  VALUE="0"/>
+	<LOOP COUNT="Variables.NumAssets">
+            <NVOBJECT.GETVALUE NAME="ldpRule0Obj" VALUENAME="ASSETIDCounters.mycounter" VARNAME="thisassetid"/>
+            <IF COND="IsVariable.thisassetid=true">
+            <THEN>
+                    <NVOBJECT.GETVALUE NAME="ldpRule0Obj" VALUENAME="ASSETTYPECounters.mycounter" VARNAME="thisassettype"/> 
+            </THEN>
+            <ELSE>
+            	<nvobject.getvalue NAME="ldpRule0Obj" VALUENAME="ASSETKEYCounters.mycounter" VARNAME="ourKey"/>
+                <CALLELEMENT NAME="OpenMarket/Gator/Rules/RuleSetMapKeyLookup">
+                        <ARGUMENT NAME="ourKey" VALUE="Variables.ourKey"/>
+                        <ARGUMENT NAME="ourMap" VALUE="theDiscMap"/>
+                </CALLELEMENT>
+                <SETVAR NAME="thisassettype" VALUE="Variables.ourAssettype"/>
+                <SETVAR NAME="thisassetid" VALUE="Variables.ourAssetid"/>
+            </ELSE>
+            </IF>
+		<NVOBJECT.GETVALUE NAME="discrulesethintobject" VALUENAME="STOREID" VARNAME="TXStoreId"/>
+ 
+		<asset.list TYPE="Variables.thisassettype" LIST="thisassetlist" FIELD1="id" VALUE1="Variables.thisassetid"/>
+		<if COND="Variables.errno=0">
+		<then>
+			<listobject.addrow NAME="DiscAssetListObject"
+				assettype="Variables.thisassettype"
+				assetid="Variables.thisassetid"
+				assetname="thisassetlist.name"/>
+		</then>
+		<else>
+			<br/><XLAT.STREAM KEY="dvin/AT/Common/Errorfromassetlistof" errno="Variables.errno" someIDstr="(Variables.thisassettype) Variables.thisassetid" EVALALL="false"/>
+			<br/><XLAT.STREAM KEY="dvin/UI/ErrorDetailErrdetail1"/>
+		</else>
+		</if>
+		<inccounter NAME="mycounter" VALUE="1"/>
+	</LOOP>
+</then>
+</if>
+
+<listobject.tolist NAME="DiscAssetListObject" LISTVARNAME="DiscAssetList"/>
+
+<NVOBJECT.GETVALUE NAME="ldpRule0Obj" VALUENAME="DISCOUNTAMT" VARNAME="DiscAmount"/>		
+<NVOBJECT.GETVALUE NAME="ldpRule0Obj" VALUENAME="DISCOUNTDESC" VARNAME="DiscDescription"/>
+<NVOBJECT.GETVALUE NAME="ldpRule0Obj" VALUENAME="DISCOUNTTYPE" VARNAME="DiscType"/>	 
+<NVOBJECT.GETVALUE NAME="ldpRule0Obj" VALUENAME="DISCOUNTSTYLE" VARNAME="DiscStyle"/>		
+<NVOBJECT.GETVALUE NAME="ldpRule0Obj" VALUENAME="PRODUCTSELECT" VARNAME="ProductType"/>		
+
+<!-- now get shipping infomation -->
+<NVOBJECT.GETVALUE NAME="discrulesethintobject" VALUENAME="DISCOUNT1" VARNAME="ldpRule1String"/>
+<NVOBJECT.CREATE NAME="ldpRule1Obj"/>
+<NVOBJECT.FROMSTRING NAME="ldpRule1Obj" VALUE="Variables.ldpRule1String"/>
+<NVOBJECT.GETVALUE NAME="ldpRule1Obj" VALUENAME="DISCOUNTAMT" VARNAME="ShipAmount"/>		
+<NVOBJECT.GETVALUE NAME="ldpRule1Obj" VALUENAME="DISCOUNTDESC" VARNAME="ShipDescription"/>
+<NVOBJECT.GETVALUE NAME="ldpRule1Obj" VALUENAME="DISCOUNTTYPE" VARNAME="ShipType"/>		
+<NVOBJECT.GETVALUE NAME="ldpRule1Obj" VALUENAME="DISCOUNTSTYLE" VARNAME="ShipStyle"/>	 
+<if COND="IsVariable.TXStoreId!=true">
+<then>
+        <NVOBJECT.GETVALUE NAME="ldpRule1Obj" VALUENAME="STOREID" VARNAME="TXStoreId"/>
+</then>
+<else>
+	<if COND="Variables.TXStoreId!=Variables.empty">
+	<then>
+		 <NVOBJECT.GETVALUE NAME="ldpRule1Obj" VALUENAME="STOREID" VARNAME="TXStoreId"/>
+	</then>
+	</if>
+</else>
+</if>
+	
+
+
+</FTCS>

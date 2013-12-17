@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/GetManualrec
+--
+-- INPUT
+--	ShowButton
+--	HiddenOnly
+--
+-- OUTPUT
+--
+-->
+
+<setvar NAME="MRNumber" VALUE="ContentDetails:Manualrecs.#numRows"/>
+<if COND="Variables.HiddenOnly!=true">
+	<then>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/Buildmanual">
+			<ARGUMENT NAME="DisplayOnly" VALUE="true"/>
+		</CALLELEMENT>
+	</then>
+	<else>
+		<if COND="Variables.MRNumber!=0">
+			<then>
+				<setcounter NAME="currcount" VALUE="0"/>
+				<loop LIST="ContentDetails:Manualrecs">
+					<setvar NAME="value" VALUE="ContentDetails:Manualrecs.assettype"/>
+					<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
+					<input TYPE="HIDDEN" NAME="AdvColsManualRecsAssetTypeCounters.currcount" VALUE="Variables.value" REPLACEALL="Variables.value,Counters.currcount"/>
+					<setvar NAME="value" VALUE="ContentDetails:Manualrecs.assetid"/>
+					<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
+					<input TYPE="HIDDEN" NAME="AdvColsManualRecsAssetIdCounters.currcount" VALUE="Variables.value" REPLACEALL="Variables.value,Counters.currcount"/>
+					<setvar NAME="value" VALUE="ContentDetails:Manualrecs.bucket"/>
+					<STRING.ENCODE VARIABLE="value" VARNAME="value"/>					
+					<input TYPE="HIDDEN" NAME="AdvColsManualRecsBucketCounters.currcount" VALUE="Variables.value" REPLACEALL="Variables.value,Counters.currcount"/>
+					<callelement NAME="OpenMarket/Xcelerate/AssetType/AdvCols/IntDecConversion">
+						<argument NAME="OPtype" VALUE="DecToInt"/>
+						<argument NAME="currentval" VALUE="ContentDetails:Manualrecs.confidence"/>
+					</callelement>
+					<input TYPE="HIDDEN" NAME="AdvColsManualRecsConfidenceCounters.currcount" VALUE="Variables.NewConfidence" REPLACEALL="Variables.NewConfidence,Counters.currcount"/>
+					<inccounter NAME="currcount" VALUE="1"/>
+				</loop>
+				<INPUT TYPE="HIDDEN" NAME="ManualrecsCount" VALUE="Counters.currcount" REPLACEALL="Counters.currcount"/>
+			</then>
+		</if>
+	</else>
+</if>
+</FTCS> 

@@ -1,0 +1,141 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/ContentForm
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+ <SCRIPT LANGUAGE="JavaScript">
+ 
+
+
+function checkfields()
+{
+	var obj = document.forms[0].elements[0];
+	if (obj.form.elements['Promotions:name'].value=="")
+	{
+		alert("<XLAT.STREAM KEY="dvin/UI/Error/specifyauniquenameforthisPromotion" ESCAPE="true" ENCODE="false"/>");
+		obj.form.elements['Promotions:name'].focus();
+		return false;
+	}
+	obj.form.submit();
+	return false;
+}
+
+function checkfields1()
+{
+	var obj = document.forms[0].elements[0];
+	if (obj.form.elements['Promotions:name'].value=="")
+	{
+		alert("<XLAT.STREAM KEY="dvin/UI/Error/specifyauniquenameforthisPromotion" ESCAPE="true" ENCODE="false"/>");
+		obj.form.elements['Promotions:name'].focus();
+		return false;
+	}
+	return true;
+}
+
+</SCRIPT>
+
+<!-- This is where the tree will put the selected products -->
+<INPUT TYPE="hidden"   NAME="ProductStr" VALUE=""/>
+
+<table border="0" cellpadding="0" cellspacing="0">
+
+<!--  design of new product 
+<setcounter  NAME="SelProdCount"  VALUE="1"/>
+
+-->
+
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ContentFormNavBar">
+		<argument NAME="CurrentCat" VALUE="Products"/>
+	</callelement>
+	
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/LoadDiscProductInfo"/>
+	<tr>
+		<td>
+			<table border="0" cellpadding="0" cellspacing="0">
+			 	<tr>
+					<td colspan="2"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="15" REPLACEALL="Variables.cs_imagedir"/></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="subtitle-text"><XLAT.STREAM KEY="dvin/AT/Common/Products"/></td>
+				</tr>
+			 	<tr>
+					<td colspan="2"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="10" REPLACEALL="Variables.cs_imagedir"/></td>
+				</tr>
+				<tr>
+					<td>
+						<table border="0" cellpadding="0" cellspacing="0">
+							<if COND="Variables.ProductType=all">
+								<then>
+									<tr>
+										<td><input type="radio" value="all" name="ProductType" checked="1"/></td>
+										<td><XLAT.STREAM KEY="dvin/AT/Common/Everyproductincatalog"/></td>
+									</tr>
+								</then>
+								<else>
+									<tr>
+										<td><input type="radio" value="all" name="ProductType"/></td>
+										<td><XLAT.STREAM KEY="dvin/AT/Common/Everyproductincatalog"/></td>
+									</tr>
+								</else>
+							</if>
+						 	<tr>
+								<td colspan="2"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+							</tr>							
+							<if COND="Variables.ProductType=specified">
+								<then> 
+									<tr>
+										<td valign="top"><input type="radio" value="specified" name="ProductType" checked="1"/></td>
+										<td valign="top"><XLAT.STREAM KEY="dvin/AT/Common/ClickPorCfromTree"/>:</td>
+									</tr>
+								</then>
+								<else> 
+									<tr>
+										<td valign="top"><input type="radio" value="specified" name="ProductType"/></td>
+										<td valign="top"><XLAT.STREAM KEY="dvin/AT/Common/ClickPorCfromTree"/>:</td>
+									</tr>
+								</else>
+							</if>
+						 	<tr>
+								<td colspan="2"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ProductListTable">
+									  <argument NAME="showX" VALUE="true"/>
+									</callelement>
+ 								</td>
+							</tr>
+							<tr>
+								<td colspan="2" height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+								  <XLAT.LOOKUP KEY="dvin/AT/Common/SelectFromTree" VARNAME="_selfromtree_" ESCAPE="true"/>
+									<XLAT.LOOKUP KEY="dvin/AT/Common/Selectproductorcategoryfromtree" VARNAME="_selporcfromtree_"/>
+									<A HREF="javascript:void(0)" onclick="return SelectFromTree('Variables.ThisPage','ContentFormProducts','ProductStr')" onmouseover="window.status='Variables._selfromtree_'" REPLACEALL="Variables._selfromtree_,Variables.ThisPage"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/AddSelectedProducts"/></CALLELEMENT></A>
+								</td>
+							</tr>			
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+	<!-- form buttons -->
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ContentFormFooter">
+		<argument NAME="FNextPage" VALUE="ContentFormDiscount"/>
+		<argument NAME="CurrentCat" VALUE="Products"/>
+	</callelement>
+	
+</table>
+  
+</FTCS> 

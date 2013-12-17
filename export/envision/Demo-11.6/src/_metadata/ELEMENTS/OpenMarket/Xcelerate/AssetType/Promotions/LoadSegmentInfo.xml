@@ -1,0 +1,78 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/LoadSegmentInfo
+--
+-- INPUT
+--	rulesethintobject set up
+--	theAppMap rulemap
+-- OUTPUT
+--	SegmentstoApply with either all or specified
+--	SegmentNameStr - comma separated list of names
+--	SegmentIdStr - comma separate lists of ids
+--  SegmentStartDate
+--  SegmentEndDate
+--  SegmentDuration
+--  SegmentEndType
+--
+-->
+
+<setvar NAME="SegmentNameStr" VALUE="Variables.empty"/>
+<setvar NAME="SegmentIdStr" VALUE="Variables.empty"/>
+
+<NVOBJECT.GETVALUE NAME="rulesethintobject" VALUENAME="APPLICABILITY" VARNAME="SegmentstoApply"/>
+<if COND="Variables.SegmentstoApply=specified">
+<then>
+	<NVOBJECT.GETVALUE NAME="rulesethintobject" VALUENAME="NUMSEGS" VARNAME="NumSegments"/>
+	<if COND="Variables.NumSegments!=0">
+	<then>
+		<SETCOUNTER  NAME="mycounter"  VALUE="0"/>
+		<LOOP COUNT="Variables.NumSegments">
+			<NVOBJECT.GETVALUE NAME="rulesethintobject" VALUENAME="SEGIDCounters.mycounter" VARNAME="thissegid"/>
+                        <IF COND="IsVariable.thissegid=true">
+                        <THEN>
+                                <NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="SEGIDCounters.mycounter"/>
+                        </THEN>
+                        <ELSE>
+        			<nvobject.getvalue NAME="rulesethintobject" VALUENAME="SEGKEYCounters.mycounter" VARNAME="ourKey"/>
+                                <CALLELEMENT NAME="OpenMarket/Gator/Rules/RuleSetMapKeyLookup">
+                                    <ARGUMENT NAME="ourKey" VALUE="Variables.ourKey"/>
+                                    <ARGUMENT NAME="ourMap" VALUE="theAppMap"/>
+                                </CALLELEMENT>
+                                <SETVAR NAME="thissegid" VALUE="Variables.ourAssetid"/>
+                        </ELSE>
+                        </IF>
+                        <asset.list TYPE="Segments" LIST="thisseglist" FIELD1="id" VALUE1="Variables.thissegid"/>
+			<if COND="Variables.errno=0">
+			<then>
+				<if COND="Counters.mycounter=0">
+				<then>
+					<setvar NAME="SegmentIdStr" VALUE="Variables.thissegid"/>
+					<setvar NAME="SegmentNameStr" VALUE="thisseglist.name"/>
+				</then>
+				<else>
+					<setvar NAME="SegmentIdStr" VALUE="Variables.SegmentIdStr,Variables.thissegid"/>
+					<setvar NAME="SegmentNameStr" VALUE="Variables.SegmentNameStr,thisseglist.name"/>
+				</else>
+				</if>
+			</then>
+			<else>
+				<br/><XLAT.STREAM KEY="dvin/AT/Common/Errorfromassetlistof" errno="Variables.errno" someIDstr="Variables.thissegid" EVALALL="false"/>
+				<br/><XLAT.STREAM KEY="dvin/UI/ErrorDetailErrdetail1"/>
+			</else>
+			</if>
+			<inccounter NAME="mycounter" VALUE="1"/>
+		</LOOP>
+	</then>
+	</if>
+</then>
+</if>
+<NVOBJECT.GETVALUE NAME="rulesethintobject" VALUENAME="STARTDATE" VARNAME="SegmentStartDate"/>
+<NVOBJECT.GETVALUE NAME="rulesethintobject" VALUENAME="ENDDATE" VARNAME="SegmentEndDate"/>
+<NVOBJECT.GETVALUE NAME="rulesethintobject" VALUENAME="DURATION" VARNAME="SegmentDuration"/>
+<NVOBJECT.GETVALUE NAME="rulesethintobject" VALUENAME="ENDTYPE" VARNAME="SegmentEndType"/>
+<NVOBJECT.GETVALUE NAME="rulesethintobject" VALUENAME="ENDTZ" VARNAME="SegmentEndTimeZone"/>
+<NVOBJECT.GETVALUE NAME="rulesethintobject" VALUENAME="STARTTZ" VARNAME="SegmentStartTimeZone"/>
+
+
+</FTCS> 

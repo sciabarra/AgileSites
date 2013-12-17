@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/SetRuleVars
+--
+-- This element seems to look at the scattered XML ruleset, and get the following data:
+-- (a) the rule name
+-- (b) the rule description
+-- (c) the rule encoding
+--
+-- I suspect this was originally here to handle 'advanced' rulesets, which the UI no longer supports.
+--
+-- INPUT
+--
+-- A scattered asset with prefix "ContentDetails:"
+--
+-- OUTPUT
+--
+-- Sets theRuleName, theRuleDescription, and theRuleEncoding
+-->
+<!--We want at least these variables to be set to something-->
+
+<setvar NAME="theRuleName" VALUE="Variables.empty"/>
+<setvar NAME="theRuleDescription" VALUE="Variables.empty"/>
+<setvar NAME="theRuleEncoding" VALUE="Variables.empty"/>
+
+<if COND="IsVariable.ContentDetails:selruleset=true">
+<then>
+	<if COND="Variables.ContentDetails:selruleset!=Variables.empty">
+	<then>
+		<rulesetdef.create NAME="theRule"/>
+		<if COND="Variables.errno=0">
+		<then>
+			<rulesetdef.fromxml NAME="theRule" XML="Variables.ContentDetails:selruleset"/>
+			<if COND="Variables.errno=0">
+			<then>
+				<rulesetdef.getname NAME="theRule" VARNAME="theRuleName"/>
+				<rulesetdef.getdescription NAME="theRule" VARNAME="theRuleDescription"/>
+				<rulesetdef.getencoding NAME="theRule" VARNAME="theRuleEncoding"/>
+			</then>
+			<else>
+				<br/><XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorRuleSetFromXml" errno="Variables.errno" EVALALL="false"/>
+				<br/><XLAT.STREAM KEY="dvin/UI/ErrorDetailErrdetail1"/>
+			</else>
+			</if>
+		</then>
+		<else>
+			<br/><XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorRuleSetCreate" errno="Variables.errno" EVALALL="false"/>
+			<br/><XLAT.STREAM KEY="dvin/UI/ErrorDetailErrdetail1"/>
+		</else>
+		</if>
+	</then>
+	</if>
+</then>
+</if>
+
+</FTCS> 

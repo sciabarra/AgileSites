@@ -12,8 +12,8 @@ import demo.Config;
 public class Tester extends TestRunnerElement {
 
 	public static AssetSetup setup() {
-		return new CSElement("Demo_Tester", demo.element.Tester.class, //
-				new SiteEntry("demo-tester", false, "Demo_Tester"));
+		return new CSElement("Tester", demo.element.Tester.class, //
+				new SiteEntry("", false, "Tester"));
 	}
 
 	@Override

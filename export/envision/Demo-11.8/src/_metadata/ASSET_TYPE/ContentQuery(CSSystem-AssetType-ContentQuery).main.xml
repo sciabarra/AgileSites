@@ -11,7 +11,7 @@
         <description>Content Query</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\Sites\11.1.1.8.0\Shared\Storage\AssetType\ContentQuery.xml</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\Sites\11.1.1.8.0\Shared\Storage\AssetType\ContentQuery,2.xml</urldescriptorspec>
         <urldescriptordata>PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8IS0tIFRoaXMgaXMgdGhlIGFzc2V0IGRlc2NyaXB0aW9u
 IG9mIGEgQ29udGVudCBRdWVyeSAtLT4KPEFTU0VUIE5BTUU9IkNvbnRlbnRRdWVyeSIgREVTQ1JJ
 UFRJT049IkNvbnRlbnQgUXVlcnkiIE1BUktFUlRFWFQ9IioiIFBST0NFU1NPUj0iNS4wIiBERUZE
@@ -268,7 +268,7 @@ CiAgPC9QUk9QRVJUSUVTPiAgCjwvQVNTRVQ+</urldescriptordata>
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/ContentQuery/SelectSummary_NoCat.sql</string>
+            <string>OpenMarket\Xcelerate\AssetType\ContentQuery\SelectSummary_NoCat,2.sql</string>
             <null/>
             <null/>
             <null/>

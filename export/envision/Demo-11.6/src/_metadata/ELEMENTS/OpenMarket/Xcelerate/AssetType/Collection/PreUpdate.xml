@@ -1,0 +1,190 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!--
+$Logfile: /VerticalApps/XcelerateC/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Collection/PreUpdate.xml $ 
+$Revision: 42 $ 
+$Modtime: 1/06/03 1:58p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of divine, Inc.
+-					All Rights Reserved.
+-
+-    When an asset is created, edited, or copied,
+-    this element is called before the database update
+-    function is invoked.
+-
+-    This element is passed in an argument: 'updatetype'
+-    whose value can drive special processing based
+-    on the type of update
+- 
+- INPUT: the asset is an object loaded and called 'theCurrentAsset'
+-  	Variables.prefix - scattered asset field prefix + ':' fieldname = fiel'd value
+-     Variables.updatetype - can be setformdefaults,editfront,edit,create,remotepost,delete, updatefrom
+-->
+
+
+<if COND="Variables.updatetype=setformdefaults">
+    <then>
+	</then>
+</if>
+
+<if COND="Variables.updatetype=editfront">
+<then>
+</then>
+</if>
+
+<if COND="Variables.updatetype=edit">
+    <then>
+
+<!-- Gather the input values into the object -->
+
+		<ASSET.GATHER NAME="theCurrentAsset" PREFIX="Variables.prefix" FIELDLIST="Variables.FieldsOnForm"/>
+
+<!-- Update children relations based on standard form values -->
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+			<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+			<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+		</CALLELEMENT>
+<!-- Set the subtype based on what Query has been chosen and check that all queries have same assettype -->
+	
+ 			<setvar NAME="subtype" VALUE="Variables.Variables.prefix:subtype"/>
+        <ASSOCNAMEDMANAGER.FIND   PREFIX="AssocQueries:" TYPE="Collection" CHILDTYPE="Query" />
+        <IF COND="Variables.AssocQueries:Total!=0">
+		<THEN>	
+            <SETCOUNTER NAME="currentItem" VALUE="0"/>
+        	<LOOP COUNT="Variables.AssocQueries:Total">
+                <ASSOCNAMED.GETNAME NAME="AssocQueries:Counters.currentItem" VARNAME="Assocname"/>
+            <IF COND="IsVariable.Variables.prefix:Variables.Assocname:id=true">
+			<THEN>
+				<SETVAR NAME="queryid" VALUE="Variables.Variables.prefix:Variables.Assocname:id"/>
+				<ASSET.LOAD NAME="aQuery" OBJECTID="Variables.queryid" TYPE="Query"/>
+				<ASSET.GET NAME="aQuery" FIELD="subtype" OUTPUT="querysubtype"/>
+				<IF COND="IsVariable.subtype=true">
+				<THEN>
+					<IF COND="Variables.subtype!=Variables.querysubtype">
+					<THEN>
+  						<XLAT.LOOKUP KEY="dvin/AT/Collection/PreUpdate-InconsistentQueries" VARNAME="_xlat_inconsistent"/>
+		        		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+							<argument NAME="msgtext" VALUE="Variables._xlat_inconsistent"/>
+							<argument NAME="severity" VALUE="error"/>
+						</callelement>	
+					</THEN>
+					</IF>
+				</THEN>
+				<ELSE>
+					<SETVAR NAME="subtype" VALUE="Variables.querysubtype"/>
+					<ASSET.SET NAME="theCurrentAsset" FIELD="subtype" VALUE="Variables.querysubtype"/>	
+				</ELSE>
+				</IF>
+			</THEN>
+			</IF>
+		<INCCOUNTER NAME="currentItem" VALUE="1"/>
+        </LOOP>
+        </THEN>
+        </IF>
+	</then>
+</if>
+
+<if COND="Variables.updatetype=create">
+    <then>
+
+<!-- Gather the input values into the object -->
+
+		<ASSET.GATHER NAME="theCurrentAsset" PREFIX="Variables.prefix" FIELDLIST="Variables.FieldsOnForm"/>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+<!-- Update children relations based on standard form values -->
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+			<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+			<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+		</CALLELEMENT>
+<!-- Set the subtype based on what Query has been chosen and check that all queries have same assettype -->
+	
+ 			<setvar NAME="subtype" VALUE="Variables.Variables.prefix:subtype"/>
+        <ASSOCNAMEDMANAGER.FIND   PREFIX="AssocQueries:" TYPE="Collection" CHILDTYPE="Query" />
+        <IF COND="Variables.AssocQueries:Total!=0">
+        <THEN>
+            <SETCOUNTER NAME="currentItem" VALUE="0"/>
+            <LOOP COUNT="Variables.AssocQueries:Total">
+                 <ASSOCNAMED.GETNAME NAME="AssocQueries:Counters.currentItem" VARNAME="Assocname"/>
+   
+    			<IF COND="IsVariable.Variables.prefix:Variables.Assocname:id=true">
+    			<THEN>
+    				<SETVAR NAME="queryid" VALUE="Variables.Variables.prefix:Variables.Assocname:id"/>
+    				<ASSET.LOAD NAME="aQuery" OBJECTID="Variables.queryid" TYPE="Query"/>
+    				<ASSET.GET NAME="aQuery" FIELD="subtype" OUTPUT="querysubtype"/>
+    				<IF COND="IsVariable.subtype=true">
+    				<THEN>
+    					<IF COND="Variables.subtype!=Variables.querysubtype">
+    					<THEN>
+   						<XLAT.LOOKUP KEY="dvin/AT/Collection/PreUpdate-InconsistentQueries" subtype="Variables.subtype" querysubtype="Variables.querysubtype" EVALALL="false" VARNAME="_xlat_inconsistent"/>
+		        			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+								<argument NAME="msgtext" VALUE="Variables._xlat_inconsistent"/>
+    							<argument NAME="severity" VALUE="error"/>
+    						</callelement>	
+    					</THEN>
+    					</IF>
+    				</THEN>
+    				<ELSE>
+    					<SETVAR NAME="subtype" VALUE="Variables.querysubtype"/>
+    					<ASSET.SET NAME="theCurrentAsset" FIELD="subtype" VALUE="Variables.querysubtype"/>	
+    				</ELSE>
+    				</IF>
+    			</THEN>
+    			</IF>
+            <INCCOUNTER NAME="currentItem" VALUE="1"/>
+    		</LOOP>
+        </THEN>
+        </IF>    
+    </then>
+</if>
+
+<if COND="Variables.updatetype=delete">
+    <then>
+    </then>
+</if>
+
+<if COND="Variables.updatetype=remotepost">
+    <then>
+    <IF COND="Variables.Action=update">
+    <THEN>
+         <CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Util/MakeFieldListforRemotePost"/>
+         <ASSET.GATHER NAME="theCurrentAsset" FIELDLIST="Variables.updateFieldList"/>
+    </THEN>
+    <ELSE>
+        <ASSET.GATHER NAME="theCurrentAsset"/>
+    </ELSE>
+    </IF>
+     </then>
+</if>
+
+<if COND="Variables.updatetype=updatefrom">
+    <then>
+    </then>
+</if>
+
+<!-- If the asset is updated from dah -->
+<if COND="Variables.dashUpdate=dashUpdate">
+<then>
+	<if COND="Variables.dashUpdateType=create">
+    <then>
+		<!--if the operation is create-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=edit">
+    <then>
+		<!--if the operation is edit-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=delete">
+    <then>
+		<!--if the operation is delete-->
+    </then>
+    </if>
+</then>
+</if>
+
+</FTCS>

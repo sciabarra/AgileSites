@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormSort
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+
+<TABLE border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormNavBar">
+		<ARGUMENT NAME="CurrentCat" VALUE="Sort"/>
+	</CALLELEMENT>
+</TABLE>
+<TABLE border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/AddSortOrder"/>
+
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/GetOrdering">
+		<ARGUMENT NAME="HiddenOnly" VALUE="false"/>
+	</CALLELEMENT>
+	
+  <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormFooter">
+		<ARGUMENT NAME="NoContinue" VALUE="true"/>
+	</CALLELEMENT>
+</TABLE>
+
+</FTCS> 

@@ -1,0 +1,170 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ftcs SYSTEM "futuretense_cs.dtd">
+<ftcs version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/SaveRulesetTuples
+-
+- This element defines hidden variables for both rulesets.  It also happens to update the asset instance
+- with the current rulesets and rulemaps.
+-
+- INPUT
+-
+-
+- OUTPUT
+-
+-->
+
+<!-- Below is a chunk of temporary code I moved from ManageFormVars.  Basically it belongs in a new element whose function is to set up hidden
+     variables for the next post. -->
+
+<if COND="Variables.PromotionsNextStep!=Variables.empty">
+<then>
+    <if COND="Variables.PromotionsNextStep!=ContentFormDisplay">
+    <then>
+	<!--save any Override variables-->
+	<setvar NAME="OvNumber" VALUE="ContentDetails:Overrides.#numRows"/>
+	<if COND="Variables.OvNumber!=0">
+	<then>
+		<setcounter NAME="currcount" VALUE="0"/>
+		<loop LIST="ContentDetails:Overrides">
+			<input TYPE="HIDDEN" NAME="PromotionsOverridesAssetTypeCounters.currcount" VALUE="ContentDetails:Overrides.recommendedassettype" REPLACEALL="ContentDetails:Overrides.recommendedassettype,Counters.currcount"/>
+			<input TYPE="HIDDEN" NAME="PromotionsOverridesAssetIdCounters.currcount" VALUE="ContentDetails:Overrides.recommendedassetid" REPLACEALL="ContentDetails:Overrides.recommendedassetid,Counters.currcount"/>
+			<input TYPE="HIDDEN" NAME="PromotionsOverridesConfidenceCounters.currcount" VALUE="ContentDetails:Overrides.confidence" REPLACEALL="ContentDetails:Overrides.confidence,Counters.currcount"/>
+			<input TYPE="HIDDEN" NAME="PromotionsOverridesRelidCounters.currcount" VALUE="ContentDetails:Overrides.relationshipid" REPLACEALL="ContentDetails:Overrides.relationshipid,Counters.currcount"/>
+			<inccounter NAME="currcount" VALUE="1"/>
+		</loop>
+		<INPUT TYPE="HIDDEN" NAME="OverridesCount" VALUE="Counters.currcount" REPLACEALL="Counters.currcount"/>
+	</then>
+	</if>
+    </then>
+    </if>
+</then>
+</if>
+		         
+
+<if COND="Variables.PromotionsNextStep!=Variables.empty">
+<then>
+    <if COND="Variables.PromotionsNextStep!=ContentFormGoals">
+    <then>
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/LoadGoalVars"/>
+
+	<setvar NAME="OutputQString" VALUE="Variables.empty"/>                              
+	<SUBSTITUTE STR="Variables.Goal1" WHAT="&#34;" WITH="&#38;quot;" 
+			OUTSTR="OutputQString"/>
+	
+	<INPUT TYPE="HIDDEN" NAME="Goal1" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/>
+	<setvar NAME="OutputQString" VALUE="Variables.empty"/>                              
+	<SUBSTITUTE STR="Variables.Goal2" WHAT="&#34;" WITH="&#38;quot;" 
+			OUTSTR="OutputQString"/>
+	
+	<INPUT TYPE="HIDDEN" NAME="Goal2" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/>
+		
+	<setvar NAME="OutputQString" VALUE="Variables.empty"/>                              
+	<SUBSTITUTE STR="Variables.Goal3" WHAT="&#34;" WITH="&#38;quot;" 
+			OUTSTR="OutputQString"/>
+	
+	<INPUT TYPE="HIDDEN" NAME="Goal3" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/>
+    </then>
+    </if>
+</then>
+</if>
+ 
+<if COND="Variables.PromotionsNextStep!=Variables.empty">
+<then>
+    <if COND="Variables.PromotionsNextStep!=ContentFormName">
+    <then>
+	<setvar NAME="OutputQString"  VALUE="Variables.empty"/>
+	<SUBSTITUTE STR="Variables.ContentDetails:name" WHAT="&#34;" WITH="&#38;quot;" 
+			OUTSTR="OutputQString"/>
+  	<INPUT TYPE="HIDDEN" NAME="Promotions:name" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/>
+	<setvar NAME="OutputQString"  VALUE="Variables.empty"/>
+	<SUBSTITUTE STR="Variables.ContentDetails:description" WHAT="&#34;" WITH="&#38;quot;" 
+			OUTSTR="OutputQString"/>
+	<INPUT TYPE="HIDDEN" NAME="Promotions:description" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/>
+	
+	<!-- Add start and end dates to the list of attribtues whose values we remember when moving from one form to the other -->
+	<STRING.ENCODE VARIABLE="ContentDetails:startdate" VARNAME="ContentDetails:startdate"/>
+	<INPUT TYPE="HIDDEN" NAME="Promotions:startdate" VALUE="Variables.ContentDetails:startdate" REPLACEALL="Variables.ContentDetails:startdate" />
+	<STRING.ENCODE VARIABLE="ContentDetails:enddate" VARNAME="ContentDetails:enddate"/>
+	<INPUT TYPE="HIDDEN" NAME="Promotions:enddate" VALUE="Variables.ContentDetails:enddate" REPLACEALL="Variables.ContentDetails:enddate" />
+    </then>
+    </if>
+</then>
+</if>
+ 
+<!-- End temporary code -->
+<!-- set and scatter updated rulemaps -->
+<PROMOTION.SETRATINGRULESETMAP NAME="theCurrentAsset" OBJECT="theAppMap"/>
+<PROMOTION.SETDISCOUNTRULESETMAP NAME="theCurrentAsset" OBJECT="theDiscMap"/>
+<ASSET.SCATTER NAME="theCurrentAsset" PREFIX="ContentDetails" FIELDLIST="ruleset,discruleset" />
+
+<!-- Do rule hints -->
+<NVOBJECT.TOSTRING NAME="rulesethintobject" VARNAME="RulesetHintString"/>
+<![CDATA[<INPUT TYPE="HIDDEN" NAME="RulesetHintString" VALUE="]]><STRING.STREAM VALUE="Variables.RulesetHintString"/><![CDATA[" />]]>
+<NVOBJECT.TOSTRING NAME="discrulesethintobject" VARNAME="DiscRulesetHintString"/>
+<![CDATA[<INPUT TYPE="HIDDEN" NAME="DiscRulesetHintString" VALUE="]]><STRING.STREAM VALUE="Variables.DiscRulesetHintString"/><![CDATA[" />]]>
+
+<!-- Now, maps -->   
+<STRING.ENCODE VARIABLE="ContentDetails:ruleset_map:Total" VARNAME="ContentDetails:ruleset_map:Total"/>
+<INPUT TYPE="HIDDEN" NAME="Promotions:ruleset_map:Total" VALUE="Variables.ContentDetails:ruleset_map:Total" REPLACEALL="Variables.ContentDetails:ruleset_map:Total"/>
+<STRING.ENCODE VARIABLE="ContentDetails:discruleset_map:Total" VARNAME="ContentDetails:discruleset_map:Total"/>
+<INPUT TYPE="HIDDEN" NAME="Promotions:discruleset_map:Total" VALUE="Variables.ContentDetails:discruleset_map:Total" REPLACEALL="Variables.ContentDetails:discruleset_map:Total"/>
+	
+<SETCOUNTER NAME="typecount" VALUE="0"/>
+<IF COND="Variables.ContentDetails:ruleset_map:Total!=0">
+<THEN>
+	<LOOP COUNT="Variables.ContentDetails:ruleset_map:Total">
+        <ICS.RESOLVEVARIABLES  NAME="$(Variables.ContentDetails:ruleset_map:$(Counters.typecount):key)" OUTPUT="ourKey" DELIMITED="true"/>
+		<STRING.ENCODE VARIABLE="ourKey" VARNAME="ourKey"/>
+		<INPUT TYPE="HIDDEN" NAME="Promotions:ruleset_map:Counters.typecount:key" VALUE="Variables.ourKey" REPLACEALL="Variables.ourKey,Counters.typecount"/>
+        <ICS.RESOLVEVARIABLES  NAME="$(Variables.ContentDetails:ruleset_map:$(Counters.typecount):type)" OUTPUT="ourType" DELIMITED="true"/>
+		<STRING.ENCODE VARIABLE="ourType" VARNAME="ourType"/>
+		<INPUT TYPE="HIDDEN" NAME="Promotions:ruleset_map:Counters.typecount:type" VALUE="Variables.ourType" REPLACEALL="Variables.ourType,Counters.typecount"/>
+        <ICS.RESOLVEVARIABLES  NAME="$(Variables.ContentDetails:ruleset_map:$(Counters.typecount):value)" OUTPUT="ourValue" DELIMITED="true"/>
+		<STRING.ENCODE VARIABLE="ourValue" VARNAME="ourValue"/>
+		<INPUT TYPE="HIDDEN" NAME="Promotions:ruleset_map:Counters.typecount:value" VALUE="Variables.ourValue" REPLACEALL="Variables.ourValue,Counters.typecount"/>
+				
+                <!-- Load rulemap keys and values from database   -->
+                
+                <!-- for segment rulemap keys -->
+                <SETVAR NAME="errno" VALUE="0"/>
+                <INDEXOF STR="Variables.ourKey" WHAT="SEGKEY" OUTSTR="keywordIndex"/>
+                <IF COND="Variables.errno=1">
+                <THEN>
+                        <!-- calculate cart item number -->
+                        <CALCULATOR.GO VALUE="Variables.keywordIndex 6 +" VARNAME="segItemIndex"/>
+                        <SUBSTRING STR="Variables.ourKey" OUTSTR="segCntr" INDEX="Variables.segItemIndex"/>
+
+                        <!-- calculate index for assettype and assetid   --> 
+                        <INDEXOF STR="Variables.ourValue" OUTSTR="keyColonIndex" WHAT=":" INDEX="0"/>
+                        <CALCULATOR.GO VALUE="Variables.keyColonIndex 1 +" VARNAME="keyColonPlusOne"/>
+                        <SUBSTRING STR="Variables.ourValue" OUTSTR="ourAssetid" INDEX="Variables.keyColonPlusOne"/>
+
+                        <SETVAR NAME="PromotionsSegmentVariables.segCntr" VALUE="Variables.ourAssetid"/>
+                </THEN>
+                </IF>
+                
+                <INCCOUNTER NAME="typecount" VALUE="1"/>
+	</LOOP>
+</THEN>
+</IF>
+
+<SETCOUNTER NAME="typecount" VALUE="0"/>
+<IF COND="Variables.ContentDetails:discruleset_map:Total!=0">
+<THEN>
+	<LOOP COUNT="Variables.ContentDetails:discruleset_map:Total">
+        <ICS.RESOLVEVARIABLES  NAME="$(Variables.ContentDetails:discruleset_map:$(Counters.typecount):key)" OUTPUT="ourKey" DELIMITED="true"/>
+		<STRING.ENCODE VARIABLE="ourKey" VARNAME="ourKey"/>
+		<INPUT TYPE="HIDDEN" NAME="Promotions:discruleset_map:Counters.typecount:key" VALUE="Variables.ourKey" REPLACEALL="Variables.ourKey,Counters.typecount"/>
+        <ICS.RESOLVEVARIABLES  NAME="$(Variables.ContentDetails:discruleset_map:$(Counters.typecount):type)" OUTPUT="ourType" DELIMITED="true"/>
+		<STRING.ENCODE VARIABLE="ourType" VARNAME="ourType"/>
+		<INPUT TYPE="HIDDEN" NAME="Promotions:discruleset_map:Counters.typecount:type" VALUE="Variables.ourType" REPLACEALL="Variables.ourType,Counters.typecount"/>
+        <ICS.RESOLVEVARIABLES  NAME="$(Variables.ContentDetails:discruleset_map:$(Counters.typecount):value)" OUTPUT="ourValue" DELIMITED="true"/>
+		<STRING.ENCODE VARIABLE="ourValue" VARNAME="ourValue"/>
+		<INPUT TYPE="HIDDEN" NAME="Promotions:discruleset_map:Counters.typecount:value" VALUE="Variables.ourValue" REPLACEALL="Variables.ourValue,Counters.typecount"/>
+		<INCCOUNTER NAME="typecount" VALUE="1"/>
+	</LOOP>
+</THEN>
+</IF>
+
+</ftcs>
+

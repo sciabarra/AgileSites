@@ -1,0 +1,150 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/GetOrdering
+--
+-- INPUT
+--	ShowButton
+--	HiddenOnly
+--
+-- OUTPUT
+--
+-->
+
+<SETVAR NAME="OurNumber" VALUE="ContentDetails:Sortorder.#numRows"/>
+<IF COND="Variables.HiddenOnly!=true">
+	<THEN>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		<tr>
+			<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/AdvCols/SortCriteria"/>:</td>
+			<td></td>
+			<td class="form-inset">
+			<table cellpadding="0" cellspacing="0" border="0">
+					<SETCOUNTER NAME="currcount" VALUE="0"/>
+					<IF COND="Variables.OurNumber!=0">
+						<THEN>
+							<tr><td>
+								<table BORDER="0" CELLSPACING="0" CELLPADDING="0">
+								<tr>
+									<td></td><td class="tile-dark" VALIGN="TOP" HEIGHT="1"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td><td></td>
+								</tr>
+								<tr>
+								<td class="tile-dark" VALIGN="top" WIDTH="1" NOWRAP="nowrap"><BR /></td>
+								<td>
+									<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff"><tr><td colspan="10" class="tile-highlight"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td></tr>
+										<tr><td class="tile-a" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td>
+											<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><BR /></DIV></td>
+											<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/AT/Common/AttributeType"/></DIV></td>
+											<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/AT/Flex/Attribute"/></DIV></td>
+											<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/AT/Common/Direction"/></DIV></td>
+											<td class="tile-c" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td>
+										</tr>
+										
+										<tr><td colspan="10" class="tile-dark"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td></tr>
+										<SETCOUNTER NAME="currcount" VALUE="0"/>
+										<SETVAR NAME="separatorLine" VALUE="0"/>
+										<setvar NAME="rowStyle" VALUE="tile-row-normal"/>
+										<LOOP LIST="ContentDetails:Sortorder">
+											<CALCULATOR.GO VALUE="Counters.currcount 1 +" VARNAME="thiscount"/>
+											<tr class="Variables.rowStyle" REPLACEALL="Variables.rowStyle">
+												<td><BR /></td>
+												<td><BR /></td>
+												<IF COND="Variables.ShowButton!=false">
+													<THEN>
+														<XLAT.LOOKUP KEY="dvin/AT/Common/Removefromlist" VARNAME="_XLAT_"/>
+														<XLAT.LOOKUP KEY="dvin/AT/Common/Removefromlist" VARNAME="_Removefromlist_" ESCAPE="true"/>
+														<td valign="middle" NOWRAP="NOWRAP" ALIGN="LEFT"><a href="javascript:void(0)" onclick="setTabDirty(); return RemoveItem('Variables.ThisPage','ContentFormSort','AdvColsAttributeTypeNameCounters.currcount')"   onmouseover="window.status='Variables._Removefromlist_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables.ThisPage, Counters.currcount, Variables._Removefromlist_" >
+																	<img src="Variables.cs_imagedir/graphics/common/icon/iconDeleteContent.gif" alt="Variables._XLAT_" title="Variables._XLAT_" border="0" hspace="2" REPLACEALL="Variables.cs_imagedir,Variables._XLAT_"/></a>
+														</td>
+													</THEN>
+													<ELSE>
+														<td></td>
+													</ELSE>
+												</IF>
+												<td><CSVAR NAME="Variables.thiscount"/>.</td>
+												<td align="left" valign="top" nowrap="0"><STRING.STREAM VALUE="ContentDetails:Sortorder.attributetypename"/>
+													<input TYPE="HIDDEN" NAME="AdvColsAttributeTypeNameCounters.currcount" VALUE="ContentDetails:Sortorder.attributetypename" REPLACEALL="ContentDetails:Sortorder.attributetypename,Counters.currcount"/>
+												</td>
+												<td></td>
+												<td align="left" valign="top"><STRING.STREAM VALUE="ContentDetails:Sortorder.attributename"/>
+													<input TYPE="HIDDEN" NAME="AdvColsAttributeNameCounters.currcount" VALUE="ContentDetails:Sortorder.attributename" REPLACEALL="ContentDetails:Sortorder.attributename,Counters.currcount"/>					     
+												</td>
+												<td></td>
+												<td align="left" valign="top">
+													<IF COND="ContentDetails:Sortorder.direction=ascending">
+														<THEN>
+															<XLAT.STREAM KEY="dvin/AT/AdvCols/Ascending"/>
+														</THEN>
+														<ELSE>
+															<XLAT.STREAM KEY="dvin/AT/AdvCols/Descending"/>
+														</ELSE>
+													</IF>
+													<input TYPE="HIDDEN" NAME="AdvColsDirectionCounters.currcount" VALUE="ContentDetails:Sortorder.direction" REPLACEALL="ContentDetails:Sortorder.direction,Counters.currcount"/>
+												</td>
+											</tr>
+											<INCCOUNTER NAME="currcount" VALUE="1"/>
+										<IF COND="Variables.rowStyle=tile-row-normal">
+											<THEN>
+												<SETVAR NAME="rowStyle" VALUE="tile-row-highlight"/>
+											</THEN>
+											<ELSE>
+												<SETVAR NAME="rowStyle" VALUE="tile-row-normal"/>
+											</ELSE>
+											</IF>
+										</LOOP>
+										
+									</table>
+									</td>
+										<td class="tile-dark" VALIGN="top" WIDTH="1" NOWRAP="nowrap"><BR /></td>
+									</tr>
+									<tr>
+										<td colspan="3" class="tile-dark" VALIGN="TOP" HEIGHT="1"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									<tr>
+										<td></td><td background="Variables.cs_imagedir/graphics/common/screen/shadow.gif" REPLACEALL="Variables.cs_imagedir"><IMG WIDTH="1" HEIGHT="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td><td></td>
+									</tr>
+								   </table>
+								
+								
+							</td>
+							</tr>
+						</THEN>
+					</IF>
+					<INPUT TYPE="HIDDEN" NAME="SortorderCount" VALUE="Counters.currcount" REPLACEALL="Counters.currcount"/>
+				</table>
+			</td>
+		</tr>
+		<IF COND="Variables.ShowChangeButton=true">
+								<THEN>
+								<tr><td></td>
+								<td><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="10" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+								
+									<TD valign="top" align="left">
+										<XLAT.LOOKUP KEY="dvin/AT/AdvCols/SortCriteria" VARNAME="changeX"/>
+										<XLAT.LOOKUP KEY="dvin/AT/AdvCols/ChangeX" VARNAME="_change_" ESCAPE="true"/>
+										<XLAT.LOOKUP KEY="dvin/AT/AdvCols/ChangeX" VARNAME="_change_ALT"/>
+										<A HREF="javascript:void(0)" onclick="setTabDirty(); return Fixpagename('Variables.ThisPage','ContentFormSort')" onmouseover="window.status='Variables._change_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._change_,Variables.ThisPage">
+											<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Change"/></CALLELEMENT>
+										</A>
+									</TD></tr>
+								</THEN>
+								</IF>
+		
+		
+	</THEN>
+	<ELSE>
+		<IF COND="Variables.OurNumber!=0">
+			<THEN>
+				<setcounter NAME="currcount" VALUE="0"/>
+				<LOOP LIST="ContentDetails:Sortorder">
+					<input TYPE="HIDDEN" NAME="AdvColsAttributeTypeNameCounters.currcount" VALUE="ContentDetails:Sortorder.attributetypename" REPLACEALL="ContentDetails:Sortorder.attributetypename,Counters.currcount"/>
+					<input TYPE="HIDDEN" NAME="AdvColsAttributeNameCounters.currcount" VALUE="ContentDetails:Sortorder.attributename" REPLACEALL="ContentDetails:Sortorder.attributename,Counters.currcount"/>					     
+					<input TYPE="HIDDEN" NAME="AdvColsDirectionCounters.currcount" VALUE="ContentDetails:Sortorder.direction" REPLACEALL="ContentDetails:Sortorder.direction,Counters.currcount"/>
+					<inccounter NAME="currcount" VALUE="1"/>
+				</LOOP>
+				<INPUT TYPE="HIDDEN" NAME="SortorderCount" VALUE="Counters.currcount" REPLACEALL="Counters.currcount"/>
+			</THEN>
+		</IF>
+	</ELSE>
+</IF>
+</FTCS> 

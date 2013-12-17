@@ -1,0 +1,170 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+ <FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Promotions/SearchForm.xml $ 
+$Revision: 23 $ 
+$Modtime: 2/27/04 2:46p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- SearchForm.xml
+-
+- DESCRIPTION
+-	
+-
+- HISTORY 
+- 25 March 1999, BobP
+-       Add DirectQuery form field, conditional on whether SE searching is
+-       enabled.  Remove onClick from Submit button if SE searching is
+-       enabled.
+- 26 May, 2000 Jeff Sokolov
+-- Converted to standard UI layout
+-
+-->
+
+<table border="0" cellspacing="0" cellpadding="0">
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/NameContainsNoColon"/>:</td>
+		<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+		<td class="form-inset">   
+          <if COND="IsVariable.Name=true">
+          <then>
+            <![CDATA[<INPUT TYPE="text" NAME="Name" VALUE="]]><STRING.STREAM VALUE="Variables.Name"/><![CDATA[" SIZE="32" MAXLENGTH="128"/>]]>
+          </then>
+          <else>
+            <INPUT TYPE="text" NAME="Name" SIZE="32" MAXLENGTH="128"/>
+          </else>
+          </if>
+        </td>
+  	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/DescriptionContains"/>:</td>
+		<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+		<td class="form-inset">
+          <if COND="IsVariable.Description=true">
+          <then>
+            <![CDATA[<INPUT TYPE="text" NAME="Description" VALUE="]]><STRING.STREAM VALUE="Variables.Description"/><![CDATA[" SIZE="32" MAXLENGTH="128"/>]]>
+          </then>
+          <else>
+            <INPUT TYPE="text" NAME="Description" SIZE="32" MAXLENGTH="128"/>
+          </else>
+          </if>
+        </td>
+	</tr>
+	
+	<IF COND="Variables.AssetTypeObj:usesearchindex=1">
+	<THEN>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		<tr>
+			<td class="form-label-text"><INPUT NAME="SelectDirectQuery" TYPE="CHECKBOX"/><XLAT.STREAM KEY="dvin/AT/Common/DirectCSSearchEngExpression"/>:</td>
+			<td></td>
+			<td class="form-inset"><TEXTAREA NAME="DirectQuery" ROWS="2" COLS="24" WRAP="virtual"></TEXTAREA></td>
+		</tr>
+	</THEN>
+	</IF>
+    <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+    <tr>
+        <td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/StatusisNoColon"/>:</td>
+        <td></td>
+        <td class="form-inset"><callelement NAME="OpenMarket/Xcelerate/Actions/Util/ChooseStatus">
+            <argument NAME="showDummy" VALUE="true"/>
+            </callelement></td>
+    </tr>
+
+		<!-- Start and End Date for Site Preview -->
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/SearchStartEndDate"/>
+		<!-- End of Start and End Date for Site Preview -->
+	<callelement NAME="OpenMarket/Xcelerate/Actions/Search/SearchCommon"/>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/SortResultsBy"/>:</td>
+		<td></td>
+		<td class="form-inset">
+		  <SELECT NAME="OrderBy">
+		  <IF  COND="IsVariable.OrderBy=true">
+             <THEN>
+                <IF COND="Variables.OrderBy=name">
+                <THEN>
+                    <OPTION VALUE="name" SELECTED=""/><XLAT.STREAM KEY="dvin/AT/Common/Name"/>
+                </THEN>
+                <ELSE>
+                    <OPTION VALUE="name"/><XLAT.STREAM KEY="dvin/AT/Common/Name"/>
+                </ELSE>
+                </IF>
+                <IF COND="Variables.OrderBy=Variables.AssetType.description">
+                <THEN>
+                    <OPTION VALUE="Variables.AssetType.description" REPLACEALL="Variables.AssetType.description" SELECTED=""/><XLAT.STREAM KEY="dvin/AT/Common/Description"/>
+                </THEN>
+                <ELSE>
+                    <OPTION VALUE="Variables.AssetType.description" REPLACEALL="Variables.AssetType.description" /><XLAT.STREAM KEY="dvin/AT/Common/Description"/>
+                </ELSE>
+                </IF>
+
+                <IF COND="Variables.OrderBy=createdby">
+                <THEN>
+                    <OPTION VALUE="createdby" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/CreatedBy"/>
+                </THEN>
+                <ELSE>
+                    <OPTION VALUE="createdby"/><XLAT.STREAM KEY="dvin/Common/CreatedBy"/>
+                </ELSE>
+                </IF>
+
+                <IF COND="Variables.OrderBy=createddate DESC">
+                <THEN>
+                    <OPTION VALUE="createddate DESC" SELECTED=""/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/>
+                </THEN>
+                <ELSE>
+                    <OPTION VALUE="createddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/>
+                </ELSE>
+                </IF>
+
+                <IF COND="Variables.OrderBy=updatedby">
+                <THEN>
+                    <OPTION VALUE="updatedby" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/ModifiedBy"/>
+                </THEN>
+                <ELSE>
+                    <OPTION VALUE="updatedby"/><XLAT.STREAM KEY="dvin/Common/ModifiedBy"/>
+                </ELSE>
+                </IF>
+
+                <IF COND="Variables.OrderBy=updateddate DESC">
+                <THEN>
+                    <OPTION VALUE="updateddate DESC" SELECTED=""/><XLAT.STREAM KEY="dvin/UI/Search/ModifiedDate"/>
+                </THEN>
+                <ELSE>
+                    <OPTION VALUE="updateddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/ModifiedDate"/>
+                </ELSE>
+                </IF>
+              </THEN>
+              <ELSE>
+ 				<OPTION VALUE="name" SELECTED=""/><XLAT.STREAM KEY="dvin/AT/Common/Name"/>
+ 				<OPTION VALUE="Variables.AssetType.description" REPLACEALL="Variables.AssetType"/><XLAT.STREAM KEY="dvin/AT/Common/Description"/>
+				<OPTION VALUE="createdby"/><XLAT.STREAM KEY="dvin/Common/CreatedBy"/>
+				<OPTION VALUE="createddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/>
+				<OPTION VALUE="updatedby"/><XLAT.STREAM KEY="dvin/Common/ModifiedBy"/>
+				<OPTION VALUE="updateddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/ModifiedDate"/>				
+              </ELSE>
+              </IF>
+ 		</SELECT></td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td></td>
+		<td></td>
+		<td>
+			 <callelement NAME="OpenMarket/Xcelerate/Actions/Search/SearchFooter"/>
+		</td>
+	</tr>
+</table>
+
+</FTCS>

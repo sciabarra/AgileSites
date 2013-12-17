@@ -1,0 +1,702 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- 
+$Logfile: /VerticalApps/XcelerateD/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/AdvCols/ContentForm.xml $ 
+$Revision: 34 $ 
+$Modtime: 8/25/04 6:21p $ 
+-->
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ContentForm
+--
+--	Form for creating/editing  AdvCols
+-- INPUT
+--			ContentDetails: result of a scatter
+-- OUTPUT
+--
+-- HISTORY 
+   [2007-09-17 KG]
+   * added XSS scripting fixes (adapted from 6.3 fixes); search for isCleanString
+   * changed definitions of 'obj' to just forms[0] (not .elements[0])
+   [2007-10-25 KG]
+   * cleaned up code in findItem and removeItem functions.
+   * removed possibility for an infinite loop in findItem (if key was not found)
+   * [#16157] fixed tpyo in removeItem (lowercase r) function, which was causing
+     all items before the selected item in the list to be removed, along with the
+     selected item.
+-->
+<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/FormatDate" />
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/ValidateInputForXSS" />
+<CALLELEMENT  NAME="OpenMarket/Gator/Scripts/SetDirtyState"/>
+<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at"/>
+<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description"/>
+<SCRIPT LANGUAGE="JavaScript">
+<![CDATA[
+var obj = document.forms[0];
+function RemoveItem(ourPage,nextstep,where)
+{ 
+	obj.elements[where].value ="deleted";
+
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	if(ourPage=="CopyFront")
+	   ourPage="NewContentFront";
+
+	var	newpage = basePage + ourPage;
+	obj.pagename.value = newpage;
+	
+	obj.AdvColsNextStep.value = nextstep;
+
+	obj.submit();
+	return false;
+}
+function RemoveTwoItems(ourPage,nextstep,where,nextwhere)
+{ 
+	obj.elements[where].value ="deleted";
+ 	obj.elements[nextwhere].value ="deleted";
+
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	if(ourPage=="CopyFront")
+	   ourPage="NewContentFront";
+
+	var	newpage = basePage + ourPage;
+	obj.pagename.value = newpage;
+	
+	obj.AdvColsNextStep.value = nextstep;
+
+	obj.submit();
+	return false;
+}
+
+function Fixpagename(ourPage,nextstep)
+{
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	if(ourPage=="CopyFront")
+	   ourPage="NewContentFront";
+
+	var	newpage = basePage + ourPage;
+	obj.pagename.value = newpage;
+	
+	obj.AdvColsNextStep.value = nextstep;
+
+	copyStartEndDateFields();
+	obj.submit();
+	return false;
+}
+
+function FixpagenameWithCheck(ourPage,nextstep,namestring)
+{
+	if (obj.elements['AdvCols:name'].value=="")
+	{
+		var replacestr=/\bVariables.at:description\b/ ;
+		var xlatstr="]]><XLAT.STREAM KEY="dvin/Assetmaker/SpecifyUniqueName" ESCAPE="true" ENCODE="false" EVALALL="false"/><![CDATA[";
+		var newstr=xlatstr.replace(replacestr, namestring) ;
+		alert(newstr);
+		obj.elements['AdvCols:name'].focus();
+		return false;
+	}
+	var isclean = isCleanString(obj.elements['AdvCols:name'].value);
+	if (!isclean) {
+		alert("]]><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/ApostropheNotAllowed" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		obj.elements['AdvCols:name'].focus();
+		return false;
+	}
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	if(ourPage=="CopyFront")
+	   ourPage="NewContentFront";
+
+	var	newpage = basePage + ourPage;
+	obj.pagename.value = newpage;
+	
+	obj.AdvColsNextStep.value = nextstep;
+	if(!checkStartEndDateValidity()){return false;}
+	obj.submit();
+	return false;
+}
+
+function submitForm()
+{
+	return checkfields();
+}
+
+function getAssetName()
+{
+	return obj.elements['AdvCols:name'].value;
+}
+
+function checkfields()
+{ 
+	if (obj.elements['AdvCols:name'].value=="")
+	{
+		var namestring="]]><STRING.STREAM VALUE="Variables.at:description"/><![CDATA[";
+		var replacestr=/\bVariables.at:description\b/ ;
+		var xlatstr="]]><XLAT.STREAM KEY="dvin/Assetmaker/SpecifyUniqueName" ESCAPE="true" ENCODE="false" EVALALL="false"/><![CDATA[";
+		var newstr=xlatstr.replace(replacestr, namestring) ;
+		alert(newstr);
+									 
+		obj.elements['AdvCols:name'].focus();
+		return false;
+	}
+	var isclean = isCleanString(obj.elements['AdvCols:name'].value);
+	if (!isclean) {
+		alert("]]><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/ApostropheNotAllowed" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		obj.elements['AdvCols:name'].focus();
+		return false;
+	}
+	
+	obj.elements['saverule'].value="true";	
+
+	if(!checkStartEndDateValidity()){return false;}
+	obj.submit();
+	return false;
+}
+
+function IsInt(str) {
+	/* strip leading zeroes to prevent false negative! */
+	while (str.charAt(0) == '0' && str.length > 1) str = str.substr(1);
+	var i = parseInt(str);
+	if (isNaN(i))
+		return false;
+	i = i.toString();
+	if (i != str)
+		return false;
+	return true;
+}
+/*
+function IsInt(StrVar)
+{
+ var Test="T"; 		 
+ for(i=StrVar.length-1; i>=0; i--)
+	{ 	 
+	 	var Flag="F";
+		if(i==0)
+		{ 
+		 if(StrVar.charAt(0)=="-")
+		 {
+		 Flag="T";
+		 }
+		 else
+		 {
+		  for(j=9;j>=0; j--)
+				{
+				if(StrVar.charAt(0)==j)
+					{
+					 Flag="T";
+					 break;
+					}
+				}	
+		 }
+		}
+		else
+		{
+			for(j=9;j>=0; j--)
+				{
+				 if(StrVar.charAt(i)==j)
+					{
+					 Flag="T";
+					 break;
+					}
+				}
+		}
+ 		if(Flag=="F"){Test="F"; break;}
+	}
+ if(Test=="F") return false;
+ else return true;	
+}
+*/
+
+function IsInteger(StrVar)
+{
+ var Test="T"; 		
+ var StrNum=parseInt(StrVar);
+ if(IsInt(StrVar))
+ {
+  if(StrNum >= -2147483648 && 2147483647 >= StrNum)
+   return true;
+	else 
+	 return false; 
+ }
+ else
+  return false; 
+}
+
+function SetCancelFlag () {
+	if(confirm("]]><XLAT.STREAM KEY="dvin/Common/CancelClicked" ESCAPE="true" ENCODE="false"/><![CDATA[")){
+		obj.elements['upcommand'].value="cancel";
+		obj.submit();
+		return false;
+	}
+}
+
+function FixRulePagename(form,ourPage,nextstep)
+{
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	if(ourPage=="CopyFront")
+	   ourPage="NewContentFront";
+
+	var	newpage = basePage + ourPage;
+  form.pagename.value = newpage;
+	form.AdvColsNextStep.value = nextstep;
+	form.submit();
+	return false;
+}
+
+
+function DisplayResultsJva(ourPage,nextstep,where)
+{  
+	obj.elements[where].value = true;
+	obj.AdvColsNextStep.value = nextstep;
+	
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	if(ourPage=="CopyFront")
+	   ourPage="NewContentFront";
+
+	var	newpage = basePage + ourPage;
+	obj.pagename.value = newpage;
+	 	
+	obj.submit();
+	
+	return false;
+}
+
+function RemoveSegment(ourPage,nextstep,segmentKey)
+{ 
+	var segKeyList = obj.PickedKeyOfSegments.value;
+	var segIdList = obj.PickedIdsOfSegments.value;
+	var segInsList = obj.PickedInsOfSegments.value;
+	var segOutsList = obj.PickedOutsOfSegments.value;
+
+	var n = findItem(segKeyList,segmentKey);
+
+	obj.PickedKeyOfSegments.value = removeItem(segKeyList,n);
+	obj.PickedIdsOfSegments.value = removeItem(segIdList,n);
+	obj.PickedInsOfSegments.value = removeItem(segInsList,n);
+	obj.PickedOutsOfSegments.value = removeItem(segOutsList,n);
+
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	if(ourPage=="CopyFront")
+	   ourPage="NewContentFront";
+
+	var	newpage = basePage + ourPage;
+	obj.pagename.value = newpage;
+	
+	obj.AdvColsNextStep.value = nextstep;
+
+	obj.submit();
+	return false;
+}
+
+function findItem(list,key)
+{
+	var n = 0; //current item in list
+	var index = 0;
+	var nextIndex = 0;
+	while (nextIndex < list.length)
+	{
+		nextIndex = list.indexOf(",",index);
+		if (nextIndex == -1) //end of list
+			nextIndex = list.length;
+		if (key == list.substring(index,nextIndex))
+			return n;
+		n++;
+		index = nextIndex + 1;
+	}
+	return -1; //not found if we got here
+}
+
+function removeItem(list,number)
+{
+	var newStuff = new String("");
+	var index = 0;
+	for (var i = 0; i < number; i++)
+	{
+		var newIndex = list.indexOf(",",index);
+		if (i > 0) newStuff += ",";
+		newStuff += list.substring(index,newIndex);
+		index = newIndex + 1;
+	}
+	var endIndex = list.indexOf(",",index);
+	if (endIndex == -1)
+		endIndex = list.length;
+	newStuff += list.substring(endIndex);		
+	return newStuff;
+}
+
+function SLAddNewSegment(inobj,ourPage,nextstep)
+{
+	var newKeyList = obj.PickedKeyOfSegments.value;
+	var newIdList = obj.PickedIdsOfSegments.value;
+	var newInsList = obj.PickedInsOfSegments.value;
+	var newOutsList = obj.PickedOutsOfSegments.value;
+	
+	var selectedOption = inobj.get('value');
+	
+	var middle = selectedOption.indexOf(";");
+	var newId = selectedOption.substring(0,middle);
+	var newKey = selectedOption.substring(middle+1,selectedOption.length);
+
+	if ( newKeyList.length == 0 )
+	{
+		newKeyList = newKey;
+		newIdList = newId;
+		newInsList = newKey + "_IN";
+		newOutsList = newKey + "_OUT";
+	}
+	else
+	{
+		newKeyList = newKeyList + "," + newKey;
+		newIdList = newIdList + "," + newId;
+		newInsList = newInsList + "," + newKey + "_IN";
+		newOutsList = newOutsList + "," + newKey + "_OUT";
+	}
+
+	obj.PickedIdsOfSegments.value = newIdList;
+	obj.PickedKeyOfSegments.value = newKeyList;
+	obj.PickedInsOfSegments.value = newInsList;
+	obj.PickedOutsOfSegments.value = newOutsList;
+
+	obj.AdvColsNextStep.value = nextstep;
+
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	if(ourPage=="CopyFront")
+	   ourPage="NewContentFront";
+
+	var	newpage = basePage + ourPage;
+
+	obj.pagename.value = newpage;
+	 	
+	obj.submit();
+	
+	return false;
+}
+
+function SelectManualFromTree(ourPage,nextstep,where,segment)
+{  
+   var EncodedString = parent.frames["XcelTree"].document.TreeApplet.exportSelections()+'';
+   var idArray = EncodedString.split(',');
+   var assetcheck = unescape(idArray[0]);
+   if (assetcheck.indexOf('assettype=')!=-1 && assetcheck.indexOf('id=')!=-1)
+   {
+      var DecodedString = unescape(EncodedString); 
+      obj.elements[where].value = DecodedString;
+      obj.AdvColsNextStep.value = nextstep;
+      obj.UpdateSelectedItems.value ="add";
+      obj.TreeSelectSegment.value = segment;
+      
+      var basePage = "OpenMarket/Xcelerate/Actions/";
+      if(ourPage=="CopyFront")
+         ourPage="NewContentFront";
+      
+      var	newpage = basePage + ourPage;
+      obj.pagename.value = newpage;
+         
+      obj.submit();
+}
+   else
+   {
+      alert("]]><XLAT.STREAM KEY="dvin/UI/PleaseSelectAssetFromTree"/><![CDATA[");
+   }
+	
+	return false;
+}
+
+
+function SelectFromTree(ourPage,nextstep,where)
+{  
+   var EncodedString = parent.frames["XcelTree"].document.TreeApplet.exportSelections()+'';
+   var idArray = EncodedString.split(',');
+   var assetcheck = unescape(idArray[0]);
+   if (assetcheck.indexOf('assettype=')!=-1 && assetcheck.indexOf('id=')!=-1)
+   {
+      var DecodedString = unescape(EncodedString); 
+      obj.elements[where].value = DecodedString;
+      obj.AdvColsNextStep.value = nextstep;
+      obj.UpdateSelectedItems.value ="add";
+      
+      var basePage = "OpenMarket/Xcelerate/Actions/";
+      if(ourPage=="CopyFront")
+         ourPage="NewContentFront";
+      
+      var	newpage = basePage + ourPage;
+      obj.pagename.value = newpage;
+         
+      obj.submit();
+   }
+	else
+   {
+      alert("]]><XLAT.STREAM KEY="dvin/UI/PleaseSelectAssetFromTree"/><![CDATA[");
+   }
+
+	return false;
+}
+
+
+function RemoveManualItem() {
+	var lst = obj.elements['ManuaList'];
+	var i = 0;
+	
+  numMR = obj.elements['ManualrecsCount'].value
+	
+	while (i < lst.options.length ) {
+	
+		if ( lst.options[i].selected ) {
+			lst.options[i] = null;
+			numMR --;
+		} else {
+			i++;
+		}
+	}
+	
+	obj.elements['ManualrecsCount'].value = numMR;
+}
+
+	function moveup()
+	{
+		var src = obj.elements['ManuaList'];
+		var i, temp;
+		for (i=0; i<src.options.length; i++)
+		{
+			if (src.options[i].selected)
+			{
+				if (i!=0)
+				{
+					temp = src.options[i-1];
+					items=new Option(temp.text,temp.value);
+					otheritem=new Option(src.options[i].text,src.options[i].value);
+					otheritem.selected=1;
+					var j=i-1;
+					src.options[j]=otheritem;
+					src.options[i]=items;
+				}
+			}
+		}
+	}
+
+	function movedown()
+	{
+		var src = obj.elements['ManuaList'];
+		var i, temp;
+		for (i=src.options.length-1; i>=0; i--)
+		{
+			if (src.options[i].selected)
+			{
+				if (i!=src.options.length-2)
+				{
+					temp = src.options[i+1];
+					items=new Option(temp.text,temp.value);
+					otheritem=new Option(src.options[i].text,src.options[i].value);
+					otheritem.selected=1;
+					var j=i+1;
+					src.options[j]=otheritem;
+					src.options[i]=items;
+				}
+			}
+		}
+	}
+
+
+function delNul(lst)
+{
+	i = 0;
+	while (i<lst.options.length)
+	{
+		if (lst.options[i].value==-1)
+			lst.options[i]=null
+		else
+			i = i + 1;
+	}
+}
+
+function selAll(lst)
+{
+  if (lst==null) return;
+  var value = checkSelected();
+  for (i=0; i<lst.options.length; i++)
+    lst.options[i].selected=value ;
+  delNul(lst);
+}
+
+function checkSelected()
+{
+  var object = obj.elements['AllTypes'];
+  if (object==null)
+    return true;
+  for (i=0;i<object.length;i++)
+  {
+    if ( (object[i].value=='T') && (object[i].checked == true) )
+      return false;
+  }
+  return true;
+}
+
+function popupCallBack()
+{
+  selAllAll();
+}
+
+function selAllAll()
+{
+	//selAll(obj.elements['ManuaList']);
+}
+
+function selThis(thisList)
+{
+	if(thisList != 'ManuaList')
+		selAll(obj.elements[thisList]);
+}
+]]>
+
+
+<![CDATA[
+function SelectFromTreeTypeAhead(widgetName, selectionmode)
+{
+	var id,name,type, subtype, selValue={};
+	var EncodedString = parent.frames["XcelTree"].document.TreeApplet.exportSelections()+'';
+	var idArray = EncodedString.split(',');
+    var assetcheck = unescape(idArray[0]);	  
+	if (assetcheck.indexOf('assettype=')!=-1 && assetcheck.indexOf('id=')!=-1)
+	{
+		var test = new String(EncodedString);
+   	
+		var nameVal = test.split(",");
+		if (selectionmode=='single' && nameVal.length!=2)
+			alert("]]><XLAT.STREAM KEY="dvin/UI/Error/Pleaseselect1assetfromthetree" ENCODE="false" ESCAPE="true"/><![CDATA[");
+		else
+		{			
+			var i = 0;
+			for (i=0;i<nameVal.length;i+=2)
+			{
+				id = unescape(nameVal[i]);
+				var splitid = id.split(',');
+				if (splitid.length==1)
+				{
+					var xlatstr=']]><XLAT.STREAM KEY="dvin/UI/Error/Nodeidisnotavalidselection" ENCODE="false" ESCAPE="true"/><![CDATA[';
+					var replacestr=/Variables.id/;
+					xlatstr = xlatstr.replace(replacestr,id);
+					alert(xlatstr);
+					return;
+				}
+   					
+				var splitpair = splitid[1].split("=");
+  				
+				id = (splitid[0].split('='))[1];
+				type = (splitid[1].split('='))[1];
+				subtype = (splitid[3].split('='))[1];
+				name = idArray[1].replace(/\+/g,' ');
+				name = DecodeUTF8(name.substr(0, name.length-1));
+				subtype = subtype.replace(/\+/g," ");
+				type = type.replace(/\+/g," ");	
+			}
+			var nodes= [];
+			nodes = dojo.query('div[name='+widgetName+']');
+			if(nodes.length === 0)
+				nodes = dojo.query('input[name='+widgetName+']');
+			var typeWidgetIns = dijit.getEnclosingWidget(nodes[0]);
+
+			selValue = {
+				'id':id,
+				'name':name,
+				'subtype':subtype,
+				'type':type
+			};
+			typeWidgetIns.setSelectedValue(selValue);
+		}	
+
+	}
+	else
+	{
+	 alert("]]><XLAT.STREAM KEY="dvin/UI/PleaseSelectAssetFromTree" ENCODE="false" ESCAPE="true"/><![CDATA[");
+	}
+}
+]]>
+<![CDATA[
+function SelectFromTreeRecoDndMult(widgetName)
+{
+	var id,name,type, subtype, selValue={};
+	var EncodedString = parent.frames["XcelTree"].document.TreeApplet.exportSelections()+'';
+	var idArray = EncodedString.split(',');
+    var assetcheck = unescape(idArray[0]);	
+	var nodes= [];
+	nodes = dojo.query('div[name='+widgetName+']');
+	if(nodes.length === 0)
+		nodes = dojo.query('input[name='+widgetName+']');
+	var typeWidgetIns = dijit.getEnclosingWidget(nodes[0]);	
+	if (assetcheck.indexOf('assettype=')!=-1 && assetcheck.indexOf('id=')!=-1)
+	{
+		var test = new String(EncodedString);
+		var allNodes = test.split(":");
+		if (allNodes.length==1)
+		{
+			alert("]]><XLAT.STREAM KEY="dvin/UI/Error/Nonodesareselectedinthetree" ENCODE="false" ESCAPE="true"/><![CDATA[");
+			return;
+		}
+		var currentNode = 0;
+		for (currentNode = 0;currentNode<allNodes.length-1;currentNode++)
+		{
+			var nameVal = allNodes[currentNode].split(",");					
+			var i = 0;
+			for (i=0;i<nameVal.length;i+=2)
+			{
+				id = unescape(nameVal[i]);
+				var splitid = id.split(',');
+				if (splitid.length==1)
+				{
+					var xlatstr=']]><XLAT.STREAM KEY="dvin/UI/Error/Nodeidisnotavalidselection" ENCODE="false" ESCAPE="true"/><![CDATA[';
+					var replacestr=/Variables.id/;
+					xlatstr = xlatstr.replace(replacestr,id);
+					alert(xlatstr);
+					return;
+				}
+					
+				var splitpair = splitid[1].split("=");
+				
+				id = (splitid[0].split('='))[1];
+				type = (splitid[1].split('='))[1];
+				subtype = (splitid[3].split('='))[1];
+				name = nameVal[i+1].replace(/\+/g,' ');
+				name = DecodeUTF8(name.substr(0, name.length));
+				subtype = subtype.replace(/\+/g," ");
+				type = type.replace(/\+/g," ");	
+			}			
+
+			selValue = {
+				'id':id,
+				'name':name,
+				'subtype':subtype,
+				'type':type
+			};
+			typeWidgetIns.setSelectedValue(selValue);
+		}
+	}
+	else
+	{
+	 alert("]]><XLAT.STREAM KEY="dvin/UI/PleaseSelectAssetFromTree" ENCODE="false" ESCAPE="true"/><![CDATA[");
+	}
+}
+]]>
+
+</SCRIPT>
+<INPUT TYPE="HIDDEN" NAME="AdvColsNextStep" VALUE=""/>
+<INPUT TYPE="HIDDEN" NAME="saverule" VALUE="false"/>
+<INPUT TYPE="hidden" NAME="upcommand" VALUE="submit"/>
+<SETVAR NAME="useSelAll" VALUE="false"/>
+
+<IF COND="IsVariable.AdvColsNextStep!=true">
+<THEN>
+	<SETVAR NAME="AdvColsNextStep" VALUE="ContentFormName"/>
+</THEN>
+</IF>
+
+<!-- form buttons -->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+	<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
+</CALLELEMENT>
+	
+
+<!-- Always gather what may have been posted from before, generate appropriate hiddens, etc. -->
+<div dojoType="dijit.layout.ContentPane" region="center">
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormSetVar"/>
+<!-- Dispatch to the appropriate place for the actual form elements -->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/Variables.AdvColsNextStep"/> 
+</div>
+</div>
+</FTCS>

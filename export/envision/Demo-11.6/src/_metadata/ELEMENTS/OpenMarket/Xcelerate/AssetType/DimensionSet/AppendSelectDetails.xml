@@ -1,0 +1,203 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+Logfile:  $ 
+$Revision: 28 $ 
+$Modtime: 2/17/03 12:23p $ 
+-->
+<!--
+- Confidential and Proprietary Information of Open Market, Inc.
+-					All Rights Reserved.
+-
+- DESCRIPTION
+-	 The basic idea: start with a minimum, default
+-    query. Then append additional criteria depending
+-    on fields that have been selected in the search
+-    form
+-->
+<!-- Set the table name for SQLEXP use -->
+	<SETVAR NAME="tablename" VALUE="DimensionSet" />
+	<if COND="IsVariable.Id=true">
+		<then>
+			<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Id"/>
+			<argument NAME="type" VALUE="Long"/>
+			</callelement>
+			<if cond="Variables.validatedstatus=true">
+			<then>
+				<SETVAR NAME="queryend" VALUE="Variables.queryend AND DimensionSet.id = Variables.Id" />
+			</then>
+			</if>
+		</then>
+	</if>
+	
+    <if COND="IsVariable.uId=true">
+		<then>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<ARGUMENT NAME="columnvalue" VALUE="Variables.uId"/>
+			<ARGUMENT NAME="type" VALUE="String"/>
+		</CALLELEMENT>
+		<IF COND="Variables.validatedstatus=true">
+			<THEN>
+				<SETVAR NAME="queryend" VALUE="Variables.queryend AND DimensionSet.fw_uid = 'Variables.uId'" />
+            	<XLAT.LOOKUP KEY="dvin/UI/Search/FWUIDis" VARNAME="_XLAT_"/>
+            	<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.uId'"/>
+        	</THEN>
+        </IF>	
+        </then>
+	</if>
+<!-- note that template is a lowercase variable name -->
+	<if COND="IsVariable.template=true">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.template"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<ics.literal table="DimensionSet" column="template" string="Variables.template" output="literal" />
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND DimensionSet.template=Variables.literal" />
+		</then>
+		</if>
+		</then>
+	</if>	
+	
+	<if COND="IsVariable.Subtype=true">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Subtype"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Subtype"/>
+			<argument NAME="type" VALUE="Nospace"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<ics.literal table="DimensionSet" column="subtype" string="Variables.Subtype" output="literal" />
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND DimensionSet.subtype=Variables.literal" />
+		</then>
+		</if>
+		</then>
+		</if>
+		</then>
+	</if>	
+	
+	<if COND="IsVariable.Status=true">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Status"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Status"/>
+			<argument NAME="type" VALUE="Length"/>
+			<argument NAME="wordcounts" VALUE="2"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND DimensionSet.status='Variables.Status'" />
+		</then>
+		</if>
+		</then>
+		</if>
+		</then>
+	</if>	
+	
+	<if COND="IsVariable.Description=true">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Description"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<SQLEXP OUTSTR="queryappend" TYPE="OR" VERB="LIKE" STR="Variables.Description" COLNAME="DimensionSet.description" />
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)" />
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)" />
+		</then>
+		</if>
+		</then>
+	</if>
+	<if COND="IsVariable.UpdatedBy=true">
+		<then>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<ARGUMENT NAME="columnvalue" VALUE="Variables.UpdatedBy"/>
+			<ARGUMENT NAME="type" VALUE="String"/>
+		</CALLELEMENT>
+		<IF COND="Variables.validatedstatus=true">
+			<THEN>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+				<ARGUMENT NAME="columnvalue" VALUE="Variables.UpdatedBy"/>
+				<ARGUMENT NAME="type" VALUE="Nospace"/>
+				</CALLELEMENT>
+				<IF COND="Variables.validatedstatus=true">
+				<THEN>
+					<ics.literal table="DimensionSet" column="updatedby" string="Variables.UpdatedBy" output="literal" />
+					<SETVAR NAME="queryend" VALUE="Variables.queryend AND DimensionSet.updatedby=Variables.literal" />
+				</THEN>
+				</IF>
+			</THEN>
+		</IF>
+		</then>
+	</if>	
+	
+	<if COND="IsVariable.UpdatedBefore=true">
+    <then>
+    <if COND="Variables.UpdatedBefore!=Variables.null">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.UpdatedBefore"/>
+			<argument NAME="type" VALUE="Date"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND DimensionSet.updateddate &#060; Variables.UpdatedBefore" />
+		</then>
+		</if>
+		</then>
+		</if>
+	</then>
+	</if>	
+		
+	<if COND="IsVariable.UpdatedAfter=true">
+    <then>
+	<if COND="Variables.UpdatedAfter!=Variables.null">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.UpdatedAfter"/>
+			<argument NAME="type" VALUE="Date"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+			<then>
+				<SETVAR NAME="queryend" VALUE="Variables.queryend AND Variables.UpdatedAfter &#060; DimensionSet.updateddate" />
+			</then>
+		</if>
+ 		</then>
+		</if>	
+    </then>
+	</if>
+	
+	
+	<if COND="IsVariable.Name=true">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Name"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<SQLEXP OUTSTR="queryappend" TYPE="OR" VERB="LIKE" STR="Variables.Name" COLNAME="DimensionSet.name" />
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)" />
+		</then>
+		</if>
+		</then>
+	</if>
+	
+	<callelement NAME="OpenMarket/Xcelerate/Actions/Search/BuildFilterString" />
+</FTCS>

@@ -11,7 +11,7 @@
         <description>CSElement</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp6\dcs6107895677256935666.tmp</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp6741\dcs3519014244360774986.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-CSElement</uid>
         <useDimension></useDimension>
@@ -250,7 +250,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket\Xcelerate\AssetType\CSElement\SelectSummary,0.sql</string>
+            <string>OpenMarket\Xcelerate\AssetType\CSElement\SelectSummary.sql</string>
             <null/>
             <null/>
             <null/>
@@ -395,6 +395,7 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA0KDQo=</byte-array>
       <associations/>
       <siteNames class="list">
         <string>Demo</string>
+        <string>MySite</string>
       </siteNames>
     </data>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -606,6 +607,6 @@ IFZhcmlhYmxlcy5xdWVyeWVuZA0KDQo=</byte-array>
 #
 key=@ASSET_TYPE-CSSystem-AssetType-CSElement
 type=ASSET_TYPE
-sites=Demo
+sites=Demo,MySite
 
 ==================___ END METADATA ___==================-->

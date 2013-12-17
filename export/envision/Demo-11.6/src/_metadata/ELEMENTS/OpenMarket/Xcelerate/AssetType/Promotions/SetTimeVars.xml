@@ -1,0 +1,100 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/SetTimeVars
+--
+-- INPUT
+--
+--	SegmentStartDate, SegmentEndType, SegmentEndDate, SegmentDuration, SegmentStartTimeZone, SegmenetEndTimeZone
+-- OUTPUT
+--
+	StartList (setup for time stuff), enddatestr - with correct comment for end information
+-->
+<LOCALE.CREATE VARNAME="localeobject" LOCALENAME="SessionVariables.locale"/> 
+<!--Takes code returns zone number-->
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyTimeZone">
+	<argument NAME="TimeCode" VALUE="Variables.StartTimeZone"/>
+</callelement>
+
+<if COND="IsVariable.SegmentStartTimeZone!=true">
+<then>
+      <DATE.DEFAULTTZ VARNAME="localtz"/>
+ 			<setvar NAME="SegmentStartTimeZone" VALUE="Variables.localtz"/>
+ </then>
+</if>
+
+<DATE.CLOCKLIST LISTVARNAME="StartList" CLOCK="Variables.SegmentStartDate" TIMEZONE="Variables.SegmentStartTimeZone" LOCALE="localeobject"/>
+<!-- if end time is "until cancelled" display "Until cancelled"
+		else if end time is "soldInstances" display "Until $X instances of the promoted product are sold"
+		else if end time is "timePeriod" display "For $Number $TimePeriod"
+		else display a date
+-->
+<XLAT.LOOKUP KEY="dvin/AT/Common/PM" VARNAME="_PM_"/>
+<XLAT.LOOKUP KEY="dvin/AT/Common/AM" VARNAME="_AM_"/>
+<XLAT.LOOKUP KEY="dvin/AT/Common/at" VARNAME="_at_"/>
+<if COND="StartList.ampm=0">
+	<then>
+		<setvar NAME="thisampm" VALUE="Variables._AM_"/>
+	</then>
+	<else>
+		<setvar NAME="thisampm" VALUE="Variables._PM_"/>
+	</else>
+</if>
+<calculator.go VALUE="StartList.minute 10 LT" VARNAME="calcresult"/>
+<if COND="Variables.calcresult=1">
+	<then>
+		<setvar NAME="thisminute" VALUE="0StartList.minute"/>
+	</then>
+	<else>
+		<setvar NAME="thisminute" VALUE="StartList.minute"/>
+	</else>
+</if>
+
+
+
+<setvar NAME="startdatestr" VALUE="StartList.longdate Variables._at_ StartList.hour:Variables.thisminute Variables.thisampm Variables.SegmentStartTimeZone"/>
+<if COND="IsVariable.SegmentEndType!=true">
+	<then>
+		<setvar NAME="SegmentEndType" VALUE="none"/>
+	</then>
+</if>
+<if COND="Variables.SegmentEndType=none">
+	<then>
+	  <XLAT.LOOKUP KEY="dvin/AT/Promotions/Untilcancelled" VARNAME="_Untilcancelled_"/>
+		<setvar NAME="enddatestr" VALUE="Variables._Untilcancelled_"/>
+	</then>
+	<else>
+		<if COND="Variables.SegmentEndType=fixed">
+			<then>
+				<!--Takes code returns zone number-->
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyTimeZone">
+					<argument NAME="TimeCode" VALUE="Variables.EndTimeZone"/>
+				</callelement>
+				<DATE.CLOCKLIST LISTVARNAME="EndList" CLOCK="Variables.SegmentEndDate" TIMEZONE="Variables.SegmentEndTimeZone" LOCALE="localeobject"/>
+				<if COND="EndList.ampm=0">
+					<then>
+						<setvar NAME="thisampm" VALUE="Variables._AM_"/>
+					</then>
+					<else>
+						<setvar NAME="thisampm" VALUE="Variables._PM_"/>
+					</else>
+				</if>
+				<calculator.go VALUE="StartList.minute 10 LT" VARNAME="calcresult"/>
+				<if COND="Variables.calcresult=1">
+					<then>
+						<setvar NAME="thisminute" VALUE="0EndList.minute"/>
+					</then>
+					<else>
+						<setvar NAME="thisminute" VALUE="EndList.minute"/>
+					</else>
+				</if>
+				<setvar NAME="enddatestr" VALUE="EndList.fulldate Variables._at_ EndList.hour:Variables.thisminute Variables.thisampm Variables.SegmentEndTimeZone"/>
+			</then>
+			<else>
+			  <XLAT.LOOKUP KEY="dvin/AT/Common/For" VARNAME="_For_"/>
+				<setvar NAME="enddatestr" VALUE="Variables._For_ Variables.SegmentDuration Variables.SegmentEndType"/>
+			</else>
+		</if>
+	</else>
+</if>
+</FTCS> 

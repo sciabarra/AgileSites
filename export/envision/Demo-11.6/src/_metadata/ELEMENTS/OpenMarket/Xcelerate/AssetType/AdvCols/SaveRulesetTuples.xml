@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/SaveRulesetTuples
+-
+- It looks like the purpose of this element is to create the right variables in scatter space that correspond to the rule map.
+- It also defines hidden variables for all of these.
+-
+-
+- INPUT
+- PickedKeyOfSegments, PickedIdsOfSegments  (coming in from a post, so they may not be present).
+-
+- OUTPUT
+-	selruleset_map variables set with the ContentDetails: prefix.
+-
+-
+- Always presumes PickedKeyOfSegments and PickedIdsOfSegments are meaningful.  The code here builds
+- ContentDetails:selruleset_map:XXX variables from these.  This will be called prior to the gather
+- of the rule hints etc.
+-
+-->
+
+<SETVAR NAME="ContentDetails:selruleset_map:0:key" VALUE="this"/>
+<SETVAR NAME="ContentDetails:selruleset_map:0:type" VALUE="asset"/>
+<ASSET.GET NAME="theCurrentAsset" FIELD="id" OUTPUT="thisId"/>
+<!-- Note "AdvCols" is the asset type in the next line - value is of format "assettype:assetid"-->
+<SETVAR NAME="ContentDetails:selruleset_map:0:value" VALUE="AdvCols:Variables.thisId"/>
+
+<SETCOUNTER NAME="typecount" VALUE="1"/>
+
+<IF COND="IsVariable.PickedKeyOfSegments=true">
+<THEN>
+	<STRINGLIST DELIM="," NAME="KeyString" STR="Variables.PickedKeyOfSegments"/>
+	<STRINGLIST DELIM="," NAME="SegId" STR="Variables.PickedIdsOfSegments"/>
+	<IF COND="KeyString.#numRows!=0">
+	<THEN>
+		<LOOP LIST="KeyString">
+			<SETVAR NAME="ContentDetails:selruleset_map:Counters.typecount:key" VALUE="KeyString.ITEM"/>
+			<SETVAR NAME="ContentDetails:selruleset_map:Counters.typecount:type" VALUE="asset"/>
+			<SETVAR NAME="ContentDetails:selruleset_map:Counters.typecount:value" VALUE="Segments:SegId.ITEM"/>
+			<INCCOUNTER NAME="typecount" VALUE="1"/>
+			<SETROW LIST="SegId" ACTION="NEXT"/>
+		</LOOP>
+	</THEN>
+	</IF>
+</THEN>
+</IF>
+<SETVAR NAME="ContentDetails:selruleset_map:Total" VALUE="Counters.typecount"/>
+
+</FTCS>

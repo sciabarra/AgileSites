@@ -1,0 +1,95 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/ConvertOps
+--
+-- INPUT
+--
+	thisOp
+	
+-- OUTPUT
+
+	strThisOp
+--
+-->
+<setvar NAME="Ourlt" VALUE="&#60;"/>
+<setvar NAME="Ourgt" VALUE="&#62;"/>    
+<substitute STR="Variables.thisOp" WITH="xxeqxx" WHAT="==" OUTSTR="Text1"/>
+<substitute STR="Variables.Text1" WITH="xxnexx" WHAT="!=" OUTSTR="Text2"/>
+<substitute STR="Variables.Text2" WITH="xxgexx" WHAT="Variables.Ourgt=" OUTSTR="Text3"/>
+<substitute STR="Variables.Text3" WITH="xxgtxx" WHAT="Variables.Ourgt" OUTSTR="Text4"/>
+<substitute STR="Variables.Text4" WITH="xxlexx" WHAT="Variables.Ourlt=" OUTSTR="Text5"/>
+<substitute STR="Variables.Text5" WITH="xxltxx" WHAT="Variables.Ourlt" OUTSTR="thisOp"/>
+
+<if COND="Variables.thisOp=xxeqxx">
+	<then>
+		<setvar NAME="strThisOp" VALUE="Variables.empty"/>
+	</then>
+	<else>
+		<if COND="Variables.thisOp=xxnexx">
+			<then>
+				<setvar NAME="strThisOp" VALUE="not"/>
+			</then>
+			<else>
+				<if COND="Variables.thisOp=xxgtxx">
+					<then>
+						<setvar NAME="strThisOp" VALUE="Variables.Ourgt"/>
+					</then>
+					<else>
+						<if COND="Variables.thisOp=xxgexx">
+							<then>
+								<setvar NAME="strThisOp" VALUE="Variables.Ourgt="/>
+							</then>
+							<else>
+								<if COND="Variables.thisOp=xxltxx">
+									<then>
+										<setvar NAME="strThisOp" VALUE="Variables.Ourlt"/>
+									</then>
+									<else>
+										<if COND="Variables.thisOp=xxlexx">
+											<then>
+												<setvar NAME="strThisOp" VALUE="Variables.Ourlt="/>
+											</then>
+											<else>
+												<if COND="Variables.thisOp=bt">
+													<then>
+														<setvar NAME="strThisOp" VALUE="Variables.empty"/>
+													</then>
+													<else>
+														<if COND="Variables.thisOp=cieq">
+															<then>
+																<XLAT.LOOKUP KEY="dvin/AT/Segments/iscaseinsensitive" VARNAME="strThisOp"/>
+															</then>
+															<else>
+																<if COND="Variables.thisOp=cine">
+																	<then>
+																		<XLAT.LOOKUP KEY="dvin/AT/Segments/notcaseinsensitive" VARNAME="strThisOp"/>
+																	</then>
+																	<else>
+																		<if COND="Variables.thisOp=cont">
+																			<then>
+																				<XLAT.LOOKUP KEY="dvin/AT/Segments/contains" VARNAME="strThisOp"/>
+																			</then>
+																			<else>
+																				<setvar NAME="strThisOp" VALUE="Variables.thisOp"/>
+																			</else>
+																		</if>
+																	</else>
+																</if>
+															</else>
+														</if>
+													</else>
+                        </if>
+											</else>
+										</if>
+									</else>
+								</if>
+							</else>
+						</if>
+					</else>
+				</if>
+			</else>
+		</if>
+	</else>
+</if>
+</FTCS> 

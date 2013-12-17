@@ -1,0 +1,286 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/ContentFormSegments
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+<SCRIPT LANGUAGE="JavaScript">
+var obj = document.forms[0];
+function checkfields()
+{
+	var obj = document.forms[0].elements[0];
+	if (obj.form.elements['Promotions:name'].value=="")
+	{
+		alert("<XLAT.STREAM KEY="dvin/UI/Error/specifyauniquenameforthisPromotion" ESCAPE="true" ENCODE="false"/>");
+ 		return false;
+	}
+
+    if(obj.form.SegmentstoApply && obj.form.SegmentstoApply[1].checked==true){
+         if(!selectSegment()) return false;
+    }
+
+	obj.form.submit();
+	return false;
+}
+
+function checkfields1()
+{
+	var obj = document.forms[0].elements[0];
+	if (obj.form.elements['Promotions:name'].value=="")
+	{
+		alert("<XLAT.STREAM KEY="dvin/UI/Error/specifyauniquenameforthisPromotion" ESCAPE="true" ENCODE="false"/>");
+ 		return false;
+	}
+
+    if(obj.form.SegmentstoApply && obj.form.SegmentstoApply[1].checked==true){
+         if(!selectSegment()) return false;
+    }
+
+	return true;
+}
+
+function getAssetName()
+{
+	var obj = document.forms[0];
+	return obj.elements['Promotions:name'].value;
+}
+
+function submitForm()
+{
+	return checkfields();
+}
+
+function setRadiobutton(checkinf)
+{ 
+  
+  var obj = document.forms[0].elements[0]; 
+  if (obj.form.elements[checkinf].checked)
+	{
+   if(!obj.form.SegmentstoApply[1].checked)
+	 	{
+			obj.form.SegmentstoApply[1].checked=true;
+		}	
+	}
+}
+
+function selectSegment()
+{
+ var obj = document.forms[0].elements[0]; 
+ var SegCounts=obj.form.elements['NumPromoSegs'].value;
+ var Selected="F";
+ var name="";
+ var i="";
+ 
+ for(i=SegCounts-1; i>=0; i--)
+ { 
+  name="PromotionsSegment"+i;
+	if(obj.form.elements[name].checked)
+		{
+		 Selected="T";
+		 break;
+		}
+ }
+ 
+ if(Selected=="F")
+ { 
+ 	 alert("<XLAT.STREAM KEY="dvin/AT/Promotions/SelectminoneSegment" ESCAPE="true" ENCODE="false"/>");
+	 return false;
+ }
+ return true;
+}
+ 
+ function deselectSegment()
+{
+ var obj = document.forms[0].elements[0]; 
+ var SegCounts=obj.form.elements['NumPromoSegs'].value;
+ var name="";
+ var i="";
+ 
+ for(i=SegCounts-1; i>=0; i--)
+ { 
+  name="PromotionsSegment"+i;
+	if(obj.form.elements[name].checked)
+		{
+        obj.form.elements[name].checked=false;
+ 		}
+ }
+   return true;
+}
+
+</SCRIPT>
+
+<!-- Get the current segment information out of the ruleset and rulemap -->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Promotions/LoadSegmentInfo"/>
+
+<ATM.LOCATE TYPE="Segments" VARNAME="segmgr"/>
+<COMPLEXASSETS.GETALLASSETS NAME="segmgr" LISTVARNAME="SegList" SITE="SessionVariables.pubid"/>
+		<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+		
+			<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ContentFormNavBar">
+				<argument NAME="CurrentCat" VALUE="Segments"/>
+			</callelement>
+ 			<tr>
+			<td>
+					<if COND="IsList.SegList=true">
+					<then> 
+						<if COND="SegList.#numRows!=0">
+						<then> 
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td colspan="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="15" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									<tr>
+										<td colspan="5" class="subtitle-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/FlexAssets/Segments"/></td>
+									</tr>
+									<tr>
+										<td colspan="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="10" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									<tr>
+										<if COND="IsVariable.SegmentstoApply!=true">
+										<then>
+													<td><input type="radio" value="all" name="SegmentstoApply" onClick="setTabDirty(); return deselectSegment()" checked="1"/></td>
+										</then>
+										<else>
+											<if COND="Variables.SegmentstoApply=all">
+											<then>
+												<td><input type="radio" value="all" name="SegmentstoApply" onClick="setTabDirty(); return deselectSegment()"  checked="1"/></td>
+											</then>
+											<else>
+												<td><input type="radio" value="all" name="SegmentstoApply" onClick="setTabDirty(); return deselectSegment()" /></td>
+											</else>
+											</if>
+										</else>
+										</if>
+											
+										<td colspan="4"><XLAT.STREAM KEY="dvin/AT/Promotions/Applytoallvisitors"/></td>
+									</tr>
+									<tr>
+										<td colspan="5" height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									<tr>
+									<if COND="IsVariable.SegmentstoApply!=true">
+									<then>
+												<td><input type="radio" onClick="setTabDirty()" value="specified" name="SegmentstoApply"/></td>
+									</then>
+									<else>
+											<if COND="Variables.SegmentstoApply=specified">
+											<then>
+												<td><input type="radio" onClick="setTabDirty()" value="specified" name="SegmentstoApply" checked="1"/></td>
+											</then>
+											<else>
+												<td><input type="radio" onClick="setTabDirty()" value="specified" name="SegmentstoApply"/></td>
+											</else>
+											</if>
+									</else>
+									</if>
+										<td colspan="4"><XLAT.STREAM KEY="dvin/AT/Promotions/Applytoselectsegments"/>:</td>
+									</tr>
+									<tr>
+										<td colspan="5" height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									
+										<!-- This is a candidate for the updated Remember functionality with the pop-up window going directly to a search (if number of segments > ~50) -->
+								</table>
+					<table BORDER="0" CELLSPACING="0" CELLPADDING="0" class="width-outer-50">
+					<tr>
+						<td></td><td class="tile-dark" HEIGHT="1"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td><td></td><td></td>
+					</tr>
+					<tr>
+						<td class="tile-dark" VALIGN="top" WIDTH="1"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+						<td >
+							<table class="width-inner-100" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff"><tr><td colspan="8" class="tile-highlight"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td></tr>
+								<tr><td class="tile-a" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td>
+									<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"></td>
+									<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/AT/Promotions/SegmentName"/></DIV></td>
+									<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/AT/Common/Description"/></DIV></td>
+									<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td>
+									<td class="tile-c" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td>
+								</tr>
+								<tr><td colspan="8" class="tile-dark"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td></tr>
+									<!-- Loop over all search results. -->
+									<SETVAR NAME="rowStyle" VALUE="tile-row-normal"/>
+									<SETVAR NAME="separatorLine" VALUE="0"/>
+																<setcounter NAME="TACTIONS" VALUE="0"/>
+
+											<!-- Loop over all search results. -->
+					
+											<setvar NAME="separatorLine" VALUE="0"/>
+											<setcounter NAME="currcount" VALUE="0"/>
+											<loop LIST="SegList">   										
+											 <IF COND="Variables.separatorLine=1">
+													<THEN>
+														<tr>
+															<td></td>
+															<!--<td colspan="4" class="light-line-color"><img height="1" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>-->
+														</tr>
+													</THEN>
+												</IF>
+										
+												<setvar NAME="separatorLine" VALUE="1"/>
+					
+												<ASSET.LOAD TYPE="Segments" NAME="seginst" OBJECTID="SegList.assetid"/>
+												<ASSET.GET  NAME="seginst"  FIELD="name" OUTPUT="segname"/>
+												<ASSET.GET  NAME="seginst"  FIELD="description" OUTPUT="segdesc"/>
+					
+												<tr>
+													<td></td>
+													<setvar NAME="errno" VALUE="0"/>
+													<ISINLIST ITEM="SegList.assetid" STR="Variables.SegmentIdStr"/>
+													<if COND="Variables.errno=1">
+														<then>
+																<td align="center" valign="top"><input type="checkbox"  name="PromotionsSegmentCounters.currcount"  onClick="setRadiobutton('PromotionsSegmentCounters.currcount'); setTabDirty();"  checked="1" value="SegList.assetid" REPLACEALL="SegList.assetid,Counters.currcount"/></td>
+														</then>
+														<else>
+																<td align="center" valign="top"><input type="checkbox" name="PromotionsSegmentCounters.currcount"   onClick="setRadiobutton('PromotionsSegmentCounters.currcount'); setTabDirty();" value="SegList.assetid" REPLACEALL="SegList.assetid,Counters.currcount"/></td>
+														</else>
+													</if>
+													<td></td><td align="left" valign="top" nowrap="0"><STRING.STREAM VALUE="Variables.segname"/></td>
+													<td></td>
+													<td align="left" valign="top"><STRING.STREAM VALUE="Variables.segdesc"/></td>
+												</tr>
+												<inccounter NAME="currcount" VALUE="1"/>
+											</loop>
+
+											<INPUT TYPE="HIDDEN" NAME="NumPromoSegs" VALUE="Counters.currcount" REPLACEALL="Counters.currcount"/>
+										</table>
+								</td>
+								<td class="tile-dark" VALIGN="top" WIDTH="1" NOWRAP="nowrap"><BR /></td><td>&nbsp;</td>
+								</tr>
+							<tr>
+							<td colspan="3" class="tile-dark" VALIGN="TOP" HEIGHT="1"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							</tr>
+							<tr>
+							<td></td><td background="Variables.cs_imagedir/graphics/common/screen/shadow.gif" REPLACEALL="Variables.cs_imagedir"><IMG WIDTH="1" HEIGHT="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td><td></td><td></td>
+							</tr>
+					</table>
+							</then>
+							 <else>
+										<br/><XLAT.STREAM KEY="dvin/AT/Promotions/nosegmentscreateone"/> 
+							</else>
+							</if>
+							</then>
+							<else>
+										<br/><XLAT.STREAM KEY="dvin/AT/Promotions/nosegmentscreateone"/> 
+							</else>
+						 </if>
+						<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+						<TR>
+							<TD class="form-inset">
+								<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ContentFormFooter">
+									<argument NAME="FNextPage" VALUE="ContentFormDiscount"/>
+									<argument NAME="CurrentCat" VALUE="Segments"/>
+								</callelement>
+							</TD>
+						</TR>
+				</td>
+			</tr>
+		
+		
+		</table>
+  </FTCS> 
+

@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+	<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ListManualShowTreeSelect
+	-
+	- INPUT
+	-
+	- OUTPUT
+	-
+	-->
+
+	<IF COND="IsVariable.TreeSelectStr=true">
+		<THEN>
+			<!--Yes, so let's parse it-->
+			<STRINGLIST NAME="ManualList" STR="Variables.TreeSelectStr" DELIM=":"/>
+			<LOOP LIST="ManualList">
+				<IF COND="IsVariable.ID=true">
+					<THEN>
+						<SETVAR NAME="SaveID" VALUE="Variables.ID"/>
+					</THEN>
+				</IF>
+				<SETVAR NAME="SaveAssetType" VALUE="Variables.AssetType"/>
+				<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/ParseTreeNodeID">
+					<ARGUMENT NAME="TreeNodeID" VALUE="ManualList.ITEM"/>
+				</CALLELEMENT>
+				<ASSET.LIST TYPE="Variables.AssetType" LIST="thisElement" FIELD1="id" VALUE1="Variables.ID"/>
+				<IF COND="Variables.errno!=0">
+					<THEN>
+						<OPTION>-- <XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorFindingAsset" EVALALL="false" ERRNO="Variables.errno" OURID="Variables.ID" OURTYPE="Variables.AssetType"/>--</OPTION>
+					</THEN>
+					<ELSE>
+						<ASSETTYPE.LIST LIST="AssetType" FIELD1="assettype" VALUE1="Variables.AssetType"/>
+						<OPTION VALUE="Variables.ID,Variables.AssetType" REPLACEALL="Variables.ID,Variables.AssetType"><STRING.STREAM VALUE="thisElement.name"/> (<STRING.STREAM VALUE="AssetType.description"/>)</OPTION>
+						<!--
+						<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsAssetTypeCounters.currcount" VALUE="Variables.AssetType" REPLACEALL="Variables.AssetType,Counters.currcount"/>
+						<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsAssetIdCounters.currcount" VALUE="Variables.ID" REPLACEALL="Variables.ID,Counters.currcount"/>
+						<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsBucketCounters.currcount" VALUE="Variables.localBucket" REPLACEALL="Variables.localBucket,Counters.currcount"/>
+						-->
+						<INCCOUNTER NAME="currcount" VALUE="1"/>
+					</ELSE>
+				</IF>
+				<IF COND="IsVariable.SaveID=true">
+					<THEN>
+						<SETVAR NAME="ID" VALUE="Variables.SaveID"/>
+					</THEN>
+				</IF>
+				<SETVAR NAME="AssetType" VALUE="Variables.SaveAssetType"/>
+			</LOOP>
+		</THEN>
+	</IF>
+
+</FTCS>

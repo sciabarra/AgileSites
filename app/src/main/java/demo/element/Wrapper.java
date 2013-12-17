@@ -17,13 +17,13 @@ public class Wrapper extends Element {
 	private final static Log log = Log.getLog(Wrapper.class);
 
 	public static AssetSetup setup() {
-		return new CSElement("Demo_Wrapper", demo.element.Wrapper.class,
-				new SiteEntry("demo", true, "Demo_Wrapper"));
+		return new CSElement("Wrapper", demo.element.Wrapper.class,
+				new SiteEntry("", true));
 	}
 
 	@Override
 	public String apply(Env e) {
-		if (log.trace())
+		if (log.debug())
 			log.trace("Demo Wrapper");
 
 		Picker html = Picker.load("/blueprint/template.html");
@@ -50,6 +50,6 @@ public class Wrapper extends Element {
 		html.attr("meta[name=description]", "content", a.getDescription());
 		html.replace("#content", a.call(a.getTemplate()));
 
-		return html/*.dump(log)*/.outerHtml();
+		return html/* .dump(log) */.outerHtml();
 	}
 }

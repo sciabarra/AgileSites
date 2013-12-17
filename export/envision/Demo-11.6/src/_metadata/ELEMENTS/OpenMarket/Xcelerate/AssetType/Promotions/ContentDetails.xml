@@ -1,0 +1,336 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Promotions/ContentDetails.xml $ 
+$Revision: 41 $ 
+$Modtime: 2/27/04 2:46p $ 
+-->
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- ContentDetails.xml
+-
+- DESCRIPTION
+-	
+-
+- HISTORY 
+-->
+<!--   Fetch all the variables  for displaying -->
+<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/LoadRuleSets"/>
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/LoadGoalVars"/>
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/LoadSegmentInfo"/>
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/LoadDiscProductInfo"/>
+
+<!-- Action bar -->
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ActionsBar">
+	<argument NAME="Screen" VALUE="Inspect"/>
+	<argument NAME="NoPreview" VALUE="true"/>
+</callelement>
+<div dojoType="dijit.layout.ContentPane" region="center">	
+ <table border="0" cellpadding="0" cellspacing="0" class="width70BottomExMargin">
+    
+  <!-- Promotion page title with asset name -->
+	<tr>
+		<td><span class="title-text"><XLAT.STREAM KEY="dvin/AT/Promotions/InspectPromotion"/>: </span><span class="title-value-text"><STRING.STREAM VALUE="Variables.ContentDetails:name"/></span></td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+		<argument NAME="SpaceBelow" VALUE="No"/>
+	</callelement>
+
+	<!-- Promotion attribute inspection form -->
+	<tr>
+		<td>
+			<table border="0" cellpadding="0" cellspacing="0" class="width-inner-100">
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/AT/Common/Name"/>:</td>
+					<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+					<td class="form-inset"><STRING.STREAM VALUE="Variables.ContentDetails:name"/></td>
+				</tr>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Description"/>:</td>
+					<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+					<td class="form-inset"><STRING.STREAM VALUE="Variables.ContentDetails:description"/></td>
+				</tr>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/ID"/>:</td>
+					<td></td>
+					<td class="form-inset"><STRING.STREAM VALUE="Variables.id"/></td>
+				</tr>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<callelement NAME="OpenMarket/Xcelerate/Actions/Util/ShowStatusCode"/>
+				</tr>
+				
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/InspectAssetStartEndDate"/>
+
+
+			
+			
+			<!-- [Insert conditional to test whether advanced rulesets are used.  
+
+				If they are used, display content details based on "contentFormAdvancedRules.xml"; 
+				else, display as shown below.
+				
+				Note: I can help create the "contentDetailsAdvancedRules.xml" page as well (Jeff Sokolov).
+				
+			-->
+	<!-- The beginning of Group 2 -->
+    
+    <XLAT.LOOKUP    KEY="dvin/AT/Promotions/LocaleCurrencySymbol" VARNAME="Dollarsign"/>
+     
+    <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Promotions/Goals"/>:</td>
+		<td></td>
+		<td class="form-inset">
+			<if COND="Variables.Goal1=Variables.empty">
+				<then>
+					<XLAT.STREAM KEY="dvin/AT/Promotions/Nogoalsspecified"/>
+				</then>
+				<else>							
+					<table cellpadding="0" cellspacing="0" border="0">															
+						<tr>
+							<td valign="top" >1.</td>
+							<td width="10"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="10" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+							<td valign="top" ><STRING.STREAM VALUE="Variables.Goal1"/></td>
+						</tr>
+						
+						<!-- [Insert conditional to test for Goal2.  If it does not exist, skip the following.] -->
+						<if COND="Variables.Goal2!=Variables.empty">
+							<then>
+								<tr>
+									<td height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+								</tr>
+								<tr>
+									<td valign="top">2.</td>
+									<td></td>
+									<td valign="top"><STRING.STREAM VALUE="Variables.Goal2"/></td>
+								</tr>
+								<if COND="Variables.Goal3!=Variables.empty">
+									<then>
+										<tr>
+											<td height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+										</tr>
+										<tr>
+											<td valign="top">3.</td>
+											<td></td>
+											<td valign="top"><STRING.STREAM VALUE="Variables.Goal3"/></td>
+										</tr>
+									</then>
+								</if>
+							</then>
+						</if>
+					</table>
+				</else>
+			</if>
+		</td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/FlexAssets/Segments"/>:</td>
+		<td></td>
+		<td class="form-inset">
+			<if COND="Variables.SegmentstoApply=all">
+				<then>
+					<XLAT.STREAM KEY="dvin/Common/All"/>
+				</then>
+				<else>
+					<STRING.STREAM VALUE="Variables.SegmentNameStr"/>
+				</else>
+			</if>
+		</td>
+	</tr>
+	
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Products"/>:</td>
+		<td></td>
+		<td class="form-inset">
+			<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ProductListTable"/>
+		</td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Promotions/DiscountValue"/>:</td>
+		<td></td>
+		<td class="form-inset">
+			<!-- if discount applies to "promoted products", display "[$X or Y%] off the promoted product"
+					else if discount applies to "shopping cart", display "[$X or Y%] off the value of the entire shopping cart"
+				if combination discount applies to "shipping fees" and either "promoted product" or "shopping cart", display br/ and then "[$X or Y%] off shipping fees"
+					else if simple discount applies only to "shipping fees" and either "promoted product" or "shopping cart", display br/ and then "[$X or Y%] off shipping fees"
+			-->
+			<!-- OMima27365 -->
+ 			<if COND="Variables.DiscType=item">
+			<then>
+			   <BEGINS STR="Variables.DiscAmount" WHAT="Variables."/>
+ 				 <if COND="Variables.errno=1">
+				 <then>
+ 							 <XLAT.STREAM KEY="dvin/AT/Promotions/NoItemDiscount"/>
+				 </then>
+				 <else>
+						 <if COND="IsVariable.DiscStyle=true">
+						 <then>
+								 <if COND="Variables.DiscStyle=percentage">
+								 <then>
+										<STRING.STREAM VALUE="Variables.DiscDescription"/>: <STRING.STREAM VALUE="Variables.DiscAmount"/> <XLAT.STREAM KEY="dvin/AT/Promotions/Percentoffpromotedproduct"/>
+								 </then>
+								 <else>
+										<STRING.STREAM VALUE="Variables.DiscDescription"/>: <XLAT.STREAM KEY="dvin/AT/Promotions/LocaleCurrencyoffpromotedproduct"/>
+								 </else>
+								 </if>
+						 </then>
+						 <else>
+ 									<STRING.STREAM VALUE="Variables.DiscDescription"/>:<STRING.STREAM VALUE="Variables.DiscAmount"/> <XLAT.STREAM KEY="dvin/AT/Promotions/Percentoffpromotedproduct"/>
+ 						 </else>
+						 </if>
+			    </else>
+					</if>
+			</then>
+			<else>
+				      <XLAT.STREAM KEY="dvin/AT/Promotions/NoItemDiscount"/>
+			</else>
+			</if>
+
+			<!-- OMima27365 -->
+			<if COND="Variables.ShipType=none">
+				<then>
+					<br/><XLAT.STREAM KEY="dvin/AT/Promotions/NoShippingdiscount"/>
+				</then>
+				<else>
+					<if COND="IsVariable.ShipDescription=true">
+						<then>
+							<if COND="IsVariable.ShipAmount=true">
+								<then>
+									<if COND="Variables.ShipStyle=percentage">
+										<then>
+										  <if COND="IsVariable.ShipDescription=true">
+											<then>
+												 <br/><STRING.STREAM VALUE="Variables.ShipDescription"/>: <STRING.STREAM VALUE="Variables.ShipAmount"/> <XLAT.STREAM KEY="dvin/AT/Promotions/Percentoffshippingcharges"/>
+											</then>
+											<else>
+												 <br/><STRING.STREAM VALUE="Variables.ShipAmount"/> <XLAT.STREAM KEY="dvin/AT/Promotions/Percentoffshippingcharges"/>
+											</else>
+											</if>
+										</then>
+										<else>
+										  <if COND="IsVariable.ShipDescription=true">
+											<then>
+												 <br/><STRING.STREAM VALUE="Variables.ShipDescription"/>: <XLAT.STREAM KEY="dvin/AT/Promotions/LocaleCurrencyoffshippingcharges"/>
+											</then>
+											<else>
+  												 <br/><XLAT.STREAM KEY="dvin/AT/Promotions/Dollarsoffshippingcharges"/>
+											</else>
+											</if>
+										</else>
+									</if>
+								</then>
+							</if>
+						</then>
+						<else>
+							 <if COND="IsVariable.ShipAmount=true">
+								<then>
+									<if COND="Variables.ShipStyle=percentage">
+										<then>
+											<br/><STRING.STREAM VALUE="Variables.ShipAmount"/> <XLAT.STREAM KEY="dvin/AT/Promotions/Percentoffshippingcharges"/>
+										</then>
+										<else>
+											<br/><XLAT.STREAM KEY="dvin/AT/Promotions/Dollarsoffshippingcharges"/>
+										</else>
+									</if>
+								</then>
+							</if>
+ 						</else>
+					</if>
+				</else>     
+			</if>
+			<if COND="IsVariable.TXStoreId=true">
+			<then>
+					<br/><XLAT.STREAM KEY="dvin/Util/StoreID"/>: <STRING.STREAM VALUE="Variables.TXStoreId"/>
+			</then>
+			</if>
+ 		</td>
+	</tr>
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/SetTimeVars"/>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Promotions/Duration"/>:</td>
+		<td></td>
+		<td class="form-inset">
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td valign="top"><XLAT.STREAM KEY="dvin/AT/Promotions/StartTime"/>:</td>
+					<td width="10"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="10" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+					<td valign="top"><STRING.STREAM VALUE="Variables.startdatestr"/></td>
+				</tr>					
+				<tr>
+					<td height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+				</tr>
+				<tr>
+					<td valign="top"><XLAT.STREAM KEY="dvin/AT/Promotions/EndTime"/>:</td>
+					<td width="10"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="10" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+					<td valign="top"><STRING.STREAM VALUE="Variables.enddatestr"/></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+ <!--  get the Display type and the recommended assets -->
+		<tr>
+			<td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Promotions/Display"/>:</td>
+			<td></td>
+			<td class="form-inset">
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/OverRideTable">
+					<argument NAME="showX" VALUE="false"/>
+				</callelement>
+			</td>
+		</tr>
+		<!-- Analyics Performance indicator -->
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/ShowAnalyticsKPI"/>
+			
+			<!-- The beginning of Group 3 -->
+ 			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+                <td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Created"/>:</td>
+                <td></td>
+                <td class="form-inset">
+                    <DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:createddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:createddate"/>
+                <XLAT.STREAM KEY="dvin/UI/ContentDetailscreateddatebycreatedby"/></td>
+            </tr>
+
+ 
+			  <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+
+             <tr>
+                <td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Modified"/>:</td>
+                <td></td>
+                <td class="form-inset">
+                 <DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:updateddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:updateddate"/>
+                 <XLAT.STREAM KEY="dvin/UI/ContentDetailsupdateddatebyupdatedby"/></td>
+            </tr>
+            
+			</table>
+			<!-- End of body -->
+		</td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+	<tr>
+		<td><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+	</tr>
+</table>
+</div>
+</div>
+</FTCS>
+
+ 

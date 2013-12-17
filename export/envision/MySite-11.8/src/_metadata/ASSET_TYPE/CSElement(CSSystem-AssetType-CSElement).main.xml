@@ -11,7 +11,7 @@
         <description>CSElement</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp20\dcs8740625840849469948.tmp</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp5\dcs5016837543441924262.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-CSElement</uid>
         <useDimension></useDimension>
@@ -250,7 +250,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket\Xcelerate\AssetType\CSElement\SelectSummary.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/CSElement/SelectSummary.sql</string>
             <null/>
             <null/>
             <null/>

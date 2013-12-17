@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/UnpackConstraints
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<nvobject.getvalue NAME="nvOurCell" VALUENAME="HCONSTRFIELDVariables.N" VARNAME="thisConstraintField"/>
+
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/GetVisitorConstraintInfo">
+	<argument NAME="thisConstraintField" VALUE="Variables.thisConstraintField"/>
+</callelement>
+
+<nvobject.getvalue NAME="nvOurCell" VALUENAME="HCONSTRTYPEVariables.N" VARNAME="ConstraintType"/>
+<if COND="Variables.ConstraintType=value">
+	<then>
+		<nvobject.getvalue NAME="nvOurCell" VALUENAME="HNUMCONSTRVALUEVariables.N" VARNAME="numValues"/>
+		<setcounter NAME="X" VALUE="0"/>
+		<loop COUNT="Variables.numValues">
+<!--for the momment we only get one-->		
+			<nvobject.getvalue NAME="nvOurCell" VALUENAME="HCONSTRVALUEVariables.N-Counters.X" VARNAME="HRvalue"/>
+			<nvobject.getvalue NAME="nvOurCell" VALUENAME="HCONSTRVALTZVariables.N-Counters.X" VARNAME="HRvalueTZ"/>
+			<inccounter NAME="X" VALUE="1"/>
+		</loop>
+	</then>
+	<else>
+		<if COND="Variables.ConstraintType=assetattr">
+			<then>
+				<nvobject.getvalue NAME="nvOurCell" VALUENAME="HCONSTRASSETTYPEVariables.N" VARNAME="DRconstraintassettype"/>
+				<nvobject.getvalue NAME="nvOurCell" VALUENAME="HCONSTRATTRTYPEVariables.N" VARNAME="DRconstraintassetattributetype"/>
+				<nvobject.getvalue NAME="nvOurCell" VALUENAME="HNUMCONSTRVALUEVariables.N" VARNAME="numVars"/>
+				<if COND="Variables.numVars!=0">
+					<then>				
+						<listobject.create  NAME="ListAssetlists" COLUMNS="assettype,assetid"/>
+						<setcounter NAME="X" VALUE="0"/>
+						<loop COUNT="Variables.numVars">
+							<nvobject.getvalue NAME="nvOurCell" VALUENAME="HCONSTRATYPEVariables.N-Counters.X" VARNAME="ourassettype"/>
+                            <IF COND="IsVariable.ourassettype=true">
+                                <THEN>
+                                    <nvobject.getvalue NAME="nvOurCell" VALUENAME="HCONSTRVALUEVariables.N-Counters.X" VARNAME="ourassetid"/>
+                                </THEN>
+                                <ELSE>
+                                    <nvobject.getvalue NAME="nvOurCell" VALUENAME="HCONSTRKEYVariables.N-Counters.X" VARNAME="ourAssetKey"/>
+                                    <CALLELEMENT NAME="OpenMarket/Gator/Rules/RuleSetMapKeyLookup">
+                                        <ARGUMENT NAME="ourKey" VALUE="Variables.ourAssetKey"/>
+                                    </CALLELEMENT>
+                                    <SETVAR NAME="ourassetid" VALUE="Variables.ourAssetid"/>
+                                    <SETVAR NAME="ourassettype" VALUE="Variables.ourAssettype"/>
+                                </ELSE>
+                            </IF>
+							<listobject.addrow NAME="ListAssetlists" assettype="Variables.ourassettype" assetid="Variables.ourassetid"/>
+							<inccounter NAME="X" VALUE="1"/>
+						</loop>
+						<listobject.tolist NAME="ListAssetlists" LISTVARNAME="Segments:Assetlists"/>
+						<setvar NAME="haveassetlist" VALUE="true"/>
+					</then>
+					<else>
+						<setvar NAME="haveassetlist" VALUE="false"/>
+					</else>
+				</if>
+			</then>
+			<else>
+			<!--will handle type asset someday-->
+			</else>
+		</if>
+	</else>
+</if>
+</FTCS> 

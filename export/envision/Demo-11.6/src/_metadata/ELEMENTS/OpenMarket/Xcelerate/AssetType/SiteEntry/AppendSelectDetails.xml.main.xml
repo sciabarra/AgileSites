@@ -10,7 +10,7 @@
         <string>search</string>
         <string></string>
         <string></string>
-        <string>OpenMarket\Xcelerate\AssetType\SiteEntry\AppendSelectDetails.xml</string>
+        <string>OpenMarket\Xcelerate\AssetType\SiteEntry\AppendSelectDetails,0.xml</string>
         <string></string>
         <string></string>
       </com.openmarket.xcelerate.common.ElementCatalogEntry>
@@ -23,9 +23,9 @@
 </dependencies>
 ==================______________________==================
 #
-#Sat Jun 01 21:29:15 UTC 2013
+#Mon Dec 16 23:39:33 UTC 2013
 storable0=/ELEMENTS/OpenMarket/Xcelerate/AssetType/SiteEntry/AppendSelectDetails.xml|null|_storable_type\=%2FELEMENTS%2FOpenMarket%2FXcelerate%2FAssetType%2FSiteEntry%2FAppendSelectDetails.xml
-@hashval=1335610767
+@hashval=751678394
 key=@ELEMENTCATALOG-OpenMarket/Xcelerate/AssetType/SiteEntry/AppendSelectDetails
 type=ELEMENTCATALOG
 

@@ -11,7 +11,7 @@
         <description>Page Attribute</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp20\dcs6525324299964344134.tmp</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp5\dcs3782428014514044519.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-PageAttribute</uid>
         <useDimension></useDimension>
@@ -250,7 +250,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket\Xcelerate\AssetType\PageAttribute\SelectSummary.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/PageAttribute/SelectSummary.sql</string>
             <null/>
             <null/>
             <null/>

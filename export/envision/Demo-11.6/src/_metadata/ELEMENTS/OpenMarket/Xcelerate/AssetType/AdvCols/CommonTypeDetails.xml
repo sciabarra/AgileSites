@@ -1,0 +1,94 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/CommonTypeDetails
+-
+- INPUT
+-
+-	ShowButton
+-	HiddenOnly
+-
+- OUTPUT
+-
+-->
+	<IF COND="Variables.advcoltype=sql">
+		<THEN>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/AdvCols/SQLQuery"/>:</td>
+				<td></td>
+				<td>
+					<ICS.GETVAR name="ContentDetails:urlquery" encoding="default"/>
+				</td>
+				<IF COND="Variables.ShowButton!=false">
+					<THEN>
+						<TD valign="top" align="left">
+							<XLAT.LOOKUP KEY="dvin/AT/AdvCols/BuildReco" VARNAME="changeX"/><XLAT.LOOKUP KEY="dvin/AT/AdvCols/ChangeX" VARNAME="_change_" ESCAPE="true"/>
+                            <XLAT.LOOKUP KEY="dvin/AT/AdvCols/ChangeX" VARNAME="_change_ALT"/>
+							<A HREF="javascript:void(0)" onclick="return Fixpagename('Variables.ThisPage','ContentFormBuild')" onmouseover="window.status='Variables._change_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._change_,Variables.ThisPage">
+								<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Change"/></CALLELEMENT>
+							</A>
+						</TD>
+					</THEN>
+				</IF>
+			</tr>
+		</THEN>
+	</IF>
+
+	<IF COND="Variables.advcoltype=element">
+		<THEN>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/AdvCols/Element"/>:</td>
+				<td></td>
+				<IF COND="IsVariable.ContentDetails:elementid=true">
+					<THEN>
+						<IF COND="Variables.ContentDetails:elementid!=Variables.empty">
+							<THEN>
+								<ASSET.LIST TYPE="CSElement" LIST="thisElement" FIELD1="id" VALUE1="Variables.ContentDetails:elementid"/>
+								<IF COND="Variables.errno!=0">
+									<THEN>
+										<TD>--<XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorFindingElement" EVALALL="false" errno="Variables.errno" ourid="Variables.ContentDetails:elementid"/> --</TD>
+									</THEN>
+									<ELSE>
+										<TD><STRING.STREAM VALUE="thisElement.name"/></TD>
+										<SETVAR NAME="ourElement" VALUE="thisElement.name"/>
+									</ELSE>
+								</IF>
+							</THEN>
+							<ELSE>
+								<TD>-- <XLAT.STREAM KEY="dvin/AT/AdvCols/NoElementSpecified"/> --</TD>
+							</ELSE>
+						</IF>
+					</THEN>
+					<ELSE>
+						<TD>-- <XLAT.STREAM KEY="dvin/AT/AdvCols/NoElementSpecified"/> --</TD>
+					</ELSE>
+				</IF>
+				<IF COND="Variables.ShowButton!=false">
+					<THEN>
+						<TD valign="top" align="left">
+							<XLAT.LOOKUP KEY="dvin/AT/AdvCols/BuildReco" VARNAME="changeX"/>
+                            <XLAT.LOOKUP KEY="dvin/AT/AdvCols/ChangeX" VARNAME="_change_" ESCAPE="true"/>
+                            <XLAT.LOOKUP KEY="dvin/AT/AdvCols/ChangeX" VARNAME="_change_ALT"/>
+							<A HREF="javascript:void(0)" onclick="return Fixpagename('Variables.ThisPage','ContentFormBuild')" onmouseover="window.status='Variables._change_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._change_,Variables.ThisPage">
+								<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Change"/></CALLELEMENT>
+							</A>
+						</TD>
+					</THEN>
+				</IF>
+			</tr>
+		</THEN>
+	</IF>
+
+	<IF COND="Variables.advcoltype=manual">
+		<THEN>			
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/GetManualrec">
+				<ARGUMENT NAME="ShowButton" VALUE="Variables.ShowButton"/>
+				<ARGUMENT NAME="HiddenOnly" VALUE="Variables.HiddenOnly"/>
+			</CALLELEMENT>
+		</THEN>
+	</IF>
+
+
+</FTCS> 

@@ -19,33 +19,15 @@ trait AgileSitesSupport extends Utils {
   lazy val wcsPassword = SettingKey[String]("wcs-password", "WCS Site password")
 
   lazy val wcsSites = SettingKey[String]("wcs-sites", "WCS Sites to configure")
+
   lazy val wcsVirtualHosts = SettingKey[Seq[Tuple2[String, String]]]("wcs-virtual-hosts", "WCS Virtual Host mapping")
-
-  lazy val wcsSetupOffline = InputKey[Unit]("wcs-setup-offline", "WCS Setup Offline")
-  lazy val wcsSetupOnline = InputKey[Unit]("wcs-setup-online", "WCS Setup Online")
-  lazy val wcsSetupSatellite = InputKey[Unit]("wcs-setup-satellite", "WCS Setup Satellite Offline")
-
-  lazy val wcsDeploy = TaskKey[Unit]("wcs-deploy", "WCS Deploy")
+  val wcsVirtualHostsTask = wcsVirtualHosts := Seq[Tuple2[String, String]]();
 
   lazy val wcsFlexBlobs = SettingKey[String]("wcs-flex-blobs", "WCS Flex Blobs Regexp")
   lazy val wcsStaticBlobs = SettingKey[String]("wcs-static-blobs", "WCS Static Blobs Regexp")
 
   lazy val wcsCsdtJar = SettingKey[String]("wcs-csdt-jar", "WCS CSDT Jar")
-  lazy val wcsCsdt = InputKey[Unit]("wcs-dt", "WCS Development Tool")
-
-  lazy val wcsCopyStatic = TaskKey[Unit]("wcs-copy-static", "WCS copy static resources")
- 
-  // note the same name - but assembly to be used in top level, package to be used in subprojects
-  lazy val wcsAssemblyJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
-  lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
- 
-  lazy val wcsUpdateAssets = TaskKey[String]("wcs-update-assets", "WCS update assets")
-  lazy val wcsLog = InputKey[Unit]("wcs-log", "WCS log manager")
-
-  // initial value for sites and vhosts
-  //val wcsSitesTask = wcsSites := Seq[String]()
-
-  val wcsVirtualHostsTask = wcsVirtualHosts := Seq[Tuple2[String, String]]();
+  
 
   // generate tag access classes from tld files
   val coreGeneratorTask = (sourceGenerators in Compile) <+=
@@ -89,20 +71,8 @@ trait AgileSitesSupport extends Utils {
         l.toSeq ++ ll.toSeq 
     }
 
-  // copy files from a src dir to a target dir recursively 
-  // filter files to copy
-  def recursiveCopy(src: File, tgt: File)(sel: File => Boolean) = {
-    val nsrc = src.getPath.length
-    val cplist = (src ** "*").get.filterNot(_.isDirectory).filter(sel) map {
-      x =>
-        val dest = tgt / x.getPath.substring(nsrc)
-        println("+++ " + dest)
-        (x, dest)
-    }
-    IO.copy(cplist).toSeq
-  }
-
   // interface to csdt from sbt
+  lazy val wcsCsdt = InputKey[Unit]("wcs-dt", "WCS Development Tool")
   val wcsCsdtTask = wcsCsdt <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
       (argTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
@@ -165,11 +135,21 @@ trait AgileSitesSupport extends Utils {
       }
   }
 
-  // interface to catalogmover from sbt
+  lazy val wcsCopyJarsOnline = TaskKey[Unit]("wcs-copyjars-online", "WCS Copy Jars Offline")
+  val wcsCopyJarsOnlineTask = wcsCopyJarsOnline <<= 
+    (fullClasspath in Compile, wcsShared) map {
+      (classpath, shared) =>
+            for(a <- classpath) println(a)
+            setupCopyJarsOnline(shared, classpath.files)
+  }
+
+  lazy val wcsSetupOnline = InputKey[Unit]("wcs-setup-online", "WCS Setup Online")
   val wcsSetupOnlineTask = wcsSetupOnline <<= inputTask {
     (argsTask: TaskKey[Seq[String]]) =>
-      (argsTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, wcsWebapp, wcsShared, streams, runner) map {
-        (args, version, httpUrl, sites, user, password, classpath, webapp, shared, s, runner) =>
+      (argsTask, wcsCopyJarsOnline, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, 
+        fullClasspath in Compile, wcsWebapp, wcsShared, streams, runner) map {
+        (args, _, version, httpUrl, sites, user, password, 
+          classpath, webapp, shared, s, runner) =>
           
           val seljars = classpath.files
           val url = httpUrl + "/CatalogManager"
@@ -186,16 +166,17 @@ trait AgileSitesSupport extends Utils {
           if (args.length == 0) messageDialog("Ensure the application server is UP and RUNNING, then press OK")
           Fork.java(None, all, Some(new java.io.File(".")), s.log)
 
-          setupCopyJarsOnline(shared, classpath.files)
-
           if (args.length == 0) messageDialog("Setup Complete.\nYou can now create site and templates.\nYou need to deploy them with \"wcs-deploy\".")
 
         //println(all.mkString(" "))
       }
   }
 
+  /// note the same name for package and assembly
+  /// but assembly used in top level, package used in subprojects
  
   // package jar task - build the jar and copy it  to destination 
+  lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
   val wcsAssemblyJarTask = wcsAssemblyJar <<=
     (assembly, wcsShared) map {
       (jar, shared) =>
@@ -209,7 +190,8 @@ trait AgileSitesSupport extends Utils {
         destjar.getAbsolutePath.toString
     }
 
- // package jar task - build the jar and copy it  to destination 
+  // package jar task - build the jar and copy it  to destination 
+  lazy val wcsAssemblyJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
   val wcsPackageJarTask = wcsPackageJar <<=
     (Keys.`package` in Compile, wcsShared) map {
       (jar, shared) =>
@@ -227,6 +209,11 @@ trait AgileSitesSupport extends Utils {
   def isHtml(f: File) = !("\\.html?$".r findFirstIn f.getName.toLowerCase isEmpty)
 
   // copy resources from the app to the webapp task
+
+
+
+  // copy statics
+  lazy val wcsCopyStatic = TaskKey[Unit]("wcs-copy-static", "WCS copy static resources")
   val wcsCopyStaticTask = wcsCopyStatic <<=
     (baseDirectory, wcsWebapp) map {
       (base, tgt) =>
@@ -234,8 +221,8 @@ trait AgileSitesSupport extends Utils {
         recursiveCopy(src, file(tgt))(x => true)
     }
 
-  val wcsCopyHtmlTask =
-    (resourceGenerators in Compile) <+=
+
+  val wcsCopyHtmlTask = (resourceGenerators in Compile) <+=
       (baseDirectory, resourceManaged in Compile) map {
         (base, dstDir) =>
           val srcDir = base / "src" / "main" / "static"
@@ -270,6 +257,7 @@ trait AgileSitesSupport extends Utils {
       }
 
   // copy resources to the webapp task
+  lazy val wcsUpdateAssets = TaskKey[String]("wcs-update-assets", "WCS update assets")
   val wcsUpdateAssetsTask = wcsUpdateAssets <<=
     (wcsUrl, wcsSites, wcsUser, wcsPassword, wcsPackageJar) map {
       (url, sites, user, pass, _) =>
@@ -279,160 +267,27 @@ trait AgileSitesSupport extends Utils {
     }
 
   // deploy task  
+  lazy val wcsDeploy = TaskKey[Unit]("wcs-deploy", "WCS Deploy")
   val wcsDeployTask = wcsDeploy <<=
     (wcsCopyStatic, wcsUpdateAssets) map { (count, update) => () }
 
-  // configure satellite
 
-  def setupServletRequest(webapp: String, sites: String, sitesSeq: Seq[Tuple2[String, String]], flexBlobs: String, staticBlobs: String) {
-
-    val prpFile = file(webapp) / "WEB-INF" / "classes" / "ServletRequest.properties"
-
-    val prp = new java.util.Properties
-    prp.load(new java.io.FileReader(prpFile))
-
-    // shift the url assembler to add agilesites as the first
-    if (prp.getProperty("uri.assembler.1.shortform") != "agilesites") {
-
-      val p1s = prp.getProperty("uri.assembler.1.shortform")
-      val p1c = prp.getProperty("uri.assembler.1.classname")
-      val p2s = prp.getProperty("uri.assembler.2.shortform")
-      val p2c = prp.getProperty("uri.assembler.2.classname")
-      val p3s = prp.getProperty("uri.assembler.3.shortform")
-      val p3c = prp.getProperty("uri.assembler.3.classname")
-      val p4s = prp.getProperty("uri.assembler.4.shortform")
-      val p4c = prp.getProperty("uri.assembler.4.classname")
-
-      if(p4s!=null && p4s!="") prp.setProperty("uri.assembler.5.shortform", p4s)
-      if(p4c!=null && p4c!="") prp.setProperty("uri.assembler.5.classname", p4c)
-      if(p3s!=null && p4s!="") prp.setProperty("uri.assembler.4.shortform", p3s)
-      if(p3s!=null && p4s!="") prp.setProperty("uri.assembler.4.classname", p3c)
-      prp.setProperty("uri.assembler.3.shortform", p2s)
-      prp.setProperty("uri.assembler.3.classname", p2c)
-      prp.setProperty("uri.assembler.2.shortform", p1s)
-      prp.setProperty("uri.assembler.2.classname", p1c)
-      prp.setProperty("uri.assembler.1.shortform", "agilesites")
-      prp.setProperty("uri.assembler.1.classname", "wcs.core.Assembler")
-    }
-
-    for ((k, v) <- sitesSeq) {
-      prp.setProperty("agilesites.site." + normalizeSiteName(k), v)
-      prp.setProperty("agilesites.name." + normalizeSiteName(k), k)
-    }
-
-    prp.setProperty("agilesites.blob.flex", flexBlobs)
-    prp.setProperty("agilesites.blob.static", staticBlobs)
-
-    // store
-    println("~ " + prpFile)
-    prp.store(new java.io.FileWriter(prpFile),
-      "updated by AgileSites setup")
-  }
-
-  // configure futurentense.ini
-  def setupFutureTenseIni(home: String, shared: String, sites: String, static: String, version: String) {
-
-    val prpFile = file(home) / "futuretense.ini"
-    val prp = new java.util.Properties
-    prp.load(new java.io.FileReader(prpFile))
-
-    val jardir = file(shared) / "agilesites"
-
-    prp.setProperty("agilesites.dir", jardir.getAbsolutePath);
-    prp.setProperty("agilesites.poll", "100");
-    prp.setProperty("agilesites.static", file(static).getAbsolutePath);
-    prp.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
-
-    println("~ " + prpFile)
-    prp.store(new java.io.FileWriter(prpFile),
-      "updated by AgileSites setup")
-
-  }
-
-  def setupAgileSitesPrp(dir: String, shared: String, sites: String, static: String, flexBlobs: String, staticBlobs: String) {
-    val prpFile = file(dir) / "WEB-INF" / "classes" / "agilesites.properties"
-    val prp = new java.util.Properties
-
-    if (prpFile.exists)
-      prpFile.delete
-
-    prp.setProperty("agilesites.sites", sites);
-    prp.setProperty("agilesites.webapp", dir);
-    prp.setProperty("agilesites.dir", (file(shared) / "agilesites").getAbsolutePath );
-    prp.setProperty("agilesites.static", file(static).getAbsolutePath);
-    prp.setProperty("agilesites.blob.flex", flexBlobs)
-    prp.setProperty("agilesites.blob.static", staticBlobs)
-
-    println("~ " + prpFile)
-    prp.store(new java.io.FileWriter(prpFile),
-      "created by AgileSites setup")
-  }
-
-  def setupMkdirs(shared: String, version: String, sites: String) {
-    // create local export dir for csdt
-    (file("export")).mkdir
-    (file("export") / "envision").mkdir
-    (file("export") / "envision" / defaultWorkspace(sites)).mkdir
-    (file("export") / ("Populate")).mkdir
-    (file(shared) / "Storage").mkdir
-    (file(shared) / "Storage" / "Static").mkdir
-  }
-
-  def setupCopyJarsOffline(webapp: String, classpathFiles: Seq[File]) {
-
-    val destlib = file(webapp) / "WEB-INF" / "lib"
-
-    val addJars = classpathFiles.filter( _.getName.startsWith("agilesites-core") )
-    
-    val removeJars = destlib.listFiles.filter(_.getName.toLowerCase.startsWith("agilesites-core"))
-
-    setupCopyJars(destlib, addJars, removeJars)
-  }
-
-  def setupCopyJarsOnline(shared: String, classpathFiles: Seq[File]) {
-
-    val destlib = file(shared) / "agilesites"
-
-    // jars to include when performing a setup
-    val addJars = classpathFiles filter(AgileSitesBuild.setupFilter accept _)
-
-    // jars to remove when performing a setup
-    val removeJars = destlib.listFiles
-    
-    setupCopyJars(destlib, addJars, removeJars)
-  } 
-
-  // classpath.files
-  // destlib.listFiles
-  def setupCopyJars(destlib: File, addJars: Seq[File], removeJars: Seq[File]) {
-
-    // remove jars
-    println("** removing old version of files");
-    for (file <- removeJars) {
-      val tgt = destlib / file.getName
-      tgt.delete
-      println("- " + tgt.getAbsolutePath)
-    }
-
-    // add jars
-    println("** installing new version of files");
-    for (file <- addJars) yield {
-      val tgt = destlib / file.getName
-      IO.copyFile(file, tgt)
-      //println("=== " + file.getAbsolutePath)
-      println("+ " + tgt.getAbsolutePath)
-    }
-
+  lazy val wcsCopyJarsOffline = TaskKey[Unit]("wcs-copyjars-offline", "WCS Copy Jars Offline")
+  val wcsCopyJarsOfflineTask = wcsCopyJarsOffline <<= 
+    (managedClasspath in Runtime, wcsWebapp) map {
+      (classpath, webapp) =>
+            setupCopyJarsOffline(webapp, classpath.files)
   }
 
   // setup offline task
+  lazy val wcsSetupOffline = InputKey[Unit]("wcs-setup-offline", "WCS Setup Offline")
   val wcsSetupOfflineTask = wcsSetupOffline <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
       (argTask,
-        managedClasspath in Runtime, classDirectory in Compile,
+        wcsCopyJarsOffline, classDirectory in Compile,
         wcsSites, wcsVersion, wcsHome, wcsShared, wcsWebapp, wcsUrl,
          wcsFlexBlobs, wcsStaticBlobs, wcsVirtualHosts) map {
-          (args, classpath, classes,
+          (args, _, classes,
            sites, version, home, shared, webapp, url,
            flexBlobs, staticBlobs, virtualHosts) =>
 
@@ -450,7 +305,6 @@ trait AgileSitesSupport extends Utils {
             } toSeq
 
             setupMkdirs(shared, version, sites)
-            setupCopyJarsOffline(webapp, classpath.files)
             setupServletRequest(webapp, sites, vhosts, flexBlobs, staticBlobs)
             setupAgileSitesPrp(webapp, shared, sites, static, flexBlobs, staticBlobs)
             setupFutureTenseIni(home, shared, static,  sites, version)
@@ -462,13 +316,17 @@ trait AgileSitesSupport extends Utils {
         }
   }
 
+
+
+
   // setup task
+  lazy val wcsSetupSatellite = InputKey[Unit]("wcs-setup-satellite", "WCS Setup Satellite Offline")
   val wcsSetupSatelliteTask = wcsSetupSatellite <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
-      (argTask, managedClasspath in Runtime, classDirectory in Compile,
+      (argTask, wcsCopyJarsOffline, classDirectory in Compile,
        wcsSites, wcsVersion, wcsWebapp,
        wcsFlexBlobs, wcsStaticBlobs, wcsVirtualHosts) map {
-      (args,classpath, classes,
+      (args, _, classes,
        sites, version, webapp,
        flexBlobs, staticBlobs, virtualHosts) =>
 
@@ -479,7 +337,6 @@ trait AgileSitesSupport extends Utils {
 
             println("*** Installing AgileSites for Satellite  ***");
 
-            setupCopyJarsOffline(webapp, classpath.files)
             setupServletRequest(webapp, sites, virtualHosts, flexBlobs, staticBlobs)
 
             //setupAgileSitesPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs) //not used for now
@@ -490,6 +347,8 @@ trait AgileSitesSupport extends Utils {
         }
   }
 
+
+  lazy val wcsLog = InputKey[Unit]("wcs-log", "WCS log manager")
   val wcsLogTask = wcsLog <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
       (argTask, wcsUrl, wcsUser, wcsPassword, streams) map {

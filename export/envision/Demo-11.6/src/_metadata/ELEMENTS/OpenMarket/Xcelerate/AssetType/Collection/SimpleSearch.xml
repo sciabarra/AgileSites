@@ -1,0 +1,209 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Collection/SimpleSearch.xml $ 
+$Revision: 17 $ 
+$Modtime: 2/27/04 2:46p $ 
+-->
+<!-- OpenMarket/Xcelerate/AssetType/Collection/SimpleSearch
+--   Confidential and Proprietary Information of Open Market, Inc.
+--					All Rights Reserved.
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+  
+
+    <if COND="IsVariable.fields!=true">
+    <then>
+         <setvar NAME="fields"  VALUE="Variables.empty"/>
+    </then>
+    </if>
+     <if COND="IsVariable.SearchString!=true">
+    <then>
+         <setvar NAME="SearchString"  VALUE="Variables.empty"/>
+    </then>
+    </if>
+
+   	<tr>
+        <td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Search"/>:</td>
+        <td NOWRAP="NOWRAP" class="form-inset">
+            <!-- Note this list must match exactly the values in the select named fields -->
+            <INPUT TYPE="HIDDEN" NAME="Name" VALUE=""/>
+            <INPUT TYPE="HIDDEN" NAME="Description" VALUE=""/>
+            <INPUT TYPE="HIDDEN" NAME="Keyword" VALUE=""/>
+            <INPUT TYPE="HIDDEN" NAME="UpdatedBy" VALUE=""/>
+            <INPUT TYPE="HIDDEN" NAME="Subtype" VALUE=""/>
+
+            <select name="fields" size="1">
+              <if COND="Variables.fields!=Variables.empty">
+              <then>
+                 <if COND="Variables.fields=Name">
+                 <then>
+                    <option value="Name" selected=""/><XLAT.STREAM KEY="dvin/Common/Name"/>
+                 </then>
+                 <else>
+                    <option value="Name"/><XLAT.STREAM KEY="dvin/Common/Name"/>
+                 </else>
+                 </if>
+                     
+                 <if COND="Variables.fields=Description">
+                 <then>
+                    <option value="Description" selected=""/><XLAT.STREAM KEY="dvin/Common/Description"/>
+                 </then>
+                 <else>
+                    <option value="Description"/><XLAT.STREAM KEY="dvin/Common/Description"/>
+                 </else>
+                 </if>
+
+
+                 <if COND="Variables.fields=Subtype">
+                 <then>
+                    <option value="Subtype" selected=""/><XLAT.STREAM KEY="dvin/Common/Subtype"/>
+                 </then>
+                 <else>
+                    <option value="Subtype"/><XLAT.STREAM KEY="dvin/Common/Subtype"/>
+                 </else>
+                 </if>
+                     
+                 <if COND="Variables.fields=Keyword">
+                 <then>
+                    <option value="Keyword" selected=""/><XLAT.STREAM KEY="dvin/Common/Keywords"/>
+                 </then>
+                 <else>
+                    <option value="Keyword"/><XLAT.STREAM KEY="dvin/Common/Keywords"/>
+                 </else>
+                 </if>
+                     
+                 <if COND="Variables.fields=UpdatedBy">
+                 <then>
+                    <option value="UpdatedBy" selected=""/><XLAT.STREAM KEY="dvin/UI/Search/Modifiedby"/>
+                 </then>
+                 <else>
+                    <option value="UpdatedBy"/><XLAT.STREAM KEY="dvin/UI/Search/Modifiedby"/>
+                 </else>
+                 </if>
+
+              </then>
+              <else>
+                <option value="Name" selected=""/><XLAT.STREAM KEY="dvin/Common/Name"/>
+                <option value="Description"/><XLAT.STREAM KEY="dvin/Common/Description"/>
+
+                <option value="Subtype"/><XLAT.STREAM KEY="dvin/Common/Subtype"/>
+                <option value="Keyword"/><XLAT.STREAM KEY="dvin/Common/Keywords"/>
+                <option value="UpdatedBy"/><XLAT.STREAM KEY="dvin/UI/Search/Modifiedby"/>
+              </else>
+              </if>
+            </select>
+
+             <span class="form-label-text">&nbsp;<XLAT.STREAM KEY="dvin/UI/Search/for"/>&nbsp;</span>
+            <STRING.ENCODE VARNAME="encSearchString" VARIABLE="SearchString"/>
+            <input name="SearchString" value="Variables.encSearchString" REPLACEALL="Variables.encSearchString" type="text" SIZE="32" />&nbsp;<BR />
+            
+            </td>
+    </tr>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/UI/ItemsperPageUC"/>:</td><td class="form-inset">
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/SearchResultOptions"/></td></tr>
+				
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+            <IF COND="IsVariable.OrderByDesc=true">
+            <THEN>
+				<STRING.ENCODE VARIABLE="OrderByDesc" VARNAME="OrderByDescEnc"/>
+ 			    <INPUT TYPE="HIDDEN" NAME="OrderByDesc" VALUE="Variables.OrderByDescEnc" REPLACEALL="Variables.OrderByDescEnc"/>
+            </THEN>
+            <ELSE>
+			    <INPUT TYPE="HIDDEN" NAME="OrderByDesc" VALUE=""/>
+            </ELSE>
+            </IF>
+			<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/SortResultsBy"/>:</td><td class="form-inset">
+		<SELECT NAME="OrderBy" onChange="this.form.elements['OrderByDesc'].value=this[this.selectedIndex].text">
+        <IF  COND="Variables.OrderBy!=Variables.empty">
+                <THEN>
+                    <IF COND="Variables.OrderBy=Collection.name">
+                    <THEN>
+                        <OPTION VALUE="Collection.name" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/Name"/>
+                    </THEN>
+                    <ELSE>
+                        <OPTION VALUE="Collection.name"/><XLAT.STREAM KEY="dvin/Common/Name"/>
+                    </ELSE>
+                    </IF>
+                    <IF COND="Variables.OrderBy=Collection.subtype">
+                    <THEN>
+    				    <OPTION VALUE="Collection.subtype" SELECTED=""/><XLAT.STREAM KEY="dvin/UI/Assetlctype"/>
+                    </THEN>
+                    <ELSE>
+                        <OPTION VALUE="Collection.subtype"/><XLAT.STREAM KEY="dvin/UI/Assetlctype"/>
+                    </ELSE>
+                    </IF>
+
+                    <IF COND="Variables.OrderBy=createdby">
+                    <THEN>
+                        <OPTION VALUE="createdby" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/CreatedBy"/>
+                    </THEN>
+                    <ELSE>
+                        <OPTION VALUE="createdby"/><XLAT.STREAM KEY="dvin/Common/CreatedBy"/>
+                    </ELSE>
+                    </IF>
+
+                    <IF COND="Variables.OrderBy=createddate DESC">
+                    <THEN>
+                        <OPTION VALUE="createddate DESC" SELECTED=""/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/>
+                    </THEN>
+                    <ELSE>
+                        <OPTION VALUE="createddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/>
+                    </ELSE>
+                    </IF>
+
+                    <IF COND="Variables.OrderBy=updatedby">
+                    <THEN>
+                        <OPTION VALUE="updatedby" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/ModifiedBy"/>
+                    </THEN>
+                    <ELSE>
+                        <OPTION VALUE="updatedby"/><XLAT.STREAM KEY="dvin/Common/ModifiedBy"/>
+                    </ELSE>
+                    </IF>
+
+                    <IF COND="Variables.OrderBy=updateddate DESC">
+                    <THEN>
+                        <OPTION VALUE="updateddate DESC" SELECTED=""/><XLAT.STREAM KEY="dvin/UI/Search/ModifiedDate"/>
+                    </THEN>
+                    <ELSE>
+                        <OPTION VALUE="updateddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/ModifiedDate"/>
+                    </ELSE>
+                    </IF>
+                    <IF COND="Variables.OrderBy=category">
+                    <THEN>
+                        <OPTION VALUE="category" SELECTED=""/><XLAT.STREAM KEY="dvin/UI/Admin/Category"/>
+                    </THEN>
+                    <ELSE>
+                        <OPTION VALUE="category"/><XLAT.STREAM KEY="dvin/UI/Admin/Category"/>
+                    </ELSE>
+                    </IF>
+                 </THEN>
+                 <ELSE>
+ 					<OPTION VALUE="Collection.name" SELECTED=""/><XLAT.STREAM KEY="dvin/Common/Name"/>
+					<OPTION VALUE="category"/><XLAT.STREAM KEY="dvin/UI/Admin/Category"/>
+					<OPTION VALUE="Collection.subtype"/><XLAT.STREAM KEY="dvin/UI/Assetlctype"/>
+					<OPTION VALUE="createdby"/><XLAT.STREAM KEY="dvin/Common/CreatedBy"/>
+					<OPTION VALUE="createddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/>
+					<OPTION VALUE="updatedby"/><XLAT.STREAM KEY="dvin/Common/ModifiedBy"/>
+					<OPTION VALUE="updateddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/ModifiedDate"/>
+                 </ELSE>
+                 </IF>
+	    	</SELECT>
+			
+		</td>
+	</tr>
+
+
+
+
+</FTCS> 

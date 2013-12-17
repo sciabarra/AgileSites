@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/CoFSetVar
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<!--We always want to load the ruleset-->
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/CoFLoadRuleSet"/>
+
+<if COND="IsVariable.SegmentsDidFirstTime=true">
+	<then>
+		<if COND="Variables.SegmentsDidFirstTime=true">
+			<then>										              
+				<setvar NAME="SegmentsDidFirstTime" VALUE="true"/>
+				
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/GetAssetList"/>
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/GetCartList"/>
+
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/CoFGetRuleFromForm"/>
+
+                <!-- set up to gather the rulesetmap obj -->
+                <SEGMENT.SETRATINGRULESETMAP NAME="theCurrentAsset" OBJECT="theMap"/>
+                 <if COND="Variables.errno!=0">
+        			<then>
+                        <br/><XLAT.STREAM KEY="dvin/AT/Segments/AGatherfailforSegments" errno="Variables.errno" EVALALL="false"/>
+        				<throwexception/>
+                    </then>
+                 </if>
+                 <ASSET.SCATTER NAME="theCurrentAsset" PREFIX="Segments" FIELDLIST="ruleset" />
+
+	<!--getorset will gather in the right way and then scatter will reset everything-->
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/GetOrSetVars">
+					<argument NAME="GetOrSet" VALUE="set"/>
+				</callelement>
+				<ASSET.SCATTER NAME="theCurrentAsset" PREFIX="ContentDetails"/>
+
+                <SEGMENT.GETRATINGRULESETMAP NAME="theCurrentAsset" OBJVARNAME="theMap"/>
+                
+			</then>
+		</if>
+	</then>
+</if>
+			   
+<!--We do these no matter what-->
+<setvar NAME="SegmentsDidFirstTime" VALUE="true"/>
+<input TYPE="hidden" NAME="SegmentsDidFirstTime" VALUE="true"/>
+
+</FTCS> 

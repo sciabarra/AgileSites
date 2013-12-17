@@ -1,0 +1,164 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/ContentForm
+--
+-- INPUT                
+--
+-- OUTPUT
+--
+-->
+ 
+<SCRIPT LANGUAGE="JavaScript">
+function Fixpagename1(form,ourPage,nextstep)
+{
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	if(ourPage=="CopyFront")
+	   ourPage="NewContentFront";
+
+	var	newpage = basePage + ourPage;
+  form.pagename.value = newpage;
+	form.PromotionsNextStep.value = nextstep;
+	 
+}
+
+function Fixpagename(ourPage,nextstep)
+{
+	var obj = document.forms[0].elements[0];
+	
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	if(ourPage=="CopyFront")
+	   ourPage="NewContentFront";
+
+	var	newpage = basePage + ourPage;
+  obj.form.pagename.value = newpage;
+	obj.form.PromotionsNextStep.value = nextstep;
+	
+	document.forms[0].submit();
+
+	return false;
+}
+
+function SelectFromTree(ourPage,nextstep,where)
+{  
+	var obj = document.forms[0].elements[0];
+  
+	var EncodedString = parent.frames["XcelTree"].document.TreeApplet.exportSelections()+'';
+   var idArray = EncodedString.split(',');
+   var assetcheck = unescape(idArray[0]);
+   if (assetcheck.indexOf('assettype=')!=-1 && assetcheck.indexOf('id=')!=-1)
+   {
+      var DecodedString = unescape(EncodedString); 
+      obj.form.elements[where].value = DecodedString;
+      obj.form.PromotionsNextStep.value = nextstep;
+      obj.form.UpdateSelectedItems.value ="add";
+      
+      var basePage = "OpenMarket/Xcelerate/Actions/";
+      if(ourPage=="CopyFront")
+       ourPage="NewContentFront";
+      
+      var	newpage = basePage + ourPage;
+      obj.form.pagename.value = newpage;
+      
+      document.forms[0].submit();
+   }
+   else
+   {
+      alert("<XLAT.STREAM KEY="dvin/UI/PleaseSelectAssetFromTree"/>");
+   }
+   
+   return false;
+}
+
+function RemoveSelection(ourPage,nextstep,where)
+{  
+	var obj = document.forms[0].elements[0];
+  
+ 	obj.form.elements[where].value ="deleted";
+ 	obj.form.PromotionsNextStep.value = nextstep;
+ 	obj.form.UpdateSelectedItems.value ="delete";
+	
+	var basePage = "OpenMarket/Xcelerate/Actions/";
+	if(ourPage=="CopyFront")
+	   ourPage="NewContentFront";
+
+	var	newpage = basePage + ourPage;
+  obj.form.pagename.value = newpage;
+	 	
+	document.forms[0].submit();
+	
+	return false;
+}
+
+function SetCancelFlag () {
+
+	var obj = document.forms[0];
+	if(confirm("<XLAT.STREAM KEY="dvin/Common/CancelClicked" ESCAPE="true" ENCODE="false"/>")){
+		obj.elements['upcommand'].value="cancel";
+		obj.submit();
+		return false;
+	}
+}
+
+</SCRIPT>
+
+<CALLELEMENT  NAME="OpenMarket/Gator/Scripts/SetDirtyState"/> 
+<setvar NAME="ContentFormUIEdit"  VALUE="false"/>
+<INPUT TYPE="hidden" NAME="upcommand" VALUE="submit"/>
+<INPUT TYPE="HIDDEN" NAME="PromotionsNextStep" VALUE=""/>
+<INPUT TYPE="hidden" NAME="UpdateSelectedItems" VALUE=""/>
+
+<!-- For convenience, a blank PromotionsNextStep value means 'none' -->
+<if COND="IsVariable.PromotionsNextStep=false">
+<then>
+	<setvar NAME="PromotionsNextStep" VALUE="Variables.empty"/>
+</then>
+</if>
+
+<if COND="Variables.PromotionsNextStep!=Variables.empty">
+<then>
+
+	<!-- form buttons -->
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+		<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
+	</CALLELEMENT>
+	
+	
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ManageFormVars"/>
+	<!-- Put in all hiddens needed for the rulesets and rulemaps -->
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Promotions/SaveRulesetTuples"/>
+
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/Variables.PromotionsNextStep"/>
+</then>
+<else>
+	<!-- The asset hasn't been edited yet.  Scatter it so that the gather won't screw up the asset.
+	     What we really want is to separate the creation of the hiddens from the gathering of the
+	     posted form data.  Proposal is to have ManageFormVars do the gather only, and create a
+	     new element SaveVariables that creates the hiddens.  Then we'd call SaveVariables from here
+	     and NOT from the repost above. -->
+	<ASSET.SCATTER NAME="theCurrentAsset" PREFIX="Promotions"/>
+	<!-- Now, process all the form variables and set up the environment -->
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ManageFormVars"/>
+	<!-- Put in all hiddens needed for the rulesets and rulemaps -->
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Promotions/SaveRulesetTuples"/>
+
+	<if COND="Variables.ThisPage=EditFront">
+	<then>
+		<setvar NAME="ContentFormUIEdit"  VALUE="UIeditform"/>
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ContentFormEdit"/>
+	</then>
+	<else>
+		<if COND="Variables.ThisPage=CopyFront">
+		<then> 
+   	     		<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ContentFormEdit"/>
+		</then>
+		<else>
+ 			<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ContentFormName"/>
+		</else>
+		</if>
+	</else>
+	</if>
+</else>
+</if>
+</FTCS> 
+

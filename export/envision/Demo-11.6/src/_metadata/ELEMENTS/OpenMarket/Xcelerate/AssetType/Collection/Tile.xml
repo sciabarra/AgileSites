@@ -1,0 +1,510 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateD/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Collection/Tile.xml $ 
+$Revision: 57 $ 
+$Modtime: 8/30/04 2:46p $ 
+-->
+
+<!--
+ Confidential and Proprietary Information of Open Market, Inc.
+					All Rights Reserved.
+
+ DESCRIPTION
+	Display collections in a list
+
+ HISTORY 
+	5/19/00 - Convert to standard UI layout - Jeff Sokolov
+
+-->
+
+
+<callelement NAME="OpenMarket/Xcelerate/Scripts/GotoPreview"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/SetTileColumnsFromPropertyFile" />
+    <SETCOUNTER NAME="colspan_count" VALUE="6"/>
+	
+	<IF COND="Variables.doName!=false">
+	<THEN>
+		<INCCOUNTER NAME="colspan_count" VALUE="2"/>
+	</THEN>
+	</IF>
+
+	<IF COND="Variables.doDescription!=false">
+	<THEN>
+		<INCCOUNTER NAME="colspan_count" VALUE="2"/>	
+	</THEN>
+	<ELSE>
+		<INCCOUNTER NAME="colspan_count" VALUE="1" />
+	</ELSE>
+	</IF>
+
+	<IF COND="Variables.doLocale!=false">
+	<THEN>
+		<INCCOUNTER NAME="colspan_count" VALUE="2"/>
+	</THEN>
+	</IF>
+	
+	<IF COND="Variables.doStatus!=false">
+	<THEN>
+		<INCCOUNTER NAME="colspan_count" VALUE="2"/>
+	</THEN>
+    </IF>
+	
+	<IF COND="Variables.doModified!=false">
+	<THEN>
+		<INCCOUNTER NAME="colspan_count" VALUE="2"/>
+	</THEN>
+	</IF>	
+	
+	<IF COND="Variables.doStatus!=false">
+	<THEN>
+		<INCCOUNTER NAME="colspan_count" VALUE="2"/>
+	</THEN>
+    </IF>
+	<IF COND="Variables.doStartDate!=false">
+	<THEN>
+		<INCCOUNTER NAME="colspan_count" VALUE="2"/>	
+	</THEN>
+	</IF>
+	<IF COND="Variables.doEndDate!=false">
+	<THEN>
+		<INCCOUNTER NAME="colspan_count" VALUE="2"/>	
+	</THEN>
+	</IF>	
+
+<table BORDER="0" CELLSPACING="0" CELLPADDING="0"  CLASS="width-inner-100">
+<tr>
+	<td></td><td class="tile-dark" VALIGN="TOP" HEIGHT="1"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td><td></td>
+</tr>
+<tr>
+<td class="tile-dark" VALIGN="top" WIDTH="1" NOWRAP="nowrap"><BR /></td>
+<td >
+<table CLASS="width-inner-100" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff">
+	<tr><td colspan="Counters.colspan_count" REPLACEALL="Counters.colspan_count" class="tile-highlight"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td></tr>
+	<tr><td class="tile-a" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td>
+			<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title">
+			<IF COND="Variables.doOrder=true">
+		<THEN>
+<XLAT.STREAM KEY="dvin/Common/Rank"/>
+		</THEN>
+		<ELSE>
+		<BR />
+		</ELSE>
+		</IF></DIV></td>
+			<IF COND="Variables.doName!=false"><THEN><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title">
+            <CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateSortArrowLink">
+						<ARGUMENT NAME="colName" VALUE="name"/>
+            </CALLELEMENT>
+            <if cond="Variables.columnName=name">
+            <then>
+                <A HREF="Variables.urlSortBy" REPLACEALL="Variables.urlSortBy" class="column-title" >
+                    <IMG src="Variables.cs_imagedir/graphics/common/icon/Variables.imgName" BORDER="0" REPLACEALL="Variables.cs_imagedir,Variables.imgName"  />
+                    <XLAT.STREAM KEY="dvin/Common/Name"/>
+                </A>
+            </then>
+            <else>
+                <A href="Variables.urlSortBy" REPLACEALL="Variables.urlSortBy" class="column-title">
+                    <XLAT.STREAM KEY="dvin/Common/Name"/>
+                </A>
+            </else>
+            </if>
+            </DIV></td></THEN></IF>
+			<IF COND="Variables.doDescription!=false">
+				<THEN>
+					<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title">
+             <CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateSortArrowLink">
+						<ARGUMENT NAME="colName" VALUE="description"/>
+            </CALLELEMENT>
+            <if cond="Variables.columnName=description">
+            <then>
+                <A HREF="Variables.urlSortBy" REPLACEALL="Variables.urlSortBy" class="column-title" >
+                    <IMG src="Variables.cs_imagedir/graphics/common/icon/Variables.imgName" BORDER="0" REPLACEALL="Variables.cs_imagedir,Variables.imgName"  />
+                    <XLAT.STREAM KEY="dvin/AT/Common/Description" />
+                </A>
+            </then>
+            <else>
+                <A href="Variables.urlSortBy" REPLACEALL="Variables.urlSortBy" class="column-title">
+                    <XLAT.STREAM KEY="dvin/AT/Common/Description" />
+                </A>
+            </else>
+            </if>
+
+                </DIV></td>
+				</THEN>
+				<ELSE>
+					<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title">&nbsp; </DIV></td>				
+				</ELSE>
+			</IF>
+		    <IF COND="Variables.doLocale!=false"><THEN><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/AT/Dimension/Locale"/></DIV></td></THEN></IF>
+			<IF COND="Variables.doStatus!=false">
+			<THEN>
+				<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/AT/Common/Status"/></DIV></td>
+			</THEN>
+			</IF>		
+			<IF COND="Variables.doModified!=false"><THEN><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title">
+             <CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateSortArrowLink">
+						<ARGUMENT NAME="colName" VALUE="updateddate"/>
+            </CALLELEMENT>
+            <if cond="Variables.columnName=updateddate">
+            <then>
+                <A HREF="Variables.urlSortBy" REPLACEALL="Variables.urlSortBy" class="column-title" >
+                    <IMG src="Variables.cs_imagedir/graphics/common/icon/Variables.imgName" BORDER="0" REPLACEALL="Variables.cs_imagedir,Variables.imgName"  />
+                    <XLAT.STREAM KEY="dvin/Common/Modified"/>
+                </A>
+            </then>
+            <else>
+                <A href="Variables.urlSortBy" REPLACEALL="Variables.urlSortBy" class="column-title">
+                   <XLAT.STREAM KEY="dvin/Common/Modified"/>
+                </A>
+            </else>
+            </if>
+     
+            </DIV></td></THEN></IF>
+			<IF COND="Variables.doStartDate!=false"><THEN><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title">
+             <CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateSortArrowLink">
+						<ARGUMENT NAME="colName" VALUE="startdate"/>
+            </CALLELEMENT>
+            <if cond="Variables.columnName=startdate">
+            <then>
+                <A HREF="Variables.urlSortBy" REPLACEALL="Variables.urlSortBy" class="column-title" >
+                    <IMG src="Variables.cs_imagedir/graphics/common/icon/Variables.imgName" BORDER="0" REPLACEALL="Variables.cs_imagedir,Variables.imgName"  />
+                    <XLAT.STREAM KEY="fatwire/Alloy/UI/StartDate"/>
+                </A>
+            </then>
+            <else>
+                <A href="Variables.urlSortBy" REPLACEALL="Variables.urlSortBy" class="column-title">
+                  <XLAT.STREAM KEY="fatwire/Alloy/UI/StartDate"/>
+                </A>
+            </else>
+            </if>
+            </DIV></td></THEN></IF>
+			<IF COND="Variables.doEndDate!=false"><THEN><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title">
+             <CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateSortArrowLink">
+						<ARGUMENT NAME="colName" VALUE="enddate"/>
+            </CALLELEMENT>
+            <if cond="Variables.columnName=enddate">
+            <then>
+                <A HREF="Variables.urlSortBy" REPLACEALL="Variables.urlSortBy" class="column-title" >
+                    <IMG src="Variables.cs_imagedir/graphics/common/icon/Variables.imgName" BORDER="0" REPLACEALL="Variables.cs_imagedir,Variables.imgName"  />
+                  <XLAT.STREAM KEY="fatwire/Alloy/UI/EndDate"/>
+                </A>
+            </then>
+            <else>
+                <A href="Variables.urlSortBy" REPLACEALL="Variables.urlSortBy" class="column-title">
+                 <XLAT.STREAM KEY="fatwire/Alloy/UI/EndDate"/>
+                </A>
+            </else>
+            </if>             
+            </DIV></td></THEN></IF>
+			<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><BR /></DIV></td>
+		<td class="tile-c" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td>
+	</tr>
+	<tr><td colspan="Counters.colspan_count" REPLACEALL="Counters.colspan_count" class="tile-dark"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td></tr>
+     
+	<SETCOUNTER NAME="assignment_count" VALUE="0"/>
+	<SETVAR NAME="rowStyle" VALUE="tile-row-normal"/>
+	<!-- Loop over all search results. -->
+	<LISTOBJECT.CREATE NAME="encodedNodeData" COLUMNS="index,data"/>
+	<SETCOUNTER NAME="nodeCount" VALUE="0"/>
+   
+	<setvar NAME="separatorLine" VALUE="0"/>
+
+	<loop LIST="Content" FROM="Variables.startingPoint" COUNT="Variables.ResultLimit">
+	
+		<IF COND="Variables.separatorLine=1">
+			<THEN>
+			<tr>
+				<!--<td colspan="Counters.colspan_count" REPLACEALL="Counters.colspan_count" class="light-line-color"><img height="1" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>-->
+			</tr>
+			</THEN>
+		</IF>
+
+	<setvar NAME="separatorLine" VALUE="1"/>
+		<tr class="Variables.rowStyle" REPLACEALL="Variables.rowStyle">
+		<td><BR /></td>
+
+	<td><BR /></td>
+		<IF COND="Variables.doOrder=true">
+		<THEN>
+		<td VALIGN="TOP" NOWRAP="NOWRAP" ALIGN="LEFT">
+				<DIV class="small-text-inset">
+					<INPUT NAME="Rank-Content.id,Collection" TYPE="TEXT" SIZE="3" MAXLENGTH="3" VALUE="" REPLACEALL="Content.id" onChange="setRank(this);"/>
+	<BR />
+				</DIV>
+			</td>  
+		</THEN>
+		<ELSE>
+				<td valign="middle" NOWRAP="NOWRAP" ALIGN="LEFT">
+                    <PREVIEWURL.MAKEURL VARNAME="previewURL" ASSETTYPE="Collection" ASSETID="Content.id" PUBID="SessionVariables.pubid"/>
+                    <IF COND="IsVariable.previewURL=true">
+                    <THEN>
+    					<XLAT.LOOKUP KEY="dvin/Common/PreviewThisItem" VARNAME="_XLAT_"/>
+    					<XLAT.LOOKUP KEY="dvin/Common/PreviewThisItem" VARNAME="mouseover" ESCAPE="true"/>                        
+    					<A HREF="javascript:void(0)" onclick="openPreview('Variables.previewURL');" onmouseover="window.status='Variables.mouseover';return true;" onmouseout="window.status='';return true" REPLACEALL="Variables.mouseover,Variables.previewURL"><img height="14" hspace="2" vspace="4" width="14" src="Variables.cs_imagedir/graphics/common/icon/iconPreviewContent.gif" border="0" title="Variables._XLAT_" alt="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,Variables._XLAT_"/></A>
+                    </THEN>
+                    </IF>
+
+					<XLAT.LOOKUP KEY="dvin/Common/InspectThisItem" VARNAME="_XLAT_"/>
+					<XLAT.LOOKUP KEY="dvin/Common/InspectThisItem" VARNAME="mouseover" ESCAPE="true"/>
+ 					<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateLink">
+						<ARGUMENT NAME="assettype" VALUE="Variables.AssetType"/>
+						<ARGUMENT NAME="assetid" VALUE="Content.id"/>
+						<ARGUMENT NAME="varname" VALUE="urlInspectItem"/>
+						<ARGUMENT NAME="function" VALUE="inspect"/>
+					</CALLELEMENT>
+					<A HREF="Variables.urlInspectItem" OnMouseOver="window.status='Variables.mouseover'; return true" OnMouseOut="return window.status='';" REPLACEALL="Variables.urlInspectItem,Variables.mouseover"><img height="14" width="14" src="Variables.cs_imagedir/graphics/common/icon/iconInspectContent.gif" border="0" hspace="2" vspace="4" title="Variables._XLAT_" alt="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,Variables._XLAT_"/></A>
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateLink">
+						<ARGUMENT NAME="assettype" VALUE="Variables.AssetType"/>
+						<ARGUMENT NAME="assetid" VALUE="Content.id"/>
+						<ARGUMENT NAME="varname" VALUE="urlEditItem"/>
+						<ARGUMENT NAME="function" VALUE="edit"/>
+					</CALLELEMENT>
+					<XLAT.LOOKUP KEY="dvin/Common/EditThisItem" VARNAME="_XLAT_"/>
+					<XLAT.LOOKUP KEY="dvin/Common/EditThisItem" VARNAME="mouseover" ESCAPE="true"/>
+					<A HREF="Variables.urlEditItem" OnMouseOver="window.status='Variables.mouseover'; return true" OnMouseOut="return window.status='';" REPLACEALL="Variables.urlEditItem,Variables.mouseover"><img height="14" width="14" src="Variables.cs_imagedir/graphics/common/icon/iconEditContent.gif" border="0" hspace="2" vspace="4" title="Variables._XLAT_" alt="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,Variables._XLAT_"/></A>
+					<XLAT.LOOKUP KEY="dvin/UI/Deletethisitem" VARNAME="_XLAT_"/>
+					<XLAT.LOOKUP KEY="dvin/UI/Deletethisitem" VARNAME="mouseover" ESCAPE="true"/>
+ 					<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateLink">
+						<ARGUMENT NAME="assettype" VALUE="Variables.AssetType"/>
+						<ARGUMENT NAME="assetid" VALUE="Content.id"/>
+						<ARGUMENT NAME="varname" VALUE="urlDeleteItem"/>
+						<ARGUMENT NAME="function" VALUE="delete"/>
+					</CALLELEMENT>
+					<A HREF="Variables.urlDeleteItem" onmouseover="window.status='Variables.mouseover';return true;" onmouseout="window.status='';return true" REPLACEALL="Variables.urlDeleteItem,Variables.mouseover"><img hspace="2" vspace="4" height="14" width="14" src="Variables.cs_imagedir/graphics/common/icon/iconDeleteContent.gif" border="0" title="Variables._XLAT_" alt="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,Variables._XLAT_"/></A>
+					<BR />
+			</td>  
+		</ELSE>
+		</IF>
+		
+		<IF COND="Variables.doName!=false">
+		<THEN>
+			<td><BR /></td>
+			<td VALIGN="TOP" NOWRAP="NOWRAP" ALIGN="LEFT">
+				<DIV class="small-text-inset">
+					<XLAT.LOOKUP KEY="dvin/Common/InspectThisItem" VARNAME="_XLAT_"/>
+					<XLAT.LOOKUP KEY="dvin/Common/InspectThisItem" VARNAME="mouseover" ESCAPE="true"/>
+ 					<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateLink">
+						<ARGUMENT NAME="assettype" VALUE="Variables.AssetType"/>
+						<ARGUMENT NAME="assetid" VALUE="Content.id"/>
+						<ARGUMENT NAME="varname" VALUE="urlInspectItem"/>
+						<ARGUMENT NAME="function" VALUE="inspect"/>
+					</CALLELEMENT>
+					<!-- If the name field contains more than 30 characters truncate it and show only 30 characters of it. Show the entire name as tool tip-->
+					<ICS.LISTGET LISTNAME="Content" FIELDNAME="name" OUTPUT="name" />
+					<STRING.LENGTH VALUE="Variables.name" VARNAME="strlen" />
+					<CALCULATOR.GO VALUE="Variables.strlen 30 GT" VARNAME="result"/> 
+					<IF COND="Variables.result=1">
+					<THEN>
+						<SUBSTRING STR="Variables.name" OUTSTR="shortName" ENDINDEX="25" />
+						<SETVAR NAME="shortName" VALUE="Variables.shortName..."/>
+					</THEN>
+					<ELSE>
+						<SETVAR NAME="shortName" VALUE="Variables.name" />
+					</ELSE>
+					</IF>
+					<STRING.ENCODE VARIABLE="name" VARNAME="name"/>
+					<A HREF="Variables.urlInspectItem" OnMouseOver="window.status='Variables.mouseover'; return true" OnMouseOut="return window.status='';" title="Variables.name"  REPLACEALL="Variables.urlInspectItem,Variables._XLAT_,Variables.mouseover,Variables.name">
+					<STRING.STREAM VARIABLE="shortName"/>
+					</A><BR />
+				</DIV>
+			</td>
+		</THEN>
+		</IF>
+
+		<ICS.LISTGET LISTNAME="Content" FIELDNAME="description" OUTPUT="description" />
+		<IF COND="Variables.doDescription!=false">
+		<THEN>
+			<td><BR /></td>
+			<td VALIGN="TOP" ALIGN="LEFT">
+			<DIV class="small-text-inset">							
+				<IF COND="Variables.description=Variables.empty">
+				<THEN>
+					<STRING.STREAM VALUE="-"/>
+				</THEN>
+				<ELSE>
+					<STRING.ENCODE VARIABLE="description" VARNAME="description"/>
+					<STRING.STREAM VALUE="Variables.description" />
+				</ELSE>
+				</IF>
+			</DIV>
+			</td>
+		</THEN>
+		<ELSE>
+			<IF COND="Variables.description=Variables.empty">
+			<THEN>
+				<!-- No description, show a message which says that there is no description for this asset-->
+				<XLAT.LOOKUP KEY="fatwire/Alloy/UI/AssetHasNoDescription" VARNAME="description" />					
+			</THEN>
+			<ELSE>
+				<STRING.ENCODE VARIABLE="description" VARNAME="description"/>				
+			</ELSE>
+			</IF>				
+			<td VALIGN="CENTER" ALIGN="CENTER">
+				<IMG NAME="imageForDescription" SRC="Variables.cs_imagedir/graphics/common/logo/assetDescription.gif" TITLE="Variables.description" REPLACEALL="Variables.cs_imagedir,Variables.description" HEIGHT="15" WIDTH="15" />
+			</td>
+		</ELSE>
+		</IF>
+
+		<IF COND="Variables.doLocale!=false">
+		<THEN>
+            <td><BR /></td>
+            <td VALIGN="TOP" >
+                <DIV class="small-text-inset">
+                    <ASSET.GETLOCALES TYPE="Variables.AssetType" OBJECTID="Content.id" LIST="tile:locales"/>
+                    <LOOP LIST="tile:locales">
+                        <STRING.STREAM LIST="tile:locales" COLUMN="NAME"/>
+                    </LOOP>
+                    <BR />
+                </DIV>
+            </td>
+		</THEN>
+		</IF>
+		
+		<IF COND="Variables.doStatus!=false">
+		<THEN>
+			<td><BR /></td>
+			<td VALIGN="TOP">
+				<DIV class="small-text-inset">
+					<XLAT.LOOKUP KEY="dvin/AT/Common/ShowStatus" VARNAME="_XLAT_"/>
+					<XLAT.LOOKUP KEY="dvin/AT/Common/ShowStatus" VARNAME="mouseover" ESCAPE="true"/>
+					<setvar NAME="key" VALUE="dvin/AT/Common/StatusCode-Content.status"/>
+					<XLAT.LOOKUP KEY="Variables.key" VARNAME="statusdesc"/>
+ 					<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateLink">
+						<ARGUMENT NAME="assettype" VALUE="Variables.AssetType"/>
+						<ARGUMENT NAME="assetid" VALUE="Content.id"/>
+						<ARGUMENT NAME="varname" VALUE="urlShowStatus"/>
+						<ARGUMENT NAME="function" VALUE="status"/>
+					</CALLELEMENT>
+					<A HREF="Variables.urlShowStatus" ONMOUSEOVER="window.status = 'Variables.mouseover'; return true;" ONMOUSEOUT="window.status='';return true;" REPLACEALL="Variables.urlShowStatus,Variables._XLAT_,Variables.mouseover" TITLE="Variables._XLAT_"><STRING.STREAM VARIABLE="statusdesc"/></A><BR />
+				</DIV>
+			</td>
+		</THEN>
+		</IF>			
+		
+		<IF COND="Variables.doModified!=false">
+		<THEN>
+			<td><BR /></td>
+			<td VALIGN="TOP" NOWRAP="NOWRAP" >
+				<DIV class="small-text-inset">
+				<IF COND="IsColumn.Content.updateddate=true">
+				<THEN>
+                    <DATEFORMAT.CREATE NAME="dObject" DATESTYLE="SHORT" TIMESTYLE="SHORT" LOCALE="LocaleName" TIMEZONEID="SessionVariables.time.zone"/>
+                    <DATEFORMAT.GETDATE NAME="dObject" VALUE="Content.updateddate" VALUETYPE="jdbcdate"  VARNAME="updateddate"/>
+                    <DATEFORMAT.GETDATE NAME="_FormatDate_" VALUE="Content.updateddate" VALUETYPE="jdbcdate"  VARNAME="updateddateFullVersion"/>
+					<SPAN ID="modifiedSpanId" TITLE="Variables.updateddateFullVersion" REPLACEALL="Variables.updateddateFullVersion">
+						<STRING.STREAM VARIABLE="updateddate"/>
+					</SPAN>
+				</THEN>
+				</IF>
+				</DIV>
+			</td>
+		</THEN>
+		</IF>
+		
+		<IF COND="Variables.doStartDate!=false">
+		<THEN>
+			<td><BR/></td>
+			<td VALIGN="TOP" NOWRAP="NOWRAP">
+				<IF COND="IsColumn.Content.startdate=true">
+				<THEN>
+					<DIV class="small-text-inset">						
+						<ICS.LISTGET LISTNAME="Content" FIELDNAME="startdate" OUTPUT="startDate" />			
+						<IF COND="Variables.startDate!=Variables.empty">
+						<THEN>
+                            <DATEFORMAT.CREATE NAME="dObject" DATESTYLE="SHORT" TIMESTYLE="SHORT" LOCALE="LocaleName" TIMEZONEID="SessionVariables.time.zone" />
+                            <DATEFORMAT.GETDATE NAME="dObject" VALUE="Variables.startDate" VALUETYPE="jdbcdate" VARNAME="startDateShortVersion" />
+                            <DATEFORMAT.GETDATE NAME="_FormatDate_" VALUE="Variables.startDate" VALUETYPE="jdbcdate" VARNAME="startDateFullVersion" />
+                            <SPAN ID="startDateSpanId" TITLE="Variables.startDateFullVersion" REPLACEALL="Variables.startDateFullVersion">
+								<STRING.STREAM VARIABLE="startDateShortVersion"/>
+							</SPAN>
+						</THEN>
+						<ELSE>
+							<STRING.STREAM VALUE="-" />
+						</ELSE>
+						</IF>
+					</DIV>
+				</THEN>
+				</IF>			
+			</td>
+		</THEN>
+		</IF>
+		
+		<IF COND="Variables.doEndDate!=false">
+		<THEN>
+			<td><BR/></td>
+			<td VALIGN="TOP" NOWRAP="NOWRAP">
+				<IF COND="IsColumn.Content.enddate=true">
+				<THEN>
+					<DIV class="small-text-inset">							
+						<ICS.LISTGET LISTNAME="Content" FIELDNAME="enddate" OUTPUT="endDate" />			
+						<IF COND="Variables.endDate!=Variables.empty">
+						<THEN>
+                            <DATEFORMAT.CREATE NAME="dObject" DATESTYLE="SHORT" TIMESTYLE="SHORT" LOCALE="LocaleName" TIMEZONEID="SessionVariables.time.zone" />
+                            <DATEFORMAT.GETDATE NAME="dObject" VALUE="Variables.endDate" VALUETYPE="jdbcdate" VARNAME="endDateShortVersion" />
+                            <DATEFORMAT.GETDATE NAME="_FormatDate_" VALUE="Variables.endDate" VALUETYPE="jdbcdate" VARNAME="endDateFullVersion" />
+							<SPAN ID="endDateSpanId" TITLE="Variables.endDateFullVersion" REPLACEALL="Variables.endDateFullVersion">
+								<STRING.STREAM VARIABLE="endDateShortVersion"/>
+							</SPAN>
+						</THEN>
+						<ELSE>
+							<STRING.STREAM VALUE="-" />
+						</ELSE>
+						</IF>
+					</DIV>
+				</THEN>
+				</IF>						
+			</td>
+		</THEN>
+		</IF>
+
+		<if COND="Variables.doOrder!=true">
+		<then>
+		
+			<td><BR /></td>
+			<td VALIGN="CENTER" NOWRAP="NOWRAP" ALIGN="LEFT">
+					<INPUT TYPE="CHECKBOX" NAME="AddALAsset" onclick="return setAddToAL(this,Content.id);" VALUE="Variables.AssetType;Content.id" style="margin-top:2px" REPLACEALL="Variables.AssetType,Content.id"/>
+			</td>
+						
+		
+		</then>
+		</if>
+
+	<td><BR /></td>
+	</tr>
+		<inccounter NAME="assignment_count" VALUE="1"/>
+		<IF COND="Variables.rowStyle=tile-row-normal">
+		<THEN>
+			<SETVAR NAME="rowStyle" VALUE="tile-row-highlight"/>
+		</THEN>
+		<ELSE>
+			<SETVAR NAME="rowStyle" VALUE="tile-row-normal"/>
+		</ELSE>
+		</IF>
+
+	</loop>
+
+		</table>
+		</td>
+		<td class="tile-dark" VALIGN="top" WIDTH="1" NOWRAP="nowrap"><BR /></td>
+	</tr>
+	<tr>
+		<td colspan="3" class="tile-dark" VALIGN="TOP" HEIGHT="1"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+	</tr>
+	<tr>
+		<td></td><td background="Variables.cs_imagedir/graphics/common/screen/shadow.gif" REPLACEALL="Variables.cs_imagedir"><IMG WIDTH="1" HEIGHT="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td><td></td>
+	</tr>
+	<IF COND="Variables.doOrder!=true">
+	<THEN>
+	<tr><td colspan="3" ALIGN="RIGHT">
+
+		<XLAT.LOOKUP KEY="dvin/UI/AddselecteditemstoyourActiveList" VARNAME="_XLAT_"/>
+		<XLAT.LOOKUP KEY="dvin/UI/AddselecteditemstoyourActiveList" VARNAME="mouseover" ESCAPE="true"/>
+		<A class="inline-right" HREF="javascript:document.forms[0].submit()" onClick="return AddToAL();" onmouseover="window.status='Variables.mouseover';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables.mouseover"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/AddtoMyBookmarks"/></CALLELEMENT></A>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/AddActiveList"/>
+	</td></tr>
+	</THEN>
+	</IF>
+</table>
+</FTCS>

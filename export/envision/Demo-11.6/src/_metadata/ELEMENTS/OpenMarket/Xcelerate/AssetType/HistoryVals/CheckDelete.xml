@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/HistoryVals/CheckDelete
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<setvar NAME="candelete" VALUE="true"/>
+<commercecontext.verifySegmentDependency ID="Variables.id" VARNAME="dependencyExists"/>
+<IF COND="Variables.dependencyExists=true">
+<THEN>
+	<ICS.RESOLVEVARIABLES NAME="$(Variables.$(Variables.id):dependentSegmentName)" DELIMITED="true" OUTPUT="segmentName"/>
+	<XLAT.LOOKUP KEY="dvin/AT/HVals/HistoryDefUsedBySegment" VARNAME="_XLAT_" ESCAPE="true"/>
+	<ICS.RESOLVEVARIABLES NAME="Variables._XLAT_ Variables.segmentName" DELIMITED="true" OUTPUT="msgTxt"/>
+	<div class="width-outer-70">
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+		<ARGUMENT NAME="msgtext" VALUE="Variables.msgTxt"/>
+		<ARGUMENT NAME="severity" VALUE="error"/>
+	</CALLELEMENT>
+	</div>
+	<setvar NAME="candelete" VALUE="false"/>
+</THEN>
+</IF>
+</FTCS>

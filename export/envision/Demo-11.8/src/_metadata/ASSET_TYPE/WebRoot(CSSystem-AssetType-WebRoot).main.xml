@@ -423,6 +423,7 @@ Ymxlcy5Bc3NldFR5cGUuc3RhdHVzIT0nVk8nIFZhcmlhYmxlcy5xdWVyeWVuZA==</byte-array>
       <associations/>
       <siteNames class="list">
         <string>Demo</string>
+        <string>MySite</string>
       </siteNames>
     </data>
   </com.fatwire.realtime.ResourceDataImpl>
@@ -532,6 +533,6 @@ Ymxlcy5Bc3NldFR5cGUuc3RhdHVzIT0nVk8nIFZhcmlhYmxlcy5xdWVyeWVuZA==</byte-array>
 #
 key=@ASSET_TYPE-CSSystem-AssetType-WebRoot
 type=ASSET_TYPE
-sites=Demo
+sites=Demo,MySite
 
 ==================___ END METADATA ___==================-->

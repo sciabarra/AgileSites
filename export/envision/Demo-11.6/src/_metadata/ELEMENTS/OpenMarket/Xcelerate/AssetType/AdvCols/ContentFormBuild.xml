@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormBuild
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+	
+<INPUT TYPE="HIDDEN" NAME="TreeSelectStr" VALUE=""/>
+<INPUT TYPE="HIDDEN" NAME="UpdateSelectedItems" VALUE=""/>
+<INPUT TYPE="HIDDEN" NAME="DisplayResults" VALUE=""/>
+<INPUT TYPE="HIDDEN" NAME="TreeSelectSegment" VALUE=""/>
+
+<IF COND="Variables.ACRule!=element">
+<THEN>
+	<STRING.ENCODE VARIABLE="ContentDetails:elementid" VARNAME="ContentDetails:elementidEnc"/>
+	<INPUT TYPE="HIDDEN" NAME="AdvCols:elementid" VALUE="Variables.ContentDetails:elementidEnc" REPLACEALL="Variables.ContentDetails:elementidEnc"/>
+</THEN>
+</IF>
+
+<STRING.ENCODE VARIABLE="PickedIdsOfSegments" VARNAME="PickedIdsOfSegments"/>
+<INPUT TYPE="HIDDEN" NAME="PickedIdsOfSegments" VALUE="Variables.PickedIdsOfSegments" REPLACEALL="Variables.PickedIdsOfSegments"/>
+<STRING.ENCODE VARIABLE="PickedKeyOfSegments" VARNAME="PickedKeyOfSegments"/>
+<INPUT TYPE="HIDDEN" NAME="PickedKeyOfSegments" VALUE="Variables.PickedKeyOfSegments" REPLACEALL="Variables.PickedKeyOfSegments"/>
+<STRING.ENCODE VARIABLE="PickedInsOfSegments" VARNAME="PickedInsOfSegments"/>
+<INPUT TYPE="HIDDEN" NAME="PickedInsOfSegments" VALUE="Variables.PickedInsOfSegments" REPLACEALL="Variables.PickedInsOfSegments"/>
+<STRING.ENCODE VARIABLE="PickedOutsOfSegments" VARNAME="PickedOutsOfSegments"/>
+<INPUT TYPE="HIDDEN" NAME="PickedOutsOfSegments" VALUE="Variables.PickedOutsOfSegments" REPLACEALL="Variables.PickedOutsOfSegments"/>
+
+<TABLE border="0" cellpadding="0" cellspacing="0" class="width-outer-90">
+	<IF COND="Variables.AdvColMode=List">
+		<THEN>
+			<SETVAR NAME="useSelAll" VALUE="true"/>
+			<SETVAR NAME="selname" VALUE="ManuaList"/>
+		</THEN>
+	</IF>
+
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormNavBar">
+		<ARGUMENT NAME="CurrentCat" VALUE="Build"/>
+	</CALLELEMENT>
+
+  <TR>
+  <TD>
+  <TABLE border="0" cellpadding="0" cellspacing="0">
+  <TR>
+    <TD colspan="4"><img height="20" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></TD>
+  </TR>
+<IF COND="Variables.ACRule!=Variables.empty">
+		<THEN>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/BuildVariables.ACRule"/>
+		</THEN>
+		<ELSE>
+			<TR>
+				<TD  colspan="3"><XLAT.STREAM KEY="dvin/AT/AdvCols/NoTypeSelected"/></TD>
+			</TR>
+		</ELSE>
+	</IF>
+	  
+	<IF COND="Variables.AdvColMode=List">
+		<THEN>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+			<TR>
+				<TD class="form-label-text"></TD><TD></TD><TD class="form-inset">
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormFooter">
+					<ARGUMENT NAME="NoContinue" VALUE="true"/>
+				</CALLELEMENT>
+				</TD>
+			</TR> 
+		</THEN>
+		<ELSE>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+			<TR>
+				<TD class="form-label-text"></TD><TD></TD><TD class="form-inset">
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormFooter">
+					<ARGUMENT NAME="ContinueTo" VALUE="Selection"/>
+				</CALLELEMENT>
+				</TD>
+			</TR> 
+		</ELSE>
+	</IF>
+
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</FTCS> 

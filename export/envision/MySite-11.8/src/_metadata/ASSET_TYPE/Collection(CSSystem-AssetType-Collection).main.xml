@@ -11,7 +11,7 @@
         <description>Collection</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp20\dcs8558969166522994550.tmp</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp5\dcs8062645141420226593.tmp</urldescriptorspec>
         <canbechild>T</canbechild>
         <uid>CSSystem-AssetType-Collection</uid>
         <useDimension></useDimension>
@@ -248,7 +248,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket\Xcelerate\AssetType\Collection\SelectSummary.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/Collection/SelectSummary.sql</string>
             <null/>
             <null/>
             <null/>

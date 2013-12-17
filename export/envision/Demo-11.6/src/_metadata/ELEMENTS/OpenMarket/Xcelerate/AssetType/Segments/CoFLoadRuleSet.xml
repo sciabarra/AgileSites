@@ -1,0 +1,92 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/CoFLoadRuleSet
+--
+-- INPUT
+--
+-- OUTPUT
+--	
+-->
+
+<!--
+We could be in one of three states
+	Initial create - no SegRuleSetHint, no xmlruleset (in ContentDetails:ruleset)
+		Make SegRuleSetHint
+	Edit load - no SegRuleSetHint, but an xmlruleset (in ContentDetails:ruleset)
+		Unpack xmlrulset
+	Screen to Screen situation - have a SegRuleSetHint (xmlruleset not relevant)
+		Do nothing
+
+But always make the nvRuleSet object
+-->
+
+<IF COND="Variables.upcommand=cancel">
+<THEN>
+    <REMOVEVAR NAME="SegRuleSetHint"/>
+</THEN>
+</IF>    
+<if COND="IsVariable.SegRuleSetHint=false">
+<then>
+	<setvar NAME="SegRuleSetHint" VALUE="Variables.empty"/>
+</then>
+</if>
+
+<if COND="Variables.SegRuleSetHint=Variables.empty">
+<then>
+	<!-- There's no SegRuleSetHint -->
+	<setvar NAME="unpackxml" VALUE="false"/>
+	<if COND="IsVariable.ContentDetails:ruleset=true">
+	<then>
+		<if COND="Variables.ContentDetails:ruleset!=Variables.empty">
+		<then>
+			<setvar NAME="unpackxml" VALUE="true"/>
+		</then>
+		</if>
+	</then>
+	</if>
+	
+	<if COND="Variables.unpackxml=true">
+	<then>
+		<!-- There is a non-empty ruleset!  We must unpack it -->
+		<rulesetdef.create NAME="theRule"/>
+		<if COND="Variables.errno=0">
+		<then>
+			<rulesetdef.fromxml NAME="theRule" XML="Variables.ContentDetails:ruleset"/>
+			<if COND="Variables.errno=0">
+			<then>
+				<rulesetdef.getencoding NAME="theRule" VARNAME="SegRuleSetHint"/>
+				<nvobject.create NAME="nvRuleSet"/>
+				<nvobject.fromstring NAME="nvRuleSet" VALUE="Variables.SegRuleSetHint"/>
+			</then>
+			<else>
+				<br/><XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorRuleSetFromXml" errno="Variables.errno" EVALALL="false"/>
+			</else>
+			</if>
+		</then>
+		<else>
+			<br/><XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorRuleSetCreate" errno="Variables.errno" EVALALL="false"/>
+		</else>
+		</if>
+	</then>
+	<else>
+		<!-- There was no ruleset to unpack, and no rule hints posted, so we need to make one from scratch -->
+		<nvobject.create NAME="nvRuleSet"/>
+		<nvobject.setvalue NAME="nvRuleSet" VALUENAME="RULESETTYPE" VALUE="ui"/>
+		<nvobject.setvalue NAME="nvRuleSet" VALUENAME="DEFAULTRATING" VALUE="0"/>
+		<nvobject.setvalue NAME="nvRuleSet" VALUENAME="RATING" VALUE="100"/>
+		<nvobject.setvalue NAME="nvRuleSet" VALUENAME="NUMAND" VALUE="0"/>
+				
+		<nvobject.tostring NAME="nvRuleSet" VARNAME="SegRuleSetHint"/>
+	</else>
+	</if>
+</then>
+<else>
+	<!-- Have a SegRuleSetHint, which overrides everything -->
+	<nvobject.create NAME="nvRuleSet"/>
+	<!-- Unpacking xxquotexx is not needed because the hint string is properly encoded now when posted -->
+	<nvobject.fromstring NAME="nvRuleSet" VALUE="Variables.SegRuleSetHint"/> 
+</else>
+</if>
+
+</FTCS> 

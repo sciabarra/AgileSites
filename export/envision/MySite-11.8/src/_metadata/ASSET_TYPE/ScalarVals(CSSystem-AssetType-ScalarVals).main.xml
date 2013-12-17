@@ -11,7 +11,7 @@
         <description>Visitor Attribute</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp20\dcs1800499812960587059.tmp</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp5\dcs1179438805518309923.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-ScalarVals</uid>
         <useDimension></useDimension>
@@ -250,7 +250,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket\Xcelerate\AssetType\ScalarVals\SelectSummary.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/ScalarVals/SelectSummary.sql</string>
             <null/>
             <null/>
             <null/>

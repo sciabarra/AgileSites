@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!--
+$Logfile: /VerticalApps/XcelerateD/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/AdvCols/UnPackRuleDetails.xml $
+$revision: $
+$Modtime: 8/10/04 2:19p $
+-->
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/UnPackRuleDetails
+-
+- This does almost EXACTLY the same work as ConvertHintString.  Highly recommend this element vanish,
+- and we use ConvertHintString directly instead.
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ConvertHintString"/>
+
+</FTCS> 

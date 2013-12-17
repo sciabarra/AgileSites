@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile:  $ 
+$Revision: 29 $ 
+$Modtime: 1/06/03 2:00p $ 
+-->
+<!--
+- Confidential and Proprietary Information of Open Market, Inc.
+-					All Rights Reserved.
+-
+- PreUpdate.xml
+-
+- DESCRIPTION
+-	
+-->
+	<if COND="Variables.updatetype=setformdefaults">
+		<then>
+		</then>
+	</if>
+	<if COND="Variables.updatetype=editfront">
+		<then>
+		</then>
+	</if>
+	<if COND="Variables.updatetype=edit">
+		<then>
+			<ASSET.GATHER NAME="theCurrentAsset" PREFIX="Dimension" FIELDLIST="Variables.FieldsOnForm" />
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+<!-- Update children relations based on standard form values -->
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+				<ARGUMENT NAME="assetname" VALUE="theCurrentAsset" />
+				<ARGUMENT NAME="prefix" VALUE="Variables.prefix" />
+			</CALLELEMENT>
+		</then>
+	</if>
+	<if COND="Variables.updatetype=create">
+		<then>
+			<ASSET.GATHER NAME="theCurrentAsset" PREFIX="Dimension" FIELDLIST="Variables.FieldsOnForm" />
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+<!-- Update children relations based on standard form values -->
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+				<ARGUMENT NAME="assetname" VALUE="theCurrentAsset" />
+				<ARGUMENT NAME="prefix" VALUE="Variables.prefix" />
+			</CALLELEMENT>
+		</then>
+	</if>
+	<if COND="Variables.updatetype=delete">
+		<then>
+		</then>
+	</if>
+	<if COND="Variables.updatetype=remotepost">
+		<then>
+			<IF COND="Variables.Action=update">
+				<THEN>
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Util/MakeFieldListforRemotePost" />
+					<ASSET.GATHER NAME="theCurrentAsset" FIELDLIST="Variables.updateFieldList" />
+				</THEN>
+				<ELSE>
+					<ASSET.GATHER NAME="theCurrentAsset" />
+				</ELSE>
+			</IF>
+		</then>
+	</if>
+	<if COND="Variables.updatetype=updatefrom">
+		<then>
+		</then>
+	</if>
+	
+	<!-- If the asset is updated from dah -->
+<if COND="Variables.dashUpdate=dashUpdate">
+<then>
+	<if COND="Variables.dashUpdateType=create">
+    <then>
+		<!--if the operation is create-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=edit">
+    <then>
+		<!--if the operation is edit-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=delete">
+    <then>
+		<!--if the operation is delete-->
+    </then>
+    </if>
+</then>
+</if>
+</FTCS>

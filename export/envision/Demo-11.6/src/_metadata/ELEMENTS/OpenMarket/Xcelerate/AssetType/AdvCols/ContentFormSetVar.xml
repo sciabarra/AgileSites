@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormSetVar
+--
+-- This element is called before all the various views of the content form: Build, Name, Options, Selection, etc.
+-- It's job is to gather anything posted, and maintain the variable set between posts.
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+<!--getorset will gather in the right way and then scatter will reset everything-->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/GetOrSetVars">
+	<ARGUMENT NAME="GetOrSet" VALUE="set"/>
+</CALLELEMENT>
+
+<ASSET.SCATTER NAME="theCurrentAsset" PREFIX="ContentDetails"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ConvertHintString"/>
+
+<!-- At this point the rule hint and map does not need to be redone, since it was already handled by ConvertHintString above.
+     ACRule and AdvColMode are also set. -->
+
+<!-- Initialize variables that should be there, but which ConvertHintString doesn't touch.  There aren't many of these anymore. -->
+<IF COND="IsVariable.ContentDetails:elementid!=true">
+<THEN>
+	<SETVAR NAME="ContentDetails:elementid" VALUE="Variables.empty"/>
+</THEN>
+</IF>
+<IF COND="IsVariable.ContentDetails:subtype!=true">
+<THEN>
+	<SETVAR NAME="ContentDetails:subtype" VALUE="Variables.empty"/>
+</THEN>
+</IF>
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormSaveVar"/>
+
+</FTCS> 

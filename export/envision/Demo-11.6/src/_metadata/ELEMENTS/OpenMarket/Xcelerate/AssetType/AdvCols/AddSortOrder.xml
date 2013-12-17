@@ -1,0 +1,184 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/AddSortOrder
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+			
+<SCRIPT LANGUAGE="JavaScript">
+
+<![CDATA[
+
+function pickNameSet(obj)
+{
+	var advAttrWidget = dijit.getEnclosingWidget(document.forms[0].NewAdvColsAttributeName);
+	var selectedOption = obj.get('value');
+	var newSrc = document.forms[0].elements["TYPE" + selectedOption].value;
+	selectAdvAttr = advAttrWidget.store.root;
+	selectAdvAttr.length = 0;
+	advAttrWidget.reset();
+	if (selectedOption && selectedOption != "") {
+	
+		if ( newSrc.length == 0 ) {
+		
+			selectAdvAttr.options[0] = new Option("<]]><XLAT.STREAM KEY="dvin/AT/Flex/NoAttrsOfType" ESCAPE="true" ENCODE="false"/><![CDATA[>","<]]><XLAT.STREAM KEY="dvin/AT/Flex/NoAttrsOfType" ESCAPE="true" ENCODE="false"/><![CDATA[>",true,true);
+			advAttrWidget.set('item', selectAdvAttr.options[0]);
+		} else { 		
+			newArr = newSrc.split(",");		
+			selectAdvAttr.options[0] = new Option("<]]><XLAT.STREAM KEY="dvin/AT/Flex/PickAttribute" ESCAPE="true" ENCODE="false"/><![CDATA[>","<]]><XLAT.STREAM KEY="dvin/AT/Flex/PickAttribute" ESCAPE="true" ENCODE="false"/><![CDATA[>",true, true);
+			advAttrWidget.set('item', selectAdvAttr.options[0]);
+			var i = 1;
+			for (var j=0; j < newArr.length; j++) {
+				selectAdvAttr.options[i] = new Option(newArr[j],newArr[j]);
+				i = i + 1;
+			}
+		}
+	}
+}
+
+]]>
+</SCRIPT>
+
+
+<SETVAR NAME="errno" VALUE="0"/>
+<EXECSQL SQL="select distinct assetattr from FlexAssetTypes ORDER BY assetattr" LIST= "AttributeList" TABLE="FlexAssetTypes"/>
+<IF COND="Variables.errno=0">
+	<THEN>
+		<SETCOUNTER NAME="mgrcount" VALUE="0"/>
+		<LOOP LIST="AttributeList">
+			<ATM.LOCATE VARNAME="AMGR" TYPE="AttributeList.assetattr"/>
+			<COMPLEXASSETS.GETALLASSETS NAME="AMGR" SITE="SessionVariables.pubid" LISTVARNAME = "AllAttr"/>
+			<SETVAR NAME="loopfirst" VALUE="true"/>
+			<SETVAR NAME="LoopStr" VALUE="Variables.empty"/>
+			<IF COND="IsList.AllAttr=true">
+				<THEN>
+					<IF COND="AllAttr.#numRows!=0">
+						<THEN>	
+							<LOOP LIST="AllAttr">
+								<ASSET.LIST TYPE="AttributeList.assetattr" LIST="currentAttr" FIELD1="id" VALUE1="AllAttr.assetid"/>
+								<IF COND="Variables.loopfirst!=true">
+									<THEN>
+										<SETVAR NAME="LoopStr" VALUE="Variables.LoopStr,currentAttr.name"/>
+									</THEN>
+									<ELSE>
+										<SETVAR NAME="loopfirst" VALUE="false"/>
+										<SETVAR NAME="LoopStr" VALUE="currentAttr.name"/>
+									</ELSE>
+								</IF>
+							</LOOP>
+						</THEN>
+					</IF>
+				</THEN>
+			</IF>
+			<STRING.ENCODE VARIABLE="LoopStr" VARNAME="OutputQString"/>
+			<INPUT TYPE="HIDDEN" NAME="TYPEAttributeList.assetattr" VALUE="Variables.OutputQString" REPLACEALL="AttributeList.assetattr,Variables.OutputQString"/>
+			<IF	COND="Counters.mgrcount=0">
+				<THEN>
+					<SETVAR NAME="AttrStrFirst" VALUE="Variables.LoopStr"/>
+					<SETVAR NAME="AttrFirstType" VALUE="AttributeList.assetattr"/>
+				</THEN>
+			</IF>
+			<INCCOUNTER NAME="mgrcount" VALUE="1"/>
+		</LOOP>
+	</THEN>
+	<ELSE>
+		<br/>No attributes ???????????
+	</ELSE>
+</IF>
+
+<!--This is hard coded for the special attributes-->
+<SETVAR NAME="SpStr" VALUE="_ASSETTYPE_,_CONFIDENCE_,_RATING_"/>
+<INPUT TYPE="HIDDEN" NAME="TYPESpStrH" VALUE="Variables.SpStr" REPLACEALL="Variables.SpStr"/>
+
+<TR>
+	<TD class="form-label-text"><XLAT.STREAM KEY="dvin/AT/AdvCols/NewSortCriteria"/>:</TD>
+	<TD></TD>
+	<TD class="form-inset">
+		<table  style="border: 1px solid rgb(230, 230, 230);" cellpadding="0" cellspacing="0"> 				
+			<tr>
+				<td>
+					<TABLE>
+						<tr>
+							<td>
+								<table>	
+									<tr>
+										<td style="text-align: center;" class="form-label-text" ><XLAT.STREAM KEY="dvin/AT/Common/AttributeType"/></td>
+										<td width="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="5" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+										<td style="text-align: center;" class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Flex/Attribute"/></td>
+										<td width="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="5" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+										<td style="text-align: center;" class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Direction"/></td>
+									</tr>
+									<TR>
+										<TD ALIGN="LEFT" VALIGN="top">
+											<select NAME="NewAdvColsAttributeTypeName" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" onChange="pickNameSet(this)">
+												<option VALUE="None"/>&lt;<XLAT.STREAM KEY="dvin/AT/Common/PickType"/>&gt;
+												<LOOP LIST="AttributeList">
+													<ASSETTYPE.LIST LIST="ourAssetType" FIELD1="assettype" VALUE1="AttributeList.assetattr"/>
+													<option VALUE="AttributeList.assetattr" REPLACEALL="AttributeList.assetattr"/><STRING.STREAM VALUE="ourAssetType.description"/>
+												</LOOP>
+												<option VALUE="SpStrH"/><XLAT.STREAM KEY="dvin/AT/Common/Special"/>
+											</select>
+										</TD>
+										<td></td>
+										<TD ALIGN="LEFT" VALIGN="top">
+											<STRINGLIST NAME="OptionList" STR="Variables.AttrStrFirst" DELIM=","/>
+											<select NAME="NewAdvColsAttributeName" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" SIZE="1">
+												<option VALUE="None"/>&lt;<XLAT.STREAM KEY="dvin/AT/Flex/PickAttribute"/>&gt;
+												<LOOP LIST="OptionList">
+													<option VALUE="OptionList.ITEM"/><STRING.STREAM VALUE="OptionList.ITEM"/>
+												</LOOP>
+											</select>
+										</TD>
+										<td></td>
+										<TD ALIGN="LEFT" VALIGN="top">
+											<TABLE>
+												<TR>
+													<TD>
+														<INPUT type="radio" name="NewDirection" value="ascending" checked="1"/>
+													</TD>
+													<TD>
+														&nbsp;
+													</TD>
+													<TD>
+														<XLAT.STREAM KEY="dvin/AT/AdvCols/Ascending"/>
+													</TD>
+												</TR>
+												<TR>
+													<TD>
+														<INPUT type="radio" name="NewDirection" value="descending"/>
+													</TD>
+													<TD>
+														&nbsp;
+													</TD>
+													<TD>
+														<XLAT.STREAM KEY="dvin/AT/AdvCols/Descending"/>
+													</TD>
+												</TR>
+											</TABLE>
+										</TD>
+									</TR>
+									<tr>
+										<td colspan="5" align="left">
+											<img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="5" height="1" REPLACEALL="Variables.cs_imagedir"/>
+											<XLAT.LOOKUP KEY="dvin/AT/AdvCols/AnotherSortCrit" VARNAME="_NotherSort_" ESCAPE="true"/>
+											<XLAT.LOOKUP KEY="dvin/AT/AdvCols/AnotherSortCrit" VARNAME="_NotherSort_ALT"/>
+											<A HREF="javascript:void(0)" onclick="setTabDirty(); return Fixpagename('Variables.ThisPage','ContentFormSort')" onmouseover="window.status='Variables._NotherSort_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables.ThisPage,Variables._NotherSort_">
+											<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/AddSortCriteria"/></CALLELEMENT>
+											</A>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</TABLE>
+				</td>
+			</tr>
+		</table>
+	</TD>
+</TR>
+
+</FTCS> 

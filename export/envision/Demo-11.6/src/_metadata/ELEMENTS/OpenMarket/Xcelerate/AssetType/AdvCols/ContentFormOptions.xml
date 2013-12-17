@@ -1,0 +1,306 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormOptions
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+<SCRIPT LANGUAGE="JavaScript">
+	<![CDATA[
+	function pmove(src,target)
+	{
+		var sc, itemText, i, newIndex, listy;
+		
+		for (i=0; i<src.options.length; i++)
+		{
+			if (src.options[i].selected)
+			{
+        var sc=i;
+				var o=src.options[sc]
+				var newValue=o.value;
+				var newText=o.text;
+				items=new Option(newText,newValue);
+				newIndex=target.options.length;
+				target.options[newIndex]=items;
+				target.options[newIndex].selected=true
+			}
+		}
+		i = 0;
+		while (i<src.options.length)
+		{
+			if (src.options[i].selected)
+				src.options[i]=null
+			else
+				i = i + 1;
+		}
+		delNul(src)
+		delNul(target)
+	}
+		]]>
+</SCRIPT>
+
+<TABLE border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+
+	<SETVAR NAME="useSelAll" VALUE="true"/>
+	<SETVAR NAME="selname" VALUE="sListOfAssetTypes"/>
+
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormNavBar">
+		<ARGUMENT NAME="CurrentCat" VALUE="Options"/>
+	</CALLELEMENT>
+	
+	<TR>
+		<TD><TABLE border="0" cellpadding="0" cellspacing="0">
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		
+		
+		<TR>
+			<TD class="form-label-text" valign="top"><XLAT.STREAM KEY="dvin/AT/AdvCols/Options"/>:</TD><TD></TD>
+			<TD class="form-inset">
+				<TABLE cellspacing="0" cellpadding="0" border="0">
+				<!--mapstyle-->
+					<TR>
+						<TD>
+							<IF COND="Variables.ContentDetails:mapstyle=C">
+								<THEN>
+									<INPUT type="radio" onclick="setTabDirty();" name="AdvCols:mapstyle" value="C" checked="1"/>
+								</THEN>
+								<ELSE>
+									<INPUT type="radio" onclick="setTabDirty();" name="AdvCols:mapstyle" value="C"/>
+								</ELSE>
+							</IF>
+						</TD>
+						<TD>
+							&nbsp;
+						</TD>
+						<TD>
+							<XLAT.STREAM KEY="dvin/AT/AdvCols/AppliesToChildren"/>
+						</TD>
+					</TR>
+					<TR>
+						<TD>
+							<IF COND="Variables.ContentDetails:mapstyle=N">
+								<THEN>
+									<INPUT type="radio" onclick="setTabDirty();" name="AdvCols:mapstyle" value="N" checked="1"/>
+								</THEN>
+								<ELSE>
+									<INPUT type="radio" onclick="setTabDirty();" name="AdvCols:mapstyle" value="N"/>
+								</ELSE>
+							</IF>
+						</TD>
+						<TD>
+							&nbsp;
+						</TD>
+						<TD>
+							<XLAT.STREAM KEY="dvin/AT/AdvCols/DoesNotApplyToChildren"/>
+						</TD>
+					</TR>
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+					<!--Override-->
+					<CALLELEMENT NAME="OpenMarket/Gator/Util/HasMarketStudio"/>
+					<!--If Marketing Studio (CS Engage) is not installed, then offer the promotions options
+						otherwise set the default to "F"-->
+					<IF COND="Variables.hasMarketStudio=true">
+						<THEN>
+							 <TR>
+								<TD>
+									<IF COND="Variables.ContentDetails:ovrdable=T">
+										<THEN>
+											<INPUT type="radio" onclick="setTabDirty();" name="AdvCols:ovrdable" value="T" checked="1"/>
+										</THEN>
+										<ELSE>
+											<INPUT type="radio" onclick="setTabDirty();" name="AdvCols:ovrdable" value="T"/>
+										</ELSE>
+									</IF>
+								</TD>
+								<TD>
+									&nbsp;
+								</TD>
+								<TD>
+									<XLAT.STREAM KEY="dvin/AT/AdvCols/CanOverride"/>
+								</TD>
+							</TR>
+							<TR>
+								<TD>
+									<IF COND="Variables.ContentDetails:ovrdable=F">
+										<THEN>
+											<INPUT type="radio" onclick="setTabDirty();" name="AdvCols:ovrdable" value="F" checked="1"/>
+										</THEN>
+										<ELSE>
+											<INPUT type="radio" onclick="setTabDirty();" name="AdvCols:ovrdable" value="F"/>
+										</ELSE>
+									</IF>
+								</TD>
+								<TD>
+									&nbsp;
+								</TD>
+								<TD>
+									<XLAT.STREAM KEY="dvin/AT/AdvCols/CanNotOverride"/>
+								</TD>
+							</TR>
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+						</THEN>
+						<ELSE>
+							<INPUT TYPE="HIDDEN" NAME="AdvCols:ovrdable" VALUE="F"/>
+						</ELSE>
+					</IF>
+
+					<!--Assets-->
+					<TR>
+					 <TD>
+						 <SETVAR NAME="DoingAll" VALUE="false"/>
+						 <IF COND="Variables.ContentDetails:types:Total=0">
+							 <THEN>
+								 <SETVAR NAME="DoingAll" VALUE="true"/>
+							 </THEN>
+							 <ELSE>
+								 <IF COND="Variables.ContentDetails:types:Total!=0">
+									 <THEN>
+										 <IF COND="Variables.ContentDetails:types:0=_ALL_">
+												<THEN>
+													<SETVAR NAME="DoingAll" VALUE="true"/>
+												</THEN>
+										 </IF>
+									 </THEN>
+								 </IF>
+							 </ELSE>
+						 </IF>
+						 
+						 <!--Make Stringlist of old ones-->
+						 <IF COND="Variables.DoingAll=false">
+							 <THEN>
+								 <SETVAR NAME="firsttime" VALUE="true"/>
+								 <SETCOUNTER NAME="typeCount" VALUE="0"/>
+								 <LOOP COUNT="Variables.ContentDetails:types:Total">
+										<ICS.RESOLVEVARIABLES  NAME="$(Variables.ContentDetails:types:$(Counters.typeCount))" OUTPUT="ourType" DELIMITED="true"/>
+										<IF COND="Variables.firsttime=false">
+											<THEN>
+												<SETVAR NAME="pTypeList" VALUE="Variables.pTypeList,Variables.ourType"/>
+											</THEN>
+											<ELSE>
+												<SETVAR NAME="pTypeList" VALUE="Variables.ourType"/>
+												<SETVAR NAME="firsttime" VALUE="false"/>
+											</ELSE>
+										</IF>
+										<INCCOUNTER NAME="typeCount" VALUE="1"/>
+								 </LOOP>
+							 </THEN>
+						 </IF>
+						 
+						 <IF COND="Variables.DoingAll=true">
+							 <THEN>
+								 <INPUT type="radio" onclick="setTabDirty();" name="AllTypes" value="T" checked="1"/>
+							 </THEN>
+							 <ELSE>
+								 <INPUT type="radio" onclick="setTabDirty();" name="AllTypes" value="T"/>
+							 </ELSE>
+						 </IF>
+					 </TD>
+					 <TD>
+						 &nbsp;
+					 </TD>
+					 <TD>
+						 <XLAT.STREAM KEY="dvin/AT/AdvCols/SelectAllAssetTypes"/>
+					 </TD>
+				 </TR>
+				 <TR>
+					 <TD>
+						 <IF COND="Variables.DoingAll=false">
+							 <THEN>
+								 <INPUT type="radio" onclick="setTabDirty();" name="AllTypes" value="F" checked="1"/>
+							 </THEN>
+							 <ELSE>
+								 <INPUT type="radio" onclick="setTabDirty();" name="AllTypes" value="F"/>
+							 </ELSE>
+						 </IF>
+					 </TD>
+					 <TD>
+						 &nbsp;
+					 </TD>
+					 <TD>
+						 <XLAT.STREAM KEY="dvin/AT/AdvCols/SelectAssetTypes"/>
+					 </TD>
+				 </TR>
+					<TR>
+						<TD colspan="3">
+							<TABLE>
+								<TR>
+									<TD>
+										<PUBLICATION.LOAD NAME="thissite" OBJECTID="SessionVariables.pubid"/>
+                                        <PUBLICATION.CHILDREN NAME="thissite" LIST="typeList" OBJECTTYPE="AssetType" ORDER="description"/>
+										<!-- <ASSETTYPE.LIST LIST="typeList" ORDER="description" PUBID="Variables.pubid"/>   -->
+										<SELECT NAME="ListOfAssetTypes" SIZE="10" MULTIPLE="yes">
+											<LOOP LIST="typeList">
+                                                <ASSETTYPE.LIST LIST="thisTypeList" FIELD1="id" VALUE1="typeList.oid"/>
+												<ICS.CLEARERRNO/>
+												<ISINLIST STR="Variables.pTypeList" ITEM="thisTypeList.assettype"/>
+												<IF COND="Variables.errno=0">
+													<THEN>
+														<OPTION VALUE="thisTypeList.assettype" REPLACEALL="thisTypeList.assettype"><STRING.STREAM VALUE="thisTypeList.description"/></OPTION>
+													</THEN>
+												</IF>
+											</LOOP>
+											<OPTION VALUE="-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</OPTION>
+										</SELECT>
+									</TD>
+									<TD>
+										<TABLE>
+											<TR>
+												<TD style="width:auto;">
+													<XLAT.LOOKUP KEY="dvin/AT/AdvCols/AddAssetType" VARNAME="AddAssetType" ESCAPE="true"/>
+													<XLAT.LOOKUP KEY="dvin/AT/AdvCols/AddAssetType" VARNAME="_XLAT_"/>
+													<A HREF="javascript:void(0)" onclick="setTabDirty(); pmove(document.forms[0].elements['ListOfAssetTypes'], document.forms[0].elements['sListOfAssetTypes']);" onmouseover="window.status='Variables.AddAssetType';return true;" onmouseout="window.status=' ';return true;"  REPLACEALL="Variables.AddAssetType">
+													<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Add"/><ARGUMENT NAME="width" VALUE="50px"/></CALLELEMENT>
+													</A>
+												</TD>
+											</TR>
+											<TR>
+												<TD style="width:auto;">
+													<XLAT.LOOKUP KEY="dvin/AT/AdvCols/RemoveAssetType" VARNAME="RemoveAssetType" ESCAPE="true"/>
+													<XLAT.LOOKUP KEY="dvin/AT/AdvCols/RemoveAssetType" VARNAME="_XLAT_"/>
+													<A HREF="javascript:void(0)" onclick="setTabDirty(); pmove(document.forms[0].elements['sListOfAssetTypes'], document.forms[0].elements['ListOfAssetTypes']);" onmouseover="window.status='Variables.RemoveAssetType';return true;" onmouseout="window.status=' ';return true;"  REPLACEALL="Variables.RemoveAssetType">
+													<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Remove"/><ARGUMENT NAME="width" VALUE="50px"/></CALLELEMENT>
+													</A>
+												</TD>
+											</TR>
+										</TABLE>
+									</TD>
+									<TD>
+										<SELECT NAME="sListOfAssetTypes" SIZE="10" MULTIPLE="yes">
+											<IF COND="Variables.DoingAll=false">
+												<THEN>
+													<SETCOUNTER NAME="typeCount" VALUE="0"/>
+													<LOOP COUNT="Variables.ContentDetails:types:Total">
+														<ICS.RESOLVEVARIABLES  NAME="$(Variables.ContentDetails:types:$(Counters.typeCount))" OUTPUT="ourType" DELIMITED="true"/>
+														<ASSETTYPE.LIST LIST="assettypelist" FIELD1="assettype" VALUE1="Variables.ourType"/>
+														<STRING.ENCODE VARIABLE="ourType" VARNAME="ourType"/>
+														<OPTION VALUE="Variables.ourType" REPLACEALL="Variables.ourType"><STRING.STREAM VALUE="assettypelist.description"/></OPTION>
+														<INCCOUNTER NAME="typeCount" VALUE="1"/>
+													</LOOP>
+												</THEN>
+											</IF>
+											<OPTION VALUE="-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</OPTION>
+										</SELECT>
+									</TD>
+								</TR>
+							</TABLE>
+						</TD>
+					</TR>
+				</TABLE>
+			</TD>	
+		</TR>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+		<TR>
+			<TD class="form-label-text"></TD><TD></TD><TD class="form-inset">
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormFooter">
+			<ARGUMENT NAME="ContinueTo" VALUE="Build"/>
+		    </CALLELEMENT></TD>
+	    </TR>
+		</TABLE></TD>
+	</TR>
+	
+	
+</TABLE>
+</FTCS>

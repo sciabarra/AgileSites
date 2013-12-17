@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/HFields/CheckDelete
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<setvar NAME="candelete" VALUE="true"/>
+
+<ATM.LOCATE VARNAME="typemgr" TYPE="HistoryVals"/>
+<HISTORYDATUMS.GETTYPESFORATTR NAME="typemgr" ID="Variables.id" LISTVARNAME="myTypes"/>
+<IF COND="IsList.myTypes=true">
+<THEN>
+	<IF COND="myTypes.#numRows!=0">
+	<THEN>
+		<setvar NAME="candelete" VALUE="false"/>
+		<setvar NAME="DeleteFailedReason" VALUE="HFieldInUse"/>
+	</THEN>
+	</IF>
+</THEN>
+</IF>
+
+</FTCS> 

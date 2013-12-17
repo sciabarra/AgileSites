@@ -250,7 +250,14 @@
 											<THEN>
 												<SETCOUNTER NAME="valTotal" VALUE="0"/>
 												<LOOP COUNT="Variables.currentVal">
-													<ICS.RESOLVEVARIABLES NAME="$(Variables.ContentDetails:DAttribute_$(lFilterList.assetid)$(Variables.AttrName):$(Counters.valTotal))" OUTPUT="currentVal" DELIMITED="true"/>
+													<IF COND="lFilteredAttrs.valuestyle=O">
+													<THEN>
+														<ICS.RESOLVEVARIABLES NAME="$(Variables.ContentDetails:DAttribute_$(lFilterList.assetid)$(Variables.AttrName):$(Counters.valTotal):data)" OUTPUT="currentVal" DELIMITED="true"/>
+													</THEN>
+													<ELSE>
+														<ICS.RESOLVEVARIABLES NAME="$(Variables.ContentDetails:DAttribute_$(lFilterList.assetid)$(Variables.AttrName):$(Counters.valTotal))" OUTPUT="currentVal" DELIMITED="true"/>
+													</ELSE>
+													</IF>
 													<LISTOBJECT.ADDROW NAME="loCurrentValues" value="Variables.currentVal"/>
 													<INCCOUNTER NAME="valTotal" VALUE="1"/>
 												</LOOP>

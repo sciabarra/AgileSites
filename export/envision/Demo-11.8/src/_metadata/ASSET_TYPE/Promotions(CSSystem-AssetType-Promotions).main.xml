@@ -11,7 +11,7 @@
         <description>Promotion</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp6\dcs4110776671913347813.tmp</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp6741\dcs7507601347617045914.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-Promotions</uid>
         <useDimension></useDimension>
@@ -250,7 +250,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/Promotions/SelectSummary.sql</string>
+            <string>OpenMarket\Xcelerate\AssetType\Promotions\SelectSummary,2.sql</string>
             <null/>
             <null/>
             <null/>

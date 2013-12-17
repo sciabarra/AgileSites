@@ -1,0 +1,123 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/ContentForm1
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+<setvar NAME="HaveRows" VALUE="false"/>
+<!-- form buttons -->
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+		<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
+	</CALLELEMENT>
+	
+<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+
+	<!-- page title w/ asset name -->
+	<assettype.list LIST="ThisAsset" FIELD1="assettype" VALUE1="Variables.AssetType"/>
+
+	<if COND="Variables.ContentDetails:name!=Variables.empty">
+		<then>
+			<setvar NAME="possiblecolon" VALUE=":"/>
+		</then>
+		<else>
+			<setvar NAME="possiblecolon" VALUE="Variables.empty"/>
+		</else>
+	</if>
+	<if COND="Variables.updatetype=setformdefaults">
+		<then>
+		  <XLAT.LOOKUP KEY="dvin/Common/New" VARNAME="_actionstring_"/>
+			<setvar NAME="actionstring" VALUE="ThisAsset.descriptionVariables.possiblecolon"/>
+		</then>
+		<else>
+		  <XLAT.LOOKUP KEY="dvin/Common/Edit" VARNAME="_actionstring_"/>
+			<setvar NAME="actionstring" VALUE="ThisAsset.descriptionVariables.possiblecolon"/>
+		</else>
+	</if>
+
+	<tr>
+		<td><span class="title-text"><csvar NAME="Variables.actionstring"/>&nbsp;</span><span class="title-value-text"><STRING.STREAM VALUE="Variables.ContentDetails:name"/></span></td>
+	</tr>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+		<argument NAME="SpaceBelow" VALUE="No"/>
+	</callelement>
+
+	<!-- attribute inspection form -->
+	<tr>
+		<td>
+		<table border="0" cellpadding="0" cellspacing="0">
+
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>	
+     			<tr>
+				<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/AT/Common/Name"/>:</td>
+				<td></td>
+				<td class="form-inset"><callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+						<argument NAME="inputName" VALUE="Segments:name"/>
+						<argument NAME="inputValue" VALUE="Variables.ContentDetails:name"/>
+						<argument NAME="inputSize" VALUE="32"/>
+						<argument NAME="inputMaxlength" VALUE="32"/>
+						<argument name="applyDefaultFormStyle" value='Variables.defaultFormStyle' />
+					</callelement>
+				</td>
+			</tr>
+			
+      		<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/> 
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Description"/>:</td>
+				<td></td>
+				<td class="form-inset">
+					<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+						<argument NAME="inputName" VALUE="Segments:description"/>
+						<argument NAME="inputValue" VALUE="Variables.ContentDetails:description"/>
+						<argument NAME="inputSize" VALUE="32"/>
+						<argument NAME="inputMaxlength" VALUE="128"/>
+						<argument name="applyDefaultFormStyle" value='Variables.defaultFormStyle' />
+					</callelement>
+				</td>
+			</tr>
+ 			
+     
+			
+ 			<!--Call start date and end date for site preview-->
+         	<callelement NAME="OpenMarket/Xcelerate/UIFramework/form/AssetTypeStartEndDate">
+				<argument NAME="startDateFieldName" VALUE="Segments:startdate"/>
+				<argument NAME="endDateFieldName"  VALUE="Segments:enddate"/>
+			</callelement>
+			<!--End site preview dates -->
+			
+			<nvobject.getvalue NAME="nvRuleSet" VALUENAME="NUMAND" VARNAME="rsnumrows"/>
+			<if COND="Variables.rsnumrows!=0">
+			<then>
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>              
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Segments/FilteringCriteria"/>:</td>
+					<td></td>
+					<td class="form-inset">
+						<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/TileRuleSet"/>
+					</td>
+				</tr>
+			</then>
+			</if>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+			<tr><td></td><td></td><td>
+				<if COND="Variables.HaveRows=false">
+				<then>
+					<A HREF="javascript:void(0)"  onclick="return AddEditRule('Variables.ThisPage','CoFDemographics','first','AddRow','0','0');" onmouseover="window.status='Variables._ContinueSegment_';return true;"   onmouseout="window.status='';return true;" REPLACEALL="Variables._ContinueSegment_,Variables.ThisPage">
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Continue"/></CALLELEMENT>
+				</A>
+				</then>
+				</if>
+			</td></tr>
+		</table>
+		</td>
+	</tr>	
+	
+</table>
+
+<INPUT TYPE="HIDDEN" NAME="FromPage" VALUE="ContentForm1"/>
+</FTCS>
+ 

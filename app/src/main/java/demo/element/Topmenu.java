@@ -17,13 +17,14 @@ public class Topmenu extends Element {
 	final static Log log = Log.getLog(Error.class);
 
 	public static AssetSetup setup() {
-		return new CSElement("Demo_Topmenu", demo.element.Topmenu.class);
+		return new CSElement("Topmenu", demo.element.Topmenu.class);
 	}
 
 	@Override
 	public String apply(Env e) {
 
-		log.debug("Testing Topmenu");
+		if (log.debug())
+			log.debug("Demo Topmenu");
 
 		Picker html = Picker.load("/blueprint/template.html", "#topmenu");
 		log.debug("picker=" + html);

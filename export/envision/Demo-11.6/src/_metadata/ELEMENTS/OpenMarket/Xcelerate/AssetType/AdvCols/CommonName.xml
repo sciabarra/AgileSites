@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/CommonName
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+<ASSETTYPE.LIST LIST="ThisAsset" FIELD1="assettype" VALUE1="Variables.AssetType"/>
+<IF COND="Variables.ContentDetails:name!=Variables.empty">
+	<THEN>
+		<SETVAR NAME="namestr" VALUE=" ThisAsset.description: Variables.ContentDetails:name"/>
+	</THEN>
+	<ELSE>
+		<SETVAR NAME="namestr" VALUE=" ThisAsset.description"/>
+	</ELSE>
+</IF>
+<STRING.ENCODE VARNAME="namestring" VARIABLE="namestr"/>
+<tr>
+	<td class="title-text" nowrap="nowrap"><CSVAR NAME="Variables.namestring"/></td>
+</tr>
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar"/>
+</FTCS> 

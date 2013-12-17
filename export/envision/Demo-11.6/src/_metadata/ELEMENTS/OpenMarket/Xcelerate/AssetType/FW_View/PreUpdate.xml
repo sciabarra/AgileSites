@@ -1,0 +1,292 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Xcelerate/AssetMaker/Populate/AssetStubElementCatalog/OpenMarket/AssetMaker/AssetStubFiles/StandardElements/PreUpdate.xml $ 
+$Revision: 29 $ 
+$Modtime: 1/03/03 5:46p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of divine Inc.
+-					All Rights Reserved.
+-
+- PreUpdate.xml
+-
+- DESCRIPTION
+-
+-    When an asset is created, edited, or copied,
+-    this element is called before the database update
+-    function is invoked.
+-
+-    This element is passed in an argument: 'updatetype'
+-    whose value can drive special processing based
+-    on the type of update
+- 
+- INPUT: the asset is an object loaded and called 'theCurrentAsset'
+-  	Variables.prefix - scattered asset field prefix + ':' fieldname = fiel'd value
+-     Variables.updatetype - can be setformdefaults,editfront,edit,create,remotepost,delete, updatefrom
+-->
+
+<SETVAR NAME="formfieldlist" VALUE="Variables.empty"/>
+
+<CALLJAVA CLASS="com.openmarket.assetmaker.asset.AssetMaker">
+    <ARGUMENT NAME="command" VALUE="parseproperties"/>
+    <ARGUMENT NAME="propertytags" VALUE="storage, inputform"/>
+    <ARGUMENT NAME="assettype" VALUE="Variables.AssetType"/>
+</CALLJAVA>
+<if COND="IsVariable.assetmaker/propertylist=true">
+<then>
+	<stringlist NAME="Proplist" STR="Variables.assetmaker/propertylist" DELIM=","/>
+</then>
+</if>
+
+<if COND="Variables.updatetype=setformdefaults">
+<then>
+	<!-- will need to parseasset in order to tell whether UNNAMEDASSOCIATIONS is set -->
+	<CALLJAVA CLASS="com.openmarket.assetmaker.asset.AssetMaker">
+	   <ARGUMENT NAME="command" VALUE="parseasset"/>
+		<ARGUMENT NAME="assettype" VALUE="Variables.AssetType"/>
+	</CALLJAVA>
+	<!-- if we are doing a copy we need to do some special handling of uploaded files -->
+	<if COND="IsVariable.sourceassetid=true">
+	<then>
+		<if COND="IsVariable.assetmaker/uploadpropertylist=true">
+		<then>
+		    <STRING.ENCODE VARIABLE="sourceassetid" VARNAME="sourceassetidEnc"/>
+			<INPUT TYPE="hidden" NAME="sourceassetid" VALUE="Variables.sourceassetidEnc" REPLACEALL="Variables.sourceassetidEnc"/>
+		</then>
+		</if>
+	</then>
+	</if>
+</then>
+</if>
+
+<if COND="Variables.updatetype=editfront">
+<then>
+	<!-- will need to parseasset in order to tell whether UNNAMEDASSOCIATIONS is set -->
+	<CALLJAVA CLASS="com.openmarket.assetmaker.asset.AssetMaker">
+	   <ARGUMENT NAME="command" VALUE="parseasset"/>
+		<ARGUMENT NAME="assettype" VALUE="Variables.AssetType"/>
+	</CALLJAVA>
+</then>
+</if>
+
+<if COND="Variables.updatetype=edit">
+<then>
+<!-- handle upload fields -->
+	<if COND="IsVariable.assetmaker/uploadpropertylist=true">
+	<then>
+		<stringlist NAME="uploadedfields" STR="Variables.assetmaker/uploadpropertylist" DELIM=","/>
+		<loop LIST="uploadedfields">
+			<!-- if user has supplied a file or requested a delete add the fields to the Gather -->
+			<setvar NAME="varname" VALUE="Variables.prefix:uploadedfields.ITEM_file"/>
+			<if COND="IsVariable.Variables.varname=false">
+			<then>
+				<setvar NAME="shoulddelete" VALUE="Variables.UploadDeleteuploadedfields.ITEM"/>
+		      <if COND="Variables.shoulddelete=true">
+		      <then>
+ 					<setvar NAME="FieldsOnForm" VALUE="Variables.FieldsOnForm,uploadedfields.ITEM"/>
+				</then>
+				</if>
+			</then>
+			<else>
+				<setvar NAME="FieldsOnForm" VALUE="Variables.FieldsOnForm,uploadedfields.ITEM"/>
+			</else>
+			</if>
+		</loop>
+	</then>
+	</if>		
+	
+<!-- process the rel fields and put them into standard form -->
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"/>
+	
+	<ASSET.GATHER NAME="theCurrentAsset" PREFIX="Variables.prefix" FIELDLIST="Variables.FieldsOnForm"/>
+<!-- update child relations baseted on standard form values -->	
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+		<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+		<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+	</CALLELEMENT>
+	<if COND="IsVariable.has_unnamed_associations=true">
+	<then>
+		<callelement NAME="OpenMarket/AssetMaker/AddUnnamedAssociations"/>
+	</then>
+	</if>
+
+<!-- eWebEditPro doesn't accept a colon in fieldname, so collect these with no prefix -->
+	<if COND="IsVariable.assetmaker/ewebeditpropertylist=true">
+	<then>
+		<ASSET.GATHER NAME="theCurrentAsset" FIELDLIST="Variables.assetmaker/ewebeditpropertylist"/>
+	</then>
+	</if>
+	<!-- handle any url fields that are edited as text areas -->
+	<if COND="IsVariable.editfileastext=true">
+	<then>
+		<STRINGLIST NAME="urlfields" STR="Variables.editfileastext" DELIM=";"/>
+		<LOOP LIST="urlfields">
+			<setvar NAME="varname" VALUE="Variables.prefix:urlfields.ITEM"/>
+			<if COND="IsVariable.Variables.varname=true">
+			<then>
+				<SETVAR NAME="urlfields.ITEM_file" VALUE="CS.UniqueID"/>
+				<SETVAR NAME="urlfields.ITEM_file" VALUE="Variables.urlfields.ITEM_file.txt"/>
+				<SETVAR NAME="var" VALUE="Variables.urlfields.ITEM_file"/>
+				<ASSET.SET NAME="theCurrentAsset" FIELD="urlfields.ITEM_file" VALUE="Variables.var"/>
+			</then>
+			</if>
+		</LOOP>
+	</then>
+	</if>
+</then>
+</if>
+
+<if COND="Variables.updatetype=create">
+<then>
+<!-- handle upload fields -->
+	<if COND="IsVariable.assetmaker/uploadpropertylist=true">
+	<then>
+		<stringlist NAME="uploadedfields" STR="Variables.assetmaker/uploadpropertylist" DELIM=","/>
+		<loop LIST="uploadedfields">
+			<setvar NAME="FieldsOnForm" VALUE="Variables.FieldsOnForm,uploadedfields.ITEM"/>
+		</loop>
+	</then>
+	</if>		
+
+<!-- process the rel fields and put them into standard form -->
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"/>
+
+	<ASSET.GATHER NAME="theCurrentAsset" PREFIX="Variables.prefix" FIELDLIST="Variables.FieldsOnForm"/>
+<!-- update child relations baseted on standard form values -->	
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+		<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+		<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+	</CALLELEMENT>
+	<if COND="IsVariable.has_unnamed_associations=true">
+	<then>
+		<callelement NAME="OpenMarket/AssetMaker/AddUnnamedAssociations"/>
+	</then>
+	</if>
+
+<!-- eWebEditPro doesn't accept a colon in fieldname, so collect these with no prefix -->
+	<if COND="IsVariable.assetmaker/ewebeditpropertylist=true">
+	<then>
+		<ASSET.GATHER NAME="theCurrentAsset" FIELDLIST="Variables.assetmaker/ewebeditpropertylist"/>
+	</then>
+	</if>
+
+	<!-- handle any url fields that are edited as text areas -->
+	<if COND="IsVariable.editfileastext=true">
+	<then>
+		<STRINGLIST NAME="urlfields" STR="Variables.editfileastext" DELIM=";"/>
+		<LOOP LIST="urlfields">
+			<setvar NAME="varname" VALUE="Variables.prefix:urlfields.ITEM"/>
+			<if COND="IsVariable.Variables.varname=true">
+			<then>
+				<SETVAR NAME="urlfields.ITEM_file" VALUE="CS.UniqueID"/>
+				<SETVAR NAME="urlfields.ITEM_file" VALUE="Variables.urlfields.ITEM_file.txt"/>
+				<SETVAR NAME="var" VALUE="Variables.urlfields.ITEM_file"/>
+				<ASSET.SET NAME="theCurrentAsset" FIELD="urlfields.ITEM_file" VALUE="Variables.var"/>
+			</then>
+			</if>
+		</LOOP>
+	</then>
+	</if>
+	<!-- if we are doing a copy we need to do some special handling of uploaded files -->
+	<if COND="IsVariable.sourceassetid=true">
+	<then>
+		<ASSET.LOAD NAME="source" TYPE="Variables.AssetType" OBJECTID="Variables.sourceassetid"/>
+		<ASSET.SCATTER NAME="source" PREFIX="source"/>
+		<stringlist NAME="uploadedfields" STR="Variables.assetmaker/uploadpropertylist" DELIM=","/>
+		<loop LIST="uploadedfields">
+			<!-- if user hasn't supplied a file use the one from the source of the copy -->
+			<setvar NAME="varname" VALUE="Variables.prefix:uploadedfields.ITEM_file"/>
+			<if COND="IsVariable.Variables.varname=false">
+			<then>
+				<ASSET.GATHER NAME="theCurrentAsset" PREFIX="source" FIELDLIST="uploadedfields.ITEM"/>
+			</then>
+			</if>
+		</loop>
+	</then>
+	</if>
+</then>
+</if>
+
+<if COND="Variables.updatetype=delete">
+<then>
+</then>
+</if>
+
+<if COND="Variables.updatetype=remotepost">
+<then>
+	<!-- set default values, sets the variable to the value, only if the variable doesn't exist -->
+	<CALLJAVA CLASS="com.openmarket.framework.commands.SetDefault">
+		<ARGUMENT NAME="category"	VALUE="g"/>
+	</CALLJAVA>
+
+    <CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Util/MakeFieldListforRemotePost"/>
+    <IF COND="Variables.Action=update">
+    <THEN>
+         <ASSET.GATHER NAME="theCurrentAsset" FIELDLIST="Variables.updateFieldList"/>
+    </THEN>
+    <ELSE>
+        <ASSET.GATHER NAME="theCurrentAsset"/>
+    </ELSE>
+    </IF>
+
+	<setvar NAME="assettype" VALUE="Variables.AssetType"/>
+	<setvar NAME="description" VALUE="Variables.category"/>
+	<SELECTTO FROM="Category" WHERE="assettype,description" LIST="CategoryList" WHAT="category"/>
+	<if COND="CategoryList.#numRows!=0">
+	<then>
+		<ASSET.SET NAME="theCurrentAsset" FIELD="category" VALUE="CategoryList.category"/>
+	</then>
+	<else>
+		<ASSET.SET NAME="theCurrentAsset" FIELD="category" VALUE="Variables.category"/>
+	</else>
+	</if>
+
+</then>
+</if>
+
+<if COND="Variables.updatetype=InSite">
+<then>
+<!-- handle upload fields -->
+	<stringlist NAME="editableFields" STR="Variables.FieldsOnForm" DELIM=","/> 
+	<LOOP LIST="editableFields">
+		<setvar NAME="errno" VALUE="0"/>
+		<BEGINS STR="editableFields.ITEM" WHAT="url"/>
+		<if COND="Variables.errno=1">
+		<then>
+			<!-- if a file name has not been provided for the url fields, then supply one -->
+			<setvar NAME="varname" VALUE="Variables.prefix:editableFields.ITEM_file"/>
+			<if COND="IsVariable.Variables.varname=false">
+			<then>
+	 			<ASSET.SET NAME="theCurrentAsset" FIELD="editableFields.ITEM_file" VALUE="CS.UniqueID.txt"/>
+	 		</then>
+			</if>
+		</then>
+		</if>
+	</LOOP>
+</then>
+</if>
+<!-- If the asset is updated from dah -->
+<if COND="Variables.dashUpdate=dashUpdate">
+<then>
+	<if COND="Variables.dashUpdateType=create">
+    <then>
+		<!--if the operation is create-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=edit">
+    <then>
+		<!--if the operation is edit-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=delete">
+    <then>
+		<!--if the operation is delete-->
+    </then>
+    </if>
+</then>
+</if>
+
+</FTCS>

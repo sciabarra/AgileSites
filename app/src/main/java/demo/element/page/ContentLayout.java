@@ -16,14 +16,16 @@ public class ContentLayout extends Element {
 	Log log = Log.getLog(ContentLayout.class);
 
 	public static AssetSetup setup() {
-		return new Template("Page", "Demo_ContentLayout", Template.LAYOUT,
-				demo.element.page.ContentLayout.class) //
+		return new Template("Page", "ContentLayout", Template.LAYOUT,
+				"Demo_Content", demo.element.page.ContentLayout.class) //
 				.cache("false", "false") // change caching here
 				.description("Layout for type Page Content");
 	}
 
 	@Override
 	public String apply(Env e) {
+		if (log.debug())
+			log.debug("Demo ContentLayout");
 
 		Asset a = e.getAsset();
 		Picker html = Picker.load("/blueprint/template.html", "#content");
@@ -63,10 +65,10 @@ public class ContentLayout extends Element {
 		html.replace("#seealso3", a.slot("SeeAlso", 3, "Page",
 				"ContentSeeAlso", "Drag a Page Here"));
 
-		html.replace("#tree", e.call("Tree"));
-		html.replace("#topmenu", e.call("Topmenu"));
-		html.replace("#breadcrump", e.call("Breadcrump",//
-				arg("c", a.getC()), arg("cid", a.getCid().toString())));
+		//html.replace("#tree", e.call("Tree"));
+		//html.replace("#topmenu", e.call("Topmenu"));
+		//html.replace("#breadcrump", e.call("Breadcrump",//
+		//		arg("c", a.getC()), arg("cid", a.getCid().toString())));
 
 		return html.html();
 	}

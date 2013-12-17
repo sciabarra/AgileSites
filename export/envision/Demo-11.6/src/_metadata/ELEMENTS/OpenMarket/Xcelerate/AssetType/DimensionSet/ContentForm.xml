@@ -1,0 +1,355 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!--
+$Logfile:  $
+$Revision: 63 $
+$Modtime: 7/08/04 11:16a $
+-->
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- ContentForm.xml
+-
+- DESCRIPTION
+-	Form for creating/editing a DimensionSet
+-    Required input variables: ContentDetails
+-
+- HISTORY
+  [2007-09-17 KG]
+  * XSS fixes (adapted from 6.3 fixes):
+    * isCleanString function usage
+  * changed definitions of 'obj' to just forms[0] (not .elements[0])
+-->
+<!--
+    setup all the fields in the DimensionSet table
+    as hidden input fields: this is required
+    for replacerow to work.
+
+    Note: you must
+    ensure that there is no more than one
+    occurence of a form field that refers
+    to one of these input fields. Else, browsers
+    will concatenate all values found, surely
+    leading to unexpected results
+
+    Note: dates are dealt with a little differently
+
+-->
+	<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
+	<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at" />
+	<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description" />
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/ValidateInputForXSS" />
+	<CALLELEMENT  NAME="OpenMarket/Gator/Scripts/SetDirtyState"/>
+	<INPUT TYPE="hidden" NAME="FieldsOnForm" VALUE="name,subtype,description,EnabledDimension,cs_dfilterclass,cs_drulectxclass" /> <INPUT TYPE="hidden" NAME="upcommand" VALUE="submit" /> <SCRIPT LANGUAGE="JavaScript">
+
+<![CDATA[
+
+var obj = document.forms[0];
+
+function getAssetName()
+{
+	return obj.elements['DimensionSet:name'].value;
+}
+
+function submitForm()
+{
+	return checkfields();
+}
+
+function SetCancelFlag () {
+	var obj = document.forms[0];
+
+	if(confirm("]]><XLAT.STREAM KEY="dvin/Common/CancelClicked" ESCAPE="true" ENCODE="false"/><![CDATA[")){
+		obj.elements['upcommand'].value="cancel";
+		obj.submit();
+		return false;
+	}
+}
+
+function checkfields() {
+	var obj = document.forms[0];
+	var isclean = isCleanString(obj.elements['DimensionSet:name'].value);
+	if (!isclean) {
+		alert("]]><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/ApostropheNotAllowed" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		return false;
+	}
+	if ( (obj.elements['DimensionSet:name'].value.length == 0) ||
+		 (obj.elements['DimensionSet:name'].value.match(/^[\s]/) != null) ) {
+
+	//Here means something is wrong, let us figure out what
+
+			if (obj.elements['DimensionSet:name'].value.length == 0) {
+				]]>
+				alert("<XLAT.STREAM KEY="dvin/UI/Error/specifyauniquenameforthisDimensionSet" ESCAPE="true" ENCODE="false" />");
+				<![CDATA[
+
+			}
+
+			if ( obj.elements['DimensionSet:name'].value.match(/^[\s]/) != null ) {
+				]]>
+				alert("<XLAT.STREAM KEY="dvin/UI/Error/ThenameforthisDimensionSetcannotstartwithaspace" ESCAPE="true" ENCODE="false" />");
+				<![CDATA[
+			}
+			obj.elements['DimensionSet:name'].focus();
+			return false;
+	}
+	obj.submit();
+	return false;
+}
+
+function setVisibility(currElem,newvis) {
+	if(obj.elements[currElem])
+		obj.elements[currElem].style = newvis;
+}
+
+function showAdvancedFilterInfo(prefix)
+{
+	setVisibility(prefix+"filterinforow","visible");
+}
+
+function hideAdvancedFilterInfo(prefix)
+{
+	setVisibility(prefix+"filterinforow","hidden");
+}
+
+function resetFilterInfoTextFields(prefix,flag)
+{
+	if  ( flag  == 'advanced')
+	{
+		showAdvancedFilterInfo(prefix);
+	}
+	else
+	{
+		hideAdvancedFilterInfo(prefix);
+		document.getElementById(prefix+'cs_dfilterclass').value=flag;
+	}
+}
+
+]]>
+
+</SCRIPT>
+
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+		<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
+	</CALLELEMENT>
+	<div dojoType="dijit.layout.ContentPane" region="center">
+	<table border="0" cellpadding="0" cellspacing="0" class="width70BottomExMargin">
+<!-- Image page title w/ image name -->
+		<tr>
+			<td>
+				<span class="title-text">
+					<STRING.STREAM VARIABLE="at:description" />
+					: </span><span class="title-value-text">
+					<STRING.STREAM VARIABLE="ContentDetails:name" />
+				</span>
+			</td>
+			<td>
+			</td>
+		</tr>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+			<argument NAME="SpaceBelow" VALUE="No" />
+		</callelement>
+		<tr>
+			<td>
+				<table border="0" cellpadding="0" cellspacing="0" class="width-inner-100">
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+					<tr>
+						<td class="form-label-text">
+							<span class="alert-color">*</span>
+							<XLAT.STREAM KEY="dvin/Common/Name" />
+							:
+						</td>
+						<td>
+							<img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir" />
+						</td>
+						<setvar NAME="OutputQString" VALUE="Variables.empty" />
+						<SUBSTITUTE STR="Variables.ContentDetails:name" WHAT="&#34;" WITH="&#38;quot;" OUTSTR="OutputQString" />
+						<PROPERTY.GET PARAM="xcelerate.asset.sizeofnamefield" INIFILE="futuretense_xcel.ini" VARNAME="sizeofnamefield" />
+						<td class="form-inset">
+							<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+								<argument NAME="inputName" VALUE="DimensionSet:name"/>
+								<argument NAME="inputValue" VALUE="Variables.OutputQString"/>
+								<argument NAME="inputSize" VALUE="32"/>
+								<argument NAME="inputMaxlength" VALUE="Variables.sizeofnamefield"/>
+							</callelement>
+						</td>
+					</tr>
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+					<tr>
+						<td class="form-label-text">
+							<XLAT.STREAM KEY="dvin/Common/Description" />
+							:
+						</td>
+						<td>
+						</td>
+						<td class="form-inset">
+							<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+								<argument NAME="inputName" VALUE="DimensionSet:description"/>
+								<argument NAME="inputValue" VALUE="Variables.ContentDetails:description"/>
+								<argument NAME="inputSize" VALUE="32"/>
+								<argument NAME="inputMaxlength" VALUE="128"/>
+							</callelement>
+						</td>
+					</tr>
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+					<tr>
+						<td class="form-label-text">
+							<XLAT.STREAM KEY="dvin/UI/Subtype" />
+							:
+						</td>
+						<td>
+						</td>
+						<td class="form-inset">
+							<callelement NAME="OpenMarket/Xcelerate/Actions/Util/MakeSubtypeList">
+								<argument NAME="Prefix" VALUE="Variables.AssetType" />
+								<argument NAME="fieldvalue" VALUE="Variables.ContentDetails:subtype" />
+								<argument NAME="AssetType" VALUE="Variables.AssetType" />
+							</callelement>
+						</td>
+					</tr>
+
+					<IF COND="Variables.updatetype!=setformdefaults">
+						<THEN>
+							<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+							<tr>
+								<td class="form-label-text">
+									<XLAT.STREAM KEY="dvin/AT/Common/ID" />
+									:
+								</td>
+								<td>
+								</td>
+								<td class="form-inset"><span class="disabledEditText">
+									<STRING.STREAM VARIABLE="id" /></span>
+								</td>
+							</tr>
+						</THEN>
+					</IF>
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+					<tr>
+						<td class="form-label-text">
+							<XLAT.STREAM KEY="dvin/AT/DimensionSet/DimensionFilterClass" />
+							:
+						</td>
+						<td>
+						</td>
+						<!--td>
+<![CDATA[ <INPUT TYPE="text" NAME="DimensionSet:cs_dfilterclass" SIZE="32" MAXLENGTH="128" VALUE="]]>
+					<STRING.STREAM VARIABLE="ContentDetails:cs_dfilterclass" />
+<![CDATA["/>]]>
+						</td-->
+
+                        <td class="form-inset">
+                            <INPUT style="margin-left:0px" TYPE="radio" NAME="DimensionSet:filterradio" ID="DimensionSet:filterSimple" VALUE="simple" onclick="resetFilterInfoTextFields('DimensionSet:','com.openmarket.xcelerate.asset.SimpleDimensionFilterInstance')"/> <XLAT.STREAM KEY="dvin/Common/AT/Simple"/>&nbsp;&nbsp;
+                            <INPUT style="margin-left:0px" TYPE="radio" NAME="DimensionSet:filterradio" ID="DimensionSet:filterSimpleLookup" VALUE="simplelookup" onclick="resetFilterInfoTextFields('DimensionSet:','com.openmarket.xcelerate.asset.SimpleLookupDimensionFilterInstance')"/> <XLAT.STREAM KEY="dvin/Common/AT/SimpleLookup"/>&nbsp;&nbsp;
+                            <INPUT style="margin-left:0px" TYPE="radio" NAME="DimensionSet:filterradio" ID="DimensionSet:filterHierarchical" VALUE="hierarchical" onclick="resetFilterInfoTextFields('DimensionSet:','com.openmarket.xcelerate.asset.FallbackDimensionFilterInstance')"/> <XLAT.STREAM KEY="dvin/Common/AT/Hierarchical"/>&nbsp;&nbsp;
+                            <INPUT style="margin-left:0px" TYPE="radio" NAME="DimensionSet:filterradio" ID="DimensionSet:filterAdvanced" VALUE="" onclick="resetFilterInfoTextFields('DimensionSet:','advanced')"/> <XLAT.STREAM KEY="dvin/Common/AT/Advanced"/>
+                        </td>
+                    </tr>
+                   
+                    <tr id="DimensionSet:filterinforow">
+                        <td></td><td></td>
+                         <SETVAR NAME="OutputQString"  VALUE="Variables.empty"/>
+                         <SETVAR NAME="value" VALUE="Variables.ContentDetails:cs_dfilterclass"/>
+                         <SUBSTITUTE STR="Variables.value" WHAT="&#34;" WITH="&#38;quot;"
+                          OUTSTR="OutputQString"/>
+
+                        <td class="form-inset"><input TYPE="text" MAXLENGTH="128" SIZE="32" NAME="DimensionSet:cs_dfilterclass" ID="DimensionSet:cs_dfilterclass" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/></td>
+					</tr>
+<![CDATA[
+<script>
+	var filterinfo = document.getElementById( 'DimensionSet:cs_dfilterclass' ).value;
+	if( filterinfo == 'com.openmarket.xcelerate.asset.SimpleDimensionFilterInstance' )
+	{
+		document.getElementById( 'DimensionSet:filterSimple' ).checked = true;
+		hideAdvancedFilterInfo('DimensionSet:');
+	}
+	else if( filterinfo == 'com.openmarket.xcelerate.asset.SimpleLookupDimensionFilterInstance' )
+	{
+		document.getElementById( 'DimensionSet:filterSimpleLookup' ).checked = true;
+		hideAdvancedFilterInfo('DimensionSet:');
+	}
+	else if( filterinfo == 'com.openmarket.xcelerate.asset.FallbackDimensionFilterInstance' )
+	{
+		document.getElementById( 'DimensionSet:filterHierarchical' ).checked = true;
+		hideAdvancedFilterInfo('DimensionSet:');
+	}
+	else
+	{
+		document.getElementById( 'DimensionSet:filterAdvanced' ).checked = true;
+		showAdvancedFilterInfo('DimensionSet:');
+	}
+</script>
+]]>
+
+<!--                <tr>
+						<td class="form-label-text">
+                            <XLAT.STREAM KEY="dvin/AT/DimensionSet/DimensionRuleCtxClass" />
+							:
+						</td>
+						<td>
+						</td>
+						<td>
+<![CDATA[ <INPUT TYPE="text" NAME="DimensionSet:cs_drulectxclass" SIZE="32" MAXLENGTH="128" VALUE="]]>
+					<STRING.STREAM VARIABLE="ContentDetails:cs_drulectxclass" />
+<![CDATA["/>]]>
+						</td>
+						<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+					</tr>
+-->
+<![CDATA[ <INPUT TYPE="hidden" NAME="DimensionSet:cs_drulectxclass" SIZE="32" MAXLENGTH="128" VALUE="]]>
+					<STRING.STREAM VARIABLE="ContentDetails:cs_drulectxclass" />
+<![CDATA["/>]]>
+					<callelement NAME="OpenMarket/Xcelerate/AssetType/DimensionSet/ShowEnabledDimensionForm"/>
+					<ASSOCNAMEDMANAGER.LIST LISTVARNAME="associations" TYPE="Variables.AssetType" SUBTYPE="Variables.ContentDetails:subtype" />
+					<IF COND="associations.#numRows!=0">
+						<THEN>
+							
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormTypeAhead"/>											
+						</THEN>
+					</IF>
+					<IF COND="Variables.updatetype!=setformdefaults">
+						<THEN>
+							<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+							<tr>
+								<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Created"/>:</td>
+								<td></td>
+								<td class="form-inset"><span class="disabledEditText">
+									<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:createddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:createddate"/>
+									<XLAT.STREAM KEY="dvin/UI/ContentDetailscreateddatebycreatedby"/></span>
+								</td>
+							</tr>
+			
+							<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+							<tr>
+								<td class="form-label-text">
+									<XLAT.STREAM KEY="dvin/AT/Common/Modified" />
+									:
+								</td>
+								<td>
+								</td>
+								<td class="form-inset"><span class="disabledEditText">
+									<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:updateddate" VALUETYPE="jdbcdate" VARNAME="ContentDetails:updateddate" />
+									<XLAT.STREAM KEY="dvin/UI/ContentDetailsupdateddatebyupdatedby" /></span>
+								</td>
+							</tr>
+						</THEN>
+					</IF>
+				</table>
+<!--end of body-->
+			</td>
+		</tr>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar" />
+		<IF COND="IsVariable.cs_AlreadyHaveAssignees=true">
+		<THEN>
+			<tr>
+				<td><callelement NAME="OpenMarket/Xcelerate/Actions/Workflow/ShowAssigneeSelectionsBelow"/></td>
+			</tr>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+		</THEN>
+		</IF>
+	</table>
+	</div>
+	</div>
+</FTCS>

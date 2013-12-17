@@ -1,0 +1,405 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!--
+$Logfile: /VerticalApps/XcelerateD/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Collection/ContentForm.xml $
+$Revision: 97 $
+$Modtime: 7/08/04 11:16a $
+-->
+
+<!--
+- Confidential and Proprietary Information of Open Market, Inc.
+-					All Rights Reserved.
+-
+- DESCRIPTION
+-    Form for creating/editing a Collection
+-    Required input variables: ContentDetails
+
+- HISTORY 
+    5/18/00 - Convert to standard UI layout - Jeff Sokolov
+    [2007-09-13 KG]
+    * added XSS scripting fixes (adapted from 6.3 fixes); search for isCleanString
+    * changed definitions of 'obj' to just forms[0] (not .elements[0])
+-->
+<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/FormatDate" />
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/ValidateInputForXSS" />
+<CALLELEMENT  NAME="OpenMarket/Gator/Scripts/SetDirtyState"/>
+<SCRIPT LANGUAGE="JavaScript">
+
+<![CDATA[
+var obj = document.forms[0];
+function SetCancelFlag () {
+	if(confirm("]]><XLAT.STREAM KEY="dvin/Common/CancelClicked" ESCAPE="true" ENCODE="false"/><![CDATA[")){
+		obj.elements['upcommand'].value="cancel";
+		obj.submit();
+		return false;
+	}
+}
+
+function getAssetName()
+{
+	return obj.elements['Collection:name'].value;
+}
+
+function submitForm()
+{
+	return checkfields();
+}
+
+function checkfields()
+{
+	var isclean = isCleanString(obj.elements['Collection:name'].value);
+	if (!isclean) {
+		alert("]]><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/ApostropheNotAllowed" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		return false;
+	}
+	if ( (obj.elements['Collection:name'].value.length == 0) ||
+		 (obj.elements['Collection:name'].value.match(/^[\s]/) != null) ) {
+
+		//Here means something is wrong, let us figure out what
+
+			if (obj.elements['Collection:name'].value.length == 0) {
+				]]>
+				alert("<XLAT.STREAM KEY="dvin/UI/Error/specifyauniquenameforthisCollection" ESCAPE="true" ENCODE="false"/>");
+				<![CDATA[
+
+			}
+
+			if ( obj.elements['Collection:name'].value.match(/^[\s]/) != null ) {
+				]]>
+				alert("<XLAT.STREAM KEY="dvin/UI/Error/nameCollectioncannotstartwithspace" ESCAPE="true" ENCODE="false"/>");
+				<![CDATA[
+			}
+			obj.elements['Collection:name'].focus();
+			return false;
+	}
+	if(!checkStartEndDateValidity()) {return false;}
+	obj.submit();
+	return false;
+}
+]]>
+</SCRIPT>
+
+<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at"/>
+<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description"/>
+<!--
+	setup all the fields that GATHER will use to update the asset
+-->
+<INPUT TYPE="hidden" NAME="FieldsOnForm" VALUE="category,name,keyword,description,template,subtype,Dimension,Dimension-parent,startdate,enddate"/>
+<INPUT TYPE="hidden" NAME="upcommand" VALUE="submit"/>
+
+<!-- form buttons -->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+	<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
+</CALLELEMENT>
+<div dojoType="dijit.layout.ContentPane" region="center">
+<table border="0" cellpadding="0" cellspacing="0" class="width70BottomExMargin">
+
+	<!-- Collection page title w/ image name -->
+	<tr>
+		<td><span class="title-text"><STRING.STREAM VARIABLE="at:description"/>: </span><span class="title-value-text"><STRING.STREAM VARIABLE="ContentDetails:name"/></span></td>
+	</tr>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+		<argument NAME="SpaceBelow" VALUE="No"/>
+	</callelement>
+
+
+	<!-- form buttons -->
+	<IF COND="Variables.updatetype=setformdefaults">
+	<THEN>
+		<SETVAR NAME="buttonSrc" VALUE="save.gif"/>
+	</THEN>
+	<ELSE>
+		<SETVAR NAME="buttonSrc" VALUE="save_changes.gif"/>
+	</ELSE>
+	</IF>
+
+	<!-- Collection editing form -->
+
+	<tr>
+		<td><table border="0" cellpadding="0" cellspacing="0">
+
+			<!-- Beginning of Group 1 -->
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/Name"/>:</td>
+				<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+             			 <PROPERTY.GET PARAM="xcelerate.asset.sizeofnamefield" INIFILE="futuretense_xcel.ini" VARNAME="sizeofnamefield"/>
+				<td class="form-inset">
+					<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+						<argument NAME="inputName" VALUE="Collection:name"/>
+						<argument NAME="inputValue" VALUE="Variables.ContentDetails:name"/>
+						<argument NAME="inputSize" VALUE="32"/>
+						<argument NAME="inputMaxlength" VALUE="Variables.sizeofnamefield"/>
+					</callelement>
+				</td>
+			</tr>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Description"/>:</td>
+				<td></td>
+
+				<td class="form-inset"> 
+					<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+						<argument NAME="inputName" VALUE="Collection:description"/>
+						<argument NAME="inputValue" VALUE="Variables.ContentDetails:description"/>
+						<argument NAME="inputSize" VALUE="32"/>
+						<argument NAME="inputMaxlength" VALUE="128"/>
+					</callelement>
+				</td>
+			</tr>
+
+			
+
+			<!-- get a list of subtypes that is just those asset types in this publication that have query assets -->
+			<SETVAR NAME="tablename" VALUE="Query"/>
+			<EXECSQL LIST="querysubtypes" SQL="SELECT DISTINCT Query.subtype FROM Query,AssetPublication where Query.id=AssetPublication.assetid AND (AssetPublication.pubid=SessionVariables.pubid OR AssetPublication.pubid=0)" TABLE="Query,AssetPublication"/>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text">
+		          <span class="alert-color">*</span><XLAT.STREAM KEY="dvin/UI/Subtype"/>:
+		      </td>
+		 		<td></td>
+				<td class="form-inset">
+					<if COND="IsList.querysubtypes=true">
+					<then>
+					    <if COND="querysubtypes.#numRows!=0">
+					    <then>
+						<LOOP LIST="querysubtypes">
+							<if COND="IsVariable.assettypes=false">
+							<then>
+								<SETVAR NAME="assettypes" VALUE="querysubtypes.subtype"/>
+							</then>
+							<else>
+								<SETVAR NAME="assettypes" VALUE="Variables.assettypes,querysubtypes.subtype"/>
+							</else>
+							</if>
+						</LOOP>
+						<SQLEXP OUTSTR="assettypesql" TYPE="OR" VERB="=" STR="Variables.assettypes" COLNAME="assettype"/>
+						<SETVAR NAME="tablename" VALUE="AssetType"/>
+						<SETVAR NAME="validatedstatus" VALUE="true" />
+						<STRINGLIST NAME="stringassettypes" STR="Variables.assettypes" DELIM=","/>
+						<LOOP LIST="stringassettypes">
+							<IF COND="Variables.validatedstatus=true" >
+								<THEN>
+									<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+										<ARGUMENT NAME="columnvalue" VALUE="stringassettypes.ITEM"/>
+										<ARGUMENT NAME="type" VALUE="String"/>
+									</CALLELEMENT>
+								</THEN>
+							</IF>
+						</LOOP>
+						<IF COND="Variables.validatedstatus=true">
+						<THEN>
+							<EXECSQL LIST="subtypes" SQL="SELECT assettype as subtype, description from AssetType WHERE Variables.assettypesql ORDER BY description"/>
+						</THEN>
+						</IF>
+						<if COND="IsList.subtypes=true">
+						<then>
+							<callelement NAME="OpenMarket/Xcelerate/Actions/Util/MakeSubtypeList">
+								<argument NAME="Prefix" VALUE="Variables.AssetType"/>
+								<argument NAME="fieldvalue" VALUE="Variables.ContentDetails:subtype"/>
+								<argument NAME="AssetType" VALUE="Variables.AssetType"/>
+								<argument NAME="subtypeslistexists" VALUE="true"/>
+							</callelement>
+						</then>
+						</if>
+					    </then>
+					    <else>
+						<XLAT.STREAM KEY="dvin/AT/Collection/ContentForm-NoQueryAssets"/>
+					    </else>
+					    </if>
+					</then>
+					</if>
+					</td>
+			</tr>
+
+			<XLAT.LOOKUP KEY="dvin/UI/Template" VARNAME="label"/>
+			<callelement NAME="OpenMarket/Xcelerate/Actions/Util/ShowTemplatesIfAny">
+				<argument NAME="Prefix" VALUE="Collection"/>
+				<argument NAME="label"  VALUE="Variables.label:"/>
+			</callelement>
+			<!--Call start date and end date for site preview-->
+         	<callelement NAME="OpenMarket/Xcelerate/UIFramework/form/AssetTypeStartEndDate">
+				<argument NAME="startDateFieldName" VALUE="Collection:startdate"/>
+				<argument NAME="endDateFieldName"  VALUE="Collection:enddate"/>
+			</callelement>
+			<!--End site preview dates -->
+			
+			<callelement NAME="OpenMarket/Xcelerate/AssetType/Dimension/ShowDimensionForm"/>
+			
+			<!-- Beginning of Group 2 -->
+			<IF COND="Variables.updatetype!=setformdefaults">
+			<THEN>			
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/ID"/>:</td>
+				<td></td>
+				<td class="form-inset"><span class="disabledEditText"><STRING.STREAM VARIABLE="id"/></span></td>
+			</tr>
+			</THEN>
+			</IF>
+			
+			<setvar NAME="assettype" VALUE="Collection"/>
+			<selectto LIST="Category" FROM="Category" WHERE="assettype"/>
+			<IF COND="Category.#numRows!=0">
+			<THEN>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/UI/Admin/Category"/>:</td>
+					<td></td>
+					<td class="form-inset">
+						<callelement NAME="OpenMarket/Xcelerate/Actions/Util/MakeCategoryList">
+							<argument NAME="Prefix" VALUE="Collection"/>
+						</callelement></td>
+				</tr>
+			</THEN>
+			</IF>	
+
+			<!-- Beginning of Group 3 -->
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Keywords"/>:</td>
+				<td></td>
+                
+ 				<td class="form-inset">
+					<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+						<argument NAME="inputName" VALUE="Collection:keyword"/>
+						<argument NAME="inputValue" VALUE="Variables.ContentDetails:keyword"/>
+						<argument NAME="inputSize" VALUE="32"/>
+						<argument NAME="inputMaxlength" VALUE="128"/>
+					</callelement>
+				</td>
+			</tr>
+
+
+			<!-- Get the number of Query associations -->
+	
+		 <ASSOCNAMEDMANAGER.LIST   LISTVARNAME="AssocListQ" TYPE="Collection" CHILDTYPE="Query"/>
+			<IF COND="IsVariable.Query=true">
+			<THEN>
+				<ASSET.LIST LIST="Queries" TYPE="Query" PUBID="SessionVariables.pubid" EXCLUDEVOIDED="true" ORDER="Query.subtype,Query.name"/>
+			</THEN>			
+			<ELSE>
+				<ASSET.LIST LIST="Queries" TYPE="Query" PUBID="SessionVariables.pubid" EXCLUDEVOIDED="true" />
+			</ELSE>
+			</IF>
+
+			<!-- Beginning of Group 4 -->
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/Associatedqueries"/>:</td>
+				<td></td>
+				<td class="form-inset">
+   	            <IF COND="AssocListQ.#numRows!=0">
+						<THEN>
+							<IF COND="IsList.Queries=true">
+								<THEN>
+									<table cellpadding="0" cellspacing="0" border="0">
+                                	<SETCOUNTER NAME="currentItem" VALUE="0"/>
+                                	<LOOP LIST="AssocListQ">
+                                		<SETVAR NAME="Assocname" VALUE="AssocListQ.name"/>
+                                    <tr>
+												<ASSET.CHILDREN NAME="theCurrentAsset" LIST="anAssetChild" CODE="Variables.Assocname" OBJECTTYPE="Query"/>
+												<td VALIGN="top"><STRING.STREAM LIST="AssocListQ" COLUMN="description"/>:</td>
+												<td>&nbsp;&nbsp;&nbsp;</td>
+												<td class="queryDropDown">
+													<INPUT TYPE="hidden" name="Collection:Association-named:Variables.Assocname_type" VALUE="Query" REPLACEALL="Variables.Assocname"/>
+													<SELECT Name="Collection:Association-named:Variables.Assocname" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" REPLACEALL="Variables.Assocname">
+														<OPTION VALUE=""/><XLAT.STREAM KEY="dvin/FlexibleAssets/Common/SelectAsset"/>
+														<LOOP LIST="Queries">
+															<IF COND="Variables.subType!=Queries.subtype">
+																<THEN>
+																	<ASSETTYPE.LOAD NAME="queryAssetType" TYPE="Queries.subtype"/>
+																	<ASSETTYPE.GET NAME="queryAssetType" FIELD="description" OUTPUT="queryAssetType"/>
+																	<SETVAR NAME="subType" VALUE="Queries.subtype"/>
+																</THEN>
+															</IF>
+															<IF COND="anAssetChild.oid=Queries.id">
+																<THEN>
+																	<OPTION VALUE="Queries.id" SELECTED="true" REPLACEALL="Queries.id"/><STRING.STREAM LIST="Queries" COLUMN="name"/>&nbsp;(<XLAT.STREAM KEY="dvin/Common/Type"/>=<STRING.STREAM VARIABLE="queryAssetType"/>)
+																</THEN>
+																<ELSE>
+																	<OPTION VALUE="Queries.id" REPLACEALL="Queries.id"/><STRING.STREAM LIST="Queries" COLUMN="name"/>&nbsp;(<XLAT.STREAM KEY="dvin/Common/Type"/>=<STRING.STREAM VARIABLE="queryAssetType"/>)
+																</ELSE>
+															</IF>
+														</LOOP>
+													</SELECT>
+												</td>	
+											</tr>
+											<INPUT TYPE="hidden" NAME="Associates" VALUE="Variables.Assocname" REPLACEALL="Variables.Assocname"/>
+                                            <INCCOUNTER NAME="currentItem" VALUE="1"/>
+									</LOOP>
+									</table>
+								</THEN>
+								<ELSE>
+									<XLAT.STREAM KEY="dvin/Common/None"/>
+								</ELSE>
+							</IF>
+						</THEN>
+						<ELSE>
+							<XLAT.STREAM KEY="dvin/Common/None"/>
+						</ELSE>
+					</IF>
+				</td>
+			</tr>
+			
+			<!-- Beginning of Group 5 -->
+	    <ASSOCNAMEDMANAGER.LIST   LISTVARNAME="AssocList" TYPE="Collection"/>
+         <IF COND="AssocList.#numRows!=AssocListQ.#numRows">
+			<THEN>
+				<setvar NAME="tablename" VALUE="AssocNamed"/>
+				<setvar NAME="errno" VALUE="0"/>
+				<execsql LIST="nonQueryNamedAssocs" SQL="SELECT DISTINCT AssocNamed.childassettype FROM AssocNamed WHERE AssocNamed.assettype='Collection' AND AssocNamed.childassettype!='Query'"/>
+				<LOOP LIST="nonQueryNamedAssocs">
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormTypeAhead">
+						<ARGUMENT NAME="childassettype" VALUE="nonQueryNamedAssocs.childassettype"/>
+					</CALLELEMENT>
+				</LOOP>
+			</THEN>
+			</IF>
+
+			<!-- Beginning of Group 4 -->
+
+			<IF COND="Variables.updatetype!=setformdefaults">
+			<THEN>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Created"/>:</td>
+				<td></td>
+				<td class="form-inset"><span class="disabledEditText">
+					<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:createddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:createddate"/>
+					<XLAT.STREAM KEY="dvin/UI/ContentDetailscreateddatebycreatedby"/></span>
+				</td>
+			</tr>
+			
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Modified"/>:</td>
+				<td></td>
+				<td class="form-inset"><span class="disabledEditText">
+				<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:updateddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:updateddate"/>
+				<XLAT.STREAM KEY="dvin/UI/ContentDetailsupdateddatebyupdatedby"/></span></td>
+			</tr>
+			</THEN>
+			</IF>
+			
+		</table><!--end of body--></td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+	<IF COND="IsVariable.cs_AlreadyHaveAssignees=true">
+	<THEN>
+	<tr>
+		<td><callelement NAME="OpenMarket/Xcelerate/Actions/Workflow/ShowAssigneeSelectionsBelow"/></td>
+	</tr>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+	</THEN>
+	</IF>
+</table>
+</div>
+</div>
+</FTCS>

@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateA/install/Xcelerate/AssetMaker/Populate/AssetStubElementCatalog/OpenMarket/AssetMaker/AssetStubFiles/StandardElements/IndexCreateVerity.xml $ 
+$Revision: 8 $ 
+$Modtime: 12/26/01 2:54p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of divine Inc.
+-					All Rights Reserved.
+-
+- IndexCreateVerity.xml
+-
+- DESCRIPTION
+-    Create the search index.
+-
+- ARGUMENTS:
+-    seindex
+-        Asset type's SE index name.
+-
+- RETURNS
+-    errno
+-        Result of executing INDEXCREATE.
+-
+- HISTORY 
+-->
+
+
+<!--
+- CUSTOMIZE NOTE: The following INDEXCREATE can be modified to add EXTN fields
+-->
+
+<INDEXCREATE INDEX="Variables.seindex">
+	<FIELDARGUMENT NAME="id" VALUE="TEXT"/>
+	<FIELDARGUMENT NAME="name" VALUE="TEXT"/>
+	<FIELDARGUMENT NAME="description" VALUE="TEXT"/>
+	<FIELDARGUMENT NAME="status" VALUE="TEXT"/>
+	<FIELDARGUMENT NAME="createdby" VALUE="TEXT"/>
+	<FIELDARGUMENT NAME="updatedby" VALUE="TEXT"/>
+	<FIELDARGUMENT NAME="createddate" VALUE="DATE"/>
+	<FIELDARGUMENT NAME="updateddate" VALUE="DATE"/>
+	<FIELDARGUMENT NAME="subtype" VALUE="TEXT"/>
+	<FIELDARGUMENT NAME="template" VALUE="TEXT"/>
+	<FIELDARGUMENT NAME="category" VALUE="TEXT"/>
+</INDEXCREATE>
+</FTCS>

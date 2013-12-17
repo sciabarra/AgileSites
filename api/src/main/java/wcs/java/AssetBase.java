@@ -41,6 +41,15 @@ public abstract class AssetBase {
 		this.subtype = subtype == null ? "" : subtype;
 	}
 
+	/**
+	 * Complete initialization of the class
+	 * 
+	 * @param site
+	 */
+	protected void init(String site) {
+		this.site = site;
+	}
+
 	protected AssetBase() {
 	}
 
@@ -122,9 +131,6 @@ public abstract class AssetBase {
 			this.description = description;
 	}
 	
-	protected void setSite(String site) {
-		this.site = site;
-	}
 
 
 	/**

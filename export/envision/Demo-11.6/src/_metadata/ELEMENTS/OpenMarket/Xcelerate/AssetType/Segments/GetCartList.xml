@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/GetCartList
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<setvar NAME="haveCartlist" VALUE="false"/>
+<if COND="IsVariable.CartlistTag=true">
+	<then>
+		<setvar NAME="SaveAssetType" VALUE="Variables.AssetType"/>
+		<listobject.create  NAME="ListCartlists" COLUMNS="assettype,assetid"/>
+         <if COND="IsVariable.NumCartlistItems=true">
+                <then>
+                    <if COND="Variables.NumCartlistItems!=0">
+                        <then>
+                            <setcounter NAME="ExistingItems" VALUE="0"/>
+                            <loop COUNT="Variables.NumCartlistItems">
+                                <ICS.RESOLVEVARIABLES  NAME="Variables.$(Variables.CriteriaRow)_$(Variables.CriteriaColumn)_$(Counters.ExistingItems)CartListAssettype" OUTPUT="existCartListAssettype" DELIMITED="true"/>
+                                <ICS.RESOLVEVARIABLES  NAME="Variables.$(Variables.CriteriaRow)_$(Variables.CriteriaColumn)_$(Counters.ExistingItems)CartListAssetid" OUTPUT="existCartListAssetid" DELIMITED="true"/>
+                                <listobject.addrow NAME="ListCartlists" assettype="Variables.existCartListAssettype" assetid="Variables.existCartListAssetid"/>
+                                <inccounter NAME="ExistingItems" VALUE="1"/>
+                            </loop>
+                        </then>
+                    </if>
+                </then>
+         </if>
+		<STRINGLIST NAME="CartlistList" STR="Variables.CartlistTag" DELIM=":"/>
+		<loop LIST="CartlistList">
+			<callelement NAME="OpenMarket/Gator/UIFramework/ParseTreeNodeID">
+				<argument NAME="TreeNodeID" VALUE="CartlistList.ITEM"/>
+			</callelement>
+			<listobject.addrow NAME="ListCartlists" assettype="Variables.AssetType" assetid="Variables.ID"/>
+		</loop>
+		<listobject.tolist NAME="ListCartlists" LISTVARNAME="Segments:Cartlists"/>
+		<setvar NAME="haveCartlist" VALUE="true"/>
+		<setvar NAME="AssetType" VALUE="Variables.SaveAssetType"/>
+	</then>
+</if>
+
+</FTCS> 

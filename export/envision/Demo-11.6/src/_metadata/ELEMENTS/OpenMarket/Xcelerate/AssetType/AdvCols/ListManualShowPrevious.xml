@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ListManualShowPrevious
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+<ACOLLECTION.SORTMANUALRECOMMENDATIONS NAME="theCurrentAsset" LISTVARNAME="recList" BUCKET="Variables.empty"/>
+<LOOP LIST="recList">
+	<ASSET.LIST TYPE="recList.assettype" LIST="thisElement" FIELD1="id" VALUE1="recList.assetid"/>
+	<ASSETTYPE.LIST LIST="AssetType" FIELD1="assettype" VALUE1="recList.assettype"/>
+	<option VALUE="recList.assetid,recList.assettype" REPLACEALL="recList.assetid,recList.assettype"><STRING.STREAM VALUE="thisElement.name"/> (<STRING.STREAM VALUE="AssetType.description"/>)</option>
+	<INCCOUNTER NAME="currcount" VALUE="1"/>
+</LOOP>
+</FTCS>

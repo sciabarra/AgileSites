@@ -1,0 +1,122 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/AssetGather
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<setvar NAME="gatherFields" VALUE="name,description,ruleset,discruleset,Overrides,Goals,startdate,enddate"/>
+
+ <!--put goals in a list-->
+<setvar NAME="Dotolist" VALUE="false"/>
+<setvar NAME="haveGoal" VALUE="false"/>
+<listobject.create  NAME="ListGoals" COLUMNS="goal"/>
+<if COND="IsVariable.Goal1=true">
+<then>
+	<listobject.addrow NAME="ListGoals" goal="Variables.Goal1"/> 
+	<setvar NAME="haveGoal" VALUE="true"/>
+</then>
+</if>
+<if COND="IsVariable.Goal2=true">
+<then>
+	<listobject.addrow NAME="ListGoals" goal="Variables.Goal2"/> 
+	<setvar NAME="haveGoal" VALUE="true"/>
+</then>
+</if>
+<if COND="IsVariable.Goal3=true">
+<then>
+	<listobject.addrow NAME="ListGoals" goal="Variables.Goal3"/> 
+	<setvar NAME="haveGoal" VALUE="true"/>
+</then>
+</if>
+<if COND="Variables.haveGoal=true">
+<then>
+	<listobject.tolist  NAME="ListGoals" LISTVARNAME="Promotions:Goals"/>
+</then>
+</if>
+
+<!--put overrides in a list-->
+
+<if COND="IsVariable.DisplayLocation!=true">
+<then>
+	<setvar NAME="DisplayLocation" VALUE="Variables.empty"/>
+</then>
+</if>
+
+<if COND="IsVariable.OverrideTag=true">
+<then>
+	<setvar NAME="SaveAssetType" VALUE="Variables.AssetType"/>
+	<listobject.create  NAME="ListOverrides" COLUMNS="relationshipid,assettype,assetid,recommendedassettype,recommendedassetid,confidence"/>
+	<STRINGLIST NAME="OverrideList" STR="Variables.OverrideTag" DELIM=":"/>
+	<loop LIST="OverrideList">
+		<callelement NAME="OpenMarket/Gator/UIFramework/ParseTreeNodeID">
+			<argument NAME="TreeNodeID" VALUE="OverrideList.ITEM"/>
+		</callelement>
+		<listobject.addrow NAME="ListOverrides"
+			relationshipid="None"
+			recommendedassettype="Variables.AssetType"
+			recommendedassetid="Variables.ID"
+			assettype="Variables.empty"
+			assetid="Variables.empty"
+			confidence="1"/>   
+	</loop>
+	<setvar NAME="Dotolist" VALUE="true"/>
+	<setvar NAME="AssetType" VALUE="Variables.SaveAssetType"/>
+</then>
+</if>
+
+<!--Do something if we the list saved in input variables-->
+<if COND="IsVariable.OverridesCount=true">
+<then>
+	<if COND="IsVariable.OverrideTag!=true">
+	<then>
+ 		<listobject.create  NAME="ListOverrides" COLUMNS="relationshipid,assettype,assetid,recommendedassettype,recommendedassetid,confidence"/>
+	</then>
+	</if>
+	<setcounter NAME="currcount" VALUE="0"/>
+	<if COND="Variables.OverridesCount!=0">
+	<then>
+	    <loop COUNT="Variables.OverridesCount">
+		<setvar NAME="addit" VALUE="true"/>
+		<if COND="IsVariable.Counters.currcountdelete=true">
+		<then>
+			<setvar NAME="delvar" VALUE="Variables.Counters.currcountdelete"/>
+			<if COND="Variables.delvar=deleted">
+			<then>
+				<setvar NAME="addit" VALUE="false"/>
+			</then>
+			</if>
+		</then>
+		</if>
+		<if COND="Variables.addit=true">
+		<then>
+			<listobject.addrow NAME="ListOverrides"
+				relationshipid="Variables.PromotionsOverridesRelidCounters.currcount"
+				recommendedassettype="Variables.PromotionsOverridesAssetTypeCounters.currcount"
+				recommendedassetid="Variables.PromotionsOverridesAssetIdCounters.currcount"
+				assettype="Variables.empty"
+				assetid="Variables.empty"
+				confidence="Variables.PromotionsOverridesConfidenceCounters.currcount"/>
+		</then>
+		</if>
+		<inccounter NAME="currcount" VALUE="1"/>
+	    </loop>
+	</then>
+	</if>
+	<setvar NAME="Dotolist" VALUE="true"/>
+</then>
+</if>
+
+<if COND="Variables.Dotolist=true">
+<then>
+	<listobject.tolist NAME="ListOverrides" LISTVARNAME="Promotions:Overrides"/>
+</then>
+</if>
+
+<ASSET.GATHER NAME="theCurrentAsset" PREFIX="Promotions" FIELDLIST="Variables.gatherFields"/>
+
+</FTCS> 
+

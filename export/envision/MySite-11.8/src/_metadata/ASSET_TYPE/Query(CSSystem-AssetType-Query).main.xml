@@ -11,7 +11,7 @@
         <description>Query</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp20\dcs7933053288887231624.tmp</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp5\dcs2606734552490610867.tmp</urldescriptorspec>
         <canbechild>T</canbechild>
         <uid>CSSystem-AssetType-Query</uid>
         <useDimension></useDimension>
@@ -248,7 +248,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket\Xcelerate\AssetType\Query\SelectSummary.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/Query/SelectSummary.sql</string>
             <null/>
             <null/>
             <null/>

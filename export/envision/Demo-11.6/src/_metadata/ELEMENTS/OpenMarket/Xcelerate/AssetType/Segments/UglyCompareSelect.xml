@@ -1,0 +1,111 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/UglyCompareSelect
+--
+-- INPUT
+--	sCO - CompareOperation 
+-- OUTPUT
+--
+-->
+
+<setvar NAME="Ourlt" VALUE="&#60;"/>
+<setvar NAME="Ourgt" VALUE="&#62;"/>    
+<substitute STR="Variables.sCO" WITH="xxeqxx" WHAT="==" OUTSTR="Text1"/>
+<substitute STR="Variables.Text1" WITH="xxnexx" WHAT="!=" OUTSTR="Text2"/>
+<substitute STR="Variables.Text2" WITH="xxgexx" WHAT="Variables.Ourgt=" OUTSTR="Text3"/>
+<substitute STR="Variables.Text3" WITH="xxgtxx" WHAT="Variables.Ourgt" OUTSTR="Text4"/>
+<substitute STR="Variables.Text4" WITH="xxlexx" WHAT="Variables.Ourgt=" OUTSTR="Text5"/>
+<substitute STR="Variables.Text5" WITH="xxltxx" WHAT="Variables.Ourlt" OUTSTR="sCO"/>
+
+<if COND="Variables.sCO=xxeqxx">
+	<then>
+		<option value="xxeqxx" selected=""/><XLAT.STREAM KEY="dvin/AT/Common/isequalto"/>
+	</then>
+	<else>
+		<option value="xxeqxx"/><XLAT.STREAM KEY="dvin/AT/Common/isequalto"/>
+	</else>
+</if>
+<if COND="Variables.sCO=xxnexx">
+	<then>
+		<option value="xxnexx" selected=""/><XLAT.STREAM KEY="dvin/AT/Common/isnotequalto"/>
+	</then>
+	<else>
+		<option value="xxnexx"/><XLAT.STREAM KEY="dvin/AT/Common/isnotequalto"/>
+	</else>
+</if>
+<if COND="Variables.sTYPE=string">
+	<then>
+		<if COND="Variables.sCO=cieq">
+			<then>
+				<option value="cieq" selected=""/><XLAT.STREAM KEY="dvin/AT/Common/isequaltocaseinsensitive"/>
+			</then>
+			<else>
+				<option value="cieq"/><XLAT.STREAM KEY="dvin/AT/Common/isequaltocaseinsensitive"/>
+			</else>
+		</if>
+		<if COND="Variables.sCO=cine">
+			<then>
+				<option value="cine" selected=""/><XLAT.STREAM KEY="dvin/AT/Common/isnotequaltocaseinsensitive"/>
+			</then>
+			<else>
+				<option value="cine"/><XLAT.STREAM KEY="dvin/AT/Common/isnotequaltocaseinsensitive"/>
+			</else>
+		</if>
+		<if COND="Variables.sCO=cont">
+			<then>
+				<option value="cont" selected=""/><XLAT.STREAM KEY="dvin/AT/Common/contains"/>
+			</then>
+			<else>
+				<option value="cont"/><XLAT.STREAM KEY="dvin/AT/Common/contains"/>
+			</else>
+		</if>
+	</then>
+	<else>
+		<if COND="Variables.sCO=xxgtxx">
+			<then>
+				<option value="xxgtxx" selected=""/><XLAT.STREAM KEY="dvin/AT/Common/isgreaterthan"/>
+			</then>
+			<else>
+				<option value="xxgtxx"/><XLAT.STREAM KEY="dvin/AT/Common/isgreaterthan"/>
+			</else>
+		</if>
+		<if COND="Variables.sCO=xxgexx">
+			<then>
+				<option value="xxgexx" selected=""/><XLAT.STREAM KEY="dvin/AT/Common/isgreaterorequalto"/>
+			</then>
+			<else>
+				<option value="xxgexx"/><XLAT.STREAM KEY="dvin/AT/Common/isgreaterorequalto"/>
+			</else>
+		</if>
+		<if COND="Variables.sCO=xxltxx">
+			<then>
+				<option value="xxltxx" selected=""/><XLAT.STREAM KEY="dvin/AT/Common/islessthen"/>
+			</then>
+			<else>
+				<option value="xxltxx"/><XLAT.STREAM KEY="dvin/AT/Common/islessthen"/>
+			</else>
+		</if>
+		<if COND="Variables.sCO=xxlexx">
+			<then>
+				<option value="xxlexx" selected=""/><XLAT.STREAM KEY="dvin/AT/Common/islessorequalto"/>
+			</then>
+			<else>
+				<option value="xxlexx"/><XLAT.STREAM KEY="dvin/AT/Common/islessorequalto"/>
+			</else>
+		</if>
+		<if COND="Variables.nobt!=true">
+			<then>
+				<if COND="Variables.sCO=bt">
+					<then>
+						<option value="bt" selected=""/><XLAT.STREAM KEY="dvin/AT/Common/isbetween"/>
+					</then>
+					<else>
+						<option value="bt"/><XLAT.STREAM KEY="dvin/AT/Common/isbetween"/>
+					</else>
+				</if>
+			</then>
+		</if>
+	</else>
+</if>
+</FTCS> 

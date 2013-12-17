@@ -1,0 +1,912 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">                                         
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/ContentFormDiscount
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<REPLACEALL LIST="Variables.id">
+ <script>
+	var displayDropZone = function(){
+		/* obj.elements['ProductType'][1] implies the input tag with name "ProductType" whose value is "specified" */
+		if(obj.elements['ProductType'][1].checked && obj.elements['DiscountType'][1].checked )
+			dojo.style("DnDSelectAsset_Variables.id_discPurchases", "display", "");
+		else
+			dojo.style("DnDSelectAsset_Variables.id_discPurchases", "display", "none");
+	};
+</script>
+</REPLACEALL>
+<SCRIPT LANGUAGE="JavaScript">
+var obj = document.forms[0];
+function getAssetName()
+{
+	var obj = document.forms[0];
+	return obj.elements['Promotions:name'].value;
+}
+
+function submitForm()
+{
+	return checkfields();
+}
+
+function checkfields()
+{
+	var obj = document.forms[0].elements[0];  
+	var CheckNoNaN="F";
+	
+	if (obj.form.elements['Promotions:name'].value=="")
+	{
+		alert("<XLAT.STREAM KEY="dvin/UI/Error/specifyauniquenameforthisPromotion" ESCAPE="true" ENCODE="false"/>");
+		return false;
+	}
+	
+  var discounttype= obj.form.elements['DiscountStyle'].value;
+
+	if (obj.form.elements['DiscountAmount'].value!="")
+	{
+		  for(var i=obj.form.elements['DiscountAmount'].value.length-1; i>=0; i--)
+				{ 	 
+					if(obj.form.elements['DiscountAmount'].value.charAt(i)!=" ")
+					{ CheckNoNaN="T";	
+						break;
+					}	
+				}
+
+			if(CheckNoNaN=="F")
+			{ 
+			 obj.form.elements['DiscountAmount'].value="";
+			}
+		  
+	    if(IsInt(obj.form.elements['DiscountAmount'].value))
+			{
+			var percentnumber=obj.form.elements['DiscountAmount'].value;
+      percentnumber=parseInt(percentnumber,10);
+      obj.form.elements['DiscountAmount'].value=percentnumber;
+			CheckNoNaN="F";
+			} 
+			
+		 if(discounttype=="percentage")
+			{
+				if (!IsInt(obj.form.elements['DiscountAmount'].value))
+				{
+					alert("<XLAT.STREAM KEY="dvin/AT/Common/enterintegerforpercent" ESCAPE="true" ENCODE="false"/>");
+					obj.form.elements['DiscountAmount'].focus();
+					return false;
+				}
+			}
+			
+
+	}
+		
+	if(discounttype=="fixed")
+	{
+	 if (obj.form.elements['DiscountAmount'].value=="")
+	 {
+		alert("<XLAT.STREAM KEY="dvin/AT/Common/mustspecvaluefordollars" ESCAPE="true" ENCODE="false"/>");
+		obj.form.elements['DiscountAmount'].focus();
+		return false;
+	 }
+	 
+	 else if (!IsNumber(obj.form.elements['DiscountAmount'].value))
+			{     
+				alert("<XLAT.STREAM KEY="dvin/AT/Common/enternumvaluefordollars" ESCAPE="true" ENCODE="false"/>");
+				obj.form.elements['DiscountAmount'].focus();
+				return false;
+	 		}
+ 	}
+
+	if(discounttype=="percentage"  && obj.form.elements['DiscountType'][1].checked)
+	{
+	 if (obj.form.elements['DiscountAmount'].value=="")
+	 {     
+		alert("<XLAT.STREAM KEY="dvin/AT/Common/mustspecvalueforpercent" ESCAPE="true" ENCODE="false"/>");
+		obj.form.elements['DiscountAmount'].focus();
+		return false;
+	 }
+  }
+	
+	var Shippingtype= obj.form.elements['ShippingFee'].value;
+	
+	if(Shippingtype=="fixed")
+	{
+	 if (!IsNumber(obj.form.elements['ShippingAmount'].value))
+			{
+				alert("<XLAT.STREAM KEY="dvin/AT/Common/enternumvaluefordollars" ESCAPE="true" ENCODE="false"/>");
+				obj.form.elements['ShippingAmount'].focus();
+				return false;
+	 		}
+	}
+
+	if (obj.form.elements['ShippingAmount'].value!="")
+	{
+					for(var i=obj.form.elements['ShippingAmount'].value.length-1; i>=0; i--)
+						{ 	 
+							if(obj.form.elements['ShippingAmount'].value.charAt(i)!=" ")
+							{ CheckNoNaN="T";	
+								break;
+							}	
+						}
+		
+				  if(CheckNoNaN=="F")
+					{ 
+					 obj.form.elements['ShippingAmount'].value="";
+					}
+
+					if(IsInt(obj.form.elements['ShippingAmount'].value))
+					{
+						var percentnumber=obj.form.elements['ShippingAmount'].value;
+						percentnumber=parseInt(percentnumber,10);
+						obj.form.elements['ShippingAmount'].value=percentnumber;
+						CheckNoNaN="F";
+					}
+					
+					if(Shippingtype=="percentage")
+					{
+						if (!IsInt(obj.form.elements['ShippingAmount'].value))
+						{
+							alert("<XLAT.STREAM KEY="dvin/AT/Common/enterintegerforpercent" ESCAPE="true" ENCODE="false"/>");
+							obj.form.elements['ShippingAmount'].focus();
+							return false;
+						}
+					}
+				 					
+					  }
+
+  obj.form.submit();
+	return false;
+}
+
+function checkfields1()
+{
+	var obj = document.forms[0].elements[0];  
+	var CheckNoNaN="F";
+	
+	if (obj.form.elements['Promotions:name'].value=="")
+	{
+		alert("<XLAT.STREAM KEY="dvin/UI/Error/specifyauniquenameforthisPromotion" ESCAPE="true" ENCODE="false"/>");
+		return false;
+	}
+	
+  var discounttype= obj.form.elements['DiscountStyle'].value;
+
+	if (obj.form.elements['DiscountAmount'].value!="")
+	{
+		  for(var i=obj.form.elements['DiscountAmount'].value.length-1; i>=0; i--)
+				{ 	 
+					if(obj.form.elements['DiscountAmount'].value.charAt(i)!=" ")
+					{ CheckNoNaN="T";	
+						break;
+					}	
+				}
+
+			if(CheckNoNaN=="F")
+			{ 
+			 obj.form.elements['DiscountAmount'].value="";
+			}
+		  
+	    if(IsInt(obj.form.elements['DiscountAmount'].value))
+			{
+			var percentnumber=obj.form.elements['DiscountAmount'].value;
+      percentnumber=parseInt(percentnumber,10);
+      obj.form.elements['DiscountAmount'].value=percentnumber;
+			CheckNoNaN="F";
+			} 
+			
+		 if(discounttype=="percentage")
+			{
+				if (!IsInt(obj.form.elements['DiscountAmount'].value))
+				{
+					alert("<XLAT.STREAM KEY="dvin/AT/Common/enterintegerforpercent" ESCAPE="true" ENCODE="false"/>");
+					obj.form.elements['DiscountAmount'].focus();
+					return false;
+				}
+			}
+			
+
+	}
+		
+	if(discounttype=="fixed")
+	{
+	 if (obj.form.elements['DiscountAmount'].value=="")
+	 {
+		alert("<XLAT.STREAM KEY="dvin/AT/Common/mustspecvaluefordollars" ESCAPE="true" ENCODE="false"/>");
+		obj.form.elements['DiscountAmount'].focus();
+		return false;
+	 }
+	 
+	 else if (!IsNumber(obj.form.elements['DiscountAmount'].value))
+			{     
+				alert("<XLAT.STREAM KEY="dvin/AT/Common/enternumvaluefordollars" ESCAPE="true" ENCODE="false"/>");
+				obj.form.elements['DiscountAmount'].focus();
+				return false;
+	 		}
+ 	}
+
+	if(discounttype=="percentage" && obj.form.elements['DiscountType'][1].checked)
+	{
+	 if (obj.form.elements['DiscountAmount'].value=="")
+	 {     
+		alert("<XLAT.STREAM KEY="dvin/AT/Common/mustspecvalueforpercent" ESCAPE="true" ENCODE="false"/>");
+		obj.form.elements['DiscountAmount'].focus();
+		return false;
+	 }
+  }
+	
+	var Shippingtype= obj.form.elements['ShippingFee'].value;
+	
+	if(Shippingtype=="fixed")
+	{
+	 if (!IsNumber(obj.form.elements['ShippingAmount'].value))
+			{
+				alert("<XLAT.STREAM KEY="dvin/AT/Common/enternumvaluefordollars" ESCAPE="true" ENCODE="false"/>");
+				obj.form.elements['ShippingAmount'].focus();
+				return false;
+	 		}
+	}
+
+	if (obj.form.elements['ShippingAmount'].value!="")
+	{
+					for(var i=obj.form.elements['ShippingAmount'].value.length-1; i>=0; i--)
+						{ 	 
+							if(obj.form.elements['ShippingAmount'].value.charAt(i)!=" ")
+							{ CheckNoNaN="T";	
+								break;
+							}	
+						}
+		
+				  if(CheckNoNaN=="F")
+					{ 
+					 obj.form.elements['ShippingAmount'].value="";
+					}
+
+					if(IsInt(obj.form.elements['ShippingAmount'].value))
+					{
+						var percentnumber=obj.form.elements['ShippingAmount'].value;
+						percentnumber=parseInt(percentnumber,10);
+						obj.form.elements['ShippingAmount'].value=percentnumber;
+						CheckNoNaN="F";
+					}
+					
+					if(Shippingtype=="percentage")
+					{
+						if (!IsInt(obj.form.elements['ShippingAmount'].value))
+						{
+							alert("<XLAT.STREAM KEY="dvin/AT/Common/enterintegerforpercent" ESCAPE="true" ENCODE="false"/>");
+							obj.form.elements['ShippingAmount'].focus();
+							return false;
+						}
+					}
+				 					
+					  }
+
+	return true;
+}
+
+     <![CDATA[
+<!-- to check if the string is belong to the 'Integer'!-->
+function IsInt(str) {
+/* strip leading zeroes to prevent false negative! */
+
+    while (str.charAt(0) == '0' && str.length > 1) str = str.substr(1);
+    var i = parseInt(str);
+    if (isNaN(i))
+        return false;
+    i = i.toString();
+    if (i != str)
+        return false;
+    return true;
+}
+/*
+function IsInt(StrVar)
+{ 
+ var Test="T"; 		 
+ for(i=StrVar.length-1; i>=0; i--)
+	{ 	 
+	 	var Flag="F";
+		if(i==0)
+		{ 
+		 if(StrVar.charAt(0)=="-")
+		 {
+		 Flag="T";
+		 }
+		 else
+		 {
+		  for(j=9;j>=0; j--)
+				{
+				if(StrVar.charAt(0)==j)
+					{
+					 Flag="T";
+					 break;
+					}
+				}	
+		 }
+		}
+		else
+		{
+			for(j=9;j>=0; j--)
+				{
+				 if(StrVar.charAt(i)==j)
+					{
+					 Flag="T";
+					 break;
+					}
+				}
+		}
+ 		if(Flag=="F"){Test="F"; break;}
+	}
+ if(Test=="F") return false;
+ else return true;	
+}   */
+
+<!-- to check if the string is the 'Float'!-->
+function IsNumber(str)
+{
+    return /^[-+]?\d*((\.\d+)([eE][-+]?\d+)?)?$/.test(str);
+}
+/*function IsNumber(StrVar)
+{
+ var loopEnd = 0;
+        if (StrVar.charAt(0) == "-")
+            loopEnd = 1;
+
+        var countDecimalPoint = 0;
+        var countE = 0;
+        var Test="T";
+        for(i=StrVar.length-1; i>=loopEnd; i--)
+            {
+                var Flag="F";
+                if(StrVar.charAt(i)==".")
+                {
+                    countDecimalPoint++;
+                    Flag="T";
+                    continue;
+                }
+                if(StrVar.charAt(i)=="E" || StrVar.charAt(i)=="e")
+                {
+                    countE++;
+                    Flag="T";
+                    continue;
+                }
+                for(j=9;j>=0; j--)
+                {
+                    if(StrVar.charAt(i)==j)
+                    {
+                     Flag="T";
+                     break;
+                    }
+                }
+                if(Flag=="F" || countDecimalPoint > 1 || countE > 1)
+                    {
+                    Test="F"; break;
+                    }
+            }
+         if(Test=="F") return false;
+         else return true;
+}	   */
+]]>
+</SCRIPT>
+
+<!-- This is where the tree will put the selected products -->
+<INPUT TYPE="hidden"   NAME="ProductStr" VALUE=""/>
+<!-- This signals that we are coming from the discount form -->
+<INPUT TYPE="hidden" NAME="FromContentFormDiscount" VALUE="true"/>
+
+<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+    <!-- <callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ContentFormHeader">
+        <argument NAME="FNextPage" VALUE="ContentFormDuration"/>
+        <argument NAME="FNextDescription" VALUE="Duration"/>
+    </callelement>	-->
+ 
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ContentFormNavBar">
+		<argument NAME="CurrentCat" VALUE="Discount"/>
+	</callelement>
+	
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/LoadDiscProductInfo"/>
+ 	
+ 	
+  <callelement NAME="OpenMarket/Gator/Util/GetStoreId"/>
+	<if COND="IsVariable.txnumStores=true">
+	<then>
+			<if COND="Variables.txnumStores=0">
+			<then>
+					<setvar NAME="DontDisplayDisc"  VALUE="true"/>
+			</then>
+			<else>
+				 <if COND="Variables.txnumStores=Variables.Empty">
+				 <then>
+						 <setvar NAME="DontDisplayDisc"  VALUE="true"/>
+				 </then>
+				 </if>
+			</else>
+			</if>
+	</then>
+	<else>
+ 		  <setvar NAME="DontDisplayDisc"  VALUE="true"/>
+	</else>
+	</if>
+ 		<tr>
+			<td>
+				<if COND="IsVariable.DontDisplayDisc!=true">
+	      <then>
+ 					<table cellspacing="0" cellpadding="0" border="0">
+                    
+   					<tr>
+							<td colspan="2"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif"  width="1" height="15" REPLACEALL="Variables.cs_imagedir"/></td>
+						</tr>
+						<tr>
+							<td colspan="2" class="subtitle-text"><XLAT.STREAM KEY="dvin/AT/Promotions/DiscountValue"/></td>
+						</tr>
+						<tr>
+							<td colspan="2"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif"  width="1" height="10" REPLACEALL="Variables.cs_imagedir"/></td>
+						</tr>
+                        
+						<tr>
+							<td>
+								<table cellspacing="0" cellpadding="0" border="0">
+									<tr height="5">
+										<td colspan="4" height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									<tr>
+										<td colspan="4"><XLAT.STREAM KEY="dvin/AT/Promotions/Purchases"/>:</td>
+									</tr>
+									<tr height="5">
+										<td colspan="4" height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									 <if COND="Variables.DiscType=none">
+										<then>
+											<tr>
+												<td><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="20" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+												<td valign="middle"><input type="radio" value="none" onClick="setTabDirty(); displayDropZone();" name="DiscountType" checked="1"/></td>
+												<td></td>
+												<td>
+														<XLAT.STREAM KEY="dvin/AT/Promotions/NoDiscount"/>
+												</td>
+											</tr>
+										</then>
+										<else>
+											<tr>
+												<td><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="20" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+												<td valign="middle"><input type="radio" value="none" onClick="setTabDirty(); displayDropZone();" name="DiscountType"/></td>
+												<td></td>
+												<td>
+														<XLAT.STREAM KEY="dvin/AT/Promotions/NoDiscount"/>
+												</td>
+											</tr>
+										 </else>
+										 </if>
+										<if COND="Variables.DiscType=item">
+										<then>
+											<tr>
+												<td><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="20" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+												<td valign="middle"><input type="radio" onClick="setTabDirty(); displayDropZone();" value="item" name="DiscountType" checked="1"/></td>
+												<td></td>
+												<td>
+												 <BEGINS STR="Variables.DiscAmount" WHAT="Variables."/>
+												 <if COND="Variables.errno=1">
+												 <then>
+															 <setvar NAME="DiscAmount"   VALUE="Variables.empty"/>
+												 </then>
+												 </if>
+												
+												<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+													<argument NAME="inputName" VALUE="DiscountAmount"/>
+													<argument NAME="inputValue" VALUE="Variables.DiscAmount"/>
+													<argument NAME="inputSize" VALUE="3"/>
+													<argument NAME="inputMaxlength" VALUE="10"/>
+													<argument NAME="width" VALUE="100px"/>
+												</callelement>:&nbsp;
+													<select NAME="DiscountStyle"  dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+														<if COND="Variables.DiscStyle=percentage">
+															<then>
+																<option value="percentage" selected="1"><XLAT.STREAM KEY="dvin/AT/Common/percent"/></option>
+																<option value="fixed"><XLAT.STREAM KEY="dvin/AT/Promotions/LocaleCurrencyword"/></option>
+															</then>
+															<else>
+																<option value="percentage"><XLAT.STREAM KEY="dvin/AT/Common/percent"/></option>
+																<option value="fixed" selected="1"><XLAT.STREAM KEY="dvin/AT/Promotions/LocaleCurrencyword"/></option>
+															</else>
+														</if>
+													</select> <XLAT.STREAM KEY="dvin/AT/Common/offpromotedproducts"/>
+												</td>
+											</tr>
+										</then>
+										<else>
+											<tr>
+												<td><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="20" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+												<td valign="middle"><input type="radio" onClick="setTabDirty(); displayDropZone();" value="item" name="DiscountType"/></td>
+												<td></td>
+												<td>
+													<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+														<argument NAME="inputName" VALUE="DiscountAmount"/>
+														<argument NAME="inputValue" VALUE=""/>
+														<argument NAME="inputSize" VALUE="3"/>
+														<argument NAME="inputMaxlength" VALUE="10"/>
+													</callelement>:&nbsp;
+													<select NAME="DiscountStyle" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+														<option value="percentage" selected="1"><XLAT.STREAM KEY="dvin/AT/Common/percent"/></option>
+														<option value="fixed"><XLAT.STREAM KEY="dvin/AT/Promotions/LocaleCurrencyword"/></option>
+													</select> <XLAT.STREAM KEY="dvin/AT/Common/offpromotedproducts"/>
+												</td>
+											</tr>
+										</else>
+									</if>
+									<!--  following is the former Products tab of promotions -->
+									 <tr>
+											<td><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="20" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+											<td>    </td>
+											<td></td>
+											<td>
+												<table border="0" cellpadding="0" cellspacing="0">
+												 <if COND="Variables.DiscType=item">
+												 <then>
+															<if COND="Variables.ProductType=all">
+																<then>
+																	<tr>
+																		<td><input type="radio" onClick="setTabDirty(); displayDropZone();" value="all" name="ProductType" checked="1"/></td>
+																		<td><XLAT.STREAM KEY="dvin/AT/Common/Everyproductincatalog"/></td>
+																	</tr>
+																</then>
+																<else>
+																	<tr>
+																		<td><input type="radio" onClick="setTabDirty(); displayDropZone();" value="all" name="ProductType"/></td>
+																		<td><XLAT.STREAM KEY="dvin/AT/Common/Everyproductincatalog"/></td>
+																	</tr>
+																</else>
+															</if>
+													</then>
+													<else>
+																<tr>
+																	<td><input type="radio" onClick="setTabDirty(); displayDropZone();" value="all" name="ProductType"/></td>
+																	<td><XLAT.STREAM KEY="dvin/AT/Common/Everyproductincatalog"/></td>
+																</tr>
+													</else>
+													</if>
+												<tr>
+													<td colspan="2"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+												</tr>
+												<if COND="Variables.DiscType=item">
+												<then>
+														<if COND="Variables.ProductType=specified">
+															<then> 
+																<tr>
+																	<td valign="top"><input type="radio" onClick="setTabDirty(); displayDropZone();" value="specified" name="ProductType" checked="1"/></td>
+																	<td valign="top">
+																		<if COND="Variables.cs_environment=ucform">
+																		<then>													
+																			<XLAT.STREAM KEY="UI/Forms/specificproductorcategory"/>:
+																		</then>											
+																		<else>
+																			<XLAT.STREAM KEY="dvin/AT/Common/specificproductorcategory"/>:
+																		</else>
+																		</if>	
+																	</td>
+																</tr>
+															</then>
+															<else> 
+																<tr>
+																	<td valign="top"><input type="radio" onClick="setTabDirty(); displayDropZone();" value="specified" name="ProductType"/></td>
+																	<td valign="top">
+																		<if COND="Variables.cs_environment=ucform">
+																		<then>													
+																			<XLAT.STREAM KEY="UI/Forms/specificproductorcategory"/>:
+																		</then>											
+																		<else>
+																			<XLAT.STREAM KEY="dvin/AT/Common/specificproductorcategory"/>:
+																		</else>
+																		</if>	
+																	</td>
+																</tr>
+															</else>
+														</if>
+														<tr>
+															<td colspan="2"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+														</tr>
+														<tr>
+															<td></td>
+															<td>
+																<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ProductListTable">
+																	<argument NAME="showX" VALUE="true"/>
+																</callelement>
+															</td>
+														</tr>
+														<tr>
+															<td colspan="2" height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+														</tr>
+												 </then>
+												 <else>
+														 <tr>
+																	<td valign="top"><input type="radio" onClick="setTabDirty(); displayDropZone();" value="specified" name="ProductType"/></td>
+																	<td valign="top">
+																		<if COND="Variables.cs_environment=ucform">
+																		<then>													
+																			<XLAT.STREAM KEY="UI/Forms/specificproductorcategory"/>:
+																		</then>											
+																		<else>
+																			<XLAT.STREAM KEY="dvin/AT/Common/specificproductorcategory"/>:
+																		</else>
+																		</if>	
+																	</td>
+															</tr>
+												 </else>
+												 </if>
+												
+												<tr>
+													<td></td>
+													<td>
+													<IF COND="Variables.cs_environment=ucform">
+													<THEN>
+														<if COND="Variables.ProductType=specified">
+														<then>
+															<div id="DnDSelectAsset_Variables.id_discPurchases" REPLACEALL="Variables.id">
+																<CALLELEMENT NAME="OpenMarket/Gator/Util/DnDSelectAsset">
+																	<ARGUMENT NAME="nameSuffix" VALUE="None"/>
+																</CALLELEMENT>
+															</div>
+														</then>
+														<else>
+															<div id="DnDSelectAsset_Variables.id_discPurchases" style="display:none" REPLACEALL="Variables.id">
+																<CALLELEMENT NAME="OpenMarket/Gator/Util/DnDSelectAsset">
+																	<ARGUMENT NAME="nameSuffix" VALUE="None"/>
+																</CALLELEMENT>
+															</div>
+														</else>
+														</if>														
+														<REPLACEALL LIST="Variables.id,Variables.ThisPage">
+															<script type="text/javascript">
+																var selectDnDSpecial_Variables.id_None = function(args){
+																	var obj=document.forms[0].elements[0],
+																		ourPage="Variables.ThisPage", nextstep="ContentFormDiscount",
+																		where="ProductStr", widgetName="typeAheadSpecial_Variables.id_None";
+																	var nodes= [];
+																	nodes = dojo.query('div[name='+widgetName+']');
+																	if(nodes.length === 0)
+																		nodes = dojo.query('input[name='+widgetName+']');
+																	var	typeWidgetIns=dijit.getEnclosingWidget(nodes[0]),
+																		valueArray=typeWidgetIns.getAllDnDValues();
+																	obj.form.elements[where].value="id=" + valueArray[0] + ",assettype=" + valueArray[1] + ",:";
+																	obj.form.PromotionsNextStep.value=nextstep;
+																	obj.form.UpdateSelectedItems.value="add";
+
+																	var basePage="OpenMarket/Xcelerate/Actions/";
+																	if(ourPage=="CopyFront")
+																		ourPage="NewContentFront";
+																	var	newpage=basePage + ourPage;
+																	obj.form.pagename.value=newpage;
+																	if(valueArray.length > 0 && valueArray[0].length >= 2)
+																		document.forms[0].submit();
+																	return false;
+																};
+															</script>
+														</REPLACEALL>
+													</THEN>
+													<ELSE>
+														<IF COND="Variables.showSiteTree=true">
+															<THEN>
+															  <XLAT.LOOKUP KEY="dvin/AT/Common/SelectFromTree" VARNAME="_selfromtree_" ESCAPE="true"/>
+																<XLAT.LOOKUP KEY="dvin/AT/Common/Selectproductorcategoryfromtree" VARNAME="_selporcfromtree_"/>
+																<if COND="Variables.ProductType=specified">
+																<then>
+																	<div id="DnDSelectAsset_Variables.id_discPurchases" REPLACEALL="Variables.id">
+																		<A HREF="javascript:void(0)" onclick="return SelectFromTree('Variables.ThisPage','ContentFormDiscount','ProductStr')" REPLACEALL="Variables.ThisPage,Variables._selfromtree_" onmouseover="window.status='Variables._selfromtree_';return true;" onmouseout="window.status='';return true;">
+                                                                     <CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/AddSelectedItems"/></CALLELEMENT>
+																</A>
+																	</div>
+																</then>
+																<else>
+																	<div id="DnDSelectAsset_Variables.id_discPurchases" style="display:none" REPLACEALL="Variables.id">
+																		<A HREF="javascript:void(0)" onclick="return SelectFromTree('Variables.ThisPage','ContentFormDiscount','ProductStr')" REPLACEALL="Variables.ThisPage,Variables._selfromtree_" onmouseover="window.status='Variables._selfromtree_';return true;" onmouseout="window.status='';return true;">
+                                                                     <CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/AddSelectedItems"/></CALLELEMENT>
+																</A>
+																	</div>
+																</else>
+																</if>																
+															</THEN>
+															<ELSE>
+                                                                <SETVAR NAME="currentUniqueID" VALUE="CS.UniqueID"/>
+                                                                <script type="text/javascript">
+                                                                    <XLAT.LOOKUP KEY="dvin/AT/Promotions/Purchases" VARNAME="_XLAT_"/>
+                                                                    <SATELLITE.LINK ASSEMBLER="query" OUTSTRING="url_Variables.currentUniqueID" PAGENAME="OpenMarket/Xcelerate/Actions/PickAssetPopup">
+                                                                        <SATELLITE.ARGUMENT NAME="cs_environment" VALUE="Variables.cs_environment"/>
+                                                                        <SATELLITE.ARGUMENT NAME="cs_formmode" VALUE="Variables.cs_formmode"/>
+                                                                        <SATELLITE.ARGUMENT NAME="cs_SelectionStyle" VALUE="multiple"/>
+                                                                        <SATELLITE.ARGUMENT NAME="cs_CallbackSuffix" VALUE="Variables.currentUniqueID"/>
+                                                                        <SATELLITE.ARGUMENT NAME="cs_FieldName" VALUE="Variables._XLAT_"/>
+                                                                    </SATELLITE.LINK>
+                                                                    <![CDATA[
+                                                                      function PickAssetCallback_]]><STRING.STREAM VALUE="Variables.currentUniqueID"/><![CDATA[(SelectedAssets)
+                                                                      {
+                                                                        var obj = document.forms[0].elements[0];
+                                                                        obj.form.PromotionsNextStep.value = "ContentFormDiscount";
+                                                                        obj.form.UpdateSelectedItems.value ="add";
+                                                                        
+                                                                        var AssetList = SelectedAssets.split(";");
+                                                                        var assetIDs = '';
+                                                                        for (var z = 0; z < AssetList.length; z++)
+                                                                        {
+                                                                          var AssetInfo = AssetList[z].split(":");
+                                                                          if (z == 0)
+                                                                            assetIDs = 'id='+AssetInfo[1]+',assettype='+AssetInfo[0];
+                                                                          else
+                                                                            assetIDs += ':id='+AssetInfo[1]+',assettype='+AssetInfo[0];
+                                                                        }
+                                                                        document.forms[0].elements['ProductStr'].value = assetIDs;
+                                                                        
+                                                                        ]]>
+                                                                        <IF COND="Variables.pagename=OpenMarket/Xcelerate/Actions/CopyFront">
+                                                                        <THEN>
+                                                                          obj.form.pagename.value = 'OpenMarket/Xcelerate/Actions/NewContentFront';
+                                                                        </THEN>
+                                                                        <ELSE>
+                                                                          obj.form.pagename.value = '<CSVAR NAME="Variables.pagename"/>';
+                                                                        </ELSE>
+                                                                        </IF>
+                                                                        <![CDATA[	
+                                                                        document.forms[0].submit();
+                                                                      }
+                                                                      ]]>
+                                                                      function PickAssetPopup_<STRING.STREAM VALUE="Variables.currentUniqueID"/>() {
+                                                                        OpenPickAssetPopup('<ICS.RESOLVEVARIABLES NAME="$(Variables.url_$(Variables.currentUniqueID))" DELIMITED="true"/>', GetBannerHistory());
+                                                                      }
+                                                                </script>
+																	<if COND="Variables.ProductType=specified">
+																	<then>
+																		<div id="DnDSelectAsset_Variables.id_discPurchases" REPLACEALL="Variables.id">
+																			<A HREF="#" ONCLICK="PickAssetPopup_Variables.currentUniqueID(); return false;" TARGET="_blank" REPLACEALL="Variables.currentUniqueID"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Browse"/></CALLELEMENT></A>	
+																		</div>
+																	</then>
+																	<else>
+																		<div id="DnDSelectAsset_Variables.id_discPurchases" style="display:none" REPLACEALL="Variables.id">
+																			<A HREF="#" ONCLICK="PickAssetPopup_Variables.currentUniqueID(); return false;" TARGET="_blank" REPLACEALL="Variables.currentUniqueID"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Browse"/></CALLELEMENT></A>	
+																		</div>
+																	</else>
+																	</if>	                                                                			  
+															</ELSE>
+														</IF>
+													</ELSE>
+													</IF>
+														
+													</td>
+												</tr>			
+											</table>
+										</td>
+									</tr>
+		
+									<tr height="10">
+										<td colspan="4" height="10"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="10" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>							
+									<tr>
+										<td></td>
+										<td valign="top" colspan="4"><XLAT.STREAM KEY="dvin/AT/Promotions/discountinvoicesreceipts"/>:&nbsp;
+											<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+												<argument NAME="inputName" VALUE="DiscountDescription"/>
+												<argument NAME="inputValue" VALUE="Variables.DiscDescription"/>
+												<argument NAME="inputSize" VALUE="32"/>
+												<argument NAME="inputMaxlength" VALUE="255"/>
+											</callelement>
+										</td>
+									</tr>
+								 <tr height="10">
+										<td colspan="4" height="10"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="10" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+																
+									<!--  Choose the transact store-id's if there are multiple store-ids -->
+								 
+			 
+									<tr height="1">
+										<td colspan="4" bgcolor="#cccccc" height="1"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									<tr height="20">
+										<td colspan="4" height="10"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="10" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									<tr>
+										<td colspan="4"><XLAT.STREAM KEY="dvin/AT/Promotions/ShippingFees"/>:</td>
+									</tr>
+									<tr height="5">
+										<td colspan="4" height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td colspan="3">
+											<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+												<argument NAME="inputName" VALUE="ShippingAmount"/>
+												<argument NAME="inputValue" VALUE="Variables.ShipAmount"/>
+												<argument NAME="inputSize" VALUE="3"/>
+												<argument NAME="inputMaxlength" VALUE="10"/>
+												<argument NAME="width" VALUE="100px"/>
+											</callelement>&nbsp;
+											<select NAME="ShippingFee" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+												<if COND="Variables.ShipStyle=fixed">
+													<then>
+														<option value="percentage"><XLAT.STREAM KEY="dvin/AT/Common/percent"/></option>
+														<option value="fixed" selected="1"><XLAT.STREAM KEY="dvin/AT/Promotions/LocaleCurrencyword"/></option>
+													</then>
+													<else>
+														<option value="percentage" selected="1"><XLAT.STREAM KEY="dvin/AT/Common/percent"/></option>
+														<option value="fixed"><XLAT.STREAM KEY="dvin/AT/Promotions/LocaleCurrencyword"/></option>
+													</else>
+												</if>
+											</select> <XLAT.STREAM KEY="dvin/AT/Promotions/offshippingfees"/>
+										</td>
+									</tr>
+									<tr height="10">
+										<td colspan="4" height="10"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="10" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td valign="top" colspan="4"><XLAT.STREAM KEY="dvin/AT/Promotions/shippingdiscinvoicesreceipts"/>:&nbsp;
+											<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+												<argument NAME="inputName" VALUE="ShippingDiscountDescription"/>
+												<argument NAME="inputValue" VALUE="Variables.ShipDescription"/>
+												<argument NAME="inputSize" VALUE="32"/>
+												<argument NAME="inputMaxlength" VALUE="255"/>
+											</callelement>
+										</td>
+									</tr>
+									 <!-- Comment out the services functionality for July release
+										<tr height="10">
+											<td colspan="4" height="10"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="10" REPLACEALL="Variables.cs_imagedir"/></td>
+										</tr>
+										<tr height="1">
+											<td colspan="4" bgcolor="#cccccc" height="1"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="1/"></td>
+										</tr>
+										<tr height="20">
+											<td colspan="4" height="20"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="20" REPLACEALL="Variables.cs_imagedir"/></td>
+										</tr>
+										<tr>
+											<td colspan="4">Services:</td>
+										</tr>
+										<tr height="5">
+											<td colspan="4" height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+										</tr>
+										<tr valign="top">
+											<td></td>
+											<td colspan="3" valign="top">
+												<table cellpadding="0" cellspacing="0" border="0">
+													<tr valign="middle">
+														<td valign="top">
+															<input type="text" name="textfield2" size="3" maxlength="3"/>&nbsp;
+															<select name="Services" size="1">
+																<option value="percentage" selected="1"/>percent
+																<option value="fixed"/>dollars
+															</select> off additional services:</td>
+																<td valign="top"><select name="ServiceType" size="2" multiple="1">
+																<option value="deluxePackage"/>deluxe packaging
+																<option value="giftWrap"/>gift wrapping
+															</select></td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									-->
+									
+													 <!--  Choose the transact store-id's if there are multiple store-ids -->
+									<callelement NAME="OpenMarket/Gator/Util/ChooseTxStore"/>
+														 
+		
+								</table>
+							</td>
+						</tr>
+						<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+						<TR>
+							<TD class="form-inset">
+							<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ContentFormFooter">
+								<argument NAME="FNextPage" VALUE="ContentFormDuration"/>
+								<argument NAME="CurrentCat" VALUE="Discount"/>
+							</callelement>
+							</TD>
+						</TR>
+					</table>
+					</then>
+					 <else>
+							 <br/><XLAT.STREAM KEY="dvin/AT/Promotions/nostoresfordiscount"/>  
+							 <br/><XLAT.STREAM KEY="dvin/AT/Promotions/Setupstore"/> 
+					 </else>
+					 </if>
+ 				</td>
+			</tr>
+</table>
+
+</FTCS> 

@@ -1,0 +1,32 @@
+<object-stream>
+  <com.fatwire.realtime.ResourceDataImpl>
+    <id class="string">OpenMarket/Xcelerate/AssetType/FW_View/IndexAdd</id>
+    <resourceType>ELEMENTCATALOG</resourceType>
+    <deps class="empty-set"/>
+    <data class="com.openmarket.xcelerate.common.ElementCatalogEntry" serialization="custom">
+      <com.openmarket.xcelerate.common.ElementCatalogEntry>
+        <int>1</int>
+        <string>OpenMarket/Xcelerate/AssetType/FW_View/IndexAdd</string>
+        <string>IndexAdd</string>
+        <string></string>
+        <string></string>
+        <string>OpenMarket/Xcelerate/AssetType/FW_View/IndexAdd.xml</string>
+        <string></string>
+        <string></string>
+      </com.openmarket.xcelerate.common.ElementCatalogEntry>
+    </data>
+  </com.fatwire.realtime.ResourceDataImpl>
+</object-stream>
+<!--==================___ METADATA ___================
+<dependencies>
+  <list/>
+</dependencies>
+==================______________________==================
+#
+#Mon Dec 16 23:39:31 UTC 2013
+storable0=/ELEMENTS/OpenMarket/Xcelerate/AssetType/FW_View/IndexAdd.xml|null|_storable_type\=%2FELEMENTS%2FOpenMarket%2FXcelerate%2FAssetType%2FFW_View%2FIndexAdd.xml
+@hashval=-1177311064
+key=@ELEMENTCATALOG-OpenMarket/Xcelerate/AssetType/FW_View/IndexAdd
+type=ELEMENTCATALOG
+
+==================___ END METADATA ___==================-->

@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/GetThisFormsRule
+--
+-- INPUT
+--	nvobject with everything in it (set in CoFLoadLoadRuleSet)
+--  CriteriaColumn and CriteriaRow not empty
+-- OUTPUT
+--	nvOurCell has the RuleInQuestion
+--	segerr = 0, got a rule,
+--  segerr = 1, got nothing
+--
+-->
+<setvar NAME="segerr" VALUE="1"/> <!--assume failure-->
+<if COND="CriteriaRow!=Variables.empty">
+	<then>
+		<if COND="CriteriaColumn!=Variables.empty">
+			<then>
+				<nvobject.getvalue NAME="nvRuleSet" VALUENAME="NUMAND" VARNAME="rsnumrows"/>
+				<if COND="Variables.rsnumrows!=0">
+					<then>
+						<calculator.go VALUE="Variables.rsnumrows Variables.CriteriaRow GT" VARNAME="calcresult"/>
+						<if COND="Variables.calcresult=1">
+							<then>
+								<!--have enough rows - check out the cell-->
+								<nvobject.getvalue NAME="nvRuleSet" VALUENAME="ANDCLAUSEVariables.CriteriaRow" VARNAME="ourRow"/>
+								<nvobject.create NAME="nvOurRow"/>
+								<nvobject.fromstring NAME="nvOurRow" VALUE="Variables.ourRow"/>
+								<!--find out the number of columns-->
+								<nvobject.getvalue NAME="nvOurRow" VALUENAME="NUMCOL" VARNAME="thisNumCol"/>
+								<calculator.go VALUE="Variables.thisNumCol Variables.CriteriaColumn GT" VARNAME="calcresult"/>
+								<if COND="Variables.calcresult=1">
+									<then>
+										<nvobject.getvalue NAME="nvOurRow" VALUENAME="ORCLAUSEVariables.CriteriaColumn" VARNAME="ourCell"/>
+										<nvobject.create NAME="nvOurCell"/>
+										<nvobject.fromstring NAME="nvOurCell" VALUE="Variables.ourCell"/>
+<!--
+<br/>ourCell: <csvar NAME="Variables.ourCell"/>
+-->
+										<setvar NAME="segerr" VALUE="0"/> <!--success-->
+									</then>
+								</if>
+							</then>
+						</if>
+					</then>
+				</if>
+			</then>
+		</if>
+	</then>
+</if>
+</FTCS> 

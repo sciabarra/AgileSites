@@ -1,0 +1,109 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ManualrecsShowTreeSelect
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+<STRING.ENCODE VARIABLE="AssetType" VARNAME="AssetType"/>
+<STRING.ENCODE VARIABLE="ID" VARNAME="ID"/>
+<STRING.ENCODE VARIABLE="cs_imagedir" VARNAME="cs_imagedir"/>
+<STRING.ENCODE VARIABLE="ThisPage" VARNAME="ThisPage"/>
+<IF COND="IsVariable.TreeSelectStr=true">
+	<THEN>
+		<IF COND="Variables.TreeSelectSegment=Variables.localSegment">
+			<THEN>
+				<SETVAR NAME="gotsome" VALUE="true"/>
+				<IF COND="Variables.localSegment=None">
+					<THEN>
+						<SETVAR NAME="localBucket" VALUE="Variables.empty"/>
+					</THEN>
+					<ELSE>
+						<SETVAR NAME="localBucket" VALUE="Variables.localSegment_IN"/>
+						<SETVAR NAME="localOutBucket" VALUE="Variables.localSegment_OUT"/>
+					</ELSE>
+				</IF>
+				<!--Yes, so let's parse it-->
+				<STRINGLIST NAME="ManualList" STR="Variables.TreeSelectStr" DELIM=":"/>
+				<LOOP LIST="ManualList">
+					<IF COND="IsVariable.ID=true">
+						<THEN>
+							<SETVAR NAME="SaveID" VALUE="Variables.ID"/>
+						</THEN>
+					</IF>
+					<SETVAR NAME="SaveAssetType" VALUE="Variables.AssetType"/>
+					<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/ParseTreeNodeID">
+						<ARGUMENT NAME="TreeNodeID" VALUE="ManualList.ITEM"/>
+					</CALLELEMENT>
+					<ASSET.LIST TYPE="Variables.AssetType" LIST="thisElement" FIELD1="id" VALUE1="Variables.ID"/>
+					<IF COND="Variables.errno!=0">
+						<THEN>
+							<TR>
+								<TD colspan="6">--<XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorFindingAsset" EVALALL="false" errno="Variables.errno" ourid="Variables.ID" ourtype="Variables.AssetType"/> --</TD>
+							</TR>
+						</THEN>
+						<ELSE>
+							<TR>
+								<XLAT.LOOKUP KEY="dvin/AT/Common/Removefromlist" VARNAME="_XLAT_"/>
+								<XLAT.LOOKUP KEY="dvin/AT/Common/Removefromlist" VARNAME="_Removefromlist_" ESCAPE="true"/>
+								<TD></TD>
+								<TD align="center">
+									<A href="javascript:void(0)" onclick="return RemoveItem('Variables.ThisPage','ContentFormBuild','AdvColsManualRecsAssetIdCounters.currcount')"   onmouseover="window.status='Variables._Removefromlist_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables.ThisPage, Counters.currcount, Variables._Removefromlist_">
+										<IMG src="Variables.cs_imagedir/graphics/common/icon/iconDeleteContent.gif" title="Variables._XLAT_" alt="Variables._XLAT_" border="0" hspace="2" REPLACEALL="Variables.cs_imagedir,Variables._XLAT_"/></A>&nbsp;
+								</TD>
+								<ASSETTYPE.LIST LIST="AssetType" FIELD1="assettype" VALUE1="Variables.AssetType"/>
+								<TD><STRING.STREAM VALUE="thisElement.name"/> (<STRING.STREAM VALUE="AssetType.description"/>)</TD>
+								<TD></TD>
+								<TD>
+									<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+										<argument NAME="inputName" VALUE="AdvColsManualRecsConfidenceCounters.currcount"/>
+										<argument NAME="inputValue" VALUE="100"/>
+										<argument NAME="inputSize" VALUE="3"/>
+										<argument NAME="inputMaxlength" VALUE="3"/>
+										<argument NAME="width" VALUE="10em"/>
+									</callelement>%
+								</TD>
+								<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsAssetTypeCounters.currcount" VALUE="Variables.AssetType" REPLACEALL="Variables.AssetType,Counters.currcount"/>
+								<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsAssetIdCounters.currcount" VALUE="Variables.ID" REPLACEALL="Variables.ID,Counters.currcount"/>
+								<STRING.ENCODE VARIABLE="localBucket" VARNAME="localBucket"/>
+								<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsBucketCounters.currcount" VALUE="Variables.localBucket" REPLACEALL="Variables.localBucket,Counters.currcount"/>
+								<INCCOUNTER NAME="currcount" VALUE="1"/>
+								<!--Now set up an out bucket-->
+								<IF COND="Variables.localSegment!=None">
+									<THEN>
+										<TD></TD>
+										<TD>
+											<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+												<argument NAME="inputName" VALUE="AdvColsManualRecsConfidenceCounters.currcount"/>
+												<argument NAME="inputValue" VALUE=""/>
+												<argument NAME="inputSize" VALUE="3"/>
+												<argument NAME="inputMaxlength" VALUE="3"/>
+												<argument NAME="width" VALUE="10em"/>
+											</callelement>%
+										</TD>
+										<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsAssetTypeCounters.currcount" VALUE="Variables.AssetType" REPLACEALL="Variables.AssetType,Counters.currcount"/>
+										<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsAssetIdCounters.currcount" VALUE="Variables.ID" REPLACEALL="Variables.ID,Counters.currcount"/>
+										<STRING.ENCODE VARIABLE="localOutBucket" VARNAME="localOutBucket"/>
+										<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsBucketCounters.currcount" VALUE="Variables.localOutBucket" REPLACEALL="Variables.localOutBucket,Counters.currcount"/>
+										<INCCOUNTER NAME="currcount" VALUE="1"/>
+									</THEN>
+								</IF>
+							</TR>
+						</ELSE>
+					</IF>
+					<IF COND="IsVariable.SaveID=true">
+						<THEN>
+							<SETVAR NAME="ID" VALUE="Variables.SaveID"/>
+						</THEN>
+					</IF>
+					<SETVAR NAME="AssetType" VALUE="Variables.SaveAssetType"/>
+				</LOOP>
+			</THEN>
+		</IF>
+	</THEN>
+</IF>
+
+</FTCS> 

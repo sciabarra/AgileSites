@@ -1,0 +1,176 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!--
+$Logfile: /VerticalApps/XcelerateC/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Query/ExecuteQuery.xml $
+$Revision: 12 $
+$Modtime: 9/29/03 11:00a $
+-->
+<!-- OpenMarket/Xcelerate/AssetType/Query/ExecuteQuery
+-- 
+-- builds a list by executing the query, whether it be an sql, a search engine
+-- or an element call to build the list
+-- INPUT
+--		list			- name of list to build
+--			assetname	- name of a loaded query asset to execute
+--		OR	inputlist	- list of the Query table from which to get fields
+--		ResultLimit	- limit of the execsql
+-- OUTPUT
+--		List	- contains the results of the executed query
+-->
+
+
+<if COND="IsList.Variables.inputlist=true">
+<then>
+	<SETVAR NAME="Query:subtype" VALUE="Variables.inputlist.subtype"/>
+	<SETVAR NAME="Query:type" VALUE="Variables.inputlist.type"/>
+	<SETVAR NAME="Query:sqlquery" VALUE="Variables.inputlist.sqlquery"/>
+	<SETVAR NAME="Query:sequery" VALUE="Variables.inputlist.sequery"/>
+	<SETVAR NAME="Query:element" VALUE="Variables.inputlist.element"/>
+</then>
+<else>
+	<if COND="IsVariable.assetname=true">
+	<then>
+		<ASSET.SCATTER NAME="Variables.assetname" PREFIX="Query"/>
+	</then>
+	</if>
+</else>
+</if>
+
+<!-- Mark log dependencies as unknown for query asset -->
+<RENDER.UNKNOWNDEPS ASSETTYPE="Variables.Query:subtype"/>
+
+<!-- execute a straight sql query -->
+
+<IF COND="Variables.Query:type=sql">
+<THEN>
+	<SETVAR NAME="tablename" VALUE="Variables.Query:subtype"/>
+	<SETVAR NAME="query" VALUE="Variables.Query:sqlquery"/>
+	<SETVAR NAME="errno" VALUE="0"/>
+	<if COND="Variables.query!=Variables.empty">
+	<then>
+		<EXECSQL 
+		    LIST="Variables.list" 
+		    SQL="Variables.query" 
+		    LIMIT="Variables.ResultLimit"/>
+	</then>
+	<else>
+		<!-- General exception - (because there is no missing query error) -->
+		<SETVAR NAME="errno" VALUE="-100"/>
+	</else>
+	</if>
+</THEN>
+</IF>
+
+<!-- execute a search index query -->
+<IF COND="Variables.Query:type=se">
+<THEN>
+<!-- Attempt to load the asset type configuration data -->
+
+	<SETVAR NAME="tablename" VALUE="Variables.Query:subtype"/>
+	<ASSETTYPE.LOAD NAME="type" TYPE="Variables.tablename"/>
+	<ASSETTYPE.GET NAME="type" FIELD="usesearchindex"/>
+	
+	<!--    Is search engine enabled for this asset type? -->
+	<IF COND="Variables.errno=0">
+	<THEN>
+	    <IF COND="Variables.usesearchindex=1">
+	    <THEN>
+			<ASSETTYPE.GET NAME="type" FIELD="indexfile"/>
+			<!--Search engine is enabled.-->
+		
+			<!-- Execute SE query.-->
+		
+			<!--Expand variables used inside the SE query string.-->
+			<SETVAR NAME="query" VALUE="Variables.Query:sequery"/>
+	
+			<!--Make sure the relevance variable is defined-->
+			<IF COND="IsVariable.relevance!=true">
+			  <THEN>
+			    <SETVAR NAME="relevance" VALUE="Variables.empty"/>
+			  </THEN>
+			</IF>
+	
+			<PROPERTY.GET PARAM="xcelerate.seLimit" INIFILE="futuretense_xcel.ini" VARNAME="propselimit"/>
+			<!--Search for items that match query-->
+			<SEARCH
+			  INDEX="Variables.indexfile"
+			  LIST="seResults"
+			  WHAT="Variables.query"
+			  RELEVANCE="Variables.relevance"
+			  LIMIT="Variables.propselimit"/>
+
+			<IF COND="Variables.errno=0">
+		  	<THEN>
+			    <!-- Prepare Variables.query using the IDs from the search. -->
+			    <!--Convert list into comma-separated IN-list for SQL-->
+			    <SETVAR
+					NAME="seQuerystart" 
+					VALUE="Variables.tablename.id IN ('seResults.ENTRY'"/>
+			    <IF COND="seResults.#numRows!=1">
+		   	 <THEN>
+					<LOOP LIST="seResults" FROM="2">
+					  <SETVAR
+					      NAME="seQuerystart"
+					      VALUE="Variables.seQuerystart,'seResults.ENTRY'"/>
+					</LOOP>
+					<SETVAR NAME="errno" VALUE="0"/><!--LOOP can diddle errno-->
+		      </THEN>
+		    	</IF>
+	    		<SETVAR NAME="seQuerystart" VALUE="Variables.seQuerystart)"/>
+	    		<FLUSH LIST="seResults"/>
+
+			   <!--Insert IN-list into SQL query-->
+			   <IF COND="Variables.query=Variables.empty">
+	      	<THEN>
+					<!--Use a default query since one isn't defined-->
+					<SETVAR NAME="query" VALUE="SELECT * FROM Variables.tablename
+								    WHERE Variables.seQuerystart"/>
+		      </THEN>
+		      <ELSE>
+					<!--Expand variables used inside the SE query string.-->
+					<setvar NAME="queryend" VALUE="AND Variables.seQuerystart"/>
+					<SETVAR NAME="query" VALUE="Variables.query"/>
+	      	</ELSE>
+	    		</IF>
+	    		<REMOVEVAR NAME="seQuerystart"/>
+
+			    <!-- 
+				Execute SQL query.
+		
+				If IndexQuery.query is defined, it must be in the form
+				    SELECT {columns} FROM {table(s)} 
+				    WHERE Variables.seQuerystart AND {expr}
+			    -->
+			    <EXECSQL 
+			         LIST="Variables.list" 
+						SQL="Variables.query" 
+						LIMIT="Variables.ResultLimit"/>
+	 		</THEN>
+			</IF>
+      </THEN>
+      <ELSE>
+			<!--Search engine is not enabled.-->
+			<SETVAR NAME="errno" VALUE="-807"/>
+      </ELSE>
+    </IF>
+  </THEN>
+</IF>
+</THEN>
+</IF>
+<!-- execute an xml element -->
+<IF COND="Variables.Query:type=xml">
+<THEN>
+	<if COND="IsElement.Variables.Query:element=true">
+	<then>
+		<CALLELEMENT NAME="Variables.Query:element"/>
+	</then>
+	<else>
+		<!-- No such element -->
+		<SETVAR NAME="errno" VALUE="-10"/>
+	</else>
+	</if>
+</THEN>
+</IF>
+
+</FTCS> 

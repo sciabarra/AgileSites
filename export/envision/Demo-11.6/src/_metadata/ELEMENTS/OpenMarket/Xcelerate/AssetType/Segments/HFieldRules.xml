@@ -1,0 +1,238 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/DemoRules
+--
+-- INPUT																																															
+-- CNum
+-- thisConstraintField
+--
+-- OUTPUT
+--
+-->
+
+<setcounter NAME="X" VALUE="0"/>
+<INPUT TYPE="HIDDEN" NAME="Variables.CNumConstraintValueNum" VALUE="Variables.numValues" REPLACEALL="Variables.CNum,Variables.numValues"/>
+<INPUT TYPE="HIDDEN" NAME="Variables.CNumConstraintField" VALUE="Variables.thisConstraintField" REPLACEALL="Variables.CNum,Variables.thisConstraintField"/>
+<INPUT TYPE="HIDDEN" NAME="Variables.CNumConstraintType" VALUE="Variables.ConstraintType" REPLACEALL="Variables.ConstraintType,Variables.CNum"/>
+<tr>
+	<td>
+		<table cellpadding="0" cellspacing="0" border="0">
+			<if COND="Variables.ConstraintType=assetattr">
+				<then>
+					<INPUT TYPE="HIDDEN" NAME="Variables.CNumConstraintAttribute" VALUE="Variables.DRconstraintassetattributetype" REPLACEALL="Variables.CNum,Variables.DRconstraintassetattributetype"/>
+					<INPUT TYPE="HIDDEN" NAME="Variables.CNumConstraintAssetType" VALUE="Variables.DRconstraintassettype" REPLACEALL="Variables.CNum,Variables.DRconstraintassettype"/>
+					<fatm.getattributetype ASSETTYPE="Variables.DRconstraintassettype" VARNAME="ourAttrType"/>
+					<INPUT TYPE="HIDDEN" NAME="Variables.CNumConstraintAttrType" VALUE="Variables.ourAttrType" REPLACEALL="Variables.CNum,Variables.ourAttrType"/>
+					<tr>
+						<td><STRING.STREAM VALUE="Variables.DRdescription"/></td>
+						<td><img height="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="5" REPLACEALL="Variables.cs_imagedir"/></td>
+						<td>
+							<IF COND="Variables.showSiteTree=true">
+								<THEN>
+								  <XLAT.LOOKUP KEY="dvin/AT/Common/SelectFromTree" VARNAME="_selfromtree_" ESCAPE="true"/>
+								  <XLAT.LOOKUP KEY="dvin/AT/Common/SelectFromTree" VARNAME="_selfromtree_ALT"/>
+									<A HREF="javascript:void(0)" onclick="return SelectFromTree('Variables.ThisPage','CoFHistory','AssetlistTag','Variables.SegmentsRuleScreen','Variables.SegmentsArg2','Variables.thisConstraintField')" onmouseover="window.status='Variables._selfromtree_'" REPLACEALL="Variables._selfromtree_,Variables.ThisPage,Variables.SegmentsRuleScreen,Variables.SegmentsArg2,Variables.thisConstraintField">
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Select"/></CALLELEMENT></A>
+								</THEN>
+								<ELSE>
+                                    <SETVAR NAME="currentUniqueID" VALUE="CS.UniqueID"/>
+                                    <script type="text/javascript">
+                                      <SATELLITE.LINK ASSEMBLER="query" OUTSTRING="url_Variables.currentUniqueID" PAGENAME="OpenMarket/Xcelerate/Actions/PickAssetPopup">
+                                          <SATELLITE.ARGUMENT NAME="cs_environment" VALUE="Variables.cs_environment"/>
+                                          <SATELLITE.ARGUMENT NAME="cs_formmode" VALUE="Variables.cs_formmode"/>
+                                          <SATELLITE.ARGUMENT NAME="cs_SelectionStyle" VALUE="multiple"/>
+                                          <SATELLITE.ARGUMENT NAME="cs_CallbackSuffix" VALUE="Variables.currentUniqueID"/>
+                                          <SATELLITE.ARGUMENT NAME="cs_FieldName" VALUE="Variables.DRdescription"/>
+                                      </SATELLITE.LINK>
+                                      <![CDATA[
+                                        function PickAssetCallback_]]><STRING.STREAM VALUE="Variables.currentUniqueID"/><![CDATA[(SelectedAssets)
+                                        {
+                                          var obj = document.forms[0].elements[0];
+                                          obj.form.SegmentsNextStep.value = 'CoFHistory';
+                                          obj.form.SegmentsRuleScreen.value = ']]><STRING.STREAM VALUE="Variables.SegmentsRuleScreen"/><![CDATA[';
+                                          obj.form.SegmentsArg2.value =  ']]><STRING.STREAM VALUE="Variables.SegmentsArg2"/><![CDATA[';
+                                          obj.form.SegmentsArg3.value =  ']]><STRING.STREAM VALUE="Variables.thisConstraintField"/><![CDATA[';
+                                          
+                                          var AssetList = SelectedAssets.split(";");
+                                          var assetIDs = '';
+                                          for (var z = 0; z < AssetList.length; z++)
+                                          {
+                                            var AssetInfo = AssetList[z].split(":");
+                                            if (z == 0)
+                                              assetIDs = 'id='+AssetInfo[1]+',assettype='+AssetInfo[0];
+                                            else
+                                              assetIDs += ':id='+AssetInfo[1]+',assettype='+AssetInfo[0];
+                                          }
+                                          document.forms[0].elements['AssetlistTag'].value = assetIDs;
+                                          
+                                          ]]>
+                                          <IF COND="Variables.pagename=OpenMarket/Xcelerate/Actions/CopyFront">
+                                          <THEN>
+                                            obj.form.pagename.value = 'OpenMarket/Xcelerate/Actions/NewContentFront';
+                                          </THEN>
+                                          <ELSE>
+                                            obj.form.pagename.value = '<CSVAR NAME="Variables.pagename"/>';
+                                          </ELSE>
+                                          </IF>
+                                          <![CDATA[	
+                                          document.forms[0].submit();
+                                        }
+                                        ]]>
+                                        function PickAssetPopup_<STRING.STREAM VALUE="Variables.currentUniqueID"/>() {
+                                          OpenPickAssetPopup('<ICS.RESOLVEVARIABLES NAME="$(Variables.url_$(Variables.currentUniqueID))" DELIMITED="true"/>', GetBannerHistory());
+                                        }
+                                  </script>
+                                  <A HREF="#" ONCLICK="PickAssetPopup_Variables.currentUniqueID(); return false;" TARGET="_blank" REPLACEALL="Variables.currentUniqueID">
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Browse"/></CALLELEMENT></A>				  
+								</ELSE>
+							</IF>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/AssetlistTable"/>
+						</td>
+					</tr>
+					<if COND="IsVariable.haveassetlist=true">
+						<then>
+							<if COND="Variables.haveassetlist=true">
+								<then>
+									<tr>
+										<td>
+											<img height="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="9" REPLACEALL="Variables.cs_imagedir"/>
+										</td>
+									</tr>
+								</then>
+							</if>
+						</then>
+					</if>
+				</then>
+				<else>
+					<!--here when constraint type is value-->						
+					<tr>
+						<td width="15"><img height="1" width="15" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+						<td><STRING.STREAM VALUE="Variables.DRdescription"/></td>
+						<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+						<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+						<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+						<!--What happens here depends on the type-->
+						<calculator.go VALUE="Variables.DRlength 2 LT" VARNAME="calcresult"/>
+						<if COND="Variables.calcresult=1">
+							<then>
+								<setvar NAME="DRlength" VALUE="255"/>
+							</then>
+						</if>
+						<calculator.go VALUE="Variables.DRlength 10 GT" VARNAME="calcresult"/>
+						<if COND="Variables.calcresult=1">
+							<then>
+								<setvar NAME="showlength" VALUE="10"/>
+							</then>
+							<else>
+								<setvar NAME="showlength" VALUE="Variables.DRlength"/>
+							</else>
+						</if>										
+						<if COND="Variables.DRtype!=string">
+							<then>
+								<if COND="Variables.DRtype=boolean">
+									<then>
+										<td align="left">
+											<select name="Variables.CNum-Counters.XscValue" size="1" REPLACEALL="Variables.CNum,Counters.X">
+												<if COND="Variables.HRvalue=false">
+													<then>
+														<option value="true"/><XLAT.STREAM KEY="dvin/AT/Common/true"/>
+														<option value="false" selected=""/><XLAT.STREAM KEY="dvin/AT/Common/false"/>
+													</then>
+													<else>
+														<option value="true" selected=""/><XLAT.STREAM KEY="dvin/AT/Common/true"/>
+														<option value="false"/><XLAT.STREAM KEY="dvin/AT/Common/false"/>
+													</else>
+												</if>
+											</select>
+										</td>
+									</then>
+									<else>
+										<if COND="Variables.DRtype=timestamp">
+											<then>
+												<INPUT TYPE="HIDDEN" NAME="Variables.CNum-Counters.XscValue" VALUE="timestamptype" REPLACEALL="Variables.CNum,Counters.X"/>
+												<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/DisplayTimeStamp">
+													<argument NAME="ourTime1" VALUE="Variables.HRvalue"/>
+													<argument NAME="tz1" VALUE="Variables.HRvalueTZ"/>
+													<argument NAME="CNum" VALUE="Variables.CNum"/>
+													<argument NAME="X" VALUE="Counters.X"/>
+													<argument NAME="startonly" VALUE="true"/>
+												</callelement>
+											</then>
+											<else>
+												<if COND="Variables.DRconstrainttype=enum">
+													<then>
+														<td align="left">
+															<select name="Variables.CNum-Counters.XscValue" size="1" REPLACEALL="Variables.CNum,Counters.X">
+																<loop LIST="DRValuesList">
+																	<if COND="Variables.HRvalue=DRValuesList.value">
+																		<then>
+																			<option value="DRValuesList.value" selected="" REPLACEALL="DRValuesList.value"/><STRING.STREAM VALUE="DRValuesList.value"/>
+																		</then>
+																		<else>
+																			<option value="DRValuesList.value" REPLACEALL="DRValuesList.value"/><STRING.STREAM VALUE="DRValuesList.value"/>
+																		</else>
+																	</if>
+																</loop>
+															</select>
+														</td>
+													</then>
+													<else>											
+														<calculator.go VALUE="Variables.DRlength 2 LT" VARNAME="calcresult"/>
+														<if COND="Variables.calcresult=1">
+															<then>
+																<setvar NAME="DRlength" VALUE="255"/>
+															</then>
+														</if>
+														<calculator.go VALUE="Variables.DRlength 10 GT" VARNAME="calcresult"/>
+														<if COND="Variables.calcresult=1">
+															<then>
+																<setvar NAME="showlength" VALUE="10"/>
+															</then>
+															<else>
+																<setvar NAME="showlength" VALUE="Variables.DRlength"/>
+															</else>
+														</if>										
+														<td align="left"><nobr><input type="text" name="Variables.CNum-Counters.XscValue" size="Variables.showlength" maxlength="Variables.DRlength" VALUE="Variables.HRvalue" REPLACEALL="Variables.CNum,Counters.X,Variables.DRlength,Variables.showlength,Variables.HRvalue"/></nobr></td>
+													</else>
+												</if>
+											</else>
+										</if>
+									</else>
+								</if>
+							</then>
+							<else>
+								<if COND="Variables.DRconstrainttype=enum">
+									<then>
+										<td align="left">
+											<select name="Variables.CNum-Counters.XscValue" size="1" REPLACEALL="Variables.CNum,Counters.X">
+												<loop LIST="DRValuesList">
+													<if COND="Variables.HRvalue=DRValuesList.value">
+														<then>
+															<option value="DRValuesList.value" selected="" REPLACEALL="DRValuesList.value"/><STRING.STREAM VALUE="DRValuesList.value"/>
+														</then>
+														<else>
+															<option value="DRValuesList.value" REPLACEALL="DRValuesList.value"/><STRING.STREAM VALUE="DRValuesList.value"/>
+														</else>
+													</if>
+												</loop>
+											</select>
+										</td>
+									</then>
+									<else>
+										<td align="left"><nobr><input type="text" name="Variables.CNum-Counters.XscValue" size="Variables.showlength" maxlength="Variables.DRlength" VALUE="Variables.HRvalue" REPLACEALL="Variables.CNum,Counters.X,Variables.HRvalue,Variables.DRlength,Variables.showlength"/></nobr></td>
+									</else>
+								</if>
+							</else>
+						</if>
+					</tr>
+				</else>
+			</if>
+		</table>
+	</td>
+</tr>
+</FTCS> 

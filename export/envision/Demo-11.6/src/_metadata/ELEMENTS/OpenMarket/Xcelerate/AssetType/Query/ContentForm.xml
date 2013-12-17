@@ -1,0 +1,437 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!--
+$Logfile: /VerticalApps/XcelerateD/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Query/ContentForm.xml $
+$Revision: 51 $
+$Modtime: 7/08/04 11:16a $
+-->
+
+<!--
+- Confidential and Proprietary Information of Open Market, Inc.
+-					All Rights Reserved.
+-
+- DESCRIPTION
+-    Present a form to create or modify an Page.
+-->
+<!--
+ [2007-09-11 KGF]
+ * added XSS scripting fixes (adapted from 6.3 fixes); search for isCleanString
+ * changed definitions of 'obj' to just forms[0] (not .elements[0])
+ [2008-02-22 KGF]
+ * Further XSS fixes: encoding special HTML chars in form fields
+-->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/FormatDate" />
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/ValidateInputForXSS" />
+<CALLELEMENT  NAME="OpenMarket/Gator/Scripts/SetDirtyState"/>
+<SCRIPT LANGUAGE="JavaScript">
+
+<![CDATA[
+var obj = document.forms[0];
+function SetCancelFlag () {
+	if(confirm("]]><XLAT.STREAM KEY="dvin/Common/CancelClicked" ESCAPE="true" ENCODE="false"/><![CDATA[")){
+		obj.elements['upcommand'].value="cancel";
+		obj.submit();
+		return false;
+	}
+}
+//This function enables/disables the query input fields (textbox for xml/textarea for sql) 
+//depending on selection of radiobox for query input-type(xml/sql) selection
+function switchRequiredQueryType(focusInput,deFocusInput){
+	obj.elements[focusInput].disabled=false;
+	obj.elements[deFocusInput].disabled=true;
+}
+
+function getAssetName()
+{
+	return obj.elements['Query:name'].value;
+}
+
+function submitForm()
+{
+	return checkfields();
+}
+
+function checkfields()
+{
+	var isclean = true;
+	if (typeof(window.top.isCleanString) != 'undefined')
+		isclean = window.top.isCleanString(obj.elements['Query:name'].value);
+	else if (window.opener != null && window.opener.top != null && typeof(window.opener.top.isCleanString) != 'undefined')
+		isclean = window.opener.top.isCleanString(obj.elements['Query:name'].value);
+	if (!isclean) {
+		]]>
+		alert("<XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/ApostropheNotAllowed" ESCAPE="true" ENCODE="false"/>");
+		<![CDATA[
+		obj.elements['Query:name'].focus();
+		return false;
+	}
+	if ( (obj.elements['Query:name'].value.length == 0) ||
+			(obj.elements['Query:name'].value.match(/^[\s]/) != null) ) {
+
+	//Here means something is wrong, let us figure out what
+
+		if (obj.elements['Query:name'].value.length == 0) {
+			]]>
+			alert("<XLAT.STREAM KEY="dvin/UI/Error/specifyauniquenameforthisQuery" ESCAPE="true" ENCODE="false"/>");
+			<![CDATA[
+
+		}
+
+		if ( obj.elements['Query:name'].value.match(/^[\s]/) != null ) {
+			]]>
+			alert("<XLAT.STREAM KEY="dvin/UI/Error/nameQuerynotstartwithaspace" ESCAPE="true" ENCODE="false"/>");
+			<![CDATA[
+		}
+		obj.elements['Query:name'].focus();
+		return false;
+	}
+	if(obj.elements['Query:type'][0].checked==true){
+			if (obj.elements['Query:sqlquery'].value.length == 0) {
+				]]>
+				alert("<XLAT.STREAM KEY="dvin/UI/Error/specifysqlqueryforthisQuery" ESCAPE="true" ENCODE="false"/>");
+				<![CDATA[
+				obj.elements['Query:sqlquery'].focus();
+				return false;
+			}
+	
+	}else if(obj.elements['Query:type'][1].checked==true){
+		if ((obj.elements['Query:element'].value.length == 0) ||
+			(obj.elements['Query:element'].value.match(/[\s]/) != null) ) {
+			
+			if (obj.elements['Query:element'].value.length == 0 ) {
+				]]>
+				alert("<XLAT.STREAM KEY="dvin/UI/Error/specifyelementnameforthisQuery" ESCAPE="true" ENCODE="false"/>");
+				<![CDATA[
+	
+			}
+	
+			if ( obj.elements['Query:element'].value.match(/[\s]/) != null ) {
+				]]>
+				alert("<XLAT.STREAM KEY="dvin/UI/Error/elementnamecannotcontainwhitespace" ESCAPE="true" ENCODE="false"/>");
+				<![CDATA[
+			}
+			obj.elements['Query:element'].focus();
+			return false;
+		}
+	}else{
+		return false;
+	}
+	
+	if(!checkStartEndDateValidity()) {return false;}
+	obj.submit();
+	return false;
+}
+]]>
+</SCRIPT>
+
+<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at"/>
+<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description"/>
+<!-- standard fields -->
+<input TYPE="hidden" NAME="FieldsOnForm" VALUE="name,description,template,type,subtype,element,sqlquery,sequery,category,Dimension,Dimension-parent,startdate,enddate"/>
+<INPUT TYPE="hidden" NAME="upcommand" VALUE="submit"/>
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+	<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
+</CALLELEMENT>
+
+<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+	<!-- Query page title w/ image name -->
+	<tr>
+		<td><span class="title-text"><STRING.STREAM VARIABLE="at:description"/>: </span><span class="title-value-text"><STRING.STREAM VARIABLE="ContentDetails:name"/></span></td>
+		<td></td>
+	</tr>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+		<argument NAME="SpaceBelow" VALUE="No"/>
+	</callelement>
+
+
+	<!-- Query editing form -->
+
+	<tr>
+		<td><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+
+		<TR>
+		<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/Name"/>:</td>
+		<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+
+
+  		 <PROPERTY.GET PARAM="xcelerate.asset.sizeofnamefield" INIFILE="futuretense_xcel.ini" VARNAME="sizeofnamefield"/>
+		<td class="form-inset">  
+			<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+				<argument NAME="inputName" VALUE="Query:name"/>
+				<argument NAME="inputValue" VALUE="Variables.ContentDetails:name"/>
+				<argument NAME="inputSize" VALUE="32"/>
+				<argument NAME="inputMaxlength" VALUE="Variables.sizeofnamefield"/>
+			</callelement>
+		</td>
+		</TR>
+
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		<tr>
+
+
+			<td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Description"/>:</td>
+			<td></td>
+			<td class="form-inset">
+				<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+					<argument NAME="inputName" VALUE="Query:description"/>
+					<argument NAME="inputValue" VALUE="Variables.ContentDetails:description"/>
+					<argument NAME="inputSize" VALUE="32"/>
+					<argument NAME="inputMaxlength" VALUE="128"/>
+				</callelement>
+			</td>
+		</tr>
+
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		<tr>
+			<td class="form-label-text">
+	          <span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/AT/Resultofquery"/>:
+	      </td>
+	 		<td></td>
+			<td class="form-inset">
+				<callelement NAME="OpenMarket/Xcelerate/Actions/Util/MakeSubtypeList">
+					<argument NAME="Prefix" VALUE="Variables.AssetType"/>
+					<argument NAME="fieldvalue" VALUE="Variables.ContentDetails:subtype"/>
+					<argument NAME="AssetType" VALUE="Variables.AssetType"/>
+				</callelement></td>
+		</tr>
+
+		<XLAT.LOOKUP KEY="dvin/UI/Template" VARNAME="label"/>
+		<callelement NAME="OpenMarket/Xcelerate/Actions/Util/ShowTemplatesIfAny">
+			<argument NAME="Prefix" VALUE="Query"/>
+			<argument NAME="label"  VALUE="Variables.label:"/>
+		</callelement>
+
+
+		<IF COND="Variables.updatetype!=setformdefaults">
+		<THEN>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/ID"/>:</td>
+				<td></td>
+				<td class="form-inset"><span class="disabledEditText"><STRING.STREAM VARIABLE="id"/></span></td>
+			</tr>
+		</THEN>
+		</IF>
+
+		<setvar NAME="assettype" VALUE="Query"/>
+		<selectto LIST="Category" FROM="Category" WHERE="assettype"/>
+		<IF COND="Category.#numRows!=0">
+		<THEN>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/UI/Admin/Category"/>:</td>
+				<td></td>
+				<td class="form-inset">
+					<callelement NAME="OpenMarket/Xcelerate/Actions/Util/MakeCategoryList">
+						<argument NAME="Prefix" VALUE="Query"/>
+					</callelement></td>
+			</tr>
+		</THEN>
+		</IF>
+		<!--Call start date and end date for site preview-->
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/form/AssetTypeStartEndDate">
+			<argument NAME="startDateFieldName" VALUE="Query:startdate"/>
+			<argument NAME="endDateFieldName"  VALUE="Query:enddate"/>
+		</callelement>
+		<!--End site preview dates -->
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Dimension/ShowDimensionForm"/>
+		
+	
+<!-- SQl Query -->
+	<IF COND="Variables.ContentDetails:type=Variables.empty">
+	<THEN>
+		<SETVAR NAME="ContentDetails:type" VALUE="sql"/>
+	</THEN>
+	</IF>
+   <CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+   <TR>
+	    <TD class="form-label-text">
+				<span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/AT/QueryType"/>:
+		</TD>
+		<TD></TD>
+		<TD class="form-inset">
+				<XLAT.STREAM KEY="dvin/Common/AT/QueryTypeDescription"/>
+		</TD>
+	</TR>
+	<tr><td colspan="3">&nbsp;</td></tr>
+	<tr>
+	<td></td>
+	<td></td>
+	<td>
+	<table>
+	   <TR>
+		    <TD >
+			    <span class="form-inset">
+			    <IF COND="Variables.ContentDetails:type=sql">
+			    <THEN>
+				    	<INPUT TYPE="radio" NAME="Query:type" VALUE="sql" CHECKED="true" onclick="switchRequiredQueryType('Query:sqlquery','Query:element')"/>
+			    </THEN>
+			    <ELSE>
+				    	<INPUT TYPE="radio" NAME="Query:type" VALUE="sql" onclick="switchRequiredQueryType('Query:sqlquery','Query:element')"/>
+			    </ELSE>
+			    </IF>
+			     <XLAT.STREAM KEY="dvin/Common/AT/Database"/>:
+		     </span>
+	    </TD>
+		<TD></TD>
+       <TD>
+	           <span class="form-inset">
+               <XLAT.STREAM KEY="dvin/Common/AT/SQLquery"/>: 
+           </span><BR/>
+	           <IF COND="Variables.ContentDetails:type=sql">
+	           <THEN>
+					<ASSET.GET NAME="theCurrentAsset" FIELD="sqlquery" OUTPUT="sqlquery"/>
+					<callelement name="OpenMarket/Gator/AttributeTypes/CommonTextArea">
+						<argument name="areaName" value='Query:sqlquery'/>
+						<argument name="areaValue" value='Variables.sqlquery'/>
+						<argument name="areaRows" value='15'/>
+						<argument name="areaCols" value='60'/>
+						<argument name="areaWrap" value='VIRTUAL'/>
+					</callelement>
+				</THEN>
+					<ELSE>
+			            <TEXTAREA NAME="Query:sqlquery" COLS="60" ROWS="15" WRAP="VIRTUAL" disabled="true" />
+					</ELSE>
+				</IF>
+       </TD>
+   </TR>
+	
+
+<!--Editing SE query-->
+	 	<!-- Load the search engine specific strings -->
+<!-- skip this section 
+	<IF COND="IsVariable.showSEQuery=true">
+	<THEN>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seDescription"/>
+	  <TR>
+		    <TD>
+			    <span class="form-label-text">
+			    <IF COND="Variables.ContentDetails:type=se">
+			    <THEN>
+			    	<INPUT TYPE="radio" NAME="Query:type" VALUE="se" CHECKED="true"/>
+			    </THEN>
+			    <ELSE>
+			    	<INPUT TYPE="radio" NAME="Query:type" VALUE="se"/>
+			    </ELSE>
+			    </IF>
+			    <CSVAR NAME="Variables.seDescription"/> Query:
+			    </span>
+			 </TD>
+			<TD></TD>
+	       <TD>
+	           <span class="form-label-text">
+	     			<CSVAR NAME="Variables.seNickname"/> Query: 
+	           </span><BR/>
+	            <TEXTAREA NAME="Query:sequery" COLS="60" ROWS="4" WRAP="VIRTUAL">
+	              <IF COND="Variables.ContentDetails:type=se">
+		           <THEN>
+						<ASSET.STREAM NAME="theCurrentAsset" FIELD="sequery" RESOLVE="false"/>
+						</THEN>
+						</IF>
+					</TEXTAREA>
+	       </TD>
+	   </TR>
+	   <TR>
+	   	<TD></TD>
+			<TD></TD>
+	       <TD>
+	           <span class="form-label-text">
+	               SQL Query: 
+	           </span><BR/>
+	       		<TEXTAREA NAME="Query:sqlquery" COLS="60" ROWS="4" WRAP="VIRTUAL">
+	       		  <IF COND="Variables.ContentDetails:type=se">
+		           <THEN>
+						<ASSET.STREAM NAME="theCurrentAsset" FIELD="sqlquery" RESOLVE="false"/>
+						</THEN>
+						</IF>
+					</TEXTAREA>
+	       </TD>
+	   </TR>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	</THEN>
+	</IF>
+-->
+
+
+	    <!--Editing Element query-->
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<TR>
+	    <TD>
+			    <span class="form-inset">
+		    <IF COND="Variables.ContentDetails:type=xml">
+		    <THEN>
+			    	<INPUT TYPE="radio" NAME="Query:type" VALUE="xml" CHECKED="true" onclick="switchRequiredQueryType('Query:element','Query:sqlquery')"/>
+		    </THEN>
+		    <ELSE>
+			    	<INPUT TYPE="radio" NAME="Query:type" VALUE="xml" onclick="switchRequiredQueryType('Query:element','Query:sqlquery')"/>
+		    </ELSE>
+		    </IF>
+		    <XLAT.STREAM KEY="dvin/Common/AT/Element"/>:
+		    </span>
+	    </TD>
+	   	<TD></TD>
+       <TD>
+	           <span class="form-inset">
+               <XLAT.STREAM KEY="dvin/Common/AT/Elementname"/>: 
+           </span><BR/>
+			    <IF COND="Variables.ContentDetails:type=xml">
+			    <THEN>
+					<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+						<argument NAME="inputName" VALUE="Query:element"/>
+						<argument NAME="inputValue" VALUE="Variables.ContentDetails:element"/>
+						<argument NAME="inputSize" VALUE="32"/>
+						<argument NAME="inputMaxlength" VALUE="128"/>
+					</callelement>
+		 		</THEN>
+		 		<ELSE>
+		 			<input TYPE="TEXT" NAME="Query:element" SIZE="32" MAXLENGTH="128" VALUE="Variables.ContentDetails:element" REPLACEALL="Variables.ContentDetails:element" disabled="true"/>
+		 		</ELSE>
+		 		</IF>
+       </TD>
+   </TR>
+	</table>
+	</td>
+	</tr>
+
+     <ASSOCNAMEDMANAGER.LIST  LISTVARNAME="associations" TYPE="Variables.AssetType" SUBTYPE="Variables.ContentDetails:subtype"/>
+      <IF COND="associations.#numRows!=0">
+		<THEN>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormTypeAhead"/>											
+		</THEN>
+		</IF>
+
+	
+			<IF COND="Variables.updatetype!=setformdefaults">
+			<THEN>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Created"/>:</td>
+				<td></td>
+				<td class="form-inset"><span class="disabledEditText">
+					<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:createddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:createddate"/>
+					<XLAT.STREAM KEY="dvin/UI/ContentDetailscreateddatebycreatedby"/></span>
+				</td>
+			</tr>
+			
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Modified"/>:</td>
+				<td></td>
+				<td class="form-inset"><span class="disabledEditText">
+				<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:updateddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:updateddate"/>
+				<XLAT.STREAM KEY="dvin/UI/ContentDetailsupdateddatebyupdatedby"/></span></td>
+			</tr>
+			</THEN>
+			</IF>
+				
+</TABLE><!--end of body--></td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+</table>
+
+
+</FTCS>

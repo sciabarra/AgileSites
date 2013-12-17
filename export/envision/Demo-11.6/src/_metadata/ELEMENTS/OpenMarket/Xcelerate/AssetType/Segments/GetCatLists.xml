@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/GetCatLists
+--
+-- INPUT
+--
+-- OUTPUT
+--	catList of Scalar categories
+--  catHList of History categories
+-->
+
+<visitordata.getscalarattributecategorynames LISTVARNAME="catList"/>
+<if COND="Variables.errno!=0">
+	<then>
+		<XLAT.STREAM KEY="dvin/AT/Segments/getscalarattrcategorynameserror" errno="Variables.errno" errdetail1="Variables.errdetail1" EVALALL="false"/>
+	</then>
+</if>
+<visitordata.gethistoryattributecategorynames LISTVARNAME="catHList"/>
+<if COND="Variables.errno!=0">
+	<then>
+		<XLAT.STREAM KEY="dvin/AT/Segments/gethistoryattrcategorynameserror" errno="Variables.errno" errdetail1="Variables.errdetail1" EVALALL="false"/>
+	</then>
+</if>
+
+</FTCS> 

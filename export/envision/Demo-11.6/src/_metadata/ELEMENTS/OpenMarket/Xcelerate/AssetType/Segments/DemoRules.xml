@@ -1,0 +1,347 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/DemoRules
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+<setvar NAME="sRuleType" VALUE="scalar"/>
+<INPUT TYPE="HIDDEN" NAME="sRuleType" VALUE="Variables.sRuleType" REPLACEALL="Variables.sRuleType"/>
+<STRING.ENCODE VARIABLE="SegmentsArg2" VARNAME="SegmentsArg2"/>
+<INPUT TYPE="HIDDEN" NAME="sVarName" VALUE="Variables.SegmentsArg2" REPLACEALL="Variables.SegmentsArg2"/>
+<STRING.ENCODE VARIABLE="SegmentsArg3" VARNAME="SegmentsArg3"/>
+<INPUT TYPE="HIDDEN" NAME="sVarAttid" VALUE="Variables.SegmentsArg3" REPLACEALL="Variables.SegmentsArg3"/>
+<scalardatums.getassetid NAME="scalarMgr" ID="Variables.SegmentsArg3" VARNAME="ourAssetId" SITE="SessionVariables.pubid"/>
+<if COND="IsVariable.ourAssetId=true">
+  <then>
+    <INPUT TYPE="HIDDEN" NAME="sVarAssetid" VALUE="Variables.ourAssetId" REPLACEALL="Variables.ourAssetId"/>
+  </then>
+</if>
+<setvar NAME="sRuleOp" VALUE="Variables.empty"/>
+<setvar NAME="sVarName" VALUE="Variables.empty"/>
+<setvar NAME="sCompareOp" VALUE="Variables.empty"/>
+<setvar NAME="sValue1" VALUE="Variables.empty"/>
+<setvar NAME="sValue2" VALUE="Variables.empty"/>
+
+<XLAT.LOOKUP KEY="dvin/AT/Segments/Pickcriteria" VARNAME="noresults"/>
+<if COND="IsVariable.SegmentsArg2=true">
+  <then>
+    <callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/GetThisFormsRule"/>
+    <if COND="Variables.segerr=0">
+      <then>
+        <!--see if ruletype matches-->
+        <nvobject.getvalue NAME="nvOurCell" VALUENAME="RULETYPE" VARNAME="oCsRuleType"/>
+        <if COND="Variables.oCsRuleType=Variables.sRuleType">
+          <then>
+            <!--see if this rule matches-->
+            <nvobject.getvalue NAME="nvOurCell" VALUENAME="RULECATEGORY" VARNAME="OurColSegmentsRuleScreen"/>
+            <if COND="Variables.OurColSegmentsRuleScreen=Variables.SegmentsRuleScreen">
+              <then>
+                <nvobject.getvalue NAME="nvOurCell" VALUENAME="VARNAME" VARNAME="sVarAttid"/>
+                <if COND="Variables.sVarAttid=Variables.SegmentsArg3">
+                  <then>
+                    <nvobject.getvalue NAME="nvOurCell" VALUENAME="VARDESC" VARNAME="sVarName"/>
+                    <if COND="Variables.sVarName=Variables.SegmentsArg2">
+                      <then>
+                        <!--Matches, so pull out some preloaded information-->
+                        <nvobject.getvalue NAME="nvOurCell" VALUENAME="RULEOP" VARNAME="sRuleOp"/>
+                        <nvobject.getvalue NAME="nvOurCell" VALUENAME="COMPAREOP" VARNAME="sCompareOp"/>
+                        <nvobject.getvalue NAME="nvOurCell" VALUENAME="VALUE" VARNAME="sValue1"/>
+                        <nvobject.getvalue NAME="nvOurCell" VALUENAME="VALTZ" VARNAME="SegmentsStartTimeZone"/>
+                        <if COND="Variables.sCompareOp=bt">
+                          <then>
+                            <nvobject.getvalue NAME="nvOurCell" VALUENAME="HIGHVALUE" VARNAME="sValue2"/>
+                            <nvobject.getvalue NAME="nvOurCell" VALUENAME="HIGHVALTZ" VARNAME="SegmentsEndTimeZone"/>
+                          </then>
+                        </if>
+                      </then>
+                    </if>
+                  </then>
+                </if>
+              </then>					
+            </if>
+          </then>
+        </if>
+      </then>
+    </if>
+    
+    <!--pull out all the data-->
+    <visitordata.getscalarattributedef NAME="myDefObject" ATTRIBUTE="Variables.SegmentsArg3"/>
+    <visitorscalar.getdescription NAME="myDefObject" VARNAME="DRdescription"/>
+    <visitorscalar.getattributecategory NAME="myDefObject" VARNAME="DRcategory"/>
+    <visitorscalar.gettype NAME="myDefObject" VARNAME="DRtype"/>
+    <visitorscalar.getlength NAME="myDefObject" VARNAME="DRlength"/>
+    <visitorscalar.getdefaultvalue NAME="myDefObject" VARNAME="DRdefaultvalue"/>
+    
+    <visitorscalar.getvalueconstraint NAME="myDefObject" VARNAME="myConstraintObject"/>
+    <visitorconstraint.gettype NAME="myConstraintObject" VARNAME="DRconstrainttype"/>
+    <INPUT TYPE="HIDDEN" NAME="DRFconstrainttype" VALUE="Variables.DRconstrainttype" REPLACEALL="Variables.DRconstrainttype"/>
+    
+    <if COND="Variables.DRconstrainttype=enum">
+      <then>
+        <visitorconstraint.getlegalvalues NAME="myConstraintObject" LISTVARNAME="DRValuesList"/>
+      </then>
+    </if>
+    <if COND="Variables.DRconstrainttype=range">
+      <then>
+        <visitorconstraint.getstart NAME="myConstraintObject" VARNAME="DRRangeStart"/>
+        <INPUT TYPE="HIDDEN" NAME="DRFrangestart" VALUE="Variables.DRRangeStart" REPLACEALL="Variables.DRRangeStart"/>
+        <visitorconstraint.getend NAME="myConstraintObject" VARNAME="DRRangeEnd"/>
+        <INPUT TYPE="HIDDEN" NAME="DRFrangeend" VALUE="Variables.DRRangeEnd" REPLACEALL="Variables.DRRangeEnd"/>
+        <INPUT TYPE="HIDDEN" NAME="testvalue" VALUE="Variables.sValue1" REPLACEALL="Variables.sValue1"/>
+      </then>
+    </if>
+       
+    <tr>
+      <td>
+        <table cellpadding="0" cellspacing="0" border="0">
+          <tr>
+          <!--
+            <td width="15"><img height="1" width="15" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+          -->
+            <td align="left">
+              <select name="sRuleOp"  dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+                <if COND="Variables.sRuleOp=exclude">
+                  <then>
+                    <option value="include"/><XLAT.STREAM KEY="dvin/AT/Segments/Include"/>
+                    <option value="exclude" selected=""/><XLAT.STREAM KEY="dvin/AT/Segments/Exclude"/>
+                  </then>
+                  <else>
+                    <option value="include" selected=""/><XLAT.STREAM KEY="dvin/AT/Segments/Include"/>
+                    <option value="exclude"/><XLAT.STREAM KEY="dvin/AT/Segments/Exclude"/>
+                  </else>
+                </if>
+              </select>
+            </td>
+            <td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+            <td>
+			<IF COND="IsVariable.DRdescription=true"> 
+			<THEN> 
+			<STRING.STREAM VALUE="Variables.DRdescription"/>
+			</THEN> 
+			<ELSE><XLAT.STREAM KEY="dvin/UI/Admin/Select" />&nbsp;<STRING.STREAM VALUE="Variables.SegmentsRuleScreen" />&nbsp;<XLAT.STREAM KEY="dvin/AT/Segments/Criteria" />
+			</ELSE>
+			</IF>
+			</td>
+            <td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+            
+            <if COND="Variables.DRtype!=blob">
+              <then>
+                <td align="left">
+                  <if COND="Variables.DRtype=string">
+                    <then>
+                      <select name="sCompareOp"  dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+                        <SETVAR NAME="OptionName" VALUE="sCompareOp"/>
+                        <callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/UglyCompareSelect">
+                          <argument NAME="sCO" VALUE="Variables.sCompareOp"/>
+                          <argument NAME="sTYPE" VALUE="Variables.DRtype"/>
+                        </callelement>
+                      </select>
+                    </then>
+                    <else>
+                      <if COND="Variables.DRtype=boolean">
+                        <then>
+                          is
+                          <INPUT TYPE="HIDDEN" NAME="sCompareOp" VALUE="xxeqxx"/>
+                        </then>
+                        <else>
+                          <select name="sCompareOp"  dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1" onchange="displayTextboxes()">
+                            <SETVAR NAME="OptionName" VALUE="sCompareOp"/>
+                            <callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/UglyCompareSelect">
+                              <argument NAME="sCO" VALUE="Variables.sCompareOp"/>
+                              <argument NAME="sTYPE" VALUE="Variables.DRtype"/>
+                            </callelement>
+                          </select>
+                        </else>
+                      </if>
+                    </else>
+                  </if>
+                </td>
+              </then>
+            </if>
+            
+            <td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+
+<!--What happens here depends on the type-->
+            <calculator.go VALUE="Variables.DRlength 2 LT" VARNAME="calcresult"/>
+            <if COND="Variables.calcresult=1">
+              <then>
+                <setvar NAME="DRlength" VALUE="255"/>
+              </then>
+            </if>
+            <calculator.go VALUE="Variables.DRlength 10 GT" VARNAME="calcresult"/>
+            <if COND="Variables.calcresult=1">
+              <then>
+                <setvar NAME="showlength" VALUE="10"/>
+              </then>
+              <else>
+                <setvar NAME="showlength" VALUE="Variables.DRlength"/>
+              </else>
+            </if>
+            <setvar NAME="STypeName" VALUE="Variables.DRtype"/>				 
+            <if COND="Variables.DRtype!=string">
+              <then>
+                <if COND="Variables.DRtype=blob">
+                  <then>
+                    <td align="left"><XLAT.STREAM KEY="dvin/AT/Segments/Binarytypecannotbecriteria"/></td>
+                  </then>
+                  <else>
+                    <if COND="Variables.DRtype=timestamp">
+                      <then>
+                        <INPUT TYPE="HIDDEN" NAME="sValue1" VALUE="timestamptype"/>
+                        <callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/DisplayTimeStamp">
+                          <argument NAME="startonly" VALUE="false"/>
+                          <argument NAME="ourTime1" VALUE="Variables.sValue1"/>
+                          <argument NAME="tz1" VALUE="Variables.SegmentsStartTimeZone"/>
+                          <argument NAME="ourTime2" VALUE="Variables.sValue2"/>
+                          <argument NAME="tz2" VALUE="Variables.SegmentsEndTimeZone"/>
+                          <argument NAME="CNum" VALUE="0"/>
+                          <argument NAME="X" VALUE="0"/>
+                        </callelement>
+                      </then>
+                      <else>
+                        <if COND="Variables.DRtype=boolean">
+                          <then>
+                            <td align="left">
+                              <select name="sValue1"  dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+                                <if COND="Variables.sValue1=false">
+                                  <then>
+                                    <option value="true"/><XLAT.STREAM KEY="dvin/AT/Common/true"/>
+                                    <option value="false" selected=""/><XLAT.STREAM KEY="dvin/AT/Common/false"/>
+                                  </then>
+                                  <else>
+                                    <option value="true" selected=""/><XLAT.STREAM KEY="dvin/AT/Common/true"/>
+                                    <option value="false"/><XLAT.STREAM KEY="dvin/AT/Common/false"/>
+                                  </else>
+                                </if>
+                              </select>
+                            </td>
+                          </then>
+                          <else>
+                            <if COND="Variables.DRconstrainttype=enum">
+                              <then>
+                                <td align="left">
+                                  <select name="sValue1"  dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+                                    <loop LIST="DRValuesList">
+                                      <if COND="Variables.sValue1=DRValuesList.value">
+                                        <then>
+                                          <option value="DRValuesList.value" REPLACEALL="DRValuesList.value" selected=""/><STRING.STREAM VALUE="DRValuesList.value"/>
+                                        </then>
+                                        <else>
+                                          <option value="DRValuesList.value" REPLACEALL="DRValuesList.value"/><STRING.STREAM VALUE="DRValuesList.value"/>
+                                        </else>
+                                      </if>
+                                    </loop>
+                                  </select>
+                                  -
+                                  <select name="sValue2"   dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+                                    <loop LIST="DRValuesList">
+                                      <if COND="Variables.sValue2=DRValuesList.value">
+                                        <then>
+                                          <option value="DRValuesList.value" REPLACEALL="DRValuesList.value" selected=""/><STRING.STREAM VALUE="DRValuesList.value"/>
+                                        </then>
+                                        <else>
+                                          <option value="DRValuesList.value" REPLACEALL="DRValuesList.value"/><STRING.STREAM VALUE="DRValuesList.value"/>
+                                        </else>
+                                      </if>
+                                    </loop>
+                                  </select>
+                                </td>
+                              </then>
+                              <else>
+                                <!--The two boxes stuff-->
+								<STRING.ENCODE VARIABLE="sValue1" VARNAME="sValue1Enc"/>
+                                <td align="left"><nobr>
+								<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+									<argument NAME="inputName" VALUE="sValue1"/>
+									<argument NAME="inputValue" VALUE="Variables.sValue1Enc"/>
+									<argument NAME="inputSize" VALUE="Variables.showlength"/>
+									<argument NAME="inputMaxlength" VALUE="Variables.DRlength"/>
+								</callelement>
+								<if COND="Variables.sValue2=Variables.empty">
+									<then><span id="sInputField2" style="visibility:hidden"> - 
+										<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+											<argument NAME="inputName" VALUE="sValue2"/>
+											<argument NAME="inputValue" VALUE="Variables.sValue2"/>
+											<argument NAME="inputSize" VALUE="Variables.showlength"/>
+											<argument NAME="inputMaxlength" VALUE="Variables.DRlength"/>
+										</callelement>
+									
+									</span></then>
+									<else><span id="sInputField2" style="visibility:visible"> - 
+										<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+											<argument NAME="inputName" VALUE="sValue2"/>
+											<argument NAME="inputValue" VALUE="Variables.sValue2"/>
+											<argument NAME="inputSize" VALUE="Variables.showlength"/>
+											<argument NAME="inputMaxlength" VALUE="Variables.DRlength"/>
+										</callelement>
+									</span></else>
+								</if>
+								</nobr></td>
+                              </else>
+                            </if>
+                            <setvar NAME="SValueName" VALUE="Variables.SValueName*sValue1!"/><setvar NAME="SValueName" VALUE="Variables.SValueName*sValue2!"/>															
+                          </else>
+                        </if>
+                      </else>
+                    </if>
+                  </else>
+                </if>
+              </then>
+              <else>
+                <if COND="Variables.DRconstrainttype=enum">
+                  <then>
+                    <td align="left">
+                      <select name="sValue1"  dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+                        <loop LIST="DRValuesList">
+                          <if COND="Variables.sValue1=DRValuesList.value">
+                            <then>
+                              <option value="DRValuesList.value" REPLACEALL="DRValuesList.value" selected=""/><STRING.STREAM VALUE="DRValuesList.value"/>
+                            </then>
+                            <else>
+                              <option value="DRValuesList.value" REPLACEALL="DRValuesList.value"/><STRING.STREAM VALUE="DRValuesList.value"/>
+                            </else>
+                          </if>
+                        </loop>
+                      </select>
+                    </td>
+                  </then>
+                  <else>
+					<STRING.ENCODE VARIABLE="sValue1" VARNAME="sValue1Enc"/>
+                    <td align="left"><nobr>
+						<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+							<argument NAME="inputName" VALUE="sValue1"/>
+							<argument NAME="inputValue" VALUE="Variables.sValue1Enc"/>
+							<argument NAME="inputSize" VALUE="Variables.showlength"/>
+							<argument NAME="inputMaxlength" VALUE="Variables.DRlength"/>
+						</callelement>
+					</nobr><setvar NAME="SValueName" VALUE="Variables.SValueName*sValue1!"/></td>
+                  </else>
+                </if>
+              </else>
+            </if>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </then>
+  <else>
+    <tr>
+      <td>
+        <table cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="15"><img height="1" width="15" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+            <td align="left">
+              <STRING.STREAM VALUE="Variables.noresults"/>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </else>
+</if>
+</FTCS> 

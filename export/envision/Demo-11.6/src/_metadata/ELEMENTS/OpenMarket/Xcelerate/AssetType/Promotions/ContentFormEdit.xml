@@ -1,0 +1,398 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateD/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Promotions/ContentFormEdit.xml $ 
+$Revision: 53 $ 
+$Modtime: 6/17/04 5:33p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- ContentDetails.xml
+-
+- DESCRIPTION
+-	
+-
+- HISTORY 
+    [2007-09-1x KG]
+    * XSS fixes (adapted from 6.3 fixes):
+      * isCleanString function usage
+      * CSVAR -> STRING.STREAM
+    * changed definitions of 'obj' to just forms[0] (not .elements[0])
+    * added CDATA tags in javascript where appropriate.
+   [2007-10-09 KG]
+   * XSS revision: minimized set of restricted characters.
+-->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/FormatDate" />
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/ValidateInputForXSS" />
+<SCRIPT LANGUAGE="JavaScript">
+<![CDATA[
+var obj = document.forms[0];
+function checkfields()
+{
+	if (obj.elements['Promotions:name'].value=="")
+	{
+		alert("]]><XLAT.STREAM KEY="dvin/UI/Error/specifyauniquenameforthisPromotion" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		obj.elements['Promotions:name'].focus();
+		return false;
+	}
+
+	var isclean = isCleanString(obj.elements['Promotions:name'].value, '<">\'', true);
+	if (!isclean) {
+		alert("]]><XLAT.STREAM KEY="dvin/AT/Common/Apostrophenotallowedinname" ESCAPE="true" ENCODE="false"/><![CDATA[");
+			obj.elements['Promotions:name'].focus();
+		return false;
+	}
+
+	if(!checkStartEndDateValidity()) {return false;}
+	obj.submit();
+	return false;
+}
+
+function getAssetName()
+{
+	return obj.elements['Promotions:name'].value;
+}
+
+function submitForm()
+{
+	return checkfields();
+}
+]]>
+</SCRIPT>
+<!-- form buttons -->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+	<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
+</CALLELEMENT>
+<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+
+
+<!-- Promotion page title with asset name -->
+<if COND="Variables.ThisPage=CopyFront">
+<then>
+  <tr>
+			<td><span class="title-text"><XLAT.STREAM KEY="dvin/AT/Promotions/NoCopyPromotion"/>: </span><span class="title-value-text"><STRING.STREAM VARIABLE="ContentDetails:name"/></span></td>
+	</tr>
+ </then>
+<else>
+		<tr>
+			<td><span class="title-text"><XLAT.STREAM KEY="dvin/AT/Promotions/NoEditPromotion"/>: </span><span class="title-value-text"><STRING.STREAM VARIABLE="ContentDetails:name"/></span></td>
+		</tr>
+</else>
+</if>
+
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+	<argument NAME="SpaceBelow" VALUE="No"/>
+</callelement>
+<XLAT.LOOKUP    KEY="dvin/AT/Promotions/LocaleCurrencySymbol" VARNAME="Dollarsign"/>
+<!-- Promotion attribute inspection form -->
+<tr>
+	<td>
+		<table border="0" cellpadding="0" cellspacing="0" class="width-inner-100">
+		<callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/CheckforQuotes">
+				<argument NAME="Prefix" VALUE="Promotions"/>
+		</callelement>
+		<!--Call start date and end date for site preview-->
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/form/AssetTypeStartEndDate">
+			<argument NAME="startDateFieldName" VALUE="Promotions:startdate"/>
+			<argument NAME="endDateFieldName"  VALUE="Promotions:enddate"/>
+		</callelement>
+		<!--End site preview dates -->
+		
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		<tr>
+			<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/ID"/>:</td>
+			<td></td>
+			<td class="form-inset" colspan="3"><STRING.STREAM VARIABLE="id"/></td>
+		</tr>
+
+		<!-- [Insert conditional to test whether advanced rulesets are used.  
+
+			If they are used, display "contentFormAdvancedRules.xml"; 
+			else, display as shown below.
+			
+		-->
+			
+		<!-- The beginning of Group 2 -->
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		<tr>
+			<td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Promotions/Goals"/>:</td>
+			<td></td>
+			<td colspan="3" class="form-inset">
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/LoadGoalVars"/>
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td valign="middle" >1.</td>
+						<td width="10"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="10" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+						<td valign="top" >
+ 						<setvar NAME="OutputQString" VALUE="Variables.empty"/>                              
+						<SUBSTITUTE STR="Variables.Goal1" WHAT="&#34;" WITH="&#38;quot;" 
+								OUTSTR="OutputQString"/>
+							<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+								<argument NAME="inputName" VALUE="Goal1"/>
+								<argument NAME="inputValue" VALUE="Variables.OutputQString"/>
+								<argument NAME="inputSize" VALUE="52"/>
+								<argument NAME="inputMaxlength" VALUE="128"/>
+							</callelement>
+  					</td>
+					</tr>
+					<tr>
+						<td height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+					</tr>
+					<tr>
+						<td valign="middle">2.</td>
+						<td></td>
+						<td valign="top" >
+						
+ 						<setvar NAME="OutputQString" VALUE="Variables.empty"/>                              
+						<SUBSTITUTE STR="Variables.Goal2" WHAT="&#34;" WITH="&#38;quot;" 
+								OUTSTR="OutputQString"/>
+							<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+								<argument NAME="inputName" VALUE="Goal2"/>
+								<argument NAME="inputValue" VALUE="Variables.OutputQString"/>
+								<argument NAME="inputSize" VALUE="52"/>
+								<argument NAME="inputMaxlength" VALUE="128"/>
+							</callelement>
+						</td>
+					</tr>
+					<tr>
+						<td height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+					</tr>
+					<tr>
+						<td valign="middle">3.</td>
+						<td></td>
+						<td valign="top" >
+  						<setvar NAME="OutputQString" VALUE="Variables.empty"/>                              
+						<SUBSTITUTE STR="Variables.Goal3" WHAT="&#34;" WITH="&#38;quot;" 
+								OUTSTR="OutputQString"/>
+							<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+								<argument NAME="inputName" VALUE="Goal3"/>
+								<argument NAME="inputValue" VALUE="Variables.OutputQString"/>
+								<argument NAME="inputSize" VALUE="52"/>
+								<argument NAME="inputMaxlength" VALUE="128"/>
+							</callelement>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/LoadSegmentInfo"/>
+		<XLAT.LOOKUP KEY="dvin/FlexibleAssets/FlexAssets/Segments" VARNAME="_Segments_" ESCAPE="true"/>
+		<XLAT.LOOKUP KEY="dvin/FlexibleAssets/FlexAssets/Segments" VARNAME="_Segments_ALT"/>
+		<tr>
+			<td valign="top" class="form-label-text"><STRING.STREAM VALUE="Variables._Segments_ALT"/>:</td>
+			<td></td>
+			<td  class="form-inset">
+				<if COND="Variables.SegmentstoApply=all">
+					<then>
+						<XLAT.STREAM KEY="dvin/Common/All"/>
+					</then>
+					<else>
+						<STRING.STREAM VARIABLE="SegmentNameStr"/>
+					</else>
+				</if>
+			</td>
+			<td></td>
+			<td valign="top" align="left">
+			  <XLAT.LOOKUP KEY="dvin/AT/Promotions/Changesegmentsforpromotion" VARNAME="_changesegments_"/>
+				<A HREF="javascript:void(0)" onclick="return Fixpagename('Variables.ThisPage','ContentFormSegments')" onmouseover="window.status='Variables._Segments_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._Segments_,Variables.ThisPage">
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Change"/></CALLELEMENT>
+				</A>
+			</td>
+		</tr>
+
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/LoadDiscProductInfo"/>
+		<tr>
+			<td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Products"/>:</td>
+			<td></td>
+			<td class="form-inset">
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ProductListTable"/>
+			</td>
+			<td></td>
+			<td> </td>
+		
+		<!--
+			<td valign="top" align="left">
+				<A HREF="javascript:void(0)" onclick="return Fixpagename('Variables.ThisPage','ContentFormProducts')" onmouseover="window.status='Products';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables.ThisPage">
+					<img border="0" src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/content/images/change.gif" alt="Change products for this promotion" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale"/>
+				</A>
+			</td>
+			
+ 		-->
+		</tr>
+		
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		<tr>
+			<td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Promotions/DiscountValue"/>:</td>
+			<td></td>
+			<td class="form-inset">
+				<!-- if discount applies to "promoted products", display "[$X or Y%] off the promoted product"
+						else if discount applies to "shopping cart", display "[$X or Y%] off the value of the entire shopping cart"
+					if combination discount applies to "shipping fees" and either "promoted product" or "shopping cart", display <br/> and then "[$X or Y%] off shipping fees"
+						else if simple discount applies only to "shipping fees" and either "promoted product" or "shopping cart", display <br/> and then "[$X or Y%] off shipping fees"
+				-->
+				<if COND="Variables.DiscType=item">
+					<then>
+							 <BEGINS STR="Variables.DiscAmount" WHAT="Variables."/>
+							 <if COND="Variables.errno=1">
+							 <then>
+   					         <XLAT.STREAM KEY="dvin/AT/Promotions/NoItemDiscount"/>
+							 </then>
+							 <else>
+										<if COND="Variables.DiscStyle=percentage">
+										<then>
+												<STRING.STREAM VARIABLE="DiscDescription"/>: <STRING.STREAM VARIABLE="DiscAmount"/> <XLAT.STREAM KEY="dvin/AT/Promotions/Percentoffpromotedproduct"/>
+										</then>
+										<else>
+												<STRING.STREAM VARIABLE="DiscDescription"/>: <XLAT.STREAM KEY="dvin/AT/Promotions/LocaleCurrencyoffpromotedproduct"/>
+										</else>
+										</if>
+								</else>
+ 								</if>
+  					</then>
+					<else>
+					    <XLAT.STREAM KEY="dvin/AT/Promotions/NoItemDiscount"/>
+				  </else>     
+				</if>
+				<if COND="Variables.ShipType=none">
+					<then>
+						<br/>No Shipping discount
+					</then>
+					<else>
+						<if COND="Variables.ShipType=total">
+							<then>
+									<if COND="Variables.ShipStyle=percentage">
+									<then>
+											<br/><STRING.STREAM VARIABLE="ShipDescription"/>:  <STRING.STREAM VARIABLE="ShipAmount"/> <XLAT.STREAM KEY="dvin/AT/Promotions/Percentoffshippingcharges"/>
+									</then>
+									<else>
+ 											<br/><STRING.STREAM VARIABLE="ShipDescription"/>: <XLAT.STREAM KEY="dvin/AT/Promotions/LocaleCurrencyoffshippingcharges"/>
+									</else>
+									</if>
+ 							</then>
+							<else>
+									<if COND="Variables.ShipStyle=percentage">
+									<then>
+										 <br/><STRING.STREAM VARIABLE="ShipDescription"/>: <STRING.STREAM VARIABLE="ShipAmount"/> <XLAT.STREAM KEY="dvin/AT/Promotions/Percentoffshippingcharges"/>
+									</then>
+									<else>
+ 										 <br/><STRING.STREAM VARIABLE="ShipDescription"/>: <XLAT.STREAM KEY="dvin/AT/Promotions/LocaleCurrencyoffshippingcharges"/>
+									</else>
+									</if>
+ 							</else>     
+						</if>
+					</else>
+				</if>
+				<if COND="IsVariable.TXStoreId=true">
+				<then>
+						<br/><XLAT.STREAM KEY="dvin/Util/StoreID"/>: <STRING.STREAM VARIABLE="TXStoreId"/>
+				</then>
+				</if>
+ 	
+			</td>
+			<td></td>
+			<td valign="top" align="left">
+			  <XLAT.LOOKUP KEY="dvin/AT/Promotions/DiscountValue" VARNAME="_DiscValue_" ESCAPE="true"/>
+			  <XLAT.LOOKUP KEY="dvin/AT/Promotions/Changediscountforpromotion" VARNAME="ChangeDisc"/>
+				<A HREF="javascript:void(0)" onclick="return Fixpagename('Variables.ThisPage','ContentFormDiscount')" onmouseover="window.status='Variables._DiscValue_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._DiscValue_,Variables.ThisPage">
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Change"/></CALLELEMENT>
+				</A>
+			</td>
+		</tr>
+
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/SetTimeVars"/>
+
+		<XLAT.LOOKUP KEY="dvin/AT/Promotions/Duration" VARNAME="_Duration_" ESCAPE="true"/>
+		<XLAT.LOOKUP KEY="dvin/AT/Promotions/Duration" VARNAME="_Duration_ALT"/>
+		<tr>
+			<td valign="top" class="form-label-text"><STRING.STREAM VALUE="Variables._Duration_ALT"/>:</td>
+			<td></td>
+			<td class="form-inset">
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td valign="top"><XLAT.STREAM KEY="dvin/AT/Promotions/StartTime"/>:</td>
+						<td width="10"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="10" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+						<td valign="top"><STRING.STREAM VARIABLE="startdatestr"/></td>
+					</tr>					
+					<tr>
+						<td height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+					</tr>
+					<tr>
+						<td valign="top"><XLAT.STREAM KEY="dvin/AT/Promotions/EndTime"/>:</td>
+						<td width="10"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="10" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+						<td valign="top"><STRING.STREAM VARIABLE="enddatestr"/></td>
+					</tr>
+				</table>
+			</td>
+			<td></td>
+			<td valign="top" align="left">
+				<XLAT.LOOKUP KEY="dvin/AT/Promotions/Changedurationforpromotion" VARNAME="_ChangeDur_"/>
+				<A HREF="javascript:void(0)" onclick="return Fixpagename('Variables.ThisPage','ContentFormDuration')" onmouseover="window.status='Variables._Duration_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._Duration_,Variables.ThisPage">
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Change"/></CALLELEMENT>
+				</A>
+			</td>
+		</tr>
+
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		<XLAT.LOOKUP KEY="dvin/AT/Promotions/Display" VARNAME="_Display_" ESCAPE="true"/>
+		<XLAT.LOOKUP KEY="dvin/AT/Promotions/Display" VARNAME="_Display_ALT"/>
+		<tr>
+			<td valign="top" class="form-label-text"><STRING.STREAM VALUE="Variables._Display_ALT"/>:</td>
+			<td></td>
+			<td class="form-inset">
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/OverRideTable">
+					<argument NAME="showX" VALUE="false"/>
+				</callelement>
+			</td>
+			<td></td>
+			<td valign="top" align="left"> 
+			<XLAT.LOOKUP KEY="dvin/AT/Promotions/Changedisplayforpromotion" VARNAME="_ChangeDisp_"/>
+				<A HREF="javascript:void(0)" onclick="return Fixpagename('Variables.ThisPage','ContentFormDisplay')" onmouseover="window.status='Variables._Display_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._Display_,Variables.ThisPage">
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Change"/></CALLELEMENT>
+				</A>
+			</td>
+		</tr>
+		
+
+		<!-- The beginning of Group 3 -->
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+             <tr>
+                <td  valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Created"/>:</td>
+                <td></td>
+                <td class="form-inset">
+                    <DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:createddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:createddate"/>
+                <XLAT.STREAM KEY="dvin/UI/ContentDetailscreateddatebycreatedby"/></td>
+            </tr>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+ 
+             <tr>
+                <td  valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Modified"/>:</td>
+                <td></td>
+                <td class="form-inset">
+                 <DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:updateddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:updateddate"/>
+                 <XLAT.STREAM KEY="dvin/UI/ContentDetailsupdateddatebyupdatedby"/></td>
+            </tr>
+
+		</table>
+		<!-- End of body -->
+	</td>
+</tr>
+
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+
+<tr>
+	<td height="10"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="10" REPLACEALL="Variables.cs_imagedir"/></td>
+</tr>
+</table>
+
+</FTCS>

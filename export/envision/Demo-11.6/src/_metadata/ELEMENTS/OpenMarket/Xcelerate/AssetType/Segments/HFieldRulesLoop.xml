@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/HFieldRulesLoop
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<!--Roll out the "new" rule stuff and then roll out the stuff from the hints-->
+<!--unpack the information here-->
+
+
+<setcounter NAME="L" VALUE="0"/>
+
+<if COND="IsVariable.SegmentsArg3=true">
+	<then>
+		<!--pull out all the data-->
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/GetVisitorConstraintInfo">
+			<argument NAME="thisConstraintField" VALUE="Variables.SegmentsArg3"/>
+		</callelement>
+		<setvar NAME="HRvalue" VALUE="Variables.empty"/>
+		<setvar NAME="numValues" VALUE="1"/> <!--only doing one value per value for now-->
+		<setvar NAME="docall" VALUE="true"/>
+		<!--if we have an assetlist for an assetattr, then this is the "second pass" for this one and so the same list is in the
+			rules-->
+		<if COND="Variables.haveassetlist=true">
+			<then>
+				<if COND="Variables.ConstraintType=assetattr">
+					<then>
+						<setvar NAME="docall" VALUE="false"/>
+					</then>
+				</if>
+			</then>
+		</if>
+		<if COND="Variables.docall=true">
+			<then>			
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/HFieldRules">
+					<argument NAME="CNum" VALUE="Counters.L"/>
+					<argument NAME="thisConstraintField" VALUE="Variables.SegmentsArg3"/>
+				</callelement>
+				<inccounter NAME="L" VALUE="1"/>
+			</then>
+		</if>
+	</then>
+</if>
+
+<!--See if we got some already-->
+<if COND="Variables.haveOurCell=true">
+	<then>
+		<nvobject.getvalue NAME="nvOurCell" VALUENAME="HNUMCONSTR" VARNAME="ConstraintCount"/>
+		<if COND="Variables.ConstraintCount!=0">
+			<then>
+				<setcounter NAME="Y" VALUE="0"/>
+				<loop COUNT="Variables.ConstraintCount">
+					<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/UnpackConstraints">
+						<argument NAME="N" VALUE="Counters.Y"/>
+					</callelement>
+					<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/HFieldRules">
+						<argument NAME="CNum" VALUE="Counters.L"/>
+						<argument NAME="thisConstraintField" VALUE="Variables.thisConstraintField"/>
+					</callelement>
+					<inccounter NAME="L" VALUE="1"/>
+					<inccounter NAME="Y" VALUE="1"/>
+				</loop>
+			</then>
+		</if>
+	</then>
+</if>
+<INPUT TYPE="HIDDEN" NAME="ConstraintCount" VALUE="Counters.L" REPLACEALL="Counters.L"/>
+</FTCS> 

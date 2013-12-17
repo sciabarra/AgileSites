@@ -11,7 +11,7 @@
         <description>FW_Application</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\Sites\11.1.1.8.0\Shared\Storage\AssetType\FW_Application.xml</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\Sites\11.1.1.8.0\Shared\Storage\AssetType\FW_Application,2.xml</urldescriptorspec>
         <urldescriptordata>PCEtLSB0aGlzIGlzIHRoZSBkZXNjcmlwdGlvbiBvZiB0aGUgQXBwbGljYXRpb24gYXNzZXQgLS0+
 DQoNCjxBU1NFVCBOQU1FPSJGV19BcHBsaWNhdGlvbiIgREVTQ1JJUFRJT049IkZXX0FwcGxpY2F0
 aW9uIiBNQVJLRVJURVhUPSIqIiBQUk9DRVNTT1I9IjQuMCIgREVGRElSPSJjOlxGdXR1cmVUZW5z
@@ -291,7 +291,7 @@ DQoNCjwvQVNTRVQ+DQo=</urldescriptordata>
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/FW_Application/SelectSummary_NoCat.sql</string>
+            <string>OpenMarket\Xcelerate\AssetType\FW_Application\SelectSummary_NoCat,2.sql</string>
             <null/>
             <null/>
             <null/>

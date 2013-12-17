@@ -11,7 +11,7 @@
         <description>Page</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp20\dcs6942091789775047443.tmp</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp5\dcs8394199573476714329.tmp</urldescriptorspec>
         <canbechild>T</canbechild>
         <uid>CSSystem-AssetType-Page</uid>
         <useDimension></useDimension>
@@ -250,10 +250,10 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket\Xcelerate\AssetType\Page\SelectSummary.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/Page/SelectSummary.sql</string>
             <null/>
             <null/>
-            <string>OpenMarket\Xcelerate\AssetType\Page\UnplacedPages.sql</string>
+            <string>OpenMarket/Xcelerate/AssetType/Page/UnplacedPages.sql</string>
             <null/>
             <null/>
             <null/>

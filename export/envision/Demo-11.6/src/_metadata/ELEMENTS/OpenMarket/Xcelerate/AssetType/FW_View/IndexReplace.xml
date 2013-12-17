@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateA/install/Xcelerate/AssetMaker/Populate/AssetStubElementCatalog/OpenMarket/AssetMaker/AssetStubFiles/StandardElements/IndexReplace.xml $ 
+$Revision: 8 $ 
+$Modtime: 12/26/01 2:46p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of divine Inc.
+-					All Rights Reserved.
+-
+- IndexReplace.xml
+-
+- DESCRIPTION
+-    Replace a single category item to the SE index.
+-
+- ARGUMENTS:
+-    asset list
+-        Current row of the asest type's table for the item to be
+-        indexed.
+-    seindex
+-        Content category's SE index name.
+-    detailArg
+-        String to be recorded in the DETAIL attribute of the SE index
+-        for this item.
+-
+- RETURNS
+-    errno
+-        Result of executing INDEXREPLACE.
+-
+- HISTORY 
+-->
+
+
+
+
+<SETDATE DATE="asset.createddate"/>
+<SETVAR NAME="createddate" VALUE="CS.SQLDate"/>
+
+<SETDATE DATE="asset.updateddate"/>
+<SETVAR NAME="updateddate" VALUE="CS.SQLDate"/>
+
+<SETVAR NAME="errno" VALUE="0"/>
+<INDEXREPLACE
+    ENTRY="asset.id"
+    INDEX="Variables.seindex"
+    DETAIL="Variables.detailArg">
+	<TEXTARGUMENT NAME="id" VALUE="asset.id"/>
+	<TEXTARGUMENT NAME="name" VALUE="asset.name"/>
+	<TEXTARGUMENT NAME="description" VALUE="asset.description"/>
+	<TEXTARGUMENT NAME="status" VALUE="asset.status"/>
+	<TEXTARGUMENT NAME="createdby" VALUE="asset.createdby"/>
+	<TEXTARGUMENT NAME="updatedby" VALUE="asset.updatedby"/>
+
+	<DATEARGUMENT NAME="createddate" VALUE="Variables.createddate"/>
+	<DATEARGUMENT NAME="updateddate" VALUE="Variables.updateddate"/>
+
+	<TEXTARGUMENT NAME="subtype" VALUE="asset.subtype"/>
+	<TEXTARGUMENT NAME="template" VALUE="asset.template"/>
+	<TEXTARGUMENT NAME="category" VALUE="asset.category"/>
+</INDEXREPLACE>
+</FTCS>

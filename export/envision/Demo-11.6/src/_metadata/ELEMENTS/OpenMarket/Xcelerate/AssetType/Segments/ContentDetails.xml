@@ -1,0 +1,172 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Segments/ContentDetails.xml $
+$Revision: 21 $
+$Modtime: 2/27/04 2:46p $
+-->
+<!-- OpenMarket/Xcelerate/AssetType/Segments/ContentDetails
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<!-- Action bar -->
+	<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ActionsBar">
+		<argument NAME="Screen" VALUE="Inspect"/>
+		<argument NAME="NoPreview" VALUE="true"/>
+	</callelement>
+	<div dojoType="dijit.layout.ContentPane" region="center">	
+<table border="0" cellpadding="0" cellspacing="0" class="width70BottomExMargin">
+    
+  <!-- Segment page title with asset name -->
+	<tr>
+		<td><span class="title-text"><XLAT.STREAM KEY="dvin/AT/Segments/InspectSegment"/>: </span><span class="title-value-text"><STRING.STREAM VALUE="Variables.ContentDetails:name"/></span></td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+		<argument NAME="SpaceBelow" VALUE="No"/>
+	</callelement>
+
+	<!-- Segment  inspection form -->
+	<tr>
+		<td>
+			<table border="0" cellpadding="0" cellspacing="0">
+		
+				<!-- The beginning of Group 1 -->
+				<tr>
+					<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/AT/Common/Name"/>:</td>
+					<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+					<td class="form-inset"><STRING.STREAM VALUE="Variables.ContentDetails:name"/></td>
+				</tr>
+			
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Description"/>:</td>
+					<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+					<td class="form-inset"><STRING.STREAM VALUE="Variables.ContentDetails:description"/></td>
+				</tr>
+							
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/ID"/>:</td>
+					<td></td>
+					<td class="form-inset"><STRING.STREAM VALUE="Variables.id"/></td>
+				</tr>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<callelement NAME="OpenMarket/Xcelerate/Actions/Util/ShowStatusCode"/>
+				</tr>
+
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/InspectAssetStartEndDate"/>
+
+
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				
+				
+				<!-- [Insert conditional to test whether advanced rulesets are used.  
+	
+					If they are used, display content details based on "contentFormAdvancedRules.xml"; 
+					else, display as shown below.
+					
+					Note: I can help create the "contentDetailsAdvancedRules.xml" page as well (Jeff Sokolov).
+					
+				-->
+
+				<!-- The beginning of Group 2 -->
+				<!--<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>-->
+				<tr>
+					<td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Segments/FilteringCriteria"/>:</td>
+					<td></td>
+					<td class="form-inset">
+						<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/CoFLoadRuleSet"/>
+						<nvobject.getvalue NAME="nvRuleSet" VALUENAME="NUMAND" VARNAME="rsnumrows"/>
+						<if COND="Variables.rsnumrows!=0">
+							<then>
+								<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/TileRuleSet">
+									<argument NAME="InspectMode" VALUE="true"/>
+								</callelement>
+							</then>
+							<else>
+								<XLAT.STREAM KEY="dvin/AT/Segments/Nocriteriaselected"/>
+							</else>
+						</if>
+					</td>
+				</tr>
+				<!-- Analyics Performance indicator -->
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/ShowAnalyticsKPI"/>
+				<!-- The beginning of Group 3 -->
+				<!--<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>-->
+                <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+                   <td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Created"/>:</td>
+                   <td></td>
+                   <td class="form-inset">
+              <DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:createddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:createddate"/>
+                   <XLAT.STREAM KEY="dvin/UI/ContentDetailscreateddatebycreatedby"/></td>
+               </tr>
+
+
+                <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+
+                <tr>
+                   <td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Modified"/>:</td>
+                   <td></td>
+                   <td class="form-inset">
+                    <DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:updateddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:updateddate"/>
+                    <XLAT.STREAM KEY="dvin/UI/ContentDetailsupdateddatebyupdatedby"/></td>
+               </tr>
+               
+			</table>
+			
+		</td>
+	</tr>
+		
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+	<tr>
+		<td><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+	</tr>
+</table>
+</div>
+</div>
+</FTCS>
+
+<!-- Old Stuff saved because it might be used by contentDetailsAdvancedRules.xml
+
+	<tr>
+		<td ALIGN="RIGHT" BGCOLOR="#336699">
+				<FONT Face="Arial, Helvetica" SIZE="2" COLOR="#ffffff">
+				RuleSet ID
+				</FONT>
+		</td>
+		<td bgcolor="#dfdfdf">
+				<FONT Face="Arial, Helvetica" SIZE="2" COLOR="#333333">
+				&nbsp;<csvar NAME="Variables.ContentDetails:ruleset"/>
+				</FONT>
+		</td>
+	</tr>
+	<if COND="IsVariable.ContentDetails:xmlruleset=true">
+		<then>
+			<substitute STR="Variables.ContentDetails:xmlruleset" WHAT="&#60;" WITH="&#38;lt;" OUTSTR="OurText"/>
+		</then>
+		<else>
+			<setvar NAME="OurText" VALUE="Variables.empty"/>
+		</else>
+	</if>
+	<tr>
+		<td ALIGN="RIGHT" BGCOLOR="#336699">
+				<FONT Face="Arial, Helvetica" SIZE="2" COLOR="#ffffff">
+				RuleSet XML
+				</FONT>
+		</td>
+		<td bgcolor="#dfdfdf">
+				<FONT Face="Arial, Helvetica" SIZE="2" COLOR="#333333">
+				&nbsp;<csvar NAME="Variables.OurText"/>
+				</FONT>
+		</td>
+	</tr>
+
+-->

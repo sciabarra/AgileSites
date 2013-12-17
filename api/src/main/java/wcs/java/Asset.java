@@ -53,10 +53,10 @@ public class Asset extends AssetBase implements wcs.api.Asset,
 		this.c = c;
 		this.cid = cid;
 		insite = env.isInsite();
+		init(i.GetVar("site"));
 		AssetTag.load().name(a).type(c).objectid(cid.toString()).run(i);
 		String subtype = AssetTag.getsubtype().name(a).eval(i, "OUTPUT");
 		this.subtype = subtype == null ? "" : subtype;
-		setSite(i.GetVar("site"));
 	}
 
 	/**

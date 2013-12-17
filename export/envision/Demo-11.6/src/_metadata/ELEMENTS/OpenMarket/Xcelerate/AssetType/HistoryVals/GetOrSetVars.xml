@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/HistoryVals/GetOrSetVars.xml $ 
+$Revision: 13 $ 
+$Modtime: 12/19/02 9:20a $ 
+-->
+<!-- OpenMarket/Xcelerate/AssetType/HistoryVals/GetOrSetVars
+--
+- INPUT
+		Variables.SetOrGet (defaults to get)
+		Variables.HistoryVals:... has the variables. (HistoryVals is the prefix)
+		
+- OUTPUT
+		"Gather" called.
+
+-->
+<setvar NAME="FieldsOnForm" VALUE="name,status,workflowid,description,category,Fields"/>
+<if COND="Variables.GetOrSet=set">
+	<then>
+		<!-- Do the field list -->
+		<listobject.create NAME="myList" COLUMNS="assetid"/>
+		<if COND="IsVariable.HistoryVals:sMyFieldList!=false">
+			<then>
+				<STRINGLIST NAME="FieldIDs" STR="Variables.HistoryVals:sMyFieldList" DELIM=";"/>
+				<loop LIST="FieldIDs">
+					<listobject.addrow NAME="myList" assetid="FieldIDs.ITEM"/>
+				</loop>
+			</then>
+		</if>
+		<listobject.tolist NAME="myList" LISTVARNAME="HistoryVals:Fields"/>
+		
+		<ASSET.GATHER NAME="theCurrentAsset" PREFIX="HistoryVals" FIELDLIST="Variables.FieldsOnForm"/>
+		<if COND="Variables.errno!=0">
+			<then>
+				<br/><XLAT.STREAM KEY="dvin/AT/HFields/AGatherFailForHVals" errno="Variables.errno" EVALALL="false"/>
+				<throwexception/>
+			</then>
+		</if>
+	</then>
+	
+	<!--"gets"-->
+	<else>
+		<br/>In GetOrSet - option get - SHOULD NOT BE HERE		
+	</else>
+</if>
+</FTCS>
+

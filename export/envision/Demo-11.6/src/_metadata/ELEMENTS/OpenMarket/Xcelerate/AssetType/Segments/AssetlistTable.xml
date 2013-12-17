@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/AssetlistTable
+--
+-- INPUT
+--	CNum
+--
+-- OUTPUT
+--
+-->
+<table cellpadding="0" cellspacing="0" border="0">
+	<setvar NAME="gotcount" VALUE="false"/>
+	<if COND="IsVariable.haveassetlist=true">
+		<then>
+			<if COND="Variables.haveassetlist=true">
+				<then>
+					<setvar NAME="alNumber" VALUE="Segments:Assetlists.#numRows"/>
+					<setvar NAME="alfirst" VALUE="true"/>
+					<if COND="Variables.alNumber!=0">
+						<then>
+							<setcounter NAME="A" VALUE="0"/>
+							<loop LIST="Segments:Assetlists">
+								<asset.list LIST="alAsset" TYPE="Segments:Assetlists.assettype" FIELD1="id" VALUE1="Segments:Assetlists.assetid"/>
+								<if COND="Variables.errno=0">
+									<then>
+										<if COND="Variables.alfirst=false">
+											<then>
+												<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+											</then>
+											<else>
+												<setvar NAME="alfirst" VALUE="false"/>
+											</else>
+										</if>
+										<tr>
+											<td valign="top"><STRING.STREAM VALUE="Segments:Assetlists.assettype"/>&nbsp;<STRING.STREAM VALUE="alAsset.name"/></td>
+											<input TYPE="HIDDEN" NAME="Variables.CNum-Counters.AALAssetType" VALUE="Segments:Assetlists.assettype" REPLACEALL="Variables.CNum,Segments:Assetlists.assettype,Counters.A"/>
+											<input TYPE="HIDDEN" NAME="Variables.CNum-Counters.AALAssetId" VALUE="Segments:Assetlists.assetid" REPLACEALL="Variables.CNum,Segments:Assetlists.assetid,Counters.A"/>
+										</tr>
+									</then>
+									<else>
+										<br/><XLAT.STREAM KEY="dvin/AT/Segments/alistfailforSegmentasset" errno="Variables.errno" assettype="Segments:Assetlists.assettype" assetid="Segments:Assetlists.assetid" EVALALL="false"/>
+										<br/><XLAT.STREAM KEY="dvin/UI/ErrorDetailErrdetail1"/>
+									</else>
+								</if>
+								<inccounter NAME="A" VALUE="1"/>
+							</loop>
+							<INPUT TYPE="HIDDEN" NAME="Variables.CNumAssetlistsCount" VALUE="Counters.A" REPLACEALL="Variables.CNum,Counters.A"/>
+							<setvar NAME="gotcount" VALUE="true"/>
+							<setvar NAME="haveassetlist" VALUE="false"/> <!--now that table is output turn off this flag-->
+							<INPUT TYPE="HIDDEN" NAME="PickedConstraintVar" VALUE="Variables.CNum" REPLACEALL="Variables.CNum"/>
+							<INPUT TYPE="HIDDEN" NAME="PickedConstraintVarAstCount" VALUE="Variables.alNumber" REPLACEALL="Variables.alNumber"/>
+						</then>
+						<else>
+							<tr>
+								<td valign="top"><XLAT.STREAM KEY="dvin/AT/Segments/Displaynotspecified"/></td>
+							</tr>
+						</else>
+					</if>
+				</then>
+			</if>
+		</then>
+	</if>
+	<if COND="Variables.gotcount!=true">
+		<then>
+			<INPUT TYPE="HIDDEN" NAME="Variables.CNumAssetlistsCount" VALUE="0" REPLACEALL="Variables.CNum"/>
+		</then>
+	</if>
+</table>
+</FTCS> 

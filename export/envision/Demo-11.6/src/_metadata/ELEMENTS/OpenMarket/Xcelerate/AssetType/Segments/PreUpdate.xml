@@ -1,0 +1,97 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateA/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Segments/PreUpdate.xml $ 
+$Revision: 10 $ 
+$Modtime: 11/16/01 5:34p $ 
+-->
+<!-- OpenMarket/Xcelerate/AssetType/Segments/PreUpdate
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+<!--
+	Note: setformdefaults, delete, updateform are NOT implemented
+	for Segments
+	Only edit, remotepost, and create are implemented
+-->
+
+<if COND="Variables.updatetype=edit">
+	<then>
+		<callelement NAME="OpenMarket/Gator/Util/GetWorkflowId"/>
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/ManageRules"/>
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/GetOrSetVars">
+			<argument NAME="GetOrSet" VALUE="set"/>
+		</callelement>
+	</then>
+	<else>
+		<if COND="Variables.updatetype=create">
+			<then>
+				<callelement NAME="OpenMarket/Gator/Util/GetWorkflowId"/>
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/ManageRules"/>
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/GetOrSetVars">
+					<argument NAME="GetOrSet" VALUE="set"/>
+				</callelement>
+			</then>
+			<else>
+				<if COND="Variables.updatetype=remotepost">
+					<then>
+						<if COND="IsVariable.workflowid=true">
+							<then>
+								<setvar NAME="Segments:workflowid" VALUE="Variables.workflowid"/>
+							</then>
+							<else>
+								<setvar NAME="AssetType" VALUE="Segments"/>
+								<callelement NAME="OpenMarket/Gator/Util/GetWorkflowId"/>
+							</else>
+						</if>
+						<if COND="IsVariable.name=true">
+							<then>
+								<setvar NAME="Segments:name" VALUE="Variables.name"/>
+							</then>
+						</if>
+						<if COND="IsVariable.status=true">
+							<then>
+								<setvar NAME="Segments:status" VALUE="Variables.status"/>
+							</then>
+						</if>
+						<if COND="IsVariable.description=true">
+							<then>
+								<setvar NAME="Segments:description" VALUE="Variables.description"/>
+							</then>
+						</if>
+						<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/GetOrSetVars">
+							<argument NAME="GetOrSet" VALUE="set"/>
+						</callelement>
+					</then>
+				</if>
+			</else>
+		</if>
+	</else>
+</if>
+<!-- If the asset is updated from dah -->
+<if COND="Variables.dashUpdate=dashUpdate">
+<then>
+	<if COND="Variables.dashUpdateType=create">
+    <then>
+		<!--if the operation is create-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=edit">
+    <then>
+		<!--if the operation is edit-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=delete">
+    <then>
+		<!--if the operation is delete-->
+    </then>
+    </if>
+</then>
+</if>
+</FTCS>
+

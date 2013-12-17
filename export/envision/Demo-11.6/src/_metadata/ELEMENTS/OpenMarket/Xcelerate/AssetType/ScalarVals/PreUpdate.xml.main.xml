@@ -1,0 +1,32 @@
+<object-stream>
+  <com.fatwire.realtime.ResourceDataImpl>
+    <id class="string">OpenMarket/Xcelerate/AssetType/ScalarVals/PreUpdate</id>
+    <resourceType>ELEMENTCATALOG</resourceType>
+    <deps class="empty-set"/>
+    <data class="com.openmarket.xcelerate.common.ElementCatalogEntry" serialization="custom">
+      <com.openmarket.xcelerate.common.ElementCatalogEntry>
+        <int>1</int>
+        <string>OpenMarket/Xcelerate/AssetType/ScalarVals/PreUpdate</string>
+        <string>PreUpdate</string>
+        <string></string>
+        <string></string>
+        <string>OpenMarket/Xcelerate/AssetType/ScalarVals/PreUpdate.xml</string>
+        <string></string>
+        <string></string>
+      </com.openmarket.xcelerate.common.ElementCatalogEntry>
+    </data>
+  </com.fatwire.realtime.ResourceDataImpl>
+</object-stream>
+<!--==================___ METADATA ___================
+<dependencies>
+  <list/>
+</dependencies>
+==================______________________==================
+#
+#Mon Dec 16 23:39:38 UTC 2013
+storable0=/ELEMENTS/OpenMarket/Xcelerate/AssetType/ScalarVals/PreUpdate.xml|null|_storable_type\=%2FELEMENTS%2FOpenMarket%2FXcelerate%2FAssetType%2FScalarVals%2FPreUpdate.xml
+@hashval=1363729371
+key=@ELEMENTCATALOG-OpenMarket/Xcelerate/AssetType/ScalarVals/PreUpdate
+type=ELEMENTCATALOG
+
+==================___ END METADATA ___==================-->

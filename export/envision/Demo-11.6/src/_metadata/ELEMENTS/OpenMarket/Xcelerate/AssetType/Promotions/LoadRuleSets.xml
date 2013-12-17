@@ -1,0 +1,230 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/LoadRuleSets
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<!--
+This element is responsible for setting up the canonical form of the rulesets of the promotion.
+That includes two ruleset hint objects: rulesethintobject and discrulesethintobject, as well as
+the corresponding maps: theAppMap and theDiscMap.
+
+Furthermore, this element folds in gathered rulehint rulemap data from the form.
+
+
+We have two rulesets to deal with
+	xmldiscruleset,xmlruleset
+
+We could be in one of three states
+	Initial create - no RuleSetHint, no xmlruleset
+		Make RuleSetHint
+	Edit load - no RuleSetHint, but an xmlruleset
+		Unpack xmlrulset
+	Screen to Screen situation - have a RuleSetHint (xmlruleset not relevant)
+		Do nothing
+
+But always make the RuleSetobjects
+-->	
+
+<!--first take care of ruleset-->
+<setvar NAME="unpackxml" VALUE="false"/>
+<NVOBJECT.CREATE NAME="rulesethintobject"/>
+<if COND="IsVariable.RulesetHintString!=true">
+<then>
+	<if COND="IsVariable.ContentDetails:ruleset=true">
+	<then>
+		<if COND="Variables.ContentDetails:ruleset!=Variables.empty">
+		<then>
+			<setvar NAME="unpackxml" VALUE="true"/>
+		</then>
+		</if>
+	</then>
+	</if>
+	<if COND="Variables.unpackxml=true">
+	<then>
+		<rulesetdef.create NAME="theRule"/>
+		<if COND="Variables.errno=0">
+		<then>
+			<rulesetdef.fromxml NAME="theRule" XML="Variables.ContentDetails:ruleset"/>
+			<if COND="Variables.errno=0">
+			<then>
+				<rulesetdef.getencoding NAME="theRule" VARNAME="RulesetHintString"/>
+				<NVOBJECT.FROMSTRING NAME="rulesethintobject" VALUE="Variables.RulesetHintString"/>
+			</then>
+			<else>
+				<br/><XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorRuleSetFromXml" errno="Variables.errno" EVALALL="false"/>
+				<br/><XLAT.STREAM KEY="dvin/UI/ErrorDetailErrdetail1"/>
+			</else>
+			</if>
+		</then>
+		<else>
+			<br/><XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorRuleSetCreate" errno="Variables.errno" EVALALL="false"/>
+			<br/><XLAT.STREAM KEY="dvin/UI/ErrorDetailErrdetail1"/>
+		</else>
+		</if>
+	</then>
+	<else>
+		<!--  Setup the default values for RulesetHintString -->
+		<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="RULESETTYPE" VALUE="ui"/>
+		<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="DEFAULTRATING" VALUE="0"/>
+		<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="NUMSEGS" VALUE="0"/>
+		<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="NUMGOALS" VALUE="0"/>
+		<!--OMIma28618-->
+		<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="APPLICABILITY" VALUE="all"/>
+ 		<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="ENDTYPE" VALUE="none"/>
+		<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="ALLRATING" VALUE="100"/>
+ 
+				
+		<NVOBJECT.TOSTRING NAME="rulesethintobject" VARNAME="RulesetHintString"/>
+	</else>
+	</if>
+</then>
+<else>
+	<!-- The rule hint came in from the post variables, so just create the object -->
+	<NVOBJECT.FROMSTRING NAME="rulesethintobject" VALUE="Variables.RulesetHintString"/>
+</else>
+</if>           
+
+<!--Now take care of discount ruleset-->
+<NVOBJECT.CREATE NAME="discrulesethintobject"/>
+<setvar NAME="unpackxml" VALUE="false"/>
+<if COND="IsVariable.DiscRulesetHintString=false">
+<then>
+	<if COND="IsVariable.ContentDetails:discruleset=true">
+	<then>
+		<if COND="Variables.ContentDetails:discruleset!=Variables.empty">
+		<then>
+			<setvar NAME="unpackxml" VALUE="true"/>
+		</then>
+		</if>
+	</then>
+	</if>
+	<if COND="Variables.unpackxml=true">
+	<then>
+		<rulesetdef.create NAME="theRule1"/>
+		<if COND="Variables.errno=0">
+		<then>
+			<rulesetdef.fromxml NAME="theRule1" XML="Variables.ContentDetails:discruleset"/>
+			<if COND="Variables.errno=0">
+			<then>
+				<rulesetdef.getencoding NAME="theRule1" VARNAME="DiscRulesetHintString"/>
+				<NVOBJECT.FROMSTRING NAME="discrulesethintobject" VALUE="Variables.DiscRulesetHintString"/>
+			</then>
+			<else>
+				<br/><XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorRuleSetFromXml" errno="Variables.errno" EVALALL="false"/>
+				<br/><XLAT.STREAM KEY="dvin/UI/ErrorDetailErrdetail1"/>
+			</else>
+			</if>
+		</then>
+		<else>
+			<br/><XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorRuleSetCreate" errno="Variables.errno" EVALALL="false"/>
+			<br/><XLAT.STREAM KEY="dvin/UI/ErrorDetailErrdetail1"/>
+		</else>
+		</if>
+	</then>
+	<else>
+		<!--  Setup the default values for DiscRulesetHintString -->
+		<NVOBJECT.CREATE NAME="DiscRule0"/>
+		<setvar NAME="itemvar"  VALUE="item"/>
+                <XLAT.LOOKUP  KEY="dvin/AT/Promotions/item"  VARNAME="item"/>
+		<NVOBJECT.SETVALUE NAME="DiscRule0" VALUENAME="DISCOUNTDESC" VALUE="Variables.item"/>
+		<NVOBJECT.SETVALUE NAME="DiscRule0" VALUENAME="DISCOUNTTYPE" VALUE="none"/>
+		<NVOBJECT.SETVALUE NAME="DiscRule0" VALUENAME="DISCOUNTAMT" VALUE="Variables.empty"/>
+		<NVOBJECT.SETVALUE NAME="DiscRule0" VALUENAME="NUMASSETS" VALUE="0"/>
+		<!--NVOBJECT.SETVALUE NAME="DiscRule0" VALUENAME="PRODUCTSELECT" VALUE="all"/-->
+		<NVOBJECT.SETVALUE NAME="DiscRule0" VALUENAME="BUCKET" VALUE="standard"/>
+		<NVOBJECT.SETVALUE NAME="DiscRule0" VALUENAME="MAX" VALUE="0"/>
+		<callelement NAME="OpenMarket/Gator/Util/GetStoreId"/>
+		<if COND="Variables.CurrentStoreId!=Variables.empty">
+		<then>
+			<NVOBJECT.SETVALUE NAME="DiscRule0" VALUENAME="STOREID" VALUE="Variables.CurrentStoreId"/>
+		</then>
+		</if>
+		<NVOBJECT.SETVALUE NAME="DiscRule0" VALUENAME="NUMCONDITIONS" VALUE="0"/>
+		<NVOBJECT.TOSTRING NAME="DiscRule0" VARNAME="DiscRule0String"/>
+				
+		<NVOBJECT.CREATE NAME="DiscRule1"/>
+                <XLAT.LOOKUP  KEY="dvin/AT/Promotions/shipping"  VARNAME="shipping"/>
+		<NVOBJECT.SETVALUE NAME="DiscRule1" VALUENAME="DISCOUNTDESC" VALUE="Variables.shipping"/>
+
+            
+		<NVOBJECT.SETVALUE NAME="DiscRule1" VALUENAME="DISCOUNTTYPE" VALUE="none"/>
+		<NVOBJECT.SETVALUE NAME="DiscRule1" VALUENAME="DISCOUNTAMT" VALUE="Variables.empty"/>
+		<!--NVOBJECT.SETVALUE NAME="DiscRule1" VALUENAME="PRODUCTSELECT" VALUE="all"/-->
+		<NVOBJECT.SETVALUE NAME="DiscRule1" VALUENAME="BUCKET" VALUE="standard"/>
+		<NVOBJECT.SETVALUE NAME="DiscRule1" VALUENAME="MAX" VALUE="0"/>
+	        <if COND="Variables.CurrentStoreId!=Variables.empty">
+		<then>
+			<NVOBJECT.SETVALUE NAME="DiscRule1" VALUENAME="STOREID" VALUE="Variables.CurrentStoreId"/>
+ 		</then>
+		</if>
+		<NVOBJECT.SETVALUE NAME="DiscRule1" VALUENAME="NUMCONDITIONS" VALUE="0"/>
+ 		<NVOBJECT.TOSTRING NAME="DiscRule1" VARNAME="DiscRule1String"/>
+ 		<NVOBJECT.SETVALUE NAME="discrulesethintobject" VALUENAME="RULESETTYPE" VALUE="ui"/>
+		<NVOBJECT.SETVALUE NAME="discrulesethintobject" VALUENAME="DISCOUNT0" VALUE="Variables.DiscRule0String"/>
+		<NVOBJECT.SETVALUE NAME="discrulesethintobject" VALUENAME="DISCOUNT1" VALUE="Variables.DiscRule1String"/>
+		<NVOBJECT.SETVALUE NAME="discrulesethintobject" VALUENAME="NUMDISCOUNTS" VALUE="2"/>
+		<NVOBJECT.SETVALUE NAME="discrulesethintobject" VALUENAME="NUMCONDITIONS" VALUE="0"/>
+		
+		<NVOBJECT.TOSTRING NAME="discrulesethintobject" VARNAME="DiscRulesetHintString"/>
+ 	</else>
+	</if>
+</then>
+<else>
+	<NVOBJECT.FROMSTRING NAME="discrulesethintobject" VALUE="Variables.DiscRulesetHintString"/>
+</else>
+</if>
+
+<!-- fetch the rulesetmap objects -->
+<PROMOTION.GETRATINGRULESETMAP NAME="theCurrentAsset" OBJVARNAME="theAppMap"/>
+<PROMOTION.GETDISCOUNTRULESETMAP NAME="theCurrentAsset" OBJVARNAME="theDiscMap"/>
+
+<!-- Apply any post variables to these maps -->
+<!-- (This code was moved from SaveRulesetTuples) -->
+<IF COND="IsVariable.Promotions:ruleset_map:Total=true">
+<THEN>
+	<IF COND="Variables.Promotions:ruleset_map:Total!=0">
+        <THEN>
+        	<SETCOUNTER NAME="hiddencount" VALUE="0"/>
+        	<LOOP COUNT="Variables.Promotions:ruleset_map:Total">
+        		<ICS.RESOLVEVARIABLES  NAME="$(Variables.Promotions:ruleset_map:$(Counters.hiddencount):key)" OUTPUT="ourKey" DELIMITED="true"/>
+        		<ICS.RESOLVEVARIABLES  NAME="$(Variables.Promotions:ruleset_map:$(Counters.hiddencount):type)" OUTPUT="ourType" DELIMITED="true"/>
+                        <ICS.RESOLVEVARIABLES  NAME="$(Variables.Promotions:ruleset_map:$(Counters.hiddencount):value)" OUTPUT="ourValue" DELIMITED="true"/>
+                        <RULESETMAP.SET NAME="theAppMap" KEY="Variables.ourKey" TYPE="Variables.ourType" VALUE="Variables.ourValue"/>
+                        <inccounter NAME="hiddencount" VALUE="1"/>
+                </LOOP>
+        </THEN>
+        </IF>
+</THEN>
+</IF>
+
+<IF COND="IsVariable.Promotions:discruleset_map:Total=true">
+<THEN>
+        <IF COND="Variables.Promotions:discruleset_map:Total!=0">
+	<THEN>
+        	<SETCOUNTER NAME="hiddencount" VALUE="0"/>
+        	<LOOP COUNT="Variables.Promotions:discruleset_map:Total">
+        		<ICS.RESOLVEVARIABLES  NAME="$(Variables.Promotions:discruleset_map:$(Counters.hiddencount):key)" OUTPUT="ourKey" DELIMITED="true"/>
+        		<ICS.RESOLVEVARIABLES  NAME="$(Variables.Promotions:discruleset_map:$(Counters.hiddencount):type)" OUTPUT="ourType" DELIMITED="true"/>
+                        <ICS.RESOLVEVARIABLES  NAME="$(Variables.Promotions:discruleset_map:$(Counters.hiddencount):value)" OUTPUT="ourValue" DELIMITED="true"/>
+                        <RULESETMAP.SET NAME="theDiscMap" KEY="Variables.ourKey" TYPE="Variables.ourType" VALUE="Variables.ourValue"/>
+                        <inccounter NAME="hiddencount" VALUE="1"/>
+                </LOOP>
+        </THEN>
+        </IF>
+</THEN>
+</IF>
+
+<!-- Initialize both maps with a "this" pointer -->
+
+<!-- set up for "this" rulemap value -->
+<ASSET.GET NAME="theCurrentAsset" FIELD="id"/>
+<RULESETMAP.SET NAME="theAppMap" KEY="this" TYPE="asset" VALUE="Variables.AssetType:Variables.id"/>
+<RULESETMAP.SET NAME="theDiscMap" KEY="this" TYPE="asset" VALUE="Variables.AssetType:Variables.id"/>
+
+
+</FTCS> 

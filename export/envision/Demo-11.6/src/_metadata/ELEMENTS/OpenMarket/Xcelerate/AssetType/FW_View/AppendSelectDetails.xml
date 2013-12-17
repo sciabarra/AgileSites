@@ -1,0 +1,444 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+Logfile:  $ 
+$Revision: 24 $ 
+$Modtime: 9/03/04 4:47p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of divine, Inc.
+-					All Rights Reserved.
+-
+- DESCRIPTION
+-    The basic idea: start with a minimum, default
+-    query. Then append additional criteria depending
+-    on fields that have been selected in the search
+-    form
+- INPUT: 
+-  Variables.queryend - query criteria, so far
+-  Variables are set in the AssetType's SearchForm or SimpleSearch element,
+- The variables will be the property name of those designated in the Asset Descriptor File with
+- <SEARCHFORM tags, as well as standard fields: Name, Description, Id, Category, template, Subtype,
+- Status, UpdatedBy, UpdatedBefore, UpdatedAfter
+-
+- OUTPUT -
+-		Variables.filterstring	- string displayable in the UI to show the query conditions
+-		Variables.queryfields	- list of fields being queried
+-		Variables.queryend	- built up conditional clause of the query
+-->
+<SETVAR NAME="errno" VALUE="0"/>
+<CALLJAVA CLASS="com.openmarket.assetmaker.asset.AssetMaker" TYPE="1">
+    <ARGUMENT NAME="command" VALUE="parseproperties"/>
+    <ARGUMENT NAME="propertytags" VALUE="storage,searchresult,searchform"/>
+    <ARGUMENT NAME="assettype" VALUE="Variables.AssetType"/>
+</CALLJAVA>
+
+<IF COND="Variables.doSearchlist=true">
+<THEN>
+	<CALLELEMENT NAME="OpenMarket/AssetMaker/Searchlist"/>
+</THEN>
+</IF>
+
+<if COND="IsVariable.assetmaker/propertylist=true">
+<then>
+	<stringlist NAME="Proplist" STR="Variables.assetmaker/propertylist" DELIM=","/>
+</then>
+</if>
+
+<SETVAR NAME="queryfields" VALUE="Variables.empty"/>
+
+ 
+<!-- Set the table name for SQLEXP use -->
+
+	<SETVAR NAME="tablename" VALUE="Variables.AssetType"/>
+
+	<if COND="IsVariable.Id=true">
+	    <then>
+	    <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Id"/>
+			<argument NAME="type" VALUE="Long"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND Variables.AssetType.id = Variables.Id"/>
+        	<XLAT.LOOKUP KEY="dvin/UI/Search/IDis" VARNAME="_XLAT_"/>
+	    	<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ Variables.Id"/>
+		</then>
+		</if>
+		</then>
+	</if>	
+
+	<if COND="IsVariable.template=true">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.template"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND Variables.AssetType.template='Variables.template'"/>
+        	<XLAT.LOOKUP  KEY="dvin/UI/Search/displaystyle" VARNAME="_XLAT_"/>
+			<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.template'"/>
+	   	</then>
+		</if>
+		</then>
+	</if>	
+
+	<if COND="IsVariable.Subtype=true">
+	    <then>
+	    <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Subtype"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Subtype"/>
+			<argument NAME="type" VALUE="Nospace"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND Variables.AssetType.subtype='Variables.Subtype'"/>
+        	<XLAT.LOOKUP  KEY="dvin/UI/Search/subtypeis" VARNAME="_XLAT_"/>
+			<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.Subtype'"/>
+	   </then>
+		</if>
+		</then>
+		</if>
+		</then>
+	</if>	
+
+	<if COND="IsVariable.Category=true">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Category"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND Variables.AssetType.category='Variables.Category'"/>
+			<SETVAR NAME="category" VALUE="Variables.Category"/>
+			<SETVAR NAME="assettype" VALUE="Variables.AssetType"/>
+			<SETVAR NAME="errno" VALUE="0"/>
+			<SELECTTO LIST="CategoryDesc" WHAT="description" FROM="Category" WHERE="category,assettype"/>
+			<IF COND="Variables.errno=0">
+			<THEN>
+            
+                 <XLAT.LOOKUP  KEY="dvin/UI/Search/categoryis" VARNAME="_XLAT_"/>
+				<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'CategoryDesc.description'"/>
+		   </THEN>
+		   </IF>
+		</then>
+		</if>
+		</then>
+	</if>	
+
+	<if COND="IsVariable.Status=true">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Status"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Status"/>
+			<argument NAME="type" VALUE="Length"/>
+			<argument NAME="wordcounts" VALUE="2"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND Variables.AssetType.status='Variables.Status'"/>
+			<XLAT.LOOKUP KEY="dvin/AT/Common/StatusCode-Variables.Status" VARNAME="_statuscodedescription_"/>
+         	<XLAT.LOOKUP  KEY="dvin/UI/Search/categoryequals" VARNAME="_XLAT_"/>
+			<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables._statuscodedescription_'"/>
+		</then>
+		</if>
+		</then>
+		</if>
+		</then>
+	</if>	
+
+	<if COND="IsVariable.UpdatedBy=true">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.UpdatedBy"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+				<ARGUMENT NAME="columnvalue" VALUE="Variables.UpdatedBy"/>
+				<ARGUMENT NAME="type" VALUE="Nospace"/>
+				</CALLELEMENT>
+				<IF COND="Variables.validatedstatus=true">
+				<THEN>
+					<SETVAR NAME="queryend" VALUE="Variables.queryend AND Variables.AssetType.updatedby='Variables.UpdatedBy'"/>
+					<XLAT.LOOKUP KEY="dvin/UI/Search/updatedby" VARNAME="_XLAT_"/>
+					<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.UpdatedBy'"/>
+				</THEN>
+				</IF>
+		</then>
+		</if>	
+		</then>
+	</if>
+
+	<if COND="IsVariable.UpdatedBefore=true">
+    <then>
+	<if COND="Variables.UpdatedBefore!=Variables.null">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.UpdatedBefore"/>
+			<argument NAME="type" VALUE="Date"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND Variables.AssetType.updateddate &#060; Variables.UpdatedBefore"/>
+            <XLAT.LOOKUP KEY="dvin/UI/updatedbefore" VARNAME="_XLAT_" ENCODE="false"/>
+			<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_"/>
+			</then>
+		</if>
+ 	  </then>
+	</if>	
+    </then>
+</if>
+
+<if COND="IsVariable.UpdatedAfter=true">
+    <then>
+	<if COND="Variables.UpdatedAfter!=Variables.null">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.UpdatedAfter"/>
+			<argument NAME="type" VALUE="Date"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND Variables.UpdatedAfter &#060; Variables.AssetType.updateddate"/>
+            <XLAT.LOOKUP KEY="dvin/UI/updatedafter" VARNAME="_XLAT_" ENCODE="false"/>
+			<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_"/>
+			</then>
+		</if>
+ 		</then>
+	</if>	
+    </then>
+</if>
+
+<IF COND="IsVariable.StartDateBefore=true">
+	<THEN>
+   		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+	  	<ARGUMENT NAME="columnvalue" VALUE="Variables.StartDateBefore"/>
+	  	<ARGUMENT NAME="type" VALUE="Date"/>
+   		</callelement>
+   		<if cond="Variables.validatedstatus=true">
+   		<then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.AssetType.startdate &#060; Variables.StartDateBefore OR Variables.AssetType.startdate IS NULL)"/>
+            <XLAT.LOOKUP KEY="fatwire/Alloy/UI/StartDateBefore" VARNAME="_XLAT_"/>
+			<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.StartDateBefore'"/>
+			</then>
+		</if>
+	</THEN>
+	</IF>
+
+<IF COND="IsVariable.StartDateAfter=true">
+<THEN>
+<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+	  <ARGUMENT NAME="columnvalue" VALUE="Variables.StartDateAfter"/>
+	  <ARGUMENT NAME="type" VALUE="Date"/>
+   </callelement>
+   <if cond="Variables.validatedstatus=true">
+   <then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.AssetType.startdate &#062; Variables.StartDateAfter OR Variables.AssetType.startdate IS NULL)"/>
+            <XLAT.LOOKUP KEY="fatwire/Alloy/UI/StartDateAfter" VARNAME="_XLAT_"/>
+			<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.StartDateAfter'"/>
+			</then>
+	</if>
+</THEN>
+</IF>
+
+<IF COND="IsVariable.EndDateBefore=true">
+<THEN>
+	<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+	  <ARGUMENT NAME="columnvalue" VALUE="Variables.EndDateBefore"/>
+	  <ARGUMENT NAME="type" VALUE="Date"/>
+   </callelement>
+   <if cond="Variables.validatedstatus=true">
+   <then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.AssetType.enddate &#060; Variables.EndDateBefore OR Variables.AssetType.enddate IS NULL)"/>
+            <XLAT.LOOKUP KEY="fatwire/Alloy/UI/EndDateBefore" VARNAME="_XLAT_"/>
+			<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.EndDateBefore'"/>
+			</then>
+	</if>
+</THEN>
+</IF>
+	
+<IF COND="IsVariable.EndDateAfter=true">
+<THEN>
+<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+	  <ARGUMENT NAME="columnvalue" VALUE="Variables.EndDateAfter"/>
+	  <ARGUMENT NAME="type" VALUE="Date"/>
+   </callelement>
+   <if cond="Variables.validatedstatus=true">
+   <then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.AssetType.enddate &#062; Variables.EndDateAfter OR Variables.AssetType.enddate IS NULL)"/>
+            <XLAT.LOOKUP KEY="fatwire/Alloy/UI/EndDateAfter" VARNAME="_XLAT_"/>
+			<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.EndDateAfter'"/>
+			</then>
+	</if>
+</THEN>
+</IF>
+	
+	<if COND="IsVariable.Name=true">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Name"/>
+			<argument NAME="type" VALUE="String"/>
+			</callelement>
+			<if cond="Variables.validatedstatus=true">
+			<then>
+             <TOLOWER OUTSTR="literal" STR="Variables.Name"/>
+             <SQLEXP OUTSTR="queryappend" TYPE="OR" VERB="LIKE" 
+              STR="Variables.literal" COLNAME="lower(Variables.AssetType.name)"/>
+ 			 <SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)"/>
+             <XLAT.LOOKUP  KEY="dvin/AT/Common/namecontains"  VARNAME="_XLAT_"/>
+			 <SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.Name'"/>
+			</then>
+			</if>
+		</then>
+	</if>		
+
+	<if COND="IsVariable.Description=true">
+	<then>
+	<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Description"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+             <TOLOWER OUTSTR="literal" STR="Variables.Description"/>
+             <SQLEXP OUTSTR="queryappend" TYPE="OR" VERB="LIKE" 
+              STR="Variables.literal" COLNAME="lower(Variables.AssetType.description)"/>
+ 			 <SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)"/>
+             <XLAT.LOOKUP KEY="dvin/UI/Search/descriptioncontains" VARNAME="_XLAT_"/>
+			 <SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.Description'"/>
+		</then>
+    	</if>
+    </then>
+    </if>	
+
+    <IF COND="IsVariable.dimensionssearch=true">
+    <THEN>
+    <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.dimensionssearch"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+        	<SETVAR NAME="queryend" VALUE="Variables.queryend AND Variables.AssetType.id IN (select Variables.AssetType_Dim.cs_ownerid from Variables.AssetType_Dim where Variables.AssetType_Dim.cs_dimensionid=Variables.dimensionssearch)"/>
+        	<XLAT.LOOKUP KEY="dvin/AT/Common/localeis" VARNAME="_XLAT_" ENCODE="false"/>
+        	<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.selectedDim'"/>
+    	</then>
+    	</if>
+    </THEN>
+    </IF>
+
+<!--
+	loop through the property list, looking
+	for the properties that are to appear
+	on the search form. For each, check
+	to see if there is a value specified
+-->
+<setvar NAME="standardqryFields" VALUE="id,name,description,updateddate,updatedby,createddate,createdby,status"/>
+<if COND="IsList.Proplist=true">
+<then>
+	<loop LIST="Proplist">
+		<if COND="IsVariable.assetmaker/property/Proplist.ITEM/searchform/description=true">
+		<then>
+			<if COND="IsVariable.Proplist.ITEM=true">
+			<then>
+                <if COND="IsVariable.qryverb=false">
+                <then>
+                    <SETVAR NAME="qryverb" VALUE="Variables.assetmaker/property/Proplist.ITEM/searchform/verb"/>
+                </then>
+                </if>
+				<SETVAR NAME="matchagainst" VALUE="Variables.Proplist.ITEM"/>
+				<SETVAR NAME="datatype" VALUE="Variables.assetmaker/property/Proplist.ITEM/storage/type"/>
+				<SETVAR NAME="errno" VALUE="0"/>
+				<ISINLIST ITEM="Variables.datatype" STR="VARCHAR,LONGVARCHAR,CHAR"/>
+				<if COND="Variables.errno=1">
+				<then>
+					<SQLEXP OUTSTR="subquery" TYPE="OR" VERB="LIKE" STR="Variables.matchagainst" COLNAME="Variables.AssetType.Proplist.ITEM"/>
+					<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.subquery)"/>
+					<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Proplist.ITEM Variables.qryverb 'Variables.matchagainst'"/>
+				</then>
+				<else>
+					<SETVAR NAME="qryverb" VALUE="Variables.assetmaker/property/Proplist.ITEM/searchform/verb"/>
+					<if COND="Variables.datatype=TIMESTAMP">
+					<then>
+						<if COND="Variables.qryverb=LIKE">
+						<then>
+							<B><XLAT.STREAM KEY="dvin/Util/FlexAssets/InvalidSearchVerb"/> </B><br/>
+						</then>
+						<else>
+							<SETVAR NAME="subquery" VALUE="Variables.AssetType.Proplist.ITEM Variables.qryverb Variables.matchagainst"/>
+						</else>
+						</if>
+					</then>
+					<else>
+						<SQLEXP OUTSTR="tmpquery" TYPE="OR" VERB="Variables.qryverb" STR="Variables.matchagainst" COLNAME="Variables.AssetType.Proplist.ITEM"/>
+						<SUBSTITUTE STR="Variables.tmpquery" WHAT="'" WITH="" OUTSTR="subquery"/>
+					</else>
+					</if>
+					<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.subquery)"/>
+					<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Proplist.ITEM Variables.qryverb 'Variables.matchagainst'"/>
+				</else>
+				</if>
+			</then>
+			</if>
+		</then>
+		</if>
+	
+		<!-- check to see which fields are being searched against -->
+		<SETVAR NAME="errno" VALUE="0"/>
+		<isinlist STR="Variables.searchfields" ITEM="Proplist.ITEM"/>
+		<if COND="Variables.errno=1">
+		<then>
+			<SETVAR NAME="resultfield" VALUE="Proplist.ITEM"/>
+			<!-- add it to the queryfields only if it isn't one of the standard ones alread there -->
+			<SETVAR NAME="errno" VALUE="0"/>
+			<ISINLIST STR="Variables.standardqryFields" ITEM="Variables.resultfield"/>
+			<IF COND="Variables.errno=0">
+			<THEN>
+				<SETVAR NAME="queryfields" VALUE="Variables.queryfields, Variables.AssetType.Variables.resultfield"/>
+			</THEN>
+			</IF>
+		</then>
+		<else>
+			<!-- check to see which fields are required to be displayed -->
+			<SETVAR NAME="errno" VALUE="0"/>
+			<if COND="IsVariable.assetmaker/property/Proplist.ITEM/searchresult/include=true">
+			<then>
+				<SETVAR NAME="includesr" VALUE="Variables.assetmaker/property/Proplist.ITEM/searchresult/include"/>
+				<if COND="Variables.includesr=TRUE">
+				<then>
+					<SETVAR NAME="resultfield" VALUE="Proplist.ITEM"/>
+					<!-- add it to the queryfields only if it isn't one of the standard ones alread there -->
+					<SETVAR NAME="errno" VALUE="0"/>
+					<ISINLIST STR="Variables.standardqryFields" ITEM="Variables.resultfield"/>
+					<IF COND="Variables.errno=0">
+					<THEN>
+						<SETVAR NAME="queryfields" VALUE="Variables.queryfields, Variables.AssetType.Variables.resultfield"/>
+					</THEN>
+					</IF>
+				</then>
+				</if>
+			</then>
+			</if>
+		</else>
+		</if>
+	</loop>
+</then>
+</if>	
+</FTCS>

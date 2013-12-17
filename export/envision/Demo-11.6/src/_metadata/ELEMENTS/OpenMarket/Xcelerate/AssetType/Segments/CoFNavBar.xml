@@ -1,0 +1,147 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/CoFNavBar
+--
+-- INPUT
+--
+-- OUTPUT
+
+--	continuePage (used by CoFFooter)
+--
+-->
+
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/GetCatLists"/>
+
+<if COND="Variables.SegmentsRuleScreen=first">
+	<then>
+		<setvar NAME="SegmentsRuleScreen" VALUE="catList.name"/>
+	</then>
+</if>
+
+<setvar NAME="pickNext" VALUE="false"/>
+<setvar NAME="continueName" VALUE="Variables.empty"/>
+<setvar NAME="continuePage" VALUE="Variables.empty"/>
+<setvar NAME="OnOrOff" VALUE="Off"/>
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+<!--first do scalar categories-->
+		<if COND="IsList.catList=true">
+			<then>
+				<loop LIST="catList">
+					<if COND="catList.name=Variables.SegmentsRuleScreen">
+						<then>
+							<if COND="Variables.SegmentsNextStep=CoFDemographics">
+								<then>
+									<setvar NAME="OnOrOff" VALUE="On"/>
+								</then>
+							</if>
+						</then>
+					</if>
+					<if COND="Variables.OnOrOff=On">
+						<then>
+							<td align="left" valign="top"><span class="navigation-bar-on"><STRING.STREAM VALUE="catList.name"/></span></td>
+							<setvar NAME="pickNext" VALUE="true"/>
+							<setvar NAME="OnOrOff" VALUE="Off"/>
+						</then>
+						<else>
+						  <XLAT.LOOKUP KEY="dvin/AT/Segments/Gonextcatspecsegment" VARNAME="_nextcat_" ESCAPE="true"/>
+							<XLAT.LOOKUP KEY="dvin/AT/Segments/Navigatetofilteringcriteria" VARNAME="_navitocat_"/>
+							<td align="left" valign="top">
+								<a href="javascript:void(0)" onclick="return FixRulePagename('Variables.ThisPage','CoFDemographics','catList.name');"  onmouseover="window.status='Variables._nextcat_';return true;" onmouseout="window.status='';"       title="Variables._navitocat_" REPLACEALL="Variables._navitocat_,Variables._nextcat_,Variables.ThisPage,catList.name">
+									<IMG src="Variables.cs_imagedir/graphics/common/icon/mArrowOff.gif" vspace="7" hspace="1" HEIGHT="9" WIDTH="9" BORDER="0" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale"/>
+								</a>
+							</td>
+							<td align="left" valign="top">
+								<a href="javascript:void(0)" onclick="return FixRulePagename('Variables.ThisPage','CoFDemographics','catList.name');"  onmouseover="window.status='Variables._nextcat_';return true;" onmouseout="window.status='';" title="Variables._navitocat_" REPLACEALL="Variables._navitocat_,Variables._nextcat_,catList.name,Variables.ThisPage">
+									<span class="navigation-bar"><STRING.STREAM VALUE="catList.name"/></span>
+								</a>
+							</td>
+							<if COND="Variables.pickNext=true">
+								<then>
+									<setvar NAME="pickNext" VALUE="false"/>
+									<setvar NAME="continuePage" VALUE="CoFDemographics"/>
+									<setvar NAME="continueName" VALUE="catList.name"/>
+								</then>
+							</if>
+						</else>
+					</if>
+					<td><img height="1" width="12" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+				</loop>
+			</then>
+		</if> 
+<!--second do history categories-->
+		<if COND="IsList.catHList=true">
+			<then>
+				<loop LIST="catHList">
+					<if COND="catHList.name=Variables.SegmentsRuleScreen">
+						<then>
+							<if COND="Variables.SegmentsNextStep=CoFHistory">
+								<then>
+									<setvar NAME="OnOrOff" VALUE="On"/>
+								</then>
+							</if>
+						</then>
+					</if>
+					<if COND="Variables.OnOrOff=On">
+						<then>
+							<td align="left" valign="top"><span class="navigation-bar-on"><STRING.STREAM VALUE="catHList.name"/></span></td>
+							<setvar NAME="pickNext" VALUE="true"/>
+							<setvar NAME="OnOrOff" VALUE="Off"/>
+						</then>
+						<else>
+						  <XLAT.LOOKUP KEY="dvin/AT/Segments/Gonextcatspecsegment" VARNAME="_nextcat_" ESCAPE="true"/>
+							<XLAT.LOOKUP KEY="dvin/AT/Segments/NavigatetoHfilteringcriteria" VARNAME="_naviHcat_"/>
+							<td align="left" valign="top">
+								<a href="javascript:void(0)" onclick="return FixRulePagename('Variables.ThisPage','CoFHistory','catHList.name');"  onmouseover="window.status='Variables._nextcat_';return true;" onmouseout="window.status='';"   title="Variables._naviHcat_" REPLACEALL="Variables._naviHcat_,Variables._nextcat_,catHList.name,Variables.ThisPage">
+									<IMG src="Variables.cs_imagedir/graphics/common/icon/mArrowOff.gif" vspace="7" HEIGHT="9" WIDTH="9" BORDER="0" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale"/>
+								</a>
+							</td>
+							<td align="left" valign="top">
+								<a href="javascript:void(0)" onclick="return FixRulePagename('Variables.ThisPage','CoFHistory','catHList.name');"  onmouseover="window.status='Variables._nextcat_';return true;" onmouseout="window.status='';"   title="Variables._naviHcat_" REPLACEALL="Variables._naviHcat_,Variables._nextcat_,catHList.name,Variables.ThisPage">
+									<span class="navigation-bar"><STRING.STREAM VALUE="catHList.name"/></span>
+								</a>
+							</td>
+							<if COND="Variables.pickNext=true">
+								<then>
+									<setvar NAME="pickNext" VALUE="false"/>
+									<setvar NAME="continuePage" VALUE="CoFHistory"/>
+									<setvar NAME="continueName" VALUE="catHList.name"/>
+								</then>
+							</if>
+						</else>
+					</if>
+					<td><img height="1" width="12" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+				</loop>
+			</then>
+		</if> 
+<!--third do car-->
+		<if COND="Shopping Cart=Variables.SegmentsRuleScreen">
+			<then>
+				<td align="left" valign="top"><span class="navigation-bar-on"><XLAT.STREAM KEY="dvin/AT/Segments/ShoppingCart"/></span></td>
+			</then>
+			<else>
+			  <XLAT.LOOKUP KEY="dvin/AT/Segments/Gonextcatspecsegment" VARNAME="_nextcat_" ESCAPE="true"/>
+				<XLAT.LOOKUP KEY="dvin/AT/Segments/NavigatetoSCfilteringcriteria" VARNAME="_naviSCcat_"/>
+				<td align="left" valign="top">
+					<a href="javascript:void(0)" onclick="return FixRulePagename('Variables.ThisPage','CoFCart','Shopping Cart');" onmouseover="window.status='Variables._nextcat_';return true;" onmouseout="window.status='';"   title="Variables._naviSCcat_" REPLACEALL="Variables._naviSCcat_,Variables._nextcat_">
+						<IMG src="Variables.cs_imagedir/graphics/common/icon/mArrowOff.gif" vspace="7" HEIGHT="9" WIDTH="9" BORDER="0" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale"/>
+					</a>
+				</td>
+				<td align="left" valign="top">
+					<a href="javascript:void(0)" onclick="return FixRulePagename('Variables.ThisPage','CoFCart','Shopping Cart');" onmouseover="window.status='Variables._nextcat_';return true;" onmouseout="window.status='';"  title="Variables._naviSCcat_" REPLACEALL="Variables._naviSCcat_,Variables._nextcat_,Variables.ThisPage">
+						<span class="navigation-bar"><XLAT.STREAM KEY="dvin/AT/Segments/ShoppingCart"/></span></a>
+				</td>
+				<if COND="Variables.pickNext=true">
+					<then>
+						<setvar NAME="pickNext" VALUE="false"/>
+						<setvar NAME="continuePage" VALUE="CoFCart"/>
+						<setvar NAME="continueName" VALUE="Shopping Cart"/>
+					</then>
+				</if>
+			</else>
+		</if>
+		<td><img height="1" width="12" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+	</tr>
+</table>
+</FTCS> 
