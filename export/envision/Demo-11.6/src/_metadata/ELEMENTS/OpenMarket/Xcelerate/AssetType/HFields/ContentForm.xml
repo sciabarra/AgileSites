@@ -1,0 +1,685 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+	<!-- 
+	$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/HFields/ContentForm.xml $ 
+	$Revision: 68 $ 
+	$Modtime: 2/27/04 2:46p $ 
+	-->
+	<!-- OpenMarket/Xcelerate/AssetType/HFields/ContentForm
+	--
+	-	Form for creating/editing  HFields
+	-- INPUT																							 	
+	--			ContentDetails: result of a scatter
+	-- OUTPUT
+	--
+	-- HISTORY 
+	-->
+
+	<!-- this load is only done to get the descriptive name of the asset
+			 for the following JavaScript. -->
+
+	<ASSETTYPE.LOAD NAME="type" TYPE="Variables.AssetType"/>
+	<ASSETTYPE.SCATTER NAME="type" PREFIX="AssetTypeObj"/>
+
+	<INPUT TYPE="hidden" NAME="upcommand" VALUE="submit"/>
+
+	<!-- 
+					setup all the fields in the HFields  table
+					as hidden input fields: this is required
+					for replacerow to work. 
+					
+					Note: you must
+					ensure that there is no more than one
+					occurence of a form field that refers
+					to one of these input fields. Else, browsers
+					will concatenate all values found, surely
+					leading to unexpected results
+	
+					Note: dates are dealt with a little differently
+	
+	-->
+	<SETVAR NAME="PName" VALUE="null"/>
+	<SETVAR NAME="PType" VALUE="null"/>
+	<SETVAR NAME="PConstrainttype" VALUE="null"/>
+	<SETVAR NAME="PLength" VALUE="null"/>
+	<SETVAR NAME="PLowerrange" VALUE="null"/>
+	<SETVAR NAME="PUpperrange" VALUE="null"/>
+	<SETVAR NAME="PDefaultval" VALUE="null"/>
+	<SETVAR NAME="PmyEnumValue" VALUE="null"/>
+	<SETVAR NAME="EnumValue" VALUE="NULL"/>
+
+	<CALLELEMENT  NAME="OpenMarket/Gator/Scripts/ValidateFields"/>
+	<CALLELEMENT  NAME="OpenMarket/Gator/Scripts/SetDirtyState"/>
+<SCRIPT LANGUAGE="JavaScript">
+<![CDATA[
+	
+function  Description()
+{ 
+	var obj = document.forms[0].elements[0];
+	if (obj.form.elements['HFields:description'].value=="")
+	{ 
+		obj.form.elements['HFields:description'].focus();
+		alert("]]><XLAT.STREAM KEY="dvin/AT/HFields/MustspecDESCRIPTION" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		return false;
+	} 
+	else 
+		return true; 
+} 
+	
+function  Category() { return  true; } 
+
+function GoToNextScreen(ourPage) {
+	var obj = document.forms[0].elements[0]; var basePage = "OpenMarket/Xcelerate/Actions/";
+	if(ourPage=="CopyFront")
+	ourPage="NewContentFront";
+
+	var	newpage = basePage + ourPage;	
+
+	obj.form.pagename.value = newpage;
+
+
+	obj.form.Reentered.value="yes";
+	document.forms[0].submit();
+
+	return false;
+
+}
+
+ 
+ function xferString(EType, EnumValue, Elength) {
+	var i, newIndex;
+	var obj = document.forms[0].elements[0];
+	var src = obj.form.elements['HFields:myEnumValue'];
+	var target = obj.form.elements['HFields:sMyEnumValues'];
+
+	if(checkdata(EType, EnumValue,Elength))
+	{						
+		if (src.value=="" || src.value==-1)
+			return;
+								for (i=0; i<target.options.length; i++) {
+												if (target.options[i]==src.value)
+				return;
+		}
+		newIndex=target.options.length;
+		target.options[newIndex]=new Option(src.value,src.value);
+		target.options[newIndex].selected=true;
+		src.value = "";
+		delNul(target)
+	}
+ }
+
+function removeStrings() {
+   var obj = document.forms[0].elements[0];
+	var target = obj.form.elements['HFields:sMyEnumValues'];
+	var i;
+	i=0;
+	while (i<target.options.length) {
+		if (target.options[i].selected)
+			target.options[i] = null;
+		else
+		{
+			target.options[i].selected=true;
+			i = i+1;
+		}
+	}
+	delNul(target)
+}
+
+function delNul(lst){
+	i = 0;
+	while (i<lst.options.length) {
+		if (lst.options[i].value==-1)
+			lst.options[i]=null
+		else
+			i = i + 1;
+	}
+}
+
+function selAll(lst){
+	if (!lst) return;
+	if (!lst.options) return;
+	for (i=0; i<lst.options.length; i++)
+	lst.options[i].selected=true
+	delNul(lst)
+}	
+function senum_selAllAll(){
+	var obj = document.forms[0].elements[0];
+	selAll(obj.form.elements['HFields:sMyEnumValues']);
+}	
+]]>
+	</SCRIPT>
+	<INPUT    TYPE="HIDDEN"   NAME="Reentered" VALUE=""/>
+
+
+	<IF COND="IsVariable.Reentered=true">
+		<THEN>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/HFields/GetOrSetVars">
+				<ARGUMENT NAME="GetOrSet" VALUE="set"/>
+			</CALLELEMENT>
+			<ASSET.SCATTER NAME="theCurrentAsset" PREFIX="ContentDetails"/>
+		</THEN>
+	</IF>
+
+	<IF COND="Variables.updatetype!=setformdefaults">
+		<THEN>
+			<ATM.LOCATE VARNAME="typemgr" TYPE="HistoryVals"/>
+			<HISTORYDATUMS.GETTYPESFORATTR NAME="typemgr" ID="Variables.id" LISTVARNAME="myTypes"/>
+			<IF COND="IsList.myTypes=true">
+				<THEN>
+					<IF COND="myTypes.#numRows!=0">
+						<THEN>
+							<!-- rskhanuja:disable editing if the attribute is a part of the defintion.Used to be SETVAR NAME="NoEditOnlyDisplay" VALUE="false" -->
+							<SETVAR NAME="NoEditOnlyDisplay"  VALUE="true"/>
+							<!-- rskhanuja:disable editing if the attribute is a part of the defintion.Used to be  SETVAR NAME="noEdit" VALUE="false" -->
+							<SETVAR NAME="noEdit" VALUE="true"/>
+							<XLAT.LOOKUP KEY="dvin/AT/HFields/Cantedithistattrusedinhisttype" VARNAME="_XLAT_"/>
+							<div class="width-outer-70">
+							<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+								<argument NAME="msgtext" VALUE="Variables._XLAT_"/>
+								<argument NAME="severity" VALUE="error"/>
+							</callelement>
+							</div>
+						</THEN>
+					</IF>
+				</THEN>
+			</IF>
+		</THEN>
+	</IF>
+
+	<!-- KDW: pr 13473 demands I rewrite the conditional below.  Condition used to be: IsVariable.NoEditOnlyDisplay=true -->
+	<IF COND="Variables.NoEditOnlyDisplay=true">
+		<THEN>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Variables.AssetType/ContentDetails"/>
+		</THEN>
+		<ELSE>
+
+			<SETVAR NAME="PName" VALUE="HFields:name"/>
+			<SETVAR NAME="PType" VALUE="HFields:type"/>
+			<SETVAR NAME="PConstrainttype" VALUE="HFields:constrainttype"/>
+			<SETVAR NAME="PLength" VALUE="HFields:length"/>
+			<SETVAR NAME="PLowerrange" VALUE="HFields:lowerrange"/>
+			<SETVAR NAME="PUpperrange" VALUE="HFields:upperrange"/>
+			<SETVAR NAME="PDefaultval" VALUE="HFields:defaultval"/>
+			<SETVAR NAME="PmyEnumValue" VALUE="HFields:sMyEnumValues"/>
+			<SETVAR NAME="EnumValue" VALUE="HFields:myEnumValue"/>
+			<REPLACEALL LIST="Variables.PType,Variables.PName,Variables.PConstrainttype,Variables.PLength,Variables.PLowerrange,Variables.PUpperrange,Variables.PDefaultval,Variables.PmyEnumValue">
+				<SCRIPT LANGUAGE="JavaScript">
+					var obj = document.forms[0];
+					function submitForm()
+					{
+						senum_selAllAll();
+						return checkfields('Variables.PType','Variables.PName','Variables.PConstrainttype','Variables.PLength','Variables.PLowerrange','Variables.PUpperrange','Variables.PDefaultval','Variables.PmyEnumValue');
+					}
+
+					function getAssetName()
+					{
+						var obj = document.forms[0];
+						return obj.elements['HFields:name'].value;
+					}
+				</SCRIPT>
+			</REPLACEALL>
+			<IF COND="IsVariable.ContentDetails:nullallowed=true">
+				<THEN>
+					<IF COND="Variables.ContentDetails:nullallowed=F">
+						<THEN>
+							<SETVAR NAME="PDefaultval" VALUE="HFields:defaultval"/>
+						</THEN>
+					</IF>
+				</THEN>
+			</IF>
+			
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+				<ARGUMENT NAME="customToolBar" VALUE="HFields"/>
+				<ARGUMENT NAME="doNotShowSaveButton" VALUE="Variables.noEdit"/>
+			</CALLELEMENT>
+			
+			
+			<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" CLASS="width-outer-70">
+				<!-- page title w/ asset name -->
+				<ASSETTYPE.LIST LIST="ThisAsset" FIELD1="assettype" VALUE1="Variables.AssetType"/>
+				<TR>
+					<TD>
+						<SPAN CLASS="title-text">
+						<STRING.STREAM VALUE="ThisAsset.description"/>
+:
+						</SPAN>
+						<SPAN CLASS="title-value-text">
+						<STRING.STREAM VALUE="Variables.ContentDetails:name"/>
+						</SPAN>
+					</TD>
+				</TR>
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+					<ARGUMENT NAME="SpaceBelow" VALUE="No"/>
+				</CALLELEMENT>
+		
+				<!-- attribute inspection form -->
+				<TR>
+					<TD>
+						<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+							<CALLELEMENT NAME="OpenMarket/Gator/FlexibleAssets/Common/CheckforQuotes">
+								<ARGUMENT NAME="Prefix" VALUE="HFields"/>
+								<ARGUMENT NAME="DesReq" VALUE="yes"/>
+							</CALLELEMENT>
+							<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+							<TR>
+								<TD CLASS="form-label-text">ID:</TD>
+								<TD></TD>
+								<TD class="form-inset">
+									<STRING.STREAM VALUE="Variables.id"/>
+								</TD>
+							</TR>
+		
+							<!-- OMIma26140	-->
+		 
+		
+							<!-- start the unique fields -->
+							<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+							<TR>
+								<TD CLASS="form-label-text"><XLAT.STREAM KEY="dvin/Common/Type"/>:</TD>
+								<TD></TD>
+								<TD class="form-inset">
+									<STRINGLIST NAME="GAStyle" STR="int,string,boolean,short,long,double,timestamp,money" DELIM=","/>
+									<XLAT.LOOKUP KEY="dvin/AT/HFields/HFieldTypes" VARNAME="_HFieldTypes_"/>
+									<STRINGLIST NAME="GAsDescription" STR="Variables._HFieldTypes_" DELIM=","/>
+
+									<SELECT NAME="HFields:type" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" SIZE="1" ONCHANGE="GoToNextScreen('Variables.ThisPage')" REPLACEALL="Variables.ThisPage">
+										<LOOP LIST="GAStyle">
+											<IF COND="Variables.ContentDetails:type=GAStyle.ITEM">
+												<THEN>
+													<OPTION VALUE="GAStyle.ITEM" SELECTED="" REPLACEALL="GAStyle.ITEM">
+													<STRING.STREAM VALUE="GAsDescription.ITEM"/>
+													</OPTION>
+												</THEN>
+												<ELSE>
+													<OPTION VALUE="GAStyle.ITEM" REPLACEALL="GAStyle.ITEM">
+													<STRING.STREAM VALUE="GAsDescription.ITEM"/>
+													</OPTION>
+												</ELSE>
+											</IF>
+											<SETROW LIST="GAsDescription" ACTION="NEXT"/>
+										</LOOP>
+									</SELECT>
+								</TD>
+							</TR>
+		
+
+							<IF COND="IsVariable.ContentDetails:type=true">
+								<THEN>
+									<IF COND="Variables.ContentDetails:type=string">
+										<THEN>
+											<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+											<TR>
+												<TD CLASS="form-label-text"><XLAT.STREAM KEY="dvin/Common/Length"/>:</TD>
+												<TD></TD>
+												<TD class="form-inset">
+													<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+														<argument NAME="inputName" VALUE="HFields:length"/>
+														<argument NAME="inputValue" VALUE="Variables.ContentDetails:length"/>
+														<argument NAME="inputSize" VALUE="4"/>
+														<argument NAME="inputMaxlength" VALUE="4"/>
+													</callelement>
+												</TD>
+											</TR>
+										</THEN>
+									</IF>
+								</THEN>
+							</IF>
+							<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+							<TR>
+								<TD CLASS="form-label-text">
+									<XLAT.STREAM KEY="dvin/AT/Common/Mustbespecified?"/>
+								</TD>
+								<TD></TD>
+								<TD class="form-inset">
+									<STRINGLIST NAME="GAStyle" STR="T,F" DELIM=","/>
+									<XLAT.LOOKUP KEY="dvin/AT/Common/truecommafalse" VARNAME="_MustbespecifiedTypes_"/>
+									<STRINGLIST NAME="GAsDescription" STR="Variables._MustbespecifiedTypes_" DELIM=","/>
+									<SELECT NAME="HFields:constraintrequired" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" SIZE="1">
+										<LOOP LIST="GAStyle">
+											<IF COND="Variables.ContentDetails:constraintrequired=GAStyle.ITEM">
+												<THEN>
+													<OPTION VALUE="GAStyle.ITEM" REPLACEALL="GAStyle.ITEM" SELECTED="">
+													<STRING.STREAM VALUE="GAsDescription.ITEM"/>
+													</OPTION>
+												</THEN>
+												<ELSE>
+													<OPTION VALUE="GAStyle.ITEM" REPLACEALL="GAStyle.ITEM">
+													<STRING.STREAM VALUE="GAsDescription.ITEM"/>
+													</OPTION>
+												</ELSE>
+											</IF>
+											<SETROW LIST="GAsDescription" ACTION="NEXT"/>
+										</LOOP>
+									</SELECT>
+								</TD>
+							</TR>
+							<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+							<TR>
+								<TD CLASS="form-label-text">
+									<XLAT.STREAM KEY="dvin/AT/HFields/Filterby?"/>
+								</TD>
+								<TD></TD>
+								<TD class="form-inset">
+									<STRINGLIST NAME="GAStyle" STR="F,T" DELIM=","/>
+									<XLAT.LOOKUP KEY="dvin/AT/Common/falsecommatrue" VARNAME="_falsecommatrue_"/>
+									<STRINGLIST NAME="GAsDescription" STR="Variables._falsecommatrue_" DELIM=","/>
+									<SELECT NAME="HFields:searchable" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" SIZE="1"   REPLACEALL="Variables.ThisPage">
+										<LOOP LIST="GAStyle">
+											<IF COND="Variables.ContentDetails:searchable=GAStyle.ITEM">
+												<THEN>
+													<OPTION VALUE="GAStyle.ITEM" REPLACEALL="GAStyle.ITEM" SELECTED="">
+													<STRING.STREAM VALUE="GAsDescription.ITEM"/>
+													</OPTION>
+												</THEN>
+												<ELSE>
+													<OPTION VALUE="GAStyle.ITEM" REPLACEALL="GAStyle.ITEM">
+													<STRING.STREAM VALUE="GAsDescription.ITEM"/>
+													</OPTION>
+												</ELSE>
+											</IF>
+											<SETROW LIST="GAsDescription" ACTION="NEXT"/>
+										</LOOP>
+									</SELECT>
+								</TD>
+							</TR>
+		
+							
+		
+							<!--  Enumeration  conditions   
+											 For String type   --  no range 
+											 For Boolean type-  no enumeration  no range-->
+
+							<IF COND="IsVariable.ContentDetails:type=true">
+								<THEN>
+									<IF COND="Variables.ContentDetails:type=string">
+										<THEN>
+											<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+											<TR>
+												<TD CLASS="form-label-text"><XLAT.STREAM KEY="dvin/AT/HFields/Constrainttype"/>:</TD>
+												<TD></TD>
+												<TD class="form-inset">
+													<STRINGLIST NAME="GAStyle" STR="none,enum" DELIM=","/>
+													<XLAT.LOOKUP KEY="dvin/AT/Common/nonecommaenum" VARNAME="_nonecommaenum_"/>
+													<STRINGLIST NAME="GAsDescription" STR="Variables._nonecommaenum_" DELIM=","/>
+													<SELECT NAME="HFields:constrainttype" SIZE="1" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" ONCHANGE="GoToNextScreen('Variables.ThisPage')" REPLACEALL="Variables.ThisPage">
+														<LOOP LIST="GAStyle">
+															<IF COND="Variables.ContentDetails:constrainttype=GAStyle.ITEM">
+																<THEN>
+																	<OPTION VALUE="GAStyle.ITEM" REPLACEALL="GAStyle.ITEM" SELECTED="">
+																	<STRING.STREAM VALUE="GAsDescription.ITEM"/>
+																	</OPTION>
+																</THEN>
+																<ELSE>
+																	<OPTION VALUE="GAStyle.ITEM" REPLACEALL="GAStyle.ITEM">
+																	<STRING.STREAM VALUE="GAsDescription.ITEM"/>
+																	</OPTION>
+																</ELSE>
+															</IF>
+															<SETROW LIST="GAsDescription" ACTION="NEXT"/>
+														</LOOP>
+													</SELECT>
+												</TD>
+											</TR>
+										</THEN>
+										<ELSE>
+											<IF COND="Variables.ContentDetails:type=boolean">
+												<THEN>
+													<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+													<TR>
+														<TD CLASS="form-label-text"><XLAT.STREAM KEY="dvin/AT/HFields/Constrainttype"/>:</TD>
+														<TD></TD>
+														<TD class="form-inset">
+															<SELECT NAME="HFields:constrainttype" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" SIZE="1" ONCHANGE="GoToNextScreen('Variables.ThisPage')" REPLACEALL="Variables.ThisPage">
+																<OPTION VALUE="">
+																<XLAT.STREAM KEY="dvin/Common/lowercasenone"/>
+																</OPTION>
+															</SELECT>
+														</TD>
+													</TR>
+													<SETVAR NAME="PConstrainttype" VALUE="HFields:constrainttype"/>
+												</THEN>
+												<ELSE>
+													<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+													<TR>
+														<TD CLASS="form-label-text"><XLAT.STREAM KEY="dvin/AT/HFields/Constrainttype"/>:</TD>
+														<TD></TD>
+														<TD class="form-inset">
+															<STRINGLIST NAME="GAStyle" STR="none,enum,range" DELIM=","/>
+															<XLAT.LOOKUP KEY="dvin/AT/Common/nonecommaenumcommarange" VARNAME="_noneenumrange_"/>
+															<STRINGLIST NAME="GAsDescription" STR="Variables._noneenumrange_" DELIM=","/>
+															<SELECT NAME="HFields:constrainttype" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" SIZE="1" ONCHANGE="GoToNextScreen('Variables.ThisPage')" REPLACEALL="Variables.ThisPage">
+																<LOOP LIST="GAStyle">
+																	<IF COND="Variables.ContentDetails:constrainttype=GAStyle.ITEM">
+																		<THEN>
+																			<OPTION VALUE="GAStyle.ITEM" REPLACEALL="GAStyle.ITEM" SELECTED="">
+																			<STRING.STREAM VALUE="GAsDescription.ITEM"/>
+																			</OPTION>
+																		</THEN>
+																		<ELSE>
+																			<OPTION VALUE="GAStyle.ITEM" REPLACEALL="GAStyle.ITEM">
+																			<STRING.STREAM VALUE="GAsDescription.ITEM"/>
+																			</OPTION>
+																		</ELSE>
+																	</IF>
+																	<SETROW LIST="GAsDescription" ACTION="NEXT"/>
+																</LOOP>
+															</SELECT>
+														</TD>
+													</TR>
+												</ELSE>
+											</IF>
+										</ELSE>
+									</IF>
+								</THEN>
+							</IF>
+		
+							<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+							<TR>
+								<TD CLASS="form-label-text">
+									<XLAT.STREAM KEY="dvin/AT/Common/Nullallowed?"/>
+								</TD>
+								<TD></TD>
+								<TD class="form-inset">
+									<STRINGLIST NAME="GAStyle" STR="F,T" DELIM=","/>
+									<XLAT.LOOKUP KEY="dvin/AT/Common/falsecommatrue" VARNAME="_falsecommatrue_"/>
+									<STRINGLIST NAME="GAsDescription" STR="Variables._falsecommatrue_" DELIM=","/>
+
+									<SELECT NAME="HFields:nullallowed" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" SIZE="1" ONCHANGE="GoToNextScreen('Variables.ThisPage')" REPLACEALL="Variables.ThisPage">
+										<LOOP LIST="GAStyle">
+											<IF COND="Variables.ContentDetails:nullallowed=GAStyle.ITEM">
+												<THEN>
+													<OPTION VALUE="GAStyle.ITEM" SELECTED="" REPLACEALL="GAStyle.ITEM">
+													<STRING.STREAM VALUE="GAsDescription.ITEM"/>
+													</OPTION>
+												</THEN>
+												<ELSE>
+													<OPTION VALUE="GAStyle.ITEM" REPLACEALL="GAStyle.ITEM">
+													<STRING.STREAM VALUE="GAsDescription.ITEM"/>
+													</OPTION>
+												</ELSE>
+											</IF>
+											<SETROW LIST="GAsDescription" ACTION="NEXT"/>
+										</LOOP>
+									</SELECT>
+								</TD>
+							</TR>
+
+							<IF COND="IsVariable.ContentDetails:nullallowed=true">
+								<THEN>
+									<IF COND="Variables.ContentDetails:nullallowed=F">
+										<THEN>
+											<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+											<TR>
+												<TD CLASS="form-label-text"><XLAT.STREAM KEY="dvin/AT/HFields/Defaultnullnotallowed"/>:</TD>
+												<TD></TD>
+												<TD class="form-inset">
+													<INPUT TYPE="INT" NAME="HFields:defaultval" SIZE="32" MAXLENGTH="32" VALUE="Variables.ContentDetails:defaultval" REPLACEALL="Variables.ContentDetails:defaultval"/>
+												</TD>
+											</TR>
+											<!--setvar NAME="PDefaultval" VALUE="HFields:defaultval"/-->
+										</THEN>
+									</IF>
+								</THEN>
+							</IF>
+
+							<IF COND="IsVariable.ContentDetails:constrainttype=true">
+								<THEN>
+									<IF COND="Variables.ContentDetails:constrainttype=range">
+										<THEN>
+										    <IF COND="Variables.ContentDetails:type!=string">
+										    <THEN>
+											<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+											<TR>
+												<TD></TD>
+												<TD></TD>
+												<TD CLASS="form-label-inset">
+													<XLAT.STREAM KEY="dvin/AT/HFields/RangeConstraints"/>
+												</TD>
+											</TR>
+					
+
+											<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+											<TR>
+												<TD CLASS="form-label-text"><XLAT.STREAM KEY="dvin/AT/HFields/Lowerrangelimit"/>:</TD>
+												<TD></TD>
+												<TD class="form-inset">
+													<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+														<argument NAME="inputName" VALUE="HFields:lowerrange"/>
+														<argument NAME="inputValue" VALUE="Variables.ContentDetails:lowerrange"/>
+														<argument NAME="inputSize" VALUE="32"/>
+														<argument NAME="inputMaxlength" VALUE="32"/>
+													</callelement>
+												</TD>
+											</TR>
+					
+
+											<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+											<TR>
+												<TD CLASS="form-label-text"><XLAT.STREAM KEY="dvin/AT/HFields/Upperrangelimit"/>:</TD>
+												<TD></TD> 
+												<TD class="form-inset">
+													<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+														<argument NAME="inputName" VALUE="HFields:upperrange"/>
+														<argument NAME="inputValue" VALUE="Variables.ContentDetails:upperrange"/>
+														<argument NAME="inputSize" VALUE="32"/>
+														<argument NAME="inputMaxlength" VALUE="32"/>
+													</callelement>
+												</TD>
+											</TR>
+											<SETVAR NAME="PLowerrange" VALUE="HFields:lowerrange"/>
+											<SETVAR NAME="PUpperrange" VALUE="HFields:upperrange"/>
+											</THEN>
+											</IF>
+										</THEN>
+										<ELSE>
+											<IF COND="Variables.ContentDetails:constrainttype=enum">
+												<THEN>
+													<SETVAR NAME="EnumValue" VALUE="HFields:myEnumValue"/>
+													<SETVAR NAME="PmyEnumValue" VALUE="HFields:sMyEnumValues"/>
+													<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+													<TR>
+														<TD></TD>
+														<TD></TD>
+														<TD CLASS="form-label-inset">
+															<XLAT.STREAM KEY="dvin/AT/HFields/EnumerationConstraints"/>
+														</TD>
+													</TR>
+
+													<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+													<TR>
+														<TD CLASS="form-label-text"><XLAT.STREAM KEY="dvin/AT/HFields/Addenumeratedvalue"/>:</TD>
+														<TD>
+														</TD>
+														<TD class="form-inset">
+															<table><tr><td>
+																<XLAT.LOOKUP KEY="dvin/AT/HFields/Addthisenumeratedvalue" VARNAME="_thisvalue_" ESCAPE="true"/>
+																<XLAT.LOOKUP KEY="dvin/AT/HFields/Addthisenumeratedvalue" VARNAME="_thisvalue_ALT"/>
+																<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+																	<argument NAME="inputName" VALUE="HFields:myEnumValue"/>
+																	<argument NAME="inputValue" VALUE=""/>
+																	<argument NAME="inputSize" VALUE="32"/>
+																	<argument NAME="inputMaxlength" VALUE="255"/>
+																</callelement>
+															</td><td style="padding-top:4px;">
+																<A HREF="javascript:void(0)" ONCLICK="xferString('Variables.PType','Variables.EnumValue','Variables.PLength')" ONMOUSEOVER="window.status='Variables._thisvalue_';return true;" ONMOUSEOUT="window.status='';return true;"REPLACEALL="Variables.PType,Variables.PLength,Variables.EnumValue,Variables._thisvalue_"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Add"/></CALLELEMENT></A>
+															</td></tr></table>
+														</TD>
+													</TR>
+													<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+													<TR>
+														<TD CLASS="form-label-text"><XLAT.STREAM KEY="dvin/AT/HFields/Legalvalues"/>:</TD>
+														<TD></TD>
+														<TD class="form-inset">
+															<table><tr><td>
+																<SELECT NAME="HFields:sMyEnumValues" SIZE="4" MULTIPLE="yes">
+																	<OPTION VALUE="-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</OPTION>
+																	<LOOP LIST="ContentDetails:Values">
+																		<OPTION VALUE="ContentDetails:Values.value" SELECTED="" REPLACEALL="ContentDetails:Values.value">
+																		<STRING.STREAM VALUE="ContentDetails:Values.value"/>
+																		</OPTION>
+																	</LOOP>
+																</SELECT>
+															</td><td style="padding-top:4px;">
+																<XLAT.LOOKUP KEY="dvin/AT/HFields/Removethisenumeratedvalue" VARNAME="_thisvalue_" ESCAPE="true"/>
+																<XLAT.LOOKUP KEY="dvin/AT/HFields/Removethisenumeratedvalue" VARNAME="_thisvalue_ALT"/>
+																<A HREF="javascript:void(0)"  ONCLICK="removeStrings()" ONMOUSEOVER="window.status='Variables._thisvalue_';return true;" ONMOUSEOUT="window.status='';return true;" REPLACEALL="Variables._thisvalue_"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Remove"/></CALLELEMENT></A>
+															</td></tr></table>
+														</TD>
+													</TR>
+												</THEN>
+											</IF>
+										</ELSE>
+									</IF>
+								</THEN>
+							</IF>
+
+							<!-- named associations if there are any -->
+							<ASSOCNAMEDMANAGER.LIST  LISTVARNAME="associations" TYPE="Variables.AssetType"/>
+							<IF COND="associations.#numRows!=0">
+								<THEN>
+									<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+									<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormTypeAhead"/>											
+								</THEN>
+							</IF>
+
+							<IF COND="Variables.updatetype!=setformdefaults">
+								<THEN>
+									<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+									<TR>
+										<TD CLASS="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Created"/>:</TD>
+										<TD></TD>
+										<TD class="form-inset"><span class="disabledEditText">
+											<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:createddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:createddate"/>
+											<XLAT.STREAM KEY="dvin/UI/ContentDetailscreateddatebycreatedby"/></span>
+										</TD>
+									</TR>
+
+									<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+									<TR>
+										<TD CLASS="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Modified"/>:</TD>
+										<TD></TD>
+										<TD class="form-inset"><span class="disabledEditText">
+											<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:updateddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:updateddate"/>
+											<XLAT.STREAM KEY="dvin/UI/ContentDetailsupdateddatebyupdatedby"/></span>
+										</TD>
+									</TR>
+								</THEN>
+							</IF>
+							
+						</TABLE><!--end of body-->
+					</TD>
+				</TR>
+		
+
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+
+			</TABLE>
+		
+			<!-- Hidden ones -->
+			<STRING.ENCODE VARIABLE="ContentDetails:attrname" VARNAME="OutputQString"/>
+			<INPUT TYPE="HIDDEN" NAME="HFields:attrname"    VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/>
+		</ELSE>
+	</IF>
+
+</FTCS>

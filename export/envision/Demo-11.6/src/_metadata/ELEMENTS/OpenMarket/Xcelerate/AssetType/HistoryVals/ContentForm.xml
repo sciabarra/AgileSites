@@ -1,0 +1,343 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/HistoryVals/ContentForm.xml $ 
+$Revision: 55 $ 
+$Modtime: 2/27/04 2:46p $ 
+-->
+<!-- OpenMarket/Xcelerate/AssetType/HistoryVals/ContentForm
+--
+--	Form for creating/editing  HistoryVals
+-- INPUT
+--			ContentDetails: result of a scatter
+-- OUTPUT
+-- HISTORY 
+   [2007-09-11 KG]
+   * added XSS scripting fixes (adapted from 6.3 fixes); search for isCleanString
+   * changed definitions of 'obj' to just forms[0] (not .elements[0])
+   * refactored Checkapostrophe functionality into isCleanString as well.
+   [2007-10-09 KG]
+   * XSS revision: minimized set of restricted characters.
+-->
+
+<!-- this load is only done to get the descriptive name of the asset
+     for the following JavaScript. -->
+
+<ASSETTYPE.LOAD NAME="type" TYPE="Variables.AssetType"/>
+<ASSETTYPE.SCATTER NAME="type" PREFIX="AssetTypeObj"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/ValidateInputForXSS" />
+<CALLELEMENT  NAME="OpenMarket/Gator/Scripts/SetDirtyState"/>
+<CALLELEMENT  NAME="OpenMarket/Gator/Scripts/TabDirtyScript"/>
+<SCRIPT LANGUAGE="JavaScript">
+<![CDATA[
+var obj = document.forms[0];
+function checkfields()
+{
+	var obj = document.forms[0];
+	if (obj.elements['HistoryVals:name'].value=="")
+	{
+		alert("]]><XLAT.STREAM KEY="dvin/Error/AT/Common/UniqueName" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		obj.elements['HistoryVals:name'].focus();
+		return false;
+	}
+	var isclean = isCleanString(obj.elements['HistoryVals:name'].value, '<">', true);
+	if (!isclean) {
+		alert("]]><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/ApostropheNotAllowedMinimal" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		obj.elements['HistoryVals:name'].focus();
+		return false;
+	}
+		
+	if (obj.elements['HistoryVals:description'].value=="") {
+		obj.elements['HistoryVals:description'].focus();
+		alert("]]><XLAT.STREAM KEY="dvin/AT/HFields/MustspecDESCRIPTION" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		return false;
+	}
+	
+	if (obj.elements['HistoryVals:category'].value=="") {
+		obj.elements['HistoryVals:category'].focus();
+		alert("]]><XLAT.STREAM KEY="dvin/AT/HVals/MustspecCATEGORY" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		return false;
+	}
+	if (obj.elements['HistoryVals:category'].value!="")
+	{
+		var cat = obj.elements['HistoryVals:category'].value;
+		isclean = isCleanString(cat, "\"'", true);
+		if (!isclean) {
+			obj.elements['HistoryVals:category'].focus();
+			alert("]]><XLAT.STREAM KEY="dvin/AT/HVals/ApostropheNotAllowedinCATEGORY" ESCAPE="true" ENCODE="false"/><![CDATA["); 
+			return false;
+		}
+ 	}
+	if (obj.elements['HistoryVals:description'].value!="")
+	{
+		var desc = obj.elements['HistoryVals:description'].value;
+		isclean = isCleanString(desc, "\"'", true);
+		if (!isclean) {
+			obj.elements['HistoryVals:description'].focus();
+			alert("]]><XLAT.STREAM KEY="dvin/AT/HVals/ApostropheNotAllowedinDESCRIPTION" ESCAPE="true" ENCODE="false"/><![CDATA["); 
+			return false;
+		}
+ 	}
+  	 
+	var sAttrs = obj.elements['HistoryVals:sMyFieldList'];
+	if (sAttrs.options.length==0)
+	{
+		alert("]]><XLAT.STREAM KEY="dvin/AT/HVals/SelectAtleastOneHistAttr" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		return false;
+	}
+	
+	obj.submit();
+	return false;
+}
+
+function SetCancelFlag () {
+	var obj = document.forms[0];
+	if(confirm("]]><XLAT.STREAM KEY="dvin/Common/CancelClicked" ESCAPE="true" ENCODE="false"/><![CDATA[")){
+		obj.elements['upcommand'].value="cancel";
+		obj.submit();
+		return false;
+	}
+}
+
+function submitForm()
+{
+	senum_selAllAll(); 
+	return checkfields();	
+}
+
+function getAssetName()
+{
+	var obj = document.forms[0];
+	return obj.elements['HistoryVals:name'].value;
+}
+]]>
+</SCRIPT>
+<INPUT TYPE="hidden" NAME="upcommand" VALUE="submit"/>
+
+<!-- 
+		setup all the fields in the HistoryVals  table
+		as hidden input fields: this is required
+		for replacerow to work. 
+		
+		Note: you must
+		ensure that there is no more than one
+		occurence of a form field that refers
+		to one of these input fields. Else, browsers
+		will concatenate all values found, surely
+		leading to unexpected results
+
+		Note: dates are dealt with a little differently
+
+-->
+<SCRIPT LANGUAGE="JavaScript">
+	
+<![CDATA[
+
+        function xfer(src,target) {
+                var sc, itemText, i, newIndex, listy;
+                for (i=0; i<src.options.length; i++) {
+                        if (src.options[i].selected) {
+                                var sc=i;
+                                var o=src.options[sc]
+                                items=new Option(o.text,o.value);
+                                newIndex=target.options.length;
+                                target.options[newIndex]=items;
+                                target.options[newIndex].selected=true
+                        }
+                }
+                i = 0;
+                while (i<src.options.length) {
+                        if (src.options[i].selected)
+                                src.options[i]=null
+                        else
+                                i = i + 1;
+                }
+                delNul(src)
+                delNul(target)
+                // set the form/tab dirty in contributor ui
+                setTabDirty();
+        }
+
+        function delNul(lst){
+                i = 0;
+                while (i<lst.options.length) {
+                        if (lst.options[i].value==-1)
+                                lst.options[i]=null
+                        else
+                                i = i + 1;
+                }
+        }
+
+        function selAll(lst){
+                for (i=0; i<lst.options.length; i++)
+                        lst.options[i].selected=true
+                delNul(lst)
+        }
+
+        function senum_selAllAll(){
+			var obj = document.forms[0].elements[0];
+			selAll(obj.form.elements['HistoryVals:sMyFieldList']);
+		}
+      
+]]>
+</SCRIPT>
+<commercecontext.verifySegmentDependency ID="Variables.id" VARNAME="dependencyExists"/>
+<IF COND="Variables.dependencyExists=true">
+<THEN>
+	<ICS.RESOLVEVARIABLES NAME="$(Variables.$(Variables.id):dependentSegmentName)" DELIMITED="true" OUTPUT="segmentName"/>
+	<XLAT.LOOKUP KEY="dvin/AT/HVals/HistoryDefUsedBySegment" VARNAME="_XLAT_" ESCAPE="true"/>
+	<ICS.RESOLVEVARIABLES NAME="Variables._XLAT_ Variables.segmentName" DELIMITED="true" OUTPUT="msgTxt"/>
+	<div class="width-outer-70">
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+		<ARGUMENT NAME="msgtext" VALUE="Variables.msgTxt"/>
+		<ARGUMENT NAME="severity" VALUE="error"/>
+	</CALLELEMENT>
+	</div>
+	<SETVAR NAME="noEdit" VALUE="true"/>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Variables.AssetType/ContentDetails"/>
+</THEN>
+<ELSE>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+	<ARGUMENT NAME="customToolBar" VALUE="HistoryVals"/>
+	<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
+</CALLELEMENT>
+
+
+
+
+<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+     <setvar NAME="PName" VALUE="HistoryVals:name"/>
+     
+		<SETVAR NAME="SelectedFields" VALUE="Variables.empty"/>
+        <LOOP LIST="ContentDetails:Fields">
+			<SETVAR NAME="SelectedFields" VALUE="Variables.SelectedFieldsContentDetails:Fields.assetid,"/>
+		</LOOP>
+	<!-- page title w/ asset name -->
+	<assettype.list LIST="ThisAsset" FIELD1="assettype" VALUE1="Variables.AssetType"/>
+	<tr>
+		<td><span class="title-text"><STRING.STREAM VALUE="ThisAsset.description"/>: </span><span class="title-value-text"><STRING.STREAM VARIABLE="ContentDetails:name"/></span></td>
+	</tr>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+		<argument NAME="SpaceBelow" VALUE="No"/>
+	</callelement>
+
+    <!-- attribute inspection form -->
+	<tr>
+		<td><table border="0" cellpadding="0" cellspacing="0">
+                        
+ 	    <callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/CheckforQuotes">
+				<argument NAME="Prefix" VALUE="HistoryVals"/>
+ 				<argument NAME="DesReq" VALUE="yes"/>
+			</callelement>
+
+		 
+
+
+		
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			 	<!-- start the unique fields -->
+
+	<TR>
+		<TD class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/UI/Admin/Category"/>:</TD>
+		<td></td>
+		<td class="form-inset">
+			<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+				<argument NAME="inputName" VALUE="HistoryVals:category"/>
+				<argument NAME="inputValue" VALUE="Variables.ContentDetails:category"/>
+				<argument NAME="inputSize" VALUE="32"/>
+				<argument NAME="inputMaxlength" VALUE="32"/>
+			</callelement>
+		</td>
+	</TR>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<TR>
+	
+		<td class="form-label-text" valign="top"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/AT/HVals/HistoryAttributes"/>:</td>
+ 		<td></td>
+		<td class="form-inset">
+		<!-- Get the list of legal field names -->
+		<ATM.LOCATE TYPE="HFields" VARNAME="myFieldMgr"/>
+		<COMPLEXASSETS.GETALLASSETS SITE="SessionVariables.pubid" NAME="myFieldMgr" LISTVARNAME="MyFieldIDList"/>
+		<!-- Go through the fields and remove those already selected -->
+		
+      <table border="0">
+		<tr>
+ 				<td align="center"><span class="table-header-small-text"><XLAT.STREAM KEY="dvin/Common/Available"/></span><br/>
+				<SELECT name="MyFieldList" size="8" MULTIPLE="yes"
+					onBlur="delNul(this.form.elements['MyFieldList'])" style="width:150px;">
+                    
+					<loop LIST="MyFieldIDList">
+						<SETVAR NAME="errno" VALUE="0"/>
+						<isinlist STR="Variables.SelectedFields" ITEM="MyFieldIDList.assetid"/>
+						<if COND="Variables.errno!=1">
+						<then>
+							<ASSET.LOAD NAME="myFieldAsset" TYPE="HFields" FIELD="id" VALUE="MyFieldIDList.assetid"/>
+							<ASSET.GET NAME="myFieldAsset" FIELD="name" OUTPUT="myAssetName"/>
+ 							<OPTION VALUE="MyFieldIDList.assetid" REPLACEALL="MyFieldIDList.assetid"><STRING.STREAM VARIABLE="myAssetName"/></OPTION>
+ 						</then>
+						</if>
+					</loop>
+                      
+					<option VALUE="-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+				</SELECT>
+				<br/>  	
+				<![CDATA[
+					<input type="button" value="-->" name="Add1" onClick="xfer(this.form.elements['MyFieldList'], this.form.elements['HistoryVals:sMyFieldList'])">
+				]]>
+			</td>
+			 <td align="center"><span class="table-header-small-text"><XLAT.STREAM KEY="dvin/Common/Selected"/></span><br/>
+				<select NAME="HistoryVals:sMyFieldList" SIZE="8" MULTIPLE="yes" style="width:150px;">
+ 					<loop LIST="MyFieldIDList">
+						<SETVAR NAME="errno" VALUE="0"/>
+						<isinlist STR="Variables.SelectedFields" ITEM="MyFieldIDList.assetid"/>
+						<if COND="Variables.errno=1">
+						<then>
+							<ASSET.LOAD NAME="myFieldAsset" TYPE="HFields" FIELD="id" VALUE="MyFieldIDList.assetid"/>
+							<ASSET.GET NAME="myFieldAsset" FIELD="name" OUTPUT="myAssetName"/>
+  						 <OPTION VALUE="MyFieldIDList.assetid" SELECTED="" REPLACEALL="MyFieldIDList.assetid"> <STRING.STREAM VARIABLE="myAssetName"/></OPTION>
+  						</then>
+						</if>
+					</loop> 
+ 				    <option VALUE="-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+				</select>
+                <br/>
+				<![CDATA[
+ 					<input type="button" value="<--" name="Remove1" onClick="xfer(this.form.elements['HistoryVals:sMyFieldList'], this.form.elements['MyFieldList'])">
+				]]>
+			</td>
+		</tr>
+      </table>
+      </td>
+	</TR>
+
+	<!-- named associations if there are any -->		 
+	        <ASSOCNAMEDMANAGER.LIST  LISTVARNAME="associations" TYPE="Variables.AssetType"/>
+            <IF COND="associations.#numRows!=0">
+			<THEN>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormTypeAhead"/>											
+			</THEN>
+			</IF>
+
+		<!-- OMIma27280 -->
+			<!--Take out now for 3.6 - sharing handled another way
+			<callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/ShowSites"/>
+			-->
+ 			<!-- OMIma27280 -->
+
+			 </table><!--end of body--></td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+
+</table>
+
+<!-- Hidden ones -->
+<STRING.ENCODE VARIABLE="ContentDetails:attrname" VARNAME="OutputQString"/>
+<INPUT TYPE="HIDDEN" NAME="HistoryVals:attrname" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/>
+</ELSE>
+</IF>
+
+</FTCS>

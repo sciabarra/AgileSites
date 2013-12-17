@@ -1,0 +1,601 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+	<!-- OpenMarket/Xcelerate/AssetType/Promotions/ContentForm
+	--
+	-- INPUT
+	--
+	-- OUTPUT
+	--
+	-->
+	
+ <![CDATA[
+<SCRIPT LANGUAGE="JavaScript">
+function fixTimeZone()
+{
+	var sval = document.forms[0].elements["StartTimeZone"].value;
+	var eval = document.forms[0].elements["EndTimeZone"].value;
+	document.forms[0].elements["StartTimeZone"].value = sval.replace("p", "+" ).replace("m", "-" );
+	document.forms[0].elements["EndTimeZone"].value = eval.replace("p", "+" ).replace("m", "-" );
+}
+</SCRIPT>
+]]>
+<SCRIPT LANGUAGE="JavaScript">
+	var obj = document.forms[0];
+function getAssetName()
+{
+	var obj = document.forms[0];
+	return obj.elements['Promotions:name'].value;
+}
+
+function submitForm()
+{
+	return checkfields();
+}
+function checkfields()
+{
+	var obj = document.forms[0].elements[0];
+	var SMonth=obj.form.elements['StartMonth'].value;
+	var SDay=obj.form.elements['StartDay'].value;
+	var SYear=obj.form.elements['StartYear'].value;
+	var SHour=obj.form.elements['StartHour'].value;
+  var SMin=obj.form.elements['StartMin'].value;
+	var SAP=obj.form.elements['StartamOrpm'].value;
+	
+	var EMonth=obj.form.elements['EndMonth'].value;
+	var EDay=obj.form.elements['EndDay'].value;
+	var EYear=obj.form.elements['EndYear'].value;
+	var EHour=obj.form.elements['EndHour'].value;
+  var EMin=obj.form.elements['EndMin'].value;
+	var EAP=obj.form.elements['EndamOrpm'].value;
+	
+  if (obj.form.elements['Promotions:name'].value=="")
+	{
+		alert("<XLAT.STREAM KEY="dvin/UI/Error/specifyauniquenameforthisPromotion" ESCAPE="true" ENCODE="false"/>");
+		return false;
+	}
+	 
+	if(obj.form.EndMethod[1].checked)
+	{	
+	  if (obj.form.elements['NumWeekHretc'].value=="")
+		{
+			alert("<XLAT.STREAM KEY="dvin/AT/Promotions/Applyforisblank" ESCAPE="true" ENCODE="false"/>");
+			obj.form.elements['NumWeekHretc'].focus();
+			return false;
+		}
+	}
+	
+	if(obj.form.EndMethod[1].checked)
+	{	
+	  if (obj.form.elements['NumWeekHretc'].value!="")
+		{
+			 for(var i=obj.form.elements['NumWeekHretc'].value.length-1; i>=0; i--)
+						{ 	 
+							if(obj.form.elements['NumWeekHretc'].value.charAt(i)==" ")
+							{ 
+								alert("<XLAT.STREAM KEY="dvin/AT/Promotions/Applyforisspace" ESCAPE="true" ENCODE="false"/>");
+								obj.form.elements['NumWeekHretc'].focus();
+								return false;
+ 							}	
+						}
+		}
+	}
+
+  
+	if(obj.form.EndMethod[2].checked)
+	{	
+	 if(!CheckDate(SYear,SMonth,SDay,SHour,SMin,SAP,EYear,EMonth,EDay,EHour,EMin,EAP))
+	 {      
+			alert("<XLAT.STREAM KEY="dvin/AT/Promotions/Endtimebeforestart" ESCAPE="true" ENCODE="false"/>");
+			obj.form.elements['EndYear'].focus();
+			return false;
+	 }
+	}
+	fixTimeZone();
+	obj.form.submit();
+	return false;
+}
+
+function checkfields1()
+{
+	var obj = document.forms[0].elements[0];
+	var SMonth=obj.form.elements['StartMonth'].value;
+	var SDay=obj.form.elements['StartDay'].value;
+	var SYear=obj.form.elements['StartYear'].value;
+	var SHour=obj.form.elements['StartHour'].value;
+  var SMin=obj.form.elements['StartMin'].value;
+	var SAP=obj.form.elements['StartamOrpm'].value;
+	
+	var EMonth=obj.form.elements['EndMonth'].value;
+	var EDay=obj.form.elements['EndDay'].value;
+	var EYear=obj.form.elements['EndYear'].value;
+	var EHour=obj.form.elements['EndHour'].value;
+  var EMin=obj.form.elements['EndMin'].value;
+	var EAP=obj.form.elements['EndamOrpm'].value;
+	
+  if (obj.form.elements['Promotions:name'].value=="")
+	{
+		alert("<XLAT.STREAM KEY="dvin/UI/Error/specifyauniquenameforthisPromotion" ESCAPE="true" ENCODE="false"/>");
+		return false;
+	}
+	 
+	if(obj.form.EndMethod[1].checked)
+	{	
+	  if (obj.form.elements['NumWeekHretc'].value=="")
+		{
+			alert("<XLAT.STREAM KEY="dvin/AT/Promotions/Applyforisblank" ESCAPE="true" ENCODE="false"/>");
+			obj.form.elements['NumWeekHretc'].focus();
+			return false;
+		}
+	}
+	
+	if(obj.form.EndMethod[1].checked)
+	{	
+	  if (obj.form.elements['NumWeekHretc'].value!="")
+		{
+			 for(var i=obj.form.elements['NumWeekHretc'].value.length-1; i>=0; i--)
+						{ 	 
+							if(obj.form.elements['NumWeekHretc'].value.charAt(i)==" ")
+							{ 
+								alert("<XLAT.STREAM KEY="dvin/AT/Promotions/Applyforisspace" ESCAPE="true" ENCODE="false"/>");
+								obj.form.elements['NumWeekHretc'].focus();
+								return false;
+ 							}	
+						}
+		}
+	}
+
+  
+	if(obj.form.EndMethod[2].checked)
+	{	
+	 if(!CheckDate(SYear,SMonth,SDay,SHour,SMin,SAP,EYear,EMonth,EDay,EHour,EMin,EAP))
+	 {      
+			alert("<XLAT.STREAM KEY="dvin/AT/Promotions/Endtimebeforestart" ESCAPE="true" ENCODE="false"/>");
+			obj.form.elements['EndYear'].focus();
+			return false;
+	 }
+	}
+	fixTimeZone();
+	return true;
+}
+
+function CheckDate(SYear,SMonth,SDay,SHour,SMin,SAP,EYear,EMonth,EDay,EHour,EMin,EAP)
+{ 		 
+  var SYear=parseInt(SYear,10);
+	var EYear=parseInt(EYear,10);
+	var SMonth=parseInt(SMonth,10);
+	var EMonth=parseInt(EMonth,10);
+	var SDay=parseInt(SDay,10);
+	var EDay=parseInt(EDay,10);
+	var SHour=parseInt(SHour,10);
+	var EHour=parseInt(EHour,10);
+	var SMin=parseInt(SMin,10);
+	var EMin=parseInt(EMin,10);
+	  
+   
+ if(EYear > SYear){return true;}
+ else if(EYear == SYear)
+ {     
+	 if(EMonth >SMonth){return true;}
+	 else if(EMonth == SMonth)
+	 {          
+		if(EDay > SDay){return true;}
+		else if(EDay == SDay)
+		{
+			if(EHour > SHour){return true;}
+			else if(EHour == SHour)
+			{
+			 if(EMin > SMin){return true;}
+			 else if(EMin == SMin)
+			 {
+			 	if(SAP=="am" && EAP=="pm"){return true;}
+				else {return false;}
+			 }
+			 else {return false;}
+			}
+			else {return false;}
+		}
+		else {return false;}
+	 }
+	 else {return false;}
+ }
+ else {return false;}
+ 
+}
+
+	</SCRIPT>
+
+  	<INPUT TYPE="HIDDEN" NAME="FromContentFormDuration" VALUE="true"/>
+	<SETVAR NAME="TIMECODES" VALUE="p00:00#+00.00,p01:00#+01:00,+02:00#+02:00,p03:00#+03:00,p04:00#+04:00,p05:00#+05:00,p06:00#+06:00,p07:00#+07:00,p08:00#+08:00,p09:00#+09:00,p10:00#+10:00,p11:00#+11:00,p12:00#+12:00,m00:00#-00:00,m01:00#-01:00,m02:00#-02:00,m03:00#-03:00,m04:00#-04:00,m05:00#-05:00,m06:00#-06:00,m07:00#-07:00,m08:00#-08:00,m09:00#-09:00,m10:00#-10:00,m11:00#-11:00,m12:00#-12:00"/>
+	<STRINGLIST NAME="codelist" STR="Variables.TIMECODES" DELIM=","/>
+	<DATE.DEFAULTTZ VARNAME="localtz"/>
+	<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" class="width-outer-70">
+
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Promotions/ContentFormNavBar">
+			<ARGUMENT NAME="CurrentCat" VALUE="Duration"/>
+		</CALLELEMENT>
+
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Promotions/LoadSegmentInfo"/>
+
+		<IF COND="IsVariable.SegmentStartDate!=true">
+			<THEN>
+				<DATE.CLOCKLIST LISTVARNAME="StartList" TIMEZONE="Variables.localtz"/>
+				<SETVAR NAME="SegmentStartTimeZone" VALUE="Variables.localtz"/>
+			</THEN>
+			<ELSE>
+				<DATE.CLOCKLIST LISTVARNAME="StartList" CLOCK="Variables.SegmentStartDate" TIMEZONE="Variables.SegmentStartTimeZone"/>
+			</ELSE>
+		</IF>
+
+		<IF COND="IsVariable.SegmentEndType!=true">
+			<THEN>
+				<SETVAR NAME="SegmentEndType" VALUE="none"/>
+			</THEN>
+		</IF>
+
+		<IF COND="IsVariable.SegmentEndDate!=true">
+			<THEN>
+				<DATE.CLOCKLIST LISTVARNAME="EndList" TIMEZONE="Variables.localtz"/>
+				<SETVAR NAME="SegmentEndTimeZone" VALUE="Variables.localtz"/>
+			</THEN>
+			<ELSE>
+				<DATE.CLOCKLIST LISTVARNAME="EndList" CLOCK="Variables.SegmentEndDate" TIMEZONE="Variables.SegmentEndTimeZone"/>
+			</ELSE>
+		</IF>
+	
+
+		<TR>
+			<TD>
+				<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+					<TR>
+						<TD COLSPAN="2"><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif"  WIDTH="1" HEIGHT="15" REPLACEALL="Variables.cs_imagedir"/></TD>
+					</TR>
+					<TR>
+						<TD COLSPAN="2" CLASS="subtitle-text">
+							<XLAT.STREAM KEY="dvin/AT/Promotions/Duration"/>
+						</TD>
+					</TR>
+					<TR>
+						<TD COLSPAN="2"><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif"  WIDTH="1" HEIGHT="10" REPLACEALL="Variables.cs_imagedir"/></TD>
+					</TR>
+					<TR>
+						<TD>
+							<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+								<TR>
+									<TD NOWRAP="" class="small-text-box">
+										<XLAT.STREAM KEY="dvin/AT/Promotions/Specifystartdate"/>:<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+										<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+											<argument NAME="inputName" VALUE="StartYear"/>
+											<argument NAME="inputValue" VALUE="StartList.year"/>
+											<argument NAME="inputSize" VALUE="4"/>
+											<argument NAME="inputMaxlength" VALUE="4"/>
+											<argument NAME="width" VALUE="75px"/>
+										</callelement>
+										<SELECT NAME="StartMonth" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" SIZE="1">
+											<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyMonthSelect">
+												<ARGUMENT NAME="InMonth" VALUE="StartList.month"/>
+											</CALLELEMENT>
+										</SELECT>
+										<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+											<argument NAME="inputName" VALUE="StartDay"/>
+											<argument NAME="inputValue" VALUE="StartList.dayofmonth"/>
+											<argument NAME="inputSize" VALUE="2"/>
+											<argument NAME="inputMaxlength" VALUE="2"/>
+											<argument NAME="width" VALUE="50px"/>
+										</callelement>
+										<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+										<XLAT.STREAM KEY="dvin/AT/Common/at"/>
+										<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+										<SELECT NAME="StartHour" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" SIZE="1">
+											<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyHourSelect">
+												<ARGUMENT NAME="InHour" VALUE="StartList.hour"/>
+											</CALLELEMENT>
+										</SELECT>:
+										<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+											<argument NAME="inputName" VALUE="StartMin"/>
+											<argument NAME="inputValue" VALUE="StartList.minute"/>
+											<argument NAME="inputSize" VALUE="2"/>
+											<argument NAME="inputMaxlength" VALUE="2"/>
+											<argument NAME="width" VALUE="50px"/>
+										</callelement>
+										<SELECT NAME="StartamOrpm" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" SIZE="1">
+											<IF COND="StartList.ampm=0">
+												<THEN>
+													<OPTION VALUE="am" SELECTED="1"/>
+													<XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+													<OPTION VALUE="pm"/>
+													<XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+												</THEN>
+												<ELSE>
+													<OPTION VALUE="am"/>
+													<XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+													<OPTION VALUE="pm" SELECTED="1"/>
+													<XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+												</ELSE>
+											</IF>
+										</SELECT>
+										<SELECT NAME="StartTimeZone" style="width:85px" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" SIZE="1">
+											<LOOP LIST="codelist">
+												<SUBSTRING STR="codelist.ITEM" OUTSTR="valStr" ENDINDEX="6"/>
+												<SUBSTRING STR="codelist.ITEM" OUTSTR="keyStr" INDEX="7"/>
+												<IF COND="Variables.keyStr=Variables.SegmentStartTimeZone">
+													<THEN>
+														<OPTION VALUE="Variables.valStr" SELECTED="1" REPLACEALL="Variables.valStr">
+															<STRING.STREAM  VARIABLE="keyStr"/>
+														</OPTION>
+													</THEN>
+													<ELSE>
+														<OPTION VALUE="Variables.valStr" REPLACEALL="Variables.valStr">
+															<STRING.STREAM  VARIABLE="keyStr"/>
+														</OPTION>
+													</ELSE>
+												</IF>
+											</LOOP>
+										</SELECT>
+									</TD>
+								</TR>
+								<TR HEIGHT="5">
+									<TD HEIGHT="5" COLSPAN="2"><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="1" HEIGHT="5" REPLACEALL="Variables.cs_imagedir"/></TD>
+								</TR>
+								<TR>
+									<TD><XLAT.STREAM KEY="dvin/AT/Promotions/Specifyenddate"/>:</TD>
+								</TR>
+								<TR HEIGHT="5">
+									<TD HEIGHT="5" COLSPAN="2"><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="1" HEIGHT="5" REPLACEALL="Variables.cs_imagedir"/></TD>
+								</TR>
+								<TR>
+									<TD>
+										<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+											<TR>
+												<TD><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="15" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+													<IF COND="Variables.SegmentEndType=none">
+														<THEN>
+															<INPUT TYPE="radio" onClick="setTabDirty();" NAME="EndMethod" VALUE="ApplyUntilCancelled" CHECKED="1"/>
+														</THEN>
+														<ELSE>
+															<INPUT TYPE="radio" onClick="setTabDirty();" NAME="EndMethod" VALUE="ApplyUntilCancelled"/>
+														</ELSE>
+													</IF>
+												</TD>
+												<TD><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/></TD>
+												<TD>
+													<XLAT.STREAM KEY="dvin/AT/Promotions/Applyuntildeleted"/>
+												</TD>
+											</TR>
+											<TR HEIGHT="5">
+												<TD COLSPAN="3" HEIGHT="5"><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="1" HEIGHT="5" REPLACEALL="Variables.cs_imagedir"/></TD>
+											</TR>
+											<TR>
+												<TD><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="15" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+													<!--this condition is checked in three cases, but not in the other two-->
+													<!--checked if days, weeks, months, but not if fixed or none-->
+													<SETVAR NAME="imchecked" VALUE="false"/>
+													<IF COND="Variables.SegmentEndType!=none">
+														<THEN>
+															<IF COND="Variables.SegmentEndType!=fixed">
+																<THEN>
+																	<SETVAR NAME="imchecked" VALUE="true"/>
+																</THEN>
+															</IF>
+														</THEN>
+													</IF>
+													<IF COND="Variables.imchecked=true">
+														<THEN>
+															<INPUT TYPE="radio" onClick="setTabDirty();" NAME="EndMethod" VALUE="ApplyforWeekHretc" CHECKED="1"/>
+														</THEN>
+														<ELSE>
+															<INPUT TYPE="radio" onClick="setTabDirty();" NAME="EndMethod" VALUE="ApplyforWeekHretc"/>
+														</ELSE>
+													</IF>
+												</TD>
+												<TD><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/></TD>
+												<IF COND="IsVariable.NumWeekHretc!=true">
+													<THEN>
+														<SETVAR NAME="NumWeekHretc"  VALUE="Variables.empty"/>
+													</THEN>
+												</IF>
+
+												<TD class="small-text-box">
+													<XLAT.STREAM KEY="dvin/AT/Promotions/Applyfor"/>
+													<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+													<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+														<argument NAME="inputName" VALUE="NumWeekHretc"/>
+														<argument NAME="inputValue" VALUE="Variables.NumWeekHretc"/>
+														<argument NAME="inputSize" VALUE="3"/>
+														<argument NAME="width" VALUE="100px"/>
+													</callelement>
+													<SELECT NAME="WeekHretc" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" SIZE="1">
+														<IF COND="Variables.SegmentEndType=hours">
+															<THEN>
+																<OPTION VALUE="hours" SELECTED="1"/>
+																<XLAT.STREAM KEY="dvin/Common/hours"/>
+																<OPTION VALUE="days"/>
+																<XLAT.STREAM KEY="dvin/Common/lcdays"/>
+																<OPTION VALUE="weeks"/>
+																<XLAT.STREAM KEY="dvin/Common/weeks"/>
+																<OPTION VALUE="months"/>
+																<XLAT.STREAM KEY="dvin/Common/months"/>
+																<OPTION VALUE="years"/>
+																<XLAT.STREAM KEY="dvin/Common/years"/>
+															</THEN>
+															<ELSE>
+																<IF COND="Variables.SegmentEndType=weeks">
+																	<THEN>
+																		<OPTION VALUE="hours"/>
+																		<XLAT.STREAM KEY="dvin/Common/hours"/>
+																		<OPTION VALUE="days"/>
+																		<XLAT.STREAM KEY="dvin/Common/lcdays"/>
+																		<OPTION VALUE="weeks" SELECTED="1"/>
+																		<XLAT.STREAM KEY="dvin/Common/weeks"/>
+																		<OPTION VALUE="months"/>
+																		<XLAT.STREAM KEY="dvin/Common/months"/>
+																		<OPTION VALUE="years"/>
+																		<XLAT.STREAM KEY="dvin/Common/years"/>
+																	</THEN>
+																	<ELSE>
+																		<IF COND="Variables.SegmentEndType=months">
+																			<THEN>
+																				<OPTION VALUE="hours"/>
+																				<XLAT.STREAM KEY="dvin/Common/hours"/>
+																				<OPTION VALUE="days"/>
+																				<XLAT.STREAM KEY="dvin/Common/lcdays"/>
+																				<OPTION VALUE="weeks"/>
+																				<XLAT.STREAM KEY="dvin/Common/weeks"/>
+																				<OPTION VALUE="months" SELECTED="1"/>
+																				<XLAT.STREAM KEY="dvin/Common/months"/>
+																				<OPTION VALUE="years"/>
+																				<XLAT.STREAM KEY="dvin/Common/years"/>
+																			</THEN>
+																			<ELSE>
+																				<IF COND="Variables.SegmentEndType=years">
+																					<THEN>
+																						<OPTION VALUE="hours"/>
+																						<XLAT.STREAM KEY="dvin/Common/hours"/>
+																						<OPTION VALUE="days"/>
+																						<XLAT.STREAM KEY="dvin/Common/lcdays"/>
+																						<OPTION VALUE="weeks"/>
+																						<XLAT.STREAM KEY="dvin/Common/weeks"/>
+																						<OPTION VALUE="months"/>
+																						<XLAT.STREAM KEY="dvin/Common/months"/>
+																						<OPTION VALUE="years" SELECTED="1"/>
+																						<XLAT.STREAM KEY="dvin/Common/years"/>
+																					</THEN>
+																					<ELSE>
+																						<OPTION VALUE="hours"/>
+																						<XLAT.STREAM KEY="dvin/Common/hours"/>
+																						<OPTION VALUE="days" SELECTED="1"/>
+																						<XLAT.STREAM KEY="dvin/Common/lcdays"/>
+																						<OPTION VALUE="weeks"/>
+																						<XLAT.STREAM KEY="dvin/Common/weeks"/>
+																						<OPTION VALUE="months"/>
+																						<XLAT.STREAM KEY="dvin/Common/months"/>
+																						<OPTION VALUE="years"/>
+																						<XLAT.STREAM KEY="dvin/Common/years"/>
+																					</ELSE>
+																				</IF>
+																			</ELSE>
+																		</IF>
+																	</ELSE>
+																</IF>
+															</ELSE>
+														</IF>
+													</SELECT>
+												</TD>
+											</TR>
+											<TR HEIGHT="5">
+												<TD COLSPAN="3" HEIGHT="5"><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="1" HEIGHT="5" REPLACEALL="Variables.cs_imagedir"/></TD>
+											</TR>
+											<!--
+											<tr height="1">
+													<td></td>
+													<td colspan="2" class="light-line-color" height="1"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+											</tr>
+											<tr height="5">
+													<td colspan="3" height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+											</tr>
+											-->
+											<TR>
+												<TD><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="15" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+													<IF COND="Variables.SegmentEndType=fixed">
+														<THEN>
+															<INPUT TYPE="radio" onClick="setTabDirty();" NAME="EndMethod" VALUE="ApplyUntil" CHECKED="1"/>
+														</THEN>
+														<ELSE>
+															<INPUT TYPE="radio" onClick="setTabDirty();" NAME="EndMethod" VALUE="ApplyUntil"/>
+														</ELSE>
+													</IF>
+												</TD>
+												<TD><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/></TD>
+												<TD class="small-text-box">
+													<XLAT.STREAM KEY="dvin/AT/Promotions/Applyuntil"/>:&nbsp;
+													<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+														<argument NAME="inputName" VALUE="EndYear"/>
+														<argument NAME="inputValue" VALUE="EndList.year"/>
+														<argument NAME="inputSize" VALUE="4"/>
+														<argument NAME="inputMaxlength" VALUE="4"/>
+														<argument NAME="width" VALUE="75px"/>
+													</callelement>
+													<SELECT NAME="EndMonth" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" SIZE="1">
+														<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyMonthSelect">
+															<ARGUMENT NAME="InMonth" VALUE="EndList.month"/>
+														</CALLELEMENT>
+													</SELECT>
+													<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+														<argument NAME="inputName" VALUE="EndDay"/>
+														<argument NAME="inputValue" VALUE="EndList.dayofmonth"/>
+														<argument NAME="inputSize" VALUE="2"/>
+														<argument NAME="inputMaxlength" VALUE="2"/>
+														<argument NAME="width" VALUE="50px"/>
+													</callelement>
+													<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+													<XLAT.STREAM KEY="dvin/AT/Common/at"/>
+													<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+													<SELECT NAME="EndHour" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" SIZE="1">
+														<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyHourSelect">
+															<ARGUMENT NAME="InHour" VALUE="EndList.hour"/>
+														</CALLELEMENT>
+													</SELECT>:
+													<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+														<argument NAME="inputName" VALUE="EndMin"/>
+														<argument NAME="inputValue" VALUE="EndList.minute"/>
+														<argument NAME="inputSize" VALUE="2"/>
+														<argument NAME="inputMaxlength" VALUE="2"/>
+														<argument NAME="width" VALUE="50px"/>
+													</callelement>
+													<SELECT NAME="EndamOrpm" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" SIZE="1">
+														<IF COND="EndList.ampm=0">
+															<THEN>
+																<OPTION VALUE="am" SELECTED="1"/>
+																<XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+																<OPTION VALUE="pm"/>
+																<XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+															</THEN>
+															<ELSE>
+																<OPTION VALUE="am"/>
+																<XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+																<OPTION VALUE="pm" SELECTED="1"/>
+																<XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+															</ELSE>
+														</IF>
+													</SELECT>
+													<SELECT NAME="EndTimeZone" dojoType="fw.dijit.UISimpleSelect" style="width:85px" showErrors="false" clearButton="true" SIZE="1">
+														<LOOP LIST="codelist">
+															<SUBSTRING STR="codelist.ITEM" OUTSTR="valStr" ENDINDEX="6"/>
+															<SUBSTRING STR="codelist.ITEM" OUTSTR="keyStr" INDEX="7"/>
+															<IF COND="Variables.keyStr=Variables.SegmentEndTimeZone">
+																<THEN>
+																	<OPTION VALUE="Variables.valStr" SELECTED="1" REPLACEALL="Variables.valStr">
+																		<STRING.STREAM  VARIABLE="keyStr"/>
+																	</OPTION>
+																</THEN>
+																<ELSE>
+																	<OPTION VALUE="Variables.valStr" REPLACEALL="Variables.valStr">
+																		<STRING.STREAM  VARIABLE="keyStr"/>
+																	</OPTION>
+																</ELSE>
+															</IF>
+														</LOOP>
+													</SELECT>
+												</TD>
+											</TR>
+										</TABLE>
+									</TD>
+								</TR>
+							</TABLE>
+						</TD>
+					</TR>
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+					<TR>
+						<TD class="form-inset">
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Promotions/ContentFormFooter">
+								<ARGUMENT NAME="FNextPage" VALUE="ContentFormDisplay"/>
+								<ARGUMENT NAME="CurrentCat" VALUE="Duration"/>
+							</CALLELEMENT>
+						</TD>
+					</TR>
+			</TABLE>
+			</TD>
+		</TR>
+	</TABLE>
+
+</FTCS>

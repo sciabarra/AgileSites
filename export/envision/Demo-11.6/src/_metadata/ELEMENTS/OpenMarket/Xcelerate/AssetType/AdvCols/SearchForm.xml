@@ -1,0 +1,107 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateD/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/AdvCols/SearchForm.xml $ 
+$Revision: 26 $
+$Modtime: 5/10/04 1:49p $
+-->
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/SearchForm
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-- HISTORY
+-- Converted to standard UI layout -- Jeff Sokolov (May 25, 00)
+--
+-->
+
+<table border="0" cellspacing="0" cellpadding="0">
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/NameContainsNoColon"/>:</td>
+		<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+		<IF COND="IsVariable.Name=false">
+		<THEN>
+			<SETVAR NAME="Name" VALUE=""/>
+		</THEN>
+		</IF>
+		<td class="form-inset"><![CDATA[<INPUT TYPE="text" NAME="Name" VALUE="]]><STRING.STREAM VALUE="Variables.Name"/><![CDATA[" SIZE="32" MAXLENGTH="128" onChange="doAutoCheck(this,'Name')"/>]]></td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/DescriptionContains"/>:</td>
+		<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+		<IF COND="IsVariable.Description=false">
+		<THEN>
+			<SETVAR NAME="Description" VALUE=""/>
+		</THEN>
+		</IF>
+		<td class="form-inset"><![CDATA[<INPUT TYPE="text" NAME="Description" VALUE="]]><STRING.STREAM VALUE="Variables.Description"/><![CDATA[" SIZE="32" MAXLENGTH="128" onChange="doAutoCheck(this,'Description')"/>]]></td>
+	</tr>
+	
+  
+	<XLAT.LOOKUP KEY="dvin/Common/Templateis" VARNAME="label"/>
+	<callelement NAME="OpenMarket/Xcelerate/Actions/Util/ShowTemplatesIfAny">
+		<argument NAME="label"  VALUE="Variables.label:"/>
+		<argument NAME="showDummy" VALUE="true"/>
+	</callelement>
+
+	<IF COND="Variables.AssetTypeObj:usesearchindex=1">
+	<THEN>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		<tr>
+			<td class="form-label-text"><INPUT NAME="SelectDirectQuery" TYPE="CHECKBOX"/><XLAT.STREAM KEY="dvin/AT/Common/DirectCSSearchEngExpression"/>:</td>
+			<td></td>
+			<td class="form-inset"><TEXTAREA NAME="DirectQuery" ROWS="2" COLS="24" WRAP="virtual"></TEXTAREA></td>
+		</tr>
+	</THEN>
+	</IF>
+    <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+    <tr>
+        <td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/StatusisNoColon"/>:</td>
+        <td></td>
+        <td class="form-inset"><callelement NAME="OpenMarket/Xcelerate/Actions/Util/ChooseStatus">
+            <argument NAME="showDummy" VALUE="true"/>
+            </callelement></td>
+    </tr>
+    
+		<!-- Start and End Date for Site Preview -->
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/SearchStartEndDate"/>
+		<!-- End of Start and End Date for Site Preview -->
+
+   <!-- Start of locale search dropdown -->
+         <callelement NAME="OpenMarket/Xcelerate/AssetType/Dimension/ShowDimensionsDropDown"/>
+    <!-- end of locale search dropdown-->    
+
+
+	<callelement NAME="OpenMarket/Xcelerate/Actions/Search/SearchCommon"/>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/SortResultsBy"/>:</td>
+		<td></td>
+		<td class="form-inset">
+			<SELECT NAME="OrderBy">
+				<OPTION VALUE="name" SELECTED=""/><XLAT.STREAM KEY="dvin/AT/Common/Name"/>
+				<OPTION VALUE="createdby"/><XLAT.STREAM KEY="dvin/Common/CreatedBy"/>
+				<OPTION VALUE="createddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/CreatedDate"/>
+				<OPTION VALUE="updatedby"/><XLAT.STREAM KEY="dvin/Common/ModifiedBy"/>
+				<OPTION VALUE="updateddate DESC"/><XLAT.STREAM KEY="dvin/UI/Search/ModifiedDate"/>		
+ 				<OPTION VALUE="Variables.AssetType.description" REPLACEALL="Variables.AssetType"/><XLAT.STREAM KEY="dvin/AT/Common/Description"/>
+			</SELECT></td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td></td>
+		<td></td>
+		<td>
+		   <callelement NAME="OpenMarket/Xcelerate/Actions/Search/SearchFooter"/>
+		</td>
+	</tr>
+</table>
+
+</FTCS>

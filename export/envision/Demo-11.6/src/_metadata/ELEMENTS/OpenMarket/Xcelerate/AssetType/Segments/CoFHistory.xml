@@ -1,0 +1,1004 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/CoFHistory
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<SETVAR NAME="OutputQString" VALUE="Variables.empty"/>
+<STRING.ENCODE VARIABLE="ContentDetails:description" VARNAME="OutputQString"/>
+<INPUT TYPE="HIDDEN" NAME="Segments:description" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/>
+<INPUT TYPE="HIDDEN" NAME="Segments:name" VALUE="Variables.ContentDetails:name" REPLACEALL="Variables.ContentDetails:name"/>
+<IF COND="IsVariable.Segments:startdate=true">
+<THEN>
+	<INPUT TYPE="HIDDEN" NAME="Segments:startdate" VALUE="Variables.Segments:startdate" REPLACEALL="Variables.Segments:startdate"/>
+</THEN>
+<ELSE>
+	<INPUT TYPE="HIDDEN" NAME="Segments:startdate" VALUE=""/>
+</ELSE>
+</IF>
+<IF COND="IsVariable.Segments:enddate=true">
+<THEN>
+	<STRING.ENCODE VARIABLE="Segments:enddate" VARNAME="Segments:enddate"/>
+	<INPUT TYPE="HIDDEN" NAME="Segments:enddate" VALUE="Variables.Segments:enddate" REPLACEALL="Variables.Segments:enddate"/>
+</THEN>
+<ELSE>
+	<INPUT TYPE="HIDDEN" NAME="Segments:enddate" VALUE=""/>
+</ELSE>
+</IF>
+<INPUT TYPE="HIDDEN" NAME="FromPage" VALUE="CoFHistory"/>
+<!-- INPUT TYPE="HIDDEN" NAME="SegRuleSetHint" VALUE="Variables.SegRuleSetHint" REPLACEALL="Variables.SegRuleSetHint"/ -->
+
+<INPUT TYPE="HIDDEN" NAME="DRFconstrainttype" VALUE="none"/>
+
+<INPUT TYPE="HIDDEN" NAME="HisType" VALUE=""/>
+
+<setvar NAME="sRuleType" VALUE="history"/>
+<INPUT TYPE="HIDDEN" NAME="sRuleType" VALUE="Variables.sRuleType" REPLACEALL="Variables.sRuleType"/>
+
+<setvar NAME="CanSum" VALUE="short,long,double,money,int"/>
+
+<atm.locate TYPE="HistoryVals" VARNAME="HistoryMgr"/>
+<historydatums.getall NAME="HistoryMgr" CATEGORY="Variables.SegmentsRuleScreen" LISTVARNAME="HistoryList" SITE="SessionVariables.pubid"/>
+<if COND="Variables.errno!=0">
+	<then>
+		<XLAT.STREAM KEY="dvin/AT/Segments/Errorhistorydatumsgetall" errno="Variables.errno" SegmentsRuleScreen="Variables.SegmentsRuleScreen" EVALALL="false"/>
+	</then>
+</if>
+
+<if COND="IsList.HistoryList=true">
+	<then>
+		<setvar NAME="historyrows" VALUE="HistoryList.#numRows"/>
+	</then>
+	<else>
+		<setvar NAME="historyrows" VALUE="0"/>
+	</else>
+</if>
+<if COND="Variables.historyrows!=0">
+	<then>
+		<if COND="IsVariable.SegmentsArg2!=true">
+			<then>
+				<visitordata.gethistoryattributedef NAME="thisDefObject" ATTRIBUTE="HistoryList.attrid"/>
+				<visitorhistory.getdescription NAME="thisDefObject" VARNAME="thisdescription"/>
+				<setvar NAME="SegmentsArg2" VALUE="Variables.thisdescription"/>
+				<setvar NAME="ourid" VALUE="HistoryList.attrid"/>
+			</then>
+		</if>
+		<!--Find our fellow-->
+		<setvar NAME="stop" VALUE="false"/>
+		<loop LIST="HistoryList" UNTIL="Variables.stop=true">
+			<visitordata.gethistoryattributedef NAME="thisDefObject" ATTRIBUTE="HistoryList.attrid"/>
+			<visitorhistory.getdescription NAME="thisDefObject" VARNAME="thisdescription"/>
+			<setvar NAME="ourid" VALUE="HistoryList.attrid"/>
+			<if COND="Variables.thisdescription=Variables.SegmentsArg2">
+				<then>
+					<setvar NAME="stop" VALUE="true"/>
+				</then>
+			</if>
+		</loop>
+	</then>
+	<else>
+		<setvar NAME="SegmentsArg2" VALUE="Variables.empty"/>
+	</else>
+</if>
+
+<INPUT TYPE="HIDDEN" NAME="sVarName" VALUE="Variables.SegmentsArg2" REPLACEALL="Variables.SegmentsArg2"/>
+<INPUT TYPE="HIDDEN" NAME="sVarAttid" VALUE="Variables.ourid" REPLACEALL="Variables.ourid"/>
+<historydatums.getassetid NAME="HistoryMgr" ID="Variables.ourid" VARNAME="ourAssetId" SITE="SessionVariables.pubid"/>
+<if COND="IsVariable.ourAssetId=true">
+<then>
+	<INPUT TYPE="HIDDEN" NAME="sVarAssetid" VALUE="Variables.ourAssetId" REPLACEALL="Variables.ourAssetId"/>
+</then>
+</if>
+
+<if COND="Variables.historyrows!=0">
+	<then>
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/UnpackHistoryHint"/>
+ 		<setvar NAME="TIMECODES" VALUE="+00:00,+01:00,+02:00,+03:00,+04:00,+05:00,+06:00,+07:00,+08:00,+09:00,+10:00,+11:00,+12:00,-00:00,-01:00,-02:00,-03:00,-04:00,-05:00,-06:00,-07:00,-08:00,-09:00,-10:00,-11:00,-12:00"/>
+		<stringlist NAME="codelist" STR="Variables.TIMECODES" DELIM=","/>
+		<DATE.DEFAULTTZ VARNAME="localtz"/>
+		<if COND="IsVariable.SegmentStartDate!=true">
+			<then>
+				<DATE.CLOCKLIST LISTVARNAME="StartList" TIMEZONE="Variables.localtz"/>
+				<setvar NAME="SegmentStartTimeZone" VALUE="Variables.localtz"/>
+			</then>
+			<else>
+				<DATE.CLOCKLIST LISTVARNAME="StartList" CLOCK="Variables.SegmentStartDate" TIMEZONE="Variables.SegmentStartTimeZone"/>
+			</else>
+		</if> 
+
+		
+		<if COND="IsVariable.SegmentEndDate!=true">
+			<then>
+				<DATE.CLOCKLIST LISTVARNAME="EndList" TIMEZONE="Variables.localtz"/>
+				<setvar NAME="SegmentEndTimeZone" VALUE="Variables.localtz"/>
+			</then>
+			<else>
+				<DATE.CLOCKLIST LISTVARNAME="EndList" CLOCK="Variables.SegmentEndDate" TIMEZONE="Variables.SegmentEndTimeZone"/>
+			</else>
+		</if>
+		
+		 
+		<if COND="IsVariable.SegmentEarliestDate!=true">
+			<then>
+				<DATE.CLOCKLIST LISTVARNAME="EarliestList" TIMEZONE="Variables.localtz"/>
+				<setvar NAME="EarliestTimeZone" VALUE="Variables.localtz"/>
+			</then>
+			<else>
+				<DATE.CLOCKLIST LISTVARNAME="EarliestList" CLOCK="Variables.SegmentEarliestDate" TIMEZONE="Variables.EarliestTimeZone"/>
+			</else>
+		</if> 
+		
+		<if COND="IsVariable.SegmentLatestDate!=true">
+			<then>
+				<DATE.CLOCKLIST LISTVARNAME="LatestList" TIMEZONE="Variables.localtz"/>
+				<setvar NAME="LatestTimeZone" VALUE="Variables.localtz"/>
+			</then>
+			<else>
+				<DATE.CLOCKLIST LISTVARNAME="LatestList" CLOCK="Variables.SegmentLatestDate" TIMEZONE="Variables.LatestTimeZone"/>
+			</else>
+		</if>
+	</then>
+</if> 
+	
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+	<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
+</CALLELEMENT>
+		
+<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/CoFHeader">
+		<argument NAME="CoFHeaderaddargument" VALUE="- Variables.SegmentsArg2"/>
+	</callelement>
+<INPUT TYPE="HIDDEN" NAME="SegmentsFromRuleScreen" VALUE="Variables.SegmentsRuleScreen" REPLACEALL="Variables.SegmentsRuleScreen"/>
+	<if COND="Variables.historyrows!=0">
+		<then>  
+			<visitorhistory.getallfielddefs NAME="thisDefObject" LISTVARNAME="fieldList"/>
+			<tr>
+				<td>
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td>
+								<if COND="Variables.SummableType=UseTotal">
+									<then>
+										<input type="radio" onClick="setTabDirty();" name="SummableType" value="UseTotal" checked="1"/>
+									</then>
+									<else>
+										<input type="radio" onClick="setTabDirty();" name="SummableType" value="UseTotal"/>
+									</else>
+								</if>
+							</td>
+							<td align="left" class="medium-text-box">
+								<select name="sRuleOp1"dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+									<if COND="Variables.sRuleOp1=exclude">
+										<then>
+											<option value="include"/><XLAT.STREAM KEY="dvin/AT/Segments/Include"/>
+											<option value="exclude" selected=""/><XLAT.STREAM KEY="dvin/AT/Segments/Exclude"/>
+										</then>
+										<else>
+											<option value="include" selected=""/><XLAT.STREAM KEY="dvin/AT/Segments/Include"/>
+											<option value="exclude"/><XLAT.STREAM KEY="dvin/AT/Segments/Exclude"/>
+										</else>
+									</if>
+								</select>
+							</td>
+							<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							<td align="left"><XLAT.STREAM KEY="dvin/AT/Segments/Total"/></td>
+							<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							<td align="left" class="large-text-box">
+								<setvar NAME="didlist" VALUE="false"/>
+								<select name="sHField" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size = "1">
+									<option value=""/><XLAT.STREAM KEY="dvin/AT/Segments/hyphensPickAttributehyphens"/>
+								 	 	<if COND="IsList.fieldList=true">
+										<then>
+											<setvar NAME="numFields" VALUE="fieldList.#numRows"/>
+											<if COND="Variables.numFields!=0">
+												<then>
+													<setvar NAME="didlist" VALUE="true"/>
+													<loop LIST="fieldList">
+														<visitordata.gethistoryattributefielddef NAME="myfielddefobj" FIELD="fieldList.name"/>
+														<visitorhistoryfield.getdescription NAME="myfielddefobj" VARNAME="fielddescription"/>
+														<visitorhistoryfield.getname NAME="myfielddefobj" VARNAME="fieldname"/>
+														<visitorhistoryfield.gettype NAME="myfielddefobj" VARNAME="fieldtype"/>
+														<setvar NAME="errno" VALUE="0"/>
+														<isinlist STR="Variables.CanSum" ITEM="Variables.fieldtype"/>
+														<if COND="Variables.errno=1">
+															<then>
+																<if COND="Variables.sHField=Variables.fieldname">
+																	<then>
+																		<option value="Variables.fieldname" selected="" REPLACEALL="Variables.fieldname"/><STRING.STREAM VALUE="Variables.fielddescription"/>
+																	</then>
+																	<else>
+																		<option value="Variables.fieldname" REPLACEALL="Variables.fieldname"/><STRING.STREAM VALUE="Variables.fielddescription"/>
+                                  </else>
+																</if>
+															</then>
+														</if>
+													</loop>
+												</then>
+												<else>
+													<option vallue=""/><XLAT.STREAM KEY="dvin/AT/Segments/NoAttributes"/>
+												</else>
+											</if>
+										</then>
+										<else>
+											<option vallue=""/><XLAT.STREAM KEY="dvin/AT/Segments/NoAttributes"/>
+										</else>
+									</if>
+								</select>
+								<if COND="Variables.didlist=true">
+									<then>
+										<loop LIST="fieldList">
+											<visitordata.gethistoryattributefielddef NAME="myfielddefobj" FIELD="fieldList.name"/>
+											<visitorhistoryfield.getdescription NAME="myfielddefobj" VARNAME="fielddescription"/>
+											<visitorhistoryfield.getname NAME="myfielddefobj" VARNAME="fieldname"/>
+											<visitorhistoryfield.gettype NAME="myfielddefobj" VARNAME="fieldtype"/>
+											<INPUT TYPE="HIDDEN" NAME="Variables.fieldname" VALUE="Variables.fieldtype" REPLACEALL="Variables.fieldname,Variables.fieldtype"/>
+										</loop>
+									</then>
+								</if>
+							</td>
+							<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							<td align="left" class="large-text-box">
+								<select name="sCompareOp1" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+									<SETVAR NAME="OptionName" VALUE="sCompareOp1"/>
+									<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/UglyCompareSelect">
+										<argument NAME="sCO" VALUE="Variables.sCompare1Op"/>
+										<argument NAME="nobt" VALUE="true"/>
+										<argument NAME="sTYPE" VALUE="Variables.empty"/>
+									</callelement>
+								</select>
+							</td>
+							<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							<td align="left" class="small-text-box"><nobr>
+							<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+								<argument NAME="inputName" VALUE="sValue"/>
+								<argument NAME="inputValue" VALUE="Variables.sValue"/>
+								<argument NAME="width" VALUE="75px"/>
+							</callelement>
+							</nobr><setvar NAME="HValueName" VALUE="sValue"/>							
+							</td>
+						</tr>
+						<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td><img height="2" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+			</tr>
+			<tr>
+				<td>
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td>
+								<if COND="Variables.SummableType=UseCount">
+									<then>
+										<input type="radio" onClick="setTabDirty();" name="SummableType" value="UseCount" checked="1"/>
+									</then>
+									<else>
+										<input type="radio" onClick="setTabDirty();" name="SummableType" value="UseCount"/>
+									</else>
+								</if>
+							</td>
+							<td align="left" class="medium-text-box">
+								<select name="sRuleOp2" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+									<if COND="Variables.sRuleOp2=exclude">
+										<then>
+											<option value="include"/><XLAT.STREAM KEY="dvin/AT/Segments/Include"/>
+											<option value="exclude" selected=""/><XLAT.STREAM KEY="dvin/AT/Segments/Exclude"/>
+										</then>
+										<else>
+											<option value="include" selected=""/><XLAT.STREAM KEY="dvin/AT/Segments/Include"/>
+											<option value="exclude"/><XLAT.STREAM KEY="dvin/AT/Segments/Exclude"/>
+										</else>
+									</if>
+								</select>
+							</td>
+							<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							<td align="left"><XLAT.STREAM KEY="dvin/AT/Segments/Count"/></td>
+							<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							<td align="left" class="large-text-box">
+								<select name="sCompareOp2" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+									<SETVAR NAME="OptionName" VALUE="sCompareOp2"/>
+									<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/UglyCompareSelect">
+										<argument NAME="sCO" VALUE="Variables.sCompare2Op"/>
+										<argument NAME="nobt" VALUE="true"/>
+										<argument NAME="sTYPE" VALUE="Variables.empty"/>
+									</callelement>
+								</select>
+							</td>
+							<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							<td align="left" class="small-text-box"><nobr>
+							<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+								<argument NAME="inputName" VALUE="sValue1"/>
+								<argument NAME="inputValue" VALUE="Variables.sValue1"/>
+								<argument NAME="width" VALUE="75px"/>
+							</callelement>
+							</nobr><setvar NAME="SValueName" VALUE="Variables.SValueName*sValue1!"/></td>
+							<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td><img height="2" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+			</tr>
+			<tr>
+				<td>
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td>
+								<if COND="Variables.SummableType=UseEarliest">
+									<then>
+										<input type="radio" onClick="setTabDirty();" name="SummableType" value="UseEarliest" checked="1"/>
+									</then>
+									<else>
+										<input type="radio"  onClick="setTabDirty();"name="SummableType" value="UseEarliest"/>
+									</else>
+								</if>
+							</td>
+							<td align="left" class="medium-text-box">
+								<select name="sRuleOp3" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+									<if COND="Variables.sRuleOp3=exclude">
+										<then>
+											<option value="include"/><XLAT.STREAM KEY="dvin/AT/Segments/Include"/>
+											<option value="exclude" selected=""/><XLAT.STREAM KEY="dvin/AT/Segments/Exclude"/>
+										</then>
+										<else>
+											<option value="include" selected=""/><XLAT.STREAM KEY="dvin/AT/Segments/Include"/>
+											<option value="exclude"/><XLAT.STREAM KEY="dvin/AT/Segments/Exclude"/>
+										</else>
+									</if>
+								</select>
+							</td>
+							<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							<td align="left" class="large-text-box">
+								<XLAT.STREAM KEY="dvin/AT/Segments/Earliestdaterecorded"/>&nbsp;&nbsp;
+								<select name="sCompareOp3" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+									<SETVAR NAME="OptionName" VALUE="sCompareOp3"/>
+									<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/UglyCompareSelect">
+										<argument NAME="sCO" VALUE="Variables.sCompare3Op"/>
+										<argument NAME="nobt" VALUE="true"/>
+										<argument NAME="sTYPE" VALUE="Variables.empty"/>
+								</callelement>
+								</select>
+							</td>
+						</tr>
+						<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+						<tr>
+							<td></td>
+							<td></td>
+							<td colspan="8" class="small-text-box">
+								<nobr>
+								<select name="sEarliestMonth" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+									<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyMonthSelect">
+										<argument NAME="InMonth" VALUE="EarliestList.month"/>
+									</callelement>
+								</select>
+								&nbsp;
+								<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+									<argument NAME="inputName" VALUE="EarliestDay"/>
+									<argument NAME="inputValue" VALUE="EarliestList.dayofmonth"/>
+									<argument NAME="width" VALUE="75px"/>
+									<argument NAME="inputMaxlength" VALUE="2"/>
+								</callelement>
+								&nbsp;
+								<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+									<argument NAME="inputName" VALUE="EarliestYear"/>
+									<argument NAME="inputValue" VALUE="EarliestList.year"/>
+									<argument NAME="width" VALUE="75px"/>
+									<argument NAME="inputMaxlength" VALUE="4"/>
+								</callelement>
+								<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+								<XLAT.STREAM KEY="dvin/AT/Common/at"/>
+								<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+								<select name="EarliestHour" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+									<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyHourSelect">
+										<argument NAME="InHour" VALUE="EarliestList.hour"/>
+									</callelement>
+								</select>&nbsp;:&nbsp;
+								<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+									<argument NAME="inputName" VALUE="EarliestMin"/>
+									<argument NAME="inputValue" VALUE="EarliestList.minute"/>
+									<argument NAME="width" VALUE="75px"/>
+									<argument NAME="inputMaxlength" VALUE="2"/>
+								</callelement>
+								&nbsp;<select name="EarliestamOrpm" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+								<if COND="EarliestList.ampm=0">
+									<then>
+										<option value="am" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+										<option value="pm"/><XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+									</then>
+									<else>
+										<option value="am"/><XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+										<option value="pm" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+									</else>
+								</if>
+								</select>
+								<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="10" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+								<XLAT.STREAM KEY="dvin/AT/Segments/timezone"/>
+								<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+								<select name="EarliestTimeZone" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+									<loop LIST="codelist">
+										<if COND="codelist.ITEM=Variables.EarliestTimeZone">
+											<then>
+												<option value="codelist.ITEM" selected="1" REPLACEALL="codelist.ITEM"/><STRING.STREAM VALUE="codelist.ITEM"/>
+											</then>
+											<else>
+												<option value="codelist.ITEM" REPLACEALL="codelist.ITEM"/><STRING.STREAM VALUE="codelist.ITEM"/>
+											</else>
+										</if>
+									</loop>
+								</select>
+								</nobr>
+							</td>
+						</tr>
+						<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+						<tr>
+							<td>
+								<if COND="Variables.SummableType=UseLatest">
+									<then>
+										<input type="radio" name="SummableType" onClick="setTabDirty();" value="UseLatest" checked="1"/>
+									</then>
+									<else>
+										<input type="radio" name="SummableType" onClick="setTabDirty();" value="UseLatest"/>
+									</else>
+								</if>
+							</td>
+							<td align="left" class="medium-text-box">
+								<select name="sRuleOp4" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+									<if COND="Variables.sRuleOp4=exclude">
+										<then>
+											<option value="include"/><XLAT.STREAM KEY="dvin/AT/Segments/Include"/>
+											<option value="exclude" selected=""/><XLAT.STREAM KEY="dvin/AT/Segments/Exclude"/>
+										</then>
+										<else>
+											<option value="include" selected=""/><XLAT.STREAM KEY="dvin/AT/Segments/Include"/>
+											<option value="exclude"/><XLAT.STREAM KEY="dvin/AT/Segments/Exclude"/>
+										</else>
+									</if>
+								</select>
+							</td>
+							<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							<td align="left" class="large-text-box">
+								<XLAT.STREAM KEY="dvin/AT/Segments/Latestdaterecorded"/>&nbsp;&nbsp;
+								<select name="sCompareOp4" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+									<SETVAR NAME="OptionName" VALUE="sCompareOp4"/>
+									<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/UglyCompareSelect">
+										<argument NAME="sCO" VALUE="Variables.sCompare4Op"/>
+										<argument NAME="nobt" VALUE="true"/>
+										<argument NAME="sTYPE" VALUE="Variables.empty"/>
+									</callelement>
+								</select>
+							</td>
+						</tr>
+						<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+						<tr>
+							<td></td>
+							<td></td>
+							<td colspan="8" class="small-text-box">
+							<nobr>
+								<select name="sLatestMonth" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+									<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyMonthSelect">
+										<argument NAME="InMonth" VALUE="LatestList.month"/>
+									</callelement>
+								</select>
+								&nbsp;
+								<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+									<argument NAME="inputName" VALUE="LatestDay"/>
+									<argument NAME="inputValue" VALUE="LatestList.dayofmonth"/>
+									<argument NAME="width" VALUE="75px"/>
+									<argument NAME="inputMaxlength" VALUE="2"/>
+								</callelement>
+								&nbsp;
+								<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+									<argument NAME="inputName" VALUE="LatestYear"/>
+									<argument NAME="inputValue" VALUE="LatestList.year"/>
+									<argument NAME="width" VALUE="75px"/>
+									<argument NAME="inputMaxlength" VALUE="4"/>
+								</callelement>
+								<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+								<XLAT.STREAM KEY="dvin/AT/Common/at"/>
+								<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+								<select name="LatestHour" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+									<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyHourSelect">
+										<argument NAME="InHour" VALUE="LatestList.hour"/>
+									</callelement>
+								</select>&nbsp;:&nbsp;
+								<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+									<argument NAME="inputName" VALUE="LatestMin"/>
+									<argument NAME="inputValue" VALUE="LatestList.minute"/>
+									<argument NAME="width" VALUE="75px"/>
+									<argument NAME="inputMaxlength" VALUE="2"/>
+								</callelement>
+								&nbsp;<select name="LatestamOrpm" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+								<if COND="LatestList.ampm=0">
+									<then>
+										<option value="am" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+										<option value="pm"/><XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+									</then>
+									<else>
+										<option value="am"/><XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+										<option value="pm" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+									</else>
+								</if>
+								</select>
+								<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="10" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+								<XLAT.STREAM KEY="dvin/AT/Segments/timezone"/>
+								<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+								<select name="LatestTimeZone" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+									<loop LIST="codelist">
+										<if COND="codelist.ITEM=Variables.LatestTimeZone">
+											<then>
+												<option value="codelist.ITEM" selected="1" REPLACEALL="codelist.ITEM"/><STRING.STREAM VALUE="codelist.ITEM"/>
+											</then>
+											<else>
+												<option value="codelist.ITEM" REPLACEALL="codelist.ITEM"/><STRING.STREAM VALUE="codelist.ITEM"/>
+											</else>
+										</if>
+									</loop>
+								</select>
+								</nobr>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td align="left" valign="top">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td valign="top">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td colspan="2"><XLAT.STREAM KEY="dvin/AT/Segments/Restricttospecifictimeperiod"/>:</td>
+									</tr>
+									<tr>
+										<td colspan="2"><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									<tr>
+										<td colspan="2" class="dark-line-color"><img height="1" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									<tr>
+										<td colspan="2"><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									<tr>
+										<td>
+											<if COND="Variables.durationType=none">
+												<then>
+													<input type="radio" name="durationType" onClick="setTabDirty();" value="none" checked=""/>
+												</then>
+												<else>
+													<input type="radio" name="durationType" onClick="setTabDirty();" value="none"/>
+												</else>
+											</if>
+										</td>
+										<td><XLAT.STREAM KEY="dvin/AT/Segments/Overall"/></td>
+									</tr>
+									<tr>
+										<td colspan="2"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									<tr>
+										<td>
+											<if COND="Variables.durationType=relative">
+												<then>
+													<input type="radio" name="durationType" onClick="setTabDirty();" value="relative" checked=""/>
+												</then>
+												<else>
+													<input type="radio" name="durationType" onClick="setTabDirty();" value="relative"/>
+												</else>
+											</if>
+										</td>
+										<td class="small-text-box"><XLAT.STREAM KEY="dvin/AT/Segments/Thelast"/>
+										<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+											<argument NAME="inputName" VALUE="sHinterval"/>
+											<argument NAME="inputValue" VALUE="Variables.sHinterval"/>
+											<argument NAME="width" VALUE="75px"/>
+										</callelement>
+										&nbsp;
+											<select name="sRelativeOp" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+												<if COND="Variables.sRelativeOp=hours">
+													<then>
+														<option value="hours" selected=""/><XLAT.STREAM KEY="dvin/Common/hours"/>
+														<option value="days"/><XLAT.STREAM KEY="dvin/Common/lcdays"/>
+														<option value="weeks"/><XLAT.STREAM KEY="dvin/Common/weeks"/>
+														<option value="months"/><XLAT.STREAM KEY="dvin/Common/months"/>
+														<option value="years"/><XLAT.STREAM KEY="dvin/Common/years"/>
+													</then>
+													<else>
+														<if COND="Variables.sRelativeOp=days">
+															<then>
+																<option value="hours"/><XLAT.STREAM KEY="dvin/Common/hours"/>
+																<option value="days" selected=""/><XLAT.STREAM KEY="dvin/Common/lcdays"/>
+																<option value="weeks"/><XLAT.STREAM KEY="dvin/Common/weeks"/>
+																<option value="months"/><XLAT.STREAM KEY="dvin/Common/months"/>
+																<option value="years"/><XLAT.STREAM KEY="dvin/Common/years"/>
+															</then>
+															<else>
+																<if COND="Variables.sRelativeOp=months">
+																	<then>
+																		<option value="hours"/><XLAT.STREAM KEY="dvin/Common/hours"/>
+																		<option value="days"/><XLAT.STREAM KEY="dvin/Common/lcdays"/>
+																		<option value="weeks"/><XLAT.STREAM KEY="dvin/Common/weeks"/>
+																		<option value="months" selected=""/><XLAT.STREAM KEY="dvin/Common/months"/>
+																		<option value="years"/><XLAT.STREAM KEY="dvin/Common/years"/>
+																	</then>
+																	<else>
+																		<if COND="Variables.sRelativeOp=years">
+																			<then>
+																				<option value="hours"/><XLAT.STREAM KEY="dvin/Common/hours"/>
+																				<option value="days"/><XLAT.STREAM KEY="dvin/Common/lcdays"/>
+																				<option value="weeks"/><XLAT.STREAM KEY="dvin/Common/weeks"/>
+																				<option value="months"/><XLAT.STREAM KEY="dvin/Common/months"/>
+																				<option value="years" selected=""/><XLAT.STREAM KEY="dvin/Common/years"/>
+																			</then>
+																			<else>
+																				<option value="hours"/><XLAT.STREAM KEY="dvin/Common/hours"/>
+																				<option value="days"/><XLAT.STREAM KEY="dvin/Common/lcdays"/>
+																				<option value="weeks" selected=""/><XLAT.STREAM KEY="dvin/Common/weeks"/>
+																				<option value="months"/><XLAT.STREAM KEY="dvin/Common/months"/>
+																				<option value="years"/><XLAT.STREAM KEY="dvin/Common/years"/>
+																			</else>
+																		</if>
+																	</else>
+																</if>
+															</else>
+														</if>
+													</else>
+												</if>
+											</select>
+										</td>
+									</tr>
+									<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+									<tr>
+										<td>
+											<if COND="Variables.durationType=fixed">
+												<then>
+													<input type="radio" onClick="setTabDirty();" name="durationType" value="fixed" checked=""/>
+												</then>
+												<else>
+													<input type="radio"  onClick="setTabDirty();" name="durationType" value="fixed"/>
+												</else>
+											</if>
+										</td>
+										<td><XLAT.STREAM KEY="dvin/AT/Segments/Aspecifictimeperiod"/>:</td>
+									</tr>
+									<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+									<tr>
+										<td>&nbsp;</td>
+										<td>
+											<table border="0" cellpadding="0" cellspacing="0">
+												<tr>
+													<td class="small-text-box"><XLAT.STREAM KEY="dvin/AT/Common/between"/>&nbsp;&nbsp;
+														<select name="StartMonth" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+															<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyMonthSelect">
+																<argument NAME="InMonth" VALUE="StartList.month"/>
+															</callelement>
+														</select>
+														&nbsp;
+														<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+															<argument NAME="inputName" VALUE="StartDay"/>
+															<argument NAME="inputValue" VALUE="StartList.dayofmonth"/>
+															<argument NAME="width" VALUE="75px"/>
+															<argument NAME="inputMaxlength" VALUE="2"/>
+														</callelement>
+														&nbsp;
+														<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+															<argument NAME="inputName" VALUE="StartYear"/>
+															<argument NAME="inputValue" VALUE="StartList.year"/>
+															<argument NAME="width" VALUE="75px"/>
+															<argument NAME="inputMaxlength" VALUE="4"/>
+														</callelement>
+													</td>
+												</tr>
+												<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+												<tr>
+													<td class="small-text-box"><nobr>
+														<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="10" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+														<XLAT.STREAM KEY="dvin/AT/Common/at"/>
+														<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+														<select name="StartHour" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+															<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyHourSelect">
+																<argument NAME="InHour" VALUE="StartList.hour"/>
+															</callelement>
+														</select>&nbsp;:&nbsp;
+														<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+															<argument NAME="inputName" VALUE="StartMin"/>
+															<argument NAME="inputValue" VALUE="StartList.minute"/>
+															<argument NAME="width" VALUE="75px"/>
+															<argument NAME="inputMaxlength" VALUE="2"/>
+														</callelement>
+														&nbsp;<select name="StartamOrpm" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+														<if COND="StartList.ampm=0">
+															<then>
+																<option value="am" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+																<option value="pm"/><XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+															</then>
+															<else>
+																<option value="am"/><XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+																<option value="pm" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+															</else>
+														</if>
+														</select>
+														<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="10" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+														<XLAT.STREAM KEY="dvin/AT/Segments/timezone"/>
+														<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+														<select name="StartTimeZone" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+															<loop LIST="codelist">
+																<if COND="codelist.ITEM=Variables.SegmentStartTimeZone">
+																	<then>
+																		<option value="codelist.ITEM" selected="1" REPLACEALL="codelist.ITEM"/><STRING.STREAM VALUE="codelist.ITEM"/>
+																	</then>
+																	<else>
+																		<option value="codelist.ITEM" REPLACEALL="codelist.ITEM"/><STRING.STREAM VALUE="codelist.ITEM"/>
+																	</else>
+																</if>
+															</loop>
+														</select>
+													</nobr></td>
+												</tr>
+												<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+												<tr>
+													<td class="small-text-box">
+														<XLAT.STREAM KEY="dvin/AT/Common/and"/>
+														<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="10" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+														<select name="EndMonth" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+															<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyMonthSelect">
+																<argument NAME="InMonth" VALUE="EndList.month"/>
+															</callelement>
+														</select>
+														&nbsp;
+														<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+															<argument NAME="inputName" VALUE="EndDay"/>
+															<argument NAME="inputValue" VALUE="EndList.dayofmonth"/>
+															<argument NAME="width" VALUE="75px"/>
+															<argument NAME="inputMaxlength" VALUE="2"/>
+														</callelement>
+														&nbsp;
+														<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+															<argument NAME="inputName" VALUE="EndYear"/>
+															<argument NAME="inputValue" VALUE="EndList.year"/>
+															<argument NAME="width" VALUE="75px"/>
+															<argument NAME="inputMaxlength" VALUE="4"/>
+														</callelement>
+													</td>
+												</tr>
+												<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+												<tr>
+													<td class="small-text-box"><nobr>
+														<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="10" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+														<XLAT.STREAM KEY="dvin/AT/Common/at"/>
+														<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+														<select name="EndHour" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+															<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyHourSelect">
+																<argument NAME="InHour" VALUE="EndList.hour"/>
+															</callelement>
+														</select>&nbsp;:&nbsp;
+														<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+															<argument NAME="inputName" VALUE="EndMin"/>
+															<argument NAME="inputValue" VALUE="EndList.minute"/>
+															<argument NAME="width" VALUE="75px"/>
+															<argument NAME="inputMaxlength" VALUE="2"/>
+														</callelement>
+														&nbsp;<select name="EndamOrpm" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+														<if COND="EndList.ampm=0">
+															<then>
+																<option value="am" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+																<option value="pm"/><XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+															</then>
+															<else>
+																<option value="am"/><XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+																<option value="pm" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+															</else>
+														</if>
+														</select>
+														<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="10" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+														<XLAT.STREAM KEY="dvin/AT/Segments/timezone"/>
+														<IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" WIDTH="5" HEIGHT="1" REPLACEALL="Variables.cs_imagedir"/>
+														<select name="EndTimeZone" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+															<loop LIST="codelist">
+																<if COND="codelist.ITEM=Variables.SegmentEndTimeZone">
+																	<then>
+																		<option value="codelist.ITEM" selected="1" REPLACEALL="codelist.ITEM"/><STRING.STREAM VALUE="codelist.ITEM"/>
+																	</then>
+																	<else>
+																		<option value="codelist.ITEM" REPLACEALL="codelist.ITEM"/><STRING.STREAM VALUE="codelist.ITEM"/>
+																	</else>
+																</if>
+															</loop>
+														</select>
+													</nobr></td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td><img height="1" width="15" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							<td class="dark-line-color"><img height="1" width="2" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							<td><img height="1" width="15" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							<td valign="top">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td valign="top">
+											<table border="0" cellpadding="0" cellspacing="0">
+												<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/WhichHistoryRadio"/>									
+												<tr>
+													<td colspan="2"><XLAT.STREAM KEY="dvin/AT/HVals/HistoryAttributes"/></td>
+												</tr>
+												<tr>
+													<td colspan="2"><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+												</tr>
+												<tr>
+													<td colspan="2" class="dark-line-color"><img height="1" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+												</tr>
+												<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+												<tr>
+													<td>
+														<if COND="Variables.historyFields=all">
+															<then>
+																<input type="radio" onClick="setTabDirty();" name="historyFields" value="all" checked=""/>
+															</then>
+															<else>
+																<input type="radio" onClick="setTabDirty();" name="historyFields" value="all"/>
+															</else>
+														</if>
+													</td>
+													<td><XLAT.STREAM KEY="dvin/UI/Admin/Norestrictions"/></td>
+												</tr>
+												<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+												<tr>
+													<td>
+														<if COND="Variables.historyFields=selected">
+															<then>
+																<input type="radio" onClick="setTabDirty();" name="historyFields" value="selected" checked=""/>
+															</then>
+															<else>
+																<input type="radio" onClick="setTabDirty();" name="historyFields" value="selected"/>
+															</else>
+														</if>
+													</td>
+													<td><XLAT.STREAM KEY="dvin/AT/Segments/Valuesforselectedattributes"/></td>
+												</tr>
+												<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+											</table>
+										</td>
+									</tr>
+																
+									<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/HFieldRulesLoop"/>
+									
+									<tr>
+										<td>
+											<table border="0" cellpadding="0" cellspacing="0">
+												<tr>
+													<td colspan="2"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+												</tr>
+												<tr>
+													<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+													<td><span class="subtitle-text"><STRING.STREAM VALUE="Variables.SegmentsArg2"/>&nbsp;<XLAT.STREAM KEY="dvin/AT/Segments/attributes"/>:</span></td>
+												</tr>
+												<setvar NAME="GotField" VALUE="false"/>
+												<if COND="IsList.fieldList=true">
+													<then>
+														<setvar NAME="numFields" VALUE="fieldList.#numRows"/>
+														<if COND="Variables.numFields!=0">
+															<then>
+																<loop LIST="fieldList">
+																	<tr>
+																		<td></td>
+																		<td align="left">
+																			<ul>
+																				<visitordata.gethistoryattributefielddef NAME="myfielddefobj" FIELD="fieldList.name"/>
+																				<visitorhistoryfield.getdescription NAME="myfielddefobj" VARNAME="fielddescription"/>
+																				<visitorhistoryfield.getname NAME="myfielddefobj" VARNAME="fieldname"/>
+																				<visitorhistoryfield.iskey NAME="myfielddefobj" VARNAME="fieldkey"/>
+																				<visitorhistoryfield.isrequiredconstraint NAME="myfielddefobj" VARNAME="fieldisreq"/>
+																				<visitorhistoryfield.gettype NAME="myfielddefobj" VARNAME="fieldtype"/>
+																				<if COND="Variables.fieldkey=true">
+																					<then>
+																						<if COND="Variables.fieldtype!=blob">
+																							<then>
+																								<li/><if COND="Variables.fieldisreq=true">
+																									<then>
+																										<span class="alert-color">*</span>&nbsp;
+																									</then>
+																								</if>
+																								  <XLAT.LOOKUP KEY="dvin/AT/Segments/Pickfielddescriptionfield" VARNAME="_pickfield_"/>
+																								  <a href="javascript:void(0)" onclick="document.forms[0].PickAttributeSelected.value='true';return FixRuleArgPagename('Variables.ThisPage','CoFHistory','Variables.SegmentsRuleScreen','Variables.SegmentsArg2','fieldList.name','SegmentSave');" title="Variables._pickfield_" REPLACEALL="Variables._pickfield_,Variables.SegmentsArg2,Variables.fielddescription,fieldList.name,Variables.ThisPage,Variables.SegmentsRuleScreen">
+																									<STRING.STREAM VALUE="Variables.fielddescription"/>
+																								</a>
+																								<setvar NAME="GotField" VALUE="true"/>
+																							</then>
+																						</if>
+																					</then>
+																				</if>
+																			</ul>
+																		</td>
+																	</tr>
+																</loop>
+															</then>
+														</if>
+													</then>
+												</if>
+												<if COND="Variables.GotField=false">
+													<then>
+														<tr>
+															<td></td>
+															<td align="left"><XLAT.STREAM KEY="dvin/AT/Segments/NoAttributes"/></td>
+														</tr>
+														<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+													</then>
+												</if>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			
+			<tr>
+				<td colspan="2"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+			</tr>
+			<tr>
+				<td><span class="subtitle-text"><XLAT.STREAM KEY="dvin/AT/Segments/AddnlSegRuleScreencriteria"/>:</span></td>
+			</tr>
+			<tr>
+				<td colspan="2"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+			</tr>
+			<tr>
+				<td>
+					<ul>
+						<if COND="IsList.HistoryList=true">
+							<then>
+								<loop LIST="HistoryList">
+									<visitordata.gethistoryattributedef NAME="thisDefObject" ATTRIBUTE="HistoryList.attrid"/>
+									<visitorhistory.getdescription NAME="thisDefObject" VARNAME="thisdescription"/>
+									<if COND="Variables.thisdescription=Variables.SegmentsArg2">
+										<then>
+											<li/><STRING.STREAM VALUE="Variables.thisdescription"/>
+										</then>
+										<else>
+											<li/><XLAT.LOOKUP KEY="dvin/AT/Segments/Pickthisdescriptioncriteria" VARNAME="_pickcriterion_"/>
+											  <a href="javascript:void(0)" onclick="return FixRuleArgPagename('Variables.ThisPage','CoFHistory','Variables.SegmentsRuleScreen','Variables.thisdescription','','SegmentSave');" title="Variables._pickcriterion_" REPLACEALL="Variables._pickcriterion_,Variables.thisdescription,Variables.ThisPage,Variables.SegmentsRuleScreen">
+												<STRING.STREAM VALUE="Variables.thisdescription"/>
+											</a>
+										</else>
+									</if>
+								</loop>
+							</then>
+							<else>
+								<li/><XLAT.STREAM KEY="dvin/AT/Segments/NoHistoryTypesdefined"/>
+              </else>
+						</if>
+					</ul>
+				</td>
+			</tr>
+		</then>
+		<else>
+			<tr>
+				<td>
+					<span class="subtitle-text"><XLAT.STREAM KEY="dvin/AT/Segments/NoHistoryTypesdefinedforsite"/></span>
+					<setvar NAME="WrongPage" VALUE="wrong"/>
+				</td>
+			</tr>   
+		</else>
+	</if>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<!-- form buttons -->
+	<tr>
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/CoFFooter"/>
+	</tr>
+</table>
+
+</FTCS> 

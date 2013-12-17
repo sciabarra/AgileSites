@@ -1,0 +1,127 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!--
+$Logfile: /VerticalApps/XcelerateC/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Query/PreUpdate.xml $
+$Revision: 12 $
+$Modtime: 1/06/03 2:34p $
+-->
+
+<!--
+- Confidential and Proprietary Information of Open Market, Inc.
+-					All Rights Reserved.
+-
+- DESCRIPTION
+-
+-    When an asset is created, edited, or copied,
+-    this element is called before the database update
+-    function is invoked.
+-
+-    This element is passed in an argument: 'updatetype'
+-    whose value can drive special processing based
+-    on the type of update
+-
+-->
+
+
+<if COND="Variables.updatetype=setformdefaults">
+	<then>
+	<!-- decide if any asset types support search engine searches -->
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/EnableAssetTypePub">
+			<ARGUMENT NAME="upcommand" VALUE="ListEnabledAssetTypes"/>
+			<ARGUMENT NAME="list" VALUE="EnabledAssetTypes"/>
+			<ARGUMENT NAME="pubid" VALUE="SessionVariables.pubid"/>
+		</CALLELEMENT>
+		<LOOP LIST="EnabledAssetTypes">
+			<IF COND="EnabledAssetTypes.canbechild=T">
+			<THEN>
+				<IF COND="EnabledAssetTypes.usesearchindex=1">
+				<THEN>
+					<SETVAR NAME="showSEQuery" VALUE="true"/>
+				</THEN>
+				</IF>
+			</THEN>
+			</IF>
+		</LOOP>	
+	</then>
+</if>
+
+<if COND="Variables.updatetype=editfront">
+<then>
+</then>
+</if>
+
+<if COND="Variables.updatetype=edit">
+	<then>
+
+<!-- Gather the input values into the object -->
+
+		<ASSET.GATHER NAME="theCurrentAsset" PREFIX="Query" FIELDLIST="Variables.FieldsOnForm"/>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+    	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+			<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+			<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+    	</CALLELEMENT>
+	</then>		
+</if>
+
+<if COND="Variables.updatetype=create">
+	<then>
+
+<!-- Gather the input values into the object -->
+
+		<ASSET.GATHER NAME="theCurrentAsset" PREFIX="Query" FIELDLIST="Variables.FieldsOnForm"/>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+    	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+			<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+			<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+    	</CALLELEMENT>
+
+	</then>
+</if>
+
+<if COND="Variables.updatetype=delete">
+	<then>
+	</then>
+</if>
+
+<if COND="Variables.updatetype=remotepost">
+	<then>
+  <IF COND="Variables.Action=update">
+    <THEN>
+         <CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Util/MakeFieldListforRemotePost"/>
+         <ASSET.GATHER NAME="theCurrentAsset" FIELDLIST="Variables.updateFieldList"/>
+    </THEN>
+    <ELSE>
+        <ASSET.GATHER NAME="theCurrentAsset"/>
+    </ELSE>
+    </IF>
+	</then>
+</if>
+
+<if COND="Variables.updatetype=updatefrom">
+	<then>
+	</then>
+</if>
+<!-- If the asset is updated from dah -->
+<if COND="Variables.dashUpdate=dashUpdate">
+<then>
+	<if COND="Variables.dashUpdateType=create">
+    <then>
+		<!--if the operation is create-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=edit">
+    <then>
+		<!--if the operation is edit-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=delete">
+    <then>
+		<!--if the operation is delete-->
+    </then>
+    </if>
+</then>
+</if>
+
+</FTCS>

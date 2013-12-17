@@ -1,0 +1,177 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateD/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/AdvCols/ContentDetails.xml $
+$Revision: 33 $
+$Modtime: 8/09/04 3:54p $
+-->
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ContentDetails
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<!-- Action bar -->
+<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ActionsBar">
+	<ARGUMENT NAME="Screen" VALUE="Inspect"/>
+</CALLELEMENT>
+<div dojoType="dijit.layout.ContentPane" region="center">
+<table border="0" cellspacing="0" cellpadding="0" class="width70BottomExMargin">
+
+	<!-- page title w/ asset name -->
+	<assettype.list LIST="ThisAsset" FIELD1="assettype" VALUE1="Variables.AssetType"/>
+	<tr>
+		<td><span class="title-text"><STRING.STREAM VALUE="ThisAsset.description"/>: </span><span class="title-value-text"><STRING.STREAM VALUE="Variables.ContentDetails:name"/></span></td>
+	</tr>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+		<ARGUMENT NAME="SpaceBelow" VALUE="No"/>
+	</CALLELEMENT>
+
+	<!-- attribute inspection form -->
+	<tr>
+		<td><table border="0" cellpadding="0" cellspacing="0" class="width-inner-100">
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/AT/Common/Name"/>:</td>
+				<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+				<td class="form-inset"><STRING.STREAM VALUE="Variables.ContentDetails:name"/></td>
+			</tr>
+
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Description"/>:</td>
+				<td></td>
+				<td class="form-inset"><STRING.STREAM VALUE="Variables.ContentDetails:description"/></td>
+			</tr>
+			<!--Need to put subtypes (Category) here-->
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/UI/Subtype"/>:</td>
+				<td></td>
+				<td class="form-inset">
+					<if COND="Variables.ContentDetails:subtype=Variables.empty">
+					<then>
+						<XLAT.STREAM KEY="dvin/UI/Util/Standardnosubtype"/>
+					</then>
+					<else>
+						<STRING.STREAM  VARIABLE="ContentDetails:subtype"/>
+					</else>
+					</if>
+				</td>
+			</tr>
+
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Util/ShowTemplateDetailsIfAny">
+				<!--also depends on Variables.AssetType-->
+				<ARGUMENT NAME="template" VALUE="Variables.ContentDetails:template"/>
+			</CALLELEMENT>
+
+			
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/InspectAssetStartEndDate"/>										
+				
+				
+	    <callelement NAME="OpenMarket/Xcelerate/AssetType/Dimension/ShowDimensionDetails"/>
+            <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/UnPackRuleDetails"/>    
+            <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/> 
+            <tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/AdvCols/Mode"/>:</td>
+				<td></td>
+				<td class="form-inset">
+					<IF COND="IsVariable.AdvColMode!=true">
+						<THEN>
+							<!--If the type is static lists then go ahead and set AdvColMode to List 
+							otherwise this could be an old segment and we need to set it to Rec-->
+							<IF COND="IsVariable.advcoltype=true">
+								<THEN>
+									<ICS.CLEARERRNO/>
+									<ISINLIST ITEM="Variables.advcoltype" STR="assetlocal,sql,element"/>
+									<IF COND="Variables.errno=0">
+										<THEN>
+											<XLAT.STREAM KEY="dvin/AT/AdvCols/List"/>
+										</THEN>
+										<ELSE>
+											<XLAT.STREAM KEY="dvin/AT/AdvCols/Rec"/>
+										</ELSE>
+									</IF>
+								</THEN>
+								<ELSE>
+									<!--List is the basic default-->
+									<XLAT.STREAM KEY="dvin/AT/AdvCols/List"/>
+								</ELSE>
+							</IF>
+						</THEN>
+						<ELSE>
+							<IF COND="Variables.AdvColMode=List">
+								<THEN>
+									<XLAT.STREAM KEY="dvin/AT/AdvCols/List"/>
+								</THEN>
+								<ELSE>
+									<XLAT.STREAM KEY="dvin/AT/AdvCols/Rec"/>
+								</ELSE>
+							</IF>
+						</ELSE>
+					</IF>
+				</td>
+			</tr>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/> 
+			<tr>
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Util/ShowStatusCode"/>
+			</tr>			  	
+			
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/ID"/>:</td>
+				<td></td>
+				<td class="form-inset"><STRING.STREAM VALUE="Variables.id"/></td>
+			</tr>
+			
+			
+			<!-- fire this earlier to get and display advcolmode
+            <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/UnPackRuleDetails"/>   -->
+
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/CommonOptions">
+				<ARGUMENT NAME="ShowButton" VALUE="false"/>
+			</CALLELEMENT>
+
+			
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/CommonType">
+				<ARGUMENT NAME="ShowButton" VALUE="false"/>
+			</CALLELEMENT>
+		
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/CommonTypeDetails">
+				<ARGUMENT NAME="ShowButton" VALUE="false"/>
+				<ARGUMENT NAME="HiddenOnly" VALUE="false"/>
+			</CALLELEMENT>
+
+
+			
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/CommonSelection">
+				<ARGUMENT NAME="ShowButton" VALUE="false"/>
+			</CALLELEMENT>
+
+			
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/GetOrdering">
+				<ARGUMENT NAME="ShowButton" VALUE="false"/>
+				<ARGUMENT NAME="HiddenOnly" VALUE="false"/>
+			</CALLELEMENT>
+			
+			<!-- Analyics Performance indicator -->
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/ShowAnalyticsKPI"/>
+			
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/CommonCreatedModified"/>
+
+		</table><!--end of body--></td>
+	</tr>
+
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+
+	<tr>
+		<td><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+	</tr>
+</table>
+</div>
+</div>
+</FTCS>

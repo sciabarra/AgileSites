@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/ManageRules
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ManageFormVars"/>
+
+<asset.get NAME="theCurrentAsset"  FIELD="id"  OUTPUT="id"/>
+<setvar NAME="assetid"  VALUE="Variables.id"/>
+<setvar NAME="assettype"  VALUE="Products"/>
+
+<NVOBJECT.TOSTRING NAME="rulesethintobject" VARNAME="RulesetHintString"/>
+<setvar NAME="targetxml"  VALUE="Promotions:ruleset"/> 
+<setvar NAME="hintstring"  VALUE="Variables.RulesetHintString"/>
+<callelement NAME="OpenMarket/Gator/Rules/GeneratePromoApplRuleset"/>
+
+<NVOBJECT.TOSTRING NAME="discrulesethintobject" VARNAME="DiscRulesetHintString"/>
+<setvar NAME="targetxml"  VALUE="Promotions:discruleset"/> 
+<setvar NAME="hintstring"  VALUE="Variables.DiscRulesetHintString"/>
+<callelement NAME="OpenMarket/Gator/Rules/GeneratePromoDiscRuleset"/>
+
+</FTCS> 

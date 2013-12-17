@@ -1,0 +1,116 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateB/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/HistoryVals/PreUpdate.xml $ 
+$Revision: 9 $ 
+$Modtime: 10/23/02 2:49p $ 
+-->
+<!-- OpenMarket/Xcelerate/AssetType/HistoryVals/PreUpdate
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+<!--
+	Note: setformdefaults, delete, updateform are NOT implemented
+	for HistoryVals
+	Only edit, remotepost, and create are implemented
+-->
+
+<if COND="Variables.updatetype=edit">
+	<then>
+		<callelement NAME="OpenMarket/Gator/Util/GetWorkflowId"/>
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/HistoryVals/GetOrSetVars">
+			<argument NAME="GetOrSet" VALUE="set"/>
+		</callelement>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+    	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+			<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+			<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+    	</CALLELEMENT>
+	</then>
+	<else>
+		<if COND="Variables.updatetype=create">
+			<then>
+				<callelement NAME="OpenMarket/Gator/Util/GetWorkflowId"/>
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/HistoryVals/GetOrSetVars">
+					<argument NAME="GetOrSet" VALUE="set"/>
+				</callelement>
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+		    	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+					<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+					<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+		    	</CALLELEMENT>
+			</then>
+			<else>
+				<if COND="Variables.updatetype=remotepost">
+					<then>
+						<if COND="IsVariable.workflowid=true">
+							<then>
+								<setvar NAME="HistoryVals:workflowid" VALUE="Variables.workflowid"/>
+							</then>
+							<else>
+								<setvar NAME="AssetType" VALUE="HistoryVals"/>
+								<callelement NAME="OpenMarket/Gator/Util/GetWorkflowId"/>
+							</else>
+						</if>
+						<if COND="IsVariable.name=true">
+							<then>
+								<setvar NAME="HistoryVals:name" VALUE="Variables.name"/>
+							</then>
+						</if>
+						<if COND="IsVariable.status=true">
+							<then>
+								<setvar NAME="HistoryVals:status" VALUE="Variables.status"/>
+							</then>
+						</if>
+						<if COND="IsVariable.description=true">
+							<then>
+								<setvar NAME="HistoryVals:description" VALUE="Variables.description"/>
+							</then>
+						</if>
+						<if COND="IsVariable.category=true">
+							<then>
+								<setvar NAME="HistoryVals:category" VALUE="Variables.category"/>
+							</then>
+						</if>
+						<if COND="IsVariable.fieldlist=true">
+							<then>
+								<setvar NAME="HistoryVals:sMyFieldList" VALUE="Variables.fieldlist"/>
+							</then>
+						</if>
+
+						<callelement NAME="OpenMarket/Xcelerate/AssetType/HistoryVals/GetOrSetVars">
+							<argument NAME="GetOrSet" VALUE="set"/>
+						</callelement>
+					</then>
+				</if>
+			</else>
+		</if>
+	</else>
+</if>
+<!-- If the asset is updated from dah -->
+<if COND="Variables.dashUpdate=dashUpdate">
+<then>
+	<if COND="Variables.dashUpdateType=create">
+    <then>
+		<!--if the operation is create-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=edit">
+    <then>
+		<!--if the operation is edit-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=delete">
+    <then>
+		<!--if the operation is delete-->
+    </then>
+    </if>
+</then>
+</if>
+</FTCS>
+

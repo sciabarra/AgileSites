@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ManageRules
+--
+-- INPUT
+--	Save's AdvCols without the ruleset
+--	Then loads it back up, scatters everything, gets the id
+--	then rebuilds the ruleset and resaves it.
+-- OUTPUT
+--
+-->
+<if COND="IsVariable.AdvCols:selruleset=true">
+	<then>
+		<if COND="Variables.AdvCols:selruleset!=Variables.empty">
+			<then>
+				<setvar NAME="saveRuleSet" VALUE="Variables.AdvCols:selruleset"/>
+				<ASSET.GET NAME="theCurrentAsset" FIELD="id"/>
+				<if COND="Variables.errno=0">
+					<then>
+						<rulesetdef.create NAME="theRule"/>
+						<if COND="Variables.errno!=0">
+							<then>
+								<br/><XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorRuleSetCreate" errno="Variables.errno" EVALALL="false"/>
+								<br/><XLAT.STREAM KEY="dvin/UI/ErrorDetailErrdetail1"/>
+							</then>
+						</if>
+						<rulesetdef.fromxml NAME="theRule" XML="Variables.saveRuleSet"/>
+						<if COND="Variables.errno!=0">
+							<then>
+								<br/><XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorRuleSetFromXml" errno="Variables.errno" EVALALL="false"/>
+								<br/><XLAT.STREAM KEY="dvin/UI/ErrorDetailErrdetail1"/>
+							</then>
+						</if>
+						<rulesetdef.getencoding NAME="theRule" VARNAME="theRuleEncoding"/>
+						<if COND="IsVariable.theRuleEncoding=true">
+							<then>
+								<nvobject.create NAME="nvSegRule"/>
+								<nvobject.fromstring NAME="nvSegRule" VALUE="Variables.theRuleEncoding"/>
+								<nvobject.getvalue NAME="nvSegRule" VALUENAME="RULESETTYPE" VARNAME="rulesettype"/>
+								<!--if ui regenerate the rules with a good file id name-->
+								<if COND="Variables.rulesettype=ui">
+									<then>
+										<callelement NAME="OpenMarket/Gator/Rules/GenerateAdvColRuleset"/>
+										<setvar NAME="AdvCols:selruleset" VALUE="Variables.tempxml"/>
+									</then>
+								</if>
+								<callelement NAME="OpenMarket/Xcelerate/AssetType/AdvCols/GetOrSetVars"/>
+							</then>
+						</if>
+					</then>
+					<else>
+						<br/><XLAT.STREAM KEY="dvin/AT/Common/AssetGetFailed" errno="Variables.errno" EVALALL="false"/>
+					</else>
+				</if>
+			</then>
+		</if>
+	</then>
+</if>
+</FTCS> 

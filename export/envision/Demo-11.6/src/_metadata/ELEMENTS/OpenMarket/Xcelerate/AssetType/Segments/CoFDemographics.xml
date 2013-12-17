@@ -1,0 +1,146 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/CoFDemographics
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<SETVAR NAME="OutputQString" VALUE="Variables.empty"/>
+<STRING.ENCODE VARIABLE="ContentDetails:description" VARNAME="OutputQString"/>
+<INPUT TYPE="HIDDEN" NAME="Segments:description" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/>
+<![CDATA[<INPUT TYPE="HIDDEN" NAME="Segments:name" VALUE="]]><STRING.STREAM VALUE="Variables.ContentDetails:name"/><![CDATA["/>]]>
+<IF COND="IsVariable.Segments:startdate=true">
+<THEN>
+	<STRING.ENCODE VARIABLE="Segments:startdate" VARNAME="Segments:startdate"/>
+	<INPUT TYPE="HIDDEN" NAME="Segments:startdate" VALUE="Variables.Segments:startdate" REPLACEALL="Variables.Segments:startdate"/>
+</THEN>
+<ELSE>
+	<INPUT TYPE="HIDDEN" NAME="Segments:startdate" VALUE=""/>
+</ELSE>
+</IF>
+<IF COND="IsVariable.Segments:enddate=true">
+<THEN>
+	<STRING.ENCODE VARIABLE="Segments:enddate" VARNAME="Segments:enddate"/>
+	<INPUT TYPE="HIDDEN" NAME="Segments:enddate" VALUE="Variables.Segments:enddate" REPLACEALL="Variables.Segments:enddate"/>
+</THEN>
+<ELSE>
+	<INPUT TYPE="HIDDEN" NAME="Segments:enddate" VALUE=""/>
+</ELSE>
+</IF>
+<INPUT TYPE="HIDDEN" NAME="FromPage" VALUE="CoFDemographics"/>
+<!-- INPUT TYPE="HIDDEN" NAME="SegRuleSetHint" VALUE="Variables.SegRuleSetHint" REPLACEALL="Variables.SegRuleSetHint"/ -->
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+	<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
+</CALLELEMENT>
+
+<table border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/CoFHeader"/>
+	<STRING.ENCODE VARIABLE="SegmentsRuleScreen" VARNAME="SegmentsRuleScreen"/>
+	<INPUT TYPE="HIDDEN" NAME="SegmentsFromRuleScreen" VALUE="Variables.SegmentsRuleScreen" REPLACEALL="Variables.SegmentsRuleScreen"/>
+	
+	
+	<atm.locate TYPE="ScalarVals" VARNAME="scalarMgr"/>
+	<scalardatums.getall NAME="scalarMgr" CATEGORY="Variables.SegmentsRuleScreen" LISTVARNAME="ScalarList" SITE="SessionVariables.pubid"/>
+
+<if COND="IsList.ScalarList=true">
+	<then>
+		<setvar NAME="scalarRows" VALUE="ScalarList.#numRows"/>
+	</then>
+	<else>
+		<setvar NAME="scalarRows" VALUE="0"/>
+	</else>
+</if>	
+
+	
+	<!--if we don't have something to get, get the first one-->
+	<if COND="IsVariable.SegmentsArg3!=true">
+		<then>
+			<if COND="IsVariable.SegmentsArg2!=true">
+				<then>
+					<if COND="Variables.scalarRows!=0">
+						<then>
+							<visitordata.getscalarattributedef NAME="thisDefObject" ATTRIBUTE="ScalarList.attrid"/>
+							<visitorscalar.getdescription NAME="thisDefObject" VARNAME="thisdescription"/>
+							<setvar NAME="SegmentsArg2" VALUE="Variables.thisdescription"/>
+							<setvar NAME="SegmentsArg3" VALUE="ScalarList.attrid"/>
+						</then>
+					</if>
+				</then>
+			</if>
+		</then>
+	</if>
+
+ 
+	<if COND="Variables.scalarRows!=0">
+		<then>
+			<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/DemoRules"/>
+		</then>
+		<else>
+			<tr>
+				<td>
+					<span class="subtitle-text"><XLAT.STREAM KEY="dvin/AT/Segments/NovisattrsforSegmentsRuleScreenforsite" ENCODE="false"/></span>
+					<setvar NAME="WrongPage" VALUE="wrong"/>
+				</td>
+			</tr>   
+		</else>
+	</if>
+
+	<tr>
+		<td colspan="2"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+	</tr>
+	<tr>
+		<td>
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td><span class="subtitle-text"><CSVAR NAME="Variables.SegmentsRuleScreen"/>&nbsp;<XLAT.STREAM KEY="dvin/AT/Segments/Criteria"/>:</span></td>
+				</tr>
+				<tr>
+					<td>
+						<ul>
+							<if COND="IsList.ScalarList=true">
+								<then>
+									<loop LIST="ScalarList">
+										<visitordata.getscalarattributedef NAME="thisDefObject" ATTRIBUTE="ScalarList.attrid"/>
+										<visitorscalar.getdescription NAME="thisDefObject" VARNAME="thisdescription"/>
+										<visitorscalar.gettype NAME="thisDefObject" VARNAME="thistype"/>
+										<if COND="Variables.thistype!=blob">
+											<then>
+												<if COND="Variables.thisdescription=Variables.SegmentsArg2">
+													<then>
+														<li/><STRING.STREAM VALUE="Variables.thisdescription"/>
+													</then>
+													<else>
+													  <XLAT.LOOKUP KEY="dvin/AT/Segments/Pickthisdescriptioncriteria" VARNAME="_Pickthis_"/> 
+														<li/>
+														    <a href="javascript:void(0)" onclick="return FixRuleArgPagename('Variables.ThisPage','CoFDemographics','Variables.SegmentsRuleScreen','Variables.thisdescription','ScalarList.attrid','NoBuild');" title="Variables._Pickthis_" REPLACEALL="Variables._Pickthis_,Variables.thisdescription,ScalarList.attrid,Variables.ThisPage,Variables.SegmentsRuleScreen">
+															<STRING.STREAM VALUE="Variables.thisdescription"/>
+														</a>
+													</else>
+												</if>
+											</then>
+										</if>
+									</loop>
+								</then>
+								<else>
+									<li/><XLAT.STREAM KEY="dvin/AT/Segments/NoVistorAttributesdefined"/>
+								</else>
+							</if>
+						</ul>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+
+	<!-- form buttons -->
+	<tr>
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/CoFFooter"/>
+	</tr>
+</table>
+
+</FTCS> 

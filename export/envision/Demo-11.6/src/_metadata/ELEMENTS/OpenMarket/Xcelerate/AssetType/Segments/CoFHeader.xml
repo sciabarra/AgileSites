@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/CoFHeader
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<if COND="IsVariable.CoFHeaderaddargument!=true">
+	<then>
+		<setvar NAME="CoFHeaderaddargument" VALUE="Variables.empty"/>
+	</then>
+</if>
+
+<tr>
+	<td><span class="title-text"><XLAT.STREAM KEY="dvin/AT/Segments/SegmentFilteringCriteria"/>:</span> <span class="title-value-text"><STRING.STREAM VALUE="Variables.ContentDetails:name"/></span></td>
+</tr>
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar"/>
+<!--Only cart is localized all others are user supplied-->
+<IF COND="Shopping Cart=Variables.SegmentsRuleScreen">
+	<THEN>
+		<XLAT.LOOKUP KEY="dvin/AT/Segments/ShoppingCart" VARNAME="showname"/>
+	</THEN>
+	<ELSE>
+		<SETVAR NAME="showname" VALUE="Variables.SegmentsRuleScreen"/>
+	</ELSE>
+</IF>
+
+<tr>
+	<td>
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/CoFNavBar"/>
+	</td>
+</tr>
+<tr height="10">
+	<td height="10"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+</tr>
+<tr>
+	<td><span class="subtitle-text"><STRING.STREAM VALUE="Variables.showname"/>&nbsp;<STRING.STREAM VALUE="Variables.CoFHeaderaddargument"/></span></td>
+</tr>
+<tr height="10">
+	<td height="10"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+</tr>
+</FTCS> 

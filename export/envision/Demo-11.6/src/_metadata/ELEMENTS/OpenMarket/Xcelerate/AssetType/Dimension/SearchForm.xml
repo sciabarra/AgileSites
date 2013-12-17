@@ -1,0 +1,156 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: $ 
+$Revision: 39 $ 
+$Modtime: 7/08/04 11:16a $ 
+-->
+<!--
+- Confidential and Proprietary Information of Open Market, Inc.
+-					All Rights Reserved.
+-
+- DESCRIPTION
+-	
+-->
+	<table border="0" cellspacing="0" cellpadding="0">
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+		<tr>
+			<td class="form-label-text">
+				<XLAT.STREAM KEY="dvin/Common/Namecontains" />
+				:
+			</td>
+			<td>
+			</td>
+			<IF COND="IsVariable.Name=false">
+			<THEN>
+				<SETVAR NAME="Name" VALUE="Variables.empty"/>
+			</THEN>
+			</IF>
+			<td class="form-inset">
+				<![CDATA[<INPUT TYPE="text" NAME="Name" VALUE="]]><STRING.STREAM VALUE="Variables.Name"/><![CDATA[" SIZE="32" MAXLENGTH="128"/>]]>
+			</td>
+		</tr>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+		<tr>
+			<td class="form-label-text">
+				<XLAT.STREAM KEY="dvin/Common/AT/Descriptioncontains" />
+				:
+			</td>
+			<td>
+			</td>
+			<IF COND="IsVariable.Description=false">
+			<THEN>
+				<SETVAR NAME="Description" VALUE="Variables.empty"/>
+			</THEN>
+			</IF>
+			<td class="form-inset">
+				<![CDATA[<INPUT TYPE="text" NAME="Description" VALUE="]]><STRING.STREAM VALUE="Variables.Description"/><![CDATA[" SIZE="32" MAXLENGTH="128"/>]]>
+			</td>
+		</tr>
+		
+		<ASSET.GETLEGALSUBTYPES TYPE="Variables.AssetType" LIST="subtypes" PUBID="SessionVariables.pubid" />
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+		<tr>
+			<td class="form-label-text">
+				<XLAT.STREAM KEY="dvin/Common/Subtypeis" />
+				:
+			</td>
+			<td>
+			</td>
+			<td class="form-inset">
+				<SELECT Name="Subtype"> 
+					<OPTION VALUE="" />
+					-- 
+					<XLAT.STREAM KEY="dvin/Common/anysubtype" />
+					-- 
+					<if COND="Variables.Subtype!=Variables.empty">
+						<then>
+							<loop LIST="subtypes">
+								<if COND="subtypes.subtype!=Variables.empty">
+									<then>
+										<if COND="Variables.Subtype=subtypes.subtype">
+											<then>
+												<OPTION VALUE="subtypes.subtype" SELECTED="" REPLACEALL="subtypes.subtype" />
+												<STRING.STREAM LIST="subtypes" COLUMN="subtype" />
+											</then>
+											<else>
+												<OPTION VALUE="subtypes.subtype" REPLACEALL="subtypes.subtype" />
+												<STRING.STREAM LIST="subtypes" COLUMN="subtype" />
+											</else>
+										</if>
+									</then>
+								</if>
+							</loop>
+						</then>
+						<else>
+							<loop LIST="subtypes">
+								<if COND="subtypes.subtype!=Variables.empty">
+									<then>
+										<IF COND="subtypes.subtype!=Variables.Subtype">
+											<THEN>
+												<OPTION VALUE="subtypes.subtype" REPLACEALL="subtypes.subtype" />
+												<STRING.STREAM LIST="subtypes" COLUMN="subtype" />
+											</THEN>
+										</IF>
+									</then>
+								</if>
+							</loop>
+						</else>
+					</if>
+				</SELECT>
+			</td>
+		</tr>
+		
+		<IF COND="Variables.AssetTypeObj:usesearchindex=1">
+			<THEN>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar" />
+				<tr>
+					<td class="form-label-text">
+						<INPUT NAME="SelectDirectQuery" TYPE="CHECKBOX" />
+						<XLAT.STREAM KEY="dvin/Common/AT/DirectCSPropertycssearchengineexpression" />
+						:
+					</td>
+					<td>
+					</td>
+					<td class="form-inset">
+<TEXTAREA NAME="DirectQuery" ROWS="2" COLS="24" WRAP="virtual"></TEXTAREA>
+					</td>
+				</tr>
+			</THEN>
+		</IF>
+		<callelement NAME="OpenMarket/Xcelerate/Actions/Search/SearchCommon" />
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+		<tr>
+			<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/SortResultsBy" />:</td>
+			<td>
+			</td>
+			<td class="form-inset">
+				<SELECT NAME="OrderBy"> 
+					<OPTION VALUE="name" SELECTED="" />
+					<XLAT.STREAM KEY="dvin/Common/Name" />
+					<OPTION VALUE="createdby" />
+					<XLAT.STREAM KEY="dvin/Common/CreatedBy" />
+					<OPTION VALUE="createddate DESC" />
+					<XLAT.STREAM KEY="dvin/UI/Search/CreatedDate" />
+					<OPTION VALUE="updatedby" />
+					<XLAT.STREAM KEY="dvin/Common/AT/UpdatedBy" />
+					<OPTION VALUE="updateddate DESC" />
+					<XLAT.STREAM KEY="dvin/Common/AT/UpdatedDate" />
+				</SELECT> 
+			</td>
+		</tr>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+		<tr>
+			<td>
+			</td>
+			<td>
+			</td>
+			<td class="form-inset">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<callelement NAME="OpenMarket/Xcelerate/Actions/Search/SearchFooter" />
+				</table>
+			</td>
+		</tr>
+	</table>
+</FTCS>

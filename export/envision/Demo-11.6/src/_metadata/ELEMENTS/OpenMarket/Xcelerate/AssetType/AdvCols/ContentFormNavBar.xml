@@ -1,0 +1,101 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormNavBar
+--
+-- INPUT
+--	Variables.CurrentCat
+--
+-- OUTPUT
+--
+-->
+<STRING.ENCODE VARNAME="namestring" VARIABLE="namestring"/>
+<STRING.ENCODE VARNAME="cs_imagedir" VARIABLE="cs_imagedir"/>
+<STRING.ENCODE VARNAME="CurrentCat" VARIABLE="CurrentCat"/>
+<STRING.ENCODE VARNAME="ThisPage" VARIABLE="ThisPage"/>
+<STRING.ENCODE VARNAME="selname" VARIABLE="selname"/>
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/CommonName"/>
+
+<IF COND="Variables.AdvColMode=List">
+	<THEN>
+		<SETVAR NAME="NavCategories" VALUE="Name,Options,Build"/>
+		<XLAT.LOOKUP KEY="dvin/AT/Common/Name" VARNAME="cat1"/>
+		<XLAT.LOOKUP KEY="dvin/AT/AdvCols/Options" VARNAME="cat2"/>
+		<XLAT.LOOKUP KEY="dvin/Common/AT/Build"  VARNAME="cat3"/>
+		<SETVAR NAME="_localcats_" VALUE="Variables.cat1,Variables.cat2,Variables.cat3"/>	
+	</THEN>
+	<ELSE>
+		<SETVAR NAME="NavCategories" VALUE="Name,Type,Options,Build,Selection,Sort"/>		
+		<XLAT.LOOKUP KEY="dvin/AT/Common/Name" VARNAME="cat1"/>
+		<XLAT.LOOKUP KEY="dvin/AT/AdvCols/Type" VARNAME="cat2"/>
+		<XLAT.LOOKUP KEY="dvin/AT/AdvCols/Options" VARNAME="cat3"/>
+		<XLAT.LOOKUP KEY="dvin/Common/AT/Build" VARNAME="cat4"/>
+		<XLAT.LOOKUP KEY="dvin/AT/AdvCols/LocalizedNavCategoriesSelection" VARNAME="cat5"/>
+		<XLAT.LOOKUP KEY="dvin/AT/AdvCols/LocalizedNavCategoriesSort" VARNAME="cat6"/>
+		<SETVAR NAME="_localcats_" VALUE="Variables.cat1,Variables.cat2,Variables.cat3,Variables.cat4,Variables.cat5,Variables.cat6"/>
+	</ELSE>
+</IF>
+<STRINGLIST NAME="ListCategories" STR="Variables.NavCategories" DELIM=","/>
+<STRINGLIST NAME="LocalizedCategories" STR="Variables._localcats_" DELIM=","/>
+
+<tr>
+	<td height="2"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="2" REPLACEALL="Variables.cs_imagedir"/></td>
+</tr>
+
+
+<tr>
+	<td colspan="4">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<LOOP LIST="ListCategories">
+					<IF COND="ListCategories.ITEM=Variables.CurrentCat">
+						<THEN>
+							<td align="left" valign="top"><span class="navigation-bar-on"><STRING.STREAM VALUE="LocalizedCategories.ITEM"/></span></td>
+						</THEN>
+						<ELSE>
+							<SETVAR NAME="nextCategory" VALUE="LocalizedCategories.ITEM"/> <!--used by lookup keys-->
+							<XLAT.LOOKUP KEY="dvin/AT/AdvCols/ContinuetoCategoryforAdvCols" VARNAME="_nextCat_" ESCAPE="true"/>
+							<XLAT.LOOKUP KEY="dvin/AT/AdvCols/SpecCategoryforAdvCols" VARNAME="_specCat_"/>
+							<td align="left" valign="top">
+								<IF COND="Variables.useSelAll=false">
+									<THEN>
+										<a href="javascript:void(0)" onclick="return FixpagenameWithCheck('Variables.ThisPage','ContentFormListCategories.ITEM','Variables.namestring');" title="Variables._specCat_" onmouseover="window.status='Variables._nextCat_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._specCat_,Variables._nextCat_,ListCategories.ITEM,Variables.ThisPage,Variables.namestring">
+											<IMG src="Variables.cs_imagedir/graphics/common/icon/mArrowOff.gif" vspace="7" hspace="1" HEIGHT="9" WIDTH="9" BORDER="0" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale"/>
+										</a>
+									</THEN>
+									<ELSE>
+										<a href="javascript:void(0)" onclick="selThis('Variables.selname'); return FixpagenameWithCheck('Variables.ThisPage','ContentFormListCategories.ITEM','Variables.namestring');" title="Variables._specCat_" onmouseover="window.status='Variables._nextCat_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._specCat_,Variables._nextCat_,ListCategories.ITEM,Variables.ThisPage,Variables.namestring,Variables.selname">
+											<IMG src="Variables.cs_imagedir/graphics/common/icon/mArrowOff.gif" vspace="7" hspace="1" HEIGHT="9" WIDTH="9" BORDER="0" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale"/>
+										</a>
+									</ELSE>
+								</IF>
+
+							</td>
+							<td align="left" valign="top">
+								<IF COND="Variables.useSelAll=false">
+									<THEN>
+										<a href="javascript:void(0)" onclick="return FixpagenameWithCheck('Variables.ThisPage','ContentFormListCategories.ITEM','Variables.namestring');" title="Variables._specCat_" onmouseover="window.status='Variables._nextCat_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._specCat_,Variables._nextCat_,ListCategories.ITEM,Variables.ThisPage,Variables.namestring">
+											<span class="navigation-bar"><STRING.STREAM VALUE="LocalizedCategories.ITEM"/></span>
+										</a>
+									</THEN>
+									<ELSE>
+										<a href="javascript:void(0)" onclick="selThis('Variables.selname'); return FixpagenameWithCheck('Variables.ThisPage','ContentFormListCategories.ITEM','Variables.namestring');" title="Variables._specCat_" onmouseover="window.status='Variables._nextCat_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._specCat_,Variables._nextCat_,ListCategories.ITEM,Variables.ThisPage,Variables.namestring,Variables.selname">
+											<span class="navigation-bar"><STRING.STREAM VALUE="LocalizedCategories.ITEM"/></span>
+										</a>
+									</ELSE>
+								</IF>
+							</td>
+						</ELSE>
+					</IF>
+          
+					<td><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="25" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+				  <SETROW LIST="LocalizedCategories" ACTION="NEXT"/>
+				</LOOP>
+			</tr>
+		</table>
+	</td>
+</tr>
+</FTCS> 
+
+

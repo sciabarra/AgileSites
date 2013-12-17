@@ -1,0 +1,236 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateD/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Collection/ContentDetails.xml $ 
+$Revision: 64 $ 
+$Modtime: 7/21/04 12:14p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of Open Market, Inc.
+-					All Rights Reserved.
+-
+- DESCRIPTION
+-	Show details of a collection
+
+- HISTORY 
+	5/14/00 - Convert to standard UI layout - Jeff Sokolov
+	
+-->
+<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
+<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at"/>
+<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description"/>
+
+	<!-- Action bar -->
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ActionsBar">
+		<argument NAME="Screen" VALUE="Inspect"/>
+	</callelement>
+	 <SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Actions/BuildCollectionFront" outstring="urlbldcollfront">
+		<satellite.argument name="cs_environment" value="Variables.cs_environment"/>
+		<satellite.argument name="cs_formmode" value="Variables.cs_formmode"/>
+		<satellite.argument name="Collection" value="Variables.id"/>
+	</SATELLITE.LINK>
+	<div dojoType="dijit.layout.ContentPane" region="center">
+	<table border="0" cellpadding="0" cellspacing="0" class="width70BottomExMargin">
+    
+    <!-- Collection page title with asset name -->
+	<tr>
+		<td><span class="title-text"><STRING.STREAM VARIABLE="at:description"/>: </span><span class="title-value-text"><STRING.STREAM VARIABLE="ContentDetails:name"/>
+		<IF COND="Variables.cs_environment=ucform">
+		<THEN>
+			&nbsp; <img src='Variables.cs_imagedir/graphics/common/icon/doubleArrow.gif' REPLACEALL="Variables.cs_imagedir"/><A href="Variables.urlbldcollfront" REPLACEALL="Variables.urlbldcollfront"><XLAT.STREAM KEY="dvin/Common/BuildCollection"/></A>
+		</THEN>
+		</IF>
+		</span></td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+		<argument NAME="SpaceBelow" VALUE="No"/>
+	</callelement>
+	<!-- Collection attribute inspection form -->
+	<tr>
+		<td>
+			<table border="0" cellpadding="0" cellspacing="0">
+
+				<!-- The beginning of Group 1 -->
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/Common/Name"/>:</td>
+					<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+					<td class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:name"/></td>
+				</tr>
+
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Description"/>:</td>
+					<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+					<td class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:description"/></td>
+				</tr>
+
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	   		    <tr>
+		   			<td class="form-label-text"><XLAT.STREAM KEY="dvin/UI/Subtype"/>:</td>
+					<td></td>
+					<td class="form-inset">
+						<ASSETTYPE.LIST LIST="at" FIELD1="assettype" VALUE1="Variables.ContentDetails:subtype"/>
+						<STRING.STREAM LIST="at" COLUMN="description"/>
+					</td>
+	        	</tr>
+
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Util/ShowTemplateDetailsIfAny">
+					<!--also depends on Variables.AssetType-->
+					<ARGUMENT NAME="template" VALUE="Variables.ContentDetails:template"/>
+				</CALLELEMENT>
+
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<callelement NAME="OpenMarket/Xcelerate/Actions/Util/ShowStatusCode"/>
+				</tr>
+
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/InspectAssetStartEndDate"/>
+				
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/Dimension/ShowDimensionDetails"/>
+
+				<!-- The beginning of Group 2 -->
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/ID"/>:</td>
+					<td></td>
+					<td class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:id"/></td>
+				</tr>
+
+				<setvar NAME="assettype" VALUE="Collection"/>
+				<selectto LIST="Category" FROM="Category" WHERE="assettype"/>
+				<IF COND="Category.#numRows!=0">
+				<THEN>
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+					<tr>
+						<td class="form-label-text"><XLAT.STREAM KEY="dvin/UI/Admin/Category"/>:</td>
+							<setvar NAME="category" VALUE="Variables.ContentDetails:category"/>
+							<setvar NAME="assettype" VALUE="Collection"/>
+							<selectto LIST="CategoryDescription" FROM="Category" WHAT="description" WHERE="category,assettype"/>
+						<td></td>
+						<td class="form-inset"><STRING.STREAM LIST="CategoryDescription" COLUMN="description"/>
+						</td>
+					</tr>
+				</THEN>
+				</IF>
+
+				<!-- The beginning of Group 3 -->
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/Common/Keywords"/>:</td>
+					<td></td>
+					<td class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:keyword"/></td>
+				</tr>
+
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/ShowAssociations">
+					<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+					<ARGUMENT NAME="childassettype" VALUE="Variables.ContentDetails:subtype"/>
+                    <ARGUMENT NAME="revision" VALUE="Variables.revision"/>
+                    <ARGUMENT NAME="revisionInspect" VALUE="Variables.revisionInspect"/>
+				</CALLELEMENT>
+
+           <ASSOCNAMEDMANAGER.LIST   LISTVARNAME="AssocListQ" TYPE="Collection" CHILDTYPE="Query" />
+           <ASSOCNAMEDMANAGER.LIST   LISTVARNAME="AssocList" TYPE="Collection" SUBTYPE="Variables.ContentDetails:subtype"/>
+	
+				<if COND="AssocListQ.#numRows!=AssocList.#numRows">
+				<then>
+					<setvar NAME="tablename" VALUE="AssocNamed"/>
+					<setvar NAME="errno" VALUE="0"/>
+					<execsql LIST="nonQueryNamedAssocs" SQL="SELECT DISTINCT AssocNamed.childassettype FROM AssocNamed WHERE AssocNamed.assettype='Collection' AND AssocNamed.childassettype!='Query'"/>
+					<LOOP LIST="nonQueryNamedAssocs">
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/ShowAssociations">
+							<ARGUMENT NAME="childassettype" VALUE="nonQueryNamedAssocs.childassettype"/>
+                            <ARGUMENT NAME="revision" VALUE="Variables.revision"/>
+                            <ARGUMENT NAME="revisionInspect" VALUE="Variables.revisionInspect"/>
+						</CALLELEMENT>
+					</LOOP>
+				</then>
+				</if>
+					
+				<!-- The beginning of Group 4 -->
+				
+
+			 	<!-- Get the number of Query associations -->
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td valign="top" class="form-label-text"><XLAT.STREAM KEY="dvin/Common/AT/Associatedqueries"/>:</td>
+					<td></td>			
+					<td class="form-inset">
+		                <IF COND="AssocListQ.#numRows!=0">
+							<THEN>
+								<table cellspacing="0" cellpadding="0" border="0">
+                            	<SETCOUNTER NAME="currentItem" VALUE="0"/>
+                            	<LOOP LIST="AssocListQ">
+                                        <tr>
+											<td><STRING.STREAM VARIABLE="AssocListQ.description"/></td>
+											<td>&nbsp;&nbsp;&nbsp;</td>
+											<ASSET.CHILDREN NAME="theCurrentAsset" LIST="anAssetChild" CODE="AssocListQ.name" OBJECTTYPE="Query"/>
+		 									<IF COND="IsList.anAssetChild=true">
+												<THEN>
+													<IF COND="Variables.subType!=anAssetChild.subtype">
+														<THEN>
+															<ASSETTYPE.LOAD NAME="queryAssetType" TYPE="anAssetChild.subtype"/>
+															<ASSETTYPE.GET NAME="queryAssetType" FIELD="plural" OUTPUT="queryAssetType"/>
+															<SETVAR NAME="subType" VALUE="anAssetChild.subtype"/>
+														</THEN>
+													</IF>
+													
+			        	  								<td><XLAT.STREAM KEY="dvin/Common/AT/returns"/></td>
+												</THEN>
+												<ELSE>
+													<td colspan="3"></td>
+												</ELSE>
+											</IF>
+										</tr>
+                                        <INCCOUNTER NAME="currentItem" VALUE="1"/>
+                                    </LOOP>
+								</table>
+							</THEN>
+							<ELSE>
+								<XLAT.STREAM KEY="dvin/Common/None"/>
+							</ELSE>
+						</IF>
+					</td>
+				</tr>
+			
+                <CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/IReferencesAndSharing"/>
+				<!-- Analyics Performance indicator -->
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/ShowAnalyticsKPI"/>
+				<!-- The beginning of Group 6 -->
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Created"/>:</td>
+					<td></td>
+					<td class="form-inset">
+						<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:createddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:createddate"/>
+						<XLAT.STREAM KEY="dvin/UI/ContentDetailscreateddatebycreatedby"/>
+					</td>
+				</tr>
+				
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Modified"/>:</td>
+					<td></td>
+					<td class="form-inset">
+					<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:updateddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:updateddate"/>
+					<XLAT.STREAM KEY="dvin/UI/ContentDetailsupdateddatebyupdatedby"/>
+					&nbsp;&nbsp;&nbsp;<XLAT.LOOKUP KEY="dvin/Common/AT/Build" VARNAME="_XLAT_" ESCAPE="true"/>
+					</td>
+				</tr>								
+			</table>
+			<!-- End of body -->
+		</td>
+	</tr>
+
+ 	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+	<tr>
+		<td><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+	</tr>
+ </table>
+</div>
+</div>
+</FTCS>

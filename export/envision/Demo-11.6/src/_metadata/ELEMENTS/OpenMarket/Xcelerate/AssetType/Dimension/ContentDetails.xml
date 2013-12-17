@@ -1,0 +1,161 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile:  $ 
+$Revision: 45 $ 
+$Modtime: 7/08/04 11:16a $ 
+-->
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- Variables.ContentDetails:xml
+-
+- DESCRIPTION
+-	
+-
+- HISTORY 
+	5/14/00 - Convert to standard UI layout - Jeff Sokolov
+-->
+	<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
+	<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at" />
+	<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description" />
+	<!-- Action bar -->
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ActionsBar">
+			<argument NAME="Screen" VALUE="Inspect" />
+		</callelement>
+		<div dojoType="dijit.layout.ContentPane" region="center">
+	<table border="0" cellpadding="0" cellspacing="0" class="width70BottomExMargin">
+<!-- Dimension page title with asset name -->
+		<tr>
+			<td>
+				<span class="title-text">
+					<STRING.STREAM VARIABLE="at:description" />:</span>&nbsp;<span class="title-value-text">
+					<STRING.STREAM VARIABLE="ContentDetails:name" />
+				</span>
+			</td>
+		</tr>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+			<argument NAME="SpaceBelow" VALUE="No" />
+		</callelement>
+<!-- Dimension attribute inspection form -->
+		<tr>
+			<td>
+				<table border="0" cellpadding="0" cellspacing="0" class="width-inner-100">
+<!-- The beginning of Group 1 -->
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+					<tr>
+						<td class="form-label-text"><span class="alert-color">*</span>
+							<XLAT.STREAM KEY="dvin/Common/Name" />
+							:
+						</td>
+						<td>
+							<img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir" />
+						</td>
+						<td class="form-inset">
+							<STRING.STREAM VARIABLE="ContentDetails:name" />
+						</td>
+					</tr>
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+					<tr>
+						<td class="form-label-text">
+							<XLAT.STREAM KEY="dvin/Common/Description" />
+							:
+						</td>
+						<td>
+							<img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir" />
+						</td>
+						<td class="form-inset">
+							<STRING.STREAM VARIABLE="ContentDetails:description" />
+						</td>
+					</tr>
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+					<tr>
+						<td class="form-label-text">
+							<XLAT.STREAM KEY="dvin/UI/Subtype" />
+							:
+						</td>
+						<td>
+						</td>
+						<td class="form-inset">
+							<if COND="Variables.ContentDetails:subtype=Variables.empty">
+								<then>
+									<XLAT.STREAM KEY="dvin/UI/Util/Standardnosubtype" />
+								</then>
+								<else>
+									<STRING.STREAM VARIABLE="ContentDetails:subtype" />
+								</else>
+							</if>
+						</td>
+					</tr>
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+					<tr>
+						<callelement NAME="OpenMarket/Xcelerate/Actions/Util/ShowStatusCode" />
+					</tr>
+					<!-- The beginning of Group 2 -->
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer" />
+					<tr>
+						<td class="form-label-text">
+							<XLAT.STREAM KEY="dvin/AT/Common/ID" />
+							:
+						</td>
+						<td>
+						</td>
+						<td class="form-inset">
+							<STRING.STREAM VARIABLE="ContentDetails:id" />
+						</td>
+					</tr>
+					<!-- The beginning of Group 3 -->
+					<!-- The beginning of Group 4 -->
+					<!-- The beginning of Group 5 -->
+					<ASSOCNAMEDMANAGER.LIST LISTVARNAME="associations" TYPE="Variables.AssetType" SUBTYPE="Variables.ContentDetails:subtype" />
+					<IF COND="associations.#numRows!=0">
+						<THEN>
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/ShowAssociations">
+								<ARGUMENT NAME="assetname" VALUE="theCurrentAsset" />
+                                <ARGUMENT NAME="revision" VALUE="Variables.revision"/>
+                                <ARGUMENT NAME="revisionInspect" VALUE="Variables.revisionInspect"/>
+							</CALLELEMENT>
+						</THEN>
+					</IF>
+					<!-- Analyics Performance indicator -->
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/ShowAnalyticsKPI"/>
+					<!-- The beginning of Group 6 -->
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+					<tr>
+						<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/Common/Created"/>:</td>
+						<td></td>
+						<td class="form-inset">
+							<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:createddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:createddate"/>
+							<XLAT.STREAM KEY="dvin/UI/ContentDetailscreateddatebycreatedby"/>
+						</td>
+					</tr>
+					
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+					<tr>
+						<td class="form-label-text">
+							<XLAT.STREAM KEY="dvin/AT/Common/Modified" />
+							:
+						</td>
+						<td>
+						</td>
+						<td class="form-inset">
+							<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:updateddate" VALUETYPE="jdbcdate" VARNAME="ContentDetails:updateddate" />
+							<XLAT.STREAM KEY="dvin/UI/ContentDetailsupdateddatebyupdatedby" />
+						</td>
+					</tr>
+				</table>
+<!-- End of body -->
+			</td>
+		</tr>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar" />
+		<tr>
+			<td>
+				<img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir" />
+			</td>
+		</tr>
+	</table>
+	</div>
+	</div>
+</FTCS>

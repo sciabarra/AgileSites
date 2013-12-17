@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateA/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/AdvCols/SearchBuildOrList.xml $ 
+$Revision: 8 $
+$Modtime: 11/16/01 5:34p $
+-->
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/SearchBuildOrList
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+<SCRIPT LANGUAGE="JavaScript">
+
+<![CDATA[
+
+function buildOrList(obj)
+{
+    // build or lists for: Name, Type, ExternalId,ExternalColumn,ExternalTable
+    
+    if (obj.form.elements['SelectName'].checked == true) {
+        s = obj.form.elements['Name'].value;
+        obj.form.elements['Name-H'].value = orList(s, 'AdvCols.name');
+    }
+
+    if (obj.form.elements['SelectDescription'].checked == true) {
+        s = obj.form.elements['Description'].value;
+        obj.form.elements['Description-H'].value = orList(s, 'AdvCols.description');
+    }
+
+		obj.form.submit();
+   }
+
+]]>
+
+</SCRIPT>
+
+</FTCS>
+
+

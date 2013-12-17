@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/GetAssetList
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+<setvar NAME="haveassetlist" VALUE="false"/>
+<if COND="IsVariable.AssetlistTag=true">
+	<then>
+		<setvar NAME="SaveAssetType" VALUE="Variables.AssetType"/>
+		<listobject.create  NAME="ListAssetlists" COLUMNS="assettype,assetid"/>
+        <if COND="IsVariable.PickedConstraintVar=true">
+            <then>
+                <if COND="Variables.PickedConstraintVarAstCount!=0">
+                    <then>
+                                <setcounter NAME="ExistingItems" VALUE="0"/>
+                                <loop COUNT="Variables.PickedConstraintVarAstCount">
+                                    <ICS.RESOLVEVARIABLES  NAME="Variables.$(Variables.CriteriaRow)_$(Variables.CriteriaColumn)_$(Counters.ExistingItems)AstListAssettype$(Variables.PickedConstraintVar)" OUTPUT="existCartListAssettype" DELIMITED="true"/>
+                                    <ICS.RESOLVEVARIABLES  NAME="Variables.$(Variables.CriteriaRow)_$(Variables.CriteriaColumn)_$(Counters.ExistingItems)AstListAssetid$(Variables.PickedConstraintVar)" OUTPUT="existCartListAssetid" DELIMITED="true"/>
+                                    <listobject.addrow NAME="ListAssetlists" assettype="Variables.existCartListAssettype" assetid="Variables.existCartListAssetid"/>
+                                    <inccounter NAME="ExistingItems" VALUE="1"/>
+                                </loop>
+                    </then>
+                </if>
+             </then>
+         </if>
+		<STRINGLIST NAME="AssetlistList" STR="Variables.AssetlistTag" DELIM=":"/>
+		<loop LIST="AssetlistList">
+			<callelement NAME="OpenMarket/Gator/UIFramework/ParseTreeNodeID">
+				<argument NAME="TreeNodeID" VALUE="AssetlistList.ITEM"/>
+			</callelement>
+			<listobject.addrow NAME="ListAssetlists" assettype="Variables.AssetType" assetid="Variables.ID"/>
+		</loop>
+		<listobject.tolist NAME="ListAssetlists" LISTVARNAME="Segments:Assetlists"/>
+		<setvar NAME="haveassetlist" VALUE="true"/>
+		<setvar NAME="AssetType" VALUE="Variables.SaveAssetType"/>
+	</then>
+</if>
+</FTCS> 

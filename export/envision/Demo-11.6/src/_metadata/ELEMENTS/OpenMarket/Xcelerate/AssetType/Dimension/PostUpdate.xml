@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile:  $ 
+$Revision: 15 $ 
+$Modtime: 7/31/02 12:01p $ 
+-->
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- PostUpdate.xml
+-
+- DESCRIPTION
+-	
+-
+- HISTORY 
+-->
+<PROPERTY.GET PARAM="analytics.enabled" INIFILE="futuretense_xcel.ini" VARNAME="analyticsEnabled"/>
+<if COND="Variables.analyticsEnabled=true">
+<then>
+    <CALLELEMENT NAME="Analytics/AddAuditIntegrationImgTag"/>
+</then>
+</if>
+    
+    <if COND="Variables.updatetype=edit">
+		<then>
+		</then>
+	</if>
+	<if COND="Variables.updatetype=create">
+		<then>
+		</then>
+	</if>
+	<if COND="Variables.updatetype=delete">
+		<then>
+		</then>
+	</if>
+	<if COND="Variables.updatetype=remotepost">
+		<then>
+		</then>
+	</if>
+	<if COND="Variables.updatetype=updatefrom">
+		<then>
+		</then>
+	</if>
+	
+<!-- If the asset is updated from dash -->
+<if COND="Variables.dashUpdate=dashUpdate">
+<then>
+	<if COND="Variables.dashUpdateType=create">
+    <then>
+		<!--if the operation is create-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=edit">
+    <then>
+		<!--if the operation is edit-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=delete">
+    <then>
+		<!--if the operation is delete-->
+    </then>
+    </if>
+	<!--
+		Uncomment this code for refreshing dash tree for any asset creation/updation/deletion operation
+		<callelement NAME="OpenMarket/Xcelerate/Actions/RefreshDashTree"/>
+	-->
+</then>
+</if>
+</FTCS>

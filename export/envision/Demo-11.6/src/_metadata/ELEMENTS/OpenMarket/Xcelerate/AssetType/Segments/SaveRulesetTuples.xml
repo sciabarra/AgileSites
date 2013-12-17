@@ -1,0 +1,214 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ftcs SYSTEM "futuretense_cs.dtd">
+<ftcs version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/SaveRulesetTuples
+-
+- INPUT
+-
+--	Prefix - prefix of variables names - prefix used in appropriate gather.
+-
+- OUTPUT
+-
+-->
+
+
+<SEGMENT.GETRATINGRULESETMAP NAME="theCurrentAsset" OBJVARNAME="theMap"/>
+
+<!-- set up for "this" rulemap value -->
+<ASSET.GET NAME="theCurrentAsset" FIELD="id"/>
+<RULESETMAP.SET NAME="theMap" KEY="this" TYPE="asset" VALUE="Variables.AssetType:Variables.id"/>
+
+<IF COND="IsVariable.Segments:ruleset_map:Total=true">
+<THEN>
+	<IF COND="Variables.Segments:ruleset_map:Total!=0">
+	<THEN>
+                    <SETCOUNTER NAME="hiddencount" VALUE="0"/>
+		<LOOP COUNT="Variables.Segments:ruleset_map:Total">
+			<ICS.RESOLVEVARIABLES  NAME="$(Variables.Segments:ruleset_map:$(Counters.hiddencount):key)" OUTPUT="ourKey" DELIMITED="true"/>
+			<ICS.RESOLVEVARIABLES  NAME="$(Variables.Segments:ruleset_map:$(Counters.hiddencount):type)" OUTPUT="ourType" DELIMITED="true"/>
+			<ICS.RESOLVEVARIABLES  NAME="$(Variables.Segments:ruleset_map:$(Counters.hiddencount):value)" OUTPUT="ourValue" DELIMITED="true"/>
+			<RULESETMAP.SET NAME="theMap" KEY="Variables.ourKey" TYPE="Variables.ourType" VALUE="Variables.ourValue"/>
+			<inccounter NAME="hiddencount" VALUE="1"/>
+		</LOOP>
+	</THEN>
+	</IF>
+</THEN>
+</IF>
+
+<!-- initialize rulemap keys and values by checking appropriate posted  variables for clauses --> 
+<!-- clause specific variables are put into the form by CofGetRuleFromForm -->
+
+<!-- cart rulemap keys -->
+<IF COND="IsVariable.CartlistClauses=true">
+<THEN>
+	<STRINGLIST STR="Variables.CartlistClauses" NAME="clauseList" DELIM=","/>
+	<LOOP LIST="clauseList">
+		<ICS.RESOLVEVARIABLES  NAME="Variables.$(clauseList.ITEM)_NumCart" OUTPUT="thisNumCartlistItems" DELIMITED="true"/>
+		<if COND="Variables.thisNumCartlistItems!=0">
+		<then>
+			<setcounter NAME="CItems" VALUE="0"/>
+			<loop COUNT="Variables.thisNumCartlistItems">
+                                                    
+				<ICS.RESOLVEVARIABLES  NAME="$(Variables.$(clauseList.ITEM)_$(Counters.CItems)CartListAssetid)" OUTPUT="ourAssetid" DELIMITED="true"/>
+				<ICS.RESOLVEVARIABLES  NAME="$(Variables.$(clauseList.ITEM)_$(Counters.CItems)CartListAssettype)" OUTPUT="ourAssettype" DELIMITED="true"/>
+				<RULESETMAP.SET NAME="theMap" KEY="clauseList.ITEM_ASSETKEYCounters.CItems" TYPE="asset" VALUE="Variables.ourAssettype:Variables.ourAssetid"/>
+                                                    
+				<inccounter NAME="CItems" VALUE="1"/>
+			</loop>
+		</then>
+		</if>          
+	</LOOP>
+</THEN>
+</IF>   
+    
+<!-- AssetAttr history vals rulemap keys -->
+<IF COND="IsVariable.AstlistClauses=true">
+<THEN>
+	<STRINGLIST STR="Variables.AstlistClauses" NAME="clauseList" DELIM=","/>
+	<LOOP LIST="clauseList">
+		<INDEXOF STR="clauseList.ITEM" WHAT="_" OUTSTR="clauseSeparator"/>
+		<SUBSTRING STR="clauseList.ITEM" OUTSTR="cAClNum" ENDINDEX="Variables.clauseSeparator"/>
+		<CALCULATOR.GO VALUE="Variables.clauseSeparator 1 +" VARNAME="clSepPlusOne"/>
+		<INDEXOF STR="clauseList.ITEM" WHAT="_" OUTSTR="fieldSeparator" INDEX="Variables.clSepPlusOne"/>
+		<SUBSTRING STR="clauseList.ITEM" OUTSTR="cOrClNum" INDEX="Variables.clSepPlusOne" ENDINDEX="Variables.fieldSeparator"/>
+                
+		<ICS.RESOLVEVARIABLES  NAME="$(Variables.$(Variables.cAClNum)_$(Variables.cOrClNum)_NumVars)" OUTPUT="thisNumVars" DELIMITED="true"/>
+		<if COND="Variables.thisNumVars!=0">
+		<then>
+			<setcounter NAME="O" VALUE="0"/>
+			<LOOP COUNT="Variables.thisNumVars">
+				<ICS.RESOLVEVARIABLES  NAME="$(Variables.$(Variables.cAClNum)_$(Variables.cOrClNum)_NumAst$(Counters.O))" OUTPUT="thisNumAstlistItems" DELIMITED="true"/>
+				<if COND="Variables.thisNumAstlistItems!=0">
+				<then>
+					<setcounter NAME="AItems" VALUE="0"/>
+					<loop COUNT="Variables.thisNumAstlistItems">
+                                                        
+						<ICS.RESOLVEVARIABLES  NAME="Variables.$(Variables.cAClNum)_$(Variables.cOrClNum)_$(Counters.AItems)AstListAssetid$(Counters.O)" OUTPUT="ourAssetid" DELIMITED="true"/>
+						<ICS.RESOLVEVARIABLES  NAME="Variables.$(Variables.cAClNum)_$(Variables.cOrClNum)_$(Counters.AItems)AstListAssettype$(Counters.O)" OUTPUT="ourAssettype" DELIMITED="true"/>
+						<RULESETMAP.SET NAME="theMap" KEY="Variables.cAClNum_Variables.cOrClNum_HCONSTRKEYCounters.O-Counters.AItems" TYPE="asset" VALUE="Variables.ourAssettype:Variables.ourAssetid"/>
+                                                        
+						<inccounter NAME="AItems" VALUE="1"/>
+					</loop>
+				</then>
+				</if>                                  
+				<inccounter NAME="O" VALUE="1"/>
+			</LOOP>
+		</then>
+		</if>
+	</LOOP>
+</THEN>
+</IF>
+
+<!-- set and scatter updated rulemaps -->
+<SEGMENT.SETRATINGRULESETMAP NAME="theCurrentAsset" OBJECT="theMap"/>
+<ASSET.SCATTER NAME="theCurrentAsset" PREFIX="Segments" FIELDLIST="ruleset" />
+
+<!-- propogate rulemaps in hiddens for posting -->
+<INPUT TYPE="HIDDEN" NAME="Variables.Prefix:ruleset_map:Total" VALUE="Variables.Segments:ruleset_map:Total" REPLACEALL="Variables.Segments:ruleset_map:Total,Variables.Prefix"/>
+<SETVAR NAME="ContentDetails:ruleset_map:Total" VALUE="Variables.Segments:ruleset_map:Total"/>
+<INPUT TYPE="HIDDEN" NAME="ContentDetails:ruleset_map:Total" VALUE="Variables.Segments:ruleset_map:Total" REPLACEALL="Variables.Segments:ruleset_map:Total"/>
+<SETCOUNTER NAME="typecount" VALUE="0"/>
+<!-- <setcounter NAME="X" VALUE="0"/>    -->
+<IF COND="Variables.ContentDetails:ruleset_map:Total!=0">
+<THEN>
+	<LOOP COUNT="Variables.ContentDetails:ruleset_map:Total">
+		<ICS.RESOLVEVARIABLES  NAME="$(Variables.Segments:ruleset_map:$(Counters.typecount):key)" OUTPUT="ourKey" DELIMITED="true"/>
+		<STRING.ENCODE VARIABLE="ourKey" VARNAME="ourKey"/>
+		<INPUT TYPE="HIDDEN" NAME="Variables.Prefix:ruleset_map:Counters.typecount:key" VALUE="Variables.ourKey" REPLACEALL="Variables.ourKey,Counters.typecount,Variables.Prefix"/>
+		<ICS.RESOLVEVARIABLES  NAME="$(Variables.Segments:ruleset_map:$(Counters.typecount):type)" OUTPUT="ourType" DELIMITED="true"/>
+		<STRING.ENCODE VARIABLE="ourType" VARNAME="ourType"/>
+		<INPUT TYPE="HIDDEN" NAME="Variables.Prefix:ruleset_map:Counters.typecount:type" VALUE="Variables.ourType" REPLACEALL="Variables.ourType,Counters.typecount,Variables.Prefix"/>
+		<ICS.RESOLVEVARIABLES  NAME="$(Variables.Segments:ruleset_map:$(Counters.typecount):value)" OUTPUT="ourValue" DELIMITED="true"/>
+		<STRING.ENCODE VARIABLE="ourValue" VARNAME="ourValue"/>
+		<INPUT TYPE="HIDDEN" NAME="Variables.Prefix:ruleset_map:Counters.typecount:value" VALUE="Variables.ourValue" REPLACEALL="Variables.ourValue,Counters.typecount,Variables.Prefix"/>
+
+		<!-- Load rulemap keys and values from database : key denotes rulemap contents using concatenated rulehint varnames  -->
+                
+		<!-- for cart based rulemap keys -->
+		<SETVAR NAME="errno" VALUE="0"/>
+		<INDEXOF STR="Variables.ourKey" WHAT="ASSETKEY" OUTSTR="keywordIndex"/>
+		<IF COND="Variables.errno=1">
+		<THEN>
+			<!-- calculate cart item number -->
+			<CALCULATOR.GO VALUE="Variables.keywordIndex 8 +" VARNAME="cartItemIndex"/>
+			<SUBSTRING STR="Variables.ourKey" OUTSTR="cartCntr" INDEX="Variables.cartItemIndex"/>
+
+			<!-- calculate index for assettype and assetid   --> 
+			<INDEXOF STR="Variables.ourValue" OUTSTR="keyColonIndex" WHAT=":" INDEX="0"/>
+			<CALCULATOR.GO VALUE="Variables.keyColonIndex 1 +" VARNAME="keyColonPlusOne"/>
+			<SUBSTRING STR="Variables.ourValue" OUTSTR="ourAssetid" INDEX="Variables.keyColonPlusOne"/>
+			<SUBSTRING STR="Variables.ourValue" OUTSTR="ourAssettype" ENDINDEX="Variables.keyColonIndex"/>
+
+			<!-- calculate index for ruleset and and or clause    -->
+			<INDEXOF STR="Variables.ourKey" WHAT="_" OUTSTR="clauseSeparator"/>
+			<SUBSTRING STR="Variables.ourKey" OUTSTR="aClNum" ENDINDEX="Variables.clauseSeparator"/>
+			<CALCULATOR.GO VALUE="Variables.clauseSeparator 1 +" VARNAME="clSepPlusOne"/>
+			<INDEXOF STR="Variables.ourKey" WHAT="_" OUTSTR="keyNameSeparator" INDEX="Variables.clSepPlusOne"/>
+			<SUBSTRING STR="Variables.ourKey" OUTSTR="orClNum" INDEX="Variables.clSepPlusOne" ENDINDEX="Variables.keyNameSeparator"/>
+			<SETVAR NAME="ourAssetidVar" VALUE="Variables.aClNum_Variables.orClNum_Variables.cartCntrCartListAssetid"/>
+			<SETVAR NAME="ourAssettypeVar" VALUE="Variables.aClNum_Variables.orClNum_Variables.cartCntrCartListAssettype"/>
+			<SETVAR NAME="Variables.ourAssetidVar" VALUE="Variables.ourAssetid"/>
+			<SETVAR NAME="Variables.ourAssettypeVar" VALUE="Variables.ourAssettype"/>
+			<!-- create hidden variables for form only if not saving or rebuilding -->
+			<if COND="Variables.SegmentsRuleScreen!=SegmentSave">
+			<then>
+				<if COND="Variables.RebuildScreen!=SegmentSave">
+				<then>
+					<INPUT TYPE="HIDDEN" NAME="Variables.ourAssetidVar" VALUE="Variables.ourAssetid" REPLACEALL="Variables.ourAssetidVar,Variables.ourAssetid"/>
+					<INPUT TYPE="HIDDEN" NAME="Variables.ourAssettypeVar" VALUE="Variables.ourAssettype" REPLACEALL="Variables.ourAssettypeVar,Variables.ourAssettype"/>
+				</then>
+				</if>
+			</then>
+			</if>     
+		</THEN>
+		<ELSE>
+
+			<!-- for AssetAttr based rulemap keys -->
+			<SETVAR NAME="errno" VALUE="0"/>
+			<INDEXOF STR="Variables.ourKey" WHAT="HCONSTRKEY" OUTSTR="hkeywordIndex"/>
+			<IF COND="Variables.errno=1">
+			<THEN>
+				<!-- calculate Ast item number and history field number -->
+				<INDEXOF STR="Variables.ourKey" WHAT="-" OUTSTR="hyphenIndex"/>
+				<CALCULATOR.GO VALUE="Variables.hkeywordIndex 10 +" VARNAME="fieldIndex"/>
+				<SUBSTRING STR="Variables.ourKey" OUTSTR="fieldCntr" INDEX="Variables.hyphenIndex" ENDINDEX="Variables.hyphenIndex"/>
+				<SUBSTRING STR="Variables.ourKey" OUTSTR="astCntr" INDEX="Variables.hyphenIndex"/>
+        
+				<!-- calculate index for assettype and assetid   --> 
+				<INDEXOF STR="Variables.ourValue" OUTSTR="keyColonIndex" WHAT=":" INDEX="0"/>
+				<CALCULATOR.GO VALUE="Variables.keyColonIndex 1 +" VARNAME="keyColonPlusOne"/>
+				<SUBSTRING STR="Variables.ourValue" OUTSTR="ourAssetid" INDEX="Variables.keyColonPlusOne"/>
+				<SUBSTRING STR="Variables.ourValue" OUTSTR="ourAssettype" ENDINDEX="Variables.keyColonIndex"/>
+        
+				<!-- calculate index for ruleset and and or clause    -->
+				<INDEXOF STR="Variables.ourKey" WHAT="_" OUTSTR="clauseSeparator"/>
+				<SUBSTRING STR="Variables.ourKey" OUTSTR="aClNum" ENDINDEX="Variables.clauseSeparator"/>
+				<CALCULATOR.GO VALUE="Variables.clauseSeparator 1 +" VARNAME="clSepPlusOne"/>
+				<INDEXOF STR="Variables.ourKey" WHAT="_" OUTSTR="keyNameSeparator" INDEX="Variables.clSepPlusOne"/>
+				<SUBSTRING STR="Variables.ourKey" OUTSTR="orClNum" INDEX="Variables.clSepPlusOne" ENDINDEX="Variables.keyNameSeparator"/>
+				<SETVAR NAME="ourAssetidVar" VALUE="Variables.aClNum_Variables.orClNum_Variables.astCntrAstListAssetidVariables.fieldCntr"/>
+				<SETVAR NAME="ourAssettypeVar" VALUE="Variables.aClNum_Variables.orClNum_Variables.astCntrAstListAssettypeVariables.fieldCntr"/>
+				<SETVAR NAME="Variables.ourAssetidVar" VALUE="Variables.ourAssetid"/>
+				<SETVAR NAME="Variables.ourAssettypeVar" VALUE="Variables.ourAssettype"/>
+				<!-- create hidden variables for form only if not saving or rebuilding -->
+				<if COND="Variables.SegmentsRuleScreen!=SegmentSave">
+				<then>
+					<if COND="Variables.RebuildScreen!=SegmentSave">
+					<then>
+						<INPUT TYPE="HIDDEN" NAME="Variables.ourAssetidVar" VALUE="Variables.ourAssetid" REPLACEALL="Variables.ourAssetidVar,Variables.ourAssetid"/>
+						<INPUT TYPE="HIDDEN" NAME="Variables.ourAssettypeVar" VALUE="Variables.ourAssettype" REPLACEALL="Variables.ourAssettypeVar,Variables.ourAssettype"/>
+					</then>
+					</if>
+				</then>
+				</if>     
+			</THEN>
+			</IF>
+		</ELSE>
+		</IF>
+                
+		<INCCOUNTER NAME="typecount" VALUE="1"/>
+	</LOOP>
+</THEN>
+</IF>
+   
+</ftcs>

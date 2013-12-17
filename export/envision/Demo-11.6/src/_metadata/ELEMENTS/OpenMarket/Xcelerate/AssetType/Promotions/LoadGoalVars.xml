@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/LoadGoalVars
+--
+-- INPUT
+--	ContentDetails:Goals list
+--
+-- OUTPUT
+
+--	Variables.Goals1, Goals2, and Goals3 loaded correctly
+--
+-->
+
+<setvar NAME="Goal1" VALUE="Variables.empty"/>
+<setvar NAME="Goal2" VALUE="Variables.empty"/>
+<setvar NAME="Goal3" VALUE="Variables.empty"/>
+<setvar NAME="numGoals" VALUE="ContentDetails:Goals.#numRows"/>
+
+<if COND="Variables.numGoals!=0">
+	<then>
+		<setcounter NAME="goalcounter"  VALUE="1"/>
+		<loop LIST="ContentDetails:Goals">
+			<setvar NAME="GoalCounters.goalcounter" VALUE="ContentDetails:Goals.goal"/>
+			<INCCOUNTER   NAME="goalcounter" VALUE="1"/>
+		</loop>
+	</then>
+</if>
+
+</FTCS> 

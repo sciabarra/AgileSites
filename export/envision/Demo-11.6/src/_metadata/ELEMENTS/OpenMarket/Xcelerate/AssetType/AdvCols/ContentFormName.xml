@@ -1,0 +1,182 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+	<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormName
+	-
+	- INPUT
+	-
+	- OUTPUT
+	-
+	-->
+		<IF COND="Variables.updatetype=setformdefaults">
+		<THEN>
+			<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" class="width-outer-70">
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormNavBar">
+				<ARGUMENT NAME="CurrentCat" VALUE="Name"/>
+			</CALLELEMENT>
+			</TABLE>
+		</THEN>
+		<ELSE>
+			<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" class="width-outer-70">
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/CommonName"/>
+			</TABLE>
+		</ELSE>
+		</IF>
+		<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" class="width-outer-70">
+		<TR>
+			<TD>
+				<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" class="width-inner-100">
+					<IF COND="Variables.updatetype=setformdefaults">
+						<THEN>
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer">
+								<ARGUMENT NAME="SpaceAbove" VALUE="No"/>
+							</CALLELEMENT>
+						</THEN>
+					</IF>
+
+					<CALLELEMENT NAME="OpenMarket/Gator/FlexibleAssets/Common/CheckforQuotes">
+						<ARGUMENT NAME="Prefix" VALUE="AdvCols"/>
+					</CALLELEMENT>
+  
+
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+					<TR>
+						<TD CLASS="form-label-text"><XLAT.STREAM KEY="dvin/UI/Subtype"/>:</TD>
+						<TD></TD>
+						<TD class="form-inset">
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Util/MakeSubtypeList">
+								<ARGUMENT NAME="Prefix" VALUE="AdvCols"/>
+								<ARGUMENT NAME="fieldvalue" VALUE="Variables.ContentDetails:subtype"/>
+								<ARGUMENT NAME="AssetType" VALUE="Variables.AssetType"/>
+							</CALLELEMENT>
+						</TD>
+					</TR>
+      
+
+					<XLAT.LOOKUP KEY="dvin/UI/Template" VARNAME="label"/>
+					<callelement NAME="OpenMarket/Xcelerate/Actions/Util/ShowTemplatesIfAny">
+						<argument NAME="Prefix" VALUE="AdvCols"/>
+						<argument NAME="label"  VALUE="Variables.label:"/>
+					</callelement>			
+
+					<!--Call start date and end date for site preview-->
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/form/AssetTypeStartEndDate">
+						<argument NAME="startDateFieldName" VALUE="AdvCols:startdate"/>
+						<argument NAME="endDateFieldName"  VALUE="AdvCols:enddate"/>
+					</callelement>
+					<!--End site preview dates -->
+					
+					<callelement NAME="OpenMarket/Xcelerate/AssetType/Dimension/ShowDimensionForm">
+                        <argument NAM="dimFormPrefix" VALUE="AdvCols"/>
+                        <argument NAM="dimVarPrefix" VALUE="ContentDetails"/>
+                    </callelement>
+
+                    <CALLELEMENT NAME="OpenMarket/Gator/Util/HasMarketStudio"/>
+					<!--If Marketing Studio (CS Engage) is not installed, then AdvColMode is List-->
+					<IF COND="Variables.hasMarketStudio=true">
+						<THEN>
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+							<TR>
+								<TD CLASS="form-label-text"><XLAT.STREAM KEY="dvin/AT/AdvCols/Mode"/>:</TD>
+								<TD></TD>
+								<TD class="form-inset">
+									<IF COND="Variables.AdvColMode=List">
+										<THEN>
+											<INPUT style="margin-left:0px" TYPE="radio" onclick="setTabDirty();" NAME="AdvColMode" VALUE="List" CHECKED="1"/>
+											<XLAT.STREAM KEY="dvin/AT/AdvCols/List"/>
+											<BR/>
+											<INPUT style="margin-left:0px" TYPE="radio" NAME="AdvColMode" VALUE="Rec" ONCLICK="setTabDirty(); return Fixpagename('Variables.ThisPage','ContentFormName');" REPLACEALL="Variables.ThisPage"/>
+											<XLAT.STREAM KEY="dvin/AT/AdvCols/Rec"/>
+										</THEN>
+										<ELSE>
+											<INPUT style="margin-left:0px" TYPE="radio" NAME="AdvColMode" VALUE="List" ONCLICK="setTabDirty(); return Fixpagename('Variables.ThisPage','ContentFormName');" REPLACEALL="Variables.ThisPage"/>
+											<XLAT.STREAM KEY="dvin/AT/AdvCols/List"/>
+											<BR/>
+											<INPUT style="margin-left:0px" TYPE="radio" onclick="setTabDirty();" NAME="AdvColMode" VALUE="Rec" CHECKED="1"/>
+											<XLAT.STREAM KEY="dvin/AT/AdvCols/Rec"/>
+										</ELSE>
+									</IF>
+								</TD>
+							</TR>
+						</THEN>
+						<ELSE>
+							<INPUT TYPE="HIDDEN" NAME="AdvColMode" VALUE="List"/>
+						</ELSE>
+					</IF>
+
+					<IF COND="Variables.updatetype!=setformdefaults">
+						<THEN>
+
+							<!--Change button not shown in most places in list Mode-->
+							<IF COND="Variables.AdvColMode=List">
+								<THEN>
+									<SETVAR NAME="ShowButtonforAdvColMode" VALUE="false"/>
+								</THEN>
+								<ELSE>
+									<SETVAR NAME="ShowButtonforAdvColMode" VALUE="true"/>
+								</ELSE>
+							</IF>
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/CommonOptions">
+								<ARGUMENT NAME="ShowButton" VALUE="true"/>
+							</CALLELEMENT>
+
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/CommonType">
+								<ARGUMENT NAME="ShowButton" VALUE="Variables.ShowButtonforAdvColMode"/>
+							</CALLELEMENT>
+					
+
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/CommonTypeDetails">
+								<ARGUMENT NAME="ShowButton" VALUE="true"/>
+								<ARGUMENT NAME="ShowChangeButton" VALUE="true"/>
+								<ARGUMENT NAME="HiddenOnly" VALUE="false"/>
+							</CALLELEMENT>
+					
+
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/CommonSelection">
+								<ARGUMENT NAME="ShowButton" VALUE="Variables.ShowButtonforAdvColMode"/>
+							</CALLELEMENT>
+					
+
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/GetOrdering">
+								<ARGUMENT NAME="ShowButton" VALUE="false"/>
+								<ARGUMENT NAME="ShowChangeButton" VALUE="Variables.ShowButtonforAdvColMode"/>
+								<ARGUMENT NAME="HiddenOnly" VALUE="false"/>
+							</CALLELEMENT>
+					
+
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/CommonCreatedModified"/>
+
+						</THEN>
+						<ELSE>
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/GetOrdering">
+								<ARGUMENT NAME="HiddenOnly" VALUE="true"/>
+							</CALLELEMENT>
+						</ELSE>
+					</IF>					
+					
+						
+						
+							<IF COND="Variables.AdvColMode=List">
+							<THEN>
+								<SETVAR NAME="ContinueTo" VALUE="Options"/>
+							</THEN>
+							<ELSE>
+								<SETVAR NAME="ContinueTo" VALUE="Type"/>
+							</ELSE>
+						</IF>
+						
+						<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+						<TR>
+							<TD class="form-label-text"></TD><TD></TD><TD class="form-inset">
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormFooter">
+								<ARGUMENT NAME="ContinueTo" VALUE="Variables.ContinueTo"/>
+							</CALLELEMENT>
+							</TD>
+						</TR>
+				</TABLE>
+			</TD>
+		</TR>
+
+
+	</TABLE>
+</FTCS>

@@ -1,0 +1,567 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/CoFGetRuleFromForm
+--
+-- INPUT
+-- 	
+--	Data from form, operation desired, and target slot (row, column).
+
+-- OUTPUT
+--	
+-->
+<STRING.ENCODE VARIABLE="CriteriaRow" VARNAME="CriteriaRow"/>
+<STRING.ENCODE VARIABLE="CriteriaColumn" VARNAME="CriteriaColumn"/>
+<if COND="Variables.SegmentsRuleScreen=SegmentSave">
+<then>
+	<setvar NAME="getrule" VALUE="true"/>
+</then>
+<else>
+	<if COND="Variables.RebuildScreen=SegmentSave">
+	<then>
+		<setvar NAME="getrule" VALUE="true"/>
+	</then>
+	<else>
+		<setvar NAME="getrule" VALUE="false"/>
+	</else>
+	</if>
+</else>
+</if>
+
+<if COND="Variables.getrule=true">
+<then>
+	<!--First get bits of information from the form-->
+	<if COND="Variables.FromPage=CoFDemographics">
+	<then>
+		<nvobject.create NAME="nvSegRule"/>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="RULETYPE" VALUE="Variables.sRuleType"/>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="RULEOP" VALUE="Variables.sRuleOp"/>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="VARNAME" VALUE="Variables.sVarAttid"/>
+		<if COND="IsVariable.sVarAssetid=true">
+		<then>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="VARASSETID" VALUE="Variables.sVarAssetid"/>
+		</then>
+		</if>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="VARDESC" VALUE="Variables.sVarName"/>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="COMPAREOP" VALUE="Variables.sCompareOp"/>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="VALUE" VALUE="Variables.sValue1"/>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="RULECATEGORY" VALUE="Variables.SegmentsFromRuleScreen"/>
+		<if COND="IsVariable.sValue2=true">
+		<then>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="HIGHVALUE" VALUE="Variables.sValue2"/>
+		</then>
+		</if>
+		<if COND="Variables.sValue1=timestamptype">
+		<then>
+			<setcounter NAME="decmonth" VALUE="Variables.00StartMonth"/>
+			<inccounter NAME="decmonth" VALUE="-1"/>
+			<if COND="Variables.00StartHour=12">
+			<then>
+				<setvar NAME="00StartHour" VALUE="0"/>
+			</then>
+			</if>
+			<DATE.CONVERT VARNAME="theStart"  YEAR="Variables.00StartYear"  MONTH="Counters.decmonth" 
+				DAY="Variables.00StartDay"  HOUR="Variables.00StartHour"  AMPM="Variables.0-0StartamOrpm"
+				MINUTE="Variables.00StartMin" TIMEZONE="Variables.0-0StartTimeZone"/>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="VALUE" VALUE="Variables.theStart"/>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="VALTZ" VALUE="Variables.0-0StartTimeZone"/>
+			<if COND="Variables.sCompareOp=bt">
+			<then>
+				<if COND="Variables.00doEndHour=12">
+				<then>
+					<setvar NAME="00doEndHour" VALUE="0"/>
+				</then>
+				</if>
+				<setcounter NAME="decmonth" VALUE="Variables.00doEndMonth"/>
+				<inccounter NAME="decmonth" VALUE="-1"/>
+				<DATE.CONVERT VARNAME="theEnd"  YEAR="Variables.00doEndYear"  MONTH="Counters.decmonth" 
+					DAY="Variables.00doEndDay"  HOUR="Variables.00doEndHour"  AMPM="Variables.0-0doEndamOrpm"
+					MINUTE="Variables.00doEndMin" TIMEZONE="Variables.0-0doEndTimeZone"/>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="HIGHVALUE" VALUE="Variables.theEnd"/>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="HIGHVALTZ" VALUE="Variables.0-0doEndTimeZone"/>
+			</then>
+			</if>
+		</then>
+		<else>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="VALTZ" VALUE="0"/>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="HIGHVALTZ" VALUE="0"/>
+		</else>
+		</if>
+		<nvobject.tostring NAME="nvSegRule" VARNAME="thisRuleString"/>
+	</then>
+	</if>
+	
+	<if COND="Variables.FromPage=CoFHistory">
+	<then>
+		<!--Handle common stuff-->				
+		<nvobject.create NAME="nvSegRule"/>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="RULETYPE" VALUE="Variables.sRuleType"/>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="VARNAME" VALUE="Variables.sVarAttid"/>
+		<if COND="IsVariable.sVarAssetid=true">
+		<then>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="VARASSETID" VALUE="Variables.sVarAssetid"/>
+		</then>
+		</if>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="VARDESC" VALUE="Variables.sVarName"/>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="RULECATEGORY" VALUE="Variables.SegmentsFromRuleScreen"/>
+
+		<!--Handle time-->				
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="HDATEOP" VALUE="Variables.durationType"/>
+		<if COND="Variables.durationType=relative">
+		<then>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="HRELTYPE" VALUE="Variables.sRelativeOp"/>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="HINTERVAL" VALUE="Variables.sHinterval"/>
+		</then>
+		<else>
+			<if COND="Variables.durationType=fixed">
+			<then>
+				<setcounter NAME="decmonth" VALUE="Variables.StartMonth"/>
+				<inccounter NAME="decmonth" VALUE="-1"/>
+				<if COND="Variables.StartHour=12">
+				<then>
+					<setvar NAME="StartHour" VALUE="0"/>
+				</then>
+				</if>
+				<DATE.CONVERT VARNAME="startdate"  YEAR="Variables.StartYear"  MONTH="Counters.decmonth" 
+					DAY="Variables.StartDay"  HOUR="Variables.StartHour"  AMPM="Variables.StartamOrpm"
+					MINUTE="Variables.StartMin" TIMEZONE="Variables.StartTimeZone"/>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="HSTARTDATE" VALUE="Variables.startdate"/>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="HSTARTTZ" VALUE="Variables.StartTimeZone"/>
+											
+				<setcounter NAME="decmonth" VALUE="Variables.EndMonth"/>
+				<inccounter NAME="decmonth" VALUE="-1"/>
+				<if COND="Variables.EndHour=12">
+				<then>
+					<setvar NAME="EndHour" VALUE="0"/>
+				</then>
+				</if>
+				<DATE.CONVERT   VARNAME="Enddate"  YEAR="Variables.EndYear"  MONTH="Counters.decmonth" 
+					DAY="Variables.EndDay"  HOUR="Variables.EndHour"  AMPM="Variables.EndamOrpm"
+					MINUTE="Variables.EndMin" TIMEZONE="Variables.EndTimeZone"/>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="HENDDATE" VALUE="Variables.Enddate"/>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="HENDTZ" VALUE="Variables.EndTimeZone"/>
+			</then>
+			<else>
+				<!--is none-->
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="HSTARTDATE" VALUE="0"/>
+			</else>
+			</if>
+		</else>
+		</if>
+ 
+		<!--Basic options-->
+		<if COND="Variables.SummableType=UseTotal">
+		<then>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="HOP" VALUE="sum"/>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="RULEOP" VALUE="Variables.sRuleOp1"/>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="COMPAREOP" VALUE="Variables.sCompareOp1"/>
+			<if COND="IsVariable.sValue=true">
+			<then>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="VALUE" VALUE="Variables.sValue"/>
+			</then>
+			</if>
+			<if COND="IsVariable.sHField=true">
+			<then>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="HFIELD" VALUE="Variables.sHField"/>
+			</then>
+			</if>
+		</then>
+		<else>
+			<if COND="Variables.SummableType=UseCount">
+			<then>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="HOP" VALUE="count"/>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="RULEOP" VALUE="Variables.sRuleOp2"/>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="COMPAREOP" VALUE="Variables.sCompareOp2"/>
+				<if COND="IsVariable.sValue1=true">
+				<then>
+					<nvobject.setvalue NAME="nvSegRule" VALUENAME="VALUE" VALUE="Variables.sValue1"/>
+				</then>
+				</if>
+			</then>
+			<else>
+				<if COND="Variables.SummableType=UseEarliest">
+				<then>
+					<nvobject.setvalue NAME="nvSegRule" VALUENAME="HOP" VALUE="first"/>
+					<nvobject.setvalue NAME="nvSegRule" VALUENAME="RULEOP" VALUE="Variables.sRuleOp3"/>
+					<nvobject.setvalue NAME="nvSegRule" VALUENAME="COMPAREOP" VALUE="Variables.sCompareOp3"/>
+					<setcounter NAME="decmonth" VALUE="Variables.sEarliestMonth"/>
+					<inccounter NAME="decmonth" VALUE="-1"/>
+					<if COND="Variables.EarliestHour=12">
+					<then>
+						<setvar NAME="EarliestHour" VALUE="0"/>
+					</then>
+					</if>
+					<DATE.CONVERT   VARNAME="earliestdate"  YEAR="Variables.EarliestYear"  MONTH="Counters.decmonth" 
+						DAY="Variables.EarliestDay"  HOUR="Variables.EarliestHour"  AMPM="Variables.EarliestamOrpm"
+						MINUTE="Variables.EarliestMin" TIMEZONE="Variables.EarliestTimeZone"/>
+					<nvobject.setvalue NAME="nvSegRule" VALUENAME="VALUE" VALUE="Variables.earliestdate"/>
+					<nvobject.setvalue NAME="nvSegRule" VALUENAME="VALUETZ" VALUE="Variables.EarliestTimeZone"/>
+				</then>
+				<else>
+					<if COND="Variables.SummableType=UseLatest">
+					<then>
+						<nvobject.setvalue NAME="nvSegRule" VALUENAME="HOP" VALUE="last"/>
+						<nvobject.setvalue NAME="nvSegRule" VALUENAME="RULEOP" VALUE="Variables.sRuleOp4"/>
+						<nvobject.setvalue NAME="nvSegRule" VALUENAME="COMPAREOP" VALUE="Variables.sCompareOp4"/>
+						<setcounter NAME="decmonth" VALUE="Variables.sLatestMonth"/>
+						<inccounter NAME="decmonth" VALUE="-1"/>
+						<if COND="Variables.LatestHour=12">
+						<then>
+							<setvar NAME="LatestHour" VALUE="0"/>
+						</then>
+						</if>
+						<DATE.CONVERT   VARNAME="latestdate"  YEAR="Variables.LatestYear"  MONTH="Counters.decmonth" 
+							DAY="Variables.LatestDay"  HOUR="Variables.LatestHour"  AMPM="Variables.LatestamOrpm"
+							MINUTE="Variables.LatestMin" TIMEZONE="Variables.LatestTimeZone"/>
+						<nvobject.setvalue NAME="nvSegRule" VALUENAME="VALUE" VALUE="Variables.latestdate"/>
+						<nvobject.setvalue NAME="nvSegRule" VALUENAME="VALUETZ" VALUE="Variables.LatestTimeZone"/>
+					</then>
+					</if>
+				</else>
+				</if>
+			</else>
+			</if>
+		</else>
+		</if>
+				
+		<!--Constraint Management-->
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/GetHistoryConstraints"/>
+
+		<nvobject.tostring NAME="nvSegRule" VARNAME="thisRuleString"/>
+	</then>
+	</if>
+	
+	<if COND="Variables.FromPage=CoFCart">
+	<then>
+		<nvobject.create NAME="nvSegRule"/>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="RULECATEGORY" VALUE="Variables.SegmentsFromRuleScreen"/>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="RULETYPE" VALUE="Variables.sRuleType"/>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="ASSETOP" VALUE="Variables.scAssetOp"/>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="CARTMODE" VALUE="Variables.CartMode"/>
+		<if COND="Variables.scAssetOp=value">
+		<then>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="RULEOP" VALUE="Variables.sRuleOp1"/>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="COMPAREOP" VALUE="Variables.sCompareOp1"/>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="VALUE" VALUE="Variables.sValue1"/>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="VALTZ" VALUE="0"/>
+			<if COND="IsVariable.sValue2=true">
+			<then>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="HIGHVALUE" VALUE="Variables.sValue2"/>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="HIGHVALTZ" VALUE="0"/>
+			</then>
+			</if>
+		</then>
+		<else>
+			<if COND="Variables.scAssetOp=count">
+			<then>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="RULEOP" VALUE="Variables.sRuleOp2"/>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="COMPAREOP" VALUE="Variables.sCompareOp2"/>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="VALUE" VALUE="Variables.sValue3"/>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="VALTZ" VALUE="0"/>
+				<if COND="IsVariable.sValue4=true">
+				<then>
+					<nvobject.setvalue NAME="nvSegRule" VALUENAME="HIGHVALUE" VALUE="Variables.sValue4"/>
+					<nvobject.setvalue NAME="nvSegRule" VALUENAME="HIGHVALTZ" VALUE="0"/>
+				</then>
+				</if>
+			</then>
+			</if>					
+		</else>
+		</if>
+		<if COND="Variables.CartMode=all">
+		<then>
+			<nvobject.setvalue NAME="nvSegRule" VALUENAME="NUMASSETS" VALUE="0"/>
+		</then>
+		<else>
+			<IF COND="IsVariable.CartlistClauses=true">
+			<THEN>
+				<SETVAR NAME="errno" VALUE="0"/>
+				<INDEXOF STR="Variables.CartlistClauses" OUTSTR="clauseindex" WHAT="Variables.CriteriaRow_Variables.CriteriaColumn"/>
+				<IF COND="Variables.errno=0">
+				<THEN>
+					<ICS.RESOLVEVARIABLES  NAME="$(Variables.CartlistClauses),$(Variables.CriteriaRow)_$(Variables.CriteriaColumn)" OUTPUT="CartlistClauses" DELIMITED="true"/>
+					<INPUT TYPE="HIDDEN" NAME="CartlistClauses" VALUE="Variables.CartlistClauses" REPLACEALL="Variables.CartlistClauses"/>
+				</THEN>
+				<ELSE>
+					<INPUT TYPE="HIDDEN" NAME="CartlistClauses" VALUE="Variables.CartlistClauses" REPLACEALL="Variables.CartlistClauses"/>
+				</ELSE>
+				</IF>
+			</THEN>
+			<ELSE>
+				<SETVAR NAME="CartlistClauses" VALUE="Variables.CriteriaRow_Variables.CriteriaColumn"/>
+				<INPUT TYPE="HIDDEN" NAME="CartlistClauses" VALUE="Variables.CartlistClauses" REPLACEALL="Variables.CartlistClauses"/>
+			</ELSE>
+			</IF>
+			<if COND="Variables.haveCartlist=true">
+			<then>
+				<setvar NAME="numVars" VALUE="Segments:Cartlists.#numRows"/>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="NUMASSETS" VALUE="Variables.numVars"/>
+				<setvar NAME="segment:ruleset_map:Total" VALUE="2"/>
+				<INPUT TYPE="HIDDEN" NAME="Variables.CriteriaRow_Variables.CriteriaColumn_NumCart" VALUE="Variables.numVars" REPLACEALL="Variables.CriteriaRow,Variables.CriteriaColumn,Variables.numVars"/>
+				<setcounter NAME="X" VALUE="0"/>
+				<loop LIST="Segments:Cartlists">
+					<!-- check and remove old rulemap stuff -->
+					<nvobject.getvalue NAME="nvSegRule" VALUENAME="ASSETIDCounters.X" VARNAME="ourAssetid"/>
+					<nvobject.getvalue NAME="nvSegRule" VALUENAME="ASSETTYPECounters.X" VARNAME="ourAssettype"/> 
+					<IF COND="IsVariable.ourAssetid=true">
+					<THEN>
+						<nvobject.setvalue NAME="nvSegRule" VALUENAME="ASSETIDCounters.X"/>
+						<nvobject.setvalue NAME="nvSegRule" VALUENAME="ASSETTYPECounters.X"/> 
+					</THEN>
+					<ELSE>
+						<SETVAR NAME="ourAssetid" VALUE="Segments:Cartlists.assetid"/>
+						<SETVAR NAME="ourAssettype" VALUE="Segments:Cartlists.assettype"/>
+					</ELSE>
+					</IF>
+
+					<SETVAR NAME="ourKey" VALUE="Variables.CriteriaRow_Variables.CriteriaColumn_ASSETKEYCounters.X"/>
+					<SETVAR NAME="ourValue" VALUE="Variables.ourAssettype:Variables.ourAssetid"/>
+					<RULESETMAP.SET NAME="theMap" KEY="Variables.ourKey" TYPE="asset" VALUE="Variables.ourValue"/>
+
+					<nvobject.setvalue NAME="nvSegRule" VALUENAME="ASSETKEYCounters.X" VALUE="Variables.ourKey"/>
+
+					<INPUT TYPE="HIDDEN" NAME="Variables.CriteriaRow_Variables.CriteriaColumn_Counters.XCartListAssetid" VALUE="Variables.ourAssetid" REPLACEALL="Variables.CriteriaRow,Variables.CriteriaColumn,Counters.X,Variables.ourAssetid"/>
+					<INPUT TYPE="HIDDEN" NAME="Variables.CriteriaRow_Variables.CriteriaColumn_Counters.XCartListAssettype" VALUE="Variables.ourAssettype" REPLACEALL="Variables.CriteriaRow,Variables.CriteriaColumn,Counters.X,Variables.ourAssettype"/>
+                                    
+					<inccounter NAME="X" VALUE="1"/>
+				</loop>
+			</then>
+			<else>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="NUMASSETS" VALUE="Variables.NumCartlistItems"/>
+				<if COND="Variables.NumCartlistItems!=0">
+				<then>
+					<setcounter NAME="X" VALUE="0"/>
+					<INPUT TYPE="HIDDEN" NAME="Variables.CriteriaRow_Variables.CriteriaColumn_NumCart" VALUE="Variables.NumCartlistItems" REPLACEALL="Variables.CriteriaRow,Variables.CriteriaColumn,Variables.NumCartlistItems"/>
+					<loop COUNT="Variables.NumCartlistItems">
+						<!-- 
+						<nvobject.setvalue NAME="nvSegRule" VALUENAME="ASSETIDCounters.X" VALUE="Variables.Counters.XCartListAssetid"/>
+						<nvobject.setvalue NAME="nvSegRule" VALUENAME="ASSETTYPECounters.X" VALUE="Variables.Counters.XCartListAssettype"/>
+						-->
+						<ICS.RESOLVEVARIABLES  NAME="$(Variables.$(Variables.CriteriaRow)_$(Variables.CriteriaColumn)_$(Counters.X)CartListAssetid)" OUTPUT="ourAssetid" DELIMITED="true"/>
+						<ICS.RESOLVEVARIABLES  NAME="$(Variables.$(Variables.CriteriaRow)_$(Variables.CriteriaColumn)_$(Counters.X)CartListAssettype)" OUTPUT="ourAssettype" DELIMITED="true"/>
+						<INPUT TYPE="HIDDEN" NAME="Variables.CriteriaRow_Variables.CriteriaColumn_Counters.XCartListAssetid" VALUE="Variables.ourAssetid" REPLACEALL="Variables.CriteriaRow,Variables.CriteriaColumn,Counters.X,Variables.ourAssetid"/>
+						<INPUT TYPE="HIDDEN" NAME="Variables.CriteriaRow_Variables.CriteriaColumn_Counters.XCartListAssettype" VALUE="Variables.ourAssettype" REPLACEALL="Variables.CriteriaRow,Variables.CriteriaColumn,Counters.X,Variables.ourAssettype"/>
+						<SETVAR NAME="ourKey" VALUE="Variables.CriteriaRow_Variables.CriteriaColumn_ASSETKEYCounters.X"/>
+						<SETVAR NAME="ourValue" VALUE="Variables.ourAssettype:Variables.ourAssetid"/>
+						<RULESETMAP.SET NAME="theMap" KEY="Variables.ourKey" TYPE="asset" VALUE="Variables.ourValue"/>
+
+						<nvobject.setvalue NAME="nvSegRule" VALUENAME="ASSETKEYCounters.X" VALUE="Variables.CriteriaRow_Variables.CriteriaColumn_ASSETKEYCounters.X"/>
+                                            
+						<inccounter NAME="X" VALUE="1"/>
+					</loop>
+				</then>
+				</if>
+			</else>
+			</if>
+		</else>
+		</if>
+		<nvobject.tostring NAME="nvSegRule" VARNAME="thisRuleString"/>
+	</then>
+	</if>
+		
+	<!--if the operation is an AddRow or AddColumn then it might really need to get changed to edit-->
+	<if COND="Variables.CriteriaOperation=AddRow">
+	<then>
+		<setvar NAME="CheckEdit" VALUE="true"/>
+	</then>
+	<else>
+		<if COND="Variables.CriteriaOperation=AddColumn">
+		<then>
+			<setvar NAME="CheckEdit" VALUE="true"/>
+		</then>
+		<else>
+			<setvar NAME="CheckEdit" VALUE="false"/>
+		</else>
+		</if>
+	</else>
+	</if>
+		
+	<if COND="Variables.CheckEdit=true">
+	<then>
+		<nvobject.getvalue NAME="nvRuleSet" VALUENAME="NUMAND" VARNAME="rsnumrows"/>
+		<calculator.go VALUE="Variables.rsnumrows Variables.CriteriaRow GT" VARNAME="calcresult"/>
+		<if COND="Variables.calcresult=1">
+		<then>
+			<!--have enough rows - check out the cell-->
+			<nvobject.getvalue NAME="nvRuleSet" VALUENAME="ANDCLAUSEVariables.CriteriaRow" VARNAME="thisRowString"/>
+						
+			<!--put the string into a row object--> 
+			<nvobject.create NAME="nvCurTestRow"/>
+			<nvobject.fromstring NAME="nvCurTestRow" VALUE="Variables.thisRowString"/>
+						
+			<!--find out the number of columns-->
+			<nvobject.getvalue NAME="nvCurTestRow" VALUENAME="NUMCOL" VARNAME="thisNumCol"/>
+			<calculator.go VALUE="Variables.thisNumCol Variables.CriteriaColumn GT" VARNAME="calcresult"/>
+			<if COND="Variables.calcresult=1">
+			<then>
+				<setvar NAME="CriteriaOperation" VALUE="EditItem"/>
+			</then>
+			</if>
+		</then>
+		</if>
+	</then>
+	</if>
+  
+	<!--We add the row at the bottom-->
+	<if COND="Variables.CriteriaOperation=AddRow">
+	<then>
+		<!--create a row-->
+		<nvobject.create NAME="nvCurRow"/>
+		<nvobject.setvalue NAME="nvCurRow" VALUENAME="ORCLAUSE0" VALUE="Variables.thisRuleString"/>
+		<nvobject.setvalue NAME="nvCurRow" VALUENAME="NUMCOL" VALUE="1"/>
+		<nvobject.tostring NAME="nvCurRow" VARNAME="thisRowString"/>
+				
+		<!--add it to master-->
+		<nvobject.setvalue NAME="nvRuleSet" VALUENAME="ANDCLAUSEVariables.CriteriaRow" VALUE="Variables.thisRowString"/>
+		<nvobject.getvalue NAME="nvRuleSet" VALUENAME="NUMAND" VARNAME="rsnumrows"/>
+		<setcounter NAME="temp" VALUE="Variables.rsnumrows"/>
+		<inccounter NAME="temp" VALUE="1"/>
+		<nvobject.setvalue NAME="nvRuleSet" VALUENAME="NUMAND" VALUE="Counters.temp"/>
+				
+		<!--reload string-->
+		<nvobject.tostring NAME="nvRuleSet" VARNAME="SegRuleSetHint"/>
+	</then>
+	</if>
+	
+	<if COND="Variables.CriteriaOperation=AddColumn">
+	<then>				
+		<!--We add the column in at the end of the row specified-->
+		<!--pull out the requested row-->						
+		<nvobject.getvalue NAME="nvRuleSet" VALUENAME="ANDCLAUSEVariables.CriteriaRow" VARNAME="thisRowString"/>
+						
+		<!--put the string into a row object--> 
+		<nvobject.create NAME="nvCurRow"/>
+		<nvobject.fromstring NAME="nvCurRow" VALUE="Variables.thisRowString"/>
+						
+		<!--find out the number of columns-->
+		<nvobject.getvalue NAME="nvCurRow" VALUENAME="NUMCOL" VARNAME="thisNumCol"/>
+						
+		<!--put a new column in at the end-->
+		<nvobject.setvalue NAME="nvCurRow" VALUENAME="ORCLAUSEVariables.thisNumCol" VALUE="Variables.thisRuleString"/>
+						
+		<!--increment the column count-->
+		<setcounter NAME="ncct" VALUE="Variables.thisNumCol"/>
+		<inccounter NAME="ncct" VALUE="1"/>
+		<nvobject.setvalue NAME="nvCurRow" VALUENAME="NUMCOL" VALUE="Counters.ncct"/>
+					
+		<!--Now put out the entire row-->
+		<nvobject.tostring NAME="nvCurRow" VARNAME="thisRowString"/>
+						
+		<!--put it back in the master ruleset in the same row position-->
+		<nvobject.setvalue NAME="nvRuleSet" VALUENAME="ANDCLAUSEVariables.CriteriaRow" VALUE="Variables.thisRowString"/>
+						
+		<!--reload string-->
+		<nvobject.tostring NAME="nvRuleSet" VARNAME="SegRuleSetHint"/>
+	</then>
+	</if>
+	
+	<if COND="Variables.CriteriaOperation=EditItem">
+	<then>
+		<!-- Edit the requested item -->
+		<!--pull out the requested row-->						
+		<nvobject.getvalue NAME="nvRuleSet" VALUENAME="ANDCLAUSEVariables.CriteriaRow" VARNAME="thisRowString"/>
+
+		<!--put the string into a row object--> 
+		<nvobject.create NAME="nvCurRow"/>
+		<nvobject.fromstring NAME="nvCurRow" VALUE="Variables.thisRowString"/>
+								
+		<!--now replace (set) the column to be the input rulestring-->
+		<nvobject.setvalue NAME="nvCurRow" VALUENAME="ORCLAUSEVariables.CriteriaColumn" VALUE="Variables.thisRuleString"/>
+								
+		<!--Now put out the entire row as a string-->
+		<nvobject.tostring NAME="nvCurRow" VARNAME="thisRowString"/>
+								
+		<!--put it back in the master ruleset in the same row position-->
+		<nvobject.setvalue NAME="nvRuleSet" VALUENAME="ANDCLAUSEVariables.CriteriaRow" VALUE="Variables.thisRowString"/>
+								
+		<!--reload string-->
+		<nvobject.tostring NAME="nvRuleSet" VARNAME="SegRuleSetHint"/>
+	</then>
+	</if>
+	
+	<if COND="Variables.CriteriaOperation=DeleteItem">
+	<then>
+		<!-- Delete the specified item -->
+		<!--pull out the requested row-->						
+		<nvobject.getvalue NAME="nvRuleSet" VALUENAME="ANDCLAUSEVariables.CriteriaRow" VARNAME="thisRowString"/>
+		
+		<!--put the string into a row object--> 
+		<nvobject.create NAME="nvCurRow"/>
+		<nvobject.fromstring NAME="nvCurRow" VALUE="Variables.thisRowString"/>
+										
+		<!--find out the number of columns-->
+		<nvobject.getvalue NAME="nvCurRow" VALUENAME="NUMCOL" VARNAME="thisNumCol"/>
+										
+		<!--if the number is greater than 1 then we need to move everything down in the column.-->
+		<!--if the number is one, then we need to move everything down in the rows-->
+		<if COND="Variables.thisNumCol!=1">
+		<then>
+			<setcounter NAME="targetctr" VALUE="Variables.CriteriaColumn"/>
+			<setcounter NAME="sourcectr" VALUE="Variables.CriteriaColumn"/>
+			<inccounter NAME="sourcectr" VALUE="1"/>
+			<setvar NAME="stopLoop" VALUE="false"/>
+			<loop UNTIL="Variables.stopLoop=true">
+				<!--Note when source points beyond end it is the same as thisNumCol-->
+				<if COND="Counters.sourcectr!=Variables.thisNumCol">
+				<then>
+					<nvobject.getvalue NAME="nvCurRow" VALUENAME="ORCLAUSECounters.sourcectr" VARNAME="thisOrClause"/>
+					<nvobject.setvalue NAME="nvCurRow" VALUENAME="ORCLAUSECounters.targetctr" VALUE="Variables.thisOrClause"/>
+				</then>
+				<else>
+					<!--deletes this item-->
+					<nvobject.setvalue NAME="nvCurRow" VALUENAME="ORCLAUSECounters.targetctr"/>
+					<setvar NAME="stopLoop" VALUE="true"/>
+				</else>
+				</if>
+				<inccounter NAME="sourcectr" VALUE="1"/>
+				<inccounter NAME="targetctr" VALUE="1"/>
+			</loop>
+			<setcounter NAME="temp" VALUE="Variables.thisNumCol"/>
+			<inccounter NAME="temp" VALUE="-1"/>
+			<nvobject.setvalue NAME="nvCurRow" VALUENAME="NUMCOL" VALUE="Counters.temp"/>
+
+			<!--Now put out the entire row as a string-->
+			<nvobject.tostring NAME="nvCurRow" VARNAME="thisRowString"/>
+												
+			<!--put it back in the master ruleset in the same row position-->
+			<nvobject.setvalue NAME="nvRuleSet" VALUENAME="ANDCLAUSEVariables.CriteriaRow" VALUE="Variables.thisRowString"/>
+			<!--reload string-->
+			<nvobject.tostring NAME="nvRuleSet" VARNAME="SegRuleSetHint"/>
+		</then>
+		<else>
+			<!--situation where we want to delete the row-->
+			<setcounter NAME="targetctr" VALUE="Variables.CriteriaRow"/>
+			<setcounter NAME="sourcectr" VALUE="Variables.CriteriaRow"/>
+			<inccounter NAME="sourcectr" VALUE="1"/>
+			<setvar NAME="stopLoop" VALUE="false"/>
+			<nvobject.getvalue NAME="nvRuleSet" VALUENAME="NUMAND" VARNAME="rsnumrows"/>
+			<loop UNTIL="Variables.stopLoop=true">
+				<!--Note when source points beyond end it is the same as rsnumrows-->
+				<if COND="Counters.sourcectr!=Variables.rsnumrows">
+				<then>
+					<nvobject.getvalue NAME="nvRuleSet" VALUENAME="ANDCLAUSECounters.sourcectr" VARNAME="thisAndClause"/>
+					<nvobject.setvalue NAME="nvRuleSet" VALUENAME="ANDCLAUSECounters.targetctr" VALUE="Variables.thisAndClause"/>
+				</then>
+				<else>
+					<!--deletes this item-->
+					<nvobject.setvalue NAME="nvRuleSet" VALUENAME="ANDCLAUSECounters.targetctr"/>
+					<setvar NAME="stopLoop" VALUE="true"/>
+				</else>
+				</if>
+				<inccounter NAME="sourcectr" VALUE="1"/>
+				<inccounter NAME="targetctr" VALUE="1"/>
+			</loop>
+			<setcounter NAME="temp" VALUE="Variables.rsnumrows"/>
+			<inccounter NAME="temp" VALUE="-1"/>
+			<nvobject.setvalue NAME="nvRuleSet" VALUENAME="NUMAND" VALUE="Counters.temp"/>
+
+			<!--reload string-->
+			<nvobject.tostring NAME="nvRuleSet" VARNAME="SegRuleSetHint"/>
+		</else>
+		</if>
+	</then>
+	</if>
+</then>
+</if>
+
+</FTCS> 

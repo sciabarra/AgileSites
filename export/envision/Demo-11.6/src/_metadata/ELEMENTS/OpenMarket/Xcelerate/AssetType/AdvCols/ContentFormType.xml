@@ -1,0 +1,138 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormType
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+
+<TABLE border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormNavBar">
+		<ARGUMENT NAME="CurrentCat" VALUE="Type"/>
+	</CALLELEMENT>
+	
+	<TR>
+		<TD><TABLE border="0" cellpadding="0" cellspacing="0">
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		
+		<TR>
+			<TD class="form-label-text" valign="top"><XLAT.STREAM KEY="dvin/AT/AdvCols/RecommendationType"/>:</TD>
+			<TD>&nbsp;</TD>
+			<TD class="form-inset">
+				<TABLE>
+					<TR>
+						<TD>
+							<IF COND="Variables.ACRule=assetlocal">
+								<THEN>
+									<INPUT type="radio" onclick="setTabDirty();" name="ACRule" value="assetlocal" checked="1"/>
+								</THEN>
+								<ELSE>
+									<INPUT type="radio" onclick="setTabDirty();" name="ACRule" value="assetlocal"/>
+								</ELSE>
+							</IF>
+						</TD>
+						<TD>
+							&nbsp;
+						</TD>
+						<TD>
+							<XLAT.STREAM KEY="dvin/AT/AdvCols/RelatedItems"/>
+						</TD>
+					</TR>
+					<TR>
+						<TD>
+							<IF COND="Variables.ACRule=manual">
+								<THEN>
+									<INPUT type="radio" onclick="setTabDirty();" name="ACRule" value="manual" checked="1"/>
+								</THEN>
+								<ELSE>
+									<INPUT type="radio" onclick="setTabDirty();" name="ACRule" value="manual"/>
+								</ELSE>
+							</IF>
+						</TD>
+						<TD>
+							&nbsp;
+						</TD>
+						<TD>
+							<XLAT.STREAM KEY="dvin/AT/AdvCols/StaticListsPlus"/>
+						</TD>
+					</TR>
+					<TR>
+						<TD>
+							<IF COND="Variables.ACRule=element">
+								<THEN>
+									<INPUT type="radio" onclick="setTabDirty();" name="ACRule" value="element" checked="1"/>
+								</THEN>
+								<ELSE>
+									<INPUT type="radio" onclick="setTabDirty();" name="ACRule" value="element"/>
+								</ELSE>
+							</IF>
+						</TD>
+						<TD>
+							&nbsp;
+						</TD>
+						<TD>
+							<XLAT.STREAM KEY="dvin/AT/AdvCols/DynamicLists"/>
+						</TD>
+					</TR>
+					<SETVAR NAME="showsql" VALUE="false"/>
+					<IF COND="Variables.ACRule=sql">
+						<THEN>
+								<SETVAR NAME="showsql" VALUE="true"/>
+						</THEN>
+						<ELSE>
+							<PROPERTY.GET PARAM="vis.showsql" INIFILE="visitor.ini" VARNAME="propshowsql"/>
+							<IF COND="IsVariable.propshowsql=true">
+								<THEN>
+									<IF COND="Variables.propshowsql=true">
+										<THEN>
+											<SETVAR NAME="showsql" VALUE="true"/>
+										</THEN>
+									</IF>
+								</THEN>
+							</IF>
+						</ELSE>
+					</IF>
+					<IF COND="Variables.showsql=true">
+						<THEN>
+							<TR>
+								<TD>
+											<IF COND="Variables.ACRule=sql">
+												<THEN>
+													<INPUT type="radio" onclick="setTabDirty();" name="ACRule" value="sql" checked="1"/>
+												</THEN>
+												<ELSE>
+													<INPUT type="radio" onclick="setTabDirty();" name="ACRule" value="sql"/>
+												</ELSE>
+											</IF>
+								</TD>
+								<TD>
+									&nbsp;
+								</TD>
+								<TD>
+									<XLAT.STREAM KEY="dvin/AT/AdvCols/SQLQuery"/>
+								</TD>
+							</TR>
+						</THEN>
+					</IF>
+				</TABLE>
+			</TD>	
+		</TR>		
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+		<TR>
+			<TD class="form-label-text"></TD><TD></TD><TD class="form-inset">
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormFooter">
+				<ARGUMENT NAME="ContinueTo" VALUE="Options"/>
+			</CALLELEMENT>
+			</TD>
+		</TR>
+		</TABLE></TD>
+	</TR>
+</TABLE>
+
+
+</FTCS> 

@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormSelection
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<TABLE border="0" cellpadding="0" cellspacing="0" class="width-outer-70">
+
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormNavBar">
+		<ARGUMENT NAME="CurrentCat" VALUE="Selection"/>
+	</CALLELEMENT>
+
+ 	<TR>
+		<TD><TABLE border="0" cellpadding="0" cellspacing="0">
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+		
+		<TR>
+			<TD class="form-label-text" valign="top"><XLAT.STREAM KEY="dvin/AT/AdvCols/SelectionCriteria"/>:</TD>
+			<TD>&nbsp;</TD>
+			<TD class="form-inset">
+				<TABLE>
+					<TR>
+						<TD>
+							<IF COND="Variables.ContentDetails:style=R">
+								<THEN>
+									<INPUT type="radio" onclick="setTabDirty();" name="AdvCols:style" value="R" checked="1"/>
+								</THEN>
+								<ELSE>
+									<INPUT type="radio" onclick="setTabDirty();" name="AdvCols:style" value="R"/>
+								</ELSE>
+							</IF>
+						</TD>
+						<TD>
+							&nbsp;
+						</TD>
+						<TD>
+							<XLAT.STREAM KEY="dvin/AT/AdvCols/Random"/>
+						</TD>
+					</TR>
+					<TR>
+						<TD>
+							<IF COND="Variables.ContentDetails:style=H">
+								<THEN>
+									<INPUT type="radio" onclick="setTabDirty();" name="AdvCols:style" value="H" checked="1"/>
+								</THEN>
+								<ELSE>
+									<INPUT type="radio" onclick="setTabDirty();" name="AdvCols:style" value="H"/>
+								</ELSE>
+							</IF>
+						</TD>
+						<TD>
+							&nbsp;
+						</TD>
+						<TD>
+							<XLAT.STREAM KEY="dvin/AT/AdvCols/Highest"/>
+						</TD>
+					</TR>
+				</TABLE>
+			</TD>	
+		</TR>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+		<TR>
+			<TD class="form-label-text"></TD><TD></TD><TD class="form-inset">
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormFooter">
+				<ARGUMENT NAME="ContinueTo" VALUE="Sort"/>
+			</CALLELEMENT>
+			</TD>
+		</TR> 
+		</TABLE></TD>
+	</TR>
+  </TABLE>
+
+
+
+
+</FTCS> 

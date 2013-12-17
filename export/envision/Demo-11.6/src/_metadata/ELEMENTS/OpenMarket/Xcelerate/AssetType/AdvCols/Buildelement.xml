@@ -1,0 +1,392 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/BuildElement
+-
+-	Handle case where Type is element (dynamic lists)
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<SETVAR NAME="PutUpDisplayResults" VALUE="false"/>
+
+
+<TR>
+	<TD>
+		<TABLE border="0" cellpadding="0" cellspacing="0">
+			<TR>
+				<TD class="form-label-text" valign="top"><XLAT.STREAM KEY="dvin/AT/AdvCols/Element"/>:</TD>
+				<TD><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="10" height="1" REPLACEALL="Variables.cs_imagedir"/></TD>
+<!--Did we get something from the tree?-->
+				<IF COND="IsVariable.TreeSelectStr=true">
+					<THEN>
+						<!--Yes, so let's parse it-->
+						<STRINGLIST NAME="ElementList" STR="Variables.TreeSelectStr" DELIM=":"/>
+						<IF COND="ElementList.#numRows=1">
+							<THEN>
+								<IF COND="IsVariable.ID=true">
+									<THEN>
+										<SETVAR NAME="SaveID" VALUE="Variables.ID"/>
+									</THEN>
+								</IF>
+								<SETVAR NAME="SaveAssetType" VALUE="Variables.AssetType"/>
+								<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/ParseTreeNodeID">
+									<ARGUMENT NAME="TreeNodeID" VALUE="ElementList.ITEM"/>
+								</CALLELEMENT>
+								<IF COND="Variables.AssetType=CSElement">
+									<THEN>
+										<ASSET.LIST TYPE="Variables.AssetType" LIST="thisElement" FIELD1="id" VALUE1="Variables.ID"/>
+										<IF COND="Variables.errno!=0">
+											<THEN>
+												<TD>--<XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorFindingAsset" EVALALL="false" errno="Variables.errno" ourid="Variables.ID" ourtype="CSElement"/> --</TD>
+											</THEN>
+											<ELSE>
+												<INPUT TYPE="HIDDEN" NAME="AdvCols:elementid" VALUE="Variables.ID" REPLACEALL="Variables.ID"/>
+												<TD><STRING.STREAM VALUE="thisElement.name"/></TD>
+												<SETVAR NAME="ourElement" VALUE="thisElement.name"/>
+												<SETVAR NAME="PutUpDisplayResults" VALUE="true"/>
+											</ELSE>
+										</IF>
+									</THEN>
+									<ELSE>
+										<!--Not a CSElement-->
+										<ASSETTYPE.LIST LIST="at" FIELD1="assettype" VALUE1="Variables.AssetType"/>
+										<SETVAR NAME="atdescription" VALUE="at.description"/>
+										<TD>-- <XLAT.STREAM KEY="dvin/AT/AdvCols/NotElement"/> --</TD>
+									</ELSE>
+								</IF>
+								<IF COND="IsVariable.SaveID=true">
+									<THEN>
+										<SETVAR NAME="ID" VALUE="Variables.SaveID"/>
+									</THEN>
+								</IF>
+								<SETVAR NAME="AssetType" VALUE="Variables.SaveAssetType"/>
+							</THEN>
+							<ELSE>
+								<!--Only should select One element-->
+								<SETVAR NAME="num" VALUE="ElementList.#numRows"/>
+								<TD>-- <XLAT.STREAM KEY="dvin/AT/AdvCols/TooManyElementsSpecified"/> --</TD>
+							</ELSE>
+						</IF>
+					</THEN>
+					<ELSE>
+<!--Nothing from tree - was there something before?-->
+						<IF COND="IsVariable.ContentDetails:elementid=true">
+							<THEN>
+								<IF COND="Variables.ContentDetails:elementid!=Variables.empty">
+									<THEN>
+										<ASSET.LIST TYPE="CSElement" LIST="thisElement" FIELD1="id" VALUE1="Variables.ContentDetails:elementid"/>
+										<IF COND="Variables.errno!=0">
+											<THEN>
+												<TD>--<XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorFindingElement" EVALALL="false" errno="Variables.errno" ourid="Variables.ContentDetails:elementid"/> --</TD>
+											</THEN>
+											<ELSE>
+												<INPUT TYPE="HIDDEN" NAME="AdvCols:elementid" VALUE="Variables.ContentDetails:elementid" REPLACEALL="Variables.ContentDetails:elementid"/>
+												<TD><STRING.STREAM VALUE="thisElement.name"/></TD>
+												<SETVAR NAME="ourElement" VALUE="thisElement.name"/>
+												<SETVAR NAME="PutUpDisplayResults" VALUE="true"/>
+											</ELSE>
+										</IF>
+									</THEN>
+									<ELSE>
+										<TD>-- <XLAT.STREAM KEY="dvin/AT/AdvCols/NoElementSpecified"/> --</TD>
+									</ELSE>
+								</IF>
+							</THEN>
+							<ELSE>
+								<TD>-- <XLAT.STREAM KEY="dvin/AT/AdvCols/NoElementSpecified"/> --</TD>
+							</ELSE>
+						</IF>
+					</ELSE>
+				</IF>
+			</TR>
+			<TR>
+				<TD colspan="8"><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></TD>
+			</TR>
+			<TR>
+				<TD></TD>
+				<TD></TD>
+				<TD colspan="5" align="left">
+				<IF COND="Variables.cs_environment=ucform">
+				<THEN>
+					<CALLELEMENT NAME="OpenMarket/Gator/Util/DnDSelectAsset">
+						<ARGUMENT NAME="nameSuffix" VALUE="None"/>
+						<ARGUMENT NAME="showTypeAheadInputBox" VALUE="true"/>
+						<ARGUMENT NAME="assetTypeToSearch" VALUE="CSElement"/>
+					</CALLELEMENT>
+					<REPLACEALL LIST="Variables.id,Variables.ThisPage,Variables.SegmentsRuleScreen">
+						<script type="text/javascript">
+							var selectDnDSpecial_Variables.id_None = function(args){
+								var obj=document.forms[0].elements[0],
+									ourPage="Variables.ThisPage", nextstep="ContentFormBuild",
+									where="TreeSelectStr", widgetName="typeAheadSpecial_Variables.id_None";
+								var nodes= [];
+								nodes = dojo.query('div[name='+widgetName+']');
+								if(nodes.length === 0)
+									nodes = dojo.query('input[name='+widgetName+']');
+								var	typeWidgetIns=dijit.getEnclosingWidget(nodes[0]),
+									valueArray=typeWidgetIns.getAllDnDValues();
+								obj.form.elements[where].value="id=" + valueArray[0] + ",assettype=" + valueArray[1] + ",:";
+								obj.form.AdvColsNextStep.value = nextstep;
+								obj.form.UpdateSelectedItems.value ="add";
+								
+								var basePage="OpenMarket/Xcelerate/Actions/";
+								if(ourPage=="CopyFront")
+									ourPage="NewContentFront";
+								var	newpage=basePage + ourPage;
+								obj.form.pagename.value=newpage;
+								  
+								if(valueArray.length > 0 && valueArray[0].length >= 2)
+									document.forms[0].submit();
+								return false;
+							};
+						</script>
+					</REPLACEALL>
+				</THEN>
+				<ELSE>
+					<IF COND="Variables.showSiteTree=true">
+						<THEN>
+							<XLAT.LOOKUP KEY="dvin/AT/AdvCols/AddSelectedElement" VARNAME="_AddSelectedElement_" ESCAPE="true"/>
+							<XLAT.LOOKUP KEY="dvin/AT/AdvCols/AddSelectedElement" VARNAME="_AddSelectedElement_ALT"/>
+							<A HREF="javascript:void(0)" onclick="return SelectFromTree('Variables.ThisPage','ContentFormBuild','TreeSelectStr');" REPLACEALL="Variables.ThisPage,Variables._AddSelectedElement_" onmouseover="window.status='Variables._AddSelectedElement_';return true;" onmouseout="window.status='';return true;">
+								<IF COND="Variables.PutUpDisplayResults=true">
+										<THEN>
+											<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/UpdateSelectedElement"/><ARGUMENT NAME="width" VALUE="140px"/></CALLELEMENT>
+										</THEN>
+										<ELSE>
+											<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/AddSelectedElement"/></CALLELEMENT>
+										</ELSE>
+								</IF>
+							</A>
+						</THEN>
+						<ELSE>
+                          <SETVAR NAME="currentUniqueID" VALUE="CS.UniqueID"/>
+                          <script type="text/javascript">
+                              <ASSETTYPE.LIST LIST="at" FIELD1="assettype" VALUE1="CSElement"/>
+                              <SATELLITE.LINK ASSEMBLER="query" OUTSTRING="url_Variables.currentUniqueID" PAGENAME="OpenMarket/Xcelerate/Actions/PickAssetPopup">
+                                  <SATELLITE.ARGUMENT NAME="cs_environment" VALUE="Variables.cs_environment"/>
+                                  <SATELLITE.ARGUMENT NAME="cs_formmode" VALUE="Variables.cs_formmode"/>
+                                  <SATELLITE.ARGUMENT NAME="cs_SelectionStyle" VALUE="single"/>
+                                  <SATELLITE.ARGUMENT NAME="cs_PickAssetType" VALUE="CSElement"/>
+                                  <SATELLITE.ARGUMENT NAME="cs_CallbackSuffix" VALUE="Variables.currentUniqueID"/>
+                                  <SATELLITE.ARGUMENT NAME="cs_FieldName" VALUE="at.description"/>
+                              </SATELLITE.LINK>
+                              <![CDATA[
+                                function PickAssetCallback_]]><STRING.STREAM VALUE="Variables.currentUniqueID"/><![CDATA[(SelectedAssets)
+                                {
+                                  var obj = document.forms[0].elements[0];
+                                  obj.form.AdvColsNextStep.value = "ContentFormBuild";
+                                  obj.form.UpdateSelectedItems.value ="add";
+                                  
+                                  var AssetList = SelectedAssets.split(";");
+                                  var assetIDs = '';
+                                  for (var z = 0; z < AssetList.length; z++)
+                                  {
+                                    var AssetInfo = AssetList[z].split(":");
+                                    if (z == 0)
+                                      assetIDs = 'id='+AssetInfo[1]+',assettype='+AssetInfo[0];
+                                    else
+                                      assetIDs += ':id='+AssetInfo[1]+',assettype='+AssetInfo[0];
+                                  }
+                                  document.forms[0].elements['TreeSelectStr'].value = assetIDs;
+                                  
+                                  ]]>
+                                  <IF COND="Variables.pagename=OpenMarket/Xcelerate/Actions/CopyFront">
+                                  <THEN>
+                                    obj.form.pagename.value = 'OpenMarket/Xcelerate/Actions/NewContentFront';
+                                  </THEN>
+                                  <ELSE>
+                                    obj.form.pagename.value = '<CSVAR NAME="Variables.pagename"/>';
+                                  </ELSE>
+                                  </IF>
+                                  <![CDATA[	
+                                  document.forms[0].submit();
+                                }
+                                ]]>
+                                function PickAssetPopup_<STRING.STREAM VALUE="Variables.currentUniqueID"/>() {
+                                  OpenPickAssetPopup('<ICS.RESOLVEVARIABLES NAME="$(Variables.url_$(Variables.currentUniqueID))" DELIMITED="true"/>', GetBannerHistory());
+                                }
+                          </script>
+                          <A HREF="#" ONCLICK="PickAssetPopup_Variables.currentUniqueID(); return false;" TARGET="_blank" REPLACEALL="Variables.currentUniqueID"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Browse"/></CALLELEMENT></A>				  
+						</ELSE>
+					</IF>
+				</ELSE>
+				</IF>				
+				</TD>
+			</TR>
+			<TR>
+				<TD colspan="8"><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></TD>
+			</TR>
+			<TR>
+				<TD></TD>
+				<TD></TD>
+				<TD colspan="5" align="left">
+					<IF COND="Variables.PutUpDisplayResults=true">
+							<THEN>									
+								<if COND="Variables.cs_environment=ucform">
+								<then>													
+									<XLAT.STREAM KEY="UI/Forms/HintUpdateElementFromTree"/>:
+								</then>											
+								<else>
+									<XLAT.STREAM KEY="dvin/AT/AdvCols/HintUpdateElementFromTree"/>
+								</else>
+								</if>
+							</THEN>
+							<ELSE>								
+								<if COND="Variables.cs_environment=ucform">
+								<then>													
+									<XLAT.STREAM KEY="UI/Forms/HintSelectedElementFromTree"/>:
+								</then>											
+								<else>
+									<XLAT.STREAM KEY="dvin/AT/AdvCols/HintSelectedElementFromTree"/>
+								</else>
+								</if>
+							</ELSE>
+					</IF>
+				</TD>
+			</TR>
+			<IF COND="Variables.PutUpDisplayResults=true">
+				<THEN>
+					<TR>
+						<TD colspan="8"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></TD>
+					</TR>
+					<TR>
+						<TD></TD>
+						<TD></TD>
+						<TD colspan="5" align="left">
+							<XLAT.LOOKUP KEY="dvin/AT/AdvCols/DisplayResults" VARNAME="_DisplayResults_" ESCAPE="true"/>
+							<XLAT.LOOKUP KEY="dvin/AT/AdvCols/DisplayResults" VARNAME="_DisplayResults_ALT"/>
+							<A HREF="javascript:void(0)" onclick="return DisplayResultsJva('Variables.ThisPage','ContentFormBuild','DisplayResults');" REPLACEALL="Variables.ThisPage,Variables._AddSelectedElement_" onmouseover="window.status='Variables._AddSelectedElement_';return true;" onmouseout="window.status='';return true;"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/DisplayResults"/></CALLELEMENT></A>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="8"><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></TD>
+					</TR>
+					<TR>
+						<TD></TD>
+						<TD></TD>
+						<TD colspan="5" align="left">
+							<XLAT.STREAM KEY="dvin/AT/AdvCols/HintDisplayResults"/>
+						</TD>
+					</TR>
+				</THEN>
+			</IF>
+			<IF COND="IsVariable.DisplayResults=true">
+				<THEN>
+					<IF COND="Variables.DisplayResults=true">
+						<THEN>
+							<!--<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>-->
+							<TR>
+								<TD class="form-label-text" valign="top"><XLAT.STREAM KEY="dvin/AT/AdvCols/Results"/>:</TD>
+							</TR>
+							<TR>
+								<TD colspan="8"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></TD>
+							</TR>
+							<TR> <!--do this just in case the element outputs something so it sort of makes sense-->
+								<TD>
+									<!-- TODO: provide the confidence map for Display Results -->
+									<CALLELEMENT NAME="Variables.ourElement"/>
+								</TD>
+								<TR>
+									<TD colspan="8"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></TD>
+								</TR>
+							</TR>
+							<IF COND="IsList.AssetList=true">
+								<THEN>
+									<IF COND="IsColumn.AssetList.assetid=true">
+										<THEN>
+											<IF COND="IsColumn.AssetList.assettype=true">
+												<THEN>
+													<IF COND="AssetList.#numRows!=0">
+														<THEN>
+															<tr>
+																<td width="10" colspan="8"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="20" height="1" REPLACEALL="Variables.cs_imagedir"/>
+																	<table cellpadding="0" cellspacing="0" border="0">
+																		<tr>
+																			<td nowrap="" align="center" class="form-label-text"><XLAT.STREAM KEY="dvin/UI/AssetMgt/AssetName"/></td>
+																			<td width="40"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="40" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+																			<td nowrap="" align="center" class="form-label-text"><XLAT.STREAM KEY="dvin/UI/Admin/AssetID"/></td>
+																			<td width="40"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="40" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+																			<td nowrap="" align="center" class="form-label-text"><XLAT.STREAM KEY="dvin/UI/AssetType"/></td>
+																			<IF COND="IsColumn.AssetList.confidence=true">
+																				<THEN>
+																					<td width="40"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="40" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+																					<td nowrap="" align="center" class="form-label-text"><XLAT.STREAM KEY="dvin/AT/AdvCols/Confidence"/></td>
+																				</THEN>
+																			</IF>
+																		</tr>
+																		<tr>
+																			<td></td>
+																			<td colspan="5" height="5"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="5" REPLACEALL="Variables.cs_imagedir"/></td>
+																		</tr>
+																		<LOOP LIST="AssetList">
+																			<ASSET.LIST TYPE="AssetList.assettype" LIST="thisElement" FIELD1="id" VALUE1="AssetList.assetid"/>
+																			<TR>
+																				<td nowrap=""><STRING.STREAM VALUE="thisElement.name"/></td>
+																				<td></td>
+																				<td><STRING.STREAM VALUE="AssetList.assetid"/></td>
+																				<td></td>
+																				<td><STRING.STREAM VALUE="AssetList.assettype"/></td>
+																				<IF COND="IsColumn.AssetList.confidence=true">
+																					<THEN>
+																						<td></td>
+																						<CALCULATOR.GO VALUE="AssetList.confidence 100 *" VARNAME="percentConfidence"/> 
+																						<td><STRING.STREAM VALUE="Variables.percentConfidence"/>%</td>
+																					</THEN>
+																				</IF>
+																			</TR>
+																		</LOOP>
+																	</table>
+																</td>
+															</tr>
+														</THEN>
+														<ELSE>
+															<TR>
+																<TD colspan="5" align="left">
+																	<XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorNoRows"/>
+																</TD>
+															</TR>
+														</ELSE>
+													</IF>
+												</THEN>
+												<ELSE>
+													<SETVAR NAME="missingColumn" VALUE="assettype"/>
+													<TR>
+														<TD colspan="5" align="left">
+															<XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorMissingColumn"/>
+														</TD>
+													</TR>
+												</ELSE>
+											</IF>
+										</THEN>
+										<ELSE>
+											<SETVAR NAME="missingColumn" VALUE="assetid"/>
+											<TR>
+												<TD colspan="5" align="left">
+													<XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorMissingColumn"/>
+												</TD>
+											</TR>
+										</ELSE>
+									</IF>
+								</THEN>
+								<ELSE>
+									<TR>
+										<TD colspan="5" align="left">
+											<XLAT.STREAM KEY="dvin/AT/AdvCols/ErrorNoElGenList"/>
+										</TD>
+									</TR>
+								</ELSE>
+							</IF>
+						</THEN>
+					</IF>
+				</THEN>
+			</IF>
+			
+		</TABLE>
+	</TD>
+</TR>
+
+</FTCS> 

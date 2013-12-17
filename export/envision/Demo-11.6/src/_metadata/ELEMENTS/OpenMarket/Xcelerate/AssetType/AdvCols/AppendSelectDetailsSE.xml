@@ -1,0 +1,95 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateB/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/AdvCols/AppendSelectDetailsSE.xml $ 
+$Revision: 2 $ 
+$Modtime: 5/29/02 5:06p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- AppendSelectDetailsSE.xml
+-
+- DESCRIPTION
+-	Add to search engine query for Article-specific search parameters 
+-	(as defined by Article/SearchForm.xml).
+-
+- ARGUMENTS
+-   seQuery
+-       SEARCH WHAT query string.  Append to this.
+-   seType
+-       SEARCH TYPE value.  Change it or leave it alone.
+-   seRelevance
+-       SEARCH RELEVANCE value.  Change it or leave it alone.
+-   sqlQueryend
+-       Tail end of WHERE expression for secondary SQL query.
+-   (FORM fields)
+-       All form fields defined by SearchForm.xml
+-   seLeft, seRight
+-       Left and right strings.  Used as 
+-		fieldname Variables.seLeft fieldvalue Variables.seRight
+-
+- HISTORY 
+-->
+
+ 
+<IF COND="IsVariable.Name=true">
+	<THEN>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+			<ARGUMENT NAME="seFieldname" VALUE="name"/>
+			<ARGUMENT NAME="seValue" VALUE="Variables.Name"/>
+		</CALLELEMENT>
+		<XLAT.LOOKUP KEY="dvin/AT/Common/namecontains" VARNAME="_namecontains_"/>
+		<SETVAR NAME="filterstring" VALUE="Variables.filterstring Variables._namecontains_ 'Variables.Name'"/>
+	</THEN>
+</IF>
+
+ 
+<if COND="IsVariable.Status=true">
+    <then>
+	<SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Variables.AssetType.status='Variables.Status'"/>
+	<SETVAR NAME="statuscode" VALUE="Variables.Status"/>
+	<SETVAR NAME="errno" VALUE="0"/>
+	<SELECTTO LIST="StatusDesc" WHAT="description" FROM="StatusCode" WHERE="statuscode"/>
+	<IF COND="IsError.Variables.errno!=true">
+	<THEN>
+	    <XLAT.LOOKUP KEY="dvin/AT/Common/statusis" VARNAME="_statusis_"/>
+	    <SETVAR NAME="filterstring" VALUE="Variables.filterstring Variables._statusis_ 'StatusDesc.description'"/>
+	</THEN>
+	<ELSE>
+	  <XLAT.LOOKUP KEY="dvin/AT/Common/statusequals" VARNAME="_statusequals_"/>
+		<SETVAR NAME="filterstring" VALUE="Variables.filterstring Variables._statusequals_ 'Variables.Status'"/>
+	</ELSE>
+	</IF>
+   </then>
+</if>
+
+ 
+<IF COND="IsVariable.Subtype=true">
+  <THEN>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+		<ARGUMENT NAME="seFieldname" VALUE="subtype"/>
+		<ARGUMENT NAME="seValue" VALUE="Variables.Subtype"/>
+	</CALLELEMENT>
+	<XLAT.LOOKUP KEY="dvin/AT/Common/subtypeequals" VARNAME="_subtypeequals_"/>
+	<SETVAR NAME="filterstring" VALUE="Variables.filterstring Variables._subtypeequals_ 'Variables.Subtype'"/>
+  </THEN>
+</IF>
+
+ 
+
+<IF COND="IsVariable.Description=true">
+  <THEN>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+		<ARGUMENT NAME="seFieldname" VALUE="description"/>
+		<ARGUMENT NAME="seValue" VALUE="Variables.Description"/>
+	</CALLELEMENT>
+	<XLAT.LOOKUP KEY="dvin/AT/Common/Descriptionis" VARNAME="_Descriptionis_"/>
+	<SETVAR NAME="filterstring" VALUE="Variables.filterstring Variables._Descriptionis_ 'Variables.Description'"/>
+  </THEN>
+</IF>
+</FTCS>

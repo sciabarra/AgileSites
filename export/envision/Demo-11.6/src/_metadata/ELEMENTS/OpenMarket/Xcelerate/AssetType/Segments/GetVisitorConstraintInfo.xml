@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/GetVistiorConstraintInfo
+--
+-- INPUT
+--  thisConstraintField
+-- OUTPUT
+--
+-->
+
+<visitordata.gethistoryattributefielddef NAME="myfielddefobj" FIELD="Variables.thisConstraintField"/>
+<visitorhistoryfield.getdescription NAME="myfielddefobj" VARNAME="DRdescription"/>
+<visitorhistoryfield.getattributecategory NAME="myfielddefobj" VARNAME="DRcategory"/>
+<visitorhistoryfield.gettype NAME="myfielddefobj" VARNAME="DRtype"/>
+<visitorhistoryfield.getlength NAME="myfielddefobj" VARNAME="DRlength"/>
+<visitorhistoryfield.getdefaultvalue NAME="myfielddefobj" VARNAME="DRdefaultvalue"/>
+<visitorhistoryfield.isrequired NAME="myfielddefobj" VARNAME="DRisrequired"/>
+
+<visitorhistoryfield.getvalueconstraint NAME="myfielddefobj" VARNAME="myConstraintObject"/>
+<visitorconstraint.gettype NAME="myConstraintObject" VARNAME="DRconstrainttype"/>
+<visitorconstraint.getassettype NAME="myConstraintObject" VARNAME="DRconstraintassettype"/>
+<visitorconstraint.getassetattribute NAME="myConstraintObject" VARNAME="DRconstraintassetattributetype"/>
+<visitorconstraint.isvalid NAME="myConstraintObject" VARNAME="DRconstraintisvalid"/>
+
+<if COND="Variables.DRconstrainttype=enum">
+	<then>
+		<visitorconstraint.getlegalvalues NAME="myConstraintObject" LISTVARNAME="DRValuesList"/>
+	</then>
+</if>
+<if COND="Variables.DRconstrainttype=range">
+	<then>
+		<visitorconstraint.getstart NAME="myConstraintObject" VARNAME="DRconstraintstart"/>
+		<visitorconstraint.getend NAME="myConstraintObject" VARNAME="DRconstraintend"/>
+	</then>
+</if>
+
+<if COND="Variables.DRconstraintassettype!=Variables.empty">
+	<then>
+		<setvar NAME="ConstraintType" VALUE="assetattr"/>
+	</then>
+	<else>
+		<setvar NAME="ConstraintType" VALUE="value"/>
+	</else>
+</if>
+
+</FTCS> 

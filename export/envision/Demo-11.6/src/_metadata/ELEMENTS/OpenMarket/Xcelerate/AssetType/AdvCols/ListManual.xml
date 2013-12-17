@@ -1,0 +1,79 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+	<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ListManual
+	-
+	- INPUT
+	-
+	- OUTPUT
+	-
+	-->
+	<STRING.ENCODE VARIABLE="ContentDetails:id" VARNAME="ContentDetails:id"/>
+	<TR>
+		<TD class="form-label-text"><XLAT.STREAM KEY="dvin/AT/AdvCols/StaticLists"/>:</TD>
+		<TD><br/></TD>
+		<TD>
+			<div>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/DnDSelectHTML">
+				<ARGUMENT NAME="dnDTitle" VALUE=''/>
+				<ARGUMENT NAME="appendStr" VALUE='Variables.ContentDetails:id'/>
+			</CALLELEMENT>
+			</div>
+			<INPUT TYPE="HIDDEN" NAME="ManualrecsCount" VALUE="" />	
+			<INPUT TYPE="HIDDEN" NAME="ManuaList" VALUE="" />							
+		</TD>
+	</TR>
+	<IF COND="Variables.cs_environment=ucform">
+	<THEN>
+		<SETVAR NAME="displaySearchInputbox" VALUE="false" />
+	</THEN>
+	<ELSE>
+		<IF COND="Variables.showSiteTree=true">									
+		<THEN>										
+			<SETVAR NAME="displaySearchInputbox" VALUE="false" />
+		</THEN>
+		<ELSE>
+			<SETVAR NAME="displaySearchInputbox" VALUE="true" />
+		</ELSE>
+		</IF>
+	</ELSE>
+	</IF>
+	<ACOLLECTION.SORTMANUALRECOMMENDATIONS NAME="theCurrentAsset" LISTVARNAME="recList" BUCKET="Variables.empty"/>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/ListManualShowItems" >
+		
+	</CALLELEMENT>
+	<REPLACE STR="Variables.ContentDetails:id">
+	<![CDATA[
+		<script type="text/javascript">
+			var selectDnDReco_Variables.ContentDetails:id = function(args){
+				var obj = document.forms[0],						
+					arr = args._getValueAttr();
+				var self_source = args._source;
+				obj.elements['ManualrecsCount'].value = arr.length;
+				var i = 0, manualElement = obj.elements['ManuaList'];
+				manualElement.value = '';
+				args._source.getAllNodes().forEach(function(node){
+					var data = fw.ui.dnd.util.getNormalizedData(self_source, node);	
+					if(i > 0)
+						manualElement.value = manualElement.value + ';' + data.id + ',' + data.type;
+					else	
+						manualElement.value = data.id + ',' + data.type;
+					i++;					
+				});	
+			};										
+		</script>
+	]]>
+	</REPLACE>
+	<callelement name='OpenMarket/Gator/FlexibleAssets/Common/TypeAheadWidget'> 
+		<argument name="parentType" value="['*']"/>
+		<argument name="subTypesForWidget" value='*'/>
+		<argument name="subTypesForSearch" value=''/>
+		<argument name="multipleVal" value="true"/>
+		<argument name="widgetValue" value='Variables.widValueList'/>	
+		<argument name="funcToRun" value='selectDnDReco_Variables.ContentDetails:id'/>
+		<argument name="widgetNode" value='typeAheadReco_Variables.ContentDetails:id'/>
+		<argument name="typesForSearch" value=''/>
+		<argument name="displaySearchbox" value='Variables.displaySearchInputbox'/>	
+		<argument name="multiOrderedAttr" value='true'/>
+	</callelement>
+</FTCS>

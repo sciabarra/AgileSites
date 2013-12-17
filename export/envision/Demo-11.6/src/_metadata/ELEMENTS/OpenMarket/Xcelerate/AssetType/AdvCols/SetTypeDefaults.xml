@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ftcs SYSTEM "futuretense_cs.dtd">
+<ftcs version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/SetTypeDefaults
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+    <IF COND="IsVariable.ACRule!=true">
+             <THEN> 
+                    <SETVAR NAME="ACRule" VALUE="manual"/>
+             </THEN>
+         </IF>
+         <IF COND="Variables.ACRule=Variables.empty">
+             <THEN> 
+                    <SETVAR NAME="ACRule" VALUE="manual"/>
+             </THEN>
+         </IF>
+
+
+
+</ftcs>

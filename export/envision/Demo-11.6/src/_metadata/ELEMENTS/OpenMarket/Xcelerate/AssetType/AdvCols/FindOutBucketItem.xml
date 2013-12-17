@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/FindOutBucketItem
+-
+- INPUT
+- OutList - copy of Manualrecs list to be used here
+- recList.assetid - id of guy to find in out bucket
+- localSegment - segment base name.
+- OUTPUT
+-
+- Outxxxx pointing to a matching guy.
+- gotanOuter says whether we found one or not.
+-
+-->
+<SETVAR NAME="localOutBucket" VALUE="Variables.localSegment_OUT"/>
+<SETVAR NAME="gotanOuter" VALUE="false"/>
+<ACOLLECTION.SORTMANUALRECOMMENDATIONS NAME="theCurrentAsset" LISTVARNAME="OutList" BUCKET="Variables.localOutBucket"/>
+<LOOP LIST="OutList" UNTIL="Variables.gotanOuter=true">
+<!--<br/><CSVAR NAME="OutList.assetid"/>, <CSVAR NAME="OutList.assettype"/>, <CSVAR NAME="OutList.bucket"/>, <CSVAR NAME="OutList.confidence"/>-->
+	<IF COND="recList.assetid=OutList.assetid">
+		<THEN>
+			<SETVAR NAME="Outassetid" VALUE="OutList.assetid"/>
+			<SETVAR NAME="Outassettype" VALUE="OutList.assettype"/>
+			<SETVAR NAME="Outbucket" VALUE="OutList.bucket"/>
+			<SETVAR NAME="Outconfidence" VALUE="OutList.confidence"/>
+			<SETVAR NAME="gotanOuter" VALUE="true"/>
+		</THEN>
+	</IF>
+</LOOP>
+
+</FTCS> 																
+

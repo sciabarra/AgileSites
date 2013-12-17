@@ -1,0 +1,195 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ContentFormSaveVar
+-
+- This element seems to make "hidden" variables for each page type.  There's a number of clauses where AdvColsNextStep is
+- compared against the various page type values: ContentFormOptions, ContentFormName, ContentFormSelection, and ContentFormSort.
+- Hidden form elements are generated for all cases where the current page type is NOT the one described.
+-
+- To this, someone has grafted on code that:
+- (a) sets default values
+- (b) Passes around the hint string for the ruleset in hiddens, as well as the ruleset name and description
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/SetTypeDefaults"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/SetOptionDefaults"/>
+	
+<IF COND="Variables.AdvColsNextStep!=ContentFormOptions">
+<THEN>
+	<INPUT TYPE="HIDDEN" NAME="AdvCols:ovrdable" VALUE="Variables.ContentDetails:ovrdable" REPLACEALL="Variables.ContentDetails:ovrdable"/>
+	<INPUT TYPE="HIDDEN" NAME="AdvCols:mapstyle" VALUE="Variables.ContentDetails:mapstyle" REPLACEALL="Variables.ContentDetails:mapstyle"/>
+	<INPUT TYPE="HIDDEN" NAME="AdvCols:types:Total" VALUE="Variables.ContentDetails:types:Total" REPLACEALL="Variables.ContentDetails:types:Total"/>
+
+	<SETCOUNTER NAME="typecount" VALUE="0"/>
+	<IF COND="Variables.ContentDetails:types:Total!=0">
+	<THEN>
+		<LOOP COUNT="Variables.ContentDetails:types:Total">
+			<ICS.RESOLVEVARIABLES  NAME="$(Variables.ContentDetails:types:$(Counters.typecount))" OUTPUT="ourType" DELIMITED="true"/>
+			<STRING.ENCODE VARIABLE="ourType" VARNAME="ourTypeEnc"/>
+			<INPUT TYPE="HIDDEN" NAME="AdvCols:types:Counters.typecount" VALUE="Variables.ourTypeEnc" REPLACEALL="Variables.ourTypeEnc,Counters.typecount"/>
+			<INCCOUNTER NAME="typecount" VALUE="1"/>
+		</LOOP>
+	</THEN>
+	</IF>
+</THEN>
+</IF>
+
+<IF COND="Variables.AdvColsNextStep!=ContentFormName">
+<THEN>
+	<![CDATA[<INPUT TYPE="HIDDEN" NAME="AdvCols:name" VALUE="]]><STRING.STREAM VALUE="Variables.ContentDetails:name"/><![CDATA["/>]]>
+	<SETVAR NAME="OutputQString" VALUE="Variables.empty"/>
+	<STRING.ENCODE VARIABLE="ContentDetails:description" VARNAME="OutputQString"/>
+	<INPUT TYPE="HIDDEN" NAME="AdvCols:description" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/>
+	<![CDATA[<INPUT TYPE="HIDDEN" NAME="AdvCols:subtype" VALUE="]]><STRING.STREAM VALUE="Variables.ContentDetails:subtype"/><![CDATA["/>]]>
+	<![CDATA[<INPUT TYPE="HIDDEN" NAME="AdvCols:template" VALUE="]]><STRING.STREAM VALUE="Variables.ContentDetails:template"/><![CDATA["/>]]>
+<!-- Remember the start and end dates that were specified for the recommendation (if they were specified) -->
+	<STRING.ENCODE VARIABLE="ContentDetails:startdate" VARNAME="ContentDetails:startdateEnc"/>
+	<INPUT TYPE="HIDDEN" NAME="AdvCols:startdate" VALUE="Variables.ContentDetails:startdateEnc" REPLACEALL="Variables.ContentDetails:startdateEnc"/>
+	<STRING.ENCODE VARIABLE="ContentDetails:enddate" VARNAME="ContentDetails:enddateEnc"/>
+	<INPUT TYPE="HIDDEN" NAME="AdvCols:enddate" VALUE="Variables.ContentDetails:enddateEnc" REPLACEALL="Variables.ContentDetails:enddateEnc"/>
+    <!-- Print out hidden inputs for Dimensions -->
+    <!-- Print out hidden inputs for Dimensions -->
+    <IF COND="IsVariable.AdvCols:Dimension:Total=true">
+	<THEN>
+        <input type="hidden" name="AdvCols:Dimension:Total" id="AdvCols:Dimension:Total" value="Variables.ContentDetails:Dimension:Total" REPLACEALL="Variables.ContentDetails:Dimension:Total" />
+        <if COND="Variables.ContentDetails:Dimension:Total!=0">
+        <then>
+            <SETCOUNTER NAME="nthArg" VALUE="0"/>
+            <LOOP COUNT="Variables.ContentDetails:Dimension:Total">
+                <setvar NAME="value" VALUE="Variables.ContentDetails:Dimension:Counters.nthArg_type" />
+                <input type="hidden" name="AdvCols:Dimension:Counters.nthArg_type" value="Variables.value" REPLACEALL="Variables.value,Counters.nthArg" />
+                <setvar NAME="value" VALUE="Variables.ContentDetails:Dimension:Counters.nthArg" />
+                <input type="hidden" name="AdvCols:Dimension:Counters.nthArg" value="Variables.value" REPLACEALL="Variables.value,Counters.nthArg" />
+                <INCCOUNTER NAME="nthArg" VALUE="1"/>
+            </LOOP>
+        </then>
+        </if>
+    </THEN>
+    </IF>
+    <IF COND="IsVariable.AdvCols:Dimension-parent:Total=true">
+	<THEN>
+        <!-- Print out hidden inputs for Dimension Parents -->
+        <input type="hidden" name="AdvCols:Dimension-parent:Total" id="AdvCols:Dimension-parent:Total" value="Variables.ContentDetails:Dimension-parent:Total" REPLACEALL="Variables.ContentDetails:Dimension-parent:Total" />
+        <if COND="Variables.ContentDetails:Dimension-parent:Total!=0">
+        <then>
+            <SETCOUNTER NAME="nthArg" VALUE="0"/>
+            <LOOP COUNT="Variables.ContentDetails:Dimension-parent:Total">
+                <setvar NAME="value" VALUE="Variables.ContentDetails:Dimension-parent:Counters.nthArg:asset_type" />
+				<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
+                <input type="hidden" name="AdvCols:Dimension-parent:Counters.nthArg:asset_type" value="Variables.value" REPLACEALL="Variables.value,Counters.nthArg" />
+                <setvar NAME="value" VALUE="Variables.ContentDetails:Dimension-parent:Counters.nthArg:asset" />
+				<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
+                <input type="hidden" name="AdvCols:Dimension-parent:Counters.nthArg:asset" value="Variables.value" REPLACEALL="Variables.value,Counters.nthArg" />
+                <setvar NAME="value" VALUE="Variables.ContentDetails:Dimension-parent:Counters.nthArg:group" />
+				<STRING.ENCODE VARIABLE="value" VARNAME="value"/>
+                <input type="hidden" name="AdvCols:Dimension-parent:Counters.nthArg:group" value="Variables.value" REPLACEALL="Variables.value,Counters.nthArg" />
+                <INCCOUNTER NAME="nthArg" VALUE="1"/>
+            </LOOP>
+        </then>
+        </if>
+    </THEN>
+    </IF>
+    
+</THEN>
+</IF>
+
+<IF COND="Variables.AdvColsNextStep!=ContentFormSelection">
+<THEN>
+	<STRING.ENCODE VARIABLE="ContentDetails:style" VARNAME="ContentDetails:style"/>
+	<INPUT TYPE="HIDDEN" NAME="AdvCols:style" VALUE="Variables.ContentDetails:style" REPLACEALL="Variables.ContentDetails:style"/>
+</THEN>
+</IF>
+		
+<IF COND="Variables.AdvColsNextStep!=ContentFormSort">
+<THEN>
+	<!--Name also calls GetOrderingrec-->
+	<IF COND="Variables.AdvColsNextStep!=ContentFormName">
+	<THEN>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/GetOrdering">
+			<ARGUMENT NAME="HiddenOnly" VALUE="true"/>
+		</CALLELEMENT>
+	</THEN>
+	</IF>
+</THEN>
+</IF>
+
+<!-- no longer needed (I think)
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/SetRuleVars"/>
+<INPUT TYPE="HIDDEN" NAME="theRuleName" VALUE="Variables.theRuleName" REPLACEALL="Variables.theRuleName"/>
+<INPUT TYPE="HIDDEN" NAME="theRuleDescription" VALUE="Variables.theRuleDescription" REPLACEALL="Variables.theRuleDescription"/>
+<INPUT TYPE="HIDDEN" NAME="theRuleEncoding" VALUE="Variables.theRuleEncoding" REPLACEALL="Variables.theRuleEncoding"/>
+-->
+<STRING.ENCODE VARIABLE="ContentDetails:selruleset_id" VARNAME="ContentDetails:selruleset_idEnc"/>
+<INPUT TYPE="HIDDEN" NAME="AdvCols:selruleset_id" VALUE="Variables.ContentDetails:selruleset_idEnc" REPLACEALL="Variables.ContentDetails:selruleset_idEnc"/>
+
+<IF COND="Variables.AdvColsNextStep!=ContentFormType">
+<THEN>
+	<INPUT TYPE="HIDDEN" NAME="ACRule" VALUE="Variables.ACRule" REPLACEALL="Variables.ACRule"/>
+</THEN>
+</IF>
+
+<IF COND="Variables.AdvColsNextStep!=ContentFormName">
+<THEN>
+	<STRING.ENCODE VARIABLE="AdvColMode" VARNAME="OutputQString"/>
+	<INPUT TYPE="HIDDEN" NAME="AdvColMode" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/>
+</THEN>
+</IF>
+
+<IF COND="Variables.AdvColsNextStep!=ContentFormBuild">
+<THEN>
+	<STRING.ENCODE VARIABLE="ContentDetails:elementid" VARNAME="ContentDetails:elementidEnc"/>
+	<INPUT TYPE="HIDDEN" NAME="AdvCols:elementid" VALUE="Variables.ContentDetails:elementidEnc"  REPLACEALL="Variables.ContentDetails:elementidEnc"/>
+	<STRING.ENCODE VARIABLE="PickedIdsOfSegments" VARNAME="PickedIdsOfSegments"/>
+	<INPUT TYPE="HIDDEN" NAME="PickedIdsOfSegments" VALUE="Variables.PickedIdsOfSegments" REPLACEALL="Variables.PickedIdsOfSegments"/>
+	<STRING.ENCODE VARIABLE="PickedKeyOfSegments" VARNAME="PickedKeyOfSegments"/>
+	<INPUT TYPE="HIDDEN" NAME="PickedKeyOfSegments" VALUE="Variables.PickedKeyOfSegments" REPLACEALL="Variables.PickedKeyOfSegments"/>
+	<STRING.ENCODE VARIABLE="PickedInsOfSegments" VARNAME="PickedInsOfSegments"/>
+	<INPUT TYPE="HIDDEN" NAME="PickedInsOfSegments" VALUE="Variables.PickedInsOfSegments" REPLACEALL="Variables.PickedInsOfSegments"/>
+	<STRING.ENCODE VARIABLE="PickedOutsOfSegments" VARNAME="PickedOutsOfSegments"/>
+	<INPUT TYPE="HIDDEN" NAME="PickedOutsOfSegments" VALUE="Variables.PickedOutsOfSegments" REPLACEALL="Variables.PickedOutsOfSegments"/>
+
+	<!--Name also calls GetManualrec when updatetype is not setformdefaults-->
+	<SETVAR NAME="lclCallManualRec" VALUE="true"/>
+	<IF COND="Variables.updatetype!=setformdefaults">
+	<THEN>
+		<IF COND="Variables.AdvColsNextStep=ContentFormName">
+		<THEN>
+			<SETVAR NAME="lclCallManualRec" VALUE="false"/>
+		</THEN>
+		</IF>
+	</THEN>
+	</IF>
+
+	<IF COND="Variables.lclCallManualRec=true">
+	<THEN>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/GetManualrec">
+			<ARGUMENT NAME="HiddenOnly" VALUE="true"/>
+		</CALLELEMENT>
+	</THEN>
+	</IF>
+				
+	<IF COND="IsSessionVariable.OurSSText!=true">
+	<THEN>
+		<IF COND="IsVariable.ContentDetails:urlquery=true">
+		<THEN>
+			<IF COND="Variables.ContentDetails:urlquery!=Variables.empty">
+			<THEN>
+				<ICS.GETVAR NAME="ContentDetails:urlquery" ENCODING="default" OUTPUT="OurText"/>
+				<SETSSVAR NAME="OurSSText" VALUE="Variables.OurText"/>
+			</THEN>
+			</IF>
+		</THEN>
+		</IF>
+	</THEN>
+	</IF>
+</THEN>
+</IF>    
+</FTCS> 
+
+

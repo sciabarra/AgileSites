@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/BuildSql
+-
+-	Handle type sql (depricated)
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<TR>
+	<TD>
+		<TABLE>
+			<TR>
+				<TD class="form-label-text" valign="top"><XLAT.STREAM KEY="dvin/AT/AdvCols/SQLQuery"/>:</TD>
+				<TD><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="10" height="1" REPLACEALL="Variables.cs_imagedir"/></TD>
+				<TD class="form-inset">
+					<IF COND="IsSessionVariable.OurSSText=true">
+						<THEN>
+							<SETVAR NAME="OurText" VALUE="SessionVariables.OurSSText"/>
+						</THEN>
+						<ELSE>
+							<ICS.GETVAR NAME="ContentDetails:urlquery" ENCODING="default" OUTPUT="OurText"/>
+						</ELSE>
+					</IF>
+					<TEXTAREA NAME="AdvCols:urlquery" COLS="60" ROWS="4" WRAP="VIRTUAL">
+						<STRING.STREAM VALUE="Variables.OurText"/>				
+					</TEXTAREA>
+					<REMOVESSVAR NAME="OurSSText"/>
+				</TD>
+			</TR>
+		</TABLE>
+	</TD>
+</TR>
+
+</FTCS> 

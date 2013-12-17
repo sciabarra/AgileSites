@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/SearchStyle
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+<!--List of Valid Attribute value styles -->
+<STRINGLIST NAME="GAStyle" STR="H,R" DELIM=","/>
+<XLAT.LOOKUP KEY="dvin/AT/AdvCols/highestcommarandom" VARNAME="_highestcommarandom_"/>
+<STRINGLIST NAME="GAsDescription" STR="Variables._highestcommarandom_" DELIM=","/>
+
+
+<!--Now drop down the  types  selection box -->
+
+<setrow LIST="GAsDescription" ACTION="FIRST"/>
+<if COND="IsVariable.DoingASearch=true">
+	<then>
+		<select name="Style" size="1"  onChange="doAutoCheck(this,'Style')">
+			<loop LIST="GAStyle">
+				<option value="GAStyle.ITEM" REPLACEALL="GAStyle.ITEM"/><STRING.STREAM VALUE="GAsDescription.ITEM"/>
+				<setrow LIST="GAsDescription" ACTION="NEXT"/>
+			</loop>
+		</select>
+	</then>
+	<else> 
+		<select name="AdvCols:style" size="1" >   
+			<loop LIST="GAStyle">
+				<if COND="Variables.ContentDetails:style=GAStyle.ITEM">
+					<then>
+						<option value="GAStyle.ITEM" SELECTED="" REPLACEALL="GAStyle.ITEM"/><STRING.STREAM VALUE="GAsDescription.ITEM"/>
+					</then>
+					<else>
+						<option value="GAStyle.ITEM" REPLACEALL="GAStyle.ITEM"/><STRING.STREAM VALUE="GAsDescription.ITEM"/>
+					</else>
+				</if>
+				<setrow LIST="GAsDescription" ACTION="NEXT"/>
+			</loop>
+		</select>
+	</else>
+</if>
+
+
+
+</FTCS> 

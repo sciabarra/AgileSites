@@ -1,0 +1,629 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/TileRuleSet
+--
+-- INPUT
+
+--	nvobject named nvRuleSet
+--
+-- OUTPUT
+--
+-->
+<if COND="IsVariable.InspectMode=false">
+<then>
+	<setvar NAME="InspectMode" VALUE="false"/>
+</then>
+</if>
+
+<setvar NAME="HaveRows" VALUE="false"/>
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/GetCatLists"/>
+
+<setvar NAME="defaultnextstep" VALUE="CoFDemographics"/>
+<setvar NAME="defaultmodification" VALUE="catList.name"/>
+
+<nvobject.getvalue NAME="nvRuleSet" VALUENAME="NUMAND" VARNAME="rsnumrows"/>
+<if COND="IsVariable.rsnumrows=false">
+<then>
+	<setvar NAME="rsnumrows" VALUE="0"/>
+</then>
+</if>
+
+<!--Find the largest column value -->
+<setvar NAME="TestCols" VALUE="0"/>
+<setcounter NAME="test" VALUE="0"/>
+<nvobject.create NAME="nvTestRow"/>
+<if COND="Variables.rsnumrows!=0">
+<then>
+	<loop COUNT="Variables.rsnumrows">
+		<nvobject.getvalue NAME="nvRuleSet" VALUENAME="ANDCLAUSECounters.test" VARNAME="thisRow"/>
+		<nvobject.fromstring NAME="nvTestRow" VALUE="Variables.thisRow"/>
+		<nvobject.getvalue NAME="nvTestRow" VALUENAME="NUMCOL" VARNAME="rsnumcols"/>
+		<calculator.go VALUE="Variables.rsnumcols Variables.TestCols GT" VARNAME="calcresult"/>
+		<if COND="Variables.calcresult=1">
+		<then>
+			<setvar NAME="TestCols" VALUE="Variables.rsnumcols"/>
+		</then>
+		</if>
+		<inccounter NAME="test" VALUE="1"/>
+	</loop>
+</then>
+</if>
+<calculator.go VALUE="Variables.TestCols 2 *" VARNAME="tmp"/>
+<calculator.go VALUE="Variables.tmp 1 +" VARNAME="MaxCols"/>
+
+<if COND="Variables.rsnumrows!=0">
+<then>
+	<setvar NAME="HaveRows" VALUE="true"/>
+	<table border="0" cellpadding="0" cellspacing="0">
+		<setcounter NAME="rct" VALUE="0"/>
+		<nvobject.create NAME="nvThisRow"/>
+		<nvobject.create NAME="nvOurCell"/>
+
+			
+		<!-- Segments start out with no restrictions -->
+		<tr>
+			<td align="center" height="1" colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><span class="small-text"><XLAT.STREAM KEY="dvin/AT/Segments/Thissegmentincludes"/>:</span>
+				<table border="1" cellpadding="2" cellspacing="0">
+					<tr>
+						<td><XLAT.STREAM KEY="dvin/AT/Segments/AllVisitors"/></td>
+					</tr>
+				</table>
+			</td>
+		</tr> 
+
+		<!-- fetch the current ruleset_map -->
+		<SEGMENT.GETRATINGRULESETMAP NAME="theCurrentAsset" OBJVARNAME="theMap"/>
+			
+		<!-- The main loop -->
+		<loop COUNT="Variables.rsnumrows">
+
+			<!-- Display "Restrict Visitors" unit for every row -->
+			<tr>
+				<td colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+			</tr>
+			<tr>
+				<td align="center" colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img src="Variables.cs_imagedir/graphics/common/screen/black-arrow-expanded.gif" width="10" height="10" REPLACEALL="Variables.cs_imagedir"/></td>
+			</tr>
+			<tr>
+				<td colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+			</tr>
+			<tr>
+				<td bgcolor="black" colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img height="1" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+			</tr>
+			<tr>
+				<td align="left" colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><XLAT.STREAM KEY="dvin/AT/Segments/RestrictVisitors"/></td>
+			</tr>
+			<tr>
+				<td colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+			</tr>				
+			<tr>
+				<nvobject.getvalue NAME="nvRuleSet" VALUENAME="ANDCLAUSECounters.rct" VARNAME="thisRow"/>
+				<nvobject.fromstring NAME="nvThisRow" VALUE="Variables.thisRow"/>
+				<nvobject.getvalue NAME="nvThisRow" VALUENAME="NUMCOL" VARNAME="rsnumcols"/>
+				<if COND="Variables.rsnumcols!=0">
+				<then>
+					<!-- Loop for this row??? -->
+					<setcounter NAME="cct" VALUE="0"/>
+					<loop COUNT="Variables.rsnumcols">
+						<nvobject.getvalue NAME="nvThisRow" VALUENAME="ORCLAUSECounters.cct" VARNAME="thisCol"/>
+						<nvobject.fromstring NAME="nvOurCell" VALUE="Variables.thisCol"/>
+						<nvobject.getvalue NAME="nvOurCell" VALUENAME="RULETYPE" VARNAME="thisRuleType"/>
+						<nvobject.getvalue NAME="nvOurCell" VALUENAME="RULEOP" VARNAME="thisRuleOp"/>
+						<nvobject.getvalue NAME="nvOurCell" VALUENAME="COMPAREOP" VARNAME="thisRuleCompOp"/>
+						<nvobject.getvalue NAME="nvOurCell" VALUENAME="RULECATEGORY" VARNAME="thisCategory"/>
+						<nvobject.getvalue NAME="nvOurCell" VALUENAME="VALUE" VARNAME="thisRuleVal"/>
+						<nvobject.getvalue NAME="nvOurCell" VALUENAME="VALTZ" VARNAME="SegmentsStartTimeZone"/>
+						<if COND="IsVariable.thisRuleVal!=true">
+						<then>
+							<setvar NAME="thisRuleVal" VALUE="Variables.empty"/>
+						</then>
+						</if>
+						<if COND="Variables.thisRuleType!=cart">
+						<then>
+							<nvobject.getvalue NAME="nvOurCell" VALUENAME="VARDESC" VARNAME="thisRuleDesc"/>
+							<nvobject.getvalue NAME="nvOurCell" VALUENAME="VARNAME" VARNAME="thisRuleName"/>
+						</then>
+						<else>
+							<setvar NAME="thisRuleDesc" VALUE="Variables.empty"/>
+							<setvar NAME="thisRuleName" VALUE="Variables.empty"/>
+							<nvobject.getvalue NAME="nvOurCell" VALUENAME="ASSETOP" VARNAME="thisAssetOp"/>
+							<nvobject.getvalue NAME="nvOurCell" VALUENAME="CARTMODE" VARNAME="thisCartMode"/>
+							<if COND="Variables.thisCartMode!=all">
+							<then>
+								<nvobject.getvalue NAME="nvOurCell" VALUENAME="NUMASSETS" VARNAME="numCartAssets"/>
+							</then>
+							</if>
+						</else>
+						</if>
+						<if COND="Variables.thisRuleCompOp=bt">
+						<then>
+							<nvobject.getvalue NAME="nvOurCell" VALUENAME="HIGHVALUE" VARNAME="thisRuleVal2"/>
+							<nvobject.getvalue NAME="nvOurCell" VALUENAME="HIGHVALTZ" VARNAME="SegmentsEndTimeZone"/>
+						</then>
+						</if>
+						<if COND="Variables.thisRuleType=history">
+						<then>
+							<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/UnpackHistoryHintSub"/>
+						</then>
+						</if>
+						
+						<td>
+							<!-- This table display the rule for a filtering criterion -->
+							<table border="1" cellspacing="0" cellpadding="2">
+								<tr>
+									<td>	
+										<table border="0" cellspacing="0" cellpadding="0">
+											<tr>
+												<td colspan="2">
+													<!--Only two possibilities for ruleop-->
+													<IF COND="Variables.thisRuleOp=include">
+													<THEN>
+														<XLAT.STREAM KEY="dvin/AT/Segments/Include"/>
+													</THEN>
+													<ELSE>
+														<XLAT.STREAM KEY="dvin/AT/Segments/Exclude"/>
+													</ELSE>
+													</IF>
+													<if COND="Variables.thisRuleType=history">
+													<then>
+																	&nbsp;(<STRING.STREAM VALUE="Variables.thisRuleDesc"/>)
+													</then>
+													<else>
+														<if COND="Variables.thisRuleType=cart">
+														<then>
+															&nbsp;(<XLAT.STREAM KEY="dvin/AT/Segments/ShoppingCart"/>)
+														</then>
+														</if>
+													</else>
+													</if>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2" bgcolor="black"><img height="1" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+											</tr>
+											<tr>
+												<td width="5"><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+												<td>
+													<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/ConvertOps">
+														<argument NAME="thisOp" VALUE="Variables.thisRuleCompOp"/>
+													</callelement>
+													<if COND="Variables.thisRuleType!=history">
+													<then>
+														<table  border="0" cellspacing="0" cellpadding="0">
+															<tr>
+																<if COND="Variables.thisRuleType=cart">
+																<then>
+																	<td>
+																						<STRING.STREAM VALUE="Variables.thisAssetOp"/>&nbsp;-&nbsp;
+																	</td>
+																</then>
+																</if>
+																<td>
+																				<STRING.STREAM VALUE="Variables.thisRuleDesc"/>
+																</td>
+																<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+																<td>
+																				<STRING.STREAM VALUE="Variables.strThisOp"/>
+																</td>
+																<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>																	
+																<td>
+																	<if COND="IsVariable.SegmentsStartTimeZone=true">
+																	<then>
+																		<if COND="Variables.SegmentsStartTimeZone!=0">
+																		<then>
+																			<LOCALE.CREATE VARNAME="localeobject" LOCALENAME="SessionVariables.locale"/> 
+																			<DATE.CLOCKLIST LISTVARNAME="thisClockList" CLOCK="Variables.thisRuleVal" TIMEZONE="Variables.SegmentsStartTimeZone" LOCALE="localeobject"/>
+																			<SUBSTITUTE STR="thisClockList.longtime" WHAT="GMT" WITH="" OUTSTR="thistime"/>
+																								<STRING.STREAM VALUE="thisClockList.longdate"/>&nbsp;<STRING.STREAM VALUE="Variables.thistime"/>
+																		</then>
+																		<else>
+																								<STRING.STREAM VALUE="Variables.thisRuleVal"/>
+																		</else>
+																		</if>
+																	</then>
+																	<else>
+																						<STRING.STREAM VALUE="Variables.thisRuleVal"/>
+																	</else>
+																	</if>
+																	<if COND="Variables.thisRuleCompOp=bt">
+																	<then>
+																		<if COND="Variables.SegmentsStartTimeZone!=0">
+																		<then>
+																			<LOCALE.CREATE VARNAME="localeobject" LOCALENAME="SessionVariables.locale"/> 
+																			<DATE.CLOCKLIST LISTVARNAME="thisClockList" CLOCK="Variables.thisRuleVal2" TIMEZONE="Variables.SegmentsEndTimeZone" LOCALE="localeobject"/>
+																			<SUBSTITUTE STR="thisClockList.longtime" WHAT="GMT" WITH="" OUTSTR="thistime"/>
+																								-&nbsp;<STRING.STREAM VALUE="thisClockList.longdate"/>&nbsp;<STRING.STREAM VALUE="Variables.thistime"/>
+																		</then>
+																		<else>
+																								-&nbsp;<STRING.STREAM VALUE="Variables.thisRuleVal2"/>
+																		</else>
+																		</if>
+																	</then>
+																	</if>
+																</td>
+															</tr>
+															<if COND="Variables.thisRuleType=cart">
+															<then>
+																<if COND="Variables.thisCartMode!=all">
+																<then>
+																	<setcounter NAME="cartX" VALUE="0"/>
+																	<loop COUNT="Variables.numCartAssets">
+																		<tr>
+																			<td colspan="6">
+																				<nvobject.getvalue NAME="nvOurCell" VALUENAME="ASSETIDCounters.cartX" VARNAME="ourAssetid"/>
+																				<IF COND="IsVariable.ourAssetid=true">
+																				<THEN>
+																					<nvobject.getvalue NAME="nvOurCell" VALUENAME="ASSETTYPECounters.cartX" VARNAME="ourAssettype"/>
+																				</THEN>
+																				<ELSE>
+																					<nvobject.getvalue NAME="nvOurCell" VALUENAME="ASSETKEYCounters.cartX" VARNAME="ourAssetKey"/>
+																					<CALLELEMENT NAME="OpenMarket/Gator/Rules/RuleSetMapKeyLookup">
+																						<ARGUMENT NAME="ourKey" VALUE="Variables.ourAssetKey"/>
+																					</CALLELEMENT>
+																				</ELSE>
+																				</IF>
+																				<asset.list LIST="clAsset" TYPE="Variables.ourAssettype" FIELD1="id" VALUE1="Variables.ourAssetid"/>
+        																									(<STRING.STREAM VALUE="Variables.ourAssettype"/>) <STRING.STREAM VALUE="clAsset.name"/>
+																			</td>
+																		</tr>
+																		<inccounter NAME="cartX" VALUE="1"/>
+																	</loop>
+                                                                                           
+																</then>
+																</if>
+															</then>
+															</if>																		
+														</table>
+													</then>
+													<else>
+														<if COND="Variables.sHop=sum">
+														<then>
+															<setvar NAME="fielddescription" VALUE="Variables.empty"/>
+															<if COND="IsVariable.sHField=true">
+															<then>
+																<if COND="Variables.sHField!=Variables.empty">
+																<then>
+																	<visitordata.gethistoryattributefielddef NAME="myfielddefobj" FIELD="Variables.sHField"/>
+																	<visitorhistoryfield.getdescription NAME="myfielddefobj" VARNAME="fielddescription"/>
+																</then>
+																</if>
+															</then>
+															</if>
+															<XLAT.LOOKUP KEY="dvin/AT/Segments/Total" VARNAME="_Total_"/>
+															<setvar NAME="ourText" VALUE="Variables._Total_  Variables.fielddescription  Variables.strThisOp Variables.thisRuleVal"/>
+														</then>
+														<else>
+															<if COND="Variables.sHop=count">
+															<then>
+																<XLAT.LOOKUP KEY="dvin/AT/Segments/Count" VARNAME="_Count_"/>
+																<setvar NAME="ourText" VALUE="Variables._Count_  Variables.strThisOp  Variables.thisRuleVal"/>
+															</then>
+															<else>
+																<if COND="Variables.thisRuleVal!=Variables.empty">
+																<then>
+																	<nvobject.getvalue NAME="nvOurCell" VALUENAME="VALUETZ" VARNAME="thisTimeZone"/>
+																	<LOCALE.CREATE VARNAME="localeobject" LOCALENAME="SessionVariables.locale"/> 
+																	<DATE.CLOCKLIST LISTVARNAME="thisClockList" CLOCK="Variables.thisRuleVal" TIMEZONE="Variables.thisTimeZone" LOCALE="localeobject"/>
+																	<setvar NAME="thisRuleVal" VALUE="thisClockList.longdate"/>
+																</then>
+																</if>
+																<if COND="Variables.sHop=first">
+																<then>
+																	<XLAT.LOOKUP KEY="dvin/AT/Segments/Firstdate" VARNAME="_Firstdate_"/>
+																	<setvar NAME="ourText" VALUE="Variables._Firstdate_ Variables.strThisOp Variables.thisRuleVal"/>
+																</then>
+																<else>
+																	<XLAT.LOOKUP KEY="dvin/AT/Segments/Lastdate" VARNAME="_Lastdate_"/>
+																	<setvar NAME="ourText" VALUE="Variables._Lastdate_ Variables.strThisOp  Variables.thisRuleVal"/>
+																</else>
+																</if>
+															</else>
+															</if>
+														</else>
+														</if>
+														<setvar NAME="have2ndRow" VALUE="false"/>
+														<if COND="Variables.durationType=relative">
+														<then>
+															<XLAT.LOOKUP KEY="dvin/AT/Segments/Last" VARNAME="_Last_"/>
+															<setvar NAME="our2ndRow" VALUE="Variables._Last_ Variables.sHinterval Variables.sRelativeOp"/>
+															<setvar NAME="have2ndRow" VALUE="true"/>
+														</then>
+														<else>
+															<if COND="Variables.durationType=fixed">
+															<then>
+																<LOCALE.CREATE VARNAME="localeobject" LOCALENAME="SessionVariables.locale"/> 
+																<DATE.CLOCKLIST LISTVARNAME="thisStartClockList" CLOCK="Variables.SegmentStartDate" TIMEZONE="Variables.SegmentStartTimeZone" LOCALE="localeobject"/>
+																<DATE.CLOCKLIST LISTVARNAME="thisEndClockList" CLOCK="Variables.SegmentEndDate" TIMEZONE="Variables.SegmentEndTimeZone" LOCALE="localeobject"/>
+																<XLAT.LOOKUP KEY="dvin/AT/Segments/Restrictedto" longDateOfStartClock="thisStartClockList.longdate" longDateOfEndClock="thisEndClockList.longdate" VARNAME="_Restrictedto_"/>
+																<setvar NAME="our2ndRow" VALUE="Variables._Restrictedto_"/>
+																<setvar NAME="have2ndRow" VALUE="true"/>
+															</then>
+															</if>
+														</else>
+														</if>
+														<table  border="0" cellspacing="0" cellpadding="0">
+															<tr>
+																<td colspan="2">
+																				<nobr><STRING.STREAM VALUE="Variables.ourText"/></nobr>
+																</td>
+															</tr>
+															<if COND="Variables.have2ndRow=true">
+															<then>
+																<tr>
+																	<td colspan="2">
+																						<nobr><STRING.STREAM VALUE="Variables.our2ndRow"/></nobr>
+																	</td>
+																</tr>
+															</then>
+															</if>
+															<nvobject.getvalue NAME="nvOurCell" VALUENAME="HNUMCONSTR" VARNAME="ConstraintCount"/>
+															<if COND="Variables.ConstraintCount!=0">
+															<then>
+																<tr>
+																	<td colspan="2">
+																						<XLAT.STREAM KEY="dvin/AT/Segments/Constraints"/>: (<STRING.STREAM VALUE="Variables.ConstraintCount"/>)
+																	</td>
+																</tr>
+																<setcounter NAME="Y" VALUE="0"/>
+																<loop COUNT="Variables.ConstraintCount">
+																	<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/UnpackConstraints">
+																		<argument NAME="N" VALUE="Counters.Y"/>
+																	</callelement>
+																	<!--Get the localized name of the type-->
+																	<STRINGLIST NAME="CnstrTypeList" STR="value,asset,assetattr" DELIM=","/>
+																	<XLAT.LOOKUP KEY="dvin/AT/Segments/ConstraintNames" VARNAME="_CnstrTypeNames_"/>
+																	<STRINGLIST NAME="ConstrNameList" STR="Variables._CnstrTypeNames_" DELIM=","/>
+																	<LOOP LIST="CnstrTypeList">
+																		<IF COND="Variables.ConstraintType=CnstrTypeList.ITEM">
+																		<THEN>
+																			<SETVAR NAME="ConstraintName" VALUE="ConstrNameList.ITEM"/>
+																		</THEN>
+																		</IF>
+																		<SETROW LIST="ConstrNameList" ACTION="NEXT"/>
+																	</LOOP>
+																	<if COND="Variables.ConstraintType=value">
+																	<then>
+																		<tr>
+																			<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+																			<td>
+																				<if COND="Variables.HRvalueTZ=0">
+																				<then>
+																											<STRING.STREAM VALUE="Variables.ConstraintName: Variables.DRdescription Variables.HRvalue"/>
+																				</then>
+																				<else>
+																					<LOCALE.CREATE VARNAME="localeobject" LOCALENAME="SessionVariables.locale"/> 
+																					<DATE.CLOCKLIST LISTVARNAME="thisClockList" CLOCK="Variables.HRvalue" TIMEZONE="Variables.HRvalueTZ" LOCALE="localeobject"/>
+																					<SUBSTITUTE STR="thisClockList.longtime" WHAT="GMT" WITH="" OUTSTR="thistime"/>
+																					<setvar NAME="thisdate" VALUE="thisClockList.longdate"/>
+																											<STRING.STREAM VALUE="Variables.ConstraintType: Variables.DRdescription Variables.thisdate Variables.thistime"/>
+																				</else>
+																				</if>
+																			</td>
+																		</tr>
+																	</then>
+																	<else>
+																		<if COND="Variables.ConstraintType=assetattr">
+																		<then>
+																			<if COND="Variables.haveassetlist=true">
+																			<then>
+																				<tr>
+																					<td></td>
+																					<td>
+																						<XLAT.STREAM KEY="dvin/AT/Common/Assets"/>:
+																					</td>
+																				</tr>
+																				<tr>
+																					<td></td>
+																					<td>
+																						<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/AssetlistTable"/>
+																					</td>
+																				</tr>
+																			</then>
+																			</if>
+																		</then>
+																		</if>
+																	</else>
+																	</if>
+																	<inccounter NAME="Y" VALUE="1"/>
+																</loop>
+															</then>
+															</if>
+														</table>
+													</else>
+													</if>
+													
+													<if COND="Variables.thisRuleType=scalar">
+													<then>
+														<setvar NAME="thisnextstep" VALUE="CoFDemographics"/>
+														<setvar NAME="arg3name" VALUE="Variables.thisRuleName"/>
+													</then>
+													<else>
+														<if COND="Variables.thisRuleType=history">
+														<then>
+															<setvar NAME="thisnextstep" VALUE="CoFHistory"/>
+															<setvar NAME="arg3name" VALUE="Variables.empty"/>
+														</then>
+														<else>
+															<if COND="Variables.thisRuleType=cart">
+															<then>
+																<setvar NAME="thisnextstep" VALUE="CoFCart"/>
+																<setvar NAME="arg3name" VALUE="Variables.empty"/>
+															</then>
+															</if>
+														</else>
+														</if>
+													</else>
+													</if>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+							<table>
+								<tr>
+									<td><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+								</tr>
+								<tr><td nowrap="nowrap">
+								<if COND="Variables.InspectMode=false">
+								<then>
+									<XLAT.LOOKUP KEY="dvin/AT/Segments/Editthissegment" VARNAME="_Editsegment_" ESCAPE="true"/>
+									<XLAT.LOOKUP KEY="dvin/AT/Segments/Editthissegment" VARNAME="_Editsegment_ALT"/>
+									<XLAT.LOOKUP KEY="dvin/AT/Segments/Deletethissegment" VARNAME="_Deletesegment_" ESCAPE="true"/>
+									<XLAT.LOOKUP KEY="dvin/AT/Segments/Deletethissegment" VARNAME="_Deletesegment_ALT"/>
+									<A HREF="javascript:void(0)"  onclick="return AddEditSpecificRule('Variables.ThisPage','Variables.thisnextstep','Variables.thisCategory','EditItem','Counters.cct','Counters.rct','Variables.thisRuleDesc','Variables.arg3name');" onmouseover="window.status='Variables._Editsegment_';return true;"   onmouseout="window.status='';return true;" REPLACEALL="Variables._Editsegment_,Variables.ThisPage,Counters.cct,Counters.rct,Variables.thisnextstep,Variables.thisCategory,Variables.thisRuleDesc,Variables.arg3name">
+										<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Edit"/></CALLELEMENT>
+									</A>
+									<img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" border="0" REPLACEALL="Variables.cs_imagedir"/>
+									<A HREF="javascript:void(0)" onclick="return AddEditRule('Variables.ThisPage','ContentForm1','SegmentSave','DeleteItem','Counters.cct','Counters.rct');" onmouseover="window.status='Variables._Deletesegment_';return true;"   onmouseout="window.status='';return true;" REPLACEALL="Variables._Deletesegment_,Variables.ThisPage,Counters.cct,Counters.rct">
+										<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Delete"/></CALLELEMENT>
+									</A>
+								</then>
+								</if></td></tr>
+							</table>
+						</td>
+						<td>&nbsp;&nbsp;&nbsp;</td>
+								
+						<inccounter NAME="cct" VALUE="1"/>
+					</loop>
+							
+					
+						<if COND="Variables.InspectMode=false">
+						<then>
+							<!--Add button to create additional criterion-->						
+							<td valign="top" height="1">
+								<select name="selectNameAdd1" size="1" onChange="SetAddEditRuleVariables(this);">
+									<if COND="IsList.catList=true">
+									<then>
+										<loop LIST="catList">
+															<option value="CoFDemographics,catList.name" REPLACEALL="catList.name"/><STRING.STREAM VALUE="catList.name"/>
+										</loop>
+									</then>
+									</if>
+									<if COND="IsList.catHList=true">
+									<then>
+										<loop LIST="catHList">
+															<option value="CoFHistory,catHList.name" REPLACEALL="catHList.name"/><STRING.STREAM VALUE="catHList.name"/>
+										</loop>
+									</then>
+									</if>
+									<option value="CoFCart,Shopping Cart"/><XLAT.STREAM KEY="dvin/AT/Segments/ShoppingCart"/>
+								</select>
+								<table>
+									<tr>
+										<td colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									<tr><td nowrap="nowrap">		
+									<XLAT.LOOKUP KEY="dvin/AT/Segments/Selectadnlcriteriaincludeothersinsegment" VARNAME="_addncrit_" ESCAPE="true"/>
+									<XLAT.LOOKUP KEY="dvin/AT/Segments/Selectadnlcriteriaincludeothersinsegment" VARNAME="_addncrit_ALT"/>
+									<A HREF="javascript:void(0)"  onclick="return GoAddEdit('Variables.ThisPage','Variables.defaultnextstep','Variables.defaultmodification','AddColumn','Counters.cct','Counters.rct');" onmouseover="window.status='Variables._addncrit_';return true;"   onmouseout="window.status='';return true;" REPLACEALL="Variables._addncrit_,Variables.ThisPage,Counters.cct,Counters.rct,Variables.defaultnextstep,Variables.defaultmodification">
+										<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/IncludeOthers"/></CALLELEMENT>
+									</A>
+									</td></tr>
+								</table>
+							</td>
+						</then>
+						</if>
+					
+				</then>
+				</if>
+			</tr>
+			<inccounter NAME="rct" VALUE="1"/>
+		</loop>
+		
+		<if COND="Variables.InspectMode=false">
+		<then>
+			<tr>
+				<td colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+			</tr>
+			<tr>
+				<td align="center" colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img src="Variables.cs_imagedir/graphics/common/screen/black-arrow-expanded.gif" width="10" height="10" REPLACEALL="Variables.cs_imagedir"/></td>
+			</tr>
+			<tr>
+				<td colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+			</tr>
+			<tr>
+				<td bgcolor="black" colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img height="1" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+			</tr>
+			<tr>
+				<td align="left" colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><XLAT.STREAM KEY="dvin/AT/Segments/RestrictVisitors"/></td>
+			</tr>
+			<tr>
+				<td colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+			</tr>
+			<tr>
+				<td colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>
+								<select name="selectNameAdd2" size="1" onChange="SetAddEditRuleVariables(this);">
+									<if COND="IsList.catList=true">
+									<then>
+										<loop LIST="catList">
+														<option value="CoFDemographics,catList.name" REPLACEALL="catList.name"/><STRING.STREAM VALUE="catList.name"/>
+										</loop>
+									</then>
+									</if>
+									<if COND="IsList.catHList=true">
+									<then>
+										<loop LIST="catHList">
+														<option value="CoFHistory,catHList.name" REPLACEALL="catHList.name"/><STRING.STREAM VALUE="catHList.name"/>
+										</loop>
+									</then>
+									</if>
+									<option value="CoFCart,Shopping Cart"/><XLAT.STREAM KEY="dvin/AT/Segments/ShoppingCart"/>
+								</select>
+								<br/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<table>	
+									<tr>
+										<td colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+									</tr>
+									<tr><td nowrap="nowrap">
+									<XLAT.LOOKUP KEY="dvin/AT/Segments/Selectadnlcriteriafurtherrestrictsegment" VARNAME="_addnrcrit_" ESCAPE="true"/>
+									<XLAT.LOOKUP KEY="dvin/AT/Segments/Selectadnlcriteriafurtherrestrictsegment" VARNAME="_addnrcrit_ALT"/>
+									<A HREF="javascript:void(0)"  onclick="return GoAddEdit('Variables.ThisPage','Variables.defaultnextstep','Variables.defaultmodification','AddRow','0','Counters.rct');" onmouseover="window.status='Variables._addnrcrit_';return true;"   onmouseout="window.status='';return true;" REPLACEALL="Variables._addnrcrit_,Variables.ThisPage,Counters.cct,Counters.rct,Variables.defaultnextstep,Variables.defaultmodification">
+										<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/RestrictFurther"/></CALLELEMENT>
+									</A>
+									</td></tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</then>
+		</if>
+		
+		<tr>
+			<td colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+		</tr>
+		<tr>
+			<td align="center" colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img src="Variables.cs_imagedir/graphics/common/screen/black-arrow-expanded.gif" width="10" height="10" REPLACEALL="Variables.cs_imagedir"/></td>
+		</tr>
+		<tr>
+			<td colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+		</tr>
+		<tr>
+			<td bgcolor="black" colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><img height="1" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+		</tr>
+		<tr>
+			<td align="center" height="1" colspan="Variables.MaxCols" REPLACEALL="Variables.MaxCols"><span class="small-text"><XLAT.STREAM KEY="dvin/AT/Segments/Thissegmentis"/>:</span>
+				<table border="1" cellpadding="2" cellspacing="0">
+					<tr>
+							<td><STRING.STREAM VALUE="Variables.ContentDetails:name"/></td>
+					</tr>
+				</table>
+			</td>
+		</tr>	
+	</table>
+</then>
+</if>
+<INPUT TYPE="HIDDEN" NAME="CurrentRow" VALUE="Counters.rct" REPLACEALL="Counters.rct"/> 
+<INPUT TYPE="HIDDEN" NAME="CurrentCol" VALUE="Counters.cct" REPLACEALL="Counters.cct"/> 
+
+</FTCS> 

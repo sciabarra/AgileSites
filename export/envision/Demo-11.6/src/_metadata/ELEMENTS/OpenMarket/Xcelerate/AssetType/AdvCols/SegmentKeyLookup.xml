@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!--
+$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/AdvCols/SegmentKeyLookup.xml $
+$revision: $
+$Modtime: 11/24/03 11:35a $
+-->
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/SegmentKeyLookup
+-
+- INPUT
+-   PickedKeyOfSegments
+-
+- OUTPUT
+-  	SegFromKeysList, SegNamesFromKeysStr
+-	
+- Loop through the keys getting the value for the key, and unpacking it to find the segment id and the looking up the segment id to get the name.
+-->
+<STRINGLIST NAME="PickedKeyList" STR="Variables.PickedKeyOfSegments" DELIM=","/>
+<STRINGLIST NAME="PickedIdList" STR="Variables.PickedIdsOfSegments" DELIM=","/>
+
+<LISTOBJECT.CREATE NAME="SegFromKeysObject" COLUMNS="segName,segId,segKey"/>
+<IF COND="PickedKeyList.#numRows!=0">
+<THEN>
+	<LOOP LIST="PickedKeyList">
+		<ASSET.LIST TYPE="Segments" LIST="thisSegList" FIELD1="id" VALUE1="PickedIdList.ITEM"/>
+		<LISTOBJECT.ADDROW NAME="SegFromKeysObject" segName="thisSegList.name" segId="Variables.ourSegId" segKey="PickedKeyList.ITEM"/>
+		<SETROW LIST="PickedIdList" ACTION="NEXT"/>
+	</LOOP>
+</THEN>
+</IF>
+<LISTOBJECT.TOLIST NAME="SegFromKeysObject" LISTVARNAME="SegFromKeysList"/>
+<SETVAR NAME="first" VALUE="true"/>
+<SETVAR NAME="SetNamesFromKeysStr" VALUE="Variables.empty"/>
+<IF COND="SegFromKeysList.#numRows!=0">
+<THEN>
+	<LOOP LIST="SegFromKeysList">
+		<IF COND="Variables.first!=true">
+		<THEN>
+			<ICS.RESOLVEVARIABLES NAME="$(Variables.SegNamesFromKeysStr),$(SegFromKeysList.segName)" OUTPUT="SegNamesFromKeysStr" DELIMITED="true"/>
+		</THEN>
+		<ELSE>
+			<SETVAR NAME="SegNamesFromKeysStr" VALUE="SegFromKeysList.segName"/>
+			<SETVAR NAME="first" VALUE="false"/>
+		</ELSE>
+		</IF>
+	</LOOP>
+</THEN>
+</IF>
+</FTCS>

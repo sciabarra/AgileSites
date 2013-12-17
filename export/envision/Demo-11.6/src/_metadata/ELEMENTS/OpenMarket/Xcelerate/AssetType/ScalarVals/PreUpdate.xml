@@ -1,0 +1,169 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateB/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/ScalarVals/PreUpdate.xml $ 
+$Revision: 13 $ 
+$Modtime: 10/23/02 2:49p $ 
+-->
+<!-- OpenMarket/Xcelerate/AssetType/ScalarVals/PreUpdate
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+<!--
+	Note: setformdefaults, delete, updateform are NOT implemented
+	for ScalarVals
+	Only edit, remotepost, and create are implemented
+-->
+
+<if COND="Variables.updatetype=edit">
+	<then>
+		<ASSET.GET NAME="theCurrentAsset" FIELD="name" OUTPUT="prevassetname"/>
+		<callelement NAME="OpenMarket/Gator/Util/GetWorkflowId"/>
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/ScalarVals/GetOrSetVars">
+			<argument NAME="GetOrSet" VALUE="set"/>
+		</callelement>
+		<ASSET.GET NAME="theCurrentAsset" FIELD="name" OUTPUT="currassetname"/>
+		<IF COND="Variables.prevassetname!=Variables.currassetname">
+		<THEN>
+		<callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/CheckForAssetExistence" />
+		</THEN>
+		</IF>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+    	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+			<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+			<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+    	</CALLELEMENT>
+	</then>
+	<else>
+		<if COND="Variables.updatetype=create">
+			<then>
+				<callelement NAME="OpenMarket/Gator/Util/GetWorkflowId"/>
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/ScalarVals/GetOrSetVars">
+					<argument NAME="GetOrSet" VALUE="set"/>
+				</callelement>
+				<callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/CheckForAssetExistence" /> 
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/AssetChildrenFormNewGather"></CALLELEMENT>
+		    	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/UpdateRelations">
+					<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+					<ARGUMENT NAME="prefix" VALUE="Variables.prefix"/>
+		    	</CALLELEMENT>
+			</then>
+			<else>
+				<if COND="Variables.updatetype=remotepost">
+					<then>
+						<if COND="IsVariable.workflowid=true">
+							<then>
+								<setvar NAME="ScalarVals:workflowid" VALUE="Variables.workflowid"/>
+							</then>
+							<else>
+								<setvar NAME="AssetType" VALUE="ScalarVals"/>
+								<callelement NAME="OpenMarket/Gator/Util/GetWorkflowId"/>
+							</else>
+						</if>
+						<if COND="IsVariable.name=true">
+							<then>
+								<setvar NAME="ScalarVals:name" VALUE="Variables.name"/>
+							</then>
+						</if>
+						<if COND="IsVariable.status=true">
+							<then>
+								<setvar NAME="ScalarVals:status" VALUE="Variables.status"/>
+							</then>
+						</if>
+						<if COND="IsVariable.description=true">
+							<then>
+								<setvar NAME="ScalarVals:description" VALUE="Variables.description"/>
+							</then>
+						</if>
+						<if COND="IsVariable.type=true">
+							<then>
+								<setvar NAME="ScalarVals:type" VALUE="Variables.type"/>
+							</then>
+						</if>
+						<if COND="IsVariable.length=true">
+							<then>
+								<setvar NAME="ScalarVals:length" VALUE="Variables.length"/>
+							</then>
+						</if>
+						<if COND="IsVariable.nullallowed=true">
+							<then>
+								<setvar NAME="ScalarVals:nullallowed" VALUE="Variables.nullallowed"/>
+							</then>
+						</if>
+						<if COND="IsVariable.default=true">
+							<then>
+								<setvar NAME="ScalarVals:defaultval" VALUE="Variables.defaultval"/>
+							</then>
+						</if>
+						<if COND="IsVariable.category=true">
+							<then>
+								<setvar NAME="ScalarVals:category" VALUE="Variables.category"/>
+							</then>
+						</if>
+						<if COND="IsVariable.assettypename=true">
+							<then>
+								<setvar NAME="ScalarVals:assettypename" VALUE="Variables.assettypename"/>
+							</then>
+						</if>
+						<if COND="IsVariable.attributename=true">
+							<then>
+								<setvar NAME="ScalarVals:attributename" VALUE="Variables.attributename"/>
+							</then>
+						</if>
+						<if COND="IsVariable.constrainttype=true">
+							<then>
+								<setvar NAME="ScalarVals:constrainttype" VALUE="Variables.constrainttype"/>
+							</then>
+						</if>
+						<if COND="IsVariable.lowerrange=true">
+							<then>
+								<setvar NAME="ScalarVals:lowerrange" VALUE="Variables.lowerrange"/>
+							</then>
+						</if>
+						<if COND="IsVariable.upperrange=true">
+							<then>
+								<setvar NAME="ScalarVals:upperrange" VALUE="Variables.upperrange"/>
+							</then>
+						</if>
+						<if COND="IsVariable.legalvalues=true">
+							<then>
+								<setvar NAME="ScalarVals:sMyEnumValues" VALUE="Variables.legalvalues"/>
+							</then>
+						</if>
+
+						<callelement NAME="OpenMarket/Xcelerate/AssetType/ScalarVals/GetOrSetVars">
+							<argument NAME="GetOrSet" VALUE="set"/>
+						</callelement>
+					</then>
+				</if>
+			</else>
+		</if>
+	</else>
+</if>
+<!-- If the asset is updated from dah -->
+<if COND="Variables.dashUpdate=dashUpdate">
+<then>
+	<if COND="Variables.dashUpdateType=create">
+    <then>
+		<!--if the operation is create-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=edit">
+    <then>
+		<!--if the operation is edit-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=delete">
+    <then>
+		<!--if the operation is delete-->
+    </then>
+    </if>
+</then>
+</if>
+</FTCS>
+

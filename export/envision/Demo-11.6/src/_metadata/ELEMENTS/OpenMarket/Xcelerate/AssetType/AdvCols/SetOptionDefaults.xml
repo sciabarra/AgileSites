@@ -1,0 +1,93 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/SetOptionDefaults
+-
+- INPUT
+-    object scattered to ContentDetails:
+- OUTPUT
+-
+-->
+<!--If any of the variables are set, leave them alone.
+	- if the variables are not set, then
+	--if Marketing Studio is Not installed
+	---Set assets to all
+	---Set override to F
+	---Set mapstyle to  N
+	--if Marketing Studio is installed
+	---Set assets to all
+	---Set override to T
+	---Set mapsytle to C
+-->
+
+	<CALLELEMENT NAME="OpenMarket/Gator/Util/HasMarketStudio"/> <!--sets hasMarketStudio to true or false-->
+	<IF COND="Variables.hasMarketStudio=true">
+		<THEN>
+			<IF COND="IsVariable.ContentDetails:mapstyle=true">
+				<THEN>
+					<ICS.CLEARERRNO/>
+					<ISINLIST ITEM="Variables.ContentDetails:mapstyle" STR="C,N"/>
+					<IF COND="Variables.errno=0">
+						<THEN>
+							<SETVAR NAME="ContentDetails:mapstyle" VALUE="C"/>
+						</THEN>
+					</IF>
+				</THEN>
+				<ELSE>
+					<SETVAR NAME="ContentDetails:mapstyle" VALUE="C"/>
+				</ELSE>
+			</IF>
+			<IF COND="IsVariable.ContentDetails:ovrdable=true">
+				<THEN>
+					<ICS.CLEARERRNO/>
+					<ISINLIST ITEM="Variables.ContentDetails:ovrdable" STR="T,F"/>
+					<IF COND="Variables.errno=0">
+						<THEN>
+							<SETVAR NAME="ContentDetails:ovrdable" VALUE="T"/>
+						</THEN>
+					</IF>
+				</THEN>
+				<ELSE>
+					<SETVAR NAME="ContentDetails:ovrdable" VALUE="T"/>
+				</ELSE>
+			</IF>
+		</THEN>
+		<ELSE>
+			<IF COND="IsVariable.ContentDetails:mapstyle=true">
+				<THEN>
+					<ICS.CLEARERRNO/>
+					<ISINLIST ITEM="Variables.ContentDetails:mapstyle" STR="C,N"/>
+					<IF COND="Variables.errno=0">
+						<THEN>
+							<SETVAR NAME="ContentDetails:mapstyle" VALUE="N"/>
+						</THEN>
+					</IF>
+				</THEN>
+				<ELSE>
+					<SETVAR NAME="ContentDetails:mapstyle" VALUE="N"/>
+				</ELSE>
+			</IF>
+			<IF COND="IsVariable.ContentDetails:ovrdable=true">
+				<THEN>
+					<ICS.CLEARERRNO/>
+					<ISINLIST ITEM="Variables.ContentDetails:ovrdable" STR="T,F"/>
+					<IF COND="Variables.errno=0">
+						<THEN>
+							<SETVAR NAME="ContentDetails:ovrdable" VALUE="F"/>
+						</THEN>
+					</IF>
+				</THEN>
+				<ELSE>
+					<SETVAR NAME="ContentDetails:ovrdable" VALUE="F"/>
+				</ELSE>
+			</IF>
+		</ELSE>
+	</IF>
+	<!--This is the same for both with and without Marketing Studio-->
+	<IF COND="Variables.ContentDetails:types:Total=0">
+		<THEN>
+			<SETVAR NAME="ContentDetails:types:Total" VALUE="1"/>
+			<SETVAR NAME="ContentDetails:types:0" VALUE="_ALL_"/>
+		</THEN>
+	</IF>
+</FTCS>

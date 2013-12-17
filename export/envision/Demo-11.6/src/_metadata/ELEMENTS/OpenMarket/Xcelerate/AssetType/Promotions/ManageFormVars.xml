@@ -1,0 +1,551 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/ContentFormManageVariables
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<!--  GOAL  FORM Variables :::::::::::
+       
+		  Goal1, Goal2 ,  Goal3
+			 
+      SEGMENTS FORM Variables :::::::::::
+			
+      ApplytoAllVisitors, ApplytoSelSegs
+			
+ 			SegmentList  :  this is a list of segments 
+			
+      CONDITIONS FORM Variables::::::::::
+			
+      DoNotApply
+			SpecTxtandMedia
+			SpecProducts
+			   SelItemsViewed
+				 SelItemsAddedtoCart
+		  SpecPromIsTriggered
+			
+      Shopping  CART :::::::::::::
+			QuantityPromProd  QuantityCriteria
+			ValuePromProd			ValueCriteria
+			TotalValofCart		CartCriteria
+			
+      PRODUCTS  FORM Variables::::::::::
+			
+      EveryProdinCatalog
+			AdditionInstofCondProd
+			PackageCondProd
+			SpecificProducts    : ProductList
+			
+       
+      DISCOUNT  FORM VARIABLES:::::::::::
+			
+      PurchasesPromProd 
+			     ValuePromProd     DollarOrPercent
+					 ValueShoppingCart DollarOrPercent
+					 ValueCondProduct  DollarOrPercent
+					 
+      ShippintFees  ShipDollarOrPercent
+			Services       ServDollarOrPercent
+			AddServicesList
+			
+      DURATION  FORM VARIABLES:::::::::::
+			
+			StartDay StartMonth StartYear 
+			StartHour StartMin StartamOrpm  StartTimeZone
+			
+      ApplyUntilCancelled
+			ApplyUntilxInst  NumSelectedProds
+			ApplyforWeekHretc NumWeekHretc  WeekHretc  
+			ApplyUntil  EndDay EndMonth EndYear 
+			EndHour EndMin EndamOrpm  EndTimeZone
+			
+    
+      DISPLAY  FORM  VARIABLES::::::::::::
+
+ 			homepageMidTop  homeMidMid  homeMidBot redWines  whiteWines
+			calWines	 frenchWines  confirmPage
+ 	 --->
+
+<!-- Coming in, we presume that the asset instance (theCurrentAsset) is valid, and form
+     variables are consistent with what might have been posted from the various subforms.
+     This element therefore performs an extended kind of gather, basically looking for variables
+     that have been posted and setting them into the asset instance. -->
+
+<!-- Gather up the standard asset variables that should have been posted -->
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/AssetGather">
+	<argument NAME="GetOrSet" VALUE="set"/>
+</callelement>
+
+<!-- Scatter asset -->
+<ASSET.SCATTER NAME="theCurrentAsset" PREFIX="ContentDetails"/>
+
+<!-- Set up internal representation of rule objects -->
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/LoadRuleSets"/>
+
+
+<!-- Check if there was data from the segment form, and if so, process it -->
+<if COND="IsVariable.NumPromoSegs=true">
+<then>
+	<!--Remove the previously stored Segment Ids from nv object (If present) before putting the new ones.--> 
+	<NVOBJECT.GETVALUE NAME="rulesethintobject" VALUENAME="NUMSEGS" VARNAME="prevNumSegs"/>
+	<IF COND="Variables.prevNumSegs!=0">
+		<THEN>
+			<setcounter NAME="prevNumSegscount" VALUE="0"/>
+			<loop COUNT="Variables.prevNumSegs">
+				<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="SEGIDCounters.prevNumSegscount"/>
+				<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="SEGKEYCounters.prevNumSegscount"/>
+				<INCCOUNTER NAME="prevNumSegscount" VALUE="1"/>
+			</loop>
+		</THEN>
+	</IF>
+	<if COND="Variables.SegmentstoApply=specified">
+	<then>
+		<if COND="Variables.NumPromoSegs!=0">
+		<then>
+			<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="APPLICABILITY" VALUE="Variables.SegmentstoApply"/>
+			<SETCOUNTER NAME="currcount" VALUE="0"/>
+			<setcounter NAME="gotcount" VALUE="0"/>
+			<loop COUNT="Variables.NumPromoSegs">
+				<if COND="IsVariable.PromotionsSegmentCounters.currcount=true">
+				<then>
+                                    <ICS.RESOLVEVARIABLES  NAME="$(Variables.PromotionsSegment$(Counters.currcount))" OUTPUT="segIDValue" DELIMITED="true"/>
+                                    <NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="SEGIDCounters.gotcount" VALUE="Variables.segIDValue"/>
+									<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="SEGKEYCounters.gotcount" VALUE="SEGKEYCounters.gotcount"/>
+				    <SETVAR NAME="ourKey" VALUE="SEGKEYCounters.gotcount"/>
+                		    <ICS.RESOLVEVARIABLES  NAME="Segments:$(Variables.PromotionsSegment$(Counters.currcount))" OUTPUT="ourValue" DELIMITED="true"/>
+                                    <RULESETMAP.SET NAME="theAppMap" KEY="Variables.ourKey" TYPE="asset" VALUE="Variables.ourValue"/>
+                                    <NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="RATINGCounters.gotcount" VALUE="100"/>
+				    <inccounter NAME="gotcount" VALUE="1"/>
+				</then>
+				</if>
+				<INCCOUNTER NAME="currcount" VALUE="1"/>
+			</loop>
+			<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="NUMSEGS" VALUE="Counters.gotcount"/>
+		</then>
+		</if>
+	</then>
+	<else>
+		<!--  Set the Appropriate variable to make it applicable to all segments -->
+		<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="APPLICABILITY" VALUE="Variables.SegmentstoApply"/>
+		<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="ALLRATING" VALUE="100"/>
+		<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="NUMSEGS" VALUE="0"/>
+	</else>
+	</if>
+</then>
+</if>
+
+<if COND="Variables.PromotionsNextStep=ContentFormDuration">
+<then>
+   	<NVOBJECT.GETVALUE NAME="rulesethintobject" VALUENAME="STARTDATE" VARNAME="startdate"/>
+ 
+ 	<if COND="IsVariable.startdate=true">
+	<then>
+ 		<NVOBJECT.GETVALUE NAME="rulesethintobject" VALUENAME="ENDTYPE" VARNAME="storedEndMethod"/>
+		<if COND="IsVariable.storedEndMethod!=true">
+		<then>
+		</then>
+		<else>
+			 <setvar NAME="EndMethod"  VALUE="ApplyforWeekHretc"/>
+			 <NVOBJECT.GETVALUE NAME="rulesethintobject" VALUENAME="ENDTYPE" VARNAME="storedEndMethod"/>
+			 <NVOBJECT.GETVALUE NAME="rulesethintobject" VALUENAME="DURATION" VARNAME="NumWeekHretc"/>
+		</else>
+		</if>
+	</then>
+	</if>
+</then>
+</if> 
+
+<if COND="IsVariable.FromContentFormDuration=true">
+<then>
+	<if COND="Variables.StartHour=12">
+	<then>
+		<setvar NAME="StartHour" VALUE="0"/>
+	</then>
+	</if>	
+	<if COND="Variables.EndHour=12">
+	<then>
+		<setvar NAME="EndHour" VALUE="0"/>
+	</then>
+	</if>
+		
+	<!--Takes code returns zone number-->
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyTimeZone">
+		<argument NAME="TimeCode" VALUE="Variables.StartTimeZone"/>
+	</callelement>
+	<setcounter NAME="decmonth" VALUE="Variables.StartMonth"/>
+	<inccounter NAME="decmonth" VALUE="-1"/>
+	<DATE.CONVERT   VARNAME="startdate"  YEAR="Variables.StartYear"  MONTH="Counters.decmonth" 
+		DAY="Variables.StartDay"  HOUR="Variables.StartHour"  AMPM="Variables.StartamOrpm"
+		MINUTE="Variables.StartMin" TIMEZONE="Variables.StartTimeZone"/>
+
+	<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="STARTDATE" VALUE="Variables.startdate"/>
+	<IF COND="IsVariable.StartTimeZone=false">
+	<THEN>
+		<setvar NAME="StartTimeZone" VALUE="Variables.empty" />
+	</THEN>
+	</IF>
+	<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="STARTTZ" VALUE="Variables.StartTimeZone"/>
+	
+		
+	<if COND="IsVariable.EndMethod=true">
+	<then>
+		<if COND="Variables.EndMethod!=ApplyUntilCancelled">
+		<then>
+			<if COND="Variables.EndMethod=ApplyforWeekHretc">
+			<then>
+				<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="DURATION" VALUE="Variables.NumWeekHretc"/>
+				<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="ENDTYPE" VALUE="Variables.WeekHretc"/>
+			</then>
+			<else>
+				<!--Takes code returns zone number-->
+				<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyTimeZone">
+					<argument NAME="TimeCode" VALUE="Variables.EndTimeZone"/>
+				</callelement>
+				<IF COND="IsVariable.EndTimeZone=false">
+				<THEN>
+					<setvar NAME="EndTimeZone" VALUE="Variables.empty" />
+				</THEN>
+				</IF>
+				<setcounter NAME="decmonth" VALUE="Variables.EndMonth"/>
+				<inccounter NAME="decmonth" VALUE="-1"/>
+				<DATE.CONVERT   VARNAME="Enddate"  YEAR="Variables.EndYear"  MONTH="Counters.decmonth" 
+					DAY="Variables.EndDay"  HOUR="Variables.EndHour"  AMPM="Variables.EndamOrpm"
+					MINUTE="Variables.EndMin" TIMEZONE="Variables.EndTimeZone"/>
+				<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="ENDDATE" VALUE="Variables.Enddate"/>
+				<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="ENDTYPE" VALUE="fixed"/>
+				<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="ENDTZ" VALUE="Variables.EndTimeZone"/>
+			</else>
+			</if>
+		</then>
+		<else>
+  			<NVOBJECT.SETVALUE NAME="rulesethintobject" VALUENAME="ENDTYPE" VALUE="none"/>
+		</else>
+ 		</if>
+	</then>
+	</if>
+</then>
+</if>
+ 
+<!--   PROMOTION DISCOUNT RULESET CREATION -->
+<if COND="IsVariable.FromContentFormDiscount=true">
+<then>
+	<!-- this was originally the content form products .. needs to get merged with 
+	the following ContentFormDiscounts -->
+
+	<NVOBJECT.GETVALUE NAME="discrulesethintobject" VALUENAME="DISCOUNT0" VARNAME="Rule0String"/>
+	<NVOBJECT.CREATE NAME="Rule0Obj"/>
+	<NVOBJECT.FROMSTRING NAME="Rule0Obj" VALUE="Variables.Rule0String"/>
+		
+ 	<if COND="IsVariable.TXStoreId=true">
+	<then>
+ 		<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="STOREID" VALUE="Variables.TXStoreId"/>
+	</then>
+	</if>
+	<if COND="Variables.DiscountType=item">
+	<then>
+		<if COND="IsVariable.ProductType=true">
+		<then>
+			<if COND="Variables.ProductType=all">
+			<then>
+				 <NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="NUMASSETS" VALUE="0"/>
+			</then>
+			</if>
+			<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="PRODUCTSELECT" VALUE="Variables.ProductType"/>
+		</then>
+		</if>
+			
+		<if COND="Variables.ProductType=specified">
+		<then>
+			<setvar NAME="SaveAssetType" VALUE="Variables.AssetType"/>
+			<if COND="Variables.UpdateSelectedItems=delete">
+			<then>
+				<!--  someone has requested for a delete of an item -->
+				<NVOBJECT.GETVALUE NAME="Rule0Obj" VALUENAME="NUMASSETS" VARNAME="numprdassets"/>
+				<if COND="IsVariable.numprdassets=true">
+				<then>
+					<!-- add the value only if it doesn't exit already exit -->
+					<setcounter NAME="tmpcounter" VALUE="0"/>
+					<setcounter NAME="outcounter" VALUE="0"/>
+					<loop COUNT="Variables.numprdassets">
+						<NVOBJECT.GETVALUE NAME="Rule0Obj" VALUENAME="ASSETIDCounters.tmpcounter" VARNAME="ourAssetid"/>
+						<IF COND="IsVariable.ourAssetid=true">
+                                       		<THEN>    
+	                                       		<NVOBJECT.GETVALUE NAME="Rule0Obj" VALUENAME="ASSETTYPECounters.tmpcounter" VARNAME="ourAssettype"/> 
+                                                </THEN>
+                                                <ELSE>
+                                                       	<nvobject.getvalue NAME="Rule0Obj" VALUENAME="ASSETKEYCounters.tmpcounter" VARNAME="ourKey"/>
+                                                       	<CALLELEMENT NAME="OpenMarket/Gator/Rules/RuleSetMapKeyLookup">
+                                                       	    <ARGUMENT NAME="ourKey" VALUE="Variables.ourKey"/>
+                                                       	    <ARGUMENT NAME="ourMap" VALUE="theDiscMap"/>
+                                                       	</CALLELEMENT>
+                                                </ELSE>
+                                                </IF>
+						<setvar NAME="pname"  VALUE="Variables.Variables.ourAssetiddel"/>
+						<if COND="Variables.pname!=deleted">
+						<then>
+							<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="ASSETIDCounters.outcounter"/>
+							<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="ASSETTYPECounters.outcounter"/>
+                                                       	<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="ASSETKEYCounters.outcounter" VALUE="ASSETKEYCounters.outcounter"/>
+                                                       	<RULESETMAP.SET NAME="theDiscMap" KEY="ASSETKEYCounters.outcounter" TYPE="asset" VALUE="Variables.ourAssettype:Variables.ourAssetid"/>
+							<INCCOUNTER NAME="outcounter" VALUE="1"/>
+						</then>
+						</if>
+						<INCCOUNTER  NAME="tmpcounter"  VALUE="1"/>
+					</loop>
+					<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="NUMASSETS" VALUE="Counters.outcounter"/>
+					<loop UNTIL="Counters.outcounter=Counters.tmpcounter">
+						<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="ASSETIDCounters.outcounter"/>
+						<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="ASSETTYPECounters.outcounter"/>
+						<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="ASSETKEYCounters.outcounter"/>
+						<RULESETMAP.REMOVE NAME="theDiscMap" KEY="ASSETKEYCounters.outcounter"/>
+						<INCCOUNTER NAME="outcounter" VALUE="1"/>
+					</loop>
+				</then>
+				</if>
+			</then>
+			<else>
+				<if COND="Variables.UpdateSelectedItems=add">
+				<then>
+					<!-- some one has requested for selected item to be added -->
+					<!--  see if an item is already part of the NVOBJECT -->
+					<NVOBJECT.GETVALUE NAME="Rule0Obj" VALUENAME="NUMASSETS" VARNAME="nprdassets"/>
+																																							
+					<if COND="Variables.nprdassets!=0">
+					<then>
+						<!-- add the value only if it doesn't exit already exit -->
+						<setcounter NAME="tmpcounter"  VALUE="0"/>
+						<loop COUNT="Variables.nprdassets">
+                               			        <NVOBJECT.GETVALUE NAME="Rule0Obj" VALUENAME="ASSETIDCounters.tmpcounter" VARNAME="ourAssetid"/>
+							<IF COND="IsVariable.ourAssetid=true">
+                                       			<THEN>    
+                                               			<NVOBJECT.GETVALUE NAME="Rule0Obj" VALUENAME="ASSETTYPECounters.tmpcounter" VARNAME="ourAssettype"/> 
+                                       			</THEN>
+                                       			<ELSE>
+                                       				<nvobject.getvalue NAME="Rule0Obj" VALUENAME="ASSETKEYCounters.tmpcounter" VARNAME="ourKey"/>
+	                                       			<CALLELEMENT NAME="OpenMarket/Gator/Rules/RuleSetMapKeyLookup">
+                                        				<ARGUMENT NAME="ourKey" VALUE="Variables.ourKey"/>
+                                                              		<ARGUMENT NAME="ourMap" VALUE="theDiscMap"/>
+                                                               	</CALLELEMENT>
+                                                       	</ELSE>
+                                                       	</IF>
+							<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="ASSETIDCounters.tmpcounter"/>
+							<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="ASSETTYPECounters.tmpcounter"/>
+                                                       	<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="ASSETKEYCounters.tmpcounter" VALUE="ASSETKEYCounters.tmpcounter"/>
+                                               		<RULESETMAP.SET NAME="theDiscMap" KEY="ASSETKEYCounters.tmpcounter" TYPE="asset" VALUE="Variables.ourAssettype:Variables.ourAssetid"/>
+							<setvar NAME="ASSETIDCounters.tmpcounter" VALUE="Variables.ourAssetid"/>
+							<setvar NAME="ASSETTYPECounters.tmpcounter" VALUE="Variables.ourAssettype"/>
+							<INCCOUNTER  NAME="tmpcounter"  VALUE="1"/>
+						</loop>
+						<if COND="IsVariable.ProductStr=true">
+						<then>
+							<STRINGLIST NAME="ProductList" STR="Variables.ProductStr" DELIM=":"/>
+							<setcounter  NAME="assetcounter"  VALUE="Counters.tmpcounter"/>
+							<loop  LIST="ProductList">
+								<callelement NAME="OpenMarket/Gator/UIFramework/ParseTreeNodeID">
+									<argument NAME="TreeNodeID" VALUE="ProductList.ITEM"/>
+								</callelement>
+								<setcounter  NAME="ncounter"  VALUE="0"/>
+								<setvar NAME="notinlist"  VALUE="true"/>
+								<loop  COUNT="Variables.nprdassets">
+									<setvar NAME="tmpid"  VALUE="Variables.ASSETIDCounters.ncounter"/>
+									<if COND="Variables.tmpid=Variables.ID">
+									<then> 
+										<setvar NAME="tmpassettype"  VALUE="Variables.ASSETTYPECounters.ncounter"/>
+										<if COND="Variables.tmpassettype=Variables.AssetType">
+										<then>																		
+											<setvar NAME="notinlist"  VALUE="false"/>
+										</then>
+										</if>
+									</then>
+									</if>
+									<INCCOUNTER  NAME="ncounter"  VALUE="1"/>
+								</loop>
+								<if COND="Variables.notinlist=true">
+								<then>
+                                                       			<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="ASSETKEYCounters.assetcounter" VALUE="ASSETKEYCounters.assetcounter"/>
+                                                                       	<RULESETMAP.SET NAME="theDiscMap" KEY="ASSETKEYCounters.assetcounter" TYPE="asset" VALUE="Variables.AssetType:Variables.ID"/>
+									<INCCOUNTER  NAME="assetcounter"  VALUE="1"/>
+								</then>
+								</if>
+							</loop>
+							<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="NUMASSETS" VALUE="Counters.assetcounter"/>
+							<setvar NAME="AssetType" VALUE="Variables.SaveAssetType"/>
+						</then>
+						</if>
+					</then>
+					<else>
+						<!--  adding the value for the first time -->
+						<if COND="Variables.ProductStr!=Variables.empty">
+						<then>
+							<STRINGLIST NAME="ProductList" STR="Variables.ProductStr" DELIM=":"/>
+							<setcounter  NAME="assetcounter"  VALUE="0"/>
+							<loop  LIST="ProductList">
+								<callelement NAME="OpenMarket/Gator/UIFramework/ParseTreeNodeID">
+									<argument NAME="TreeNodeID" VALUE="ProductList.ITEM"/>
+								</callelement>
+								<if COND="IsVariable.ID=true">
+								<then>
+        		                                        	<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="ASSETKEYCounters.assetcounter" VALUE="ASSETKEYCounters.assetcounter"/>
+	                                                               	<RULESETMAP.SET NAME="theDiscMap" KEY="ASSETKEYCounters.assetcounter" TYPE="asset" VALUE="Variables.AssetType:Variables.ID"/>
+									<INCCOUNTER  NAME="assetcounter"  VALUE="1"/>
+								</then>
+								</if>
+							</loop>
+							<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="NUMASSETS" VALUE="Counters.assetcounter"/>
+							<setvar NAME="AssetType" VALUE="Variables.SaveAssetType"/>
+						</then>
+						</if>
+					</else>
+					</if>
+				</then>
+				<else>
+					<!-- it is an edit or create --> 
+					<NVOBJECT.GETVALUE NAME="Rule0Obj" VALUENAME="NUMASSETS" VARNAME="nprdassets"/>
+					<if COND="Variables.nprdassets!=0">
+					<then>
+						<!-- add the value only if it doesn't exit already exit -->
+						<setcounter NAME="assetcounter"  VALUE="0"/>
+						<loop COUNT="Variables.nprdassets">
+	                                        	<NVOBJECT.GETVALUE NAME="Rule0Obj" VALUENAME="ASSETIDCounters.assetcounter" VARNAME="ourAssetid"/>
+    							<IF COND="IsVariable.ourAssetid=true">
+                                                    	<THEN>    
+                                                            <NVOBJECT.GETVALUE NAME="Rule0Obj" VALUENAME="ASSETTYPECounters.assetcounter" VARNAME="ourAssettype"/> 
+                                                       	</THEN>
+                                                       	<ELSE>
+                                                   	        <nvobject.getvalue NAME="Rule0Obj" VALUENAME="ASSETKEYCounters.assetcounter" VARNAME="ourKey"/>
+                                                               	<CALLELEMENT NAME="OpenMarket/Gator/Rules/RuleSetMapKeyLookup">
+                                                               	    <ARGUMENT NAME="ourKey" VALUE="Variables.ourKey"/>
+                                                               	    <ARGUMENT NAME="ourMap" VALUE="theDiscMap"/>
+                                                               	</CALLELEMENT>
+                                                       	</ELSE>
+                                                       	</IF>
+                                                       	<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="ASSETKEYCounters.assetcounter" VALUE="ASSETKEYCounters.assetcounter"/>
+                                                       	<RULESETMAP.SET NAME="theDiscMap" KEY="ASSETKEYCounters.assetcounter" TYPE="asset" VALUE="Variables.ourAssettype:Variables.ourAssetid"/>
+							<INCCOUNTER  NAME="assetcounter"  VALUE="1"/>
+						</loop>
+						<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="NUMASSETS" VALUE="Counters.assetcounter"/>
+						<setvar NAME="AssetType" VALUE="Variables.SaveAssetType"/>
+					</then>
+					</if>
+				</else>
+				</if>
+			</else>
+			</if>
+		</then>
+		</if>
+	</then>
+	<else>
+	    <NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="PRODUCTSELECT" VALUE="none"/>
+            <if COND="Variables.DiscountType=none">
+            <then>
+                <NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="DISCOUNTTYPE" VALUE="none"/>
+
+                <NVOBJECT.GETVALUE NAME="Rule0Obj" VALUENAME="NUMASSETS" VARNAME="numprdassets"/>
+		<if COND="IsVariable.numprdassets=true">
+		<then>
+                       	<if COND="Variables.numprdassets!=Variables.empty">
+                        <then>
+                               	<if COND="Variables.numprdassets!=0">
+                                <then>
+        				<!-- delete leftover maps and keys  -->
+        				<setcounter NAME="tmpcounter"  VALUE="0"/>
+        				<loop COUNT="Variables.numprdassets">
+                                               	<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="ASSETKEYCounters.tmpcounter"/>
+                                                <RULESETMAP.REMOVE NAME="theDiscMap" KEY="ASSETKEYCounters.tmpcounter"/>
+        					<INCCOUNTER  NAME="tmpcounter"  VALUE="1"/>
+                                        </loop>
+                                </then>
+                                </if>
+                        </then>
+                        </if>
+                </then>
+                </if>
+                <NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="NUMASSETS" VALUE="0"/>
+	    </then>
+            </if>
+	</else>
+	</if>
+			 
+	<NVOBJECT.TOSTRING NAME="Rule0Obj" VARNAME="DiscRule0String"/>
+	<NVOBJECT.SETVALUE NAME="discrulesethintobject" VALUENAME="DISCOUNT0" VALUE="Variables.DiscRule0String"/>
+	<NVOBJECT.TOSTRING NAME="discrulesethintobject" VARNAME="DRulesetHintString"/>
+	<if COND="IsVariable.DRulesetHintString=true">
+	<then>
+		 <setvar NAME="DiscRulesetHintString" VALUE="Variables.DRulesetHintString"/>
+	</then>
+	</if>
+  
+	<!-- Create HintString  from  the DISC  FORM Variables -->
+	<!-- At this point we should have relevant objects already created--> 
+	<!--discrulesethintobject-->
+
+	<NVOBJECT.GETVALUE NAME="discrulesethintobject" VALUENAME="DISCOUNT0" VARNAME="Rule0String"/>
+	<NVOBJECT.CREATE NAME="Rule0Obj"/>
+	<NVOBJECT.FROMSTRING NAME="Rule0Obj" VALUE="Variables.Rule0String"/>
+		
+	<NVOBJECT.GETVALUE NAME="discrulesethintobject" VALUENAME="DISCOUNT1" VARNAME="Rule1String"/>
+	<NVOBJECT.CREATE NAME="Rule1Obj"/>
+	<NVOBJECT.FROMSTRING NAME="Rule1Obj" VALUE="Variables.Rule1String"/>
+		
+		
+	<if COND="IsVariable.DiscountDescription=true">
+	<then>
+		<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="DISCOUNTDESC" VALUE="Variables.DiscountDescription"/>
+	</then>
+	</if>
+	<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="DISCOUNTTYPE" VALUE="Variables.DiscountType"/>
+		
+		
+	<if COND="Variables.DiscountType=item">
+	<then>
+		<!-- X Percentage/$ off of the promoted product -->
+		<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="DISCOUNTAMT" VALUE="Variables.DiscountAmount"/>
+		<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="DISCOUNTSTYLE" VALUE="Variables.DiscountStyle"/>
+	</then>
+	<else>
+		<if COND="Variables.DiscountType=total">
+		<then>
+			<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="DISCOUNTAMT" VALUE="Variables.DiscountAmount2"/>
+			<NVOBJECT.SETVALUE NAME="Rule0Obj" VALUENAME="DISCOUNTSTYLE" VALUE="Variables.DiscountStyle2"/>
+			<!-- X Percentage/Dollar off of the value of the entire shopping cart -->
+		</then>
+		</if>
+	</else>
+	</if> 
+	<NVOBJECT.TOSTRING NAME="Rule0Obj" VARNAME="DiscRule0String"/>
+		
+	<if COND="IsVariable.TXStoreId=true">
+	<then>
+		<NVOBJECT.SETVALUE NAME="Rule1Obj" VALUENAME="STOREID" VALUE="Variables.TXStoreId"/>
+	</then>
+	</if>
+										
+	<if COND="IsVariable.ShippingFee=true">
+	<then>
+		<if COND="IsVariable.ShippingAmount=true">
+		<then>
+			<NVOBJECT.SETVALUE NAME="Rule1Obj" VALUENAME="DISCOUNTTYPE" VALUE="shipping"/>		
+			<NVOBJECT.SETVALUE NAME="Rule1Obj" VALUENAME="DISCOUNTAMT" VALUE="Variables.ShippingAmount"/>
+			<NVOBJECT.SETVALUE NAME="Rule1Obj" VALUENAME="DISCOUNTSTYLE" VALUE="Variables.ShippingFee"/>
+		</then>
+		</if>
+		<if COND="IsVariable.ShippingDiscountDescription=true">
+		<then>
+			<NVOBJECT.SETVALUE NAME="Rule1Obj" VALUENAME="DISCOUNTDESC" VALUE="Variables.ShippingDiscountDescription"/>
+		</then>
+		</if>
+	</then>
+	</if>
+	<NVOBJECT.TOSTRING NAME="Rule1Obj" VARNAME="DiscRule1String"/>
+
+	<NVOBJECT.SETVALUE NAME="discrulesethintobject" VALUENAME="DISCOUNT0" VALUE="Variables.DiscRule0String"/>
+	<NVOBJECT.SETVALUE NAME="discrulesethintobject" VALUENAME="DISCOUNT1" VALUE="Variables.DiscRule1String"/>
+</then>
+</if>
+ 
+
+
+</FTCS> 

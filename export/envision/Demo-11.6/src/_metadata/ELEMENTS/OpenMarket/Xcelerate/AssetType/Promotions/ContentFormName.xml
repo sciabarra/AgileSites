@@ -1,0 +1,126 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/ContentNameDes
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+<!--
+ [2007-09-10 KG]
+ * added XSS scripting fixes (adapted from 6.3 fixes); search for isCleanString
+ * changed definitions of 'obj' to just forms[0] (not .elements[0])
+ * added CDATA tags where appropriate.
+ [2007-10-09 KG]
+ * XSS revision: minimized set of restricted characters.
+-->
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/FormatDate" />
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Scripts/ValidateInputForXSS" />
+<SCRIPT LANGUAGE="JavaScript">
+
+
+<![CDATA[
+var obj = document.forms[0];
+function checkfields()
+{
+	if (obj.elements['Promotions:name'].value=="")
+	{
+		alert("]]><XLAT.STREAM KEY="dvin/UI/Error/specifyauniquenameforthisPromotion" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		obj.elements['Promotions:name'].focus();
+		return false;
+	}
+
+	var isclean = isCleanString(obj.elements['Promotions:name'].value, '<">\'', true);
+	if (!isclean) {
+		alert("]]><XLAT.STREAM KEY="dvin/AT/Common/Apostrophenotallowedinname" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		obj.elements['Promotions:name'].focus();
+		return false;
+	}
+
+	if(!checkStartEndDateValidity()) {return false;}
+	obj.submit();
+	return false;
+}
+
+]]><!--same as checkfields, but doesn't submit form--><![CDATA[
+function checkfields1()
+{
+	if (obj.elements['Promotions:name'].value=="")
+	{
+		alert("]]><XLAT.STREAM KEY="dvin/UI/Error/specifyauniquenameforthisPromotion" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		obj.elements['Promotions:name'].focus();
+		return false;
+	}
+
+	var isclean = isCleanString(obj.elements['Promotions:name'].value, '<">\'', true);
+	if (!isclean) {
+		alert("]]><XLAT.STREAM KEY="dvin/AT/Common/Apostrophenotallowedinname" ESCAPE="true" ENCODE="false"/><![CDATA[");
+		obj.elements['Promotions:name'].focus();
+		return false;
+	}
+
+	if(!checkStartEndDateValidity()) {return false;}
+	return true;
+}
+function getAssetName()
+{
+	return obj.elements['Promotions:name'].value;
+}
+
+function submitForm()
+{
+	return checkfields();
+}
+]]>
+</SCRIPT>
+
+<table class="width-outer-70" border="0" cellpadding="0" cellspacing="0">
+
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ContentFormNavBar">
+		<argument NAME="CurrentCat" VALUE="Name"/>
+	</callelement>
+
+	<tr>
+		<td>
+			<table class="width-inner-100" cellpadding="0" cellspacing="0" border="0">
+			 	<tr>
+					<td colspan="3"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="15" REPLACEALL="Variables.cs_imagedir"/></td>
+				</tr>
+				<tr>
+					<td colspan="3" class="subtitle-text"><XLAT.STREAM KEY="dvin/AT/Common/NameampersandDescription"/></td>
+				</tr>
+			 	<tr>
+					<td colspan="3"><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="1" height="10" REPLACEALL="Variables.cs_imagedir"/></td>
+				</tr>
+
+ 	    		<callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/CheckforQuotes">
+					<argument NAME="Prefix" VALUE="Promotions"/>
+				</callelement>
+				<!-- Add Start and end dates to the form to be used when creating new promotions -->
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	
+				<!--Call start date and end date for site preview-->
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/form/AssetTypeStartEndDate">
+					<argument NAME="startDateFieldName" VALUE="Promotions:startdate"/>
+					<argument NAME="endDateFieldName"  VALUE="Promotions:enddate"/>
+				</callelement>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+				<TR>
+					<TD class="form-label-text"></TD><TD></TD><TD class="form-inset">
+					<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ContentFormFooter">
+						<argument NAME="FNextPage" VALUE="ContentFormGoals"/>
+						<argument NAME="CurrentCat" VALUE="Name"/>
+					</callelement>
+					</TD>
+				</TR>
+			</table>
+		</td>
+	</tr>
+	<!--End site preview dates -->
+
+</table>
+
+</FTCS>

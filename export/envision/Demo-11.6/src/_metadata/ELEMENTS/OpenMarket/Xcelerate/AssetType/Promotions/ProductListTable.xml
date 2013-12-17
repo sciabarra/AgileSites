@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/ProductListTable
+--
+-- INPUT
+--	DiscAssetList (built in LoadDiscProductInfo)
+-- OUTPUT
+--
+-->
+ 
+<table cellpadding="0" cellspacing="0" border="0">
+	<if COND="DiscAssetList.#numRows!=0">
+		<then>
+        <if COND="Variables.DiscType!=none">
+		<then>
+			<loop LIST="DiscAssetList">
+				<INPUT  TYPE="HIDDEN"  NAME="DiscAssetList.assetiddel" VALUE=""  REPLACEALL="DiscAssetList.assetid"/>
+				<setvar NAME="pname"  VALUE="Variables.DiscAssetList.assetiddel"/>
+				<tr>
+					<if COND="Variables.showX=true">
+						<then>
+						  <XLAT.LOOKUP KEY="dvin/AT/Common/Removefromlist" VARNAME="_Removefromlist_"/>
+							<td><a href="javascript:void(0)" onclick="return RemoveSelection('Variables.ThisPage','ContentFormDiscount','DiscAssetList.assetiddel')"   REPLACEALL="Variables.ThisPage,DiscAssetList.assetid,Variables._Removefromlist_" title="Variables._Removefromlist_">
+							<img src="Variables.cs_imagedir/graphics/common/icon/iconDeleteContent.gif" border="0" hspace="2" REPLACEALL="Variables.cs_imagedir"/></a></td>
+						</then>
+					</if>
+					<td></td>
+					<td align="left"><STRING.STREAM VALUE="DiscAssetList.assetname"/> 
+ 										(<STRING.STREAM VALUE="DiscAssetList.assettype"/>)
+  				</td>
+				</tr>
+			</loop>
+        </then>
+        </if>
+		</then>
+		<else>
+			<tr>
+			  <!--OMIma28603-->
+				 <if COND="Variables.ProductType=all">
+				 <then>
+				      <td> <XLAT.STREAM KEY="dvin/Common/All"/> </td>
+				 </then>
+				 <else>
+				     <td colspan="3" valign="top"><XLAT.STREAM KEY="dvin/AT/Promotions/Productsnotchosen"/></td>
+				 </else>
+				 </if>
+			</tr>
+		</else>
+	</if>
+</table>
+</FTCS> 

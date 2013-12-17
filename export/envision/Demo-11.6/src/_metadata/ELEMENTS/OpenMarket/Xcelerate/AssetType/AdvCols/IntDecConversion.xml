@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/IntDecConversion
+--
+--
+-- INPUT
+--     1. OPtype
+       2. currentval 3 digits right justified, left filled with zeros
+-- OUTPUT
+--		NewConfidence
+--
+-->
+<if COND="Variables.OPtype=IntToDec">
+	<then>
+		<CALCULATOR.GO VALUE="Variables.currentval 100 /" VARNAME="NewConfidence"/>
+	</then>
+	<else>
+		<if COND="Variables.OPtype=DecToInt">
+			<then>	 
+				<setvar NAME="NewConfidence"  VALUE="100"/> 
+				<CALCULATOR.GO VALUE="Variables.currentval 100 *" VARNAME="newIntConfidence"/> 
+				<setvar NAME="errno"  VALUE="0"/>
+				<INDEXOF STR="Variables.newIntConfidence" WHAT="." OUTSTR="index"/>
+				<IF COND="Variables.errno=1">
+					<THEN>
+						<SUBSTRING STR="Variables.newIntConfidence" OUTSTR="NewConfidence" INDEX="0" ENDINDEX="Variables.index"/>
+					</THEN>
+				</IF>
+			</then>
+		</if>
+	</else>
+</if>
+</FTCS> 

@@ -1,0 +1,282 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/AdvCols/GetOrSetVars.xml $ 
+$Revision: 32 $ 
+$Modtime: 3/18/04 10:07a $ 
+-->
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/GetOrSetVars
+--
+- INPUT
+		Variables.SetOrGet (defaults to get)
+		Variables.AdvCols:... has the variables. (AdvCols is the prefix)
+		
+- OUTPUT
+		"Gather" called.
+
+-->
+<SETVAR NAME="FieldsOnForm" VALUE="name,status,workflowid,description,urlquery,selruleset,selruleset_id,subtype,style,template,templateid,elementid,ovrdable,mapstyle,types,Sortorder,Manualrecs,Dimension,Dimension-parent,startdate,enddate"/>
+
+<!-- For some set of fields, which are not handled specially, they all should be posted together, or not at all.  We therefore can get away with
+     a single check for a posted variable; if it's not there then we presume we need to scatter from the current asset. -->
+<STRING.ENCODE VARIABLE="NewDirection" VARNAME="NewDirection"/>
+<STRING.ENCODE VARIABLE="NewAdvColsAttributeTypeName" VARNAME="NewAdvColsAttributeTypeName"/>
+<STRING.ENCODE VARIABLE="NewAdvColsAttributeName" VARNAME="NewAdvColsAttributeName"/>
+<IF COND="IsVariable.AdvCols:name=false">
+<THEN>
+	<ASSET.SCATTER NAME="theCurrentAsset" PREFIX="AdvCols" FIELDLIST="name,status,workflowid,description,urlquery,subtype,elementid,ovrdable,mapstyle,Dimension,Dimension-parent,startdate,enddate"/>
+</THEN>
+</IF>
+
+<!-- If Mode is list then the style and sort screens are not presented so set some defaults-->
+<SETVAR NAME="GotSortOrder" VALUE="false"/>
+<SETVAR NAME="GotStyle" VALUE="false"/>
+
+<IF COND="Variables.AdvColMode=List">
+<THEN>
+	<SETVAR NAME="AdvCols:style" VALUE="H"/>
+	<SETVAR NAME="SortorderCount" VALUE="1"/>
+	<SETVAR NAME="AdvColsAttributeTypeName0" VALUE="Special"/>
+	<SETVAR NAME="AdvColsAttributeName0" VALUE="_CONFIDENCE_"/>
+	<SETVAR NAME="AdvColsDirection0" VALUE="descending"/>
+	<SETVAR NAME="GotSortOrder" VALUE="true"/>
+	<SETVAR NAME="GotStyle" VALUE="true"/>
+</THEN>
+</IF>
+
+<IF COND="IsVariable.AdvCols:style=true">
+<THEN>
+	<SETVAR NAME="GotStyle" VALUE="true"/>
+</THEN>
+</IF>
+<IF COND="Variables.GotStyle=false">
+<THEN>
+	<ASSET.SCATTER NAME="theCurrentAsset" PREFIX="AdvCols" FIELDLIST="style"/>
+</THEN>
+</IF>
+
+<IF COND="IsVariable.AdvCols:types:Total=true">
+<THEN>
+	<SETVAR NAME="typesneeded" VALUE="false"/>
+</THEN>
+<ELSE>
+	<SETVAR NAME="typesneeded" VALUE="true"/>
+</ELSE>
+</IF>
+
+<IF COND="IsVariable.AllTypes=true">
+<THEN>
+	<IF COND="Variables.AllTypes=T">
+	<THEN>
+		<SETVAR NAME="AdvCols:types:Total" VALUE="1"/>
+		<SETVAR NAME="AdvCols:types:0" VALUE="_ALL_"/>
+	</THEN>
+	</IF>
+	<SETVAR NAME="typesneeded" VALUE="false"/>
+</THEN>
+</IF>
+
+<IF COND="IsVariable.sListOfAssetTypes=true">
+<THEN>
+	<STRINGLIST DELIM=";" NAME="typeList" STR="Variables.sListOfAssetTypes"/>
+	<SETCOUNTER NAME="typeCount"  VALUE="0"/>
+	<LOOP LIST="typeList">
+		<SETVAR NAME="AdvCols:types:Counters.typeCount"  VALUE="typeList.ITEM"/>
+		<INCCOUNTER NAME="typeCount" VALUE="1"/>
+	</LOOP>
+	<SETVAR NAME="AdvCols:types:Total" VALUE="Counters.typeCount"/>
+	<SETVAR NAME="typesneeded" VALUE="false"/>
+</THEN>
+</IF>
+<IF COND="Variables.typesneeded=true">
+<THEN>
+	<ASSET.SCATTER NAME="theCurrentAsset" PREFIX="AdvCols" FIELDLIST="types"/>
+</THEN>
+</IF>
+
+<!--Need to save both template and templateid, so lookup templateid-->
+<IF COND="IsVariable.AdvCols:template=true">
+<THEN>
+	<SETVAR NAME="errno" VALUE="0"/>
+	<ASSET.LIST TYPE="Template" LIST="MyTemplate" FIELD1="name" VALUE1="Variables.AdvCols:template"/>
+	<IF COND="Variables.errno=0">
+	<THEN>
+		<SETVAR NAME="AdvCols:templateid"  VALUE="MyTemplate.id"/>
+	</THEN>
+	</IF>
+</THEN>
+<ELSE>
+	<ASSET.SCATTER NAME="theCurrentAsset" PREFIX="AdvCols" FIELDLIST="template,templateid"/>
+</ELSE>
+</IF>
+
+<!--Convert multiple Sortorders into list-->
+<LISTOBJECT.CREATE  NAME="Sortorder" COLUMNS="attributetypename,attributename,direction"/>
+<IF COND="IsVariable.SortorderCount=true">
+<THEN>
+	<IF COND="Variables.SortorderCount!=0">
+	<THEN>
+		<SETCOUNTER NAME="currcount" VALUE="0"/>
+		<LOOP FROM="0" COUNT="Variables.SortorderCount">
+			<SETVAR NAME="mytemp" VALUE="Variables.AdvColsAttributeTypeNameCounters.currcount"/>
+			<IF COND="Variables.mytemp!=None">
+			<THEN>
+				<!--don't save deleted ones-->
+				<IF COND="Variables.mytemp!=deleted">
+				<THEN>
+					<LISTOBJECT.ADDROW NAME="Sortorder"
+						attributetypename="Variables.AdvColsAttributeTypeNameCounters.currcount"
+						attributename="Variables.AdvColsAttributeNameCounters.currcount"
+						direction="Variables.AdvColsDirectionCounters.currcount"/> 
+				</THEN>
+				</IF>
+			</THEN>
+			</IF>
+			<INCCOUNTER NAME="currcount" VALUE="1"/>
+		</LOOP>
+	</THEN>
+	</IF>
+	<SETVAR NAME="GotSortOrder" VALUE="true"/>
+</THEN>
+</IF> 
+
+<!--Now see if a new one has been added-->
+<IF COND="IsVariable.NewAdvColsAttributeTypeName=true">
+<THEN>
+	<IF COND="Variables.NewAdvColsAttributeTypeName!=None">
+	<THEN>
+		<IF COND="Variables.NewAdvColsAttributeTypeName!=None">
+		<THEN>
+			<LISTOBJECT.ADDROW NAME="Sortorder"
+				attributetypename="Variables.NewAdvColsAttributeTypeName"
+				attributename="Variables.NewAdvColsAttributeName"
+				direction="Variables.NewDirection"/>
+			<SETVAR NAME="GotSortOrder" VALUE="true"/>
+		</THEN>
+		</IF>
+	</THEN>
+	</IF>
+</THEN>
+</IF>
+
+<IF COND="Variables.GotSortOrder=true">
+<THEN>
+	<LISTOBJECT.TOLIST NAME="Sortorder" LISTVARNAME="AdvCols:Sortorder"/>
+</THEN>
+<ELSE>
+	<ASSET.SCATTER NAME="theCurrentAsset" PREFIX="AdvCols" FIELDLIST="Sortorder"/>
+</ELSE>
+</IF>
+
+<!--Convert multiple Manual Requests into list-->
+<IF COND="IsVariable.ManualrecsCount=true">
+<THEN>
+	<LISTOBJECT.CREATE  NAME="Manualrecs" COLUMNS="assettype,assetid,confidence,bucket"/>
+	<IF COND="Variables.ManualrecsCount!=0">
+	<THEN>
+		<!--handles case where AdvColMode is List-->
+		<IF COND="IsVariable.ManuaList=true">
+		<THEN>
+ 			<SETVAR NAME="confidence" VALUE="1"/>
+			<!--each item in the list is separated by semi-colon-->
+			<STRINGLIST DELIM=";" NAME="ML" STR="Variables.ManuaList"/>
+			<LOOP LIST="ML">
+				<!--each item has two parts (assetid,assettype) separated by a comma-->
+				<INDEXOF WHAT="," OUTSTR="idix" STR="ML.ITEM"/>
+				<SUBSTRING STR="ML.ITEM" OUTSTR="assetid" ENDINDEX="Variables.idix"/>
+				<CALCULATOR.GO VALUE="Variables.idix 1 +" VARNAME="offset"/>
+				<SUBSTRING STR="ML.ITEM" OUTSTR="assettype" INDEX="Variables.offset"/>
+				<LISTOBJECT.ADDROW NAME="Manualrecs"
+					assettype="Variables.assettype"
+					assetid="Variables.assetid"
+					confidence="Variables.confidence"
+					bucket="Variables.empty"/>
+				<CALCULATOR.GO VALUE="Variables.confidence .01 -" VARNAME="confidence"/>
+			</LOOP>
+		</THEN>
+		<ELSE>
+			<!--Handles case whre AdvColMode is Rec-->
+			<SETCOUNTER NAME="currcount" VALUE="0"/>
+			<LOOP FROM="0" COUNT="Variables.ManualrecsCount">
+				<!--We want to add this item, if is an "in" item or if it is an "out" item and a confidence is set.
+					(If it is an in item and confidence is not set - then set it to 1.)-->
+				<SETVAR NAME="ourId" VALUE="Variables.AdvColsManualRecsAssetIdCounters.currcount"/>
+				<IF COND="Variables.ourId!=deleted">
+				<THEN>
+					<SETVAR NAME="doThisOne" VALUE="true"/>
+					<IF COND="IsVariable.AdvColsManualRecsConfidenceCounters.currcount!=true">
+					<THEN>
+						<IF COND="IsVariable.AdvColsManualRecsBucketCounters.currcount=true">
+						<THEN>
+							<SETVAR NAME="ourBucket" VALUE="Variables.AdvColsManualRecsBucketCounters.currcount"/>
+							<SETVAR NAME="errno" VALUE="0"/>
+							<ENDS STR="Variables.ourBucket" WHAT="_OUT"/>
+							<IF COND="Variables.errno=1">
+							<THEN>
+								<!--Here means we have an outBucket but no confidence value.-->
+								<SETVAR NAME="doThisOne" VALUE="false"/>
+							</THEN>
+							</IF>
+						</THEN>
+						</IF>
+					</THEN>
+					</IF>
+					<IF COND="Variables.doThisOne=true">
+					<THEN>
+						<IF COND="IsVariable.AdvColsManualRecsConfidenceCounters.currcount=true">
+						<THEN>
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/IntDecConversion">
+								<ARGUMENT NAME="OPtype" VALUE="IntToDec"/>
+								<ARGUMENT NAME="currentval"  VALUE="Variables.AdvColsManualRecsConfidenceCounters.currcount"/>
+							</CALLELEMENT>
+						</THEN>
+						<ELSE>
+							<SETVAR NAME="NewConfidence" VALUE="1"/>
+						</ELSE>
+						</IF>
+						<IF COND="IsVariable.AdvColsManualRecsBucketCounters.currcount!=true">
+						<THEN>
+							<SETVAR NAME="localBucket" VALUE="Variables.empty"/>
+						</THEN>
+						<ELSE>
+							<SETVAR NAME="localBucket" VALUE="Variables.AdvColsManualRecsBucketCounters.currcount"/>
+						</ELSE>
+						</IF>
+						<LISTOBJECT.ADDROW NAME="Manualrecs"
+							assettype="Variables.AdvColsManualRecsAssetTypeCounters.currcount"
+							assetid="Variables.AdvColsManualRecsAssetIdCounters.currcount"
+							confidence="Variables.NewConfidence"
+							bucket="Variables.localBucket"/>
+					</THEN>
+					</IF>
+				</THEN>
+				</IF>
+				<INCCOUNTER NAME="currcount" VALUE="1"/>
+			</LOOP>
+		</ELSE>
+		</IF>
+	</THEN>
+	</IF>
+	<LISTOBJECT.TOLIST  NAME="Manualrecs" LISTVARNAME="AdvCols:Manualrecs"/>
+</THEN>
+<ELSE>
+	<!-- Scatter list from the current instance instead, since nobody posted one -->
+	<ASSET.SCATTER NAME="theCurrentAsset" PREFIX="AdvCols" FIELDLIST="Manualrecs"/>
+</ELSE>
+</IF>
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/GetRuleInfo"/>
+
+<ASSET.GATHER NAME="theCurrentAsset" PREFIX="AdvCols" FIELDLIST="Variables.FieldsOnForm"/>
+
+<IF COND="Variables.errno!=0">
+<THEN>
+	<br/><XLAT.STREAM KEY="dvin/AT/AdvCols/AGatherFailForRecos" errno="Variables.errno" EVALALL="false"/>
+	<br/><CSVAR NAME="Variables.errdetail1"/>
+	<THROWEXCEPTION/>
+</THEN>
+</IF>
+
+</FTCS>
+

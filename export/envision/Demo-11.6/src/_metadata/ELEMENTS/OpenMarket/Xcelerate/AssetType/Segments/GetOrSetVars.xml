@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Segments/GetOrSetVars.xml $ 
+$Revision: 15 $ 
+$Modtime: 12/19/02 9:21a $ 
+-->
+<!-- OpenMarket/Xcelerate/AssetType/Segments/GetOrSetVars
+--
+- INPUT
+		Variables.SetOrGet (defaults to get)
+		Variables.Segments:... has the variables. (Segments is the prefix)
+		
+- OUTPUT
+		"Gather" called.
+
+-->
+<setvar NAME="FieldsOnForm" VALUE="name,status,workflowid,description,ruleset,startdate,enddate"/>
+<if COND="Variables.GetOrSet=set">
+	<then>
+		
+		<if COND="IsVariable.SegmentRuleText=true">
+			<then>
+				<setvar NAME="Segments:ruleset" VALUE="Variables.SegmentRuleText"/>
+			</then>
+		</if>
+		
+		<ASSET.GATHER NAME="theCurrentAsset" PREFIX="Segments" FIELDLIST="Variables.FieldsOnForm"/>
+		<if COND="Variables.errno!=0">
+			<then>
+				<br/><XLAT.STREAM KEY="dvin/AT/Segments/AGatherfailforSegments" errno="Variables.errno" EVALALL="false"/>
+				<throwexception/>
+			</then>
+		</if>
+	</then>
+
+<!--"gets"-->
+	<else>
+		<br/>In GetOrSet - option get - SHOULD NOT BE HERE		
+	</else>
+</if>
+</FTCS>
+

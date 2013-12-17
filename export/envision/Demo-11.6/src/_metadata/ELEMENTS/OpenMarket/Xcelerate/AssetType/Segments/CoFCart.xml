@@ -1,0 +1,457 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/CoFCart
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<REPLACEALL LIST="Variables.id">
+<script>
+	var displayDropZone = function(){
+		/* obj.elements['CartMode'][1] implies the input tag with name "CartMode" whose value is "specified" */
+		if(obj.elements['CartMode'][1].checked)
+			dojo.style("DnDSelectAsset_Variables.id_cart", "display", "");
+		else
+			dojo.style("DnDSelectAsset_Variables.id_cart", "display", "none");
+	};
+</script>
+</REPLACEALL>
+<SETVAR NAME="OutputQString" VALUE="Variables.empty"/>
+<STRING.ENCODE VARIABLE="ContentDetails:description" VARNAME="OutputQString"/>
+<INPUT TYPE="HIDDEN" NAME="Segments:description" VALUE="Variables.OutputQString" REPLACEALL="Variables.OutputQString"/>
+<![CDATA[<INPUT TYPE="HIDDEN" NAME="Segments:name" VALUE="]]><STRING.STREAM VALUE="Variables.ContentDetails:name"/><![CDATA["/>]]>
+<IF COND="IsVariable.Segments:startdate=true">
+<THEN>
+	<INPUT TYPE="HIDDEN" NAME="Segments:startdate" VALUE="Variables.Segments:startdate" REPLACEALL="Variables.Segments:startdate"/>
+</THEN>
+<ELSE>
+	<INPUT TYPE="HIDDEN" NAME="Segments:startdate" VALUE=""/>
+</ELSE>
+</IF>
+<IF COND="IsVariable.Segments:enddate=true">
+<THEN>
+	<INPUT TYPE="HIDDEN" NAME="Segments:enddate" VALUE="Variables.Segments:enddate" REPLACEALL="Variables.Segments:enddate"/>
+</THEN>
+<ELSE>
+	<INPUT TYPE="HIDDEN" NAME="Segments:enddate" VALUE=""/>
+</ELSE>
+</IF>
+<INPUT TYPE="HIDDEN" NAME="FromPage" VALUE="CoFCart"/>
+<setvar NAME="sRuleType" VALUE="cart"/>
+<INPUT TYPE="HIDDEN" NAME="sRuleType" VALUE="Variables.sRuleType" REPLACEALL="Variables.sRuleType"/>
+<INPUT TYPE="HIDDEN" NAME="DRFconstrainttype" VALUE="none"/>
+
+<setvar NAME="sValue1" VALUE="Variables.empty"/>
+<setvar NAME="sValue2" VALUE="Variables.empty"/>
+<setvar NAME="sValue3" VALUE="Variables.empty"/>
+<setvar NAME="sValue4" VALUE="Variables.empty"/>
+<if COND="IsVariables.scAssetOp!=true">
+	<then>
+		<setvar NAME="scAssetOp" VALUE="value"/>
+	</then>
+</if>
+
+<!--Unpack rules-->
+<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/GetThisFormsRule"/>
+<if COND="Variables.segerr=0">
+	<then>
+		<!--see if ruletype matches-->
+		<nvobject.getvalue NAME="nvOurCell" VALUENAME="RULETYPE" VARNAME="sRuleType"/>
+		<!--see if ruletype matches-->
+		<nvobject.getvalue NAME="nvOurCell" VALUENAME="RULETYPE" VARNAME="oCsRuleType"/>
+		<if COND="Variables.oCsRuleType=Variables.sRuleType">
+			<then>
+				<nvobject.getvalue NAME="nvOurCell" VALUENAME="NUMASSETS" VARNAME="NumCartlistItems"/>
+				<nvobject.getvalue NAME="nvOurCell" VALUENAME="ASSETOP" VARNAME="scAssetOp"/>
+				<nvobject.getvalue NAME="nvOurCell" VALUENAME="CARTMODE" VARNAME="CartMode"/>
+				<if COND="Variables.scAssetOp=value">
+					<then>
+						<nvobject.getvalue NAME="nvOurCell" VALUENAME="RULEOP" VARNAME="sRuleOp1"/>
+						<nvobject.getvalue NAME="nvOurCell" VALUENAME="COMPAREOP" VARNAME="sCompare1Op"/>
+						<nvobject.getvalue NAME="nvOurCell" VALUENAME="VALUE" VARNAME="sValue1"/>
+						<if COND="Variables.sCompare1Op=bt">
+							<then>
+								<nvobject.getvalue NAME="nvOurCell" VALUENAME="HIGHVALUE" VARNAME="sValue2"/>
+							</then>
+						</if>
+					</then>
+					<else>
+						<if COND="Variables.scAssetOp=count">
+							<then>
+								<nvobject.getvalue NAME="nvOurCell" VALUENAME="RULEOP" VARNAME="sRuleOp2"/>
+								<nvobject.getvalue NAME="nvOurCell" VALUENAME="COMPAREOP" VARNAME="sCompare2Op"/>
+								<nvobject.getvalue NAME="nvOurCell" VALUENAME="VALUE" VARNAME="sValue3"/>
+								<if COND="Variables.sCompare2Op=bt">
+									<then>
+										<nvobject.getvalue NAME="nvOurCell" VALUENAME="HIGHVALUE" VARNAME="sValue4"/>
+									</then>
+								</if>
+							</then>
+						</if>					
+					</else>
+				</if>
+			</then>
+		</if>
+	</then>
+</if>
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ToolBar">
+	<ARGUMENT NAME="doNotShowSaveButton" VALUE="false"/>
+</CALLELEMENT>
+
+<table border="0" cellpadding="0" cellspacing="0"  class="width-outer-70">
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/CoFHeader"/>
+	<INPUT TYPE="HIDDEN" NAME="SegmentsFromRuleScreen" VALUE="Variables.SegmentsRuleScreen" REPLACEALL="Variables.SegmentsRuleScreen"/>
+	<tr>
+		<td>
+			<table cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td>
+						<if COND="Variables.scAssetOp=value">
+							<then>
+								<input type="radio" name="scAssetOp" onClick="setTabDirty();" value="value" checked=""/>
+							</then>
+							<else>
+								<input type="radio" name="scAssetOp" onClick="setTabDirty();" value="value"/>
+							</else>
+						</if>
+					</td>
+					<td align="left" class="medium-text-box">
+						<select name="sRuleOp1" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+							<if COND="Variables.sRuleOp1=exclude">
+								<then>
+									<option value="include"/><XLAT.STREAM KEY="dvin/AT/Segments/Include"/>
+									<option value="exclude" selected=""/><XLAT.STREAM KEY="dvin/AT/Segments/Exclude"/>
+								</then>
+								<else>
+									<option value="include" selected=""/><XLAT.STREAM KEY="dvin/AT/Segments/Include"/>
+									<option value="exclude"/><XLAT.STREAM KEY="dvin/AT/Segments/Exclude"/>
+								</else>
+							</if>
+						</select>
+					</td>
+					<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+					<td><XLAT.STREAM KEY="dvin/AT/Segments/Totvaluecartitems"/></td>
+					<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+					<td align="left">
+						<select name="sCompareOp1" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+							<SETVAR NAME="OptionName" VALUE="sCompareOp1"/>
+							<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/UglyCompareSelect">
+								<argument NAME="sCO" VALUE="Variables.sCompare1Op"/>
+								<argument NAME="sTYPE" VALUE="Variables.empty"/>
+							</callelement>
+						</select>
+					</td>
+					<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+					<!--The two boxes stuff-->
+                    
+                    <XLAT.LOOKUP    KEY="dvin/AT/Promotions/LocaleCurrencySymbol" VARNAME="Dollarsign"/>
+					<td class="small-text-box" align="left"><nobr><STRING.STREAM VALUE="Variables.Dollarsign"/>
+						<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+							<argument NAME="inputName" VALUE="sValue1"/>
+							<argument NAME="inputValue" VALUE="Variables.sValue1"/>
+							<argument NAME="width" VALUE="5em"/>
+							<argument NAME="inputMaxlength" VALUE="25"/>
+						</callelement>
+					<XLAT.STREAM KEY="dvin/AT/Segments/hyphendollar"/>
+						<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+							<argument NAME="inputName" VALUE="sValue2"/>
+							<argument NAME="inputValue" VALUE="Variables.sValue2"/>
+							<argument NAME="width" VALUE="5em"/>
+							<argument NAME="inputMaxlength" VALUE="25"/>
+						</callelement>
+					</nobr><setvar NAME="SValueName" VALUE="Variables.SValueName*sValue2!"/><setvar NAME="SValueName" VALUE="Variables.SValueName*sValue1!"/></td>
+				</tr>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>				
+				<tr>
+					<td>
+						<if COND="Variables.scAssetOp=count">
+							<then>
+								<input type="radio" name="scAssetOp" onClick="setTabDirty();" value="count" checked=""/>
+							</then>
+							<else>
+								<input type="radio" name="scAssetOp" onClick="setTabDirty();" value="count"/>
+							</else>
+						</if>
+					</td>
+					<td align="left" class="medium-text-box">
+						<select name="sRuleOp2" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+							<if COND="Variables.sRuleOp2=exclude">
+								<then>
+									<option value="include"/><XLAT.STREAM KEY="dvin/AT/Segments/Include"/>
+									<option value="exclude" selected=""/><XLAT.STREAM KEY="dvin/AT/Segments/Exclude"/>
+								</then>
+								<else>
+									<option value="include" selected=""/><XLAT.STREAM KEY="dvin/AT/Segments/Include"/>
+									<option value="exclude"/><XLAT.STREAM KEY="dvin/AT/Segments/Exclude"/>
+								</else>
+							</if>
+						</select>
+					</td>
+					<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+					<td><XLAT.STREAM KEY="dvin/AT/Segments/Totcountcartitems"/></td>
+					<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+					<td align="left">
+						<select name="sCompareOp2" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" size="1">
+						  <SETVAR NAME="OptionName" VALUE="sCompareOp2"/>
+							<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/UglyCompareSelect">
+								<argument NAME="sCO" VALUE="Variables.sCompare2Op"/>
+								<argument NAME="sTYPE" VALUE="Variables.empty"/>
+							</callelement>
+						</select>
+					</td>
+					<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+					<!--The two boxes stuff-->
+					<td class="small-text-box" align="left"><nobr>
+						<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+							<argument NAME="inputName" VALUE="sValue3"/>
+							<argument NAME="inputValue" VALUE="Variables.sValue3"/>
+							<argument NAME="width" VALUE="5em"/>
+							<argument NAME="inputMaxlength" VALUE="25"/>
+						</callelement>    -    
+						<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+							<argument NAME="inputName" VALUE="sValue4"/>
+							<argument NAME="inputValue" VALUE="Variables.sValue4"/>
+							<argument NAME="width" VALUE="5em"/>
+							<argument NAME="inputMaxlength" VALUE="25"/>
+						</callelement>
+					</nobr><setvar NAME="SValueName" VALUE="Variables.SValueName*sValue4!"/><setvar NAME="SValueName" VALUE="Variables.SValueName*sValue3!"/> </td>
+				</tr>						
+			</table>
+		</td>
+	</tr>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td align="left" valign="top">
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td width="25"><img height="1" width="25" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+					<td valign="top">
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td colspan="2"><XLAT.STREAM KEY="dvin/AT/Segments/Restricttospecificproducts"/>:</td>
+							</tr>
+							<tr>
+								<td colspan="2"><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							</tr>
+							<tr>
+								<td colspan="2" bgcolor="black"><img height="1" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							</tr>
+							<tr>
+								<td colspan="2"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							</tr>
+							<tr>
+								<td>
+									<if COND="Variables.CartMode=specified">
+										<then>
+											<input type="radio" value="all" onClick="setTabDirty(); displayDropZone();" name="CartMode"/>
+										</then>
+										<else>
+											<input type="radio" value="all" onClick="setTabDirty(); displayDropZone();" name="CartMode" checked=""/>
+										</else>
+									</if>
+									<XLAT.STREAM KEY="dvin/UI/Admin/Norestrictions"/>
+ 							  </td>
+								 <td>
+ 								</td>
+							</tr>
+							<tr height="2">
+								<td height="2" colspan="2"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+							</tr>
+							<tr>
+								<td align="left">
+									<if COND="Variables.CartMode=specified">
+										<then>
+											<input type="radio" value="specified" onClick="setTabDirty(); displayDropZone();" name="CartMode" checked=""/>
+										</then>
+										<else>
+											<input type="radio" value="specified" onClick="setTabDirty(); displayDropZone();" name="CartMode"/>
+										</else>
+									</if>
+									<if COND="Variables.cs_environment=ucform">
+									<then>
+										<XLAT.STREAM KEY="UI/Forms/Restricttospecificproductswithhint"/>:										
+									</then>
+									<else>
+										<XLAT.STREAM KEY="dvin/AT/Segments/Restricttospecificproductswithhint"/>:
+									</else>
+									</if>
+  								</td>
+								 <td> </td>
+								
+								<!--
+ 								<td>
+									<A HREF="javascript:void(0)" onclick="return SelectFromTree('Variables.ThisPage','ContentFormDiscount','ProductStr')" onmouseover="window.status='Select From Tree'" REPLACEALL="Variables.ThisPage">
+										<img border="0" src="Variables.cs_imagedir/graphics/SessionVariables.locale/button/content/images/add_selected_products.gif" alt="Select a product or category from the tree" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale"/>
+									</A>
+								</td>
+								-->
+
+								<INPUT TYPE="hidden" NAME="CartlistTag" VALUE=""/>					
+							</tr>
+							 <tr>
+									<td>
+									<IF COND="Variables.cs_environment=ucform">
+									<THEN>
+										<if COND="Variables.CartMode=specified">
+										<then>
+											<div id="DnDSelectAsset_Variables.id_cart" REPLACEALL="Variables.id">
+												<CALLELEMENT NAME="OpenMarket/Gator/Util/DnDSelectAsset">
+													<ARGUMENT NAME="nameSuffix" VALUE="None"/>
+												</CALLELEMENT>
+											</div>
+										</then>
+										<else>
+											<div id="DnDSelectAsset_Variables.id_cart" style="display:none" REPLACEALL="Variables.id">
+												<CALLELEMENT NAME="OpenMarket/Gator/Util/DnDSelectAsset">
+													<ARGUMENT NAME="nameSuffix" VALUE="None"/>
+												</CALLELEMENT>
+											</div>
+										</else>
+										</if>
+										<REPLACEALL LIST="Variables.id,Variables.ThisPage,Variables.SegmentsRuleScreen">
+											<script type="text/javascript">
+												var selectDnDSpecial_Variables.id_None = function(args){
+													var obj=document.forms[0].elements[0],
+														ourPage="Variables.ThisPage", nextstep="CoFCart",
+														where="CartlistTag", widgetName="typeAheadSpecial_Variables.id_None";
+													var nodes = [];	
+													nodes = dojo.query('div[name='+widgetName+']');
+													if(nodes.length === 0)
+														nodes = dojo.query('input[name='+widgetName+']');
+													var	typeWidgetIns=dijit.getEnclosingWidget(nodes[0]),
+														valueArray=typeWidgetIns.getAllDnDValues();
+													obj.form.elements[where].value="id=" + valueArray[0] + ",assettype=" + valueArray[1] + ",:";
+													obj.form.SegmentsNextStep.value = nextstep;
+
+													var basePage="OpenMarket/Xcelerate/Actions/";
+													if(ourPage=="CopyFront")
+														ourPage="NewContentFront";
+													var	newpage=basePage + ourPage;
+													obj.form.pagename.value=newpage;
+													obj.form.SegmentsRuleScreen.value = "Variables.SegmentsRuleScreen";
+													obj.form.SegmentsArg2.value =  '';
+													obj.form.SegmentsArg3.value =  '';
+													obj.form.RebuildScreen.value =  "SegmentSave";
+													if(valueArray.length > 0 && valueArray[0].length >= 2)
+														document.forms[0].submit();
+													return false;
+												};
+											</script>
+										</REPLACEALL>
+									</THEN>
+									<ELSE>
+										<IF COND="Variables.showSiteTree=true">
+											<THEN>
+											  <XLAT.LOOKUP KEY="dvin/AT/Common/SelectFromTree" VARNAME="_selfromtree_" ESCAPE="true"/>
+												<XLAT.LOOKUP KEY="dvin/AT/Common/Selectproductorcategoryfromtree" VARNAME="_selporcfromtree_"/>
+												<if COND="Variables.CartMode=specified">
+												<then>
+													<div id="DnDSelectAsset_Variables.id_cart" REPLACEALL="Variables.id">
+														<a href="javascript:void(0)" onclick="return SelectFromTreeRebuild('Variables.ThisPage','CoFCart','CartlistTag','Variables.SegmentsRuleScreen','','')"   onmouseover="window.status='Variables._selfromtree_';return true;"   onmouseout="window.status='';return true;"    REPLACEALL="Variables._selfromtree_,Variables.ThisPage,Variables.SegmentsRuleScreen"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/AddSelectedItems"/></CALLELEMENT></a>
+													</div>
+												</then>
+												<else>
+													<div id="DnDSelectAsset_Variables.id_cart" style="display:none" REPLACEALL="Variables.id">
+														<a href="javascript:void(0)" onclick="return SelectFromTreeRebuild('Variables.ThisPage','CoFCart','CartlistTag','Variables.SegmentsRuleScreen','','')"   onmouseover="window.status='Variables._selfromtree_';return true;"   onmouseout="window.status='';return true;"    REPLACEALL="Variables._selfromtree_,Variables.ThisPage,Variables.SegmentsRuleScreen"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/AddSelectedItems"/></CALLELEMENT></a>
+													</div>
+												</else>
+												</if>												
+											</THEN>
+											<ELSE>
+                                              <SETVAR NAME="currentUniqueID" VALUE="CS.UniqueID"/>
+                                              <script type="text/javascript">
+                                                  <XLAT.LOOKUP KEY="dvin/AT/Segments/ShoppingCart" VARNAME="_XLAT_"/>
+                                                  <SATELLITE.LINK ASSEMBLER="query" OUTSTRING="url_Variables.currentUniqueID" PAGENAME="OpenMarket/Xcelerate/Actions/PickAssetPopup">
+                                                      <SATELLITE.ARGUMENT NAME="cs_environment" VALUE="Variables.cs_environment"/>
+                                                      <SATELLITE.ARGUMENT NAME="cs_formmode" VALUE="Variables.cs_formmode"/>
+                                                      <SATELLITE.ARGUMENT NAME="cs_SelectionStyle" VALUE="multiple"/>
+                                                      <SATELLITE.ARGUMENT NAME="cs_CallbackSuffix" VALUE="Variables.currentUniqueID"/>
+                                                      <SATELLITE.ARGUMENT NAME="cs_FieldName" VALUE="Variables._XLAT_"/>
+                                                  </SATELLITE.LINK>
+                                                  <![CDATA[
+                                                    function PickAssetCallback_]]><STRING.STREAM VALUE="Variables.currentUniqueID"/><![CDATA[(SelectedAssets)
+                                                    {
+                                                      var obj = document.forms[0].elements[0];
+                                                      obj.form.SegmentsNextStep.value = 'CoFCart';
+                                                      obj.form.SegmentsRuleScreen.value = ']]><STRING.STREAM VALUE="Variables.SegmentsRuleScreen"/><![CDATA[';
+                                                      obj.form.SegmentsArg2.value =  '';
+                                                      obj.form.SegmentsArg3.value =  '';
+                                                      obj.form.RebuildScreen.value =  "SegmentSave";
+
+                                                      
+                                                      var AssetList = SelectedAssets.split(";");
+                                                      var assetIDs = '';
+                                                      for (var z = 0; z < AssetList.length; z++)
+                                                      {
+                                                        var AssetInfo = AssetList[z].split(":");
+                                                        if (z == 0)
+                                                          assetIDs = 'id='+AssetInfo[1]+',assettype='+AssetInfo[0];
+                                                        else
+                                                          assetIDs += ':id='+AssetInfo[1]+',assettype='+AssetInfo[0];
+                                                      }
+                                                      document.forms[0].elements['CartlistTag'].value = assetIDs;
+                                                      
+                                                      ]]>
+                                                      <IF COND="Variables.pagename=OpenMarket/Xcelerate/Actions/CopyFront">
+                                                      <THEN>
+                                                        obj.form.pagename.value = 'OpenMarket/Xcelerate/Actions/NewContentFront';
+                                                      </THEN>
+                                                      <ELSE>
+                                                        obj.form.pagename.value = '<STRING.STREAM VALUE="Variables.pagename"/>';
+                                                      </ELSE>
+                                                      </IF>
+                                                      <![CDATA[	
+                                                      document.forms[0].submit();
+                                                    }
+                                                    ]]>
+                                                    function PickAssetPopup_<STRING.STREAM VALUE="Variables.currentUniqueID"/>() {
+                                                      OpenPickAssetPopup('<ICS.RESOLVEVARIABLES NAME="$(Variables.url_$(Variables.currentUniqueID))" DELIMITED="true"/>', GetBannerHistory());
+                                                    }
+                                              </script>
+											 <if COND="Variables.CartMode=specified">
+												<then>
+													<div id="DnDSelectAsset_Variables.id_cart" REPLACEALL="Variables.id">
+														<A HREF="#" ONCLICK="PickAssetPopup_Variables.currentUniqueID(); return false;" TARGET="_blank" REPLACEALL="Variables.currentUniqueID"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Browse"/></CALLELEMENT></A>
+													</div>
+												</then>
+												<else>
+													<div id="DnDSelectAsset_Variables.id_cart" style="display:none" REPLACEALL="Variables.id">
+														<A HREF="#" ONCLICK="PickAssetPopup_Variables.currentUniqueID(); return false;" TARGET="_blank" REPLACEALL="Variables.currentUniqueID"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Browse"/></CALLELEMENT></A>
+													</div>
+												</else>
+												</if>                                              				  
+											</ELSE>
+										</IF>
+									</ELSE>
+									</IF>
+									</td>
+ 									<td></td>
+							 </tr>			
+						</table>
+					</td>
+				</tr>
+				<tr height="2">
+					<td height="2" colspan="2"><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/ProductListTable"/>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+
+	<!-- form buttons -->
+	<tr>
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/CoFFooter"/>
+	</tr>
+</table>
+
+</FTCS> 

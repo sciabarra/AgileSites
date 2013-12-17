@@ -1,0 +1,84 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/ContentFormNavBar
+--
+-- INPUT
+--	Variables.CurrentCat
+--
+-- OUTPUT
+--
+-->
+
+<!-- [Insert conditional to distinguish "Adds" from "Edits" -->
+<assettype.list LIST="ThisAsset" FIELD1="assettype" VALUE1="Variables.AssetType"/>
+
+<if COND="Variables.ContentDetails:name!=Variables.empty">
+	<then>
+		<setvar NAME="namestring" VALUE=" ThisAsset.description: Variables.ContentDetails:name"/>
+	</then>
+	<else>
+		<setvar NAME="namestring" VALUE=" ThisAsset.description"/>
+	</else>
+</if>
+<if COND="Variables.updatetype=setformdefaults">
+	<then>
+		<XLAT.LOOKUP KEY="dvin/Common/New" VARNAME="actionstring"/>
+	</then>
+	<else>
+		<XLAT.LOOKUP KEY="dvin/Common/Edit" VARNAME="actionstring"/>
+	</else>
+</if>
+<STRING.ENCODE VARIABLE="namestring" VARNAME="namestring"/>
+<tr>
+	<td class="title-text"><csvar NAME="Variables.namestring"/></td>
+</tr>
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+	<argument NAME="SpaceBelow" VALUE="No"/>
+</callelement>
+
+<!-- [Insert conditional statements such that any promNavBar tabs that have been modified have a check next to them] -->
+<setvar NAME="NavCategories" VALUE="Name,Goals,Segments,Discount,Duration,Display"/>
+<stringlist NAME="ListCategories" STR="Variables.NavCategories" DELIM=","/>
+
+<XLAT.LOOKUP KEY="dvin/AT/Common/Name" VARNAME="cat1"/>
+<XLAT.LOOKUP KEY="dvin/AT/Promotions/Goals" VARNAME="cat2"/>
+<XLAT.LOOKUP KEY="dvin/FlexibleAssets/FlexAssets/Segments" VARNAME="cat3"/>
+<XLAT.LOOKUP KEY="dvin/AT/Promotions/LocalizedNavCategoriesDiscount" VARNAME="cat4"/>
+<XLAT.LOOKUP KEY="dvin/AT/Promotions/Duration" VARNAME="cat5"/>
+<XLAT.LOOKUP KEY="dvin/AT/Promotions/Display" VARNAME="cat6"/>
+<SETVAR NAME="_localcats_" VALUE="Variables.cat1,Variables.cat2,Variables.cat3,Variables.cat4,Variables.cat5,Variables.cat6"/>
+<stringlist NAME="LocalizedCategories" STR="Variables._localcats_" DELIM=","/>
+
+<tr>
+	<td>
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<loop LIST="ListCategories">
+					<if COND="ListCategories.ITEM=Variables.CurrentCat">
+						<then>
+							<td align="left" valign="top"><span class="navigation-bar-on"><csvar NAME="LocalizedCategories.ITEM"/></span></td>
+						</then>
+						<else>
+						  <XLAT.LOOKUP KEY="dvin/AT/Promotions/ContinuetoCategoryforPromo" VARNAME="_nextCat_" ESCAPE="true"/>
+						  <XLAT.LOOKUP KEY="dvin/AT/Promotions/SpecCategoryforPromo" VARNAME="_specCat_"/>
+							<td align="left" valign="top">
+								<a href="javascript:void(0)" onclick="if(checkfields1()){return Fixpagename('Variables.ThisPage','ContentFormListCategories.ITEM','ListCategories.ITEM')}" title="Variables._specCat_" onmouseover="window.status='Variables._nextCat_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._specCat_,Variables._nextCat_,ListCategories.ITEM,Variables.ThisPage">
+									<IMG src="Variables.cs_imagedir/graphics/common/icon/mArrowOff.gif" vspace="7" hspace="1" HEIGHT="9" WIDTH="9" BORDER="0" REPLACEALL="Variables.cs_imagedir,SessionVariables.locale"/>
+								</a>
+							</td>
+							<td align="left" valign="top">
+								<a href="javascript:void(0)" onclick="if(checkfields1()){return Fixpagename('Variables.ThisPage','ContentFormListCategories.ITEM','ListCategories.ITEM')}" title="Variables._specCat_" onmouseover="window.status='Variables._nextCat_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._specCat_,Variables._nextCat_,ListCategories.ITEM,Variables.ThisPage">
+									<span class="navigation-bar"><csvar NAME="LocalizedCategories.ITEM"/></span>
+								</a>
+							</td>
+						</else>
+					</if>
+					<td><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="25" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+				  <SETROW LIST="LocalizedCategories" ACTION="NEXT"/>
+				</loop>
+			</tr>
+		</table>
+	</td>
+</tr>
+</FTCS> 

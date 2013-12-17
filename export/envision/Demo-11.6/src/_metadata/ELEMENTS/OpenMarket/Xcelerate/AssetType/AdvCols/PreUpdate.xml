@@ -1,0 +1,122 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+	<!-- 
+	$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/AdvCols/PreUpdate.xml $ 
+	$Revision: 16 $ 
+	$Modtime: 11/24/03 11:35a $ 
+	-->
+	<!-- OpenMarket/Xcelerate/AssetType/AdvCols/PreUpdate
+	--
+	-- INPUT
+	--
+	-- OUTPUT
+	--
+	-->
+	<!--
+			Note: setformdefaults, delete, updateform are NOT implemented
+			for AdvCols
+			Only edit, remotepost, and create are implemented
+	-->
+	<IF COND="Variables.updatetype=edit">
+		<THEN>
+			<CALLELEMENT NAME="OpenMarket/Gator/Util/GetWorkflowId"/>
+			<IF COND="IsSessionVariable.OurSSText=true">
+				<THEN>
+					<SETVAR NAME="AdvCols:urlquery" VALUE="SessionVariables.OurSSText"/>
+					<REMOVESSVAR NAME="OurSSText"/>
+				</THEN>
+			</IF>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/GetOrSetVars">
+				<ARGUMENT NAME="GetOrSet" VALUE="set"/>
+			</CALLELEMENT>
+			<IF COND="IsVariable.AdvCols:urlquery=true">
+				<THEN>
+					<ASSET.SET NAME="theCurrentAsset" FIELD="urlquery_file" VALUE="Variables.id.txt"/>
+				</THEN>
+			</IF>
+		</THEN>
+		<ELSE>
+			<IF COND="Variables.updatetype=create">
+				<THEN>
+					<CALLELEMENT NAME="OpenMarket/Gator/Util/GetWorkflowId"/>
+					<IF COND="IsSessionVariable.OurSSText=true">
+						<THEN>
+							<SETVAR NAME="AdvCols:urlquery" VALUE="SessionVariables.OurSSText"/>
+							<REMOVESSVAR NAME="OurSSText"/>
+						</THEN>
+					</IF>
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/GetOrSetVars">
+						<ARGUMENT NAME="GetOrSet" VALUE="set"/>
+					</CALLELEMENT>
+					<IF COND="IsVariable.AdvCols:urlquery=true">
+						<THEN>
+							<SETVAR NAME="urlquery_file" VALUE="CS.UniqueID"/>
+							<SETVAR NAME="urlquery_file" VALUE="Variables.urlquery_file.txt"/>
+							<ASSET.SET NAME="theCurrentAsset" FIELD="urlquery_file" VALUE="Variables.urlquery_file"/>
+						</THEN>
+					</IF>
+				</THEN>
+				<ELSE>
+					<IF COND="Variables.updatetype=remotepost">
+						<THEN>
+							<IF COND="IsVariable.workflowid=true">
+								<THEN>
+									<SETVAR NAME="AdvCols:workflowid" VALUE="Variables.workflowid"/>
+								</THEN>
+								<ELSE>
+									<SETVAR NAME="AssetType" VALUE="AdvCols"/>
+									<CALLELEMENT NAME="OpenMarket/Gator/Util/GetWorkflowId"/>
+								</ELSE>
+							</IF>
+							<IF COND="IsVariable.name=true">
+								<THEN>
+									<SETVAR NAME="AdvCols:name" VALUE="Variables.name"/>
+								</THEN>
+							</IF>
+							<IF COND="IsVariable.status=true">
+								<THEN>
+									<SETVAR NAME="AdvCols:status" VALUE="Variables.status"/>
+								</THEN>
+							</IF>
+							<IF COND="IsVariable.description=true">
+								<THEN>
+									<SETVAR NAME="AdvCols:description" VALUE="Variables.description"/>
+								</THEN>
+							</IF>
+							<IF COND="IsVariable.style=true">
+								<THEN>
+									<SETVAR NAME="AdvCols:style" VALUE="Variables.style"/>
+								</THEN>
+							</IF>
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/GetOrSetVars">
+								<ARGUMENT NAME="GetOrSet" VALUE="set"/>
+							</CALLELEMENT>
+						</THEN>
+					</IF>
+				</ELSE>
+			</IF>
+		</ELSE>
+	</IF>
+	<!-- If the asset is updated from dah -->
+<if COND="Variables.dashUpdate=dashUpdate">
+<then>
+	<if COND="Variables.dashUpdateType=create">
+    <then>
+		<!--if the operation is create-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=edit">
+    <then>
+		<!--if the operation is edit-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=delete">
+    <then>
+		<!--if the operation is delete-->
+    </then>
+    </if>
+</then>
+</if>
+
+</FTCS>

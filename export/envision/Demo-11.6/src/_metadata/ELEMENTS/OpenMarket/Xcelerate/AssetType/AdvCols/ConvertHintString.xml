@@ -1,0 +1,160 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!--
+$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/AdvCols/ConvertHintString.xml $
+$revision: $
+$Modtime: 11/24/03 11:35a $
+-->
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ConvertHintString
+
+Generally, this module reads information out of the scattered ruleset and ruleset map and generates variables to be used by forms
+or posted.
+
+If the rule encoding does not yet exist, this element INITIALIZES all the variables that would have been set by the rule encoding,
+had it existed.
+
+-
+- INPUT
+-
+- The current asset in "theCurrentAsset", and scattered asset details with prefix "ContentDetails:"
+-
+- OUTPUT
+-
+- 	PickedKeyOfSegments, PickedIdsOfSegments, PickedInsOfSegments, PickedOutsOfSegments
+-	ACRule, AdvColMode
+-
+- Does NOT generate any hidden variables; that's handled elsewhere.  If the ruleset is blank, it is considered an error.
+-
+-->
+
+<!-- First, get the rule hints and map from the scattered and/or posted information -->
+
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/SetRuleVars"/>
+
+<ACOLLECTION.GETSELECTIONRULESETMAP NAME="theCurrentAsset" OBJVARNAME="theMap"/>
+<IF COND="IsError.Variables.errno=true">
+<THEN>
+	<BR/>ACOLLECTION.GETSELECTIONRULESETMAP: <CSVAR NAME="Variables.errno"/>
+</THEN>
+</IF>
+
+<SETVAR NAME="PickedKeyOfSegments" VALUE="Variables.empty"/>
+<SETVAR NAME="PickedIdsOfSegments" VALUE="Variables.empty"/>
+<SETVAR NAME="PickedInsOfSegments" VALUE="Variables.empty"/>
+<SETVAR NAME="PickedOutsOfSegments" VALUE="Variables.empty"/>
+
+<SETVAR NAME="ACRule" VALUE="manual"/>
+<SETVAR NAME="AdvColMode" VALUE="List"/>
+
+<IF COND="Variables.theRuleEncoding != Variables.empty">
+<THEN>
+    <NVOBJECT.CREATE NAME="nvSegRule"/>
+    <NVOBJECT.FROMSTRING NAME="nvSegRule" VALUE="Variables.theRuleEncoding"/>
+    <NVOBJECT.GETVALUE NAME="nvSegRule" VALUENAME="RULESETTYPE" VARNAME="rulesettype"/>
+    <IF COND="Variables.rulesettype=ui">
+    <THEN>
+        <NVOBJECT.GETVALUE NAME="nvSegRule" VALUENAME="ADVCOLMODE" VARNAME="AdvColMode"/>
+        <NVOBJECT.GETVALUE NAME="nvSegRule" VALUENAME="ADVCOLTYPE" VARNAME="advcoltype"/>
+
+        <SETVAR NAME="ACRule" VALUE="Variables.advcoltype"/>
+
+        <IF COND="IsVariable.AdvColMode=false">
+        <THEN>
+            <ICS.CLEARERRNO/>
+            <ISINLIST ITEM="Variables.advcoltype" STR="assetlocal,sql,element"/>
+            <IF COND="Variables.errno=0">
+            <THEN>
+                <SETVAR NAME="AdvColMode" VALUE="List"/>
+            </THEN>
+            <ELSE>
+                <SETVAR NAME="AdvColMode" VALUE="Rec"/>
+            </ELSE>
+            </IF>
+        </THEN>
+        </IF>
+
+        <IF COND="Variables.advcoltype=manual">
+        <THEN>
+            <NVOBJECT.GETVALUE NAME="nvSegRule" VALUENAME="NUMSEGS" VARNAME="numSegsCount"/>
+            <IF COND="IsVariable.numSegsCount=true">
+            <THEN>
+                <IF COND="Variables.numSegsCount!=0">
+                <THEN>
+                    <SETCOUNTER NAME="numSegs" VALUE="0"/>
+                    <NVOBJECT.GETVALUE NAME="nvSegRule" VALUENAME="SEGKEYCounters.numSegs" VARNAME="thisKey"/>
+                    <IF COND="IsVariable.thisKey!=true">
+                    <THEN>
+                        <!--We don't have a key - so we need to do a conversion-->
+                        <CALCULATOR.GO VALUE="Variables.numSegsCount 1 +"  VARNAME="thiscount"/>
+                        <ASSET.GET NAME="theCurrentAsset" FIELD="id" OUTPUT="thisId"/>
+                        <!-- Note "AdvCols" is the asset type in the next line - value is of format "assettype:assetid"-->
+                        <LOOP FROM="0" COUNT="Variables.numSegsCount">
+                            <NVOBJECT.GETVALUE NAME="nvSegRule" VALUENAME="SEGIDCounters.numSegs" VARNAME="thisId"/>
+                            <NVOBJECT.GETVALUE NAME="nvSegRule" VALUENAME="SEGNAMECounters.numSegs" VARNAME="thisName"/>
+                            <nvobject.getvalue NAME="nvSegRule" VALUENAME="ITEMSCounters.numSegs" VARNAME="inValue"/>
+                            <nvobject.getvalue NAME="nvSegRule" VALUENAME="NOTITEMSCounters.numSegs" VARNAME="outValue"/>
+
+                            <SETVAR NAME="ourKey" VALUE="CS.UniqueID"/>
+                            <IF COND="Counters.numSegs=0">
+                            <THEN>
+                                <SETVAR NAME="PickedKeyOfSegments" VALUE="Variables.ourKey"/>
+                                <SETVAR NAME="PickedIdsOfSegments" VALUE="Variables.thisId"/>
+                                <SETVAR NAME="PickedInsOfSegments" VALUE="Variables.inValue"/>
+                                <SETVAR NAME="PickedOutsOfSegments" VALUE="Variables.outValue"/>
+                            </THEN>
+                            <ELSE>
+                                <ICS.RESOLVEVARIABLES NAME="$(Variables.PickedKeyOfSegments),$(Variables.ourKey)" OUTPUT="PickedKeyOfSegments" DELIMITED="true"/>
+                                <ICS.RESOLVEVARIABLES NAME="$(Variables.PickedIdsOfSegments),$(Variables.thisId)" OUTPUT="PickedIdsOfSegments" DELIMITED="true"/>
+                                <ICS.RESOLVEVARIABLES NAME="$(Variables.PickedInsOfSegments),$(Variables.inValue)" OUTPUT="PickedInsOfSegments" DELIMITED="true"/>
+                                <ICS.RESOLVEVARIABLES NAME="$(Variables.PickedOutsOfSegments),$(Variables.outValue)" OUTPUT="PickedOutsOfSegments" DELIMITED="true"/>
+                            </ELSE>
+                            </IF>
+                            <INCCOUNTER NAME="numSegs" VALUE="1"/>
+                        </LOOP>
+                    </THEN>
+                    <ELSE>
+                        <!-- We found the key, so the hints are in the new form.  Now, set everything up
+                             the way we need, based on the ruleset -->
+                        <SETCOUNTER NAME="numSegs" VALUE="0"/>
+                        <LOOP FROM="0" COUNT="Variables.numSegsCount">
+                            <NVOBJECT.GETVALUE NAME="nvSegRule" VALUENAME="SEGKEYCounters.numSegs" VARNAME="thisKey"/>
+                            <!-- Use the key to get the name out of the map -->
+                            <RULESETMAP.GETVALUE NAME="theMap" KEY="Variables.thisKey" VARNAME="theKeyValue"/>
+                            <INDEXOF STR="Variables.theKeyValue" WHAT=":" INDEX="0" OUTSTR="colonIndex"/>
+                            <CALCULATOR.GO VALUE="Variables.colonIndex 1 +"   VARNAME="idOffset"/>
+                            <SUBSTRING STR="Variables.theKeyValue" OUTSTR="ourSegId" INDEX="Variables.idOffset"/>
+                            <nvobject.getvalue NAME="nvSegRule" VALUENAME="ITEMSCounters.numSegs" VARNAME="inValue"/>
+                            <nvobject.getvalue NAME="nvSegRule" VALUENAME="NOTITEMSCounters.numSegs" VARNAME="outValue"/>
+                            <IF COND="Counters.numSegs=0">
+                            <THEN>
+                                <SETVAR NAME="PickedKeyOfSegments" VALUE="Variables.thisKey"/>
+                                <SETVAR NAME="PickedIdsOfSegments" VALUE="Variables.ourSegId"/>
+                                <SETVAR NAME="PickedInsOfSegments" VALUE="Variables.inValue"/>
+                                <SETVAR NAME="PickedOutsOfSegments" VALUE="Variables.outValue"/>
+                            </THEN>
+                            <ELSE>
+                                <ICS.RESOLVEVARIABLES NAME="$(Variables.PickedKeyOfSegments),$(Variables.thisKey)" OUTPUT="PickedKeyOfSegments" DELIMITED="true"/>
+                                <ICS.RESOLVEVARIABLES NAME="$(Variables.PickedIdsOfSegments),$(Variables.ourSegId)" OUTPUT="PickedIdsOfSegments" DELIMITED="true"/>
+                                <ICS.RESOLVEVARIABLES NAME="$(Variables.PickedInsOfSegments),$(Variables.inValue)" OUTPUT="PickedInsOfSegments" DELIMITED="true"/>
+                                <ICS.RESOLVEVARIABLES NAME="$(Variables.PickedOutsOfSegments),$(Variables.outValue)" OUTPUT="PickedOutsOfSegments" DELIMITED="true"/>
+                            </ELSE>
+                            </IF>
+                            <INCCOUNTER NAME="numSegs" VALUE="1"/>
+                        </LOOP>
+                    </ELSE>
+                    </IF>
+                </THEN>
+                </IF>
+            </THEN>
+            </IF>
+        </THEN>
+        </IF>
+    </THEN>
+    </IF>
+
+</THEN>
+</IF>
+
+
+</FTCS>

@@ -1,0 +1,128 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/OverRideTable
+--
+-- INPUT
+--	showX true means it is editable, false not.
+
+--
+-- OUTPUT
+--
+-->
+ <table cellpadding="0" cellspacing="0" border="0">
+	<setvar NAME="OvNumber" VALUE="ContentDetails:Overrides.#numRows"/>
+ 	<setvar NAME="ovfirst" VALUE="true"/>
+	<!--Get all the recommendations (advcols) -->
+	<setvar NAME="errno" VALUE="0"/>
+	<setvar NAME="tablename"  VALUE="AdvCols"/>
+	<!--
+	<execsql LIST="temptable" SQL="SELECT id, name, description FROM AdvCols WHERE status NOT IN ('VO', 'PR') ORDER BY name"/>	
+	  is done in ContentFormDisplay
+  -->
+	<ATM.LOCATE TYPE="AdvCols" VARNAME="myAdvColsMgr"/>
+	<COMPLEXASSETS.GETALLASSETS SITE="SessionVariables.pubid" NAME="myAdvColsMgr" LISTVARNAME="temptable"/>
+
+	<if COND="Variables.errno!=0">
+		<then>
+			<setvar NAME="haverecs" VALUE="false"/>
+			<tr>
+				<td><XLAT.STREAM KEY="dvin/AT/Promotions/Nolocations"/></td>
+			</tr>
+		</then>
+		<else>
+			<setvar NAME="haverecs" VALUE="true"/>
+		</else>
+	</if>
+	
+<if COND="Variables.OvNumber!=0">
+	<then>
+		<setcounter NAME="currcount" VALUE="0"/>
+		<loop LIST="ContentDetails:Overrides">
+ 			<INPUT TYPE="HIDDEN" NAME="Counters.currcountdelete"  VALUE=""  REPLACEALL="Counters.currcount"/>
+			<asset.list LIST="OvAsset" TYPE="ContentDetails:Overrides.recommendedassettype" FIELD1="id" VALUE1="ContentDetails:Overrides.recommendedassetid"/>
+			<if COND="Variables.errno=0">
+			<then>
+				<if COND="Variables.ovfirst=false">
+					<then>
+						<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+					</then>
+					<else>
+						<setvar NAME="ovfirst" VALUE="false"/>
+					</else>
+				</if>
+				 <tr>
+					<if COND="Variables.showX=true">
+						<then>
+							<XLAT.LOOKUP KEY="dvin/AT/Common/Removefromlist" VARNAME="_Removefromlist_"/>
+							<td><a href="javascript:void(0)" onclick="setTabDirty(); return RemoveSelection('Variables.ThisPage','ContentFormDisplay','Counters.currcountdelete')"   REPLACEALL="Variables.ThisPage, Counters.currcount, Variables._Removefromlist_" title="Variables._Removefromlist_">
+							<img src="Variables.cs_imagedir/graphics/common/icon/iconDeleteContent.gif" border="0" hspace="2" REPLACEALL="Variables.cs_imagedir"/></a></td>
+							<td><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="5" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+						</then>
+					</if>
+						<td valign="top">
+							<SETVAR NAME="localassetname" VALUE="OvAsset.name"/>
+							<ASSETTYPE.LOAD NAME="localassettype" FIELD="assettype" VALUE="ContentDetails:Overrides.recommendedassettype"/>
+							<ASSETTYPE.GET NAME="localassettype" FIELD="description" OUTPUT="localassettype"/>
+							<XLAT.STREAM KEY="dvin/AT/Promotions/UseWith"/>
+						 </td>
+						<td><img src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="5" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+					<td>
+						<input TYPE="HIDDEN" NAME="PromotionsOverridesAssetTypeCounters.currcount" VALUE="ContentDetails:Overrides.recommendedassettype" REPLACEALL="ContentDetails:Overrides.recommendedassettype,Counters.currcount"/>
+						<input TYPE="HIDDEN" NAME="PromotionsOverridesAssetIdCounters.currcount" VALUE="ContentDetails:Overrides.recommendedassetid" REPLACEALL="ContentDetails:Overrides.recommendedassetid,Counters.currcount"/>
+						<input TYPE="HIDDEN" NAME="PromotionsOverridesConfidenceCounters.currcount" VALUE="ContentDetails:Overrides.confidence" REPLACEALL="ContentDetails:Overrides.confidence,Counters.currcount"/>
+					  <if COND="Variables.showX!=true">
+						 <then>
+						    <loop LIST="temptable">
+										<setvar NAME="relid"  VALUE="ContentDetails:Overrides.relationshipid"/>
+										<if COND="temptable.assetid=Variables.relid">
+										<then>
+											<asset.list LIST="tt" TYPE="AdvCols" FIELD1="id" VALUE1="temptable.assetid"/>
+											<STRING.STREAM VALUE="tt.name"/>						
+											<input TYPE="HIDDEN" NAME="PromotionsOverridesRelidCounters.currcount" VALUE="ContentDetails:Overrides.relationshipid" REPLACEALL="ContentDetails:Overrides.relationshipid,Counters.currcount"/>
+										</then>
+										</if>
+								</loop>
+						 </then>
+						 <else>
+ 								<select name="PromotionsOverridesRelidCounters.currcount" dojoType="fw.dijit.UISimpleSelect" showErrors="false" clearButton="true" REPLACEALL="Counters.currcount">
+									<option value="None"><XLAT.STREAM KEY="dvin/AT/Promotions/Pickrecommendation"/></option>
+									<if COND="Variables.haverecs=true">
+										<then>
+											<loop LIST="temptable">
+												<setvar NAME="relid"  VALUE="ContentDetails:Overrides.relationshipid"/>
+												<asset.list LIST="tt" TYPE="AdvCols" FIELD1="id" VALUE1="temptable.assetid"/>
+												<if COND="temptable.assetid=Variables.relid">
+													<then>
+														<option value="temptable.assetid" selected="" REPLACEALL="temptable.assetid"> <STRING.STREAM VALUE="tt.name"/></option>
+													</then>
+													<else>
+														<option value="temptable.assetid" REPLACEALL="temptable.assetid"><STRING.STREAM VALUE="tt.name"/></option>
+													</else>
+												</if>
+											</loop>
+										</then>
+										<else>
+											<option value="None"><XLAT.STREAM KEY="dvin/AT/Promotions/Norecommendations"/></option>
+										</else>
+									</if>
+								</select>
+							</else>
+							</if>
+ 					</td>
+				</tr>
+			</then>
+			</if>
+			<inccounter NAME="currcount" VALUE="1"/>
+		</loop>
+		<if COND="Counters.currcount!=0">
+		<then>
+			<INPUT TYPE="HIDDEN" NAME="OverridesCount" VALUE="Counters.currcount" REPLACEALL="Counters.currcount"/>
+			<INPUT TYPE="HIDDEN" NAME="ProductNum" VALUE="Counters.currcount" REPLACEALL="Counters.currcount"/>
+			<setvar NAME="ProductNumber" VALUE="Counters.currcount" REPLACEALL="Counters.currcount"/>
+		</then>
+		</if>
+	</then>
+	</if>
+</table>
+</FTCS> 

@@ -1,0 +1,135 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/DisplayTimeStamp
+--
+-- INPUT
+--	startonly (display one time field or two)
+--	ourTime1 	Value of time or empty
+--	ourTime2	Value of time or empty (needed if startonly = false)
+--	CNum  Variable definitions
+--	X
+--
+-- OUTPUT
+--
+-->
+    <!--  Removing timezones ADT,AST,EDT,EST,CDT,CST,MDT,MST,PDT,PST as they are US-ONLY -->
+<setvar NAME="TIMECODES" VALUE="+00:00,+01:00,+02:00,+03:00,+04:00,+05:00,+06:00,+07:00,+08:00,+09:00,+10:00,+11:00,+12:00,-00:00,-01:00,-02:00,-03:00,-04:00,-05:00,-06:00,-07:00,-08:00,-09:00,-10:00,-11:00,-12:00"/>
+<stringlist NAME="codelist" STR="Variables.TIMECODES" DELIM=","/>
+<DATE.DEFAULTTZ VARNAME="localtz"/>
+<if COND="IsVariable.ourTime1!=true">
+	<then>
+		<DATE.CLOCKLIST LISTVARNAME="StartList" TIMEZONE="Variables.localtz"/>
+		<setvar NAME="tz1" VALUE="Variables.localtz"/>
+	</then>
+	<else>
+		<DATE.CLOCKLIST LISTVARNAME="StartList" CLOCK="Variables.ourTime1" TIMEZONE="Variables.tz1"/>
+	</else>
+</if> 
+<td>
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<if COND="Variables.startonly!=true">
+				<then>
+					<td><XLAT.STREAM KEY="dvin/Common/Start"/></td>
+				</then>
+			</if>
+			<td>&nbsp;</td>
+			<td><select name="Variables.CNumVariables.XStartMonth" size="1" REPLACEALL="Variables.CNum,Variables.X">
+					<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyMonthSelect">
+						<argument NAME="InMonth" VALUE="StartList.month"/>
+					</callelement>
+				</select>
+				&nbsp;
+				<input type="text" name="Variables.CNumVariables.XStartDay" size="2" maxlength="2" value="StartList.dayofmonth" REPLACEALL="StartList.dayofmonth,Variables.CNum,Variables.X"/> 
+				&nbsp;
+				<input type="text" name="Variables.CNumVariables.XStartYear" size="4" maxlength="4" value="StartList.year" REPLACEALL="StartList.year,Variables.CNum,Variables.X"/>
+				&nbsp;
+				<select name="Variables.CNumVariables.XStartHour" size="1" REPLACEALL="Variables.CNum,Variables.X">
+					<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyHourSelect">
+						<argument NAME="InHour" VALUE="StartList.hour"/>
+					</callelement>
+				</select>&nbsp;:&nbsp;<input type="text" name="Variables.CNumVariables.XStartMin" size="2" maxlength="2" value="StartList.minute" REPLACEALL="StartList.minute,Variables.CNum,Variables.X"/>&nbsp;<select name="Variables.CNum-Variables.XStartamOrpm" size="1" REPLACEALL="Variables.CNum,Variables.X">
+					<if COND="StartList.ampm=0">
+						<then>
+							<option value="am" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+							<option value="pm"/><XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+						</then>
+						<else>
+							<option value="am"/><XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+							<option value="pm" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+						</else>
+					</if>
+				</select>&nbsp;time&nbsp;zone&nbsp;<select name="Variables.CNum-Variables.XStartTimeZone" size="1" REPLACEALL="Variables.CNum,Variables.X">
+					<loop LIST="codelist">
+						<if COND="codelist.ITEM=Variables.tz1">
+							<then>
+								<option value="codelist.ITEM" selected="1" REPLACEALL="codelist.ITEM"/><csvar NAME="codelist.ITEM"/>
+							</then>
+							<else>
+								<option value="codelist.ITEM" REPLACEALL="codelist.ITEM"/><csvar NAME="codelist.ITEM"/>
+							</else>
+						</if>
+					</loop>
+				</select>
+			</td>
+		</tr>
+		<if COND="Variables.startonly!=true">
+			<then>
+				<if COND="IsVariable.ourTime2!=true">
+					<then>
+						<DATE.CLOCKLIST LISTVARNAME="EndList" TIMEZONE="Variables.localtz"/>
+						<setvar NAME="tz2" VALUE="Variables.localtz"/>
+					</then>
+					<else>
+						<DATE.CLOCKLIST LISTVARNAME="EndList" CLOCK="Variables.ourTime2" TIMEZONE="Variables.tz2"/>
+					</else>
+				</if>
+				<tr>
+					<td><XLAT.STREAM KEY="dvin/Common/End"/></td>
+					<td>&nbsp;</td>
+					<td><select name="Variables.CNumVariables.XdoEndMonth" size="1" REPLACEALL="Variables.CNum,Variables.X">
+							<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyMonthSelect">
+								<argument NAME="InMonth" VALUE="EndList.month"/>
+							</callelement>
+						</select>
+						&nbsp;
+						<input type="text" name="Variables.CNumVariables.XdoEndDay" size="2" maxlength="2" value="EndList.dayofmonth" REPLACEALL="EndList.dayofmonth,Variables.CNum,Variables.X"/> 
+						&nbsp;
+						<input type="text" name="Variables.CNumVariables.XdoEndYear" size="4" maxlength="4" value="EndList.year" REPLACEALL="EndList.year,Variables.CNum,Variables.X"/>
+						&nbsp;
+						<select name="Variables.CNumVariables.XdoEndHour" size="1" REPLACEALL="Variables.CNum,Variables.X">
+							<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/UglyHourSelect">
+								<argument NAME="InHour" VALUE="EndList.hour"/>
+							</callelement>
+						</select>&nbsp;:&nbsp;<input type="text" name="Variables.CNumVariables.XdoEndMin" size="2" maxlength="2" value="EndList.minute" REPLACEALL="EndList.minute,Variables.CNum,Variables.X"/>&nbsp;<select name="Variables.CNum-Variables.XdoEndamOrpm" size="1" REPLACEALL="Variables.CNum,Variables.X">
+							<if COND="EndList.ampm=0">
+								<then>
+									<option value="am" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+									<option value="pm"/><XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+								</then>
+								<else>
+									<option value="am"/><XLAT.STREAM KEY="dvin/AT/Common/AM"/>
+									<option value="pm" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/PM"/>
+								</else>
+							</if>
+						</select>&nbsp;time&nbsp;zone&nbsp;<select name="Variables.CNum-Variables.XdoEndTimeZone" size="1" REPLACEALL="Variables.CNum,Variables.X">
+							<loop LIST="codelist">
+								<if COND="codelist.ITEM=Variables.tz2">
+									<then>
+										<option value="codelist.ITEM" selected="1" REPLACEALL="codelist.ITEM"/><csvar NAME="codelist.ITEM"/>
+									</then>
+									<else>
+										<option value="codelist.ITEM" REPLACEALL="codelist.ITEM"/><csvar NAME="codelist.ITEM"/>
+									</else>
+								</if>
+							</loop>
+						</select>
+					</td>
+				</tr>
+			</then>
+		</if>
+	</table>
+</td>
+
+</FTCS> 

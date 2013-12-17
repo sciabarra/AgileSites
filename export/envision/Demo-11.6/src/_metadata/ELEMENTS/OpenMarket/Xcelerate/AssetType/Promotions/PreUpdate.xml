@@ -1,0 +1,157 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateB/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Promotions/PreUpdate.xml $ 
+$Revision: 16 $ 
+$Modtime: 7/16/02 12:11p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- PreUpdate.xml
+-
+- DESCRIPTION
+-	
+-
+- HISTORY 
+-->
+
+<!--Segments/PreUpdate.xml-->   
+<if COND="Variables.updatetype=edit">
+<then>
+	<callelement NAME="OpenMarket/Gator/Util/GetWorkflowId"/>
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ManageRules"/>
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/AssetGather">
+		<argument NAME="GetOrSet" VALUE="set"/>
+	</callelement> 
+</then>
+</if>
+
+<if COND="Variables.updatetype=create">
+<then>
+	<callelement NAME="OpenMarket/Gator/Util/GetWorkflowId"/>
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ManageRules"/>
+	<callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/AssetGather">
+		<argument NAME="GetOrSet" VALUE="set"/>
+	</callelement> 
+</then>
+</if>
+
+<if COND="Variables.updatetype=delete">
+<then>
+	<setvar NAME="updateddate" VALUE="CS.SQLDate"/>
+	<setvar NAME="updatedby" VALUE="SessionVariables.username"/>
+	<!-- Change the name of the deleted record, so user can create another page with same name -->
+	<setvar NAME="name" VALUE="Variables.id"/>			
+</then>
+</if>
+ 
+<if COND="Variables.updatetype=remotepost">
+<then>
+               
+        <!-- REMOTEPOST VARUABLES 
+             internalname
+             internaldescription
+             xmldiscruleset
+             xmlruleset
+             Goal1 Goal2 Goal3
+             DiscRulesetHintString
+             RulesetHintString 
+             
+             NumOverrides
+             for (i=0;  i<NumOverrides; i++)
+             {
+                     relasseti
+                     passettypei
+                     passetnamei
+                     confidencei
+             }
+              
+        -->
+        <if COND="IsVariable.internalname=true">
+        <then>
+                <setvar NAME="promotions:name" VALUE="Variables.internalname"/>
+        </then>
+        </if>
+        <if COND="IsVariable.status=true">
+                <then>
+                        <setvar NAME="promotions:status" VALUE="Variables.status"/>
+                </then>
+        </if>
+        <if COND="IsVariable.internaldescription=true">
+                <then>
+                        <setvar NAME="promotions:description" VALUE="Variables.internaldescription"/>
+                </then>
+        </if>
+         <if COND="IsVariable.discruleset=true">
+        <then>
+                <setvar NAME="promotions:discruleset" VALUE="Variables.discruleset"/>
+        </then>
+        </if>
+        <if COND="IsVariable.xmlruleset=true">
+                <then>
+                        <setvar NAME="promotions:ruleset" VALUE="Variables.ruleset"/>
+                </then>
+        </if>
+        <if COND="IsVariable.NumOverrides=true">
+        <then>
+   	    <listobject.create  NAME="ListOverrides" COLUMNS="relationshipid,assettype,assetid,recommendedassettype,recommendedassetid,confidence"/>
+            <setcounter NAME="currcount" VALUE="1"/>
+            <loop  COUNT="Variables.NumOverrides">
+                 <!-- look up for id's given names for  relasset, passettype and 
+                 passetname)   -->
+                                  <listobject.addrow NAME="ListOverrides"
+                                relationshipid="Variables.RelidCounters.currcount"
+                                recommendedassettype="Variables.AssetTypeCounters.currcount"
+                                recommendedassetid="Variables.AssetIdCounters.currcount"
+                                assettype="Variables.empty"
+                                assetid="Variables.empty"
+                                confidence="Variables.ConfidenceCounters.currcount"/>
+                 <inccounter NAME="currcount" VALUE="1"/>
+             </loop>
+           <listobject.tolist NAME="ListOverrides" LISTVARNAME="Promotions:Overrides"/>
+           <setvar NAME="promotions:overrides" VALUE="Variables.overrides"/>
+        </then>
+        </if>
+          <!--  Variables Goal1,  Goal2, Goal3 are verified in AssetGather --> 
+        <if COND="IsVariable.DiscRulesetHintString=true">
+        <then>
+           <if COND="IsVariable.RulesetHintString=true">
+           <then>
+               <callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ManageRules"/>
+           </then>
+           </if>
+         </then>
+         </if>
+        <callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/AssetGather">
+			<argument NAME="GetOrSet" VALUE="set"/>
+	</callelement> 
+</then>
+</if>
+<!-- If the asset is updated from dah -->
+<if COND="Variables.dashUpdate=dashUpdate">
+<then>
+	<if COND="Variables.dashUpdateType=create">
+    <then>
+		<!--if the operation is create-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=edit">
+    <then>
+		<!--if the operation is edit-->
+    </then>
+    </if>
+    <if COND="Variables.dashUpdateType=delete">
+    <then>
+		<!--if the operation is delete-->
+    </then>
+    </if>
+</then>
+</if>
+
+</FTCS>
+ 

@@ -1,0 +1,205 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/ManualrecsShowPrevious
+-
+- INPUT
+-
+-	Variables.localSegment
+- Variables.oldWay
+-	Counters.currcount
+- DisplayOnly
+-
+- OUTPUT
+-
+-->
+<STRING.ENCODE VARIABLE="cs_imagedir" VARNAME="cs_imagedir"/>
+<STRING.ENCODE VARIABLE="ThisPage" VARNAME="ThisPage"/>
+<IF COND="Variables.MRNumber!=0">
+<THEN>
+	<IF COND="Variables.localSegment!=Variables.empty">
+	<THEN>
+		<SETVAR NAME="localBucket" VALUE="Variables.localSegment_IN"/>
+		<SETVAR NAME="localOutBucket" VALUE="Variables.localSegment_OUT"/>
+	</THEN>
+	<ELSE>
+		<SETVAR NAME="localBucket" VALUE="Variables.localSegment"/>
+	</ELSE>
+	</IF>
+	<!--		<COPYLIST LIST="OutList" FROM="ContentDetails:Manualrecs"/>-->
+	<ACOLLECTION.SORTMANUALRECOMMENDATIONS NAME="theCurrentAsset" LISTVARNAME="recList" BUCKET="Variables.localBucket"/>
+	<!--If we got nothing, then it may be because the buckets are specified in the old way-->		
+	<IF COND="recList.#numRows=0">
+	<THEN>
+		<IF COND="Variables.localSegment!=Variables.empty">
+		<THEN>
+			<SETVAR NAME="localBucket" VALUE="Variables.oldWay_IN"/>
+			<SETVAR NAME="localOutBucket" VALUE="Variables.oldWay_OUT"/>
+		</THEN>
+		<ELSE>
+			<SETVAR NAME="localBucket" VALUE="Variables.oldWay"/>
+		</ELSE>
+		</IF>
+		<ACOLLECTION.SORTMANUALRECOMMENDATIONS NAME="theCurrentAsset" LISTVARNAME="recList" BUCKET="Variables.localBucket"/>
+	</THEN>
+	</IF>
+  	<LOOP LIST="recList">
+		<SETVAR NAME="gotsome" VALUE="true"/>
+		<TR>
+			<TD><BR/></TD>
+			<IF COND="Variables.DisplayOnly!=true">
+			<THEN>
+				<XLAT.LOOKUP KEY="dvin/AT/Common/Removefromlist" VARNAME="_XLAT_"/>
+				<XLAT.LOOKUP KEY="dvin/AT/Common/Removefromlist" VARNAME="_Removefromlist_" ESCAPE="true"/>
+				<!--Need to delete this one and the next one (in, and out)-->
+				<SETCOUNTER NAME="localcounter" VALUE="Counters.currcount"/>
+				<INCCOUNTER NAME="localcounter" VALUE="1"/>
+				<TD style="text-align:center;" nowrap="nowrap">
+					<IF COND="Variables.localSegment!=Variables.empty">
+					<THEN>
+						<A href="javascript:void(0)" onclick="return RemoveTwoItems('Variables.ThisPage','ContentFormBuild','AdvColsManualRecsAssetIdCounters.currcount','AdvColsManualRecsAssetIdCounters.localcounter')"   onmouseover="window.status='Variables._Removefromlist_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables.ThisPage, Counters.currcount, Counters.localcounter, Variables._Removefromlist_">
+							<IMG src="Variables.cs_imagedir/graphics/common/icon/iconDeleteContent.gif" title="Variables._XLAT_" alt="Variables._XLAT_" border="0" hspace="2" REPLACEALL="Variables.cs_imagedir,Variables._XLAT_"/></A>&nbsp;
+					</THEN>
+					<ELSE>
+						<A href="javascript:void(0)" onclick="return RemoveItem('Variables.ThisPage','ContentFormBuild','AdvColsManualRecsAssetIdCounters.currcount')" onmouseover="window.status='Variables._Removefromlist_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables.ThisPage, Counters.currcount, Variables._Removefromlist_">
+							<IMG src="Variables.cs_imagedir/graphics/common/icon/iconDeleteContent.gif" title="Variables._XLAT_" alt="Variables._XLAT_" border="0" hspace="2" REPLACEALL="Variables.cs_imagedir,Variables._XLAT_"/></A>&nbsp;
+					</ELSE>
+					</IF>
+				</TD>
+			</THEN>
+			<ELSE>
+				<TD></TD>
+			</ELSE>
+			</IF>
+			<ASSET.LIST TYPE="recList.assettype" LIST="thisElement" FIELD1="id" VALUE1="recList.assetid"/>
+			<ASSETTYPE.LIST LIST="AssetType" FIELD1="assettype" VALUE1="recList.assettype"/>
+			<TD nowrap="nowrap">
+				<!-- [2009-01-05 KGF #13180] Make assets in static list recommendations immediately inspectable -->
+				<!-- in cases where we are in edit mode, don't show links -->
+				<IF COND="Variables.DisplayOnly!=true"><THEN>
+					<!-- in edit for Recommendation-mode -->
+					<STRING.STREAM LIST="thisElement" COLUMN="name"/>
+				</THEN><ELSE>
+				<XLAT.LOOKUP KEY="dvin/Common/InspectThisItem" VARNAME="_XLAT_"/>
+				<XLAT.LOOKUP KEY="dvin/Common/InspectThisItem" VARNAME="mouseover" ESCAPE="true"/>
+ 				<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateLink">
+					<ARGUMENT NAME="assettype" VALUE="recList.assettype"/>
+					<ARGUMENT NAME="assetid" VALUE="recList.assetid"/>
+					<ARGUMENT NAME="varname" VALUE="urlInspectItem"/>
+					<ARGUMENT NAME="function" VALUE="inspect"/>
+				</CALLELEMENT>
+				<A HREF="Variables.urlInspectItem"
+					onmouseover="window.status='Variables.mouseover';return true;"
+					onmouseout="return window.status='';return true;"
+					title="Variables._XLAT_" REPLACEALL="Variables.urlInspectItem,Variables._XLAT_,Variables.mouseover">
+					<STRING.STREAM LIST="thisElement" COLUMN="name"/>
+				</A>
+				</ELSE></IF>
+				(<STRING.STREAM LIST="AssetType" COLUMN="description"/>)
+			</TD>
+			<TD></TD>
+			<TD nowrap="nowrap">
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/IntDecConversion">
+					<ARGUMENT NAME="OPtype" VALUE="DecToInt"/>
+					<ARGUMENT NAME="currentval" VALUE="recList.confidence"/>
+				</CALLELEMENT>
+				<IF COND="Variables.DisplayOnly!=true">
+				<THEN>
+					<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+						<argument NAME="inputName" VALUE="AdvColsManualRecsConfidenceCounters.currcount"/>
+						<argument NAME="inputValue" VALUE="Variables.NewConfidence"/>
+						<argument NAME="inputSize" VALUE="3"/>
+						<argument NAME="inputMaxlength" VALUE="3"/>
+						<argument NAME="width" VALUE="10em"/>
+					</callelement>%
+				</THEN>
+				<ELSE>
+					<STRING.STREAM VALUE="Variables.NewConfidence"/>
+					<STRING.ENCODE VARIABLE="NewConfidence" VARNAME="NewConfidence"/>
+					<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsConfidenceCounters.currcount" VALUE="Variables.NewConfidence" REPLACEALL="Variables.NewConfidence,Counters.currcount"/>%
+				</ELSE>
+				</IF>
+			</TD>
+			<TD></TD>
+			<STRING.ENCODE LIST="recList" COLUMN="assettype" VARNAME="recListassettype"/>
+			<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsAssetTypeCounters.currcount" VALUE="Variables.recListassettype" REPLACEALL="Variables.recListassettype,Counters.currcount"/>
+			<STRING.ENCODE LIST="recList" COLUMN="assetid" VARNAME="recListassetid"/>
+			<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsAssetIdCounters.currcount" VALUE="Variables.recListassetid" REPLACEALL="Variables.recListassetid,Counters.currcount"/>
+			<STRING.ENCODE LIST="recList" COLUMN="bucket" VARNAME="recListbucket"/>
+			<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsBucketCounters.currcount" VALUE="Variables.recListbucket" REPLACEALL="Variables.recListbucket,Counters.currcount"/>
+			<INCCOUNTER NAME="currcount" VALUE="1"/>
+			<!--This is for the "out" structure-->
+			<IF COND="Variables.localSegment!=Variables.empty">
+			<THEN>
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/FindOutBucketItem"/>
+				<IF COND="Variables.gotanOuter=true">
+				<THEN>
+					<TD nowrap="nowrap">
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/AdvCols/IntDecConversion">
+							<ARGUMENT NAME="OPtype" VALUE="DecToInt"/>
+							<ARGUMENT NAME="currentval" VALUE="Variables.Outconfidence"/>
+						</CALLELEMENT>
+						<IF COND="Variables.DisplayOnly!=true">
+						<THEN>
+							<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+								<argument NAME="inputName" VALUE="AdvColsManualRecsConfidenceCounters.currcount"/>
+								<argument NAME="inputValue" VALUE="Variables.NewConfidence"/>
+								<argument NAME="inputSize" VALUE="3"/>
+								<argument NAME="inputMaxlength" VALUE="3"/>
+								<argument NAME="width" VALUE="10em"/>
+							</callelement>%
+						</THEN>
+						<ELSE>
+							<STRING.STREAM VALUE="Variables.NewConfidence"/>
+							<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsConfidenceCounters.currcount" VALUE="Variables.NewConfidence" REPLACEALL="Variables.NewConfidence,Counters.currcount"/>%
+						</ELSE>
+						</IF>
+					</TD>
+					<STRING.ENCODE VARIABLE="Outassettype" VARNAME="Outassettype"/>
+					<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsAssetTypeCounters.currcount" VALUE="Variables.Outassettype" REPLACEALL="Variables.Outassettype,Counters.currcount"/>
+					<STRING.ENCODE VARIABLE="Outassetid" VARNAME="Outassetid"/>
+					<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsAssetIdCounters.currcount" VALUE="Variables.Outassetid" REPLACEALL="Variables.Outassetid,Counters.currcount"/>
+					<STRING.ENCODE VARIABLE="Outbucket" VARNAME="Outbucket"/>
+					<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsBucketCounters.currcount" VALUE="Variables.Outbucket" REPLACEALL="Variables.Outbucket,Counters.currcount"/>
+					<INCCOUNTER NAME="currcount" VALUE="1"/>
+				</THEN>
+				<ELSE>
+					<!--Don't have an outer bucket so:  Unless this is just a no-segment case that doesn't have an outter bucket,
+						if this is editing, then repeat inner information and put up an empty confidence box.
+									if it is not editing, just say None - and no inner information-->
+					<IF COND="Variables.localSegment!=Variables.empty">
+					<THEN>
+						
+						<TD nowrap="nowrap">
+							<IF COND="Variables.DisplayOnly!=true">
+							<THEN>
+								<callelement NAME="OpenMarket/Gator/AttributeTypes/TextBox">
+									<argument NAME="inputName" VALUE="AdvColsManualRecsConfidenceCounters.currcount"/>
+									<argument NAME="inputValue" VALUE=""/>
+									<argument NAME="inputSize" VALUE="3"/>
+									<argument NAME="inputMaxlength" VALUE="3"/>
+									<argument NAME="width" VALUE="10em"/>
+								</callelement>%
+								<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsAssetTypeCounters.currcount" VALUE="Variables.recListassettype" REPLACEALL="Variables.recListassettype,Counters.currcount"/>
+								<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsAssetIdCounters.currcount" VALUE="Variables.recListassetid" REPLACEALL="Variables.recListassetid,Counters.currcount"/>
+								<STRING.ENCODE VARIABLE="localOutBucket" VARNAME="localOutBucket"/>
+								<INPUT TYPE="HIDDEN" NAME="AdvColsManualRecsBucketCounters.currcount" VALUE="Variables.localOutBucket" REPLACEALL="Variables.localOutBucket,Counters.currcount"/>
+								<INCCOUNTER NAME="currcount" VALUE="1"/>
+							</THEN>
+							<ELSE>
+								<XLAT.STREAM KEY="dvin/Common/None"/>
+							</ELSE>
+							</IF>
+						</TD>
+					</THEN>
+					</IF>
+				</ELSE>
+				</IF>
+			</THEN>
+			</IF>
+		</TR>
+	</LOOP>
+</THEN>
+</IF>
+
+</FTCS> 

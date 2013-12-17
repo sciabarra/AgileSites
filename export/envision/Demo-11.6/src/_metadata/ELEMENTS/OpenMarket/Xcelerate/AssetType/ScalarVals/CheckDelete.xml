@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/ScalarVals/CheckDelete
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+<XLAT.LOOKUP KEY="dvin/AT/SVals/CheckDelete" VARNAME="_CheckDelete_"/>
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+	<argument NAME="msgtext" VALUE="Variables._CheckDelete_"/>
+	<argument NAME="severity" VALUE="warning"/>
+</callelement>
+</FTCS> 

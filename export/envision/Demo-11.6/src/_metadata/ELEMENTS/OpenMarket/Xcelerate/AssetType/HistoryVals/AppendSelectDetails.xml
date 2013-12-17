@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateB/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/HistoryVals/AppendSelectDetails.xml $
+$Revision: 10 $
+$Modtime: 11/21/02 5:37p $ 
+-->
+<!-- OpenMarket/Xcelerate/AssetType/HistoryVals/AppendSelectDetails
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+
+<!-- Set the table name for SQLEXP use -->
+<SETVAR NAME="tablename" VALUE="Variables.AssetType"/>
+
+<!-- ---------------------- -->
+<!-- Asset table search -->
+<!-- ---------------------- -->
+
+<!-- To search for a standard column in the Variables.AssetType table:
+  -- 
+  -- Every row in the following list corresponds to a search parameter. Each
+  -- row has four columns: formname, columnname, guiname, operator.
+  --
+  -- formname is the name of the input field in SearchForm
+  -- columnname is the database columnname in the table named <Variables.AssetType>
+  -- guiname is the user-friendly display name
+  -- operator is the SQL verb to use in the SQLEXP statement
+  --
+  -- The list must be named 'srchFlds'
+-->
+
+<LISTOBJECT.CREATE NAME="flds" COLUMNS="formname,columnname,guiname,operator"/>
+<XLAT.LOOKUP KEY="dvin/AT/Common/ID" VARNAME="guiid"/>
+ <LISTOBJECT.ADDROW NAME="flds" formname="Id" columnname="id" guiname="Variables.guiid" operator="="/>
+
+<XLAT.LOOKUP KEY="dvin/AT/Common/FWUID" VARNAME="guiuid"/>
+<LISTOBJECT.ADDROW NAME="flds" formname="uId" columnname="fw_uid" guiname="Variables.guiuid" operator="="/>
+    
+   <XLAT.LOOKUP  KEY="dvin/AT/Common/Name"  VARNAME="guiName"/>
+
+ <LISTOBJECT.ADDROW NAME="flds" formname="Name" columnname="name" guiname="Variables.guiName" operator="LIKE"/>
+
+
+ <XLAT.LOOKUP KEY="dvin/Common/Description" VARNAME="guiDesc"/>
+ <LISTOBJECT.ADDROW NAME="flds" formname="Description" columnname="description" guiname="Variables.guiDesc" operator="LIKE"/>
+
+<LISTOBJECT.TOLIST NAME="flds" LISTVARNAME="srchFlds"/>
+
+<!-- call common append procedure, this knows what to do with the lists above -->
+<CALLELEMENT NAME="OpenMarket/Gator/FlexibleAssets/Common/AppendSelectDetailsCommon"/>
+
+</FTCS>

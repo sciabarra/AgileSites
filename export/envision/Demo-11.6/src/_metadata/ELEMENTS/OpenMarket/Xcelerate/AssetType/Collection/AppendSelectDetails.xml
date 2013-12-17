@@ -1,0 +1,308 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Collection/AppendSelectDetails.xml $ 
+$Revision: 23 $ 
+$Modtime: 2/18/03 12:16p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of Open Market, Inc.
+-					All Rights Reserved.
+-
+- DESCRIPTION
+-	The basic idea: start with a minimum, default
+-    query. Then append additional criteria depending
+-    on fields that have been selected in the search
+-    form
+-->
+
+
+
+<!-- Set the table name for SQLEXP use -->
+
+	<SETVAR NAME="tablename" VALUE="Collection"/>
+
+<if COND="IsVariable.Name=true">
+	<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Name"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>       
+        	<TOLOWER OUTSTR="literal" STR="Variables.Name"/>
+         	<ics.sqlexp output="queryappend" TYPE="OR" VERB="LIKE" 
+        	STRING="Variables.literal" table="Collection" COLUMN="name" expression="lower(Collection.name)"/>
+			<!--SQLEXP OUTSTR="queryappend" TYPE="OR" VERB="LIKE" STR="Variables.Name" COLNAME="Collection.name"/-->
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)"/>
+  		</then>
+  		</if>
+  	</then>	
+</if>
+
+
+<if COND="IsVariable.Description=true">
+	<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Description"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>       
+        	<TOLOWER OUTSTR="literal" STR="Variables.Description"/>
+        	<SQLEXP OUTSTR="queryappend" TYPE="OR" VERB="LIKE" 
+        	STR="Variables.literal" COLNAME="lower(Collection.description)"/>
+			<!--SQLEXP OUTSTR="queryappend" TYPE="OR" VERB="LIKE" STR="Variables.Description" COLNAME="Collection.description"/-->
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)"/>  
+ 		</then>
+ 		</if>
+ 	</then>	
+</if>
+
+<if COND="IsVariable.Subtype=true">
+    <then>
+    <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Subtype"/>
+			<argument NAME="type" VALUE="String"/>
+	</callelement>
+	<if cond="Variables.validatedstatus=true">
+	<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Subtype"/>
+			<argument NAME="type" VALUE="Nospace"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<ics.literal  table="Collection" column="subtype" string="Variables.Subtype"  output="literal"/>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND Collection.subtype=Variables.literal"/>
+		</then>
+		</if>
+	</then>
+	</if>
+	</then>
+</if>	
+
+
+<!-- note that template is a lowercase variable name -->
+<if COND="IsVariable.template=true">
+    <then>
+    <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.template"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+    		<ics.literal  table="Template" column="template" string="Variables.template" output="literal"/>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND Collection.template=Variables.literal"/>
+     	</then>
+     	</if>
+     </then>	
+</if>
+
+<if COND="IsVariable.Status=true">
+    <then>
+    <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Status"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Status"/>
+			<argument NAME="type" VALUE="Length"/>
+			<argument NAME="wordcounts" VALUE="2"/>
+			</callelement>
+			<if cond="Variables.validatedstatus=true">
+			<then>
+				<SETVAR NAME="queryend" VALUE="Variables.queryend AND Collection.status='Variables.Status'"/>
+			</then>
+			</if>
+		</then>
+		</if>
+	</then>
+</if>	
+
+<if COND="IsVariable.Category=true">
+    <then>
+    <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Category"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+    		<ics.literal  table="Category"   column="category" string="Variables.Category"  output="literal"/>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND Collection.category=Variables.literal"/>
+    	</then>
+    	</if>
+    </then>
+</if>
+
+<if COND="IsVariable.Keyword=true">
+	<then>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<ARGUMENT NAME="columnvalue" VALUE="Variables.Keyword"/>
+			<ARGUMENT NAME="type" VALUE="String"/>
+	 </CALLELEMENT>
+	<IF COND="Variables.validatedstatus=true">
+		<THEN>
+			<SQLEXP OUTSTR="queryappend" TYPE="OR" VERB="LIKE" STR="Variables.Keyword" COLNAME="Collection.keyword"/>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)"/>
+		</THEN>
+	</IF>		
+    </then>
+</if>
+
+<if COND="IsVariable.Id=true">
+    <then>
+    <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Id"/>
+			<argument NAME="type" VALUE="Long"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND Collection.id = Variables.Id "/>
+     	</then>
+     	</if>
+     </then>	
+</if>
+
+<if COND="IsVariable.uId=true">
+    <then>
+    <CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<ARGUMENT NAME="columnvalue" VALUE="Variables.uId"/>
+			<ARGUMENT NAME="type" VALUE="String"/>
+		</CALLELEMENT>
+		<IF COND="Variables.validatedstatus=true">
+			<THEN>
+				<SETVAR NAME="queryend" VALUE="Variables.queryend AND Collection.fw_uid = 'Variables.uId' "/>
+    			<XLAT.LOOKUP KEY="dvin/UI/Search/FWUIDis" VARNAME="_XLAT_"/>
+    			<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.uId'"/>
+ 			</THEN>
+ 		</IF>	    
+     </then>
+</if>
+
+<if COND="IsVariable.UpdatedBefore=true">
+    <then>
+    <if COND="Variables.UpdatedBefore!=Variables.null">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.UpdatedBefore"/>
+			<argument NAME="type" VALUE="Date"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND Collection.updateddate &#060; Variables.UpdatedBefore"/>	
+    	</then>
+		</if>
+		</then>
+	</if>
+	</then>
+</if>		
+		
+
+<if COND="IsVariable.UpdatedAfter=true">
+    <then>
+	<if COND="Variables.UpdatedAfter!=Variables.null">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.UpdatedAfter"/>
+			<argument NAME="type" VALUE="Date"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND Variables.UpdatedAfter &#060; Collection.updateddate"/>
+		 </then>
+		</if>
+ 		</then>
+	</if>	
+    </then>
+</if>
+ <if COND="IsVariable.UpdatedBy=true">
+    <then>
+    <CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<ARGUMENT NAME="columnvalue" VALUE="Variables.UpdatedBy"/>
+			<ARGUMENT NAME="type" VALUE="String"/>
+		</CALLELEMENT>
+		<IF COND="Variables.validatedstatus=true">
+			<THEN>
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+				<ARGUMENT NAME="columnvalue" VALUE="Variables.UpdatedBy"/>
+				<ARGUMENT NAME="type" VALUE="Nospace"/>
+				</CALLELEMENT>
+				<IF COND="Variables.validatedstatus=true">
+				<THEN>
+					<SETVAR NAME="queryend" VALUE="Variables.queryend AND Collection.updatedby='Variables.UpdatedBy'"/>
+				</THEN>
+				</IF>	
+			</THEN>
+		</IF>
+	</then>
+</if>	
+
+<!-- Add the start date to the query -->
+<IF COND="IsVariable.StartDateBefore=true">
+<THEN>
+   <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+	  <ARGUMENT NAME="columnvalue" VALUE="Variables.StartDateBefore"/>
+	  <ARGUMENT NAME="type" VALUE="Date"/>
+   </callelement>
+   <if cond="Variables.validatedstatus=true">
+   <then>
+		<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.AssetType.startdate &#060; Variables.StartDateBefore OR Variables.AssetType.startdate IS NULL)"/>
+ 	</then>
+   </if>
+</THEN>
+</IF>
+
+<IF COND="IsVariable.StartDateAfter=true">
+<THEN>
+   <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+	  <ARGUMENT NAME="columnvalue" VALUE="Variables.StartDateAfter"/>
+	  <ARGUMENT NAME="type" VALUE="Date"/>
+   </callelement>
+   <if cond="Variables.validatedstatus=true">
+   <then>
+		<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.StartDateAfter &#060; Variables.AssetType.startdate OR Variables.AssetType.startdate IS NULL)"/>
+	</then>
+   </if>
+</THEN>
+</IF>
+
+<!-- Add the end date to the query -->
+<IF COND="IsVariable.EndDateBefore=true">
+<THEN>
+   <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+	  <ARGUMENT NAME="columnvalue" VALUE="Variables.EndDateBefore"/>
+	  <ARGUMENT NAME="type" VALUE="Date"/>
+   </callelement>
+   <if cond="Variables.validatedstatus=true">
+   <then>
+		<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.AssetType.enddate &#060; Variables.EndDateBefore OR Variables.AssetType.enddate is NULL)"/>
+	</then>
+   </if>
+</THEN>
+</IF>
+
+<IF COND="IsVariable.EndDateAfter=true">
+<THEN>
+   <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+	  <ARGUMENT NAME="columnvalue" VALUE="Variables.EndDateAfter"/>
+	  <ARGUMENT NAME="type" VALUE="Date"/>
+   </callelement>
+   <if cond="Variables.validatedstatus=true">
+   <then>
+		<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.EndDateAfter &#060; Variables.AssetType.enddate OR Variables.AssetType.enddate is NULL)"/>
+	</then>
+   </if>
+</THEN>
+</IF>
+
+<!-- Build the Filter String that is displayed on the Search Results Screen -->
+
+<callelement NAME="OpenMarket/Xcelerate/Actions/Search/BuildFilterString"/>
+
+</FTCS>

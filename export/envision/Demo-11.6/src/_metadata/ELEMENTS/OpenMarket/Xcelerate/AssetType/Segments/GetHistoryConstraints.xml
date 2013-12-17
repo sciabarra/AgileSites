@@ -1,0 +1,183 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/GetHistoryConstraints
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+<STRING.ENCODE VARIABLE="CriteriaRow" VARNAME="CriteriaRow"/>
+<STRING.ENCODE VARIABLE="CriteriaColumn" VARNAME="CriteriaColumn"/>
+<if COND="Variables.historyFields=all">
+	<then>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="HNUMCONSTR" VALUE="0"/>
+	</then>
+	<else>
+		<if cond="IsVariable.ConstraintCount=false">
+		<then>
+			<setvar name="ConstraintCount" value="0"/>
+		</then>
+		</if>
+		<setcounter NAME="N" VALUE="0"/>
+		<setcounter NAME="O" VALUE="0"/>
+		<if COND="Variables.ConstraintCount!=0">
+			<then>
+				<setvar NAME="firstassetattr" VALUE="true"/>
+				<loop COUNT="Variables.ConstraintCount">
+					<setvar NAME="ConstraintType" VALUE="Variables.Counters.NConstraintType"/>
+					<if COND="Variables.ConstraintType=value">
+						<then>
+							<setvar NAME="numVars" VALUE="Variables.Counters.NConstraintValueNum"/>
+							<setcounter NAME="X" VALUE="0"/>
+							<setcounter NAME="Y" VALUE="0"/>							
+							<loop COUNT="Variables.numVars">
+								<if COND="IsVariable.Counters.N-Counters.XscValue=true">
+									<then>
+										<nvobject.setvalue NAME="nvSegRule" VALUENAME="HCONSTRFIELDCounters.O" VALUE="Variables.Counters.NConstraintField"/>
+										<nvobject.setvalue NAME="nvSegRule" VALUENAME="HCONSTRTYPECounters.O" VALUE="Variables.ConstraintType"/>
+										<setvar NAME="thevalue" VALUE="Variables.Counters.N-Counters.XscValue"/>
+										<if COND="Variables.thevalue=timestamptype">
+											<then>
+												<setcounter NAME="decmonth" VALUE="Variables.Counters.NCounters.XStartMonth"/>
+												<inccounter NAME="decmonth" VALUE="-1"/>
+												<setvar NAME="ourhour" VALUE="Variables.Counters.NCounters.XStartHour"/>
+												<if COND="Variables.ourhour=12">
+													<then>
+														<setvar NAME="ourhour" VALUE="0"/>
+													</then>
+												</if>
+												<DATE.CONVERT VARNAME="theStart"  YEAR="Variables.Counters.NCounters.XStartYear"  MONTH="Counters.decmonth" 
+													DAY="Variables.Counters.NCounters.XStartDay"  HOUR="Variables.ourhour"  AMPM="Variables.Counters.N-Counters.XStartamOrpm"
+													MINUTE="Variables.Counters.NCounters.XStartMin" TIMEZONE="Variables.Counters.N-Counters.XStartTimeZone"/>
+												<nvobject.setvalue NAME="nvSegRule" VALUENAME="HCONSTRVALUECounters.O-Counters.Y" VALUE="Variables.theStart"/>
+												<nvobject.setvalue NAME="nvSegRule" VALUENAME="HCONSTRVALTZCounters.O-Counters.Y" VALUE="Variables.Counters.N-Counters.XStartTimeZone"/>
+											</then>
+											<else>
+												<nvobject.setvalue NAME="nvSegRule" VALUENAME="HCONSTRVALUECounters.O-Counters.Y" VALUE="Variables.Counters.N-Counters.XscValue"/>
+												<nvobject.setvalue NAME="nvSegRule" VALUENAME="HCONSTRVALTZCounters.O-Counters.Y" VALUE="0"/>
+											</else>
+										</if>
+										<inccounter NAME="Y" VALUE="1"/>
+									</then>
+								</if>
+								<inccounter NAME="X" VALUE="1"/>
+							</loop>
+							<if COND="Counters.Y!=0">
+								<then>
+									<nvobject.setvalue NAME="nvSegRule" VALUENAME="HNUMCONSTRVALUECounters.O" VALUE="Counters.Y"/>
+									<inccounter NAME="O" VALUE="1"/>
+								</then>
+							</if>
+						</then>
+						<else>
+							<if COND="Variables.ConstraintType=assetattr">
+								<then>
+									<nvobject.setvalue NAME="nvSegRule" VALUENAME="HCONSTRFIELDCounters.O" VALUE="Variables.Counters.NConstraintField"/>
+									<nvobject.setvalue NAME="nvSegRule" VALUENAME="HCONSTRTYPECounters.O" VALUE="Variables.ConstraintType"/>
+									<nvobject.setvalue NAME="nvSegRule" VALUENAME="HCONSTRATTRKEYCounters.O" VALUE="Variables.Counters.NConstraintAttrType:Variables.Counters.NConstraintAttribute"/>
+                                    <nvobject.setvalue NAME="nvSegRule" VALUENAME="HCONSTRASSETTYPECounters.O" VALUE="Variables.Counters.NConstraintAssetType"/>
+									<!--Only look at assettypelist on first one where we could be getting it from the tree-->
+									<setvar NAME="gotlist" VALUE="false"/>
+                                    <!-- set markers for clauses which have assetattr type values -->
+                                        <IF COND="IsVariable.AstlistClauses=true">
+                                        <THEN>
+                                            <SETVAR NAME="errno" VALUE="0"/>
+                                            <INDEXOF STR="Variables.AstlistClauses" OUTSTR="clauseindex" WHAT="Variables.CriteriaRow_Variables.CriteriaColumn_Counters.O"/>
+                                            <IF COND="Variables.errno=0">
+                                                <THEN>
+                                                    <ICS.RESOLVEVARIABLES  NAME="$(Variables.AstlistClauses),$(Variables.CriteriaRow)_$(Variables.CriteriaColumn)_$(Counters.O)" OUTPUT="AstlistClauses" DELIMITED="true"/>
+                                                    <INPUT TYPE="HIDDEN" NAME="AstlistClauses" VALUE="Variables.AstlistClauses" REPLACEALL="Variables.AstlistClauses"/>
+                                                </THEN>
+                                                <ELSE>
+                                                    <INPUT TYPE="HIDDEN" NAME="AstlistClauses" VALUE="Variables.AstlistClauses" REPLACEALL="Variables.AstlistClauses"/>
+                                                </ELSE>
+                                            </IF>
+                                        </THEN>
+                                        <ELSE>
+                                            <SETVAR NAME="AstlistClauses" VALUE="Variables.CriteriaRow_Variables.CriteriaColumn_Counters.O"/>
+                                            <INPUT TYPE="HIDDEN" NAME="AstlistClauses" VALUE="Variables.AstlistClauses" REPLACEALL="Variables.AstlistClauses"/>
+                                        </ELSE>
+                                    </IF>
+									<if COND="Variables.firstassetattr=true">
+										<then>
+											<setvar NAME="firstassetattr" VALUE="false"/>
+											<if COND="Variables.haveassetlist=true">
+												<then>
+													<setvar NAME="numVars" VALUE="Segments:Assetlists.#numRows"/>
+													<nvobject.setvalue NAME="nvSegRule" VALUENAME="HNUMCONSTRVALUECounters.O" VALUE="Variables.numVars"/>
+                                                    <INPUT TYPE="HIDDEN" NAME="Variables.CriteriaRow_Variables.CriteriaColumn_NumAstCounters.O" VALUE="Variables.numVars" REPLACEALL="Variables.CriteriaRow,Variables.CriteriaColumn,Variables.numVars,Counters.O"/>
+													<setcounter NAME="X" VALUE="0"/>
+													<loop LIST="Segments:Assetlists">
+                                                        <!-- check and remove old rulemap stuff -->
+                                                        <nvobject.getvalue NAME="nvSegRule" VALUENAME="HCONSTRATYPECounters.O-Counters.X" VARNAME="ourAssettype"/>
+                                                        <nvobject.getvalue NAME="nvSegRule" VALUENAME="HCONSTRVALUECounters.O-Counters.X" VARNAME="ourAssetid"/>
+                    									<IF COND="IsVariable.ourAssettype=true">
+                                                        <THEN>
+                                                            <nvobject.setvalue NAME="nvSegRule" VALUENAME="HCONSTRVALUECounters.O-Counters.X"/>
+                                                                <nvobject.setvalue NAME="nvSegRule" VALUENAME="HCONSTRATYPECounters.O-Counters.X"/> 
+                                                        </THEN>
+                                                        <ELSE>
+                                                            <SETVAR NAME="ourAssetid" VALUE="Segments:Assetlists.assetid"/>
+                                                             <SETVAR NAME="ourAssettype" VALUE="Segments:Assetlists.assettype"/>
+                                                        </ELSE>
+                                                        </IF>
+                    
+                                                        <SETVAR NAME="ourKey" VALUE="Variables.CriteriaRow_Variables.CriteriaColumn_HCONSTRKEYCounters.O-Counters.X"/>
+                                                        <SETVAR NAME="ourValue" VALUE="Variables.ourAssettype:Variables.ourAssetid"/>
+                                                        <RULESETMAP.SET NAME="theMap" KEY="Variables.ourKey" TYPE="asset" VALUE="Variables.ourValue"/>
+                    
+                                                        <nvobject.setvalue NAME="nvSegRule" VALUENAME="HCONSTRKEYCounters.O-Counters.X" VALUE="Variables.ourKey"/>
+                                                        
+                                                        <INPUT TYPE="HIDDEN" NAME="Variables.CriteriaRow_Variables.CriteriaColumn_Counters.XAstListAssetidCounters.O" VALUE="Variables.ourAssetid" REPLACEALL="Variables.CriteriaRow,Variables.CriteriaColumn,Counters.X,Variables.ourAssetid,Counters.O"/>
+                                                        <INPUT TYPE="HIDDEN" NAME="Variables.CriteriaRow_Variables.CriteriaColumn_Counters.XAstListAssettypeCounters.O" VALUE="Variables.ourAssettype" REPLACEALL="Variables.CriteriaRow,Variables.CriteriaColumn,Counters.X,Variables.ourAssettype,Counters.O"/>
+
+														<inccounter NAME="X" VALUE="1"/>
+													</loop>
+													<setvar NAME="gotlist" VALUE="true"/>
+												</then>
+											</if>
+										</then>
+									</if>
+									<if COND="Variables.gotlist!=true">
+										<then>
+											<setvar NAME="numVars" VALUE="Variables.Counters.NAssetlistsCount"/>
+											<nvobject.setvalue NAME="nvSegRule" VALUENAME="HNUMCONSTRVALUECounters.O" VALUE="Variables.Counters.NAssetlistsCount"/>
+                                            <INPUT TYPE="HIDDEN" NAME="Variables.CriteriaRow_Variables.CriteriaColumn_NumAstCounters.O" VALUE="Variables.Counters.NAssetlistsCount" REPLACEALL="Variables.CriteriaRow,Variables.CriteriaColumn,Variables.Counters.NAssetlistsCount,Counters.O"/>
+											<setcounter NAME="X" VALUE="0"/>
+											<if COND="Variables.numVars!=0">
+												<then>
+													<loop COUNT="Variables.numVars">
+                                                        <ICS.RESOLVEVARIABLES  NAME="Variables.$(Variables.CriteriaRow)_$(Variables.CriteriaColumn)_$(Counters.X)AstListAssetid$(Counters.O)" OUTPUT="ourAssetid" DELIMITED="true"/>
+                                                        <ICS.RESOLVEVARIABLES  NAME="Variables.$(Variables.CriteriaRow)_$(Variables.CriteriaColumn)_$(Counters.X)AstListAssettype$(Counters.O)" OUTPUT="ourAssettype" DELIMITED="true"/>
+                                                        <INPUT TYPE="HIDDEN" NAME="Variables.CriteriaRow_Variables.CriteriaColumn_Counters.XAstListAssetidCounters.O" VALUE="Variables.ourAssetid" REPLACEALL="Variables.CriteriaRow,Variables.CriteriaColumn,Counters.X,Variables.ourAssetid,Counters.O"/>
+                                                        <INPUT TYPE="HIDDEN" NAME="Variables.CriteriaRow_Variables.CriteriaColumn_Counters.XAstListAssettypeCounters.O" VALUE="Variables.ourAssettype" REPLACEALL="Variables.CriteriaRow,Variables.CriteriaColumn,Counters.X,Variables.ourAssettype,Counters.O"/>
+                                                        <SETVAR NAME="ourKey" VALUE="Variables.CriteriaRow_Variables.CriteriaColumn_HCONSTRKEYCounters.O-Counters.X"/>
+                                                        <SETVAR NAME="ourValue" VALUE="Variables.ourAssettype:Variables.ourAssetid"/>
+
+                                                        <RULESETMAP.SET NAME="theMap" KEY="Variables.ourKey" TYPE="asset" VALUE="Variables.ourValue"/>
+                                                        <nvobject.setvalue NAME="nvSegRule" VALUENAME="HCONSTRKEYCounters.O-Counters.X" VALUE="Variables.CriteriaRow_Variables.CriteriaColumn_HCONSTRKEYCounters.O-Counters.X"/>
+														<inccounter NAME="X" VALUE="1"/>
+													</loop>
+												</then>
+											</if>
+										</then>
+									</if>
+									<inccounter NAME="O" VALUE="1"/>
+								</then>
+								<else>
+								<!--will handle type asset someday-->
+								</else>
+							</if>
+						</else>
+					</if>
+					<inccounter NAME="N" VALUE="1"/>
+				</loop>
+                <INPUT TYPE="HIDDEN" NAME="Variables.CriteriaRow_Variables.CriteriaColumn_NumVars" VALUE="Counters.O" REPLACEALL="Variables.CriteriaRow,Variables.CriteriaColumn,Counters.O"/>
+			</then>
+		</if>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="HNUMCONSTR" VALUE="Counters.O"/>
+	</else>
+</if>
+</FTCS> 

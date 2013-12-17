@@ -1,0 +1,82 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/ContentForm
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+ 
+
+<!--callelement NAME="OpenMarket/Xcelerate/AssetType/Promotions/ContentFormSetVar"/-->
+
+<SCRIPT LANGUAGE="JavaScript">
+
+function checkfields()
+{
+	var obj = document.forms[0].elements[0];
+	if (obj.form.elements['Promotions:name'].value=="")
+	{
+		alert("<XLAT.STREAM KEY="dvin/Error/AT/Common/UniqueName" ESCAPE="true" ENCODE="false"/>");
+		obj.form.elements['Promotions:name'].focus();
+		return false;
+	}
+	obj.form.submit();
+	return false;
+}
+
+</SCRIPT>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="title-text"><XLAT.STREAM KEY="dvin/AT/Promotions/IntroNewPromotion"/></td>
+	</tr>
+	<tr height="5">
+		<td height="5"><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+	</tr>
+	<tr height="2">
+		<td height="2" class="dark-line-color"><img height="2" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+	</tr>
+	<tr height="5">
+		<td height="5"><img height="5" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+	</tr>
+	<tr height="25">
+		<td height="25"><XLAT.STREAM KEY="dvin/AT/Promotions/SpielNewPromotion"/>
+		
+<!--No advanced rules yet
+			 An <a HREF="javascript:void(0)" onclick="return Fixpagename('Variables.ThisPage','ContentFormAdvancedRules')" onmouseover="window.status='Switch to Advanced Method';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables.ThisPage">
+			  advanced form</a> is available.
+-->
+			</td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+
+	<tr height="10">
+		<td height="10"><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+	</tr>
+	
+	<!-- form buttons -->
+
+	<!-- [Insert session locale variable instead of "en_US"] -->
+	
+	<tr>
+		<td align="right">
+		<table><tr><td>
+		  <XLAT.LOOKUP KEY="dvin/AT/Common/CancelChanges" VARNAME="_CancelChanges_" ESCAPE="true"/>
+		  <XLAT.LOOKUP KEY="dvin/UI/Cancel" VARNAME="_CancelPromo_"/>
+			<a HREF="javascript:void(0)" onclick="return SetCancelFlag()" onmouseover="window.status='Variables._CancelChanges_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._CancelChanges_"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Cancel"/></CALLELEMENT></a>
+			<!-- <img height="1" width="15" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/> -->
+			</td><td>
+			<XLAT.LOOKUP KEY="dvin/AT/Promotions/ContinuetoNameDesc" VARNAME="_ContinuetoNameDesc_" ESCAPE="true"/>
+			<XLAT.LOOKUP KEY="dvin/AT/Promotions/ContinuetoGoals" VARNAME="_ContinuetoGoals_"/>
+			<a HREF="javascript:void(0)" onclick="return Fixpagename('Variables.ThisPage','ContentFormName')" REPLACEALL="Variables.ThisPage,Variables._ContinuetoNameDesc_" onmouseover="window.status='Variables._ContinuetoNameDesc_';return true;" onmouseout="window.status='';return true;"><CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Continue"/></CALLELEMENT></a>
+		</td></tr></table>
+		</td>
+	</tr>
+</table>
+
+    
+</FTCS> 

@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/HistoryVals/LoadTree
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+<ics.literal table="ComplexAssets" column="assettypename" string="Variables.AssetType"
+output="literal"/>
+<SETVAR NAME="errno" VALUE="0"/>
+<SETVAR NAME="tablename" VALUE="ComplexAssets"/>
+<EXECSQL LIST="currenttype" SQL="SELECT category FROM Variables.tablename WHERE assettypename=Variables.literal"/>
+<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/Loadcurrenttype.categoryAsset"/>
+
+</FTCS> 

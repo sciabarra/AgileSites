@@ -1,0 +1,109 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/UglyMonthSelect
+--
+-- INPUT
+--	InMonth
+-- OUTPUT
+--
+-->
+<if COND="Variables.InMonth=1">
+	<then>
+		<option value="1" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/Jan"/>
+	</then>
+	<else>
+		<option value="1"/><XLAT.STREAM KEY="dvin/AT/Common/Jan"/>
+	</else>
+</if>
+<if COND="Variables.InMonth=2">
+	<then>
+		<option value="2" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/Feb"/>
+	</then>
+	<else>
+		<option value="2"/><XLAT.STREAM KEY="dvin/AT/Common/Feb"/>
+	</else>
+</if>
+<if COND="Variables.InMonth=3">
+	<then>
+		<option value="3" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/Mar"/>
+	</then>
+	<else>
+		<option value="3"/><XLAT.STREAM KEY="dvin/AT/Common/Mar"/>
+	</else>
+</if>
+<if COND="Variables.InMonth=4">
+	<then>
+		<option value="4" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/Apr"/>
+	</then>
+	<else>
+		<option value="4"/><XLAT.STREAM KEY="dvin/AT/Common/Apr"/>
+	</else>
+</if>
+<if COND="Variables.InMonth=5">
+	<then>
+		<option value="5" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/May"/>
+	</then>
+	<else>
+		<option value="5"/><XLAT.STREAM KEY="dvin/AT/Common/May"/>
+	</else>
+</if>
+<if COND="Variables.InMonth=6">
+	<then>
+		<option value="6" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/Jun"/>
+	</then>
+	<else>
+		<option value="6"/><XLAT.STREAM KEY="dvin/AT/Common/Jun"/>
+	</else>
+</if>
+<if COND="Variables.InMonth=7">
+	<then>
+		<option value="7" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/Jul"/>
+	</then>
+	<else>
+		<option value="7"/><XLAT.STREAM KEY="dvin/AT/Common/Jul"/>
+	</else>
+</if>
+<if COND="Variables.InMonth=8">
+	<then>
+		<option value="8" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/Aug"/>
+	</then>
+	<else>
+		<option value="8"/><XLAT.STREAM KEY="dvin/AT/Common/Aug"/>
+	</else>
+</if>
+<if COND="Variables.InMonth=9">
+	<then>
+		<option value="9" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/Sep"/>
+	</then>
+	<else>
+		<option value="9"/><XLAT.STREAM KEY="dvin/AT/Common/Sep"/>
+	</else>
+</if>
+<if COND="Variables.InMonth=10">
+	<then>
+		<option value="10" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/Oct"/>
+	</then>
+	<else>
+		<option value="10"/><XLAT.STREAM KEY="dvin/AT/Common/Oct"/>
+	</else>
+</if>
+<if COND="Variables.InMonth=11">
+	<then>
+		<option value="11" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/Nov"/>
+	</then>
+	<else>
+		<option value="11"/><XLAT.STREAM KEY="dvin/AT/Common/Nov"/>
+	</else>
+</if>
+<if COND="Variables.InMonth=12">
+	<then>
+		<option value="12" selected="1"/><XLAT.STREAM KEY="dvin/AT/Common/Dec"/>
+	</then>
+	<else>
+		<option value="12"/><XLAT.STREAM KEY="dvin/AT/Common/Dec"/>
+	</else>
+</if>
+
+
+</FTCS> 

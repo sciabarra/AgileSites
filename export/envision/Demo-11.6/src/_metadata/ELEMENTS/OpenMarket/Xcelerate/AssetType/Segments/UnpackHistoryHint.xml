@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/UnpackHistoryHint
+--
+-- INPUT
+--	ourid
+
+-- OUTPUT
+--	Bunches of form variables set
+--
+-->
+<!--We got one so clean up some variables.-->
+<setvar NAME="sHinterval" VALUE="Variables.empty"/>
+<setvar NAME="sCompareOp1" VALUE="Variables.empty"/>
+<setvar NAME="sCompareOp2" VALUE="Variables.empty"/>
+<setvar NAME="sCompareOp3" VALUE="Variables.empty"/>
+<setvar NAME="sCompareOp4" VALUE="Variables.empty"/>
+<setvar NAME="sValue" VALUE="Variables.empty"/>
+<setvar NAME="sValue1" VALUE="Variables.empty"/>
+<setvar NAME="sHField" VALUE="Variables.empty"/>
+<setvar NAME="SummableType" VALUE="UseTotal"/>
+<setvar NAME="durationType" VALUE="none"/>
+<setvar NAME="haveOurCell" VALUE="false"/>
+<if COND="IsVariable.SegmentsArg2=true">
+	<then>
+		<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/GetThisFormsRule"/>
+		<if COND="Variables.segerr=0">
+			<then>
+				<!--see if ruletype matches-->
+				<nvobject.getvalue NAME="nvOurCell" VALUENAME="RULETYPE" VARNAME="oCsRuleType"/>
+				<if COND="Variables.oCsRuleType=Variables.sRuleType">
+					<then>
+						<!--see if this rule matches-->
+						<nvobject.getvalue NAME="nvOurCell" VALUENAME="RULECATEGORY" VARNAME="OurColSegmentsRuleScreen"/>
+						<if COND="Variables.OurColSegmentsRuleScreen=Variables.SegmentsRuleScreen">
+							<then>
+								<nvobject.getvalue NAME="nvOurCell" VALUENAME="VARNAME" VARNAME="sVarAttid"/>
+								<if COND="Variables.sVarAttid=Variables.ourid">
+									<then>
+										<nvobject.getvalue NAME="nvOurCell" VALUENAME="VARDESC" VARNAME="sVarName"/>
+										<if COND="Variables.sVarName=Variables.SegmentsArg2">
+											<then>
+												<setvar NAME="haveOurCell" VALUE="true"/>
+												<!--Matches, so pull out some preloaded information-->
+												<callelement NAME="OpenMarket/Xcelerate/AssetType/Segments/UnpackHistoryHintSub"/>
+											</then>
+										</if>
+									</then>
+								</if>
+							</then>					
+						</if>
+					</then>
+				</if>
+			</then>
+		</if>
+	</then>
+</if>
+</FTCS> 

@@ -1,0 +1,114 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Promotions/UglyHourSelect
+--
+-- INPUT
+--
+--	InHour
+-- OUTPUT
+--
+-->
+<if COND="Variables.InHour=0">
+	<then>
+		<setvar NAME="InHour" VALUE="12"/>
+	</then>
+</if>
+<if COND="Variables.InHour=12">
+	<then>
+		<option value="12" selected="1"/>12
+	</then>
+	<else>
+		<option value="12"/>12
+	</else>
+</if>
+<if COND="Variables.InHour=1">
+	<then>
+		<option value="1" selected="1"/>1
+	</then>
+	<else>
+		<option value="1"/>1
+	</else>
+</if>
+<if COND="Variables.InHour=2">
+	<then>
+		<option value="2" selected="1"/>2
+	</then>
+	<else>
+		<option value="2"/>2
+	</else>
+</if>
+<if COND="Variables.InHour=3">
+	<then>
+		<option value="3" selected="1"/>3
+	</then>
+	<else>
+		<option value="3"/>3
+	</else>
+</if>
+<if COND="Variables.InHour=4">
+	<then>
+		<option value="4" selected="1"/>4
+	</then>
+	<else>
+		<option value="4"/>4
+	</else>
+</if>
+<if COND="Variables.InHour=5">
+	<then>
+		<option value="5" selected="1"/>5
+	</then>
+	<else>
+		<option value="5"/>5
+	</else>
+</if>
+<if COND="Variables.InHour=6">
+	<then>
+		<option value="6" selected="1"/>6
+	</then>
+	<else>
+		<option value="6"/>6
+	</else>
+</if>
+<if COND="Variables.InHour=7">
+	<then>
+		<option value="7" selected="1"/>7
+	</then>
+	<else>
+		<option value="7"/>7
+	</else>
+</if>
+<if COND="Variables.InHour=8">
+	<then>
+		<option value="8" selected="1"/>8
+	</then>
+	<else>
+		<option value="8"/>8
+	</else>
+</if>
+<if COND="Variables.InHour=9">
+	<then>
+		<option value="9" selected="1"/>9
+	</then>
+	<else>
+		<option value="9"/>9
+	</else>
+</if>
+<if COND="Variables.InHour=10">
+	<then>
+		<option value="10" selected="1"/>10
+	</then>
+	<else>
+		<option value="10"/>10
+	</else>
+</if>
+<if COND="Variables.InHour=11">
+	<then>
+		<option value="11" selected="1"/>11
+	</then>
+	<else>
+		<option value="11"/>11
+	</else>
+</if>
+
+</FTCS> 

@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/CommonSelection
+-
+- INPUT
+-
+- ShowButton
+-
+- OUTPUT
+-
+-->
+
+	<IF COND="Variables.ContentDetails:style=F">
+		<THEN>
+			<setvar NAME="formvalue" VALUE="first"/>
+		</THEN>
+		<ELSE>
+			<IF COND="Variables.ContentDetails:style=H">
+				<THEN>
+					<XLAT.LOOKUP KEY="dvin/AT/AdvCols/Highest" VARNAME="formvalue"/>
+				</THEN>
+				<ELSE>
+					<IF COND="Variables.ContentDetails:style=R">
+						<THEN>					
+							<XLAT.LOOKUP KEY="dvin/AT/AdvCols/Random" VARNAME="formvalue"/>
+						</THEN>
+						<ELSE>
+							<setvar NAME="formvalue" VALUE="Variables.ContentDetails:style"/>
+						</ELSE>
+					</IF>
+				</ELSE>
+			</IF>
+		</ELSE>
+	</IF>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<tr>
+		<td class="form-label-text"><XLAT.STREAM KEY="dvin/AT/AdvCols/SelectionCriteria"/>:</td>
+		<td></td>
+		<td class="form-inset">
+		<table border="0" cellpadding="0" cellspacing="0"><tr>
+		<td><csvar NAME="Variables.formvalue"/></td>
+		<td><IMG src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" width="10" height="1" REPLACEALL="Variables.cs_imagedir"/></td>
+		<IF COND="Variables.ShowButton!=false">
+			<THEN>
+				<TD valign="top" align="left">
+					<XLAT.LOOKUP KEY="dvin/AT/AdvCols/SelectionCriteria" VARNAME="changeX"/><XLAT.LOOKUP KEY="dvin/AT/AdvCols/ChangeX" VARNAME="_change_" ESCAPE="true"/>
+                    <XLAT.LOOKUP KEY="dvin/AT/AdvCols/ChangeX" VARNAME="_change_ALT"/>
+					<A HREF="javascript:void(0)" onclick="return Fixpagename('Variables.ThisPage','ContentFormSelection')" onmouseover="window.status='Variables._change_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._change_,Variables.ThisPage">
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Change"/></CALLELEMENT>
+					</A>
+				</TD>
+			</THEN>
+		</IF>
+		</tr>
+		</table>
+		</td>
+	</tr>
+
+</FTCS> 

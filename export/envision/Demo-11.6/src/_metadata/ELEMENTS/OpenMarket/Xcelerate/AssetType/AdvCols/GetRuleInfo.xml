@@ -1,0 +1,134 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!--
+$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/AdvCols/GetRuleInfo.xml $
+$revision: $
+$Modtime: 11/24/03 11:35a $
+-->
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/GetRuleInfo
+--
+-- Part of the "gather" operation.
+-- The following possibly-present input post variables need to converted to a hint string, a ruleset, and a rule map,
+-- suitable for gathering:
+--
+-- AdvColMode
+-- ACRule
+-- PickedKeyOfSegments, PickedInsOfSegments, PickedOutsOfSegments
+--
+-- For the Recommendation asset, the rule encoding is never useful in posted form, and is ignored.
+--
+-- Also required is theCurrentAsset, since should there be no post information, that's the source
+-- of the scatter values.
+-- 
+-- If it looks like nothing has been posted yet, the existing ruleset and ruleset map are NOT replaced,
+-- and will remain to be gathered.
+-->
+
+<IF COND="IsVariable.AdvColMode=true">
+<THEN>
+	<!-- Presume that we have something to gather if we saw the mode be posted.  We assume AdvColMode, ACRule, PickedKeyOfSegments,
+	     PickedInsOfSegments, PickedOutsOfSegments, were all posted too. -->
+
+	<!-- Fix the artifacts of posting.  Empty variables don't exist after posting on some app servers. Fix up all variables
+	     that could legitimately be blank -->
+	<IF COND="IsVariable.PickedKeyOfSegments!=true">
+	<THEN>
+		<SETVAR NAME="PickedKeyOfSegments" VALUE="Variables.empty"/>
+	</THEN>
+	</IF>
+	<IF COND="IsVariable.PickedInsOfSegments!=true">
+	<THEN>
+		<SETVAR NAME="PickedInsOfSegments" VALUE="Variables.empty"/>
+	</THEN>
+	</IF>
+	<IF COND="IsVariable.PickedOutsOfSegments!=true">
+	<THEN>
+		<SETVAR NAME="PickedOutsOfSegments" VALUE="Variables.empty"/>
+	</THEN>
+	</IF>
+
+	<!--Mode List only supports Type manual and someone may have just changed from one to the other or it may not have been set yet-->
+	<IF COND="Variables.AdvColMode=List">
+	<THEN>
+		<IF COND="Variables.ACRule!=manual">
+		<THEN>
+			<SETVAR NAME="ACRule" VALUE="manual"/>
+		</THEN>
+		</IF>
+	</THEN>
+	</IF>
+
+
+	<nvobject.create NAME="nvSegRule"/>
+	<nvobject.setvalue NAME="nvSegRule" VALUENAME="RULESETTYPE" VALUE="ui"/>
+	<nvobject.setvalue NAME="nvSegRule" VALUENAME="ADVCOLTYPE" VALUE="Variables.ACRule"/>
+	<nvobject.setvalue NAME="nvSegRule" VALUENAME="ADVCOLMODE" VALUE="Variables.AdvColMode"/>
+
+	<IF COND="Variables.ACRule=manual">
+	<THEN>
+		<SETCOUNTER NAME="numSegs" VALUE="0"/>
+
+		<STRINGLIST DELIM="," NAME="KeyList" STR="Variables.PickedKeyOfSegments"/>
+		<STRINGLIST DELIM="," NAME="InList" STR="Variables.PickedInsOfSegments"/>
+		<STRINGLIST DELIM="," NAME="OutList" STR="Variables.PickedOutsOfSegments"/>
+
+		<IF COND="KeyList.#numRows!=0">
+		<THEN>
+			<LOOP LIST="KeyList">
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="SEGKEYCounters.numSegs" VALUE="KeyList.ITEM"/>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="ITEMSCounters.numSegs" VALUE="InList.ITEM"/>
+				<nvobject.setvalue NAME="nvSegRule" VALUENAME="NOTITEMSCounters.numSegs" VALUE="OutList.ITEM"/>
+				<INCCOUNTER NAME="numSegs" VALUE="1"/>
+				<SETROW LIST="InList" ACTION="NEXT"/>
+				<SETROW LIST="OutList" ACTION="NEXT"/>
+			</LOOP>
+		</THEN>
+		</IF>
+		<nvobject.setvalue NAME="nvSegRule" VALUENAME="NUMSEGS" VALUE="Counters.numSegs"/>
+	</THEN>
+	</IF>
+
+	<nvobject.tostring NAME="nvSegRule" VARNAME="localHintString"/>
+	<!--For debugging <BR/><CSVAR NAME="Variables.localHintString"/>-->
+	<CALLELEMENT NAME="OpenMarket/Gator/Rules/GenerateAdvColRuleset"/>
+
+	<!-- Now build the map -->
+	<SETVAR NAME="AdvCols:selruleset" VALUE="Variables.tempxml"/>
+	<SETVAR NAME="AdvCols:selruleset_map:0:key" VALUE="this"/>
+	<SETVAR NAME="AdvCols:selruleset_map:0:type" VALUE="asset"/>
+	<ASSET.GET NAME="theCurrentAsset" FIELD="id" OUTPUT="thisId"/>
+	<!-- Note "AdvCols" is the asset type in the next line - value is of format "assettype:assetid"-->
+	<SETVAR NAME="AdvCols:selruleset_map:0:value" VALUE="AdvCols:Variables.thisId"/>
+
+	<SETCOUNTER NAME="typecount" VALUE="1"/>
+
+	<IF COND="Variables.ACRule=manual">
+	<THEN>
+
+		<STRINGLIST DELIM="," NAME="KeyString" STR="Variables.PickedKeyOfSegments"/>
+		<STRINGLIST DELIM="," NAME="SegId" STR="Variables.PickedIdsOfSegments"/>
+		<IF COND="KeyString.#numRows!=0">
+		<THEN>
+			<LOOP LIST="KeyString">
+				<SETVAR NAME="AdvCols:selruleset_map:Counters.typecount:key" VALUE="KeyString.ITEM"/>
+				<SETVAR NAME="AdvCols:selruleset_map:Counters.typecount:type" VALUE="asset"/>
+				<SETVAR NAME="AdvCols:selruleset_map:Counters.typecount:value" VALUE="Segments:SegId.ITEM"/>
+				<INCCOUNTER NAME="typecount" VALUE="1"/>
+				<SETROW LIST="SegId" ACTION="NEXT"/>
+			</LOOP>
+		</THEN>
+		</IF>
+	</THEN>
+	</IF>
+	<SETVAR NAME="AdvCols:selruleset_map:Total" VALUE="Counters.typecount"/>
+
+</THEN>
+<ELSE>
+	<!-- Nothing got posted.  Yet we need to prepare to gather the ruleset, so we need to scatter it out of the existing
+	     asset -->
+	<ASSET.SCATTER NAME="theCurrentAsset" PREFIX="AdvCols" FIELDLIST="selruleset"/>
+</ELSE>
+</IF>
+
+</FTCS> 

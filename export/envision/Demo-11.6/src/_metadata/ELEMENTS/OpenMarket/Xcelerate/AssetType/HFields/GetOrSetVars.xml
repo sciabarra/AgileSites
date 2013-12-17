@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/HFields/GetOrSetVars.xml $ 
+$Revision: 18 $ 
+$Modtime: 12/19/02 9:19a $ 
+-->
+<!-- OpenMarket/Xcelerate/AssetType/HFields/GetOrSetVars
+--
+- INPUT
+		Variables.SetOrGet (defaults to get)
+		Variables.HFields:... has the variables. (HFields is the prefix)
+		
+- OUTPUT
+		"Gather" called.
+
+-->
+<setvar NAME="FieldsOnForm" VALUE="name,status,workflowid,description,searchable,constraintrequired,type,length,nullallowed,defaultval,assettype,attrname,attributename,constrainttype,lowerrange,upperrange,Values"/>
+
+<if COND="Variables.GetOrSet=set">
+	<then>
+		<!-- Do the enum list -->
+		<listobject.create NAME="myList" COLUMNS="value"/>
+		<if COND="IsVariable.HFields:sMyEnumValues!=false">
+		<then>
+		        <STRINGLIST NAME="EnumValues" STR="Variables.HFields:sMyEnumValues" DELIM=";"/>
+			<loop LIST="EnumValues">
+				<listobject.addrow NAME="myList" value="EnumValues.ITEM"/>
+			</loop>
+		</then>
+		</if>
+		<listobject.tolist NAME="myList" LISTVARNAME="HFields:Values"/>
+ 		<ASSET.GATHER NAME="theCurrentAsset" PREFIX="HFields" FIELDLIST="Variables.FieldsOnForm"/>
+		<if COND="Variables.errno!=0">
+			<then>
+				<br/><XLAT.STREAM KEY="dvin/AT/HFields/AGatherFailForHFields" errno="Variables.errno" EVALALL="false"/>
+				<throwexception/>
+			</then>
+		</if>
+	</then>
+
+<!--"gets"-->
+	<else>
+		<br/>In GetOrSet - option get - SHOULD NOT BE HERE		
+	</else>
+</if>
+</FTCS>
+

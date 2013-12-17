@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateB/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Collection/AppendSelectDetailsSE.xml $ 
+$Revision: 15 $ 
+$Modtime: 7/03/02 6:07p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of Open Market, Inc.
+-					All Rights Reserved.
+-
+- DESCRIPTION
+-	Add to search engine query for Collection-specific search parameters 
+-	(as defined by Collection/SearchForm.xml).
+-
+- ARGUMENTS
+-   seQuery
+-       SEARCH WHAT query string.  Append to this.
+-   seType
+-       SEARCH TYPE value.  Change it or leave it alone.
+-   seRelevance
+-       SEARCH RELEVANCE value.  Change it or leave it alone.
+-   sqlQueryend
+-       Tail end of WHERE expression for secondary SQL query.
+-   (FORM fields)
+-       All form fields defined by SearchForm.xml
+-   seLeft, seRight
+-       Left and right strings.  Used as 
+-		fieldname Variables.seLeft fieldvalue Variables.seRight
+-->
+
+
+<IF COND="IsVariable.Name=true">
+	<THEN>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+		<ARGUMENT NAME="seFieldname" VALUE="name"/>
+		<ARGUMENT NAME="seValue" VALUE="Variables.Name"/>
+	</CALLELEMENT>
+ 	</THEN>
+</IF>
+
+<IF COND="IsVariable.Description=true">
+	<THEN>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+		<ARGUMENT NAME="seFieldname" VALUE="description"/>
+		<ARGUMENT NAME="seValue" VALUE="Variables.Description"/>
+	</CALLELEMENT>
+ 	</THEN>
+</IF>
+
+<!-- note that template is a lowercase variable name -->
+<if COND="IsVariable.template=true">
+    <then>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+		<ARGUMENT NAME="seFieldname" VALUE="template"/>
+		<ARGUMENT NAME="seValue" VALUE="Variables.template"/>
+	</CALLELEMENT>
+	<SETVAR NAME="errno" VALUE="0"/>
+    </then>
+</if>
+
+<if COND="IsVariable.Status=true">
+    <then>
+	<SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Collection.status='Variables.Status'"/>
+    </then>
+</if>
+
+<IF COND="IsVariable.Keyword=true">
+	<THEN>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+		<ARGUMENT NAME="seFieldname" VALUE="keyword"/>
+		<ARGUMENT NAME="seValue" VALUE="Variables.Keyword"/>
+	</CALLELEMENT>
+ 	</THEN>
+</IF>
+
+<IF COND="IsVariable.Category=true">
+	<THEN>
+        <ics.literal table="Variables.AssetType" column="category" string="Variables.Category"
+            output="literal"/>
+		<SETVAR NAME="sqlQueryend" VALUE="Variables.sqlQueryend AND Variables.AssetType.category=Variables.literal"/>
+ 	</THEN>
+</IF>
+
+<callelement NAME="OpenMarket/Xcelerate/Actions/Search/BuildFilterString"/>
+
+</FTCS>

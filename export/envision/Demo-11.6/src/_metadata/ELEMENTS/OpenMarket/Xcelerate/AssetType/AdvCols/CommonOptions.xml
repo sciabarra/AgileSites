@@ -1,0 +1,103 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/AdvCols/CommonOptions
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+	<TR>
+		<TD CLASS="form-label-text"><XLAT.STREAM KEY="dvin/AT/AdvCols/Options"/>:</TD>
+		<TD></TD>
+		<TD class="form-inset">
+			<TABLE border="0" cellpadding="0" cellspacing="0">
+				<TR>
+					<TD colspan="3">
+						<TABLE border="0" cellpadding="0" cellspacing="0">
+							<TR>
+								<TD><IF COND="Variables.ContentDetails:mapstyle=C">
+										<THEN>
+											<XLAT.STREAM KEY="dvin/AT/AdvCols/BringBackChildren"/>
+										</THEN>
+										<ELSE>
+											<XLAT.STREAM KEY="dvin/AT/AdvCols/DoNotBringBackChildren"/>
+										</ELSE>
+									</IF></TD>
+								<TD></TD>
+								<TD>
+								  
+								</TD>
+							</TR>
+							<TR>
+								<TD><IF COND="Variables.ContentDetails:ovrdable=T">
+										<THEN>
+											<XLAT.STREAM KEY="dvin/AT/AdvCols/CanOverride"/>
+										</THEN>
+										<ELSE>
+											<XLAT.STREAM KEY="dvin/AT/AdvCols/CanNotOverride"/>
+										</ELSE>
+									</IF></TD>
+								<TD></TD>
+								<TD>
+								</TD>
+							</TR>
+							<IF COND="Variables.ContentDetails:types:Total!=0">
+								<THEN>
+									<IF COND="Variables.ContentDetails:types:0=_ALL_">
+										<THEN>
+											<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+											<TR>
+												<TD colspan="3">
+													<XLAT.STREAM KEY="dvin/AT/AdvCols/SelectAllAssetTypes"/>
+												</TD>
+											</TR>
+										</THEN>
+										<ELSE>
+											<TR>
+												<TD colspan="3">
+													<TABLE border="0" cellpadding="0" cellspacing="0">
+														<TR>
+															<TD colspan="2" style="margin:0px"><XLAT.STREAM KEY="dvin/AT/AdvCols/SelectAssetTypes"/></TD>
+														</TR>
+														<SETCOUNTER NAME="typeCount" VALUE="0"/>
+														<LOOP COUNT="Variables.ContentDetails:types:Total">
+															<ICS.RESOLVEVARIABLES  NAME="$(Variables.ContentDetails:types:$(Counters.typeCount))" OUTPUT="ourType" DELIMITED="true"/>
+															<ASSETTYPE.LIST LIST="assettypelist" FIELD1="assettype" VALUE1="Variables.ourType"/>
+															<TR>
+																<TD>&nbsp;</TD>
+																<TD><STRING.STREAM VALUE="assettypelist.description"/></TD>
+															</TR>
+															<INCCOUNTER NAME="typeCount" VALUE="1"/>
+														</LOOP>
+													</TABLE>
+												</TD>
+											</TR>
+										</ELSE>
+									</IF>
+								</THEN>
+							</IF>
+						</TABLE>
+					</TD>
+					<TD>
+						<IF COND="Variables.ShowButton!=false">
+							<THEN>
+								<TD valign="top" align="left">
+									<XLAT.LOOKUP KEY="dvin/AT/AdvCols/Options" VARNAME="changeX"/><XLAT.LOOKUP KEY="dvin/AT/AdvCols/ChangeX" VARNAME="_change_" ESCAPE="true"/>
+									<XLAT.LOOKUP KEY="dvin/AT/AdvCols/ChangeX" VARNAME="_change_ALT"/>
+									<A HREF="javascript:void(0)" onclick="return Fixpagename('Variables.ThisPage','ContentFormOptions')" onmouseover="window.status='Variables._change_';return true;" onmouseout="window.status='';return true;" REPLACEALL="Variables._change_,Variables.ThisPage">
+										<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TextButton"><ARGUMENT NAME="buttonkey" VALUE="UI/Forms/Change"/></CALLELEMENT>						
+									</A>
+								</TD>
+							</THEN>
+						</IF>
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+
+	</TR>
+
+</FTCS>

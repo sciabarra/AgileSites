@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile:  $ 
+$Revision: 20 $ 
+$Modtime: 2/17/03 12:24p $ 
+-->
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- AppendSelectDetailsSE.xml
+-
+- DESCRIPTION
+-	Add to search engine query for DimensionSet-specific search parameters 
+-	(as defined by DimensionSet/SearchForm.xml).
+-
+- ARGUMENTS
+-   seQuery
+-       SEARCH WHAT query string.  Append to this.
+-   seType
+-       SEARCH TYPE value.  Change it or leave it alone.
+-   seRelevance
+-       SEARCH RELEVANCE value.  Change it or leave it alone.
+-   sqlQueryend
+-       Tail end of WHERE expression for secondary SQL query.
+-   (FORM fields)
+-       All form fields defined by SearchForm.xml
+-   seLeft, seRight
+-       Left and right strings.  Used as 
+-		fieldname Variables.seLeft fieldvalue Variables.seRight
+-
+- HISTORY 
+-->
+	<IF COND="IsVariable.Subtype=true">
+		<THEN>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+				<ARGUMENT NAME="seFieldname" VALUE="subtype" />
+				<ARGUMENT NAME="seValue" VALUE="Variables.Subtype" />
+			</CALLELEMENT>
+		</THEN>
+	</IF>
+<!-- note that template is a lowercase variable name -->
+	<if COND="IsVariable.template=true">
+		<then>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+				<ARGUMENT NAME="seFieldname" VALUE="template" />
+				<ARGUMENT NAME="seValue" VALUE="Variables.template" />
+			</CALLELEMENT>
+			<SETVAR NAME="errno" VALUE="0" />
+		</then>
+	</if>
+	<IF COND="IsVariable.Description=true">
+		<THEN>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+				<ARGUMENT NAME="seFieldname" VALUE="description" />
+				<ARGUMENT NAME="seValue" VALUE="Variables.Description" />
+			</CALLELEMENT>
+		</THEN>
+	</IF>
+	<IF COND="IsVariable.Name=true">
+		<THEN>
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Search/seAppend">
+				<ARGUMENT NAME="seFieldname" VALUE="name" />
+				<ARGUMENT NAME="seValue" VALUE="Variables.Name" />
+			</CALLELEMENT>
+		</THEN>
+	</IF>
+	<callelement NAME="OpenMarket/Xcelerate/Actions/Search/BuildFilterString" />
+</FTCS>

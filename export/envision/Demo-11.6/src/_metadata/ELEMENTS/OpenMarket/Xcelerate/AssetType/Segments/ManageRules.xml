@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/ManageRules
+--
+-- INPUT
+--	SegRuleSetHint
+--
+-- OUTPUT
+--     SegmentRuleText
+--
+-- Calls GenerateSegmentRuleset, based on a rule hint value in SegRuleSetHint.
+--
+-->
+<if COND="IsVariable.SegRuleSetHint=false">
+<then>
+	<setvar NAME="SegRuleSetHint" VALUE="Variables.empty"/>
+</then>
+</if>
+
+<if COND="Variables.SegRuleSetHint!=Variables.empty">
+<then>
+	<nvobject.create NAME="test"/>
+	<nvobject.fromstring NAME="test" VALUE="Variables.SegRuleSetHint"/>
+	<nvobject.getvalue NAME="test" VALUENAME="NUMAND" VARNAME="rsnumrows"/>
+	<if COND="IsVariable.rsnumrows=true">
+	<then>
+		<if COND="Variables.rsnumrows!=0">
+		<then>
+		
+			<!-- This chunk of code has probably been unneeded for a long time, since all assets (even newly-created ones) now have an id -->
+			<setvar NAME="GotId" VALUE="false"/>
+			<if COND="Variables.updatetype=create">
+			<then>
+				<ASSET.GET NAME="theCurrentAsset" FIELD="id"/>
+				<if COND="Variables.errno=0">
+				<then>
+					<setvar NAME="GotId" VALUE="true"/>
+				</then>
+				<else>
+					<br/><XLAT.STREAM KEY="dvin/FlexibleAssets/FlexAssets/AssetGetFailed" errno="Variables.errno" EVALALL="false"/>
+				</else>
+				</if>
+			</then>
+			<else>
+				<setvar NAME="GotId" VALUE="true"/>
+			</else>
+			</if>
+						
+			<if COND="Variables.GotId=true">
+			<then>		
+				<!--ok lets get the operators to be right -->
+								
+				<setvar NAME="Ourlt" VALUE="&#60;"/>
+				<setvar NAME="Ourgt" VALUE="&#62;"/>
+
+				<substitute STR="Variables.SegRuleSetHint" WHAT="xxeqxx" WITH="==" OUTSTR="Text1"/>
+				<substitute STR="Variables.Text1" WHAT="xxnexx" WITH="!=" OUTSTR="Text2"/>
+				<substitute STR="Variables.Text2" WHAT="xxgtxx" WITH="Variables.Ourgt" OUTSTR="Text3"/>
+				<substitute STR="Variables.Text3" WHAT="xxgexx" WITH="Variables.Ourgt=" OUTSTR="Text4"/>
+				<substitute STR="Variables.Text4" WHAT="xxltxx" WITH="Variables.Ourlt" OUTSTR="Text5"/>
+				<substitute STR="Variables.Text5" WHAT="xxlexx" WITH="Variables.Ourlt=" OUTSTR="SegRuleSetHint"/>
+				<!-- Unpacking quotes is no longer needed, since SegRuleSetHint is now properly escaped before posting -->
+								
+				<!--Convert to xml-->
+				<callelement NAME="OpenMarket/Gator/Rules/GenerateSegmentRuleset">
+					<argument NAME="hintstring" VALUE="Variables.SegRuleSetHint"/>
+					<argument NAME="segid" VALUE="Variables.id"/>
+					<argument NAME="targetxml" VALUE="SegmentRuleText"/>
+				</callelement>
+								
+			</then>
+			</if>
+		</then>
+		</if>
+	</then>
+	</if>
+</then>
+</if>
+
+</FTCS> 

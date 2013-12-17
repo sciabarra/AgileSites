@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Segments/UnpackHistoryHintSub
+--
+-- INPUT
+--	nvOurCell set up
+--
+-- OUTPUT
+--	some variables set
+-->
+
+<nvobject.getvalue NAME="nvOurCell" VALUENAME="HDATEOP" VARNAME="durationType"/>
+<if COND="Variables.durationType=fixed">
+	<then>
+		<nvobject.getvalue NAME="nvOurCell" VALUENAME="HSTARTDATE" VARNAME="SegmentStartDate"/>
+		<nvobject.getvalue NAME="nvOurCell" VALUENAME="HSTARTTZ" VARNAME="SegmentStartTimeZone"/>
+		<nvobject.getvalue NAME="nvOurCell" VALUENAME="HENDDATE" VARNAME="SegmentEndDate"/>
+		<nvobject.getvalue NAME="nvOurCell" VALUENAME="HENDTZ" VARNAME="SegmentEndTimeZone"/>
+	</then>
+	<else>
+		<if COND="Variables.durationType=relative">
+			<then>
+				<nvobject.getvalue NAME="nvOurCell" VALUENAME="HRELTYPE" VARNAME="sRelativeOp"/>
+				<nvobject.getvalue NAME="nvOurCell" VALUENAME="HINTERVAL" VARNAME="sHinterval"/>
+			</then>
+		</if>
+	</else>
+</if>
+<nvobject.getvalue NAME="nvOurCell" VALUENAME="HOP" VARNAME="sHop"/>
+<if COND="Variables.sHop=sum">
+	<then>
+		<setvar NAME="SummableType" VALUE="UseTotal"/>
+		<nvobject.getvalue NAME="nvOurCell" VALUENAME="RULEOP" VARNAME="sRuleOp1"/>
+		<nvobject.getvalue NAME="nvOurCell" VALUENAME="COMPAREOP" VARNAME="sCompare1Op"/>
+		<nvobject.getvalue NAME="nvOurCell" VALUENAME="VALUE" VARNAME="sValue"/>
+		<if COND="IsVariable.sValue!=true">
+			<then>
+				<setvar NAME="sValue" VALUE="Variables.empty"/>
+			</then>
+		</if>
+		<nvobject.getvalue NAME="nvOurCell" VALUENAME="HFIELD" VARNAME="sHField"/>
+	</then>
+	<else>
+		<if COND="Variables.sHop=count">
+			<then>
+				<setvar NAME="SummableType" VALUE="UseCount"/>
+				<nvobject.getvalue NAME="nvOurCell" VALUENAME="RULEOP" VARNAME="sRuleOp2"/>
+				<nvobject.getvalue NAME="nvOurCell" VALUENAME="COMPAREOP" VARNAME="sCompare2Op"/>
+				<nvobject.getvalue NAME="nvOurCell" VALUENAME="VALUE" VARNAME="sValue1"/>
+				<if COND="IsVariable.sValue1!=true">
+					<then>
+						<setvar NAME="sValue1" VALUE="Variables.empty"/>
+					</then>
+				</if>
+			</then>
+			<else>
+				<if COND="Variables.sHop=first">
+					<then>
+						<setvar NAME="SummableType" VALUE="UseEarliest"/>
+						<nvobject.getvalue NAME="nvOurCell" VALUENAME="RULEOP" VARNAME="sRuleOp3"/>
+						<nvobject.getvalue NAME="nvOurCell" VALUENAME="COMPAREOP" VARNAME="sCompare3Op"/>
+						<nvobject.getvalue NAME="nvOurCell" VALUENAME="VALUE" VARNAME="SegmentEarliestDate"/>
+						<nvobject.getvalue NAME="nvOurCell" VALUENAME="VALUETZ" VARNAME="EarliestTimeZone"/>
+					</then>
+					<else>
+						<if COND="Variables.sHop=last">
+							<then>
+								<setvar NAME="SummableType" VALUE="UseLatest"/>
+								<nvobject.getvalue NAME="nvOurCell" VALUENAME="RULEOP" VARNAME="sRuleOp4"/>
+								<nvobject.getvalue NAME="nvOurCell" VALUENAME="COMPAREOP" VARNAME="sCompare4Op"/>
+								<nvobject.getvalue NAME="nvOurCell" VALUENAME="VALUE" VARNAME="SegmentLatestDate"/>
+								<nvobject.getvalue NAME="nvOurCell" VALUENAME="VALUETZ" VARNAME="LatestTimeZone"/>
+							</then>
+						</if>
+					</else>
+				</if>
+			</else>
+		</if>
+	</else>
+</if>
+
+</FTCS> 

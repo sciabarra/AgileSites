@@ -1,0 +1,287 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateD/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Query/ApprovePost.xml $ 
+$Revision: 28 $ 
+$Modtime: 8/30/04 2:50p $ 
+-->
+<!-- OpenMarket/Xcelerate/AssetType/Query/ApprovePost
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<!-- put out a warning if user is approving a query for export -->
+<if COND="Variables.targettype=export">
+<then>
+	<XLAT.LOOKUP KEY="dvin/AT/Query/ApprovePost-approvingForExport" VARNAME="_xlat_exporting"/>
+     <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+      <argument NAME="msgtext" VALUE="Variables._xlat_exporting"/>
+		<argument NAME="severity" VALUE="info"/>	
+     </callelement>   
+</then>
+</if>  
+
+<setvar NAME="errno" VALUE="0"/>
+<!-- execute the query and if possible, display the resulst and the approval status -->
+<ASSET.LOAD NAME="qry" TYPE="Query" OBJECTID="Variables.id"/>
+<if COND="IsError.Variables.errno=false">
+<then>
+
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Query/ExecuteQuery">
+		<ARGUMENT NAME="list" VALUE="Content"/>
+		<ARGUMENT NAME="assetname" VALUE="qry"/>
+		<ARGUMENT NAME="ResultLimit" VALUE="-1"/>
+	</CALLELEMENT>
+	<SETVAR NAME="executeQueryError" VALUE="Variables.errno"/>
+	<if COND="IsError.Variables.executeQueryError=false">
+	<then>
+	
+	<SETVAR NAME="rowStyle" VALUE="tile-row-normal"/>
+	<setcounter NAME="colspan_count" VALUE="13"/> 	
+	<XLAT.STREAM KEY="dvin/Common/AT/Assetsreturnedbyquery"/>
+	<table BORDER="0" CELLSPACING="0" CELLPADDING="0">
+	<tr>
+		<td></td><td class="tile-dark" VALIGN="TOP" HEIGHT="1"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td><td></td>
+	</tr>
+	<tr>
+	<td class="tile-dark" VALIGN="top" WIDTH="1" NOWRAP="nowrap"><BR /></td>
+	<td >
+	<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff">
+		<tr><td colspan="Counters.colspan_count" REPLACEALL="Counters.colspan_count" class="tile-highlight"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td></tr>
+		<tr><td class="tile-a" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td>
+			<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td>
+			<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/Common/Name"/></DIV></td>
+			<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/Common/Description"/></DIV></td>
+			<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/AT/Common/Status"/></DIV></td>
+			<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><XLAT.STREAM KEY="dvin/Common/Modified"/></DIV></td>
+			<td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;&nbsp;&nbsp;&nbsp;</td><td class="tile-b" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir"><DIV class="new-table-title"><BR /></DIV></td>
+			<td class="tile-c" background="Variables.cs_imagedir/graphics/common/screen/grad.gif" REPLACEALL="Variables.cs_imagedir">&nbsp;</td>
+		</tr>
+		
+				<!-- Loop over all search results. -->
+			
+				<setvar NAME="separatorLine" VALUE="0"/>
+			
+				<if COND="IsColumn.Content.id=true">
+				<then>
+					<setvar NAME="idcol" VALUE="id"/>
+				</then>
+				<else>
+					<if COND="IsColumn.Content.Query:subtype.id=true">
+					<then>
+						<setvar NAME="idcol" VALUE="Query:subtype.id"/>
+					</then>
+					<else>
+						<if COND="IsColumn.Content.oid=true">
+						<then>
+							<setvar NAME="idcol" VALUE="oid"/>
+						</then>
+						<else>
+							<if COND="IsColumn.Content.assetid=true">
+							<then>
+								<setvar NAME="idcol" VALUE="assetid"/>
+							</then>
+							</if>
+						</else>
+						</if>
+					</else>
+					</if>
+				</else>
+				</if>
+				<if COND="IsVariable.idcol=false">
+				<then>
+					<XLAT.LOOKUP KEY="dvin/AT/Query/ApprovePost-cannotDisplayResults" VARNAME="_xlat_nodisplay"/>
+			     <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+			      <argument NAME="msgtext" VALUE="Variables._xlat_nodisplay"/>
+					<argument NAME="severity" VALUE="info"/>	
+			     </callelement>   
+				</then>
+				<else> 
+
+					<loop LIST="Content">
+				
+					<!-- Note: this is not very efficient, loading each asset this way - candidate for performance improvemnet -->
+					<SETVAR NAME="assetid" VALUE="Content.Variables.idcol"/>
+					<SETVAR NAME="assettype" VALUE="Variables.Query:subtype"/>
+					<ASSET.LOAD NAME="anAsset" TYPE="Variables.assettype" OBJECTID="Variables.assetid"/>
+					<if COND="IsError.Variables.errno=false">
+					<then>
+						<ASSET.GET NAME="anAsset" FIELD="name"/>
+						<ASSET.GET NAME="anAsset" FIELD="description"/>
+						<ASSET.GET NAME="anAsset" FIELD="updateddate"/>
+						<ASSET.GET NAME="anAsset" FIELD="id" OUTPUT="assetid"/>
+						<ASSET.GET NAME="anAsset" FIELD="status"/>
+				
+						<IF COND="Variables.separatorLine=1">
+							<THEN>
+								<tr>
+									<!--<td colspan="Counters.colspan_count" REPLACEALL="Counters.colspan_count" class="light-line-color"><img height="1" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>-->
+								</tr>
+							</THEN>
+						</IF>
+					
+						<setvar NAME="separatorLine" VALUE="1"/>
+						<tr class="Variables.rowStyle" REPLACEALL="Variables.rowStyle">
+						
+                        <PREVIEWURL.MAKEURL VARNAME="previewURL" ASSETTYPE="Variables.assettype" ASSETID="Variables.assetid" PUBID="SessionVariables.pubid" TARGET="Variables.target"/>
+                        <IF COND="IsVariable.previewURL=true">
+                        <THEN>
+                            <td><BR /></td>
+    					
+                            <td VALIGN="TOP" NOWRAP="NOWRAP" ALIGN="LEFT">
+                                <img height="5" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/>
+                                <XLAT.LOOKUP KEY="dvin/UI/Previewfortargetname" VARNAME="_XLAT_"/>
+                                <XLAT.LOOKUP KEY="dvin/UI/Previewfortargetname" VARNAME="mouseover" ESCAPE="true"/>                                
+                                <A HREF="javascript:void(0)" onclick="openPreview('Variables.previewURL');" onmouseover="window.status='Variables.mouseover';return true;" onmouseout="window.status='';return true" REPLACEALL="Variables.previewURL,Variables.targetname,Variables.mouseover"><img height="14" width="14" vspace="4" src="Variables.cs_imagedir/graphics/common/icon/iconPreviewContent.gif" border="0" title="Variables._XLAT_" alt="Variables._XLAT_" REPLACEALL="Variables.cs_imagedir,Variables._XLAT_"/></A>
+                            </td>
+                        </THEN>
+                        </IF>
+
+                        <td><BR /></td>
+					
+							<td VALIGN="TOP" NOWRAP="NOWRAP" ALIGN="LEFT">
+							<DIV class="small-text-inset">
+								<XLAT.LOOKUP KEY="dvin/Common/InspectThisItem" VARNAME="_XLAT_"/>
+								<XLAT.LOOKUP KEY="dvin/Common/InspectThisItem" VARNAME="mouseover" ESCAPE="true"/>
+			 					<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateLink">
+									<ARGUMENT NAME="assettype" VALUE="Variables.assettype"/>
+									<ARGUMENT NAME="assetid" VALUE="Variables.assetid"/>
+									<ARGUMENT NAME="varname" VALUE="urlInspectItem"/>
+									<ARGUMENT NAME="function" VALUE="inspect"/>
+								</CALLELEMENT>
+								<A HREF="Variables.urlInspectItem" OnMouseOver="window.status='Variables.mouseover'; return true" OnMouseOut="return window.status='';" title="Variables._XLAT_"  REPLACEALL="Variables.urlInspectItem,Variables._XLAT_,Variables.mouseover">
+									<STRING.STREAM VARIABLE="name"/>
+								</A><BR />
+							</DIV>
+							</td>
+							<td><BR /></td>
+					
+							<td valign="top">
+								<DIV class="small-text-inset">
+									<STRING.STREAM VARIABLE="description"/><BR />
+								</DIV>
+							</td>
+							<td><BR /></td>
+							
+							<td valign="top">
+								<DIV class="small-text-inset">
+									<XLAT.LOOKUP KEY="dvin/AT/Common/ShowStatus" VARNAME="_XLAT_"/>
+									<XLAT.LOOKUP KEY="dvin/AT/Common/ShowStatus" VARNAME="mouseover" ESCAPE="true"/>
+									<XLAT.LOOKUP KEY="dvin/AT/Common/StatusCode-Variables.status" VARNAME="statusdesc"/>
+				 					<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateLink">
+										<ARGUMENT NAME="assettype" VALUE="Variables.assettype"/>
+										<ARGUMENT NAME="assetid" VALUE="Variables.assetid"/>
+										<ARGUMENT NAME="varname" VALUE="urlShowStatus"/>
+										<ARGUMENT NAME="function" VALUE="status"/>
+									</CALLELEMENT>
+   								<A HREF="Variables.urlShowStatus" ONMOUSEOVER="window.status = 'Variables.mouseover'; return true;" ONMOUSEOUT="window.status='';return true;" REPLACEALL="Variables.urlShowStatus,Variables._XLAT_,Variables.mouseover" TITLE="Variables._XLAT_"><STRING.STREAM VALUE="Variables.statusdesc"/></A><BR />
+								</DIV>
+							</td>
+							<td><BR /></td>
+				
+							<td VALIGN="TOP" NOWRAP="NOWRAP" >
+								<DIV class="small-text-inset">
+								 <DATEFORMAT.GETDATE NAME="_FormatDate_" VALUE="Content.updateddate" VALUETYPE="jdbcdate"  VARNAME="updateddate"/>
+								 <STRING.STREAM VALUE="Variables.updateddate"/>
+								</DIV>
+							</td>	
+							<td><BR /></td>
+					
+							<td VALIGN="TOP">
+								<DIV class="small-text-inset">
+								<ApprovedAssets.IsApprovedAsset TARGET="Variables.target" ASSET="anAsset" VARNAME="isApproved"/>
+								<if COND="Variables.isApproved=true">
+								<then>
+									<XLAT.STREAM KEY="dvin/UI/AssetMgt/Approved"/>
+								</then>
+								<else>
+									<XLAT.LOOKUP KEY="dvin/UI/Approvethisitem" VARNAME="_XLAT_" ESCAPE="true"/>
+                                     <SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Xcelerate/Actions/ApprovePost" outstring="urlappropost">
+                                         <satellite.argument name="cs_environment" value="Variables.cs_environment"/>
+                                         <satellite.argument name="cs_formmode" value="Variables.cs_formmode"/>
+                                          <satellite.argument name="assetTotal" value="1"/>
+                                          <satellite.argument name="type0" value="Variables.assettype"/>
+                                          <satellite.argument name="id0" value="Variables.assetid"/>
+                                          <satellite.argument name="targetid" value="Variables.target"/>
+                                           </SATELLITE.LINK>
+									<A HREF="Variables.urlappropost" onmouseover="window.status='Variables._XLAT_';return true;" onmouseout="window.status='';return true" REPLACEALL="Variables.urlappropost,Variables._XLAT_"><XLAT.STREAM KEY="dvin/UI/AssetMgt/NeedsApproval"/></A>
+								</else>
+								</if>
+								</DIV>
+							</td>
+							<td><BR /></td>
+						</tr>
+					</then>
+					<else>
+						<tr><td COLSPAN="Counters.colspan_count" REPLACEALL="Counters.colspan_count">
+							<XLAT.STREAM KEY="dvin/UI/Error/errnoloadingassetassettypewithididcol" errno="Variables.errno" assettype="Variables.assettype" assetid="Content.Variables.idcol" EVALALL="false"/>
+						</td></tr>
+					</else>
+					</if>
+					<IF COND="Variables.rowStyle=tile-row-normal">
+					<THEN>
+						<SETVAR NAME="rowStyle" VALUE="tile-row-highlight"/>
+					</THEN>
+					<ELSE>
+						<SETVAR NAME="rowStyle" VALUE="tile-row-normal"/>
+					</ELSE>
+					</IF>
+					</loop>
+				</else>
+				</if>
+			</table>
+	 </td>
+		<td class="tile-dark" VALIGN="top" WIDTH="1" NOWRAP="nowrap"><BR /></td>
+	</tr>
+	<tr>
+		<td colspan="3" class="tile-dark" VALIGN="TOP" HEIGHT="1"><IMG WIDTH="1" HEIGHT="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+	</tr>
+	<tr>
+		<td></td><td background="Variables.cs_imagedir/graphics/common/screen/shadow.gif" REPLACEALL="Variables.cs_imagedir"><IMG WIDTH="1" HEIGHT="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td><td></td>
+	</tr>
+	</table>
+		
+
+    	
+	</then>
+	<else>
+	 	<if COND="Variables.executeQueryError=-101">
+	 	<then>
+			<ASSET.GET NAME="qry" FIELD="subtype"/>
+	 		<ASSETTYPE.LOAD NAME="at" FIELD="assettype" VALUE="Variables.subtype"/>
+	 		<ASSETTYPE.GET NAME="at" FIELD="plural"/>
+	 		<XLAT.LOOKUP KEY="dvin/AT/Query/ApprovePost-noAssets" VARNAME="_xlat_noassets"/>
+	  		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+				<argument NAME="msgtext" VALUE="Variables._xlat_noassets"/>
+				<argument NAME="severity" VALUE="info"/>
+			</callelement>
+	 	</then>
+	 	<else>
+	 		<ASSET.GET NAME="qry" FIELD="name"/>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+					<argument NAME="elem" VALUE="ExecuteQueryError"/>
+					<argument NAME="severity" VALUE="info"/>
+					<argument NAME="errno" VALUE="Variables.executeQueryError"/>
+					<argument NAME="qryid" VALUE="Variables.id"/>
+					<argument NAME="qryname" VALUE="Variables.name"/>
+			</callelement>	
+	 	</else>
+	 	</if>
+		<setvar NAME="errno" VALUE="0"/>
+	
+	 </else>
+	 </if>
+	 
+</then>
+<else>
+	<callelement NAME="OpenMarket/Xcelerate/Actions/Util/ShowError">
+		<argument NAME="error" VALUE="InvalidContentId"/>
+	</callelement>
+</else>
+</if>
+	
+</FTCS> 
