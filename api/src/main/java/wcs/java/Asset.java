@@ -617,21 +617,19 @@ public class Asset extends AssetBase implements wcs.api.Asset,
         BlobserviceTag.readdata().id(blobWhere.toString()).listvarname("outlist").run(i);
         IList blobData = i.GetList("outlist");
         String filename;
-        String folder;
         try {
             filename = blobData.getValue("urldata");
-            folder = blobData.getValue("folder");
         } catch (NoSuchFieldException e1) {
             return null;
         }
-        return normalizeFilename(filename, folder);
+        return normalizeFilename(filename);
     }
 
-    private String normalizeFilename(String filepath, String folder) {
-        String filename = filepath;
+    private String normalizeFilename(String filepath) {
         filepath = filepath.replace("\\","/");
-        if (filepath.startsWith(folder)) {
-            filename = filepath.substring(folder.length() +1);
+        String filename = filepath;
+        if (filepath.lastIndexOf("/") > 0) {
+            filename = filepath.substring(filepath.lastIndexOf("/") +1, filepath.length());
         }
         int version = filename.lastIndexOf(",");
         int extensionPos = filename.lastIndexOf(".", filename.length()) ;
