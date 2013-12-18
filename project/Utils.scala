@@ -119,7 +119,7 @@ trait Utils {
     val jardir = file(shared) / "agilesites"
 
     prp.setProperty("agilesites.dir", jardir.getAbsolutePath);
-    prp.setProperty("agilesites.poll", "100");
+    prp.setProperty("agilesites.poll", "1000");
     prp.setProperty("agilesites.static", file(static).getAbsolutePath);
     prp.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
 
@@ -176,12 +176,18 @@ trait Utils {
   def setupCopyJarsOnline(shared: String, classpathFiles: Seq[File]) {
 
     val destlib = file(shared) / "agilesites"
+    destlib.mkdirs
+
+    //println(destlib)
 
     // jars to include when performing a setup
     val addJars = classpathFiles filter(AgileSitesBuild.setupFilter accept _)
+    //println(addJars)
 
     // jars to remove when performing a setup
     val removeJars = destlib.listFiles
+    //println(removeJars)  
+
     
     setupCopyJars(destlib, addJars, removeJars)
   } 
@@ -201,8 +207,9 @@ trait Utils {
     println("** installing new version of files");
     for (file <- addJars) yield {
       val tgt = destlib / file.getName
-      println("+ " + tgt.getAbsolutePath)
       IO.copyFile(file, tgt)
+      //println(file)
+      println("+ " + tgt.getAbsolutePath)
     }
 
   }

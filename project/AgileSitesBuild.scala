@@ -11,32 +11,14 @@ import giter8.ScaffoldPlugin.scaffoldSettings
 
 object AgileSitesBuild extends Build with AgileSitesSupport {
 
-  // if you change this 
-  // remember to update the agilesites scripts
-  val v = "1.8.0" 
-
   // jars to be added to the library setup
-  val setupFilter =  "agilesites-api*" || "junit*" 
-
-  // configuring WCS jars as unmanaged lib
-  val unmanagedFilter = "log4j-*" || "slf4j*" || "spring-*" || "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
-    "wem-sso-api-*" || "rest-api-*" || "cas-client-*" || "assetapi*" || "xstream*" ||
-    "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar" || "ehcache-*" || "sites-*" || "esapi-*"
-
-  val includeFilterUnmanagedJars = includeFilter in unmanagedJars := unmanagedFilter
-
-  val unmanagedBaseTask = unmanagedBase in Compile <<= wcsWebapp {
-    base => file(base) / "WEB-INF" / "lib"
-  }
-
-  val unmanagedJarsTask = unmanagedJars in Compile <+= wcsCsdtJar map {
-    jar => Attributed.blank(file(jar))
-  }
+  val setupFilter =  "agilesites-api*" || "junit*" || "hamcrest*"
 
   ///  core dependencies - those are used for compiling
   val coreDependencies = Seq(
     "javax.servlet" % "servlet-api" % "2.5",
     "junit" % "junit" % "4.4",
+    "org.hamcrest" % "hamcrest-all" % "1.3",
     "org.springframework" % "spring" % "2.5.5",
     "org.springframework" % "spring-test" % "2.5.5",
     "commons-logging" % "commons-logging" % "1.1.1",
@@ -47,8 +29,28 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "org.apache.httpcomponents" % "httpmime" % "4.1.2",
     "org.apache.james" % "apache-mime4j" % "0.5",
     "junit" % "junit" % "4.11" % "test",
-    "com.novocode" % "junit-interface" % "0.10" % "test",
-    "org.hamcrest" % "hamcrest-all" % "1.3" % "test")
+    "com.novocode" % "junit-interface" % "0.10" % "test")
+
+  // configuring WCS jars as unmanaged lib from sites directory
+  val unmanagedFilter = "log4j-*" || "slf4j*" || "spring-*" || "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
+    "wem-sso-api-*" || "rest-api-*" || "cas-client-*" || "assetapi*" || "xstream*" ||
+    "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar" || "ehcache-*" || "sites-*" || "esapi-*"
+
+  /// END CHANGES
+
+  // if you change this 
+  // remember to update the agilesites scripts
+  val v = "1.8.0" 
+
+  val includeFilterUnmanagedJars = includeFilter in unmanagedJars := unmanagedFilter
+
+  val unmanagedBaseTask = unmanagedBase in Compile <<= wcsWebapp {
+    base => file(base) / "WEB-INF" / "lib"
+  }
+
+  val unmanagedJarsTask = unmanagedJars in Compile <+= wcsCsdtJar map {
+    jar => Attributed.blank(file(jar))
+  }
 
   val coreSettings = Defaults.defaultSettings ++ net.virtualvoid.sbt.graph.Plugin.graphSettings ++ Seq(
     scalaVersion := "2.10.2",

@@ -7,7 +7,6 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -18,23 +17,37 @@ import org.junit.Test;
 /**
  * 
  * Part of this class must be run manually as a java application because the
- * class loader are not compantible with the test runner...
+ * class loader are not compatible with the test runner...
  * 
  * @author msciab
  * 
  */
 public class LoaderTest {
 
+	static {
+		// org.apache.log4j.BasicConfigurator.configure();
+	}
+
+	public LoaderTest() {
+		tempDir = new File(System.getProperty("java.io.tmpdir"), "testdir");
+		tempDir.mkdirs();
+		parent = LoaderTest.class.getClassLoader();
+		loader = new Loader(tempDir, 100, parent);
+	}
+
+	public LoaderTest(LoaderTest loaderTest) {
+		tempDir = loaderTest.tempDir;
+		parent = loaderTest.parent;
+		loader = loaderTest.loader;
+	}
+
 	Loader loader;
 	ClassLoader parent;
 	File tempDir;
 
 	@Before
-	public void setup() {
-		tempDir = new File(System.getProperty("java.io.tmpdir"), "testdir");
-		tempDir.mkdirs();
-		parent = LoaderTest.class.getClassLoader();
-		loader = new Loader(tempDir, 100, parent);
+	public void setup() throws Exception {
+		emptyDir();
 		msg("[" + tempDir + "]");
 	}
 
@@ -69,27 +82,33 @@ public class LoaderTest {
 
 	private void emptyDir() throws Exception {
 
+		if (loader != null)
+			loader.close();
+
 		for (File f : tempDir.listFiles()) {
 			if (f.isDirectory())
 				continue;
-			if (!f.delete())
+			if (!f.delete()) {
+				System.out.println("cannot delete " + f);
 				throw new Exception("cannot empty dir");
+			}
 		}
-
-		for (File f : new File(tempDir, "spool").listFiles()) {
-			if (!f.delete())
-				throw new Exception("cannot empty dir");
-		}
-
 	}
 
-	private wcs.api.Element load(String name) throws InstantiationException,
+	private int load(String name) throws InstantiationException,
 			IllegalAccessException {
 		Class<?> clazz = loader.loadClass("wcs.core.test." + name);
 		if (clazz == null)
-			return null;
+			return 0;
 		Object object = clazz.newInstance();
-		return (wcs.api.Element) object;
+		Readable r = (Readable) object;
+		try {
+			int res = r.read(null);
+			return res;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 	@Test
@@ -97,7 +116,6 @@ public class LoaderTest {
 
 		msg("Empty");
 
-		emptyDir();
 		assertNull(loader.getJarsIfSomeIsModifiedAfterInterval());
 		assertEquals(loader.getClassLoader(), loader.getParentClassLoader());
 
@@ -111,7 +129,6 @@ public class LoaderTest {
 	@Test
 	public void testOne() throws Exception {
 
-		emptyDir();
 		updateJar("a");
 
 		// find it first time
@@ -151,7 +168,6 @@ public class LoaderTest {
 	@Test
 	public void testTwo() throws Exception {
 
-		emptyDir();
 		updateJar("a");
 		updateJar("b");
 
@@ -203,22 +219,20 @@ public class LoaderTest {
 
 	// manual test - launch main
 	public void testZeroJar() throws Exception {
-		emptyDir();
 		assertTr(loader.getClassLoader() == parent);
 		// loader.close();
 	}
 
 	// manual test - launch main
+	@Test
 	public void testOneJar() throws Exception {
-		emptyDir();
-
 		updateJar("a");
 
 		msg("change to urlcl");
 		Thread.sleep(200);
 		ClassLoader cur = loader.getClassLoader();
 		assertTr(cur != parent);
-		assertTr(cur instanceof URLClassLoader);
+		assertTr(cur instanceof JarClassLoader);
 
 		// loader.close();
 		msg("no change");
@@ -231,7 +245,7 @@ public class LoaderTest {
 		assertTr(cur != loader.getClassLoader());
 	}
 
-	// manual test
+	@Test
 	public void testTwoJar() throws Exception {
 
 		updateJar("a");
@@ -241,7 +255,7 @@ public class LoaderTest {
 		Thread.sleep(200);
 		ClassLoader cur = loader.getClassLoader();
 		assertTr(cur != parent);
-		assertTr(cur instanceof URLClassLoader);
+		assertTr(cur instanceof JarClassLoader);
 
 		// loader.close();
 		msg("no change");
@@ -262,8 +276,6 @@ public class LoaderTest {
 	// manual test
 	public void testThreeJar() throws Exception {
 
-		emptyDir();
-
 		updateJar("a");
 		updateJar("b");
 		updateJar("c");
@@ -272,7 +284,7 @@ public class LoaderTest {
 		Thread.sleep(200);
 		ClassLoader cur = loader.getClassLoader();
 		assertTr(cur != parent);
-		assertTr(cur instanceof URLClassLoader);
+		assertTr(cur instanceof JarClassLoader);
 
 		// loader.close();
 		msg("no change");
@@ -291,28 +303,67 @@ public class LoaderTest {
 	}
 
 	// manual test
+	@Test
 	public void testLoadClassFromOneJar() throws Exception {
-		emptyDir();
 		updateJar("a");
 		msg("loading class");
-		assertTr(load("a.A").equals("a"));
+		assertTr(load("a.A") == 'a');
 	}
 
-	/*
-	 * 
-	 * @Test public void testLoadOneJar() throws Exception { emptyDir();
-	 * updateJar("a"); // assertFalse(cl == loader.getDefaultClassLoader());
-	 * Element e = load("a.A"); assertEquals(e.exec(null), "a"); loader.close();
-	 * }
-	 * 
-	 * public static void main(String[] args) throws Exception { LoaderTest lt =
-	 * new LoaderTest(); lt.setup(); lt.emptyDir(); lt.updateJar("a");
-	 * lt.updateJar("b"); System.out.println(lt.tempDir.getAbsolutePath()); }
-	 * 
-	 * public static void main(String[] args) throws Exception {
-	 * 
-	 * LoaderTest test = new LoaderTest(); test.setup(); //test.testZeroJar();
-	 * //test.testOneJar(); //test.testTwoJar(); //test.testThreeJar();
-	 * test.testLoadClassFromOneJar(); }
-	 */
+	@Test
+	public void testLoadClassFromTwoJar() throws Exception {
+		updateJar("a");
+		updateJar("b");
+		msg("loading class from b");
+		assertTr(load("a.A") == 'a');
+		assertTr(load("b.B") == 'b');
+	}
+
+	@Test
+	public void testLoadClassFromThreeJar() throws Exception {
+		updateJar("a");
+		updateJar("b");
+		updateJar("c");
+
+		msg("loading class from b");
+		assertTr(load("a.A") == 'a');
+		assertTr(load("b.B") == 'b');
+		assertTr(load("c.C") == 'c');
+
+	}
+
+	// @Test
+	public void replaceJar() throws Exception {
+		updateJar("a");
+		updateJar("b");
+
+		msg("loading class from b");
+		assertTr(load("a.A") == 'a');
+		assertTr(load("b.B") == 'b');
+
+		copyJar("c", "a");
+		Thread.sleep(1000);
+
+		assertTr(load("c.C") == 'c');
+		try {
+			assertTr(load("a.A") == 'a');
+			throw new Error("a.A should be gone in "
+					+ loader.getCurrentSpoolDir());
+		} catch (Exception e) {
+			msg("ex is ok:" + e.getMessage());
+		}
+
+		copyJar("a", "b");
+		Thread.sleep(200);
+
+		assertTr(load("a.A") == 'a');
+		try {
+			assertTr(load("b.B") == 'b');
+			throw new Exception("b.B should be gone in "
+					+ loader.getCurrentSpoolDir());
+		} catch (Exception e) {
+			msg("ex is ok:" + e.getMessage());
+		}
+	}
+
 }

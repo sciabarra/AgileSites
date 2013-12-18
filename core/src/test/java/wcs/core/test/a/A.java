@@ -1,20 +1,16 @@
 package wcs.core.test.a;
 
-import COM.FutureTense.Interfaces.ICS;
-import wcs.api.Env;
+import java.io.IOException;
+import java.nio.CharBuffer;
 
 // this class is used to build the test a.jar under resources 
 
-public class A implements wcs.api.Element {
+public class A implements Readable {
 
 	@Override
-	public String apply(Env e) {		
-		return "a";
-	}
+	public int read(CharBuffer arg0) throws IOException {
 
-	@Override
-	public String exec(ICS ics) {
-		return "a";
+		return 'a';
 	}
 
 }

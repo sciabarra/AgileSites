@@ -135,12 +135,13 @@ trait AgileSitesSupport extends Utils {
       }
   }
 
+
   lazy val wcsCopyJarsOnline = TaskKey[Unit]("wcs-copyjars-online", "WCS Copy Jars Offline")
   val wcsCopyJarsOnlineTask = wcsCopyJarsOnline <<= 
     (fullClasspath in Compile, wcsShared) map {
       (classpath, shared) =>
-            for(a <- classpath) println(a)
-            setupCopyJarsOnline(shared, classpath.files)
+            //for(a <- classpath) println(a)
+          setupCopyJarsOnline(shared, classpath.files)
   }
 
   lazy val wcsSetupOnline = InputKey[Unit]("wcs-setup-online", "WCS Setup Online")
