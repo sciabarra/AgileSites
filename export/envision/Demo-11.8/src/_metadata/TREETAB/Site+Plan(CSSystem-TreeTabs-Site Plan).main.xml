@@ -101,6 +101,14 @@
       <sites class="com.openmarket.xcelerate.common.SiteList">
         <hashtable>
           <entry>
+            <long>1253041378564</long>
+            <long>1253041378564</long>
+          </entry>
+          <entry>
+            <long>1374097567472</long>
+            <long>1374097567472</long>
+          </entry>
+          <entry>
             <long>1351275793143</long>
             <long>1351275793143</long>
           </entry>
@@ -125,6 +133,14 @@
             <populateURL>OpenMarket/Xcelerate/AssetType/Page/LoadSiteTree</populateURL>
             <sites class="com.openmarket.xcelerate.common.SiteList">
               <hashtable>
+                <entry>
+                  <long>1253041378564</long>
+                  <long>1253041378564</long>
+                </entry>
+                <entry>
+                  <long>1374097567472</long>
+                  <long>1374097567472</long>
+                </entry>
                 <entry>
                   <long>1351275793143</long>
                   <long>1351275793143</long>

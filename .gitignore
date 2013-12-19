@@ -12,8 +12,10 @@ build.sbt
 .metadata
 report.xml
 # sbt specific
+api/scaffolds/cselement/default.properties
+api/scaffolds/layout/default.properties
+api/scaffolds/template/default.properties
 target/
-tags/
 project/boot/
 project/repo/
 project/ivy2/

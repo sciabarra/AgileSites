@@ -1,6 +1,18 @@
 package wcs.java;
 
-import static wcs.Api.*;
+import static wcs.Api.arg;
+import static wcs.Api.tmp;
+import static wcs.Api.toDate;
+import static wcs.Api.toInt;
+import static wcs.Api.toLong;
+
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import wcs.Api;
 import wcs.api.Arg;
 import wcs.api.Asset;
@@ -16,12 +28,6 @@ import wcs.core.tag.SatelliteTag;
 import wcs.java.util.Util;
 import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Facade to the Sites services. It is passed as the main argument to element
@@ -40,15 +46,15 @@ public class Env extends wcs.core.ICSProxyJ implements Content, wcs.api.Env {
 	private wcs.api.Config config;
 	private wcs.api.Router router;
 	private String site;
-	private String normSite;
 	private boolean insite;
 	private boolean preview;
 
 	/**
-	 * Build the env - with this costructor you have an invalid env that still needs to be initialized with
-	 * init to be usable
+	 * Build the env - with this costructor you have an invalid env that still
+	 * needs to be initialized with init to be usable
 	 */
-	public Env() { }
+	public Env() {
+	}
 
 	/**
 	 * Build the env from the ICS and initialize it
@@ -67,7 +73,6 @@ public class Env extends wcs.core.ICSProxyJ implements Content, wcs.api.Env {
 	public void init(ICS ics) {
 		super.init(ics);
 		this.site = ics.GetVar("site");
-		this.normSite = WCS.normalizeSiteName(site);
 		config = wcs.core.WCS.getConfig(ics);
 		router = wcs.core.WCS.getRouter(ics);
 		String rendermode = ics.GetVar("rendermode");
@@ -490,7 +495,7 @@ public class Env extends wcs.core.ICSProxyJ implements Content, wcs.api.Env {
 		// System.out.println("getUrl:" + id);
 
 		if (insite || preview) {
-			return RenderTag.getpageurl().pagename(normSite).c(id.c)
+			return RenderTag.getpageurl().pagename(site).c(id.c)
 					.cid(id.cid.toString()).assembler("query")
 					.eval(ics, "outstr");
 		}

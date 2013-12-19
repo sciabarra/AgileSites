@@ -13,7 +13,7 @@ public class Tester extends TestRunnerElement {
 
 	public static AssetSetup setup() {
 		return new CSElement("Tester", demo.element.Tester.class, //
-				new SiteEntry("", false, "Tester"));
+				new SiteEntry("Tester", false));
 	}
 
 	@Override

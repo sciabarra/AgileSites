@@ -16,7 +16,7 @@ public class Wrapper extends Element {
 	private final static Log log = Log.getLog(Wrapper.class);
 	public static AssetSetup setup() {
 		return new CSElement("Wrapper", $site;format="normalize"$.element.Wrapper.class,
-				new SiteEntry("", true));
+				new SiteEntry("", true, "$site$/$site$_Wrapper"));
 	}
 
 	@Override

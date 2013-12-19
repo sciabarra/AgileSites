@@ -118,7 +118,7 @@
             <COM.FutureTense.Interfaces.FTVAL serialization="custom">
               <COM.FutureTense.Interfaces.FTVAL>
                 <int>30</int>
-                <string></string>
+                <string>SiteEntry:1374097571175</string>
               </COM.FutureTense.Interfaces.FTVAL>
             </COM.FutureTense.Interfaces.FTVAL>
             <string>name</string>
