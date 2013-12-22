@@ -32,13 +32,30 @@ import com.fatwire.cs.core.uri.Definition;
 
 @SuppressWarnings("deprecation")
 public class ICSProxyJ implements ICS {
-	
-	public String getVersion() { return "7.5.0"; }
-	public int getVersionMajor() { return 7; }
-	public int getVersionMinor() { return 5; }
-	public int getVersionLevel() { return 0; }
 
+	public String getVersion() {
+		return "7.5.0";
+	}
 
+	public int getVersionMajor() {
+		return 7;
+	}
+
+	public int getVersionMinor() {
+		return 5;
+	}
+
+	public int getVersionLevel() {
+		return 0;
+	}
+
+	public static String getSiteVar() {
+		return "c";
+	}
+
+	public static String getUrlVar() {
+		return "cid";
+	}
 
 	public ICS ics;
 
@@ -54,28 +71,27 @@ public class ICSProxyJ implements ICS {
 		init(ics);
 	}
 
-
-	public String getSiteId(String siteName) {		
+	public String getSiteId(String siteName) {
 		String pub = tmp();
 		String out = tmp();
-					
+
 		FTValList attrs = new FTValList();
 		attrs.setValString("NAME", pub);
 		attrs.setValString("FIELD", "name");
 		attrs.setValString("VALUE", siteName);
 		ics.runTag("PUBLICATION.LOAD", attrs);
-		
+
 		attrs = new FTValList();
 		attrs.setValString("NAME", pub);
 		attrs.setValString("FIELD", "id");
 		attrs.setValString("OUTPUT", out);
 		ics.runTag("PUBLICATION.GET", attrs);
-		
+
 		return ics.GetVar(out);
 	}
 
 	public Id getSitePlanRoot(String siteName) {
-	   return new Id("Publication", Long.parseLong(getSiteId(siteName)));
+		return new Id("Publication", Long.parseLong(getSiteId(siteName)));
 	}
 
 	public boolean AppEvent(String arg0, String arg1, String arg2,
@@ -83,16 +99,15 @@ public class ICSProxyJ implements ICS {
 		return ics.AppEvent(arg0, arg1, arg2, arg3);
 	}
 
-
 	public boolean BlobServer(FTValList arg0, IMIMENotifier arg1,
 			OutputStream arg2) {
 		return ics.BlobServer(arg0, arg1, arg2);
 	}
 
 	/*
-	public boolean BlobServer(FTValList arg0, OutputStream arg1) {
-		return ics.BlobServer(arg0, arg1);
-	}*/
+	 * public boolean BlobServer(FTValList arg0, OutputStream arg1) { return
+	 * ics.BlobServer(arg0, arg1); }
+	 */
 
 	public boolean CallElement(String arg0, FTValList arg1) {
 		return ics.CallElement(arg0, arg1);
@@ -308,12 +323,11 @@ public class ICSProxyJ implements ICS {
 		return ics.IsTracked(arg0);
 	}
 
-/*
-	public boolean IsTrackedNewFormat(String arg0) {
-		return ics.IsTrackedNewFormat(arg0);
-	}
-*/
-	
+	/*
+	 * public boolean IsTrackedNewFormat(String arg0) { return
+	 * ics.IsTrackedNewFormat(arg0); }
+	 */
+
 	public boolean LoadProperty(String arg0) {
 		return ics.LoadProperty(arg0);
 	}
@@ -687,12 +701,11 @@ public class ICSProxyJ implements ICS {
 		return ics.getCookie(arg0);
 	}
 
-/*
-	public String getElementArgumentValue(String arg0, String arg1) {
-		return ics.getElementArgumentValue(arg0, arg1);
-	}
-*/
-	
+	/*
+	 * public String getElementArgumentValue(String arg0, String arg1) { return
+	 * ics.getElementArgumentValue(arg0, arg1); }
+	 */
+
 	public IProperties getIProperties() {
 		return ics.getIProperties();
 	}
@@ -701,7 +714,6 @@ public class ICSProxyJ implements ICS {
 	public COM.FutureTense.Interfaces.IServlet getIServlet() {
 		return ics.getIServlet();
 	}
-
 
 	public String getLocaleString(String arg0, String arg1) {
 		return ics.getLocaleString(arg0, arg1);

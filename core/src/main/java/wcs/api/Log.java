@@ -46,7 +46,7 @@ public class Log {
 	 * @param message
 	 * @param args
 	 */
-	public void trace(Exception ex, String message, Object... args) {
+	public void trace(Throwable ex, String message, Object... args) {
 		if (logger != null)
 			logger.trace(args.length > 0 ? String.format(message, args)
 					: message, ex);
@@ -79,7 +79,7 @@ public class Log {
 	 * @param message
 	 * @param args
 	 */
-	public void debug(Exception ex, String message, Object... args) {
+	public void debug(Throwable ex, String message, Object... args) {
 		// System.out.println("[DEBUG]" + className + message + e2s(ex));
 		if (logger != null && logger.isDebugEnabled())
 			logger.debug(args.length > 0 ? String.format(message, args)
@@ -104,7 +104,7 @@ public class Log {
 	 * @param message
 	 * @param args
 	 */
-	public void info(Exception ex, String message, Object... args) {
+	public void info(Throwable ex, String message, Object... args) {
 		// System.out.println("[ INFO]" + className + message + e2s(ex));
 		if (logger != null)
 			logger.info(args.length > 0 ? String.format(message, args)
@@ -138,7 +138,7 @@ public class Log {
 	 * @param message
 	 * @param args
 	 */
-	public void warn(Exception ex, String message, Object... args) {
+	public void warn(Throwable ex, String message, Object... args) {
 		// System.out.println("[WARN ]" + className + String.format(message,
 		// args) + e2s(ex));
 		if (logger != null)
@@ -165,7 +165,7 @@ public class Log {
 	 * @param message
 	 * @param args
 	 */
-	public void error(Exception ex, String message, Object... args) {
+	public void error(Throwable ex, String message, Object... args) {
 		// System.out.print("[ERROR]" + className + String.format(message, args)
 		// + e2s(ex));
 		if (logger != null)

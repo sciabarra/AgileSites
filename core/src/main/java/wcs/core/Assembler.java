@@ -2,7 +2,6 @@ package wcs.core;
 
 import wcs.Api;
 import wcs.api.Log;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,7 +13,6 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 import com.fatwire.cs.core.uri.Definition;
 import com.fatwire.cs.core.uri.Definition.ContainerType;
 import com.fatwire.cs.core.uri.QueryAssembler;
@@ -23,33 +21,32 @@ import com.fatwire.cs.core.uri.Simple;
 public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 
 	public static URI buildUri(String prefix, String suffix) {
-		log.debug("buildUri: %s / %s", prefix, suffix);
+		if (log.debug())
+			log.debug("buildUri: %s / %s", prefix, suffix);
 		try {
 			URI uri = new URI(prefix);
 			uri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
-					uri.getPort(), uri.getPath() + Api.nn(suffix), null,
-					null);
+					uri.getPort(), uri.getPath() + Api.nn(suffix), null, null);
 			return uri;
 		} catch (URISyntaxException e) {
 			return null;
 		}
 	}
 
-    private URI buildBlobUri(String prefix, String blobId) {
-        try {
-        	if(prefix==null)
-        		return null;
-            URI uri = new URI(prefix);
-            uri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
-                    uri.getPort(), uri.getPath() +"/" + blobId,  null,
-                    null);
-            return uri;
-        } catch (URISyntaxException e) {
-            return null;
-        }
-    }
+	private URI buildBlobUri(String prefix, String blobId) {
+		try {
+			if (prefix == null)
+				return null;
+			URI uri = new URI(prefix);
+			uri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
+					uri.getPort(), uri.getPath() + "/" + blobId, null, null);
+			return uri;
+		} catch (URISyntaxException e) {
+			return null;
+		}
+	}
 
-    final static Log log = Log.getLog(Assembler.class);
+	final static Log log = Log.getLog(Assembler.class);
 
 	private QueryAssembler qa = new QueryAssembler();
 	private Map<String, String> sitePrefix = new HashMap<String, String>();
@@ -68,14 +65,16 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		log.debug("staticBlobs=" + staticBlobs);
+		if (log.debug())
+			log.debug("staticBlobs=" + staticBlobs);
 		try {
 			flexBlobs = Pattern
 					.compile(prp.getProperty("agilesites.blob.flex"));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		log.debug("flexBlobs=" + flexBlobs);
+		if (log.debug())
+			log.debug("flexBlobs=" + flexBlobs);
 		try {
 			// look for sites
 			Enumeration<?> keys = prp.keys();
@@ -88,7 +87,8 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 
 				String site = key.substring("agilesites.1234.".length());
 				String value = prp.getProperty(key);
-				log.debug(key + ": " + value);
+				if (log.trace())
+					log.trace("%s: %s", key, value);
 
 				if (value != null) {
 					if (key.startsWith("agilesites.site")) {
@@ -97,14 +97,15 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 					if (key.startsWith("agilesites.name")) {
 						siteName.put(site, value);
 					}
-				} else
+				} else if (log.debug())
 					log.debug("no site name or prefix for " + site);
-
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
+			log.error(ex, "Assembler.setProperties");
 		}
-		log.debug("sitePrefixes=" + sitePrefix);
+		if (log.debug())
+			log.debug("sitePrefixes=" + sitePrefix);
 
 		try {
 			qa.setProperties(prp);
@@ -124,18 +125,18 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 				uri.getFragment());
 
 		def.setQueryStringParameter("pagename", "AAAgileRouter");
+		def.setQueryStringParameter("site", site);
+
+		if (d != null)
+			def.setQueryStringParameter("d", d);
 		if (path != null)
 			def.setQueryStringParameter("url", path);
-		def.setQueryStringParameter("site", site);
 		String q = uri.getRawQuery();
 		if (q != null)
 			def.setQueryStringParameter("q", q);
-        if (d != null)
-            def.setQueryStringParameter("d", d);
 
-		log.debug("site=" + site);
-		log.debug("url=" + path);
-		log.debug("q=" + q);
+		if (log.trace())
+			log.trace("%s=%s %s=%s q=%s", "site", site, "url", path, q);
 
 		return def;
 
@@ -150,14 +151,16 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 					if (pos == -1) {
 						String k = URLDecoder.decode(pair, "UTF-8");
 						def.setQueryStringParameter(k, "");
-						log.debug("qs: " + k);
+						if (log.trace())
+							log.trace("query string: %s", k);
 					} else {
 						String k = URLDecoder.decode(pair.substring(0, pos),
 								"UTF-8");
 						String v = URLDecoder.decode(pair.substring(pos + 1),
 								"UTF-8");
 						def.setQueryStringParameter(k, v);
-						log.debug("qs: " + k + "=" + v);
+						if (log.trace())
+							log.trace("query string: %s = %v ", k, v);
 					}
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
@@ -187,15 +190,16 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		def.setQueryStringParameter("blobwhere", blobwhere);
 		def.setQueryStringParameter("blobtable", blobtable);
 
-        //def.setQueryStringParameter("blobheadername1", "Content-Disposition");
-        //def.setQueryStringParameter("blobheadervalue1", "attachment; filename=" + filename);
-        //def.setQueryStringParameter("blobheadername2", "Content-Type");
-        //def.setQueryStringParameter("blobheadervalue2", mimeType);
+		// def.setQueryStringParameter("blobheadername1",
+		// "Content-Disposition");
+		// def.setQueryStringParameter("blobheadervalue1",
+		// "attachment; filename=" + filename);
+		// def.setQueryStringParameter("blobheadername2", "Content-Type");
+		// def.setQueryStringParameter("blobheadervalue2", mimeType);
 
-        log.debug("blobcol=" + blobcol);
-		log.debug("blobkey=" + blobkey);
-		log.debug("blobwhere=" + blobwhere);
-		log.debug("blobtable=" + blobtable);
+		if (log.trace())
+			log.trace("blobcol=%s blobkey=%s blowhere=%s blobtable=%s",
+					blobcol, blobkey, blobwhere, blobtable);
 
 		addQueryString(def, uri.getQuery());
 		return def;
@@ -215,14 +219,16 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		if (flexBlobs != null) {
 			Matcher mFlex = flexBlobs.matcher(subpath);
 			if (mFlex.find()) {
-				log.debug("flexBlob subpath=" + subpath);
+				if (log.trace())
+					log.trace("flexBlob subpath=%s", subpath);
 				return blobDef(uri, subpath, false);
 			}
 		}
 		if (staticBlobs != null) {
 			Matcher mStatic = staticBlobs.matcher(subpath);
 			if (mStatic.find()) {
-				log.debug("staticBlob subpath=" + subpath);
+				if (log.trace())
+					log.trace("staticBlob subpath=%s", subpath);
 				return blobDef(uri, subpath, true);
 			}
 		}
@@ -236,7 +242,8 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		// get path
 		Definition result = null;
 		String path = uri.getPath();
-		log.debug("dissassembling " + path);
+		if (log.trace())
+			log.debug("dissassembling %s", path);
 
 		// search if it is one of the configured sites
 		Matcher match = sitePattern.matcher(path);
@@ -246,17 +253,20 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 			if (siteName.containsKey(site) && sitePrefix.containsKey(site)) {
 				// check if it is one of the blobs
 				site = siteName.get(site);
-				log.debug("site=" + site + " subpath=" + subpath);
+				if (log.debug())
+					log.debug("site=%s subpath=%s", site, subpath);
 				result = disassembleBlob(uri, site, subpath);
 				if (result == null) {
-					log.debug("**** asset found");
+					if (log.debug())
+						log.debug("**** asset found");
 					return assetDef(uri, site, subpath, getDeviceParam(uri));
 				} else {
-					log.debug("*** blob found");
+					if (log.debug())
+						log.debug("*** blob found");
 					return result;
 				}
 			} else {
-				log.debug("no prefix for site " + site);
+				log.warn("no prefix for site " + site);
 			}
 		}
 		return qa.disassemble(uri, type);
@@ -264,18 +274,35 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 
 	@Override
 	public URI assemble(Definition def) throws URISyntaxException {
-		
+
+		if ("BlobServer".equalsIgnoreCase(def.getAppType().toString())) {
+			String site = def.getParameter("blobkey");
+			String prefix = sitePrefix.get(site);
+			String where = def.getParameter("blobwhere");
+			if (log.debug())
+				log.debug("assemble: buildBlobUri prefix=%s, where=%s", prefix,
+						where);
+			return buildBlobUri(prefix, where);
+		}
+
+		// get site/url, fallback to c/cid if not found
 		String site = def.getParameter("site");
+		if (site == null)
+			site = def.getParameter("c");
+
 		String url = def.getParameter("url");
+		if (url == null)
+			def.getParameter("cid");
+
 		String rendermode = def.getParameter("rendermode");
-        if ("BlobServer".equalsIgnoreCase(def.getAppType().toString())) {
-            site = def.getParameter("blobkey");
-            String prefix = sitePrefix.get(site);
-            return buildBlobUri(prefix, def.getParameter("blobwhere"));
-        }
-    	log.debug("assemble: d=%s site=%s url=%s rendermode=%s", site, url, rendermode);
-		
-		if (rendermode != null && !rendermode.equals("live"))
+		if (rendermode == null)
+			rendermode = "live";
+
+		if (log.debug())
+			log.debug("assemble: site=%s url=%s rendermode=%s", site, url,
+					rendermode);
+
+		if (!rendermode.equals("live"))
 			return qa.assemble(def);
 
 		String prefix = sitePrefix.get(site);
@@ -290,18 +317,18 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		return qa.assemble(def);
 	}
 
-    private String getDeviceParam (URI uri) {
-        String query = uri.getRawQuery();
-        if (query == null) {
-            return null;
-        }
-        Pattern p = Pattern.compile("(^d=|\\&d=)(.+$)");
-        Matcher m = p.matcher(query);
-        if (m.find()) {
-            String val = m.group(2);
-            return val.substring(0,val.indexOf('&'));
-        }
-        return null;
-    }
+	final static Pattern devicePattern = Pattern.compile("(^d=|\\&d=)(.+$)");
 
+	private String getDeviceParam(URI uri) {
+		String query = uri.getRawQuery();
+		if (query == null) {
+			return null;
+		}
+		Matcher m = devicePattern.matcher(query);
+		if (m.find()) {
+			String val = m.group(2);
+			return val.substring(0, val.indexOf('&'));
+		}
+		return null;
+	}
 }

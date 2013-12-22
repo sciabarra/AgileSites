@@ -505,24 +505,17 @@ public class Env extends wcs.core.ICSProxyJ implements Content, wcs.api.Env {
 
 		String res;
 
-		if (hasDevices) {
+		String rendermode = ics.GetVar("rendermode");
+		if (rendermode == null)
+			rendermode = "live";
 
-			String rendermode = ics.GetVar("rendermode");
-			if (rendermode == null)
-				rendermode = "live";
+		res = SatelliteTag.link().pagename("AAAgileRouter")
+				.set("rendermode", rendermode).set("url", url)
+				.set("site", nsite).assembler("agilesites")
+				.eval(ics, "outstring");
 
-			res = SatelliteTag.link().pagename("AAAgileRouter")
-					.set("rendermode", rendermode).set("url", url)
-					.set("site", nsite).assembler("agilesites")
-					.eval(ics, "outstring");
-
-		} else {
-			res = RenderTag.getpageurl().pagename("AAAgileRouter").c(id.c)
-					.cid(id.cid.toString()).assembler("agilesites")
-					.set("site", nsite).set("url", url).eval(ics, "outstr");
-		}
-
-		log.debug("getUrl: outstr=" + res);
+		if (log.debug())
+			log.debug("getUrl: outstr=" + res);
 		return res;
 	}
 

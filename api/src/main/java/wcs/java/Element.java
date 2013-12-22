@@ -49,13 +49,14 @@ public abstract class Element implements wcs.api.Element {
 				device = ics.GetVar("d");
 			}
 			return callApply(env, device);
-		} catch (NullPointerException npe) {
-			log.error(npe, "NPE: ");
-			return "NULL <span style='display: none'>" + ex2str(npe)
-					+ "</span>";
 		} catch (Exception ex) {
-			log.error(ex, "exception in element");
-			return ex.getMessage();
+			String msg = ex.getMessage();
+			msg = msg == null ? "NULL" : msg;
+			log.error(ex, msg);
+			return "<div style='font-color: red'>" //
+					+ msg //
+					+ "<span style='display: none'>" + ex2str(ex) //
+					+ "</span></div>";
 		}
 	}
 
@@ -74,14 +75,14 @@ public abstract class Element implements wcs.api.Element {
 		return Api.call("ICS:CALLELEMENT", list);
 	}
 
-
 	public String callApply(Env env, String device) {
 		if (device == null || device.length() == 0) {
 			return apply(env);
 		}
 		try {
-			Method method = this.getClass().getMethod(
-					"apply" + StringUtils.capitalize(device), wcs.api.Env.class);
+			Method method = this.getClass()
+					.getMethod("apply" + StringUtils.capitalize(device),
+							wcs.api.Env.class);
 			return (String) method.invoke(this, env);
 
 		} catch (Exception ex) {

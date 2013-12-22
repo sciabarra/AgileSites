@@ -111,12 +111,14 @@ public class WCS {
 	 */
 	public static Call route(ICS ics, String site, String path, String query)
 			throws Exception {
-		log.debug("[WCS.route] Dispatching...");
+		if (log.debug())
+			log.debug("[WCS.route] site=%s path=%s query=%s", site, path, query);
 		Dispatcher dispatcher = Dispatcher.getDispatcher(ics);
 		if (dispatcher != null) {
 			return dispatcher.route(ics, site, path, query);
 		} else {
-			log.debug("[WCS.route] Not found jar.");
+			if (log.debug())
+				log.debug("[WCS.route] Not found jar.");
 		}
 		return null;
 	}
@@ -129,7 +131,7 @@ public class WCS {
 	 */
 	public static Router getRouter(ICS ics) {
 		try {
-			Router router =  (Router) Dispatcher.getDispatcher(ics)
+			Router router = (Router) Dispatcher.getDispatcher(ics)
 					.loadSiteClass(ics, "Router").newInstance();
 			router.init(ics.GetVar("site"));
 			return router;

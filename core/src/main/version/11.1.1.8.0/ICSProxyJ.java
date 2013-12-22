@@ -38,7 +38,6 @@ public class ICSProxyJ implements ICS {
 	public int getVersionMinor() { return 8; }
 	public int getVersionLevel() { return 0; }
 
-
 	public ICS ics;
 
 	public ICSProxyJ() {

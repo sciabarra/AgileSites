@@ -6,10 +6,12 @@
 %><%@ page import="wcs.core.*,wcs.api.*,wcs.Api" 
 %><%! final static Log log = Log.getLog("jsp.%CLASS%");
 %><cs:ftcs><ics:if condition='<%=ics.GetVar("tid") != null%>'><ics:then><render:logdep cid='<%=ics.GetVar("tid")%>' c="Template" /></ics:then></ics:if><%
+
 String res = WCS.dispatch(ics, "%CLASS%");
 Sequencer seq = new Sequencer(res);
 %><%=seq.header()%><%
 while (seq.hasNext()) {
+ try {
 	Call c = seq.next();
 	String name = c.getName();
 	if(log.trace())
@@ -143,5 +145,5 @@ if (name.equalsIgnoreCase("INSITE:EDIT")) {
 } /* END INSITE:EDIT */
 %><% // -----------------------------------------------------
 %><%=seq.header()%><%
-}
+} catch(Throwable ex) { log.error(ex, "jsp.%CLASS%"); } }
 %></cs:ftcs>

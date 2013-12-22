@@ -53,6 +53,8 @@ public class Router extends wcs.java.Router {
 
 		// path not split in pieces
 		if (c == null || name == null) {
+			if (log.debug())
+				log.debug("path not found");
 			return call("", arg("error", "Path not found: " + url.getPath()));
 		}
 
@@ -60,6 +62,9 @@ public class Router extends wcs.java.Router {
 		List<Id> list = e.find(c, arg("name", name));
 		if (list.size() > 0) {
 			// found
+			if (log.debug())
+				log.debug("calling Wrapper c=%s cid=%s", list.get(0).c,
+						list.get(0).cid.toString());
 			return call("Wrapper", //
 					arg("c", list.get(0).c), //
 					arg("cid", list.get(0).cid.toString()));

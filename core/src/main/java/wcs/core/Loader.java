@@ -203,11 +203,11 @@ public class Loader {
 				ClassLoader oldClassLoader = currentClassLoader;
 				currentClassLoader = new URLClassLoader(toUrlArray(list),
 						parentClassLoader);
-				if (oldClassLoader instanceof URLClassLoader)
+				if (oldClassLoader != parentClassLoader
+						&& oldClassLoader instanceof URLClassLoader)
 					((URLClassLoader) oldClassLoader).close();
 
 				currentSpoolDir = newSpoolDir;
-
 				cleanup();
 
 			} catch (Exception ex) {
