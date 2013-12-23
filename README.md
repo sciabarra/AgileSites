@@ -13,7 +13,7 @@ If you already know what is it, then you can:
 - [Check references](http://www.agilesites.org/reference.html) for in-depth documentation.
 - [Browse the API](http://www.agilesites.org/javadoc/) reading the JavaDocs
 
-# Developing for FatWire or Oracle WebCenter Sites?
+# Developing for Oracle WebCenter Sites?
 
 If you ever developed with Fatwire Content Server or Oracle WebCenter Sites, you may think (as many does) it is somewhat lacking friendly development tools.
 
