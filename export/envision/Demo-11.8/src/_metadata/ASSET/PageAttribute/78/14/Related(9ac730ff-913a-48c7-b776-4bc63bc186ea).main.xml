@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>PageAttribute:1374097570293</id>
+    <id>PageAttribute:1374098079854</id>
     <name>Related</name>
     <createdby>fwadmin</createdby>
     <createddate>2013-06-01T18:01:55.164Z</createddate>
@@ -9,7 +9,7 @@
     <status>PL</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-09-12T19:05:42.157Z</updateddate>
+    <updateddate>2013-12-22T08:53:15.167Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1374097570293</longValue>
+            <longValue>1374098079854</longValue>
         </data>
     </attribute>
     <attribute>
@@ -199,7 +199,7 @@
     <dependency>
       <depType>N</depType>
       <resType>PageAttribute</resType>
-      <resId>1374097570293</resId>
+      <resId>1374098079854</resId>
       <uid>9ac730ff-913a-48c7-b776-4bc63bc186ea</uid>
     </dependency>
   </linked-hash-set>

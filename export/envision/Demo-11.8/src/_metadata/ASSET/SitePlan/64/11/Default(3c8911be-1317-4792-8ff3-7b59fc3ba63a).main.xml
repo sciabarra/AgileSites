@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>SitePlan:1374097570627</id>
+    <id>SitePlan:1374098079887</id>
     <name>Default</name>
     <createdby>fwadmin</createdby>
     <createddate>2013-09-10T07:27:22.280Z</createddate>
@@ -9,7 +9,7 @@
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-12-19T11:27:31.810Z</updateddate>
+    <updateddate>2013-12-22T10:43:29.258Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1374097570627</longValue>
+            <longValue>1374098079887</longValue>
         </data>
     </attribute>
     <attribute>
@@ -105,7 +105,7 @@
     <dependency>
       <depType>N</depType>
       <resType>SitePlan</resType>
-      <resId>1374097570627</resId>
+      <resId>1374098079887</resId>
       <uid>3c8911be-1317-4792-8ff3-7b59fc3ba63a</uid>
     </dependency>
     <dependency>

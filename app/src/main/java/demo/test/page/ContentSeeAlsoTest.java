@@ -22,8 +22,9 @@ public class ContentSeeAlsoTest extends TestElement {
 	@Test
 	public void testHome() {
 		parse(it.apply(env("")));
+		//dump(log);
 		assertText("h6", "Home");
-		assertTextContains("div", "This is a SUMMARY.");
+		assertTextContains("p", "This is a SUMMARY.");
 	}
 
 	@Test

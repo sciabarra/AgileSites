@@ -1,5 +1,7 @@
 package demo.element;
 
+import static wcs.Api.arg;
+import static wcs.Api.model;
 import wcs.api.Env;
 import wcs.api.Index;
 import wcs.api.Log;
@@ -22,9 +24,8 @@ public class Error extends Element {
 		if (log.debug())
 			log.debug("Demo Error");
 
-		Picker html = Picker.load("/demo/simple.html", "#content");
-		html.replace("#title", "Error");
-		html.replace("#subtitle", e.getString("error"));
-		return html.html();
+		return Picker.load("/demo/simple.html", "#content")
+				.html(model(arg("Title", "Error"),
+						arg("Text", e.getString("error"))));
 	}
 }

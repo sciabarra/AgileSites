@@ -24,7 +24,7 @@ public class ErrorTest extends TestElement {
 		parse(it.apply(env(arg("error", "Hello, world"))));
 
 		// check the result
-		assertText("#subtitle", "Hello, world");
+		assertText("#detail p", "Hello, world");
 	}
 
 }

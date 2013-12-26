@@ -23,6 +23,6 @@ public class SummaryTest extends TestElement {
 		parse(it.apply(env("")));
 		dump(log);
 		assertText("h4", "Home");
-		assertTextContains("div div", "This is a SUMMARY.");
+		assertTextContains("p", "This is a SUMMARY.");
 	}
 }

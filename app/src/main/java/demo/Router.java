@@ -55,7 +55,7 @@ public class Router extends wcs.java.Router {
 		if (c == null || name == null) {
 			if (log.debug())
 				log.debug("path not found");
-			return call("", arg("error", "Path not found: " + url.getPath()));
+			return call("Wrapper", arg("error", "Path not found: " + url.getPath()));
 		}
 
 		// resolve the name to an id
@@ -71,7 +71,7 @@ public class Router extends wcs.java.Router {
 		} else {
 			// not found
 			String error = "Asset not found: type:" + c + " name:" + name;
-			return call("", arg("error", error));
+			return call("Wrapper", arg("error", error));
 		}
 	}
 

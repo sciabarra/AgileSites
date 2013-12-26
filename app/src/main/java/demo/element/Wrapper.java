@@ -35,21 +35,21 @@ public class Wrapper extends Element {
 
 		// handle errors
 		if (e.isVar("error"))
-			return html.replace("#content", e.call("Error",//
-					arg("error", e.getString("error"))))//
-					/* .dump(log) */.outerHtml();
+			return html.replace("#content",
+					e.call("Error", arg("error", e.getString("error"))))
+					.outerHtml();
 
 		Asset a = e.getAsset();
 		if (a == null)
-			return html.replace("#content", e.call("Error",//
-					arg("error", "Asset not found")))//
-					/* .dump(log) */.outerHtml();
+			return html.replace("#content",
+					e.call("Error", arg("error", "Asset not found")))
+					.outerHtml();
 
 		// render the asset using his default template
 		html.replace("title", a.getName());
 		html.attr("meta[name=description]", "content", a.getDescription());
 		html.replace("#content", a.call(a.getTemplate()));
 
-		return html/* .dump(log) */.outerHtml();
+		return html.outerHtml();
 	}
 }
