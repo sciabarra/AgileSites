@@ -9,7 +9,6 @@ trait Utils {
  // name says it all  
   def normalizeSiteName(s: String) = s.toLowerCase.replaceAll("""[^a-z0-9]+""", "")
 
-
   /**
    * Look for a java source file
    */
@@ -53,9 +52,9 @@ trait Utils {
 
   }
 
-  def writeFile(file: File, body: String) = {
+  def writeFile(file: File, body: String, log: Logger) = {
     //println("*** %s%s****\n".format(file.toString, body))
-    println("+++ %s".format(file.toString))
+    log.debug("+++ %s".format(file.toString))
     val w = new java.io.FileWriter(file)
     w.write(body)
     w.close
@@ -161,7 +160,7 @@ trait Utils {
   }
 
   // select jars for the setup offline
-  def setupCopyJarsOffline(webapp: String, classpathFiles: Seq[File]) {
+  def setupCopyJarsWeb(webapp: String, classpathFiles: Seq[File]) {
 
     val destlib = file(webapp) / "WEB-INF" / "lib"
 
@@ -170,15 +169,15 @@ trait Utils {
     val removeJars = destlib.listFiles.filter(_.getName.toLowerCase.startsWith("agilesites-core"))
 
     setupCopyJars(destlib, addJars, removeJars)
+  
+    //println(destlib)
   }
 
   // select jars for the setup online
-  def setupCopyJarsOnline(shared: String, classpathFiles: Seq[File]) {
-
-    val destlib = file(shared) / "agilesites"
-    destlib.mkdirs
-
-    //println(destlib)
+  def setupCopyJarsLib(shared: String, classpathFiles: Seq[File]) {
+  
+    val destlib = file(shared) / "agilesites" / "lib"
+    destlib.mkdirs 
 
     // jars to include when performing a setup
     val addJars = classpathFiles filter(AgileSitesBuild.setupFilter accept _)
@@ -187,10 +186,9 @@ trait Utils {
     // jars to remove when performing a setup
     val removeJars = destlib.listFiles
     //println(removeJars)  
-
     
     setupCopyJars(destlib, addJars, removeJars)
-  } 
+ } 
 
   // copy jars filtering and and remove
   def setupCopyJars(destlib: File, addJars: Seq[File], removeJars: Seq[File]) {
@@ -216,12 +214,12 @@ trait Utils {
 
   // copy files from a src dir to a target dir recursively 
   // filter files to copy
-  def recursiveCopy(src: File, tgt: File)(sel: File => Boolean) = {
+  def recursiveCopy(src: File, tgt: File, log: Logger)(sel: File => Boolean) = {
     val nsrc = src.getPath.length
     val cplist = (src ** "*").get.filterNot(_.isDirectory).filter(sel) map {
       x =>
         val dest = tgt / x.getPath.substring(nsrc)
-        println("+++ " + dest)
+        log.debug("+++ " + dest)
         (x, dest)
     }
     IO.copy(cplist).toSeq

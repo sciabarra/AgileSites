@@ -37,10 +37,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar" || "ehcache-*" || "sites-*" || "esapi-*"
 
   /// END CHANGES
-
-  // if you change this 
-  // remember to update the agilesites scripts
-  val v = "1.8.0" 
+  val v = "1.8"
 
   val includeFilterUnmanagedJars = includeFilter in unmanagedJars := unmanagedFilter
 
@@ -53,21 +50,15 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   }
 
   val coreSettings = Defaults.defaultSettings ++ net.virtualvoid.sbt.graph.Plugin.graphSettings ++ Seq(
+    resolvers += "Local Maven Repository" at "file:///"+(file("project").absolutePath)+"/repo",
     scalaVersion := "2.10.2",
     organization := "com.sciabarra",
     publishTo := Some(Resolver.file("repo",  new File( "project/repo" )) ),
     publishMavenStyle := true,
-    version <<= (wcsVersion) { x => x +  "_" + v },
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
     unmanagedJarsTask)
-
-  val commonSettings = coreSettings ++ Seq(
-    resolvers += "Local Maven Repository" at "file:///"+(file("project").absolutePath)+"/repo",
-    libraryDependencies <++= (version) {
-      x => coreDependencies ++ Seq("com.sciabarra" % "agilesites-core" % x)
-    })
-
+ 
   import javadoc.JavadocPlugin.javadocSettings
   import javadoc.JavadocPlugin.javadocTarget
 
@@ -76,10 +67,10 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     id = "core",
     base = file("core"),
     settings = coreSettings ++ Seq(
+      name := "agilesites-core",
+      version <<= (wcsVersion) { x => x +  "_" + v },
       libraryDependencies ++= coreDependencies,
       publishArtifact in packageDoc := false,
-      name := "agilesites-core",
-      javacOptions ++= Seq("-g"),
       crossPaths := false,
 	    javacOptions ++= Seq("-encoding", "UTF-8", "-g"),
       coreGeneratorTask,
@@ -89,8 +80,12 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   lazy val api: Project = Project(
     id = "api",
     base = file("api"),
-    settings = commonSettings ++ Seq(
+    settings = coreSettings ++ Seq(
      name := "agilesites-api",
+     version := v,
+     libraryDependencies <++= (wcsVersion) { x => 
+       Seq("com.sciabarra" % "agilesites-core" % (x + "_" + v) )
+     },
      publishArtifact in packageDoc := false,
      javacOptions ++= Seq("-g"),
      crossPaths := false,
@@ -98,15 +93,18 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
      EclipseKeys.skipProject := true,
      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
 
+ 
   /// APP 
   lazy val app: Project = Project(
     id = "app",
     base = file("app"),
-    settings = commonSettings ++ Seq(
+    settings = coreSettings ++ Seq(
       javacOptions ++= Seq("-g"), 
       name := "agilesites-app",
-      libraryDependencies <++= (version) {
-        x => Seq("com.sciabarra" % "agilesites-api" % x withSources())},
+      version := v,
+      libraryDependencies <++= (wcsVersion) { x => Seq(
+           "com.sciabarra" % "agilesites-core" % (x + "_" + v),
+           "com.sciabarra" % "agilesites-api" % v withSources())},
       wcsGenerateIndexTask,
       wcsCopyHtmlTask,
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
@@ -115,27 +113,30 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   lazy val all: Project = Project(
     id = "all",
     base = file("."),
-    settings = commonSettings ++ assemblySettings ++ scaffoldSettings ++ Seq(
-      javacOptions ++= Seq("-g"), 
-      name := "agilesites-all",
-      wcsCsdtTask,
-      wcsVirtualHostsTask,
-      wcsCopyJarsOfflineTask,
-      wcsCopyJarsOnlineTask,
-      wcsSetupOnlineTask,
-      wcsSetupOfflineTask,
-      wcsSetupSatelliteTask,
-      wcsDeployTask,
-      wcsCopyStaticTask,
-      wcsAssemblyJarTask,
-      wcsUpdateAssetsTask,
-      wcsLogTask,
-      libraryDependencies <++= (version) {
-        x => Seq("com.sciabarra" % "agilesites-api" % x)},
-      excludedJars in assembly <<= (fullClasspath in assembly),
-      watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").get),
-      EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
-      EclipseKeys.skipProject := false,
-      assembleArtifact in packageScala := false)) dependsOn (app) aggregate (app, api)
+    settings = coreSettings ++ 
+      assemblySettings ++ 
+      scaffoldSettings ++ Seq(
+       javacOptions ++= Seq("-g"), 
+       name := "agilesites-all",
+       version := v,
+       libraryDependencies <++= (wcsVersion) { x => Seq(
+           "com.sciabarra" % "agilesites-core" % (x + "_" + v),
+           "com.sciabarra" % "agilesites-api" % v withSources())},
+       wcsCsdtTask,
+       wcsVirtualHostsTask,
+       wcsCopyJarsWebTask,
+       wcsCopyJarsLibTask,
+       wcsSetupOnlineTask,
+       wcsSetupOfflineTask,
+       wcsSetupSatelliteTask,
+       wcsDeployTask,
+       wcsCopyStaticTask,
+       wcsAssemblyJarTask,
+       wcsUpdateAssetsTask,
+       wcsLogTask,
+       excludedJars in assembly <<= (fullClasspath in assembly),
+       watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").get),
+       EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
+       EclipseKeys.skipProject := false,
+       assembleArtifact in packageScala := false)) dependsOn (app) aggregate (app, api)
 }
-
