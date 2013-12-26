@@ -176,7 +176,10 @@ trait Utils {
   // select jars for the setup online
   def setupCopyJarsLib(shared: String, classpathFiles: Seq[File]) {
   
-    val destlib = file(shared) / "agilesites" / "lib"
+    val parentlib = file(shared) / "agilesites"
+
+    val destlib = parentlib / "lib"
+
     destlib.mkdirs 
 
     // jars to include when performing a setup
@@ -188,6 +191,15 @@ trait Utils {
     //println(removeJars)  
     
     setupCopyJars(destlib, addJars, removeJars)
+
+    for(file <- destlib.listFiles) {
+      val parentfile = parentlib / file.getName
+      if(parentfile.exists) {
+        parentfile.delete
+        println("- " + parentfile.getAbsolutePath)
+      }
+    } 
+      
  } 
 
   // copy jars filtering and and remove

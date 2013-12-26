@@ -184,8 +184,15 @@ public class Loader {
 					list.add(f);
 
 				// adding lib jars
-				for(File f : libDir.listFiles(onlyJars))
-					list.add(f);
+				for (File f : libDir.listFiles(onlyJars)) {
+					// allow a jar with the same name
+					// to replace a jar in the lib dir
+					if (!new File(jarDir, f.getName()).exists())
+						list.add(f);
+					else if (log.debug())
+						log.debug("jar %s override the same in the lib dir",
+								f.getName());
+				}
 
 				if (log.debug()) {
 					System.out.println("Loader: reloader " + newSpoolDir);
@@ -195,7 +202,6 @@ public class Loader {
 							log.trace("jar %s", f.toString());
 					}
 				}
-				
 
 				// switch the class loader
 				ClassLoader oldClassLoader = currentClassLoader;
@@ -245,7 +251,10 @@ public class Loader {
 		}
 	};
 
-	/* note that this function relies on the fact that generated names starts with _ */
+	/*
+	 * note that this function relies on the fact that generated names starts
+	 * with _
+	 */
 	private FileFilter onlyTempDirs = new FileFilter() {
 		@Override
 		public boolean accept(File f) {
