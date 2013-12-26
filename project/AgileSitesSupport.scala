@@ -80,14 +80,17 @@ trait AgileSitesSupport extends Utils {
           val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d|spring-\\d|commons-logging-|servlet-api|sites-security|esapi-|cs-|http(client|core|mime)-).*.jar$".r;
           val seljars = classpath.files.filter(f => !re.findAllIn(f.getName).isEmpty)
 
+          val sitesSearch = (( "!" + sites) +: args).reverse.filter(_.startsWith("!")).head.substring(1)
           val workspaces = (file("export") / "envision").listFiles.filter(_.isDirectory).map(_.getName)
           val workspaceSearch = (("#" + defaultWorkspace(sites)) +: args).reverse.filter(_.startsWith("#")).head.substring(1)
           val workspace = workspaces.filter(_.indexOf(workspaceSearch) != -1)
 
           if (args.size == 0) {
-            println("""usage: wcs-dt  [<cmd>]  [<selector> ...] [#<workspace>]
+            println("""usage: wcs-dt  [<cmd>]  [<selector> ...] [#<workspace>] [!<sites>]
                        | <workspace> can be a substring of available workspaces,
                        |   available workspaces are: %s
+                       | <sites> are the sites (comma separated list of site names) 
+                       |   defaults to '%s' 
                        | <cmd> defaults to 'listcs'
                        |   must be one of 'listcs', 'listds', 'import', 'export', 
                        | <selector> check developer tool documentation for syntax
@@ -96,14 +99,14 @@ trait AgileSitesSupport extends Utils {
                        |      listds: @ALL_ASSETS
                        |      import: @SITE @ASSET_TYPE @ALL_ASSETS @STARTMENU @TREETAB
                        |      export: @SITE @ASSET_TYPE
-                       |""".stripMargin.format(workspaces.mkString("'", "', '", "'")))
+                       |""".stripMargin.format(workspaces.mkString("'", "', '", "'"), sitesSearch))
           } else if (workspace.size == 0)
             println("workspace " + workspaceSearch + " not found")
           else if (workspace.size > 1)
             println("workspace " + workspaceSearch + " is ambigous")
           else {
 
-            val args1 = args.filter(!_.startsWith("#"))
+            val args1 = args.filter(!_.startsWith("#")).filter(!_.startsWith("!"))
             val firstArg = if (args1.size > 0) args1(0) else "listcs"
             val resources = if (args1.size > 1) args1.drop(1)
             else firstArg match {
@@ -124,7 +127,7 @@ trait AgileSitesSupport extends Utils {
                 "password=" + password,
                 "cmd=" + firstArg,
                 "resources=" + res,
-                //"fromSites=" + sites,
+                "fromSites=" + sitesSearch,
                 "datastore=" + workspace.head)
 
               println(seljars.mkString("\n"))
