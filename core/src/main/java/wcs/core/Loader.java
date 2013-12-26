@@ -32,6 +32,7 @@ public class Loader {
 	final static Log log = Log.getLog(Loader.class);
 
 	private File jarDir;
+	private File libDir;
 	private long nextCheck = 0;
 	private long jarTimeStamp;
 	private int reloadInterval = 0;
@@ -56,6 +57,7 @@ public class Loader {
 	 */
 	public Loader(File dir, int interval, ClassLoader cl) {
 		jarDir = dir;
+		libDir = new File(dir, "lib");
 
 		// reset spool dir to a known state
 		cleanup();
@@ -68,7 +70,7 @@ public class Loader {
 	}
 
 	private void cleanup() {
-		for (File sdir : jarDir.listFiles(onlyDirs)) {
+		for (File sdir : jarDir.listFiles(onlyTempDirs)) {
 			if (currentSpoolDir != null
 					&& !currentSpoolDir.getAbsolutePath().equals(
 							sdir.getAbsolutePath()))
@@ -92,16 +94,6 @@ public class Loader {
 	public ClassLoader getParentClassLoader() {
 		return parentClassLoader;
 	}
-
-	/*
-	 * private boolean copy(File source, File dest) { FileOutputStream fout =
-	 * null; FileInputStream fin = null; try { fout = new
-	 * FileOutputStream(dest); fin = new FileInputStream(source); int c =
-	 * fin.read(); while (c != -1) { fout.write(c); c = fin.read(); } return
-	 * true; } catch (Exception ex) { ex.printStackTrace(); return false; }
-	 * finally { try { fin.close(); } catch (IOException e) { } try {
-	 * fout.close(); } catch (IOException e) { } } }
-	 */
 
 	private boolean copy(File src, File dst) {
 		Path ps = src.toPath();
@@ -190,6 +182,11 @@ public class Loader {
 				List<File> list = new LinkedList<File>();
 				for (File f : newSpoolDir.listFiles(onlyJars))
 					list.add(f);
+
+				// adding lib jars
+				for(File f : libDir.listFiles(onlyJars))
+					list.add(f);
+
 				if (log.debug()) {
 					System.out.println("Loader: reloader " + newSpoolDir);
 					log.debug("reloaded from %s", newSpoolDir.toString());
@@ -198,6 +195,7 @@ public class Loader {
 							log.trace("jar %s", f.toString());
 					}
 				}
+				
 
 				// switch the class loader
 				ClassLoader oldClassLoader = currentClassLoader;
@@ -247,10 +245,11 @@ public class Loader {
 		}
 	};
 
-	private FileFilter onlyDirs = new FileFilter() {
+	/* note that this function relies on the fact that generated names starts with _ */
+	private FileFilter onlyTempDirs = new FileFilter() {
 		@Override
 		public boolean accept(File f) {
-			return f.isDirectory();
+			return f.isDirectory() && f.getName().startsWith("_");
 		}
 	};
 

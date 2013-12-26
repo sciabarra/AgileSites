@@ -1,21 +1,19 @@
 You need either the full Oracle WebCenter Sites (available from Oracle WebSite) or Oracle WebCenter Sites JumpStart Kit (available on Oracle Support) to use this framework.
 
-Supported versions are 11.1.1.6.x and 11.1.1.8.0. Version 7.6.x may compile with it but it has not been tested.
+You need also a Java Development Kit (not just the Java Runtime) to use it, version 1.7 or greater. 
 
-
-You need also a Java Development Kit (not just tte Java Runtime) to use it, version 1.7 or greated. 
-
-Jdk 1.6 (aka Java 6) does not work.
+Currently supported versions are  11.1.1.6.x and 11.1.8.0.
 
 Both java and javac must be available on path. 
 
 IMPORTANT: java and javac in the path must be the same used to run JSK or Fatwire/Sites.
 
-To start, execute either agilesites.cmd or agilesites.sh. It will popup a configurator. You have to provide the main directory of your installation.
+To start, execute either agilesites.cmd or agilesites.sh. It will popup a configurator. 
+You have to provide the main directory of your installation.
 
 If the configurator cannot locate it, you must also provide the csdt jar location and the webapp location.
 
-All the documentation is online on http://www.agilesites.org
+The documentation is online on http://www.agilesites.org/1.8/
 
 
 
