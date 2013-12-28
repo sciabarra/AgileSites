@@ -130,7 +130,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
        wcsCopyJarsWebTask,
        wcsCopyJarsLibTask,
        wcsHelloTask,
-       wcsPopulateTask,
        wcsCatalogManagerTask,
        wcsSetupTask,
        wcsWebappSatelliteTask,

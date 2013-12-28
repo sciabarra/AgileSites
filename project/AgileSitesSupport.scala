@@ -181,20 +181,6 @@ trait AgileSitesSupport extends AgileSitesUtil {
       }
   }
 
-  // populate task - import agilesites elements if they do not exist 
-  val wcsPopulate = TaskKey[Unit]("wcs-populate", "WCS catalog manager import")
-  val wcsPopulateTask = wcsPopulate <<=
-    (wcsHello, wcsUser, wcsPassword, wcsUrl, fullClasspath in Compile, wcsHome, wcsShared, streams) map {
-      (hello, user, pass, url, classpath, home, shared, s) =>
-        if (hello.isEmpty)
-          throw new Exception("WebCenter Site must be online.")
-        val flag = file(home) / "populate.done"
-        if(!flag.exists) {
-          catalogManager(url, user, pass, classpath.files, Seq("import_all"), s.log)
-          flag.createNewFile
-        }    
-    }
-
   lazy val wcsCatalogManager = InputKey[Unit]("wcs-cm", "WCS Catalog Manager")
   val wcsCatalogManagerTask = wcsCatalogManager <<= inputTask {
     (argsTask: TaskKey[Seq[String]]) =>
@@ -281,16 +267,25 @@ trait AgileSitesSupport extends AgileSitesUtil {
   // copy resources to the webapp task
   lazy val wcsUpdateAssets = TaskKey[Unit]("wcs-update-assets", "WCS update assets")
   val wcsUpdateAssetsTask = wcsUpdateAssets <<=
-    (wcsUrl, wcsUser, wcsPassword, wcsSites) map {
-      (url, user, pass, sites) =>
-      deploy(url, user, pass, sites)  
-      ()
+    (wcsPackageJar, wcsHome, wcsHello, fullClasspath in Compile, wcsUrl, wcsUser, wcsPassword, wcsSites, streams) map {
+      (_, home, hello, classpath, url, user, pass, sites, s) =>
+        // check wcs is online 
+        if (hello.isEmpty)
+          throw new Exception("WebCenter Site must be online.")
+        // pupulate with support elements 
+        val flag = file(home) / "populate.done"
+        if(!flag.exists) {
+          catalogManager(url, user, pass, classpath.files, Seq("import_all"), s.log)
+          flag.createNewFile
+        }    
+        // deploy
+        deploy(url, user, pass, sites)  
     }
 
   // deploy task  
   lazy val wcsDeploy = TaskKey[Unit]("wcs-deploy", "WCS Deploy")
   val wcsDeployTask = wcsDeploy <<=
-    (wcsPopulate, wcsCopyStatic, wcsUpdateAssets) map { (_ , _, _) => () }
+    (wcsCopyStatic, wcsUpdateAssets) map { (_, _) => () }
 
   // copy jars in the webapp lib folder
   lazy val wcsCopyJarsWeb = TaskKey[Unit]("wcs-copyjars-web", "WCS Copy Jars to WEB-INF/lib")
@@ -342,8 +337,8 @@ trait AgileSitesSupport extends AgileSitesUtil {
             ( file(home) / "populate.done" ).delete
 
             println("""**** Setup Complete.
-                |\n*** Please restart your application server.
-                |\n**** You need to complete installation with "wcs-deploy".""".stripMargin)
+                |**** Please restart your application server.
+                |**** You need to complete installation with "wcs-deploy".""".stripMargin)
         }
   }
 

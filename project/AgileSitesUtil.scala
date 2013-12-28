@@ -276,14 +276,22 @@ trait AgileSitesUtil {
   // find the default workspace from sites
   def defaultWorkspace(sites: String) =  normalizeSiteName(sites.split(",").head)
 	
-
   def catalogManager(url: String, user: String, pass: String, jars: Seq[File], opts: Seq[String], log: Logger) {
         val cp = (Seq(file("bin").getAbsoluteFile) ++ jars).mkString(java.io.File.pathSeparator)
         val dir = file("core") / "populate"
         //println(dir.getAbsolutePath)
         val cmd = Seq("-cp", cp, "COM.FutureTense.Apps.CatalogMover")
         val stdopts = Seq("-u", user, "-p", pass, "-b", url + "/CatalogManager", "-d", dir.getAbsolutePath, "-x")
-        val all = cmd ++ stdopts ++ opts
+        val all = if(opts.size >0) {
+                    if(opts(0)  ==  "view") cmd
+                    else cmd ++ stdopts ++ opts
+                  } else {  
+                      log.info("use 'view' to display the gui")                      
+                      log.info("use a sequence of options for other functions")
+                      log.info("(not needed -u -p -b)")
+                      cmd ++ Seq("-h")
+                  } 
+
         Fork.java(None, all, Some(new java.io.File(".")), log)  
   }
 
