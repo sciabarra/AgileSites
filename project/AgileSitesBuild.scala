@@ -2,10 +2,13 @@ package wcs.build
 
 import sbt._
 import Keys._
-import sys.process._
+
+import com.typesafe.sbteclipse.plugin.EclipsePlugin._
+
 import sbtassembly.Plugin._
 import AssemblyKeys._
-import com.typesafe.sbteclipse.plugin.EclipsePlugin._
+
+import sys.process._
 import scala.xml.transform.RewriteRule
 import giter8.ScaffoldPlugin.scaffoldSettings
 
@@ -113,7 +116,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   lazy val all: Project = Project(
     id = "all",
     base = file("."),
-    settings = coreSettings ++ 
+    settings = coreSettings ++
       assemblySettings ++ 
       scaffoldSettings ++ Seq(
        javacOptions ++= Seq("-g"), 
@@ -126,8 +129,11 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
        wcsVirtualHostsTask,
        wcsCopyJarsWebTask,
        wcsCopyJarsLibTask,
-       wcsSetupOnlineTask,
-       wcsSetupOfflineTask,
+       wcsHelloTask,
+       wcsPopulateTask,
+       wcsCatalogManagerTask,
+       wcsSetupTask,
+       wcsWebappSatelliteTask,
        wcsSetupSatelliteTask,
        wcsDeployTask,
        wcsCopyStaticTask,
@@ -138,5 +144,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
        watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").get),
        EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
        EclipseKeys.skipProject := false,
+       wcsSetupOffline := {  println("Please use wcs-setup instead") },
+       wcsSetupOnline := {  println("Please use wcs-deploy instead") },
        assembleArtifact in packageScala := false)) dependsOn (app) aggregate (app, api)
 }

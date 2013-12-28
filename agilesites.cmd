@@ -11,9 +11,9 @@ javac -d bin bin\Configurator.java
 java -cp bin Configurator
 :foundbuildsbt
 set SCRIPT_DIR=%~dp0
-java -version:1.7 -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=project\boot -Dsbt.ivy.home=project\ivy2 -jar "%SCRIPT_DIR%bin\sbt-launch.jar" core/publish api/publish
+java -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=project\boot -Dsbt.ivy.home=project\ivy2 -jar "%SCRIPT_DIR%bin\sbt-launch.jar" core/publish api/publish
 :corebuilt
-java -version:1.7 -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=project\boot -Dsbt.ivy.home=project\ivy2 -jar "%SCRIPT_DIR%bin\sbt-launch.jar" %*
+java -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=project\boot -Dsbt.ivy.home=project\ivy2 -jar "%SCRIPT_DIR%bin\sbt-launch.jar" %*
 goto end
 :notfoundjava
 echo java not found. Please install JDK and set JAVA_HOME environment variable. 

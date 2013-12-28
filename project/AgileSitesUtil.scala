@@ -4,65 +4,59 @@ import sbt._
 import Keys._
 import Dialog._
 
-trait Utils {
+import sbtassembly.Plugin._
+import AssemblyKeys._
+
+trait AgileSitesUtil {
 
  // name says it all  
   def normalizeSiteName(s: String) = s.toLowerCase.replaceAll("""[^a-z0-9]+""", "")
 
-  /**
-   * Look for a java source file
-   */
-  def extractClassAndIndex(file: File): Option[Tuple2[String, String]] = {
-    import scala.io._
+  // is an html file?
+  def isHtml(f: File) = !("\\.html?$".r findFirstIn f.getName.toLowerCase isEmpty)
 
-    //println("***" + file)
+  // copy files from a src dir to a target dir recursively 
+  // filter files to copy
+  def recursiveCopy(src: File, tgt: File, log: Logger)(sel: File => Boolean) = {
+    val nsrc = src.getPath.length
+    val cplist = (src ** "*").get.filterNot(_.isDirectory).filter(sel) map {
+      x =>
+        val dest = tgt / x.getPath.substring(nsrc)
+        log.debug("+++ " + dest)
+        (x, dest)
+    }
+    IO.copy(cplist).toSeq
+  }
 
-    var packageRes: Option[String] = None;
-    var indexRes: Option[String] = None;
-    var classRes: Option[String] = None;
-    val packageRe = """.*package\s+([\w\.]+)\s*;.*""".r;
-    val indexRe = """.*@Index\(\"(.*?)\"\).*""".r;
-    val classRe = """.*class\s+(\w+).*""".r;
+  def httpCallRaw(req: String) = {
+    val scan = new java.util.Scanner(new URL(req).openStream(), "UTF-8")
+    val res = scan.useDelimiter("\\A").next()
+    scan.close
+    //">>>%s\n%s<<<%s\n" format(req,res,req)
+    res
+  }
 
-    if (file.getName.endsWith(".java") || file.getName.endsWith(".scala"))
-      for (line <- Source.fromFile(file).getLines) {
-        line match {
-          case packageRe(m) =>
-            //println(line + ":" + m)
-            packageRes = Some(m)
-          case indexRe(m) =>
-            //println(line + ":" + m)
-            indexRes = Some(m)
-          case classRe(m) =>
-            //println(line + ":" + m)
-            classRes = Some(m)
-          case _ => ()
-        }
-      }
+  // invoking the url (for comma separated options)
+  def httpCall(op: String, option: String, url: String, user: String, pass: String, sites: String = null) = {
 
-    if (packageRes.isEmpty || indexRes.isEmpty || classRes.isEmpty)
-      None
-    else {
-      val t = (indexRes.get, packageRes.get + "." + classRes.get)
-      Some(t)
+    // create a site list if is is not empty
+    val siteList = if (sites == null) {
+      List("")
+    } else {
+      sites split (",") map { s => "&site=" + s } toList
     }
 
-    // TODO: rewrite in functional style
-    // maybe this is better for (p <- packageRes; i <- indexRes; c <- classRes) yield { (i, p + "." + c) }
+    //println(siteList)
 
+    val out = for (site <- siteList) yield {
+      val req = "%s/ContentServer?pagename=AAAgile%s&username=%s&password=%s%s%s"
+        .format(url, op, user, pass, option, site)
+      println(">>> " + req + "")
+      httpCallRaw(req)
+    }
+    out mkString ""
   }
 
-  def writeFile(file: File, body: String, log: Logger) = {
-    //println("*** %s%s****\n".format(file.toString, body))
-    log.debug("+++ %s".format(file.toString))
-    val w = new java.io.FileWriter(file)
-    w.write(body)
-    w.close
-  }
-
-  // find the default workspace from sites
-  def defaultWorkspace(sites: String) =  normalizeSiteName(sites.split(",").head)
-	
     def setupServletRequest(webapp: String, sites: String, sitesSeq: Seq[Tuple2[String, String]], flexBlobs: String, staticBlobs: String) {
 
     val prpFile = file(webapp) / "WEB-INF" / "classes" / "ServletRequest.properties"
@@ -153,8 +147,7 @@ trait Utils {
     // create local export dir for csdt
     (file("export")).mkdir
     (file("export") / "envision").mkdir
-    (file("export") / "envision" / defaultWorkspace(sites)).mkdir
-    (file("export") / ("Populate")).mkdir
+    (file("export") / "envision" / "cs_workspace").mkdir
     (file(shared) / "Storage").mkdir
     (file(shared) / "Storage" / "Static").mkdir
   }
@@ -224,18 +217,74 @@ trait Utils {
 
   }
 
-  // copy files from a src dir to a target dir recursively 
-  // filter files to copy
-  def recursiveCopy(src: File, tgt: File, log: Logger)(sel: File => Boolean) = {
-    val nsrc = src.getPath.length
-    val cplist = (src ** "*").get.filterNot(_.isDirectory).filter(sel) map {
-      x =>
-        val dest = tgt / x.getPath.substring(nsrc)
-        log.debug("+++ " + dest)
-        (x, dest)
-    }
-    IO.copy(cplist).toSeq
+  def deploy(url: String, user: String, pass: String, sites: String) {
+    println(httpCall("Setup", "&sites=%s".format(sites), url, user, pass))
   }
 
+
+  /**
+   * Look for a java source file
+   */
+  def extractClassAndIndex(file: File): Option[Tuple2[String, String]] = {
+    import scala.io._
+
+    //println("***" + file)
+
+    var packageRes: Option[String] = None;
+    var indexRes: Option[String] = None;
+    var classRes: Option[String] = None;
+    val packageRe = """.*package\s+([\w\.]+)\s*;.*""".r;
+    val indexRe = """.*@Index\(\"(.*?)\"\).*""".r;
+    val classRe = """.*class\s+(\w+).*""".r;
+
+    if (file.getName.endsWith(".java") || file.getName.endsWith(".scala"))
+      for (line <- Source.fromFile(file).getLines) {
+        line match {
+          case packageRe(m) =>
+            //println(line + ":" + m)
+            packageRes = Some(m)
+          case indexRe(m) =>
+            //println(line + ":" + m)
+            indexRes = Some(m)
+          case classRe(m) =>
+            //println(line + ":" + m)
+            classRes = Some(m)
+          case _ => ()
+        }
+      }
+
+    if (packageRes.isEmpty || indexRes.isEmpty || classRes.isEmpty)
+      None
+    else {
+      val t = (indexRes.get, packageRes.get + "." + classRes.get)
+      Some(t)
+    }
+
+    // TODO: rewrite in functional style
+    // maybe this is better for (p <- packageRes; i <- indexRes; c <- classRes) yield { (i, p + "." + c) }
+
+  }
+
+  def writeFile(file: File, body: String, log: Logger) = {
+    //println("*** %s%s****\n".format(file.toString, body))
+    log.debug("+++ %s".format(file.toString))
+    val w = new java.io.FileWriter(file)
+    w.write(body)
+    w.close
+  }
+
+  // find the default workspace from sites
+  def defaultWorkspace(sites: String) =  normalizeSiteName(sites.split(",").head)
+	
+
+  def catalogManager(url: String, user: String, pass: String, jars: Seq[File], opts: Seq[String], log: Logger) {
+        val cp = (Seq(file("bin").getAbsoluteFile) ++ jars).mkString(java.io.File.pathSeparator)
+        val dir = file("core") / "populate"
+        //println(dir.getAbsolutePath)
+        val cmd = Seq("-cp", cp, "COM.FutureTense.Apps.CatalogMover")
+        val stdopts = Seq("-u", user, "-p", pass, "-b", url + "/CatalogManager", "-d", dir.getAbsolutePath, "-x")
+        val all = cmd ++ stdopts ++ opts
+        Fork.java(None, all, Some(new java.io.File(".")), log)  
+  }
 
 }

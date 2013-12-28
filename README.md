@@ -1,6 +1,9 @@
 #  AgileSites 1.8
 
 Welcome to **AgileSites**, the Open Source framework for Agile development with Oracle WebCenter Sites (formerly Fatwire Content Server).
+
+AgileSites requires Java 1.7 or greated and WebCenter Sites version 11.x or greater. 
+Past releases (Fatwire releases) are not supported.
  
 The framework is released under the commercial friendly Apache License 2.0.
 

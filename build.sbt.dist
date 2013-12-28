@@ -30,12 +30,6 @@ wcsWebapp in ThisBuild := "C:/Oracle/WebCenter/Sites/11gR1/App_Server/apache-tom
 // location of the csdt-client jar
 wcsCsdtJar in ThisBuild := "C:/Oracle/WebCenter/Sites/11gR1/Sites/11.1.1.6.1/csdt-client-1.2.2.jar"
 
-/// Configurations options for front-end Satellite and proxy
-/// "wcs-setup-satellite" must be run in the separate satellite host
-
-/// front end url - NO slashes at the end please
-wcsVirtualHosts += ("Demo" -> "http://demo.loc")
-
 // this regexp must mach the numeric id of the flex blob 
 // the first group must be the numeric id of the flex blob
 wcsFlexBlobs in ThisBuild := """^/(\d+)\.(jpg|png|gif)$"""
@@ -44,4 +38,16 @@ wcsFlexBlobs in ThisBuild := """^/(\d+)\.(jpg|png|gif)$"""
 // the first group must be the name of the static resource 
 wcsStaticBlobs in ThisBuild := """^(.*\.(css|js|jpg|png|gif))$"""
 
+/// Configurations options for front-end Satellite and proxy
+/// use  "wcs-setup-satellite" to setup the separate satellite host
+
+// webapp directory of WebCenter Sites Satellite 
+// wcsWebappSatellite in ThisBuild := "/your/satellite/webappp"
+
+// front end url - NO slashes at the end please
+// the following SAMPLE assumes that a reverse proxy is configured 
+// mapping http://demo.loc to http://host:port/cs/Satellite/demo
+// wcsVirtualHosts += ("Demo" -> "http://demo.loc")
+
 // leave an empty line to support appending extra commands at the end
+
