@@ -1,4 +1,4 @@
-##### Prev:  [Edit Content](EditContent.md).
+##### Prev:  [Edit Content](EditContent.md). Next:  [Tutorial Index](/tutorial.html)
 
 
 In this section we will see how to create links and how to use them to build naviations.
@@ -47,4 +47,3 @@ for (Id id : sp.children()) {
 }
 ```
 
-#####  Next:  [Tutorial Index](/tutorial.html)

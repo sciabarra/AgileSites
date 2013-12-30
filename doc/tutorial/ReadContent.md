@@ -1,4 +1,4 @@
-##### Prev:  [Picker](Picker.md).
+##### Prev:  [Picker](Picker.md). Next:  [Testing](Testing.md)
 
 In this section we will see how to create content specific for the home page.
 
@@ -131,9 +131,6 @@ The standard code to render a linked asset is (assuming the asset is of type `Pa
 ```java
 a.getAsset("Related", "Page").call("DmSummary")
 ```
-
-
-##### Next:  [Testing](Testing.md)
 
 
 

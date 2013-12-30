@@ -1,5 +1,4 @@
-
-##### Prev:  [Read Content](ReadContent.md).
+##### Prev:  [Read Content](ReadContent.md) Next:  [Edit Content](EditContent.md)
 
 In this section we will see how to write tests with the framework mocked environment.
 
@@ -108,4 +107,3 @@ You can also set anoter port in the log: `wcs-log debug wcs 4444` will log at de
 
 Last but not least: you can see which logs are enabled with `wcs-log list` and you can stop a log stream, for example of the package `mysite` with `wcs-log stop mysite`.
 
-##### Next:  [Edit Content](EditContent.md)

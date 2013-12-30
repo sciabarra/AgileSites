@@ -1,3 +1,5 @@
+**NOTE** For version 1.0, not yet updated to 1.8
+
 The following image describes the standard rendering process: 
 
 ![Rendering model](../img/rendering.png)

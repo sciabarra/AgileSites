@@ -1,3 +1,6 @@
+
+**NOTE** For version 1.0, not yet updated to 1.8
+
 The Picker is the template engine provided by AgileSites to implement the "original html" templating features.
 
 The actual library implementing the Picker is the [JSoup Library](http://jsoup.org) and inherits its selector syntax. All the available selectors are  described [in detail here](http://jsoup.org/apidocs/org/jsoup/select/Selector.html)

@@ -1,5 +1,4 @@
-
-##### Prev:  [Testing](Testing.md).
+##### Prev:  [Testing](Testing.md). Next:  [Navigation](Navigation.md)
 
 In this section we will see how to invoke insite editing for attributes in some common cases.
 
@@ -68,4 +67,3 @@ html.append("#related-container",
 
 This code shows an editable list of assets, followed by an empty slot. The user can add new slots to the list dragging in the empty slot, and then can reorder and delete existing assets, editing the list that pops up clicking on the list.
 
-##### Next:  [Navigation](Navigation.md)

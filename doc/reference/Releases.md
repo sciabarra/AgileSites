@@ -2,11 +2,15 @@ Agile development framework for Oracle WebCenter Sites.
 
 Release history.
 
-## 1.0.0a
+## 1.8-RC1
 
 - fixed a bug in editText
 - now generated projects does not rquire scala ide anymore
 
+## 1.0.0a
+
+- fixed a bug in editText
+- now generated projects does not rquire scala ide anymore
 
 ## 1.0.0
 

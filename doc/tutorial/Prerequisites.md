@@ -1,5 +1,5 @@
 
-##### Prev:  [Tutorial Index](/tutorial.html)
+##### Prev:  [Tutorial Index](/tutorial.html) Next: [New Site](NewSite.md)
 
 In this section we will see what is needed in order to use this framework.
 
@@ -58,4 +58,3 @@ On Linux the solution is the same as the Mac solution except that the actual loc
 
 Once you installed Sites, follows the [installation procedure](../install.md) to install AgileSites. You do not require the installation of the demo site, although it is convenient to have it installed during development.
 
-##### Next: [New Site](NewSite.md)

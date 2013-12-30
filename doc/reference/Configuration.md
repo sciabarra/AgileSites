@@ -1,4 +1,7 @@
 
+
+**NOTE** For version 1.0, not yet updated to 1.8
+
  `wcsSites in ThisBuild` 
 
 Names of the  sites you are currently working on with AgileSites. It  is a comma-separated list of site names.

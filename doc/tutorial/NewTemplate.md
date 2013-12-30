@@ -1,4 +1,5 @@
-##### Prev:  [New Site](NewSite.md).
+##### Prev:  [New Site](NewSite.md). Next: [Java Idiom](JavaIdiom.md)
+
 
 In the previous section we created the skeleton of the site. There is no content in it, so if you try to access to any page you will get, of course, page not found.
 
@@ -81,5 +82,3 @@ Now test the generated template works, clicking on the switch to select the web 
 
 ![Description](../img/snap5968.png)
 
-
-##### Next: [Java Idiom](JavaIdiom.md)

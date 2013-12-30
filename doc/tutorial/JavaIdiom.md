@@ -1,4 +1,4 @@
-##### Prev:  [New Template](NewTemplate.md)
+##### Prev:  [New Template](NewTemplate.md) Next: [Picker](Picker.md)
 
 The AgileSites API uses a modern style of Java coding, with fluent interfaces, static imports and value classes without getter and setter.
 
@@ -181,4 +181,3 @@ return AssetTag.get().name("a").field("id").eval("output",e.ics)
 
 This shortcut works exactly as the previous example: a temporary variable will be generated and stored as the value of the `output` attribute in the previous example. Then the tag will be executed, the value of the variable read and returned.
 
-##### Next: [Picker](Picker.md)

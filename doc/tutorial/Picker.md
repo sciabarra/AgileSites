@@ -1,4 +1,5 @@
-##### Prev: [Java Idiom](JavaIdiom.md)
+##### Prev: [Java Idiom](JavaIdiom.md) Next:  [Read Content](ReadContent.md)
+
 
 Here we introduce the AgileSites template engine, the picker. Picker is very helpful in keeping the HTML in his original form and placing content where is needed. It will result in code much clearer without a confusing mix of html and java code as in JSP.
 
@@ -92,4 +93,4 @@ So to access to the css you need to add the prefix '/cs/blueprint' to the href a
 
 Code to use javascript in the template is slightly more complex. Plese check the `demo.Wrapper` class for details.
 
-#####  Next:  [Read Content](ReadContent.md)
+

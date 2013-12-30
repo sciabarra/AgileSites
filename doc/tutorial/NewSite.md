@@ -1,4 +1,4 @@
-##### Prev: [Prerequisites](Prerequisites.md)
+##### Prev: [Prerequisites](Prerequisites.md) Next:  [New Template](NewTemplate.md)
 
 In this section we describe which steps are needed in order to create a new site, both in Site and in AgileSites, and start development.
 
@@ -154,4 +154,3 @@ You may change the `agilesites-api` code if you want to extend the framework add
 You are not expected to change the `agilesites-core` code except for adding very low level functionality. 
 
 
-#####  Next:  [New Template](NewTemplate.md)
