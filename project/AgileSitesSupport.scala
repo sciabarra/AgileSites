@@ -311,11 +311,11 @@ trait AgileSitesSupport extends AgileSitesUtil {
   lazy val wcsSetup = InputKey[Unit]("wcs-setup", "WCS Setup Offline")
   val wcsSetupTask = wcsSetup <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
-      (argTask,
+      (argTask, wcsPackageJar, wcsCopyStatic,
         wcsCopyJarsWeb, wcsCopyJarsLib, classDirectory in Compile,
         wcsSites, wcsVersion, wcsHome, wcsShared, wcsWebapp, wcsUrl,
          wcsFlexBlobs, wcsStaticBlobs, wcsVirtualHosts) map {
-          (args, _, _, classes,
+          (args, _, _, _, _, classes,
            sites, version, home, shared, webapp, url,
            flexBlobs, staticBlobs, virtualHosts) =>
 
