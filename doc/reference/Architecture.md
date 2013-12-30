@@ -1,5 +1,3 @@
-# Architecture
-
 **NOTE** For version 1.0, not yet updated to 1.8
 
 The following diagram describes the architecture of the framework.

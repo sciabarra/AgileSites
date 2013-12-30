@@ -8,5 +8,5 @@ Here there are more detailed information than you ever wanted to know.
 - [Scaffold](reference/Scaffold.md): overview of the code generated with scaffolding
 - [Shell](reference/Shell.md): all the available command line commands 
 - [Picker](reference/Picker.md): detailed documentation for the Picker
-- [Releases](reference/Releases.md): release history
+- [Releases](https://github.com/sciabarra/AgileSites/releases): release history
 

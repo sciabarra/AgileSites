@@ -1,12 +1,14 @@
-## Where are the binaries? I see only the sources in the download page
-
-The framework is, by design, source only. The build will actually create 2 jars, one is the core and will be deployed (by the integrated installer) inside the WebCenter Sites webapp. Another jar is built and deployed in the shared folder and contains you application logic. This jar is continously built and deployed by the `wcs-package-jar` command. Both the jar are built automatically by an heavily tested automated build.
-
-The framework lets you create 1 eclipse project, typing `eclipse` and importing the `app` folder in eclipse as an Eclipse project.
-
 ## I have compilations errors.
 
 AgileSites 1.8 requires Java 7. If you have Java 6 in your path the code won't compile since it is using features found only in JDK version 7 or greater. 
+
+## Where are the binaries? I see only the sources in the download page
+
+The framework is, by design, source only. The build will actually create 2 jars, one is the core and will be deployed (by the integrated installer) inside the WebCenter Sites webapp. 
+
+Another jar is built and deployed in the shared folder and contains your application logic. This jar is continously built and deployed by the `wcs-package-jar` command. Both the jar are built automatically by an heavily tested automated build.
+
+The framework lets you create one eclipse project, typing `eclipse` and importing the `app` folder in eclipse as an Eclipse project.
 
 ## How do I add a custom library to the framework?
 
