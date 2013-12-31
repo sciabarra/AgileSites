@@ -11,7 +11,7 @@ javac -d bin bin\Configurator.java
 java -cp bin Configurator
 :foundbuildsbt
 set SCRIPT_DIR=%~dp0
-java -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=project\boot -Dsbt.ivy.home=project\ivy2 -jar "%SCRIPT_DIR%bin\sbt-launch.jar" core/publish api/publish
+java -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=project\boot -Dsbt.ivy.home=project\ivy2 -jar "%SCRIPT_DIR%bin\sbt-launch.jar" core/publish api/publish app/compile
 :corebuilt
 java -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=project\boot -Dsbt.ivy.home=project\ivy2 -jar "%SCRIPT_DIR%bin\sbt-launch.jar" %*
 goto end
