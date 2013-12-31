@@ -50,7 +50,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
           val src = tld.getAbsolutePath
           val clsj = Tld2Tagj.tld2class(src)
           val dstj = file(dstDir / clsj + ".java")
-          //if tld.getName.equalsIgnoreCase("asset.tld") // select only one for debug generator
+          // if tld.getName.equalsIgnoreCase("asset.tld") // select only one for debug generator
         } yield {
           if (!dstj.exists) {
             val bodyj = Tld2Tagj(src)
@@ -84,50 +84,80 @@ trait AgileSitesSupport extends AgileSitesUtil {
     (argTask: TaskKey[Seq[String]]) =>
       (argTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
         (args, version, url, sites, user, password, classpath, s, runner) =>
+
           val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d|spring-\\d|commons-logging-|servlet-api|sites-security|esapi-|cs-|http(client|core|mime)-).*.jar$".r;
           val seljars = classpath.files.filter(f => !re.findAllIn(f.getName).isEmpty)
           val sitesSearch = (( "!" + sites) +: args).reverse.filter(_.startsWith("!")).head.substring(1)
           val workspaces = (file("export") / "envision").listFiles.filter(_.isDirectory).map(_.getName)
           val workspaceSearch = ("#cs_workspace" +: args).reverse.filter(_.startsWith("#")).head.substring(1)
-          val workspace = workspaces.filter(_.indexOf(workspaceSearch) != -1)
+          val workspace = workspaces.filter( _.indexOf(workspaceSearch) != -1)
+
+          //println(workspaceSearch)
+          //println(workspace.mkString(" "))
 
           if(args.size >0 && args(0) == "raw") {
-
-
               Run.run("com.fatwire.csdt.client.main.CSDT", 
                        seljars, args.drop(1), s.log)(runner)
 
           } else if(args.size == 0) {
             println("""usage: wcs-dt  [<cmd>]  [<selector> ...] [#<workspace>] [!<sites>]
                        | <workspace> can be a substring of available workspaces,
-                       |   default workspaces is: cs_workspace
+                       |   default workspace is: cs_workspace
                        |   available workspaces are: %s
-                       | <sites> is a comma separated list of sites defined in WCS 
+                       | <sites> is a comma separated list of sites defined, 
                        |   defaults to '%s' 
-                       | <cmd> is one of 'listcs', 'listds', 'import', 'export',
+                       | <cmd> is one of 'listcs', 'listds', 'import', 'export', 'mkws'
                        |    defaults to 'listcs'
                        | <selector> check developer tool documentation for complete syntax
-                       |  defaults for commands are
-                       |      listcs: @ALL_ASSETS
-                       |      listds: @ALL_ASSETS
-                       |      import: @SITE @ASSET_TYPE @ALL_ASSETS @STARTMENU @TREETAB
-                       |      export: @SITE
+                       |    you can use <AssetType>[:<id>] or a special form,
+                       |    the special form are
+                       |      @SITE @ASSET_TYPE @ALL_ASSETS @STARTMENU @TREETAB
+                       |  and also additional @ALL for all of them
                        |""".stripMargin.format(workspaces.mkString("'", "', '", "'"), sitesSearch))
           } else if (workspace.size == 0)
-            println("workspace " + workspaceSearch + " not found")
+            println("workspace " + workspaceSearch + " not found - create it with mkws <workspace>")
           else if (workspace.size > 1)
             println("workspace " + workspaceSearch + " is ambigous")
           else {
+
+            def processArgs(args: Seq[String]) = {
+                if(args.size == 0 || args.size==1) {
+                  println("""please specify what you want to export or use @ALL to export all
+                       | you can use <AssetType>[:<id>] or a special form,
+                       | the special form are
+                       |   @SITE @ASSET_TYPE @ALL_ASSETS @STARTMENU @TREETAB @ROLE
+                       |  and also additional @ALL meaning  all of them""".stripMargin)
+                  Seq()
+                } else if(args.size == 2 && args(1) == "@ALL") {
+                  Seq("@SITE", "@ASSET_TYPE", "@ALL_ASSETS", "@STARTMENU", "@TREETAB", "@ROLE")
+                } else {
+                  args.drop(1)
+                }
+            }
+
             val args1 = args.filter(!_.startsWith("#")).filter(!_.startsWith("!"))
             val firstArg = if (args1.size > 0) args1(0) else "listcs"
-            val resources = if (args1.size > 1) args1.drop(1)
-            else firstArg match {
-              case "listcs" => Seq("@ALL_ASSETS")
-              case "listds" => Seq("@ALL_ASSETS")
-              case "import" =>
-                Seq("@SITE", "@ASSET_TYPE", "@ALL_ASSETS", "@STARTMENU", "@TREETAB")
-              case "export" =>
-                Seq("@SITE")
+            val resources = firstArg match {
+              case "listcs" => processArgs(args1)
+              case "listds" => processArgs(args1)
+              case "import" => processArgs(args1)
+              case "export" => processArgs(args1)
+              case "mkws" =>
+                if(args1.size==1) {
+                 println("please specify workspace name")
+                } else {
+                  val ws = file("export") / "envision" / args1(1)
+                  if(ws.exists)
+                    println("nothing to do - workspace "+args1(1)+" exists")
+                  else {
+                    ws.mkdirs
+                    if(ws.exists)
+                      println(" workspace "+args1(1)+" created")
+                    else 
+                      println("cannot create workspace "+args1(1))
+                  } 
+                }
+                Seq()
               case _ =>
                 println("Unknown command")
                 Seq()
