@@ -1,6 +1,6 @@
 ##### Prev: [Java Idiom](JavaIdiom.md) Next:  [Read Content](ReadContent.md)
 
-Here we introduce the AgileSites template engine, the picker. Picker is very helpful in keeping the HTML in his original form and placing content where is needed. It will result in code much clearer without a confusing mix of html and java code as in JSP.
+Here we introduce the development cycle and the AgileSites template engine, the picker. Picker is very helpful in keeping the HTML in his original form and placing content where is needed. It will result in code much clearer without a confusing mix of html and java code as in JSP.
 
 Here there is a quick introductin to the picker including some samples. Full documentation is [here](../reference/Picker.md).
 

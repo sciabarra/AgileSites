@@ -1,5 +1,4 @@
-
-**NOTE** For version 1.0, not yet updated to 1.8
+**NOTE** not yet updated to 1.8 
 
 The Picker is the template engine provided by AgileSites to implement the "original html" templating features.
 
@@ -126,11 +125,9 @@ You use selectors almost everywhere:
     
 Note that the above indexed pseudo-selectors are 0-based, that is, the first element is at index 0, the second at 1, etc.
 
-
 ## Replacements
 
 Let's see which replacements methods are available with some samples
-
 
 ### replace
 

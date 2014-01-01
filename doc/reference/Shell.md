@@ -6,10 +6,14 @@ Documentation of the commands in the shell.
 
 ## setup
 
-- wcs-setup-offline [satellite] [silent]
+- wcs-setup 
+Setup offline
 
-- wcs-setup-online [silent]
+- wcs-deploy
+Setup online and deployment
 
+- wcs-setup-satellite
+Setup satellite
 
 ## compile
 

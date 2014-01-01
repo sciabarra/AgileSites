@@ -1,7 +1,5 @@
-(Draft)
 
 This document is a reference guide of the code generated with scaffolding.
-
 
 ## Scaffold `site`
 
@@ -68,7 +66,6 @@ Default test classes.
 ## Scaffold `layout`
 
 Generate a new layout template, with a test.
-
 
 ## Scaffold `template`
 
