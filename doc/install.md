@@ -33,7 +33,6 @@ An important tweak is to add a new WebCenter Sites site in the `build.sbt`, edit
 
 **HINT** You can read details of the configuration in the [configuration reference](http://www.agilesites.org/reference/Configuration.html) to understand each parameter if in doubt.
 
-
 ## Installation 
 
 Ensure you have a connection to internet and start the AgileSites shell running either `agilesites.bat` or `agilesites.sh`
@@ -115,3 +114,4 @@ You can now create a new site following the [tutorial](http://www.agilesites.org
 The installation for development is complete but for live deployment you need to configure also Satellite Server and Apache.
 
 You can learn how to configure a Satellite and Apache front end installation in the [deployment reference](http://www.agilesites.org/reference/Deployment.html).
+

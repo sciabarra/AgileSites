@@ -1,10 +1,8 @@
 ##### Prev:  [New Site](NewSite.md). Next: [Java Idiom](JavaIdiom.md)
 
-
 In the previous section we created the skeleton of the site. There is no content in it, so if you try to access to any page you will get, of course, page not found.
 
 We are now ready to define the content model then create some content to render a home page.
-
 
 ## Content Model: Page Definitions 
 
@@ -18,8 +16,7 @@ A Page definition is technically a subtype of the Page asset type, while Page is
 
 We will see later that each page definition has also an associated set of attributes that defines the content specific for each Page subtype. For now, we will only create a new Page defintion, specific for the Home Page.
 
-
-### Creating the MyHome content definition
+### Creating the MySite_Home content definition
 
 Switch to the Administrative interface, clicking on the icon shown below in the application bar:
 
@@ -30,11 +27,11 @@ Click on the **New** link in the toolbar, and then finally click on the **New Pa
 ![New Page Definition](../img/snap1821.png)
 
 You can create a new page definition. 
-Create `MyHome` page definition: 
+Create `MySite_Home` page definition: 
 
 ![My Home](../img/snap6106.png)
 
-**Note** Since if there are 2 definitions with the same name in different results in problems  it is recommended you name all the content definitions with the site prefix, in order to reduce non-unique name conflicts.
+**Note** Since if there are 2 definitions with the same name in different results in problems  it is recommended you name all the content definitions with the site name as a , in order to reduce non-unique name conflicts.
 
 ## Generate and deploy layout
 
@@ -48,14 +45,13 @@ The command to generate a layout is simply:
 
 The shell will ask for some parameters, use the following answers:
 
-- subtype: MyHome
+- subtype: MySite_Home
 - site: MySite
 - type: Page
 
 Once done, you can deploy the generated templates with the command
 
 `wcs-deploy`
-
 
 ##  Create the home page
 
@@ -64,11 +60,11 @@ Now you are read to create the nome Page. Go in the contributor interface clicki
 ![Contributor Interface](../img/snap7755.png)
 
 Click on the toolbar on New
-Give `Home` as name and select the (only) available template `MyHomeLayout`
+Give `Home` as name and select the (only) available template `MySite_HomeLayout`
 
 ![New Layout](../img/snap6677.png)
 
-Verify that in meta data section the page defintion is `MyHome`. 
+Verify that in meta data section the page defintion is `MySite_Home`. 
 
 ![Page Definition is MyHome](../img/snap5365.png)
 

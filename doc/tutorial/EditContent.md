@@ -25,14 +25,13 @@ Again the second argument is the json parameter that is passed to the widget and
 
 ## Creating a slot
 
-
 In the previous section we saw how to invoke template on a linked asset. With Sites it is possible to create instead a slot where you drag an asset to link it.
 
 You have to trasform a call like this:
 
 
 ```java
-a.getAsset("Related", index, "Page").call("DmSummary")
+a.getAsset("Related", index, "Page").call("Summary")
 ```
 
 into this:
@@ -48,7 +47,6 @@ Please note that:
 - the fourth parametes is the template name `DmSummary` 
 - the fitfh parameter is the text to display when the slot is empty
 
-
 ## Slot list and slot empty
 
 When you want to edit a list of linked asset (a multiple attribute of type Asset), you can use the `a.getSlotList` as a methods. However, since the slot list does not allow to add additional elements with drag-and-drop, normally there is also a related `a.getSlotEmpty` to add additional assets showing an always empty slot. 
@@ -58,10 +56,10 @@ The typical usage of slotList/slotEmpty is as follow:
 ```java
 html.append("#related-container",
   a.slotList("Related", "Page", 
-    "DmSummary"));
+    "Summary"));
 html.append("#related-container", 
   a.slotEmpty("Related", "Page",
-	"DmSummary", 
+	"Summary", 
 	"Drag a Page here. Save to add more."));
 ```
 

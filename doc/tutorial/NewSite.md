@@ -2,32 +2,56 @@
 
 In this section we describe which steps are needed in order to create a new site, both in Site and in AgileSites, and start development.
 
+## Choose a name for your site
 
-## Choose a name and a prefix
+The first step is to choose a name for your new site. Here I am assume your choice is **MySite**. Of course if you pick a different name you need to adapt samples accordingly to your choice.
 
-The first step is naming your new site. Here I am assume your choice is **MySite**. Of course you need to change samples accordingly to your decision if you choose a different name.
+**NOTE** do not use long names and do not use spaces for your site name. The site name will be used also as a prefix (see below), so it is convenient if it is show.
 
-Also you need to choose a prefix that you will use consistently to name specific assets of your sites (most notably types, content definitions, attributes). 
+## The universal naming convention for development asset names
 
-The prefix is a common conventions used to avoid name clashes. Here I will use the prefix *My*.
+In order to minimize conflicts when more than one site is deployes in your instance, AgileSites follows a simple naming convention:
 
-**NOTE** We experienced problems when Content Definitions or Attributes have the same name in 2 different sites. So we recommend to use always a prefix when naming Types, Attributes, Content and Parent definitions, in order to guarantee the uniqueness of the names. Templates are also automatically named with a prefix when created by the deployer (see later in this tutorial).
+> **everything** (except attributes( has the site name as a prefix
+
+So the recommended naming convention will apply to
+
+- Types
+- Subtypes
+- Content and Parent Definitions
+- Template, Site Entry and 
+
+Note that attribute names, that are referred directly all the time in code, does not require the site name.
+
+This is a set of sample names recommended for a site named MySite
+
+- MySite (the site)
+- MySite_A (the attribute for a flex family used with MySite)
+- MySite_CD, MySite_PD (content definition types and parent definition)
+- MySite_Content, MySite_Home (actual content definitions)
+- MySite_Wrapper, MySite_ContentLayout (template and cselement names) 
+
+So we recommend to use always a prefix when naming Types, Attributes, Content and Parent definitions, in order to guarantee the uniqueness of the names. Templates are also automatically named with a prefix when created by the deployer (see later in this tutorial).
 
 ## Configure a new site and a virtual host
 
-Edit the `build.sbt` and put your site name in the `wcsSites` variable. For example:
+Delete the build.sbt and launch the shell (`agilesites.cmd` or `agilesites.sh`)
 
-``
-wcsSites in ThisBuild := "MySite"
-``
+The configurator will pop up and will ask for the location of your Sites installation and then the name of the site you want to use for developement.
 
-If you have a virtual host configured (with satellite and apache in place) for your new site then you should also configure virtual hosts mapping.
+It will be added as the first site in the `wcsSites` variable in the `build.sbt`.
 
-For example if you have a front-end url `http://www.mysite.com` for the site `MySite` you should add a line mapping the site to the 
+### Configure virtual host for Satellite and Apache (optional)
 
-``
+If (and only if) you have a virtual host configured (with satellite and apache in place) for your new site then you should also configure virtual hosts mapping.
+
+For example if you have a front-end url ``http://www.mysite.com`` for the site `MySite` that points to ``http://yourserver/cs/Satellite/mysite`` 
+
+you need to edit the ``build.sbt`` and add  add a line mapping the site to the 
+
+```
 wcsVirtualHosts in ThisBuild += ("MySite" -> "http://www.mysite.com")
-``
+```
 
 You can remove others sites but if they were already installed the installer won't remove configurations for them so they will be still be available in your instance of the application server.
 
@@ -44,16 +68,14 @@ This is a reminder if you have already read it.
 On Content Server (Sites):
 
 - shut down the application server running Sites,
-- execute again the ``wcs-setup-offline`` command
+- execute again the ``wcs-setup`` command
 - restart it  
-- execute again the ``wcs-setup-online`` command.
 
 On Satellite Server:
 
 - shut down the application server running Sites
-- execute again the ``wcs-setup-offline satellite`` command
+- execute again the ``wcs-setup-satellite`` command
 - restart it  
-
 
 ## Create a site in Sites
 
@@ -72,7 +94,6 @@ Create a new site with the chosen name (in this case *MySite*), enabling at leas
 - Page
 - PageAttribute
 - PageDefinitions
-
 
 ![Asset Type enabling](../img/snap4206.png)
 
@@ -102,9 +123,9 @@ You can learn more on the generated source [here](../reference/Scaffold.md).
 
 ## Access the new site and the tester
 
-Accessing the site with 
+Accessing the site with (change port according to your installation)
 
-> http://localhost:8080/cs/Satellite/mysite
+> http://localhost:9080/cs/Satellite/mysite
 
 You should see the following screenshot:
 
@@ -114,9 +135,7 @@ It is normal since you do not have yet any page, so the Error Page is displayed,
 
 You can then invoke the tester with:
 
->http://localhost:8080/cs/ContentServer?pagename=mysite-tester
-
-(in general the pagename is the lowercase version of your site name with concatenated "-tester").
+>http://localhost:9080/cs/ContentServer?pagename=MySite_Tester
 
 You should see this screenshot:
 
@@ -130,8 +149,6 @@ You can also select a few tests and run only the selected tests clicking on "Run
 
 ## Importing the project in eclipse
 
-**Note**: you need the eclipse plugin [http://www.scala-ide.org](http://www.scala-ide.org "Scala IDE") to use the generated eclipse project. Projects are currently Java only, but planned extensions of the framework will allow also Scala coding. 
-
 Once the new site and the new project has been created you can generate configuration files for your IDE. Execute the command in the shell:
 
 `eclipse`
@@ -144,13 +161,8 @@ opening the main directory of AgileSites. You should see the following screensho
 
 ![Import AgileSites projects](../img/snap4673.png)
 
-then selecting the folder where you unzipped AgileSites, you should see 3 projects.
+then selecting the folder where you unzipped AgileSites, you should see one project.
 
 ![Import](../img/snap6285.png)
 
-Select all of them. You will work mostly only on the `agilesites-app` project for implementing your application code. However other projects are required for compilation.
-
-You may change the `agilesites-api` code if you want to extend the framework adding your functionalities. If you do so, consider contribute them to the project. 
-You are not expected to change the `agilesites-core` code except for adding very low level functionality. 
-
-
+Import it and you can start development.

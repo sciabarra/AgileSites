@@ -1,6 +1,5 @@
 ##### Prev:  [Edit Content](EditContent.md). Next:  [Tutorial Index](/tutorial.html)
 
-
 In this section we will see how to create links and how to use them to build naviations.
 
 ## Create a Link
@@ -15,9 +14,21 @@ a.getAsset("Related", "Page").getUrl()
 
 Another option is to use the `Env.getUrl(id)`. To use this method, you need an id. You use this method when you navigate the siteplan.
 
-**NOTE** Be aware of dependencies when you retrieve assets by id. The pagelet you generate will depend on them, and if you change the linked asset then the pagelet must be invalidated.
+## Dependencies
 
-Once you got the url, you can use it to set the href attribute.
+When you retrieve assets by id you need to be aware of dependencies (see the development manual about it)
+
+By default `a.getAsset()` does not log any dependencies. This is correct if you use the asset only for creating a link.
+
+However if you are going to extract attributes and render them in the current pagelent, then you need to log dependencies.
+
+```
+a.getAsset(c, cid, AssetDeps.EXIST)
+```
+
+The best practice is to create a separate Pagelet for each asset, but when you build navigation you may end up with too many pagelets so in such a case it is approriate to render a single pagelet with values coming from multiple assets.
+
+Be sure to log all the dependencies in such a case.
 
 ## SitePlan
 
@@ -28,7 +39,6 @@ You get a siteplan instance with `e.getSitePlan()`. The SitePlan has a concept o
 - `sp.children()` returns the children of the current nodem as an array of Ids
 - `sp.goTo(id)` lets you to change the current id
 - `sp.getPath()` return the path (as an array of id) from the current asset up to the root. 
-
 
 Note that in the path the current node is excluded so when you are at the root, the path is an array of zero elements.
 
