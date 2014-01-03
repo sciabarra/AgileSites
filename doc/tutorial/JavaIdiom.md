@@ -1,4 +1,4 @@
-##### Prev:  [New Template](NewTemplate.md) Next: [Picker](Picker.md)
+##### Prev:  [New Template](NewTemplate.md) Next: [Development](Development.md)
 
 The AgileSites API uses a modern style of Java coding, with fluent interfaces, static imports and value classes without getter and setter.
 
@@ -59,7 +59,6 @@ e.call("Summary", arg("c", id.c), arg("cid", id.cid.toString()))
 
 The function `arg` actually creates an instance of class `Arg` that is a value class with 2 public fields: `k` and `v`. The call is declared as having a variable number of arguments of type arg (declaration: `Arg...args`)
 
-
 ### `range`
 
 A common code pattern, used for example to iterate all the occurrences of a Fatwire List (accessibile in the enviroment) is:
@@ -72,7 +71,6 @@ for(int i: e.getRange("List"))  {
 ```
 
 Here you can note the range that is an iterator that  produces a sequence of integers. Since multiple attributes and sequences are accessed by index, it is pretty useful (and easier to use than a classical `for` loop with numeric integers).
-
 
 ### `tmp()`
 

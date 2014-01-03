@@ -12,7 +12,7 @@ The first step is to choose a name for your new site. Here I am assume your choi
 
 In order to minimize conflicts when more than one site is deployes in your instance, AgileSites follows a simple naming convention:
 
-> **everything** (except attributes( has the site name as a prefix
+> **everything** (except attributes) has the site name as a prefix
 
 So the recommended naming convention will apply to
 

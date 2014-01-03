@@ -37,7 +37,3 @@ Please DO NOT include a slash at the end.
 Include the protocol (http or https), the port and the  path to ContentServer (for example /cs ).
 
 This url must  expose Content Server servlets (ContentServer, CatalogManager), so it is generally available only in development (on live site, the /cs/Satellite/site prefix is added by an Apache Proxy so the '/cs/' is inaccessible)
-
-
-TODO document other configurations
-
