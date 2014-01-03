@@ -8,7 +8,7 @@ Get the latest bug fix release:
 ```
 git clone https://github.com/sciabarra/AgileSites.git
 cd AgileSites 
-git checkout 1.8
+git checkout remotes/origin/1.8
 ```
 
 Launch agilesites.bat or agilesites.sh A configurator will popup.
