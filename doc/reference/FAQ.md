@@ -10,7 +10,7 @@ Another jar is built and deployed in the shared folder and contains your applica
 
 The framework lets you create one eclipse project, typing `eclipse` and importing the `app` folder in eclipse as an Eclipse project.
 
-## when I try to deploy I get Class not found mysite.Setup in the logs
+## When I try to deploy I get `class not found mysite.Setup` in the logs
 
 First, ensure you have done all the steps to create a new site:
 
@@ -25,7 +25,6 @@ First, ensure you have done all the steps to create a new site:
 If the error persists, 
 
 1. verify in futuretense.ini there is an entry `agilesites.dir`
-.0\\Shared\\agilesites
 
 2. check the content of that directory and ensure there is only ONE jar `agilesites-all-assembly-*` in that folder. 
 
