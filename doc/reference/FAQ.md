@@ -10,6 +10,30 @@ Another jar is built and deployed in the shared folder and contains your applica
 
 The framework lets you create one eclipse project, typing `eclipse` and importing the `app` folder in eclipse as an Eclipse project.
 
+## when I try to deploy I get Class not found mysite.Setup in the logs
+
+First, ensure you have done all the steps to create a new site:
+
+1. shut down JSK
+2. edited build.sbt and added TestAgileSites ( wcsSites := "TestAgileSites,Demo"
+3. run wcs-setup
+4. started JSK
+5. created the site TestAgileSites
+6. executed wcs-generate site (Site=TestAgileSites)
+7. wcs-deploy
+
+If the error persists, 
+
+1. verify in futuretense.ini there is an entry `agilesites.dir`
+.0\\Shared\\agilesites
+
+2. check the content of that directory and ensure there is only ONE jar `agilesites-all-assembly-*` in that folder. 
+
+You may have more if you tried a previous release. If there are more, just delete all of them and recreate it with `wcs-package-jar`
+ 
+If you do not see any file created  you may have a permission problem.
+
+
 ## How do I add a custom library to the framework?
 
 You need to locate it in a repository accessible by maven, using websites like [MVN repository](http://mvnrepository.com). Assuming you want something like, for example, jfreechart, locate it and locate its sbt dependency. In the site you will find a string like this:
