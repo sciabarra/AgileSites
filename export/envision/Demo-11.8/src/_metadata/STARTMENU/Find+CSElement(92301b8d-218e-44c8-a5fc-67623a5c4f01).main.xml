@@ -1,10 +1,10 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
-    <id class="string">1374097568707</id>
+    <id class="string">1374098063901</id>
     <resourceType>STARTMENU</resourceType>
     <deps class="empty-set"/>
     <data class="com.openmarket.xcelerate.startmenu.StartMenuItem">
-      <id>1374097568707</id>
+      <id>1374098063901</id>
       <uid>92301b8d-218e-44c8-a5fc-67623a5c4f01</uid>
       <name>Find CSElement</name>
       <description>CSElement</description>
@@ -12,6 +12,10 @@
       <menuType>Search</menuType>
       <legalSites class="com.openmarket.xcelerate.common.SiteList">
         <hashtable>
+          <entry>
+            <long>1322052581735</long>
+            <long>1322052581735</long>
+          </entry>
           <entry>
             <long>1374097567472</long>
             <long>1374097567472</long>
@@ -81,6 +85,6 @@
 #
 key=@STARTMENU-92301b8d-218e-44c8-a5fc-67623a5c4f01
 type=STARTMENU
-sites=MySite,Demo
+sites=avisports,MySite,Demo
 
 ==================___ END METADATA ___==================-->

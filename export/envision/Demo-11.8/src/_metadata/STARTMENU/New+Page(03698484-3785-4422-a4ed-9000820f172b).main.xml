@@ -1,10 +1,10 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
-    <id class="string">1374097568733</id>
+    <id class="string">1374098078394</id>
     <resourceType>STARTMENU</resourceType>
     <deps class="empty-set"/>
     <data class="com.openmarket.xcelerate.startmenu.StartMenuItem">
-      <id>1374097568733</id>
+      <id>1374098078394</id>
       <uid>03698484-3785-4422-a4ed-9000820f172b</uid>
       <name>New Page</name>
       <assetType>Page</assetType>

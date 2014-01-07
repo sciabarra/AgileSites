@@ -1,11 +1,11 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
-    <id class="string">1374098063606</id>
+    <id class="string">1374098063623</id>
     <resourceType>TREETAB</resourceType>
     <deps class="empty-set"/>
     <data class="com.openmarket.xcelerate.treetab.TreeTab">
-      <id>1374098063606</id>
-      <uid>CSSystem:TreeTabs:Site Plan</uid>
+      <id>1374098063623</id>
+      <uid>CSSystem:TreeTabs:Site Admin</uid>
       <globalItems class="com.openmarket.xcelerate.treetab.TreeItems">
         <hashtable>
           <entry>
@@ -26,75 +26,23 @@
             <string>NODEITEMS</string>
             <com.openmarket.xcelerate.treetab.TreeItem>
               <name>NODEITEMS</name>
-              <values>Item:15:Refresh=refresh:Item:13:Status=status:</values>
+              <values>Item:15:Refresh=refresh:</values>
             </com.openmarket.xcelerate.treetab.TreeItem>
           </entry>
         </hashtable>
       </globalItems>
       <lineStyle>Angled</lineStyle>
-      <title>Site Plan</title>
+      <title>Site Admin</title>
       <actionURL>ContentServer?pagename=OpenMarket%2FGator%2FUIFramework%2FTreeOpURL</actionURL>
       <globalPopupURL>ContentServer?pagename=OpenMarket%2FGator%2FUIFramework%2FLoadGlobalPopup</globalPopupURL>
-      <ordinal>1</ordinal>
-      <toolTip>Site Plan Tab</toolTip>
+      <ordinal>3</ordinal>
+      <toolTip>Site Administration</toolTip>
       <paneType>Tree</paneType>
       <roles class="com.openmarket.xcelerate.common.RoleList">
         <hashtable>
           <entry>
-            <string>ContentAuthor</string>
-            <string>ContentAuthor</string>
-          </entry>
-          <entry>
-            <string>MarketingEditor</string>
-            <string>MarketingEditor</string>
-          </entry>
-          <entry>
-            <string>Approver</string>
-            <string>Approver</string>
-          </entry>
-          <entry>
-            <string>GeneralAdmin</string>
-            <string>GeneralAdmin</string>
-          </entry>
-          <entry>
-            <string>ArtworkAuthor</string>
-            <string>ArtworkAuthor</string>
-          </entry>
-          <entry>
-            <string>DocumentAuthor</string>
-            <string>DocumentAuthor</string>
-          </entry>
-          <entry>
-            <string>ContentEditor</string>
-            <string>ContentEditor</string>
-          </entry>
-          <entry>
-            <string>ArtworkEditor</string>
-            <string>ArtworkEditor</string>
-          </entry>
-          <entry>
-            <string>ProductAuthor</string>
-            <string>ProductAuthor</string>
-          </entry>
-          <entry>
-            <string>SitesUser</string>
-            <string>SitesUser</string>
-          </entry>
-          <entry>
-            <string>DocumentEditor</string>
-            <string>DocumentEditor</string>
-          </entry>
-          <entry>
-            <string>Designer</string>
-            <string>Designer</string>
-          </entry>
-          <entry>
-            <string>ProductEditor</string>
-            <string>ProductEditor</string>
-          </entry>
-          <entry>
-            <string>MarketingAuthor</string>
-            <string>MarketingAuthor</string>
+            <string>SiteAdmin</string>
+            <string>SiteAdmin</string>
           </entry>
         </hashtable>
       </roles>
@@ -131,14 +79,14 @@
       <sections class="com.openmarket.xcelerate.treetab.SectionList">
         <sections>
           <entry>
-            <string>Page</string>
+            <string>SiteAdmin</string>
             <int>0</int>
           </entry>
         </sections>
         <sectionVector>
           <com.openmarket.xcelerate.treetab.Section>
-            <name>Page</name>
-            <populateURL>OpenMarket/Xcelerate/AssetType/Page/LoadSiteTree</populateURL>
+            <name>SiteAdmin</name>
+            <populateURL>OpenMarket/Gator/UIFramework/Admin/LoadSites</populateURL>
             <sites class="com.openmarket.xcelerate.common.SiteList">
               <hashtable>
                 <entry>
@@ -170,60 +118,8 @@
             <roles class="com.openmarket.xcelerate.common.RoleList">
               <hashtable>
                 <entry>
-                  <string>ContentAuthor</string>
-                  <string>ContentAuthor</string>
-                </entry>
-                <entry>
-                  <string>MarketingEditor</string>
-                  <string>MarketingEditor</string>
-                </entry>
-                <entry>
-                  <string>Approver</string>
-                  <string>Approver</string>
-                </entry>
-                <entry>
-                  <string>GeneralAdmin</string>
-                  <string>GeneralAdmin</string>
-                </entry>
-                <entry>
-                  <string>ArtworkAuthor</string>
-                  <string>ArtworkAuthor</string>
-                </entry>
-                <entry>
-                  <string>DocumentAuthor</string>
-                  <string>DocumentAuthor</string>
-                </entry>
-                <entry>
-                  <string>ContentEditor</string>
-                  <string>ContentEditor</string>
-                </entry>
-                <entry>
-                  <string>ArtworkEditor</string>
-                  <string>ArtworkEditor</string>
-                </entry>
-                <entry>
-                  <string>ProductAuthor</string>
-                  <string>ProductAuthor</string>
-                </entry>
-                <entry>
-                  <string>SitesUser</string>
-                  <string>SitesUser</string>
-                </entry>
-                <entry>
-                  <string>DocumentEditor</string>
-                  <string>DocumentEditor</string>
-                </entry>
-                <entry>
-                  <string>Designer</string>
-                  <string>Designer</string>
-                </entry>
-                <entry>
-                  <string>ProductEditor</string>
-                  <string>ProductEditor</string>
-                </entry>
-                <entry>
-                  <string>MarketingAuthor</string>
-                  <string>MarketingAuthor</string>
+                  <string>SiteAdmin</string>
+                  <string>SiteAdmin</string>
                 </entry>
               </hashtable>
             </roles>
@@ -239,14 +135,14 @@
     <dependency>
       <depType>E</depType>
       <resType>@ELEMENTCATALOG</resType>
-      <resId>OpenMarket/Xcelerate/AssetType/Page/LoadSiteTree</resId>
-      <uid>OpenMarket/Xcelerate/AssetType/Page/LoadSiteTree</uid>
+      <resId>OpenMarket/Gator/UIFramework/Admin/LoadSites</resId>
+      <uid>OpenMarket/Gator/UIFramework/Admin/LoadSites</uid>
     </dependency>
   </linked-hash-set>
 </dependencies>
 ==================______________________==================
 #
-key=@TREETAB-CSSystem-TreeTabs-Site Plan
+key=@TREETAB-CSSystem-TreeTabs-Site Admin
 type=TREETAB
 
 ==================___ END METADATA ___==================-->

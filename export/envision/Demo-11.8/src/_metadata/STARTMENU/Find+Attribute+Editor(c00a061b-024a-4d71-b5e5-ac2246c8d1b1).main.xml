@@ -1,16 +1,20 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
-    <id class="string">1374097568715</id>
+    <id class="string">1374098063894</id>
     <resourceType>STARTMENU</resourceType>
     <deps class="empty-set"/>
     <data class="com.openmarket.xcelerate.startmenu.StartMenuItem">
-      <id>1374097568715</id>
+      <id>1374098063894</id>
       <uid>c00a061b-024a-4d71-b5e5-ac2246c8d1b1</uid>
       <name>Find Attribute Editor</name>
       <assetType>AttrTypes</assetType>
       <menuType>Search</menuType>
       <legalSites class="com.openmarket.xcelerate.common.SiteList">
         <hashtable>
+          <entry>
+            <long>1322052581735</long>
+            <long>1322052581735</long>
+          </entry>
           <entry>
             <long>1374097567472</long>
             <long>1374097567472</long>
@@ -80,6 +84,6 @@
 #
 key=@STARTMENU-c00a061b-024a-4d71-b5e5-ac2246c8d1b1
 type=STARTMENU
-sites=MySite,Demo
+sites=avisports,MySite,Demo
 
 ==================___ END METADATA ___==================-->
