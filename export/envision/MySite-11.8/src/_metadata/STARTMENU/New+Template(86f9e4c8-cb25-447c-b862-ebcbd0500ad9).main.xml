@@ -1,0 +1,96 @@
+<object-stream>
+  <com.fatwire.realtime.ResourceDataImpl>
+    <id class="string">1374098064035</id>
+    <resourceType>STARTMENU</resourceType>
+    <deps class="empty-set"/>
+    <data class="com.openmarket.xcelerate.startmenu.StartMenuItem">
+      <id>1374098064035</id>
+      <uid>86f9e4c8-cb25-447c-b862-ebcbd0500ad9</uid>
+      <name>New Template</name>
+      <assetType>Template</assetType>
+      <menuType>ContentForm</menuType>
+      <legalSites class="com.openmarket.xcelerate.common.SiteList">
+        <hashtable>
+          <entry>
+            <long>1322052581735</long>
+            <long>1322052581735</long>
+          </entry>
+          <entry>
+            <long>1374097567472</long>
+            <long>1374097567472</long>
+          </entry>
+          <entry>
+            <long>1351275793143</long>
+            <long>1351275793143</long>
+          </entry>
+        </hashtable>
+      </legalSites>
+      <legalRoles class="com.openmarket.xcelerate.common.RoleList">
+        <hashtable>
+          <entry>
+            <string>AdvancedUser</string>
+            <string>AdvancedUser</string>
+          </entry>
+        </hashtable>
+      </legalRoles>
+      <processInputForm>0</processInputForm>
+      <participantInputForm>0</participantInputForm>
+      <siteAffinityInputForm>0</siteAffinityInputForm>
+      <legalArguments class="com.openmarket.xcelerate.startmenu.InputArgList">
+        <hashtable/>
+      </legalArguments>
+      <workflowChoices class="com.openmarket.xcelerate.startmenu.ProcessList">
+        <hashtable/>
+      </workflowChoices>
+      <participantChoices class="com.openmarket.xcelerate.startmenu.ParticipantList">
+        <required class="com.openmarket.xcelerate.workflow.Participants">
+          <rolesHash class="java.util.Collections$SynchronizedMap" serialization="custom">
+            <java.util.Collections_-SynchronizedMap>
+              <default>
+                <m class="tree-map"/>
+                <mutex class="java.util.Collections$SynchronizedMap" reference="../../.."/>
+              </default>
+            </java.util.Collections_-SynchronizedMap>
+          </rolesHash>
+          <usersHash/>
+        </required>
+        <optional class="com.openmarket.xcelerate.workflow.Participants">
+          <rolesHash class="java.util.Collections$SynchronizedMap" serialization="custom">
+            <java.util.Collections_-SynchronizedMap>
+              <default>
+                <m class="tree-map"/>
+                <mutex class="java.util.Collections$SynchronizedMap" reference="../../.."/>
+              </default>
+            </java.util.Collections_-SynchronizedMap>
+          </rolesHash>
+          <usersHash/>
+        </optional>
+      </participantChoices>
+      <siteChoices class="com.openmarket.xcelerate.common.SiteList">
+        <hashtable>
+          <entry>
+            <long>1351275793143</long>
+            <long>1351275793143</long>
+          </entry>
+        </hashtable>
+      </siteChoices>
+      <arguments class="com.openmarket.xcelerate.startmenu.InputArgListMv" serialization="custom">
+        <com.openmarket.xcelerate.common.ArgumentList>
+          <int>1</int>
+          <int>0</int>
+        </com.openmarket.xcelerate.common.ArgumentList>
+      </arguments>
+    </data>
+  </com.fatwire.realtime.ResourceDataImpl>
+</object-stream>
+<!--==================___ METADATA ___================
+<dependencies>
+  <linked-hash-set/>
+</dependencies>
+==================______________________==================
+#
+key=@STARTMENU-86f9e4c8-cb25-447c-b862-ebcbd0500ad9
+type=STARTMENU
+sites=avisports,MySite,Demo
+
+==================___ END METADATA ___==================-->

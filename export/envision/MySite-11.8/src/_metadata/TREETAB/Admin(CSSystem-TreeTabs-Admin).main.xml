@@ -1,0 +1,148 @@
+<object-stream>
+  <com.fatwire.realtime.ResourceDataImpl>
+    <id class="string">1374098063614</id>
+    <resourceType>TREETAB</resourceType>
+    <deps class="empty-set"/>
+    <data class="com.openmarket.xcelerate.treetab.TreeTab">
+      <id>1374098063614</id>
+      <uid>CSSystem:TreeTabs:Admin</uid>
+      <globalItems class="com.openmarket.xcelerate.treetab.TreeItems">
+        <hashtable>
+          <entry>
+            <string>GLOBALITEMS</string>
+            <com.openmarket.xcelerate.treetab.TreeItem>
+              <name>GLOBALITEMS</name>
+              <values>Item:22:Refresh ALL=refreshAll:</values>
+            </com.openmarket.xcelerate.treetab.TreeItem>
+          </entry>
+          <entry>
+            <string>LOADURI</string>
+            <com.openmarket.xcelerate.treetab.TreeItem>
+              <name>LOADURI</name>
+              <values>ContentServer?pagename=OpenMarket%2FGator%2FUIFramework%2FLoadTab</values>
+            </com.openmarket.xcelerate.treetab.TreeItem>
+          </entry>
+          <entry>
+            <string>NODEITEMS</string>
+            <com.openmarket.xcelerate.treetab.TreeItem>
+              <name>NODEITEMS</name>
+              <values>Item:15:Refresh=refresh:</values>
+            </com.openmarket.xcelerate.treetab.TreeItem>
+          </entry>
+        </hashtable>
+      </globalItems>
+      <lineStyle>Angled</lineStyle>
+      <title>Admin</title>
+      <actionURL>ContentServer?pagename=OpenMarket%2FGator%2FUIFramework%2FTreeOpURL</actionURL>
+      <globalPopupURL>ContentServer?pagename=OpenMarket%2FGator%2FUIFramework%2FLoadGlobalPopup</globalPopupURL>
+      <ordinal>2</ordinal>
+      <toolTip>Administrative Functions</toolTip>
+      <paneType>Tree</paneType>
+      <roles class="com.openmarket.xcelerate.common.RoleList">
+        <hashtable>
+          <entry>
+            <string>GeneralAdmin</string>
+            <string>GeneralAdmin</string>
+          </entry>
+        </hashtable>
+      </roles>
+      <sites class="com.openmarket.xcelerate.common.SiteList">
+        <hashtable>
+          <entry>
+            <long>1322052581735</long>
+            <long>1322052581735</long>
+          </entry>
+          <entry>
+            <long>1253041378564</long>
+            <long>1253041378564</long>
+          </entry>
+          <entry>
+            <long>1374097567472</long>
+            <long>1374097567472</long>
+          </entry>
+          <entry>
+            <long>1112198287026</long>
+            <long>1112198287026</long>
+          </entry>
+          <entry>
+            <long>1351275793143</long>
+            <long>1351275793143</long>
+          </entry>
+          <entry>
+            <long>0</long>
+            <long>0</long>
+          </entry>
+        </hashtable>
+      </sites>
+      <nodeOpenedPic>Xcelerate/OMTree/TreeImages/minus.gif</nodeOpenedPic>
+      <nodeClosedPic>Xcelerate/OMTree/TreeImages/plus.gif</nodeClosedPic>
+      <sections class="com.openmarket.xcelerate.treetab.SectionList">
+        <sections>
+          <entry>
+            <string>Admin Tree</string>
+            <int>0</int>
+          </entry>
+        </sections>
+        <sectionVector>
+          <com.openmarket.xcelerate.treetab.Section>
+            <name>Admin Tree</name>
+            <populateURL>OpenMarket/Gator/UIFramework/LoadAdminTree</populateURL>
+            <sites class="com.openmarket.xcelerate.common.SiteList">
+              <hashtable>
+                <entry>
+                  <long>1322052581735</long>
+                  <long>1322052581735</long>
+                </entry>
+                <entry>
+                  <long>1253041378564</long>
+                  <long>1253041378564</long>
+                </entry>
+                <entry>
+                  <long>1374097567472</long>
+                  <long>1374097567472</long>
+                </entry>
+                <entry>
+                  <long>1112198287026</long>
+                  <long>1112198287026</long>
+                </entry>
+                <entry>
+                  <long>1351275793143</long>
+                  <long>1351275793143</long>
+                </entry>
+                <entry>
+                  <long>0</long>
+                  <long>0</long>
+                </entry>
+              </hashtable>
+            </sites>
+            <roles class="com.openmarket.xcelerate.common.RoleList">
+              <hashtable>
+                <entry>
+                  <string>GeneralAdmin</string>
+                  <string>GeneralAdmin</string>
+                </entry>
+              </hashtable>
+            </roles>
+          </com.openmarket.xcelerate.treetab.Section>
+        </sectionVector>
+      </sections>
+    </data>
+  </com.fatwire.realtime.ResourceDataImpl>
+</object-stream>
+<!--==================___ METADATA ___================
+<dependencies>
+  <linked-hash-set>
+    <dependency>
+      <depType>E</depType>
+      <resType>@ELEMENTCATALOG</resType>
+      <resId>OpenMarket/Gator/UIFramework/LoadAdminTree</resId>
+      <uid>OpenMarket/Gator/UIFramework/LoadAdminTree</uid>
+    </dependency>
+  </linked-hash-set>
+</dependencies>
+==================______________________==================
+#
+key=@TREETAB-CSSystem-TreeTabs-Admin
+type=TREETAB
+
+==================___ END METADATA ___==================-->
