@@ -11,7 +11,7 @@
         <description>WebRoot</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\Sites\11.1.1.8.0\Shared\Storage\AssetType\WebRoot.xml</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.8\11.8\Sites\11.1.1.8.0\Shared\Storage\AssetType\WebRoot,0.xml</urldescriptorspec>
         <urldescriptordata>PEFTU0VUIE5BTUU9IldlYlJvb3QiIERFU0NSSVBUSU9OPSJXZWJSb290IiBNQVJLRVJURVhUPSIq
 IiBQUk9DRVNTT1I9IjQuMCIgREVGRElSPSJDOlxGdXR1cmVUZW5zZVxTdG9yYWdlXFdlYlJvb3Qx
 Ij4NCjxQUk9QRVJUSUVTPg0KDQo8UFJPUEVSVFkgTkFNRT0ibmFtZSIgREVTQ1JJUFRJT049Ikhv
@@ -91,7 +91,7 @@ ICAgICAgICAgICAgIA==</urldescriptordata>
             <null/>
             <null/>
             <null/>
-            <string>z:/AgileSitesJSK/1.0/11.8.0/Sites/11.1.1.8.0/Shared/Storage/WebRoot/</string>
+            <string>z:/AgileSitesJSK/1.8/11.8/Sites/11.1.1.8.0/Shared/Storage/WebRoot/</string>
             <null/>
             <null/>
             <null/>
@@ -276,7 +276,7 @@ ICAgICAgICAgICAgIA==</urldescriptordata>
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/WebRoot/SelectSummary_NoCat.sql</string>
+            <string>OpenMarket\Xcelerate\AssetType\WebRoot\SelectSummary_NoCat,0.sql</string>
             <null/>
             <null/>
             <null/>
@@ -422,6 +422,9 @@ Ymxlcy5Bc3NldFR5cGUuc3RhdHVzIT0nVk8nIFZhcmlhYmxlcy5xdWVyeWVuZA==</byte-array>
       <subtypes/>
       <associations/>
       <siteNames class="list">
+        <string>avisports</string>
+        <string>Demo</string>
+        <string>FirstSiteII</string>
         <string>MySite</string>
       </siteNames>
     </data>
@@ -532,6 +535,6 @@ Ymxlcy5Bc3NldFR5cGUuc3RhdHVzIT0nVk8nIFZhcmlhYmxlcy5xdWVyeWVuZA==</byte-array>
 #
 key=@ASSET_TYPE-CSSystem-AssetType-WebRoot
 type=ASSET_TYPE
-sites=MySite
+sites=avisports,Demo,FirstSiteII,MySite
 
 ==================___ END METADATA ___==================-->

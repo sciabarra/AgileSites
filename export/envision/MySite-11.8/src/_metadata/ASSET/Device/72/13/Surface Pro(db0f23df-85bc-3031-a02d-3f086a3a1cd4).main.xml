@@ -6,12 +6,15 @@
     <createddate>2012-12-19T16:27:53.640Z</createddate>
     <description>Surface Pro</description>
     <publist>0</publist>
+    <publist>FirstSiteII</publist>
     <publist>AdminSite</publist>
+    <publist>avisports</publist>
+    <publist>Demo</publist>
     <publist>MySite</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-01-18T15:43:12.887Z</updateddate>
+    <updateddate>2014-01-07T22:54:03.275Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -179,7 +182,7 @@
 storable0=ASSET/Device/72/13/Surface Pro.urlimage(db0f23df-85bc-3031-a02d-3f086a3a1cd4).Microsoft_Surface_Pro_Landscape.png||_storable_type\=Surface+Pro.urlimage%28db0f23df-85bc-3031-a02d-3f086a3a1cd4%29.Microsoft_Surface_Pro_Landscape.png&_blob_prop\=urlimage&_value_count\=S
 key=Device-db0f23df-85bc-3031-a02d-3f086a3a1cd4
 type=ASSETDATA
-sites=0,AdminSite,MySite
+sites=0
 storable1=ASSET/Device/72/13/Surface Pro.urlthumbnailimage(db0f23df-85bc-3031-a02d-3f086a3a1cd4).Microsoft_Surface_Pro_Thumbnail.png||_storable_type\=Surface+Pro.urlthumbnailimage%28db0f23df-85bc-3031-a02d-3f086a3a1cd4%29.Microsoft_Surface_Pro_Thumbnail.png&_blob_prop\=urlthumbnailimage&_value_count\=S
 
 ==================___ END METADATA ___==================-->

@@ -6,12 +6,15 @@
     <createddate>2013-04-08T11:17:13.887Z</createddate>
     <description>Group for all other legacy phones</description>
     <publist>0</publist>
+    <publist>FirstSiteII</publist>
     <publist>AdminSite</publist>
+    <publist>avisports</publist>
+    <publist>Demo</publist>
     <publist>MySite</publist>
-    <status>PL</status>
+    <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-04-08T11:17:36.127Z</updateddate>
+    <updateddate>2014-01-07T22:54:01.594Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -144,63 +147,63 @@
       <depType>V</depType>
       <resType>DeviceGroup</resType>
       <resId>1358430850827</resId>
-      <assetDate>2013-01-18 14:48:34.887</assetDate>
+      <assetDate>2014-01-07 22:54:02.973</assetDate>
       <uid>32f0bc4a-1cfc-47f3-91e7-41c01f809126</uid>
     </dependency>
     <dependency>
       <depType>V</depType>
       <resType>DeviceGroup</resType>
       <resId>1358430851590</resId>
-      <assetDate>2013-01-18 14:48:34.743</assetDate>
+      <assetDate>2014-01-07 22:54:02.828</assetDate>
       <uid>b0b5b384-acb8-4bd0-8f7b-dc9d1b4c36cc</uid>
     </dependency>
     <dependency>
       <depType>V</depType>
       <resType>DeviceGroup</resType>
       <resId>1358434841098</resId>
-      <assetDate>2013-02-26 17:08:37.967</assetDate>
+      <assetDate>2014-01-07 22:54:02.672</assetDate>
       <uid>cafe0088-11a7-4e81-ade6-eee48f07cc4e</uid>
     </dependency>
     <dependency>
       <depType>V</depType>
       <resType>DeviceGroup</resType>
       <resId>1358434842108</resId>
-      <assetDate>2013-01-18 14:48:34.99</assetDate>
+      <assetDate>2014-01-07 22:54:02.497</assetDate>
       <uid>73bba297-e30a-40c8-bfc1-d880d2a30cdc</uid>
     </dependency>
     <dependency>
       <depType>V</depType>
       <resType>DeviceGroup</resType>
       <resId>1358434843096</resId>
-      <assetDate>2013-01-18 14:48:35.93</assetDate>
+      <assetDate>2014-01-07 22:54:02.317</assetDate>
       <uid>c936720c-e32d-45c4-b39a-b7ad8bcbdacc</uid>
     </dependency>
     <dependency>
       <depType>V</depType>
       <resType>DeviceGroup</resType>
       <resId>1358491825686</resId>
-      <assetDate>2013-01-18 14:48:35.673</assetDate>
+      <assetDate>2014-01-07 22:54:02.134</assetDate>
       <uid>a9369223-00af-475b-b8a5-6959bc7c3906</uid>
     </dependency>
     <dependency>
       <depType>V</depType>
       <resType>DeviceGroup</resType>
       <resId>1358495275261</resId>
-      <assetDate>2013-01-18 14:48:35.817</assetDate>
+      <assetDate>2014-01-07 22:54:03.132</assetDate>
       <uid>4c8a0c51-36e6-498a-9bbf-34049e5d4a2d</uid>
     </dependency>
     <dependency>
       <depType>V</depType>
       <resType>DeviceGroup</resType>
       <resId>1365399666345</resId>
-      <assetDate>2013-04-08 11:17:35.977</assetDate>
+      <assetDate>2014-01-07 22:54:01.937</assetDate>
       <uid>3a005d0e-64ad-437e-a2f8-74743faeba4e</uid>
     </dependency>
     <dependency>
       <depType>V</depType>
       <resType>DeviceGroup</resType>
       <resId>1365399666760</resId>
-      <assetDate>2013-04-08 11:17:35.92</assetDate>
+      <assetDate>2014-01-07 22:54:01.766</assetDate>
       <uid>b28f8bd2-9986-4181-b52f-d748894cb3d5</uid>
     </dependency>
     <dependency>
@@ -215,6 +218,6 @@
 #
 key=DeviceGroup-1306bef7-432f-44cc-b1ca-7e849fb92b60
 type=ASSETDATA
-sites=0,AdminSite,MySite
+sites=0
 
 ==================___ END METADATA ___==================-->

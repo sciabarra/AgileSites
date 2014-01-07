@@ -21,7 +21,7 @@ public class MapIListTest {
 		return ls;
 	}
 
-	private Map<String, List<String>> map(String keys, List<String>... lists) {
+	private Map<String, List<String>> map(String keys, @SuppressWarnings("unchecked") List<String>... lists) {
 		Map<String, List<String>> map = new HashMap<String, List<String>>();
 		int n = 0;
 		StringTokenizer st = new StringTokenizer(keys, ",");

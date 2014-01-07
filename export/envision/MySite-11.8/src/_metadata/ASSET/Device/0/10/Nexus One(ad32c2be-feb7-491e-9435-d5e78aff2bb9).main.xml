@@ -6,12 +6,15 @@
     <createddate>2012-11-30T19:36:25.020Z</createddate>
     <description>Nexus One</description>
     <publist>0</publist>
+    <publist>FirstSiteII</publist>
     <publist>AdminSite</publist>
+    <publist>avisports</publist>
+    <publist>Demo</publist>
     <publist>MySite</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-01-18T15:42:10.747Z</updateddate>
+    <updateddate>2014-01-07T22:54:06.390Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -179,7 +182,7 @@
 storable0=ASSET/Device/0/10/Nexus One.urlimage(ad32c2be-feb7-491e-9435-d5e78aff2bb9).HTC_Google_Nexus_One_Portrait.png||_storable_type\=Nexus+One.urlimage%28ad32c2be-feb7-491e-9435-d5e78aff2bb9%29.HTC_Google_Nexus_One_Portrait.png&_blob_prop\=urlimage&_value_count\=S
 key=Device-ad32c2be-feb7-491e-9435-d5e78aff2bb9
 type=ASSETDATA
-sites=0,AdminSite,MySite
+sites=0
 storable1=ASSET/Device/0/10/Nexus One.urlthumbnailimage(ad32c2be-feb7-491e-9435-d5e78aff2bb9).HTC_Google_Nexus_One_Thumbnail.png||_storable_type\=Nexus+One.urlthumbnailimage%28ad32c2be-feb7-491e-9435-d5e78aff2bb9%29.HTC_Google_Nexus_One_Thumbnail.png&_blob_prop\=urlthumbnailimage&_value_count\=S
 
 ==================___ END METADATA ___==================-->

@@ -6,12 +6,15 @@
     <createddate>2012-10-10T12:36:24.637Z</createddate>
     <description>Desktop</description>
     <publist>0</publist>
+    <publist>FirstSiteII</publist>
     <publist>AdminSite</publist>
+    <publist>avisports</publist>
+    <publist>Demo</publist>
     <publist>MySite</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-01-16T12:58:52.013Z</updateddate>
+    <updateddate>2014-01-07T22:54:04.802Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -179,7 +182,7 @@
 storable0=ASSET/Device/14/6/Desktop.urlimage(6cb45f80-a7b2-4918-a755-42ff99320f7b).desktop.png||_storable_type\=Desktop.urlimage%286cb45f80-a7b2-4918-a755-42ff99320f7b%29.desktop.png&_blob_prop\=urlimage&_value_count\=S
 key=Device-6cb45f80-a7b2-4918-a755-42ff99320f7b
 type=ASSETDATA
-sites=0,AdminSite,MySite
+sites=0
 storable1=ASSET/Device/14/6/Desktop.urlthumbnailimage(6cb45f80-a7b2-4918-a755-42ff99320f7b).desktop_Thumbnail.png||_storable_type\=Desktop.urlthumbnailimage%286cb45f80-a7b2-4918-a755-42ff99320f7b%29.desktop_Thumbnail.png&_blob_prop\=urlthumbnailimage&_value_count\=S
 
 ==================___ END METADATA ___==================-->

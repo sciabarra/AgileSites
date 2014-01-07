@@ -6,12 +6,15 @@
     <createddate>2012-10-10T12:31:54.713Z</createddate>
     <description>Nexus 10</description>
     <publist>0</publist>
+    <publist>FirstSiteII</publist>
     <publist>AdminSite</publist>
+    <publist>avisports</publist>
+    <publist>Demo</publist>
     <publist>MySite</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-01-18T12:53:24.020Z</updateddate>
+    <updateddate>2014-01-07T22:54:05.379Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -179,7 +182,7 @@
 storable0=ASSET/Device/13/9/Nexus 10.urlimage(14b3024e-5dc4-4721-913d-65f9bf6e6ee8).Samsung_Nexus_10_Landscape.png||_storable_type\=Nexus+10.urlimage%2814b3024e-5dc4-4721-913d-65f9bf6e6ee8%29.Samsung_Nexus_10_Landscape.png&_blob_prop\=urlimage&_value_count\=S
 key=Device-14b3024e-5dc4-4721-913d-65f9bf6e6ee8
 type=ASSETDATA
-sites=0,AdminSite,MySite
+sites=0
 storable1=ASSET/Device/13/9/Nexus 10.urlthumbnailimage(14b3024e-5dc4-4721-913d-65f9bf6e6ee8).Samsung_Nexus_10_Thumbnail.png||_storable_type\=Nexus+10.urlthumbnailimage%2814b3024e-5dc4-4721-913d-65f9bf6e6ee8%29.Samsung_Nexus_10_Thumbnail.png&_blob_prop\=urlthumbnailimage&_value_count\=S
 
 ==================___ END METADATA ___==================-->

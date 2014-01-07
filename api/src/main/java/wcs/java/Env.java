@@ -41,8 +41,8 @@ public class Env extends wcs.core.ICSProxyJ implements Content, wcs.api.Env {
 	private static Log log = Log.getLog(Env.class);
 	@SuppressWarnings("unused")
 	private boolean hasInsite = getVersionMajor() == 11;
-	private boolean hasDevices = getVersionMajor() == 11
-			&& getVersionMinor() == 8;
+	//private boolean hasDevices = getVersionMajor() == 11
+	//		&& getVersionMinor() == 8;
 	private wcs.api.Config config;
 	private wcs.api.Router router;
 	private String site;

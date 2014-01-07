@@ -6,12 +6,15 @@
     <createddate>2012-10-10T12:35:07.470Z</createddate>
     <description>E71</description>
     <publist>0</publist>
+    <publist>FirstSiteII</publist>
     <publist>AdminSite</publist>
+    <publist>avisports</publist>
+    <publist>Demo</publist>
     <publist>MySite</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-01-18T15:43:48.700Z</updateddate>
+    <updateddate>2014-01-07T22:54:05.113Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -179,7 +182,7 @@
 storable0=ASSET/Device/6/67/E71.urlimage(0287fdd0-f2fc-4bc8-8fba-23a29a73c58e).Nokia_E71.png||_storable_type\=E71.urlimage%280287fdd0-f2fc-4bc8-8fba-23a29a73c58e%29.Nokia_E71.png&_blob_prop\=urlimage&_value_count\=S
 key=Device-0287fdd0-f2fc-4bc8-8fba-23a29a73c58e
 type=ASSETDATA
-sites=0,AdminSite,MySite
+sites=0
 storable1=ASSET/Device/6/67/E71.urlthumbnailimage(0287fdd0-f2fc-4bc8-8fba-23a29a73c58e).Nokia_E71_Thumbnail.png||_storable_type\=E71.urlthumbnailimage%280287fdd0-f2fc-4bc8-8fba-23a29a73c58e%29.Nokia_E71_Thumbnail.png&_blob_prop\=urlthumbnailimage&_value_count\=S
 
 ==================___ END METADATA ___==================-->

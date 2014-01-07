@@ -6,13 +6,15 @@
     <createddate>2012-10-10T11:53:02.373Z</createddate>
     <description>Blackberry 8520</description>
     <publist>0</publist>
+    <publist>FirstSiteII</publist>
     <publist>AdminSite</publist>
+    <publist>avisports</publist>
     <publist>Demo</publist>
     <publist>MySite</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-12-16T11:33:19.711Z</updateddate>
+    <updateddate>2014-01-07T22:54:03.569Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>

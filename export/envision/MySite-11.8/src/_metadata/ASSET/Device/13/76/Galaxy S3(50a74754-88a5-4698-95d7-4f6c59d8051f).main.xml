@@ -6,12 +6,15 @@
     <createddate>2012-11-30T18:34:11.110Z</createddate>
     <description>Galaxy S3</description>
     <publist>0</publist>
+    <publist>FirstSiteII</publist>
     <publist>AdminSite</publist>
+    <publist>avisports</publist>
+    <publist>Demo</publist>
     <publist>MySite</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-01-18T15:44:48.943Z</updateddate>
+    <updateddate>2014-01-07T22:54:05.824Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -179,7 +182,7 @@
 storable0=ASSET/Device/13/76/Galaxy S3.urlimage(50a74754-88a5-4698-95d7-4f6c59d8051f).Samsung_Galaxy_S3_Portrait.png||_storable_type\=Galaxy+S3.urlimage%2850a74754-88a5-4698-95d7-4f6c59d8051f%29.Samsung_Galaxy_S3_Portrait.png&_blob_prop\=urlimage&_value_count\=S
 key=Device-50a74754-88a5-4698-95d7-4f6c59d8051f
 type=ASSETDATA
-sites=0,AdminSite,MySite
+sites=0
 storable1=ASSET/Device/13/76/Galaxy S3.urlthumbnailimage(50a74754-88a5-4698-95d7-4f6c59d8051f).Samsung_Galaxy_S3_Thumbnail.png||_storable_type\=Galaxy+S3.urlthumbnailimage%2850a74754-88a5-4698-95d7-4f6c59d8051f%29.Samsung_Galaxy_S3_Thumbnail.png&_blob_prop\=urlthumbnailimage&_value_count\=S
 
 ==================___ END METADATA ___==================-->

@@ -6,12 +6,15 @@
     <createddate>2013-02-26T14:36:21.117Z</createddate>
     <description>Blackberry Z10</description>
     <publist>0</publist>
+    <publist>FirstSiteII</publist>
     <publist>AdminSite</publist>
+    <publist>avisports</publist>
+    <publist>Demo</publist>
     <publist>MySite</publist>
-    <status>PL</status>
+    <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-02-26T14:36:21.117Z</updateddate>
+    <updateddate>2014-01-07T22:54:06.533Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -179,7 +182,7 @@
 storable0=ASSET/Device/70/11/Blackberry Z10.urlimage(91ac9aee-ee08-497f-8e1e-2eef126122b2).BlackBerry_Z10_Portrait.png||_storable_type\=Blackberry+Z10.urlimage%2891ac9aee-ee08-497f-8e1e-2eef126122b2%29.BlackBerry_Z10_Portrait.png&_blob_prop\=urlimage&_value_count\=S
 key=Device-91ac9aee-ee08-497f-8e1e-2eef126122b2
 type=ASSETDATA
-sites=0,AdminSite,MySite
+sites=0
 storable1=ASSET/Device/70/11/Blackberry Z10.urlthumbnailimage(91ac9aee-ee08-497f-8e1e-2eef126122b2).BlackBerry_Z10_Thumbnail.png||_storable_type\=Blackberry+Z10.urlthumbnailimage%2891ac9aee-ee08-497f-8e1e-2eef126122b2%29.BlackBerry_Z10_Thumbnail.png&_blob_prop\=urlthumbnailimage&_value_count\=S
 
 ==================___ END METADATA ___==================-->

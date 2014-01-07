@@ -6,12 +6,15 @@
     <createddate>2012-11-30T19:39:42.667Z</createddate>
     <description>Droid Razr 4G</description>
     <publist>0</publist>
+    <publist>FirstSiteII</publist>
     <publist>AdminSite</publist>
+    <publist>avisports</publist>
+    <publist>Demo</publist>
     <publist>MySite</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-01-18T15:43:20.893Z</updateddate>
+    <updateddate>2014-01-07T22:54:03.351Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -179,7 +182,7 @@
 storable0=ASSET/Device/2/14/Droid Razr 4G.urlimage(db0f23df-85bc-4022-a02d-3f086a3a7ad6).Motorola_Droid_RAZR_Portrait.png||_storable_type\=Droid+Razr+4G.urlimage%28db0f23df-85bc-4022-a02d-3f086a3a7ad6%29.Motorola_Droid_RAZR_Portrait.png&_blob_prop\=urlimage&_value_count\=S
 key=Device-db0f23df-85bc-4022-a02d-3f086a3a7ad6
 type=ASSETDATA
-sites=0,AdminSite,MySite
+sites=0
 storable1=ASSET/Device/2/14/Droid Razr 4G.urlthumbnailimage(db0f23df-85bc-4022-a02d-3f086a3a7ad6).Motorola_Droid_RAZR_Thumbnail.png||_storable_type\=Droid+Razr+4G.urlthumbnailimage%28db0f23df-85bc-4022-a02d-3f086a3a7ad6%29.Motorola_Droid_RAZR_Thumbnail.png&_blob_prop\=urlthumbnailimage&_value_count\=S
 
 ==================___ END METADATA ___==================-->

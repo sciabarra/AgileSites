@@ -6,12 +6,15 @@
     <createddate>2012-11-30T19:38:00.227Z</createddate>
     <description>Nexus 7</description>
     <publist>0</publist>
+    <publist>FirstSiteII</publist>
     <publist>AdminSite</publist>
+    <publist>avisports</publist>
+    <publist>Demo</publist>
     <publist>MySite</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-01-18T14:48:37.487Z</updateddate>
+    <updateddate>2014-01-07T22:54:05.034Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -179,7 +182,7 @@
 storable0=ASSET/Device/0/4/Nexus 7.urlimage(518a4e8a-1689-44eb-a56a-581c818c2f3a).Samsung_Google_Nexus_7_Portrait.png||_storable_type\=Nexus+7.urlimage%28518a4e8a-1689-44eb-a56a-581c818c2f3a%29.Samsung_Google_Nexus_7_Portrait.png&_blob_prop\=urlimage&_value_count\=S
 key=Device-518a4e8a-1689-44eb-a56a-581c818c2f3a
 type=ASSETDATA
-sites=0,AdminSite,MySite
+sites=0
 storable1=ASSET/Device/0/4/Nexus 7.urlthumbnailimage(518a4e8a-1689-44eb-a56a-581c818c2f3a).Samsung_Google_Nexus_7_Thumbnail.png||_storable_type\=Nexus+7.urlthumbnailimage%28518a4e8a-1689-44eb-a56a-581c818c2f3a%29.Samsung_Google_Nexus_7_Thumbnail.png&_blob_prop\=urlthumbnailimage&_value_count\=S
 
 ==================___ END METADATA ___==================-->

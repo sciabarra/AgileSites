@@ -6,12 +6,15 @@
     <createddate>2012-12-19T17:01:35.953Z</createddate>
     <description>Nook HD</description>
     <publist>0</publist>
+    <publist>FirstSiteII</publist>
     <publist>AdminSite</publist>
+    <publist>avisports</publist>
+    <publist>Demo</publist>
     <publist>MySite</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-01-18T14:48:37.343Z</updateddate>
+    <updateddate>2014-01-07T22:54:05.609Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -179,7 +182,7 @@
 storable0=ASSET/Device/2/64/Nook HD.urlimage(db0f23df-85bc-2102-a02d-3f086a3a1cd4).Nook_Tablet_HD_Portrait.png||_storable_type\=Nook+HD.urlimage%28db0f23df-85bc-2102-a02d-3f086a3a1cd4%29.Nook_Tablet_HD_Portrait.png&_blob_prop\=urlimage&_value_count\=S
 key=Device-db0f23df-85bc-2102-a02d-3f086a3a1cd4
 type=ASSETDATA
-sites=0,AdminSite,MySite
+sites=0
 storable1=ASSET/Device/2/64/Nook HD.urlthumbnailimage(db0f23df-85bc-2102-a02d-3f086a3a1cd4).Nook_Tablet_HD_Thumbnail.png||_storable_type\=Nook+HD.urlthumbnailimage%28db0f23df-85bc-2102-a02d-3f086a3a1cd4%29.Nook_Tablet_HD_Thumbnail.png&_blob_prop\=urlthumbnailimage&_value_count\=S
 
 ==================___ END METADATA ___==================-->

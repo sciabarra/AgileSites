@@ -6,12 +6,15 @@
     <createddate>2013-02-15T22:21:13.783Z</createddate>
     <description></description>
     <publist>0</publist>
+    <publist>FirstSiteII</publist>
     <publist>AdminSite</publist>
+    <publist>avisports</publist>
+    <publist>Demo</publist>
     <publist>MySite</publist>
-    <status>PL</status>
+    <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-02-15T22:21:13.783Z</updateddate>
+    <updateddate>2014-01-07T22:54:06.465Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -112,6 +115,6 @@
 #
 key=WebRoot-4480afb3-11c3-474e-87ee-fe013789ca65
 type=ASSETDATA
-sites=0,AdminSite,MySite
+sites=0
 
 ==================___ END METADATA ___==================-->

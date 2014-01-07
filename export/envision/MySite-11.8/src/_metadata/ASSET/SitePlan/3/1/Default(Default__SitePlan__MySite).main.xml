@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>SitePlan:1097567472</id>
+    <id>SitePlan:1374098078953</id>
     <name>Default</name>
     <createdby>fwadmin</createdby>
     <createddate>2013-12-07T08:30:07.756Z</createddate>
     <description>Default</description>
     <publist>MySite</publist>
-    <status>PL</status>
+    <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-12-07T08:30:07.756Z</updateddate>
+    <updateddate>2014-01-07T22:54:07.157Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1097567472</longValue>
+            <longValue>1374098078953</longValue>
         </data>
     </attribute>
     <attribute>
@@ -105,7 +105,7 @@
     <dependency>
       <depType>N</depType>
       <resType>SitePlan</resType>
-      <resId>1097567472</resId>
+      <resId>1374098078953</resId>
       <uid>Default:SitePlan:MySite</uid>
     </dependency>
     <dependency>

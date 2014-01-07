@@ -6,12 +6,15 @@
     <createddate>2012-12-19T16:04:32.280Z</createddate>
     <description>iPad 3</description>
     <publist>0</publist>
+    <publist>FirstSiteII</publist>
     <publist>AdminSite</publist>
+    <publist>avisports</publist>
+    <publist>Demo</publist>
     <publist>MySite</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-01-18T15:42:25.593Z</updateddate>
+    <updateddate>2014-01-07T22:54:05.973Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -179,7 +182,7 @@
 storable0=ASSET/Device/67/6/iPad 3.urlimage(db0f23df-85bc-4022-b03c-3f086a3a1cd4).iPad3_Portrait.png||_storable_type\=iPad+3.urlimage%28db0f23df-85bc-4022-b03c-3f086a3a1cd4%29.iPad3_Portrait.png&_blob_prop\=urlimage&_value_count\=S
 key=Device-db0f23df-85bc-4022-b03c-3f086a3a1cd4
 type=ASSETDATA
-sites=0,AdminSite,MySite
+sites=0
 storable1=ASSET/Device/67/6/iPad 3.urlthumbnailimage(db0f23df-85bc-4022-b03c-3f086a3a1cd4).iPad3_Thumbnail.png||_storable_type\=iPad+3.urlthumbnailimage%28db0f23df-85bc-4022-b03c-3f086a3a1cd4%29.iPad3_Thumbnail.png&_blob_prop\=urlthumbnailimage&_value_count\=S
 
 ==================___ END METADATA ___==================-->

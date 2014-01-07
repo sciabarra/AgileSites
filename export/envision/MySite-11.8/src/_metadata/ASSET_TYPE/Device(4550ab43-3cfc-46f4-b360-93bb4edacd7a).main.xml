@@ -11,7 +11,7 @@
         <description>Device</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.0\11.8.0\Sites\11.1.1.8.0\Shared\Storage\AssetType\DeviceImage.xml</urldescriptorspec>
+        <urldescriptorspec>z:\AgileSitesJSK\1.8\11.8\Sites\11.1.1.8.0\Shared\Storage\AssetType\DeviceImage,0.xml</urldescriptorspec>
         <urldescriptordata>PCEtLSB0aGlzIGlzIHRoZSBkZXNjcmlwdGlvbiBvZiBhbiBhc3NldCAtLT4KPEFTU0VUIE5BTUU9
 IkRldmljZSIgREVTQ1JJUFRJT049IkRldmljZSIgTUFSS0VSVEVYVD0iKiIgUFJPQ0VTU09SPSI1
 LjAiICBSRU5ERVJVU0lOR1RFTVBMQVRFPSJubyIgREVGRElSPSJjOlxGdXR1cmVUZW5zZVxTdG9y
@@ -113,7 +113,7 @@ Uk9QRVJUWT4KICAgIDwvUFJPUEVSVElFUz4KPC9BU1NFVD4K</urldescriptordata>
             <null/>
             <null/>
             <null/>
-            <string>z:/AgileSitesJSK/1.0/11.8.0/Sites/11.1.1.8.0/Shared/Storage/Device/</string>
+            <string>z:/AgileSitesJSK/1.8/11.8/Sites/11.1.1.8.0/Shared/Storage/Device/</string>
             <null/>
             <null/>
             <null/>
@@ -298,7 +298,7 @@ Uk9QRVJUWT4KICAgIDwvUFJPUEVSVElFUz4KPC9BU1NFVD4K</urldescriptordata>
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket/Xcelerate/AssetType/Device/SelectSummary_NoCat.sql</string>
+            <string>OpenMarket\Xcelerate\AssetType\Device\SelectSummary_NoCat,0.sql</string>
             <null/>
             <null/>
             <null/>
@@ -444,6 +444,9 @@ Ymxlcy5Bc3NldFR5cGUuc3RhdHVzIT0nVk8nIFZhcmlhYmxlcy5xdWVyeWVuZA==</byte-array>
       <subtypes/>
       <associations/>
       <siteNames class="list">
+        <string>avisports</string>
+        <string>Demo</string>
+        <string>FirstSiteII</string>
         <string>MySite</string>
       </siteNames>
     </data>
@@ -650,6 +653,6 @@ Ymxlcy5Bc3NldFR5cGUuc3RhdHVzIT0nVk8nIFZhcmlhYmxlcy5xdWVyeWVuZA==</byte-array>
 #
 key=@ASSET_TYPE-4550ab43-3cfc-46f4-b360-93bb4edacd7a
 type=ASSET_TYPE
-sites=MySite
+sites=avisports,Demo,FirstSiteII,MySite
 
 ==================___ END METADATA ___==================-->
