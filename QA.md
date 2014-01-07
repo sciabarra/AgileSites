@@ -45,31 +45,30 @@ wcs-hello
 
 Wait until you get an answer.
 
-Import the sites only with
+# Import the Demo site
+
+Import the Demo site (first inmport the site, then deploy, then import all the assets).
 
 ```
 wcs-dt import #Demo-11.8 @SITE
-wcs-dt import #MySite-11.8 @SITE
+wcs-deploy
+wcs-dt import #Demo-11.8 @ALL
 ```
 
-# Generate a site with the scaffolds and Deploy
- 
+# Generate a site with the scaffolds 
+
 Run the following commands, accepting all the defaults:
 
 ```
-wcs-dt import #MySite-11.8 @ALL
+wcs-dt import #MySite-11.8 @SITE
 wcs-generate site
 wcs-generate template
 wcs-generate layout
 wcs-generate cselement
 wcs-deploy
+wcs-dt import #MySite-11.8 @ALL
 ```
 
-# Import the demo
-
-```
-wcs-dt import #Demo-11.8 @ALL
-```
 
 # Verify
 
