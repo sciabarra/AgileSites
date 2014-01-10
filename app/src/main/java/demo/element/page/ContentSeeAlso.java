@@ -18,6 +18,7 @@ public class ContentSeeAlso extends Element {
 		return new Template("Page", "ContentSeeAlso", Template.INTERNAL,
 				"Demo_Content", demo.element.page.ContentSeeAlso.class) //
 				.cache("false", "false") // change caching here
+                .cacheCriteria("d")
 				.description("Template ContentSeeAlso for type Page subtype Content");
 	}
 
@@ -36,7 +37,7 @@ public class ContentSeeAlso extends Element {
 	}
 
     public String applyTouch(Env e) {
-        Picker html = Picker.load("/blueprint/template.html", "#seealso1");
+        Picker html = Picker.load("/blueprint/template_mobile.html", "#seealso1");
         Asset a = e.getAsset();
         html.replace("#seealso-title1", a.getString("Title"));
         html.replace("#seealso-text1", a.getString("Summary"));
