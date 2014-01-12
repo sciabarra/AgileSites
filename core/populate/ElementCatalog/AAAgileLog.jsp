@@ -3,8 +3,8 @@
 %><%@ page import="org.apache.log4j.*,org.apache.log4j.net.*,java.util.*"
 %><cs:ftcs>
 <user:login 
- username='<%= ics.GetVar("user") %>' 
- password='<%= ics.GetVar("pass") %>'/><% 
+ username='<%= ics.GetVar("username") %>' 
+ password='<%= ics.GetVar("password") %>'/><% 
 
 String name = "";
 String op = (String)ics.GetVar("op");

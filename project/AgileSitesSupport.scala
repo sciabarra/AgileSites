@@ -438,17 +438,17 @@ trait AgileSitesSupport extends AgileSitesUtil {
               }.start
               None
             case "start" :: Nil =>
-              Some("op=start&level=DEBUG&%s" format parse(Nil))
+              Some("&op=start&level=DEBUG&%s" format parse(Nil))
             case "stop" :: rest =>
-              Some("op=stop&%s" format parse(rest))
+              Some("&op=stop&%s" format parse(rest))
             case "list" :: rest =>
-              Some("op=list")
+              Some("&op=list")
             case level :: rest =>
               if ("ERROR|WARN|DEBUG|INFO|TRACE".r findAllIn level.toUpperCase isEmpty) {
                 println("Invalid level " + level)
                 None
               } else
-                Some("op=start&level=%s&%s" format (level.toUpperCase, parse(rest)))
+                Some("&op=start&level=%s&%s" format (level.toUpperCase, parse(rest)))
             case _ =>
               usage
               None
