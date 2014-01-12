@@ -1,60 +1,89 @@
 # Agile Shell
 
-(Draft)
+Reference of the commands available the shell.
 
-Documentation of the commands in the shell.
+## setup commands
 
-## setup
+### wcs-setup 
 
-- wcs-setup 
-Setup offline
+Perform the offline setup
 
-- wcs-deploy
-Setup online and deployment
+### wcs-setup-satellite
 
-- wcs-setup-satellite
-Setup satellite
+Perform the setup on satellite
 
-## compile
+### wcs-deploy
+
+Perform the online setup and deployment
+
+## compilation
 
 Main compilation method:
 
-- wcs-package-jar
+### wcs-package-jar
 
 to be used in continuos mode (`~ wcs-package-jar`)
 
-- wcs-deploy
+### wcs-copy-static
 
--- wcs-package-jar
--- wcs-copy-static
--- wcs-update-model
+copy files from the `app/src/main/static` in the application folder
+
+### wcs-update-model
+
+update the content model - currently it deploys Templates, CSElemements and SiteEntries.
+
+### wcs-deploy
+
+This command perform in a single shot `wcs-package-jar`, `wcs-copy-static` and `wcs-update-model`. 
+
+Also it upload the special elements required by AgileSites. It does only once.
 
 ## log
 
-- wcs-log view
+### wcs-log view
 
-- wcs-log list
+Show a new windows for logging. You must create a new client window for receiving the log. Select on the menu "client", using localhost and 4445 (the default values). You can create multiple windows but you need to specify different ports. You can then direct outputs to different ports, see below.
 
-- wcs-log trace mysite
+### wcs-log list
 
-- wcs-log trace wcs 4445
+This command list the currently active log appenders (corresponding to the packages you are tracing)
+
+### wcs-log trace mysite
+
+This command enable tracing for the package `mysite`. Tracing will go in the client running in localhost listening in port `4445`
+
+### wcs-log trace wcs 4444
+
+This command enable tracing for the package `wcs`, and send the output in localhost to a client listening in port `4444`.
+
+### wcg-log `<level>` `<appender>` [`<port>`]
+
+This is the general form. `<level>` is the trace leve (one of trace, debug, info, warn, error), the `<appender>` is a class or package name and the `<port>` is a number.
 
 ## csdt
 
-- wcs-dt 
+The shell integrates CSDT
 
-default: listcs
+The general format is:
 
-- wcs-dt listcs [asset-selector ...]
+```
+wcs-dt  [<cmd>]  [<selector> ...] [#<workspace>] [!<sites>]```
 
-- wcs-dt listds [asset-selector ...]
+You can then execute one of the available csdt commands, which are:
 
-- wcs-dt export [asset-selector ...]
+- `listcs`: list assets using ids to identify them
+- `listds`: list assets using uids to identify them
+- `import`: import assets 
+- `export`: export assets
 
-default: @SITE @ASSET_TYPE @ALL_ASSET @ALL_NONASSET
+Each command will act on a site and on a workspace, and will select a set of assets using a selector
 
-- wcs-dt import [asset-selector ...]
+The `<workspace>` can be omitted and it is by default `cs_workspace`, but you can specify a different workspace with `#<workspace>`. Note that the syntax will search for a workspace that contains `<workspace>` as a substring (so you do not have to specify a long workspace name).
 
-default: @SITE @ASSET_TYPE @ALL_ASSET @ALL_NONASSET
+The site can be omitted and defaults to the first site specified in the `wcsSites` variable. You can specify a different site with the syntax `!<site>`.
 
-- wcs-dt import [asset-selector ...]
+The shell has also an additional command  `mkws`  that create a new workspace.
+
+The `<selector>` is specified in the developer tools documentation. As a reminder they have `<AssetType>[:<id>]` or a special form starting with `@`. Recognized special forms are @SITE @ASSET_TYPE @ALL_ASSETS @STARTMENU @TREETAB.
+
+There is also the additional @ALL as a shortcurt for all of them.

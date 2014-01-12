@@ -1,4 +1,4 @@
-##### Prev:  [Read Content](ReadContent.md) Next:  [Edit Content](EditContent.md)
+##### Prev:  [Read Content](ReadContent.md) - Next:  [Edit Content](EditContent.md)
 
 In this section we will see how to write tests with the framework mocked environment.
 

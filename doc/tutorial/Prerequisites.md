@@ -1,24 +1,20 @@
-##### Prev:  [Tutorial Index](/tutorial.html) Next: [New Site](NewSite.md)
+##### Prev:  [Tutorial Index](/tutorial.html) - Next: [New Site](NewSite.md)
 
-In this section we will see what is needed in order to use this framework.
+In this section we list the prerequisites needed before starting to use this framework.
 
-## Prerequisites 
-
-The framework **requires** you develop in your local machine with a local installation of Sites.  You are expected to share code and content model through a version control system. 
-
-However this is not a limitation, since you can easily install the enviroment and the JumpStartKit for development on your system. 
-
-### You need Java Development Kit  7
+### Java Development Kit  7
 
 The framework currently requires a java development kit version 7 or greater. You need to compile code so an actual Java Development Kit is needed, not just a java runtime
 
-### A local instance of WebCenter Sites is required
+## Jump Start Kit 11.1.1.x
 
-We stress here that the framework assumes you are going (and willing) to use a local installation of Sites that is unique to each developer.
+The framework **requires** you develop in your local machine with a local installation of Sites. All the development is done using the JumpStart Kit that is available on support to Sites customers.
 
-It is opinion of the author that working on a shared instance is against good development practices, so the framework is assuming that you may not want to do this, but instead you prefer to work in your local machine and share changes with other through a version control system.
+You need JSK 11.1.1.6.1 or 11.1.1.8.0. Other versions can work but they are not tested. 
 
-## Install JumpStart Kit
+You are expected to share code and content model with other developers through a version control system.  The source should be tested by a continuous integration system.
+
+## How to install JumpStart Kit
 
 The JumpStartKit (a version of Sites easy to install, with its own embedded application server and database) is available from Oracle Support to customers. Just access to support.oracle.home and search for Jump Start Kit (JSK).
 
@@ -26,11 +22,11 @@ JSK It is convenient because it does not requires too many resources and can be 
 
 **NOTE** It is possible to [install the full Sites in your computer](http://www.sciabarra.com/fatwire/2012/04/09/download-and-install-a-development-fatwire-instance-also-on-mac/) for development purposes. You can install it with free Oracle XE or  the free Microsoft SQLServer. It is even possible to install it with the simple, in-memory database Hypersonic SQL (note, only using **version 1.8.0**) 
 
-## Verify Java Versions
+## Use the sate JDK for both Sites and AgileSites
 
 It is important that you verify the java version used by the JumpStart Kit is the same that will be used by AgileSites. AgileSites will refuse to deploy anything if the version of the JDK used in Sites is different from the version used by the AgileSites shell.
 
-### Checking which Java version are in use
+### How to check which Java version you are using
 
 Start Jump Start Kit then access the `HelloCS` servlet within you Sites webapp to check the version (typically you use the url `http://localhost:8080/cs/HelloCS`). It displays the version of Java in use.
 
@@ -44,7 +40,7 @@ Both the used java version and the compiler version must match the version used 
 
 On Windows, if the `java` or `javac` is not found you must the variable JAVA_HOME and the PATH as described [here](http://stackoverflow.com/questions/11161248/setting-java-home).
 
-A windows JDK is installed together with  JSK by default in `C:\Oracle\WebCenter\Sites\11gR1\windowsJDK` (change accordingly your installation choices) so you use this JDK as JAVA_HOME. Remeber also to the the PATH variable adding at the end of the PATH: `;"%JAVA_HOME\bin"`
+A windows JDK is installed together with JSK by default in `C:\Oracle\WebCenter\Sites\11gR1\windowsJDK` (change accordingly your installation choices) so you use this JDK as JAVA_HOME. Remeber also to the the PATH variable adding at the end of the PATH: `;"%JAVA_HOME\bin"`
 
 On Mac, you need to edit the file `~/.bash_profile` followinging [these directions](http://stackoverflow.com/questions/6588390/where-is-java-home-on-osx-lion-10-7-or-mountain-lion-10-8). Then you should also fix the path adding `export PATH="$JAVA_HOME/bin":$PATH`
 

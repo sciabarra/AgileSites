@@ -37,10 +37,10 @@ public class Wrapper extends Element {
 							.outerHtml(m);
 		}
 
-		// handle asset not found
+		// handle asset not found or template not found
 		Asset a = e.getAsset();
-		if (a == null) {
-			String error = "Asset not found";
+		if (a == null || a.getTemplate()==null || a.getTemplate().trim().length()==0) {
+			String error = (a==null) ? "Asset not found" : "Layout not found";
 			Model m = model(arg("name", "Error"), arg("description", error));
 			return html.replace("#content", //
 					e.call("Error",arg("error", error)))//

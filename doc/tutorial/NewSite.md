@@ -1,4 +1,4 @@
-##### Prev: [Prerequisites](Prerequisites.md) Next:  [New Template](NewTemplate.md)
+##### Prev: [Prerequisites](Prerequisites.md) - Next:  [New Template](NewTemplate.md)
 
 In this section we describe which steps are needed in order to create a new site, both in Site and in AgileSites, and start development.
 
@@ -12,7 +12,7 @@ The first step is to choose a name for your new site. Here I am assume your choi
 
 In order to minimize conflicts when more than one site is deployes in your instance, AgileSites follows a simple naming convention:
 
-> **everything** (except attributes) has the site name as a prefix
+> **everything** (except attribute names) has the site name as a prefix
 
 So the recommended naming convention will apply to
 
@@ -21,7 +21,9 @@ So the recommended naming convention will apply to
 - Content and Parent Definitions
 - Template, Site Entry and 
 
-Note that attribute names, that are referred directly all the time in code, does not require the site name.
+Note that attribute names, that are referred directly all the time in code, do not require the site name.
+
+We recommend to add the site name anyway although in code you will have to use the name including the site prefix (since the prefix is not added). We may remove this exception in future releases and have a more a consistent rule also for attributes.
 
 This is a set of sample names recommended for a site named MySite
 
@@ -46,7 +48,6 @@ It will be added as the first site in the `wcsSites` variable in the `build.sbt`
 If (and only if) you have a virtual host configured (with satellite and apache in place) for your new site then you should also configure virtual hosts mapping.
 
 For example if you have a front-end url ``http://www.mysite.com`` for the site `MySite` that points to ``http://yourserver/cs/Satellite/mysite`` 
-
 you need to edit the ``build.sbt`` and add  add a line mapping the site to the 
 
 ```

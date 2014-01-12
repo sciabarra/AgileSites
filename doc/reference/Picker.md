@@ -1,5 +1,3 @@
-**NOTE** not yet updated to 1.8 
-
 The Picker is the template engine provided by AgileSites to implement the "original html" templating features.
 
 The actual library implementing the Picker is the [JSoup Library](http://jsoup.org) and inherits its selector syntax. All the available selectors are  described [in detail here](http://jsoup.org/apidocs/org/jsoup/select/Selector.html)
@@ -56,7 +54,6 @@ Picker.create("<h1>Title<h1>")
 
 ### html() and outerHtml()
 
-
 If you load a snippet of html like this
 
 ```java
@@ -76,6 +73,33 @@ If you instead use `p.html()` you will output only the inner part of the loaded 
 ```html
 <h1>Hello</h1>
 ```
+
+## Moustache replacement
+
+The picker can perform a replacement using the "moustache" syntax.
+
+Anything that in the html has the format `{{Something}}` can be replaced by a value coming from a source passed to the method `html` and `outerHtml`.
+
+The source is a object that implements the interface `Content`. Note that both `Asset` and `Env` implements this interface so you can pass them as a source.
+
+You can also create a new `Content` on the fly using `model(arg("Key", "Value"), arg("Key", "Value"))` (`model` and `arg` are defined in the `import static wcs.Api.*`).
+
+As an example, if you have this snippet of html in a template:
+
+
+```html
+<h1>{{Title}}</h1>
+<b>by {{author}}</b>
+<p>{{Body}}<p>
+```
+
+Now, assume that you have an asset `a` with an attribute named "Body" and a variable "author" in the current enviroment (in variable `e`). Also you want to set the title from the name of the asset. You can then do this way:
+
+```java
+html.outerHtml(e, a, model(arg("Title", a.getName()))
+```
+
+The variable `Title` will be then located in the name, the variable `author` will be extracted from the enviroment and the attribute `Body` from the attribute `Body` of the asset.
 
 ## Selectors 
 

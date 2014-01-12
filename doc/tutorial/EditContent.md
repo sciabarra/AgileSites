@@ -1,4 +1,4 @@
-##### Prev:  [Testing](Testing.md). Next:  [Navigation](Navigation.md)
+##### Prev:  [Testing](Testing.md) - Next:  [Navigation](Navigation.md)
 
 In this section we will see how to invoke insite editing for attributes in some common cases.
 

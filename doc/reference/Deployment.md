@@ -1,4 +1,3 @@
-
 AgileSites supports front end with an Apache reverse proxy. It works also with other reverse proxy.
 
 This document describe this setup: 
@@ -34,7 +33,6 @@ This configuration is a sample only.
 Download the agilesites in your installation host.
 
 Copy the development `build.sbt` or create one with the configurator.
-
 
 The only special configuration needed is the following:
 

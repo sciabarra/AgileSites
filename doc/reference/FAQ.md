@@ -32,7 +32,6 @@ You may have more if you tried a previous release. If there are more, just delet
  
 If you do not see any file created  you may have a permission problem.
 
-
 ## How do I add a custom library to the framework?
 
 You need to locate it in a repository accessible by maven, using websites like [MVN repository](http://mvnrepository.com). Assuming you want something like, for example, jfreechart, locate it and locate its sbt dependency. In the site you will find a string like this:

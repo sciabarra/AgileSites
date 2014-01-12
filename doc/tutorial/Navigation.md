@@ -1,4 +1,4 @@
-##### Prev:  [Edit Content](EditContent.md). Next:  [Tutorial Index](/tutorial.html)
+##### Prev:  [Edit Content](EditContent.md) - Next: [Export](Export.md)
 
 In this section we will see how to create links and how to use them to build naviations.
 

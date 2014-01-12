@@ -1,4 +1,4 @@
-##### Prev:  [New Site](NewSite.md). Next: [Java Idiom](JavaIdiom.md)
+##### Prev:  [New Site](NewSite.md) - Next: [Java Idiom](JavaIdiom.md)
 
 In the previous section we created the skeleton of the site. There is no content in it, so if you try to access to any page you will get, of course, page not found.
 
@@ -14,9 +14,9 @@ In Sites, we model the concept that Pages can be of a different "kind", creating
 
 A Page definition is technically a subtype of the Page asset type, while Page is the asset type. You define an asset subtype of Pages creating an instance of another asset type, the Page Definition.
 
-We will see later that each page definition has also an associated set of attributes that defines the content specific for each Page subtype. For now, we will only create a new Page defintion, specific for the Home Page.
+We will see later that each page definition has also an associated set of attributes that defines the content specific for each Page subtype. For now, we will only create a new Page definition, specific for the Home Page.
 
-### Creating the MySite_Home content definition
+### Creating the MySite_Home PageDefinition definition
 
 Switch to the Administrative interface, clicking on the icon shown below in the application bar:
 

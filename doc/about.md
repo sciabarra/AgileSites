@@ -4,10 +4,10 @@ It **modernises** Oracle WebCenter Site development providing a layer that intro
 
 The **inspiration** of the framework are modern and agile web frameworks like Ruby on Rails or Play! Framework.
 
-This framework is **strongly opinionated**. It is built based on the following assumptions, or opinions if you prefer (incidentally those opinions are very similar to those advocated by the *Agile Development Moviment*):
+This framework is **opinionated**. It is built based on the following assumptions, or opinions if you prefer (incidentally those opinions are very similar to those advocated by the *Agile Development Moviment*):
 
 - developers should work in isolation, using either a jump start kit or a local install of the product, sharing their code through a version control system 
-- you _must not use_ a shared development server but you _must have_ instead a continuous integration server 
+- you _should not use_ a shared development server but you _should have_ instead a continuous integration server 
 - you *need*  to write tests for every single piece of code you write, so writing tests should be very easy
 - you need a build system so you can rebuild the entire site with a single command (the one to be run on the continuous integration server)
 - being able to write your code in straight Java (leveraging Java OOP and code reuse) is much better than writing a lot of Java logic inside a JSP (losing on average 70% of the power of Java)

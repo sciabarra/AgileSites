@@ -10,6 +10,8 @@ Read the following documents in order to learn how to use AgileSites.
 1. [Edit Content](tutorial/EditContent.md): writing content from a template back into the CMS
 1. [Navigation](tutorial/Navigation.md): 
 implementing navigations
+1. [Export](tutorial/Export.md): 
+how to export the result with CSDT
 
 ## What is next?
 

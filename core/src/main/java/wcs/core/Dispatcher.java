@@ -179,14 +179,16 @@ public class Dispatcher {
 			String className = WCS.normalizeSiteName(site) + ".Setup";
 			try {
 				// cast to Setup and execute
-				Object obj = loadClass(className).newInstance();
-				if (obj instanceof wcs.core.Setup) {
+				Class<?> clazz = loadClass(className);
+				Object obj = null;
+				if(clazz!=null) obj = clazz.newInstance();
+				if (obj!=null && obj instanceof wcs.core.Setup) {
 					log.debug("[Dispatcher.deploy] obj is a wcs.core.Setup");
 					Setup setup = (wcs.core.Setup) obj;
 					msg.append(setup.exec(ics, site, user, pass));
 				} else {
 					log.debug("[Dispatcher.deploy] obj is NOT a wcs.core.Setup");
-					msg.append("<h1>Not Found Setup for " + site + "<h1>");
+					msg.append("*** Not Found Setup for " + site+"\n");
 				}
 			} catch (Exception e) {
 				log.error(e, "[Dispatcher.deploy]");

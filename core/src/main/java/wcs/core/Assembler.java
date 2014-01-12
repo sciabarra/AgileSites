@@ -188,14 +188,8 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 		def.setQueryStringParameter("blobcol", blobcol);
 		def.setQueryStringParameter("blobkey", blobkey);
 		def.setQueryStringParameter("blobwhere", blobwhere);
-		def.setQueryStringParameter("blobtable", blobtable);
-
-		// def.setQueryStringParameter("blobheadername1",
-		// "Content-Disposition");
-		// def.setQueryStringParameter("blobheadervalue1",
-		// "attachment; filename=" + filename);
-		// def.setQueryStringParameter("blobheadername2", "Content-Type");
-		// def.setQueryStringParameter("blobheadervalue2", mimeType);
+        def.setQueryStringParameter("blobtable", blobtable);
+        def.setQueryStringParameter("ssbinary", "true");
 
 		if (log.trace())
 			log.trace("blobcol=%s blobkey=%s blowhere=%s blobtable=%s",

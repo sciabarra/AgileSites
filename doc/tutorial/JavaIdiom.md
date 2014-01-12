@@ -1,4 +1,4 @@
-##### Prev:  [New Template](NewTemplate.md) Next: [Development](Development.md)
+##### Prev:  [New Template](NewTemplate.md) - Next: [Development](Development.md)
 
 The AgileSites API uses a modern style of Java coding, with fluent interfaces, static imports and value classes without getter and setter.
 
@@ -84,7 +84,7 @@ See the Asset Tag paragraph in this section for an example of a common use.
 
 The `Picker` (see later) can take an instance of an interface `Content` to get content from it. A content is basically a map of string to string.
 
-Both the `Env` and the `Asset` are `Content` but you can also create an instance of the class `Model` on the fly. The api includes the static function `model` that lets you to create a content of the fly
+Both the `Env` and the `Asset` are `Content` but you can also create an instance of the class `Model` on the fly. The api includes the static function `model` that lets you to create a content of the fly.
 
 ```java
 model( arg("Title", "I am the title"), arg("Text", "<p>The text</p>"))

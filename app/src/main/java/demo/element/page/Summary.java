@@ -18,6 +18,7 @@ public class Summary extends Element {
 		return new Template("Page", "Summary", Template.INTERNAL, // change
 				"Demo_Content", demo.element.page.Summary.class) //
 				.cache("false", "false") // change caching here
+                .cacheCriteria("d")
 				.description("Template Summary for type Page ");
 	}
 
@@ -34,10 +35,12 @@ public class Summary extends Element {
 		return html.outerHtml();
 	}
 
-
     public String applyTouch(Env e) {
+        if (log.debug())
+            log.debug("Demo ContentSeeAlso");
+
         Asset a = e.getAsset();
-        Picker html = Picker.load("/blueprint/template.html", "#related");
+        Picker html = Picker.load("/blueprint/template_mobile.html", "#related");
         html.replace("#related-title", a.getString("Title"));
         html.replace("#related-body", a.getString("Summary"));
         html.removeAttrs("*[id^=related]", "id");

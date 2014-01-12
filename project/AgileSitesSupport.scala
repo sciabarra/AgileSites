@@ -349,7 +349,9 @@ trait AgileSitesSupport extends AgileSitesUtil {
          wcsFlexBlobs, wcsStaticBlobs, wcsVirtualHosts, wcsPackageJar, wcsCopyStatic) map {
           (args, _, _, classes,
            sites, version, home, shared, webapp, url,
-           flexBlobs, staticBlobs, virtualHosts, _, _) =>
+           flexBlobs, staticBlobs, virtualHosts, jar, _) =>
+
+
 
             val static = (file(shared) / "Storage" / "Static") getAbsolutePath
 
@@ -365,12 +367,29 @@ trait AgileSitesSupport extends AgileSitesUtil {
             setupAgileSitesPrp(webapp, shared, sites, static, flexBlobs, staticBlobs)
             setupFutureTenseIni(home, shared, static,  sites, version)
 
+
+            // remove any other jar starting with agilesites-all-assembly 
+            // remnants of the past
+            for(f <- (file(shared) / "agilesites").listFiles) {
+                if(f.isFile && f.getName.startsWith("agilesites-all-assembly")) {
+                  //println("candidate to removal: "+f)
+                  if(! f.getAbsolutePath.equals(jar)) {
+                    f.delete
+                    println("--- "+f);
+                  } else {
+                    //println("not removing "+jar)
+                  }
+                }
+            }
+
+
             // remove pupulate mark if there
             ( file(home) / "populate.done" ).delete
 
             println("""**** Setup Complete.
                 |**** Please restart your application server.
                 |**** You need to complete installation with "wcs-deploy".""".stripMargin)
+
         }
   }
 

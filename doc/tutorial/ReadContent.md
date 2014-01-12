@@ -1,4 +1,4 @@
-##### Prev:  [Picker](Picker.md). Next:  [Testing](Testing.md)
+##### Prev:  [Picker](Picker.md) - Next:  [Testing](Testing.md)
 
 In this section we will see how to create content specific for the home page.
 
@@ -111,7 +111,7 @@ return p.html(model(arg("Description", a.getDescription()));
 return Picker.load("/site/template.html", "#body").html(e.getAsset())
 ```
 
-**NOTE** The `html()` method returns the inner of the selected snippet of html. So if you select `#title` the returned html is `<h1>Title</h1>`. Use outerHtml() if you want also the div
+**NOTE** The `html()` method returns the inner of the selected snippet of html. So if you select `#title` the returned html is `<h1>Title</h1>`. Use outerHtml() if you want also the div.
 
 ### Render the attribute using replacements
 
