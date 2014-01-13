@@ -123,8 +123,8 @@
     <attribute>
         <name>Summary</name>
         <data>
-            <stringValue>&lt;div&gt;
-	This is a SUMMARY.&lt;/div&gt;
+            <stringValue>&lt;p&gt;
+	This is a SUMMARY.&lt;/p&gt;
 </stringValue>
         </data>
     </attribute>

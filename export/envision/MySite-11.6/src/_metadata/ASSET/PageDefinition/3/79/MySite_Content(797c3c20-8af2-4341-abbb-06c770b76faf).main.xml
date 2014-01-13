@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>PageDefinition:1351276304720</id>
+    <name>MySite_Content</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2014-01-13T17:08:01.542Z</createddate>
+    <description>Content</description>
+    <publist>MySite</publist>
+    <status>ED</status>
+    <subtype></subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2014-01-13T17:31:47.448Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>797c3c20-8af2-4341-abbb-06c770b76faf</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1351276304720</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Attributes</name>
+        <data>
+            <listValue>
+                <item>
+                    <item>
+                        <name>ordinal</name>
+                        <data>
+                            <integerValue>1</integerValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>required</name>
+                        <data>
+                            <stringValue>true</stringValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>assetid</name>
+                        <data>
+                            <stringValue>PageAttribute:1351276305019</stringValue>
+                        </data>
+                    </item>
+                </item>
+                <item>
+                    <item>
+                        <name>ordinal</name>
+                        <data>
+                            <integerValue>2</integerValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>required</name>
+                        <data>
+                            <stringValue>true</stringValue>
+                        </data>
+                    </item>
+                    <item>
+                        <name>assetid</name>
+                        <data>
+                            <stringValue>PageAttribute:1351276304710</stringValue>
+                        </data>
+                    </item>
+                </item>
+            </listValue>
+        </data>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <list>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351276304710</resId>
+      <uid>21c56323-f837-4f4d-ba9f-1a5ee99d3fa2</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351276305019</resId>
+      <uid>74b60a5f-73b9-417c-9f02-2fe059d69e69</uid>
+    </dependency>
+    <dependency>
+      <depType>N</depType>
+      <resType>PageDefinition</resType>
+      <resId>1351276304720</resId>
+      <uid>797c3c20-8af2-4341-abbb-06c770b76faf</uid>
+    </dependency>
+  </list>
+</dependencies>
+==================______________________==================
+#
+#Mon Jan 13 18:18:40 UTC 2014
+key=PageDefinition-797c3c20-8af2-4341-abbb-06c770b76faf
+type=ASSETDATA
+sites=MySite
+
+==================___ END METADATA ___==================-->

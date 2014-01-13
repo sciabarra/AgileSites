@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>Page:1351276305042</id>
+    <name>Home</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2014-01-13T17:32:33.334Z</createddate>
+    <description></description>
+    <publist>MySite</publist>
+    <status>PL</status>
+    <subtype>MySite_Content</subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2014-01-13T18:10:21.876Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue>MySite_ContentLayout</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>8e3b29c9-4d04-47c7-a333-c2f24b473d53</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1351276305042</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SegRating</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>category</name>
+        <data>
+            <stringValue>acct</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SPTParent</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>SPTRank</name>
+        <data>
+            <integerValue>1</integerValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SPTNCode</name>
+        <data>
+            <stringValue>Placed</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>flextemplateid</name>
+        <data>
+            <stringValue>PageDefinition:1351276304720</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>MySite_Title</name>
+        <data>
+            <stringValue>Home Page Title</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>MySite_Text</name>
+        <data>
+            <stringValue>Home Page Text</stringValue>
+        </data>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <list>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351276304710</resId>
+      <uid>21c56323-f837-4f4d-ba9f-1a5ee99d3fa2</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351276305019</resId>
+      <uid>74b60a5f-73b9-417c-9f02-2fe059d69e69</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageDefinition</resType>
+      <resId>1351276304720</resId>
+      <uid>797c3c20-8af2-4341-abbb-06c770b76faf</uid>
+    </dependency>
+    <dependency>
+      <depType>N</depType>
+      <resType>Page</resType>
+      <resId>1351276305042</resId>
+      <uid>8e3b29c9-4d04-47c7-a333-c2f24b473d53</uid>
+    </dependency>
+  </list>
+</dependencies>
+==================______________________==================
+#
+#Mon Jan 13 18:18:40 UTC 2014
+key=Page-8e3b29c9-4d04-47c7-a333-c2f24b473d53
+type=ASSETDATA
+sites=MySite
+
+==================___ END METADATA ___==================-->

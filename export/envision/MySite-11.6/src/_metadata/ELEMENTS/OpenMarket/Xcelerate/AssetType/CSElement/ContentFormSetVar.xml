@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.2">
+<!-- OpenMarket/Xcelerate/AssetType/Template/ContentFormSetVar
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+<!-- if this is a copy then do something about the file name for the element logic -->
+<if COND="Variables.EditFlag=copy">
+<then>
+	<setvar NAME="CSElement:rootelement" VALUE="Variables.CSElement:name"/>
+	<SUBSTITUTE STR="Variables.CSElement:rootelement" WHAT="%20" WITH="_" OUTSTR="CSElement:rootelement"/>
+	<INDEXOF STR="Variables.CSElement:urlspec" WHAT="." OUTSTR="extIndex"/>
+	<SUBSTRING STR="Variables.CSElement:urlspec" OUTSTR="extension" INDEX="Variables.extIndex"/>
+	<setvar NAME="CSElement:urlspec" VALUE="Variables.CSElement:rootelementVariables.extension"/>
+	<setvar NAME="CSElement:elementname" VALUE="Variables.CSElement:elementname"/>
+</then>
+</if>
+
+<if COND="IsVariable.FieldsOnForm=true">
+<then>
+	<ASSET.GATHER NAME="theCurrentAsset" PREFIX="CSElement" FIELDLIST="Variables.FieldsOnForm"/>
+</then>
+</if>
+
+<INPUT TYPE="hidden" NAME="FieldsOnForm" VALUE="name,rootelement,description,category,elementdescription,url,url_file,url_folder,resdetails1,resdetails2,Composition,Association-named,Arguments,Mapping"/>
+
+<ASSET.SCATTER NAME="theCurrentAsset" FIELDLIST="*" PREFIX="ContentDetails"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/CSElement/ContentFormSaveVar"/>
+
+</FTCS>

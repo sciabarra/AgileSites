@@ -157,14 +157,9 @@ trait AgileSitesUtil {
 
     val destlib = file(webapp) / "WEB-INF" / "lib"
 
-    val addJars = classpathFiles.filter( _.getName.startsWith("agilesites-core-"+version) )
+    val addJars = classpathFiles.filter( _.getName.startsWith("agilesites-core") )
     
     val removeJars = destlib.listFiles.filter(_.getName.toLowerCase.startsWith("agilesites-core"))
-
-    val f1 = classpathFiles.filter(_.getName.startsWith("agilesites"))
-    println("files "+f1)
-    println("add "+addJars)
-    println("remove "+removeJars)
 
     setupCopyJars(destlib, addJars, removeJars)
   

@@ -1,0 +1,520 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+	<!--
+	$Logfile: /verticalapps/xcelerated/install/Gator/Populate/ElementCatalog/OpenMarket/Gator/FlexibleAssets/FlexAssets/ContentDetails.xml $
+	$Revision: 71 $
+	$Modtime: 9/03/04 5:24p $
+	-->
+
+	<!--
+	- Confidential and Proprietary Information of FutureTense Inc.
+	-					All Rights Reserved.
+	-
+	- OpenMarket/Xcelerate/AssetType/ExtensiblePage/ContentDetails.xml
+	-
+	- DESCRIPTION
+	-   Used to Inspect ( View ) a ExtensiblePage
+	-
+	- HISTORY
+	-->
+
+   <!--   <FATM.GETGROUPTYPE ASSETTYPE="Variables.AssetType" VARNAME="grouptype"/>--  --> 
+
+<!-- 
+    At this point we can set the Variables templatetype ICS variable to 
+	PageDefinition which defines the Extended Page Attributes 	
+  --> 
+	<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
+    <SETVAR NAME="templatetype" VALUE="PageDefinition"/>
+						
+	<!-- 
+	
+	  <FATM.GETTEMPLATETYPE ASSETTYPE="Variables.AssetType" VARNAME="templatetype"/>
+   --> 
+  
+
+	<ASSET.LOAD TYPE="Variables.templatetype" NAME="ProdTmplinst" OBJECTID="Variables.ContentDetails:flextemplateid"/>
+
+	<ASSET.GET NAME="ProdTmplinst" FIELD="name" OUTPUT="TypeName"/>
+	<ASSET.GET NAME="ProdTmplinst" FIELD="description" OUTPUT="TypeDesc" />
+	<IF COND="Variables.TypeDesc=CS.Empty">
+	<THEN>
+		<SETVAR NAME="TypeDesc" VALUE="Variables.TypeName" />
+	</THEN>
+	</IF>
+	<IF COND="IsVariable.cs_title=false">
+	<THEN>
+		<SETVAR NAME="cs_title" VALUE="Variables.TypeDesc" />
+	</THEN>
+	</IF>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/ActionsBar">
+		<ARGUMENT NAME="Screen" VALUE="Inspect"/>
+	</CALLELEMENT>
+
+        
+	<xlat.lookup KEY="UI/Forms/Content" VARNAME="tabContent"/>
+	<xlat.lookup KEY="UI/Forms/Metadata" VARNAME="tabMetadata"/>
+	<div dojoType="dijit.layout.ContentPane" region="center">
+	<div dojoType="dijit.layout.TabContainer" class="formstabs formsTabContainer" style="width:100%;height:100%">
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/RetainSelectedTab">
+		<ARGUMENT NAME="tabContent" VALUE="Variables.tabContent"/>
+		<ARGUMENT NAME="elementType" VALUE="XML"/>
+	</CALLELEMENT>
+	<div dojoType="dijit.layout.ContentPane" title="Variables.tabContent"  selected="true" REPLACEALL="Variables.tabContent">
+	<table border="0" cellpadding="0" cellspacing="0" class="width70BottomExMargin">
+
+		<!-- page title w/ asset name -->
+		<ASSETTYPE.LIST LIST="ThisAsset" FIELD1="assettype" VALUE1="Variables.AssetType"/>
+
+		<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at"/>
+		<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description"/>
+		<tr>
+			<td>
+				<span class="title-text"><STRING.STREAM VARIABLE="cs_title"/>:</span>&nbsp;<span class="title-value-text"><STRING.STREAM VARIABLE="ContentDetails:name"/></span>
+			</td>
+		</tr>
+
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+			<ARGUMENT NAME="SpaceBelow" VALUE="No"/>
+		</CALLELEMENT>
+
+        <CALLELEMENT NAME="OpenMarket/Gator/FlexibleAssets/FormMode/DMSupported"/>
+		<!-- allow switching to DM mode if there are DM asset types and we are not WCM mode -->
+		<IF COND="Variables.DMSupported=true">
+			<THEN>
+            <IF COND="Variables.cs_formmode!=DM">
+            <THEN>
+                <SATELLITE.LINK ASSEMBLER="query" PAGENAME="OpenMarket/Xcelerate/Actions/ContentDetailsFront" OUTSTRING="EditFunction:0:URL">
+                    <satellite.argument NAME="AssetType" VALUE="Variables.AssetType" />
+                    <satellite.argument NAME="id" VALUE="Variables.id" />
+                    <satellite.argument NAME="cs_environment" VALUE="Variables.cs_environment" />
+                    <satellite.argument NAME="cs_formmode" VALUE="DM" />
+                </SATELLITE.LINK>
+                <xlat.lookup KEY="dvin/FlexibleAssets/FormMode/DM" VARNAME="EditFunction:0:Text"/>
+                <ics.setvar NAME="EditFunction:Total" VALUE="1"/>
+				</THEN>
+				<ELSE>
+                <SATELLITE.LINK ASSEMBLER="query" PAGENAME="OpenMarket/Xcelerate/Actions/ContentDetailsFront" OUTSTRING="EditFunction:0:URL">
+                    <satellite.argument NAME="AssetType" VALUE="Variables.AssetType" />
+                    <satellite.argument NAME="id" VALUE="Variables.id" />
+                    <satellite.argument NAME="cs_environment" VALUE="Variables.cs_environment" />
+                    <satellite.argument NAME="cs_formmode" VALUE="WCM" />
+                </SATELLITE.LINK>
+                <xlat.lookup KEY="dvin/FlexibleAssets/FormMode/WCM" VARNAME="EditFunction:0:Text"/>
+                <ics.setvar NAME="EditFunction:Total" VALUE="1"/>
+				</ELSE>
+				</IF>
+			</THEN>
+		</IF>
+
+		<IF COND="Variables.cs_formmode=DM">
+            <THEN>
+                <IF COND="Variables.DMSupported=true">
+                    <THEN>
+                        <CALLELEMENT NAME="OpenMarket/Gator/FlexibleAssets/FormMode/DMEnabled"/>
+                    </THEN>
+                </IF>
+            </THEN>
+        </IF>
+
+		<!-- Check if the hashtable enabledFields exists-->
+		<MISC.CHECKOBJECTEXISTS NAME="enabledFields" VARNAME="enabledFields"/>
+		<IF COND="Variables.enabledFields=false">
+			<THEN>
+				<SETVAR NAME="enabled" VALUE="true"/>
+			</THEN>
+		</IF>
+
+		<!-- attribute inspection form -->
+		<tr>
+			<td>
+				<table>
+
+					<SETVAR NAME="NewSection" VALUE="true"/>
+
+					<!-- The beginning of Group 1 -->
+					<IF COND="Variables.enabledFields=true">
+						<THEN>
+							<HASH.CONTAINS VARNAME="enabled" NAME="enabledFields" VALUE="name"/>
+						</THEN>
+					</IF>
+					<IF COND="Variables.enabled=true">
+						<THEN>
+							<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+							<tr>
+								<td class="form-label-text"><span class="alert-color">*</span>
+									<XLAT.STREAM KEY="dvin/AT/Common/Name"/>:
+								</td>
+								<td>
+									<img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/>
+								</td>
+								<td class="form-inset">
+									<STRING.STREAM VARIABLE="ContentDetails:name"/>
+								</td>
+							</tr>
+						</THEN>
+					</IF>
+					<IF COND="Variables.enabledFields=true">
+						<THEN>
+							<HASH.CONTAINS VARNAME="enabled" NAME="enabledFields" VALUE="template"/>
+						</THEN>
+					</IF>
+					<IF COND="Variables.enabled=true">
+						<THEN>
+						<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Util/ShowTemplateDetailsIfAny">
+							<!--also depends on Variables.AssetType-->
+							<ARGUMENT NAME="template" VALUE="Variables.ContentDetails:template"/>
+						</CALLELEMENT>
+						</THEN>
+					</IF>					
+					<!-- The beginning of Group 4 -->
+					<tr>
+						<td></td>
+						<td></td>
+						<td class="form-inset">
+							<SETVAR NAME="attributetype" VALUE="PageAttribute"/>
+
+							<!--Using Product Template, get the list of Attribute ID's associated with the given product  -->
+							<!-- ASSET.GATHER doesn't seem to be setting producttemplateid  field,
+								so use the FlexAsset.gettemplateid for getting the template -->
+                         
+							<FLEXASSET.GETTEMPLATE NAME="theCurrentAsset" VARNAME="ptemplateid"/>
+
+							<FATM.GETALL ASSETTYPE="Variables.AssetType" LISTVARNAME="out"/>
+
+							<SETVAR NAME="templatetype" VALUE="PageDefinition"/>
+
+							<SETVAR NAME="filtertype" VALUE="PageFilter"/>
+
+					        <FTTM.GETTEMPLATETYPE ASSETTYPE="Variables.templatetype" VARNAME="parentdeftype"/>
+
+						   	<SETVAR NAME="templateid" VALUE="Variables.ContentDetails:flextemplateid"/>
+							<SETVAR NAME="errno" VALUE="0"/>
+
+							<IF COND="IsVariable.templateid=true">
+								<THEN>
+									<SETVAR NAME="templatetype" VALUE="PageDefinition"/>
+								    <ASSET.LOAD TYPE="Variables.templatetype" NAME="ProdTmplinst" OBJECTID="Variables.templateid"/>
+								</THEN>
+								<ELSE>
+									<STRING.STREAM VARIABLE="ContentDetails:flextemplateid is not defined"/><br/>
+								</ELSE>
+							</IF>
+
+							<CALLELEMENT NAME="OpenMarket/Gator/FlexibleAssets/Common/CheckAttributeDisplayOrder"/>
+							<ATM.LOCATE TYPE="Variables.grouptype" VARNAME="pgmgr"/>
+
+							<IF COND="Variables.attrDisplayOrder=last">
+								<THEN>
+									<ICS.CLEARERRNO/>
+									<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/AssocAttrDetail">
+										<ARGUMENT NAME="tagtype" VALUE="asset"/>
+									</CALLELEMENT>
+									<SETVAR NAME="errno" VALUE="0"/>
+									<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/AssocAttrDetail">
+										<ARGUMENT NAME="tagtype" VALUE="asset"/>
+										<ARGUMENT NAME="AttrSource" VALUE="derived"/>
+									</CALLELEMENT>
+								</THEN>
+								<ELSE>
+									<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/AssocAttrDetail">
+										<ARGUMENT NAME="tagtype" VALUE="asset"/>
+									</CALLELEMENT>
+									<SETVAR NAME="errno" VALUE="0"/>
+									<CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/AssocAttrDetail">
+										<ARGUMENT NAME="tagtype" VALUE="asset"/>
+										<ARGUMENT NAME="AttrSource" VALUE="derived"/>
+									</CALLELEMENT>
+									<SETVAR NAME="errno" VALUE="0"/>
+								</ELSE>
+							</IF>
+						</td>
+					</tr>
+					<!-- Enabled variable may have got removed in AssocAttrDetail so reset it here-->
+					<IF COND="Variables.enabledFields=false">
+					<THEN>
+						<SETVAR NAME="enabled" VALUE="true"/>
+					</THEN>
+					</IF>
+					<ASSOCNAMEDMANAGER.LIST LISTVARNAME="associations" TYPE="Variables.AssetType"/>
+					<IF COND="associations.#numRows!=0">
+						<THEN>
+							
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/ShowAssociations">
+								<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+								<IF COND="Variables.revisionInspect=true">
+								<THEN>
+									<ARGUMENT NAME="revision" VALUE="Variables.revision"/>
+									<ARGUMENT NAME="revisionInspect" VALUE="Variables.revisionInspect"/>
+								</THEN>
+								</IF>
+							</CALLELEMENT>
+						</THEN>
+					</IF>
+					</table>
+					</td>
+					</tr>
+					</table>
+					</div>
+					<div dojoType="dijit.layout.ContentPane" title="Variables.tabMetadata"  REPLACEALL="Variables.tabMetadata">
+					<table class="width70BottomExMargin" border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td>
+							<span class="title-text"><STRING.STREAM VARIABLE="cs_title"/>:</span>&nbsp;<span class="title-value-text"><STRING.STREAM VARIABLE="ContentDetails:name"/></span>
+						</td>
+					</tr>
+
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+						<ARGUMENT NAME="SpaceBelow" VALUE="No"/>
+					</CALLELEMENT>
+					<tr>
+					<td>
+					<table class="width-inner-100" border="0" cellpadding="0" cellspacing="0">
+					<IF COND="Variables.enabledFields=true">
+						<THEN>
+							<HASH.CONTAINS VARNAME="enabled" NAME="enabledFields" VALUE="description"/>
+						</THEN>
+					</IF>
+					<IF COND="Variables.enabled=true">
+						<THEN>
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+							<tr>
+								<td class="form-label-text">
+									<XLAT.STREAM KEY="dvin/AT/Common/Description"/>:
+								</td>
+								<td></td>
+								<td class="form-inset">
+									<STRING.LENGTH VALUE="Variables.ContentDetails:description" VARNAME="descLength"/> 
+									<IF COND="Variables.descLength=0">
+									<THEN>
+										<span class="disabledText"><XLAT.STREAM KEY="UI/Forms/NotAvailable"/></span>
+									</THEN>
+									<ELSE>
+										<STRING.STREAM VARIABLE="ContentDetails:description"/>
+									</ELSE>
+									</IF>
+								</td>
+							</tr>
+						</THEN>
+					</IF>
+					<IF COND="Variables.enabledFields=true">
+						<THEN>
+							<HASH.CONTAINS VARNAME="enabled" NAME="enabledFields" VALUE="id"/>
+						</THEN>
+					</IF>
+					<IF COND="Variables.enabled=true">
+						<THEN>
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+							<tr>
+								<td class="form-label-text">
+									<XLAT.STREAM KEY="dvin/AT/Common/ID"/>:
+								</td>
+								<td></td>
+								<td class="form-inset">
+									<STRING.STREAM VARIABLE="id"/>
+								</td>
+							</tr>
+						</THEN>
+					</IF>
+					<IF COND="Variables.enabledFields=true">
+						<THEN>
+							<HASH.CONTAINS VARNAME="enabled" NAME="enabledFields" VALUE="filename"/>
+						</THEN>
+					</IF>
+					<IF COND="Variables.enabled=true">
+						<THEN>
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+							<tr>
+								<td class="form-label-text">
+									<XLAT.STREAM KEY="dvin/Common/Filename"/>:
+								</td>
+								<td></td>
+								<td class="form-inset">
+									<STRING.LENGTH VALUE="Variables.ContentDetails:filename" VARNAME="fnameLength"/> 
+									<IF COND="Variables.fnameLength=0">
+									<THEN>
+										<span class="disabledText"><XLAT.STREAM KEY="UI/Forms/NotAvailable"/></span>
+									</THEN>
+									<ELSE>
+										<STRING.STREAM VARIABLE="ContentDetails:filename"/>
+									</ELSE>
+									</IF>
+								</td>
+							</tr>
+						</THEN>
+					</IF>
+
+					<IF COND="Variables.enabledFields=true">
+						<THEN>
+							<HASH.CONTAINS VARNAME="enabled" NAME="enabledFields" VALUE="path"/>
+						</THEN>
+					</IF>
+					<IF COND="Variables.enabled=true">
+						<THEN>
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+							<tr>
+								<td class="form-label-text">
+									<XLAT.STREAM KEY="dvin/Common/Path"/>:
+								</td>
+								<td></td>
+								<td class="form-inset">
+									<STRING.LENGTH VALUE="Variables.ContentDetails:path" VARNAME="pathLength"/> 
+									<IF COND="Variables.pathLength=0">
+									<THEN>
+										<span class="disabledText"><XLAT.STREAM KEY="UI/Forms/NotAvailable"/></span>
+									</THEN>
+									<ELSE>
+										<STRING.STREAM VARIABLE="ContentDetails:path"/>
+									</ELSE>
+									</IF>
+								</td>
+							</tr>
+						</THEN>
+					</IF>
+
+					<IF COND="Variables.enabledFields=true">
+						<THEN>
+							<HASH.CONTAINS VARNAME="enabled" NAME="enabledFields" VALUE="status"/>
+						</THEN>
+					</IF>
+					<IF COND="Variables.enabled=true">
+						<THEN>
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+							<tr>
+								<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Util/ShowStatusCode"/>
+							</tr>
+						</THEN>
+					</IF>
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/InspectAssetStartEndDate"/>					
+					<callelement NAME="OpenMarket/Xcelerate/AssetType/Dimension/ShowDimensionDetails"/>
+					<IF COND="Variables.enabledFields=true">
+						<THEN>
+							<HASH.CONTAINS VARNAME="enabled" NAME="enabledFields" VALUE="externalid"/>
+						</THEN>
+					</IF>
+					<PROPERTY.GET PARAM="mwb.externalattributes" INIFILE="gator.ini" VARNAME="canDefineExternalAttributes"/>
+					<IF COND="Variables.canDefineExternalAttributes!=true">
+					<THEN>
+						<SETVAR NAME="enabled" VALUE="false"/>
+					</THEN>
+					</IF>
+
+					<IF COND="Variables.enabled=true">
+						<THEN>
+							<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+							<tr>
+								<td class="form-label-text">
+									<XLAT.STREAM KEY="dvin/FlexibleAssets/FlexAssets/ExternalItemId"/>:
+								</td>
+								<td></td>
+								<td class="form-inset">
+									<STRING.STREAM VARIABLE="ContentDetails:externalid"/>
+								</td>
+							</tr>
+						</THEN>
+					</IF>
+					<setvar NAME="assettype" VALUE="Page"/>
+					<selectto LIST="Category" FROM="Category" WHERE="assettype"/>
+					<IF COND="Category.#numRows!=0">
+					<THEN>
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+					<tr>
+						<td class="form-label-text"><XLAT.STREAM KEY="dvin/UI/Admin/Category"/>:</td>
+						<setvar NAME="category" VALUE="Variables.ContentDetails:category"/>
+						<selectto LIST="CategoryDescription" FROM="Category" WHAT="description" WHERE="category,assettype"/>
+						<td></td>
+						<td class="form-inset">
+							<IF COND="CategoryDescription.#numRows=0">
+							<THEN>
+								<span class="disabledText"><XLAT.STREAM KEY="UI/Forms/NotAvailable"/></span>
+							</THEN>
+							<ELSE>
+								<STRING.STREAM LIST="CategoryDescription" COLUMN="description"/>
+							</ELSE>
+							</IF>
+						</td>
+					</tr>
+					</THEN>
+					</IF>
+					<!-- The beginning of Group 3 -->
+					<!-- RESET Enabled since it might have got changed in ExternalItemId above -->
+					<SETVAR NAME="enabled" VALUE="true"/>
+                    <ASSETTYPE.LIST LIST="TemplateTypeMgr" FIELD1="assettype" VALUE1="Variables.templatetype"/>
+					<IF COND="Variables.enabledFields=true">
+						<THEN>
+							<HASH.CONTAINS VARNAME="enabled" NAME="enabledFields" VALUE="AssetType"/>
+						</THEN>
+					</IF>
+					
+					<IF COND="Variables.enabled=true">
+						<THEN>
+							<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+							<XLAT.LOOKUP KEY="dvin/Common/InspectThisItem" VARNAME="InspectThisItem" ESCAPE="true"/>
+							<tr>
+								<td class="form-label-text">
+									<STRING.STREAM VALUE="TemplateTypeMgr.description"/>:
+								</td>
+								<td></td>
+								<td class="form-inset">
+									<IF COND="Variables.revisionInspect=true">
+									<THEN>
+										<STRING.STREAM VARIABLE="TypeName"/>
+									</THEN>
+									<ELSE>										
+										<XLAT.LOOKUP KEY="dvin/Common/InspectThisItem" VARNAME="_XLAT_"/>
+										<XLAT.LOOKUP KEY="dvin/Common/InspectThisItem" VARNAME="mouseover" ESCAPE="true"/>
+										<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/GenerateLink">
+											<ARGUMENT NAME="assettype" VALUE="Variables.templatetype"/>
+											<ARGUMENT NAME="assetid" VALUE="Variables.ContentDetails:flextemplateid"/>
+											<ARGUMENT NAME="varname" VALUE="urlInspectThisItem"/>
+											<ARGUMENT NAME="function" VALUE="inspect"/>
+										</CALLELEMENT>
+										<a href="Variables.urlInspectThisItem" onmouseover="window.status='Variables.InspectThisItem';return true;" onmouseout="window.status='';return true" REPLACEALL="Variables.urlInspectThisItem,Variables.InspectThisItem"><STRING.STREAM VARIABLE="TypeName"/></a>
+									</ELSE>
+									</IF>
+								</td>
+							</tr>
+						</THEN>
+					</IF>
+					 <!-- The beginning of Referenced By and Sharing -->
+                    <CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/IReferencesAndSharing"/>
+					<!-- Analyics Performance indicator -->
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/ShowAnalyticsKPI"/>
+					<!-- The beginning of Group 7 -->
+					<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+					<tr>
+						<td class="form-label-text">
+							<XLAT.STREAM KEY="dvin/AT/Common/Created"/>:
+						</td>
+						<td></td>
+						<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:createddate" VALUETYPE="jdbcdate" VARNAME="ContentDetails:createddate"/>
+						<td class="form-inset">
+							<XLAT.STREAM ENCODE="false" KEY="dvin/FlexibleAssets/FlexAssets/Bycreatedby"/>
+						</td>
+					</tr>
+
+					<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+					<tr>
+						<td class="form-label-text">
+							<XLAT.STREAM KEY="dvin/AT/Common/Modified"/>:
+						</td>
+						<td></td>
+						<DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:updateddate" VALUETYPE="jdbcdate" VARNAME="ContentDetails:updateddate"/>
+						<td class="form-inset">
+							<XLAT.STREAM ENCODE="false" KEY="dvin/FlexibleAssets/FlexAssets/byUpdatedby"/>
+						</td>
+					</tr>
+
+				</table>
+
+				<!--end of body-->
+			</td>
+		</tr>
+	</table>
+</div>
+	</div>
+	</div>
+</div>
+</FTCS>
+

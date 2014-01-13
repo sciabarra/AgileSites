@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/flexassets/ManageRules
+--
+-- INPUT
+--	Save's flexassets without the ruleset
+--	Then loads it back up, scatters everything, gets the id
+--	then rebuilds the ruleset and resaves it.
+-- OUTPUT
+--
+-->
+
+<!-- FlexAssetsSelRuleText -->
+
+<if COND="IsVariable.hintstring=true">
+<then>
+	<if COND="Variables.flextype!=group">
+	<then>
+		<setvar NAME="flexxml" VALUE="flexassets:xmlruleset"/>
+	</then>
+	<else>
+		<setvar NAME="flexxml" VALUE="flexgroups:xmlruleset"/>
+	</else>
+	</if>
+
+	<ASSET.GET NAME="theCurrentAsset" FIELD="id"/>
+
+	<!-- Variables needed are hintstring, assettype, assetid, targetxml -->
+	<callelement NAME="OpenMarket/Gator/Rules/GenerateRatingRuleset">
+		<argument NAME="assettype" VALUE="Variables.AssetType"/>
+		<argument NAME="assetid" VALUE="Variables.id"/>
+		<argument NAME="targetxml" VALUE="Variables.flexxml"/>
+	</callelement>
+	<!-- Note well: The AssetGather element is used for a lot more than gathering rulesets, and if we
+	      call that from here, it breaks reposting of blob temporary values, because the temporary values
+	      tend to get cleaned up prematurely.  One can argue that this is a bug in the AssetGather element,
+	      and it is, but the whole flow here is too funky to risk changing that element at this time -->
+	<!-- callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/AssetGather"/ -->
+	<callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/RatingRuleSet"/>
+	<asset.gather NAME="theCurrentAsset" PREFIX="flexVariables.flextypes" FIELDLIST="ruleset"/>
+</then>
+</if>
+
+</FTCS> 
+

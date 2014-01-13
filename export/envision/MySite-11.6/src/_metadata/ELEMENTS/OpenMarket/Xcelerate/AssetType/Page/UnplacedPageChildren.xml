@@ -1,0 +1,124 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Page/UnplacedPageChildren
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<!-- Signal that we handled the request -->
+
+<SETVAR NAME="loadexecuted" VALUE="true"/>
+<SITEPLAN.ROOT LIST="PubRoot" OBJECTID="SessionVariables.pubid"/>
+	
+<!-- No special criteria; just grab all the nodes -->
+<setvar  NAME="tablename" VALUE="SitePlanTree"/>
+<execsql LIST="children" TABLE="SitePlanTree,Page" 
+    	 SQL="select siteplantree.nid,siteplantree.otype,siteplantree.oid,siteplantree.oversion from siteplantree,Page 
+	          where siteplantree.nparentid = PubRoot.nid and
+	          siteplantree.otype='Page' and siteplantree.ncode='UnPlaced'  and 
+	          siteplantree.oid=Page.id and Page.status !='VO' order by Page.name" />
+	
+<IF COND="IsList.children=true">
+<THEN>	
+
+	<IF COND="children.#numRows!=0">
+	<THEN>
+		<LOOP LIST="children">
+				
+			<SITEPLAN.LOAD NAME="thePage" NODEID="children.nid"/>
+			<ASSET.LOAD NAME="currentChild" TYPE="children.otype" OBJECTID="children.oid"/>
+			<ASSET.GET NAME="currentChild" FIELD="name" OUTPUT="currentName"/>
+			<ASSET.GET NAME="currentChild" FIELD="description" OUTPUT="currentDesc"/>
+			<SITEPLAN.CHILDREN NAME="thePage" LIST="grandchildren" ORDER="nrank"/>
+			<ASSET.CHILDREN NAME="currentChild" LIST="relatedchildren"/>
+								
+			<REMOVEVAR NAME="LoadURL"/>
+			
+			<!--  Has Children  -->
+			<IF COND="IsList.grandchildren=true">
+			<THEN>
+				<IF COND="grandchildren.#numRows!=0">
+				<THEN>
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+						<satellite.argument name="AssetType" value="children.otype"/>
+						<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/children.otype/LoadSiteTree"/>
+						<satellite.argument name="op" value="load"/>
+						<satellite.argument name="loadpages" value="children.nid"/>
+					</SATELLITE.LINK>
+				</THEN>
+				</IF>
+			</THEN>
+			</IF>
+				
+			<IF COND="IsList.relatedchildren=true">
+			<THEN>
+				<IF COND="relatedchildren.#numRows!=0">
+				<THEN>
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+						<satellite.argument name="AssetType" value="children.otype"/>
+						<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/children.otype/LoadSiteTree"/>
+						<satellite.argument name="op" value="load"/>
+						<satellite.argument name="loadpages" value="children.nid"/>
+					</SATELLITE.LINK>
+				</THEN>
+				</IF>
+			</THEN>
+			</IF>
+				
+			<!--  Any  children references attribute -->	
+			<IF COND="IsVariable.LoadURL=false">
+			<THEN>			
+				 <CALLELEMENT NAME="OpenMarket/Xcelerate/AssetType/Page/GetChildrenReferences">
+					<ARGUMENT NAME="cid" VALUE="children.oid "/>				
+				 </CALLELEMENT>
+			     
+			     <IF COND="IsList.ChildrenReferences=true">
+				 <THEN>	
+					<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+						<satellite.argument name="AssetType" value="children.otype"/>
+						<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/children.otype/LoadSiteTree"/>
+						<satellite.argument name="op" value="load"/>
+						<satellite.argument name="loadpages" value="children.nid"/>
+					</SATELLITE.LINK>	
+				 </THEN>					
+				 </IF>				 	
+  			</THEN>
+			</IF>		
+					
+			<SETVAR NAME="oldat" VALUE="Variables.AssetType"/>
+			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+				<ARGUMENT NAME="ID" VALUE="children.oid"/>
+				<ARGUMENT NAME="AssetType" VALUE="children.otype"/>
+				<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+		 	</CALLELEMENT>
+				
+			<SETVAR NAME="AssetType" VALUE="Variables.oldat"/>
+										
+			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+				<ARGUMENT NAME="Label" VALUE="Variables.currentName"/>
+				<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+				<ARGUMENT NAME="okFunctions" VALUE="edit;delete;treerefresh" />
+				<ARGUMENT NAME="executeFunction" VALUE="inspect" />
+				<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/children.otype.png"/>
+				<ARGUMENT NAME="RefreshKeys" VALUE="children.oid;children.nid"/>  
+					<!--  
+						  SitePlanTree SPN Node Record identifier  
+						  Used to detect, track and manage 
+					      spn dnd stale nodes 
+					-->
+				<ARGUMENT NAME="nid" VALUE="children.nid"/>
+				<ARGUMENT NAME="oid" VALUE="children.oid"/>
+				<ARGUMENT NAME="otype"  VALUE="children.otype"/>
+				<ARGUMENT NAME="oversion" VALUE="children.oversion"/>					
+			</CALLELEMENT>
+		</LOOP>
+	</THEN>
+	</IF>
+</THEN>
+</IF>					
+</FTCS>

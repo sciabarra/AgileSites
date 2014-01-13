@@ -1,0 +1,271 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateC/install/Xcelerate/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/SiteEntry/AppendSelectDetails.xml $ 
+$Revision: 6 $ 
+$Modtime: 9/18/03 2:25p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of Open Market, Inc.
+-					All Rights Reserved.
+-
+- DESCRIPTION
+-	Complete the sql query based on user's search selections
+-   The basic idea: start with a minimum, default
+-   query. Then append additional criteria depending
+-   on fields that have been selected in the search
+-   form
+-->
+
+
+<!-- Set the table name for SQLEXP use -->
+
+<SETVAR NAME="tablename" VALUE="SiteEntry"/>
+
+<if COND="IsVariable.Name=true">
+	<then>
+	<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Name"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>    
+        	<TOLOWER OUTSTR="literal" STR="Variables.Name"/>
+        
+       		<ics.sqlexp output="queryappend" type="OR" verb="LIKE"  table="SiteEntry"
+        	string="Variables.literal" column="name" expression="lower(SiteEntry.name)"/>
+ 
+        	<XLAT.LOOKUP KEY="dvin/AT/Common/namecontains" VARNAME="_XLAT_"/>
+
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)"/>
+			<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.Name'"/>
+		</then>
+		</if>
+	</then>
+</if>		
+
+<if COND="IsVariable.Category=true">
+    <then>
+  		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Category"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+		<ics.literal  table="Category"   column="category" string="Variables.Category"  output="literal"/>
+		<SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.category=Variables.literal"/>
+		 </then>
+		</if>      
+    </then>
+</if>
+
+<if COND="IsVariable.Description=true">
+	<then>
+	<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Description"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>        
+        	<TOLOWER OUTSTR="literal" STR="Variables.Description"/>
+        	<ics.sqlexp output="queryappend" type="OR" verb="LIKE"   table="SiteEntry"
+       	 	string="Variables.literal" column="description" expression="lower(SiteEntry.description)"/>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)"/>
+        	<XLAT.LOOKUP KEY="dvin/Common/AT/Descriptioncontains" VARNAME="_XLAT_"/>
+			<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.Description'"/>
+		</then>
+		</if>
+	</then>
+</if>		
+
+<if COND="IsVariable.Status=true">
+    <then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Status"/>
+			<argument NAME="type" VALUE="String"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+		<SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.status='Variables.Status'"/>
+		 </then>
+		</if>
+	<SETVAR NAME="statuscode" VALUE="Variables.Status"/>
+	<SETVAR NAME="errno" VALUE="0"/>
+	<SELECTTO LIST="StatusDesc" WHAT="description" FROM="StatusCode" WHERE="statuscode"/>
+	<IF COND="IsError.Variables.errno!=true">
+	<THEN>
+        <XLAT.LOOKUP KEY="dvin/AT/Common/statusis" VARNAME="_XLAT_"/>
+
+	    <SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'StatusDesc.description'"/>
+	</THEN>
+	<ELSE>
+        <XLAT.LOOKUP KEY="dvin/AT/Common/statusequals" VARNAME="_XLAT_"/>
+		<SETVAR NAME="filterstring" VALUE="Variables.filterstring :Variables._XLAT_ 'Variables.Status'"/>
+	</ELSE>
+	</IF>
+   </then>
+</if>
+
+
+	
+
+<if COND="IsVariable.Subtype=true">
+    <then>
+    <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Subtype"/>
+			<argument NAME="type" VALUE="String"/>
+	</callelement>
+	<if cond="Variables.validatedstatus=true">
+	<then>
+    <ics.literal  table="SiteEntry" column="subtype" string="Variables.Subtype"  output="literal"/>
+	<SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.subtype=Variables.literal"/>
+	 </then>
+	</if>     
+	<ASSETTYPE.LIST LIST="assetlist" FIELD1="assettype" VALUE1="Variables.Subtype"/>
+	<SETVAR NAME="errno" VALUE="0"/>
+    
+    <XLAT.LOOKUP KEY="dvin/AT/Common/subtypeequals" VARNAME="_XLAT_"/>
+
+      <SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.Subtype'"/>
+    </then>
+</if>
+
+
+<if COND="IsVariable.Rootelement=true">
+	<then>
+	<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Rootelement"/>
+			<argument NAME="type" VALUE="string"/>
+	</callelement>
+	<if cond="Variables.validatedstatus=true">
+	<then>
+		<SQLEXP OUTSTR="queryappend" TYPE="OR" VERB="LIKE" STR="Variables.Rootelement" COLNAME="sitecatalog.rootelement"/>
+		<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)"/>
+        <XLAT.LOOKUP KEY="dvin/Common/AT/ElementNamecontains" VARNAME="_XLAT_"/>
+		<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.Rootelement'"/>
+	</then>
+	</if>
+	</then>
+</if>	
+
+<if COND="IsVariable.Pagename=true">
+	<then>
+	<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<ARGUMENT NAME="columnvalue" VALUE="Variables.Pagename"/>
+			<ARGUMENT NAME="type" VALUE="String"/>
+		</CALLELEMENT>
+		<IF COND="Variables.validatedstatus=true">
+			<THEN>
+				<SQLEXP OUTSTR="queryappend" TYPE="OR" VERB="LIKE" STR="Variables.Pagename" COLNAME="SiteEntry.pagename"/>
+				<SETVAR NAME="queryend" VALUE="Variables.queryend AND (Variables.queryappend)"/>
+        		<XLAT.LOOKUP KEY="dvin/Common/AT/SiteCatalogPagenamecontains" VARNAME="_XLAT_"/>
+				<SETVAR NAME="filterstring" VALUE="Variables.filterstring :Variables._XLAT_'Variables.Pagename'"/>
+			</THEN>
+		</IF>		
+	</then>
+</if>
+
+
+
+<if COND="IsVariable.Id=true">
+    <then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.Id"/>
+			<argument NAME="type" VALUE="Long"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+		  <SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.id = Variables.Id"/>
+		 </then>
+		</if>
+    <XLAT.LOOKUP KEY="dvin/UI/Search/IDis" VARNAME="_XLAT_"/>
+    
+    <SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.Id'"/>
+    </then>
+</if>
+
+<if COND="IsVariable.uId=true">
+    <then>
+    <CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<ARGUMENT NAME="columnvalue" VALUE="Variables.uId"/>
+			<ARGUMENT NAME="type" VALUE="String"/>
+		</CALLELEMENT>
+		<IF COND="Variables.validatedstatus=true">
+			<THEN>
+    			<SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.fw_uid = 'Variables.uId'"/>
+    			<XLAT.LOOKUP KEY="dvin/UI/Search/FWUIDis" VARNAME="_XLAT_"/>
+			</THEN>
+		</IF>	
+    <SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.uId'"/>
+    </then>
+</if>
+
+<if COND="IsVariable.UpdatedBefore=true">
+    <then>
+	<if COND="Variables.UpdatedBefore!=Variables.null">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.UpdatedBefore"/>
+			<argument NAME="type" VALUE="Date"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+		<SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.updateddate &#060; Variables.UpdatedBefore"/>
+		 </then>
+		</if>
+        <XLAT.LOOKUP KEY="dvin/UI/updatedbefore" VARNAME="_XLAT_" ENCODE="false"/>
+       		<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_"/>
+		</then>
+	</if>	
+    </then>
+</if>
+
+<if COND="IsVariable.UpdatedAfter=true">
+    <then>
+	<if COND="Variables.UpdatedAfter!=Variables.null">
+		<then>
+		<callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.UpdatedAfter"/>
+			<argument NAME="type" VALUE="Date"/>
+		</callelement>
+		<if cond="Variables.validatedstatus=true">
+		<then>
+		<SETVAR NAME="queryend" VALUE="Variables.queryend AND Variables.UpdatedAfter &#060; SiteEntry.updateddate"/>
+		 </then>
+		</if>
+        <XLAT.LOOKUP KEY="dvin/UI/updatedafter" VARNAME="_XLAT_" ENCODE="false"/>
+		<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_"/>
+		</then>
+	</if>	
+    </then>
+</if>
+
+<if COND="IsVariable.UpdatedBy=true">
+    <then>
+    <callelement NAME="OpenMarket/Xcelerate/Util/validateFields">
+			<argument NAME="columnvalue" VALUE="Variables.UpdatedBy"/>
+			<argument NAME="type" VALUE="String"/>
+	</callelement>
+	<if cond="Variables.validatedstatus=true">
+	<then>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+		<ARGUMENT NAME="columnvalue" VALUE="Variables.UpdatedBy"/>
+		<ARGUMENT NAME="type" VALUE="Nospace"/>
+		</CALLELEMENT>
+		<IF COND="Variables.validatedstatus=true">
+		<THEN>
+			<XLAT.LOOKUP KEY="dvin/Common/ModifiedByLC" VARNAME="_XLAT_"/>
+			<ics.literal  table="SiteEntry" column="updatedby" string="Variables.UpdatedBy"  output="literal"/>
+			<SETVAR NAME="queryend" VALUE="Variables.queryend AND SiteEntry.updatedby=Variables.literal"/>
+			<SETVAR NAME="filterstring" VALUE="Variables.filterstring : Variables._XLAT_ 'Variables.UpdatedBy'"/>
+		</THEN>
+		</IF>
+	</then>
+	</if> 
+    </then>
+</if>
+
+</FTCS>
+                                                                               

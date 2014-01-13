@@ -1,0 +1,315 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+
+	<!--
+	$Logfile: /VerticalApps/XcelerateD/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/Page/AssocAttrDetail.xml $
+	$Revision: 24 $
+	$Modtime: 8/12/04 5:30p $
+	-->
+
+	<!--
+	- Confidential and Proprietary Information of FutureTense Inc.
+	-					All Rights Reserved.
+	-
+	-AssocAttr.xml
+	-
+	- DESCRIPTION
+	-
+	-
+	- HISTORY
+	-->
+
+	<!-- Attributes -->
+	<DEBABBLE VALUE="false"/>
+	<if COND="Variables.errno=0">
+	<then>
+		<ATM.LOCATE TYPE="Variables.templatetype" VARNAME="ptmgr"/>
+		<IF COND="IsList.tmplattrlist=false">
+		<THEN>
+			<IF COND="Variables.tagtype=asset">
+			<THEN>
+				<FLEXTEMPLATES.GETATTRIBUTEINFO NAME="ptmgr" ID="Variables.templateid" LISTVARNAME="tmplattrlist"/>
+				<FLEXTEMPLATE.GETFILTERS NAME="ProdTmplinst" LISTVARNAME="lFilterList"/>
+				<FLEXTEMPLATES.GETDERIVEDINFO NAME="ptmgr" ID="Variables.templateid" ASSETTYPE="Variables.templatetype" GROUPTYPE="Variables.grouptype" VARNAME="oFilterInfo"/>
+			</THEN>
+			</IF>
+		</THEN>
+		<ELSE>
+			<FLEXTEMPLATE.GETFILTERS NAME="ProdTmplinst" LISTVARNAME="lFilterList"/>
+			<FLEXTEMPLATES.GETDERIVEDINFO NAME="ptmgr" ID="Variables.templateid" ASSETTYPE="Variables.templatetype" GROUPTYPE="Variables.grouptype" VARNAME="oFilterInfo"/>
+		</ELSE>
+		</IF>
+
+		<IF COND="Variables.AttrSource!=derived">
+		<THEN>
+			<if COND="IsList.tmplattrlist=true">
+			<then>
+				<if COND="tmplattrlist.#numRows!=0">
+				<then>
+					<!-- determine whether to display attribute names or descriptions -->
+					<callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/CheckAttributeDisplayStyle"/>
+
+					<!-- Check if the hashtable enabledAttributes exists-->
+					<misc.checkobjectexists NAME="enabledAttributes" VARNAME="enabledAttributes"/>
+					<if COND="Variables.enabledAttributes=false">
+					<then>
+						<setvar NAME="enabled" VALUE="true"/>
+					</then>
+					</if>
+
+					<setvar NAME="SpacerBar" VALUE="1"/>
+					<loop LIST="tmplattrlist">
+						<if COND="Variables.enabledAttributes=true">
+						<then>
+							<hash.contains VARNAME="enabled" NAME="enabledAttributes" VALUE="tmplattrlist.name"/>
+						</then>
+						</if>
+						<if COND="Variables.enabled!=false">
+						<then>
+							<setvar NAME="AttrID" VALUE="tmplattrlist.assetid"/>
+							<setvar NAME="AttrName" VALUE="tmplattrlist.name"/>
+							<setvar NAME="AttrDesc" VALUE="tmplattrlist.description"/>
+							<setvar NAME="type" VALUE="tmplattrlist.type"/>
+							<setvar NAME="uploaddir" VALUE="tmplattrlist.uploaddir"/>
+							<setvar NAME="attrassettype" VALUE="tmplattrlist.assettypename"/>
+							<setvar NAME="AttrTypeID" VALUE="tmplattrlist.attributetype"/>
+							<setvar NAME="EditingStyle" VALUE="single"/>
+							<IF COND="Variables.type=blob">
+							<THEN>
+								<SETVAR NAME="type" VALUE="url"/>
+							</THEN>
+							</IF>
+							<IF COND="tmplattrlist.valuestyle!=S">
+							<THEN>
+								<setvar NAME="EditingStyle" VALUE="multiple-ordered"/>
+							</THEN>
+							</IF>
+							<setvar NAME="RequiredAttr" VALUE="true"/>
+							<IF COND="tmplattrlist.required=F">
+							<THEN>
+								<setvar NAME="RequiredAttr" VALUE="false"/>
+							</THEN>
+							</IF>
+
+							<if COND="Variables.AttrName=GAProductSet">
+							<then>
+								<!--  don't present this attribute now -->
+								<setvar NAME="isProductSet" VALUE="true"/>
+							</then>
+							<else>
+								<!--get the value(s) for this attribute-->
+
+								<IF COND="Variables.tagtype=asset">
+								<THEN>
+									<IF COND="tmplattrlist.storage!=L">
+									<THEN>
+										<ASSETSET.SETASSET NAME="as"
+										      TYPE="Variables.AssetType"
+										      ID="Variables.id"/>
+
+										<ASSETSET.GETATTRIBUTEVALUES
+										      NAME="as"
+										      ATTRIBUTE="Variables.AttrName"
+										      LISTVARNAME="AttrValueList"
+										      TYPENAME="Variables.attributetype"/>
+		      							</THEN>
+									<ELSE>
+										<FlexAsset.getattribute NAME="theCurrentAsset" ID="tmplattrlist.assetid" LISTVARNAME="AttrValueList"/>
+									</ELSE>
+									</IF>
+								</THEN>
+								<ELSE>
+								<!-- no parent here -->
+									<!--FlexGroup.getattribute NAME="theCurrentAsset" ID="tmplattrlist.assetid" LISTVARNAME="AttrValueList"/-->
+								</ELSE>
+								</IF>
+
+								<setvar NAME="doDefaultDisplay" VALUE="yes"/>
+								<CALLELEMENT NAME="OpenMarket/Gator/FlexibleAssets/Common/ShowAttributesCD"/>
+							</else>
+							</if> <!-- IF name is GAProductSet -->
+						</then>
+						</if> <!-- IF enabled -->
+					</loop>
+
+					<removevar NAME="enabled"/>
+					<removevar NAME="enabledAttributes"/>
+				</then>
+				</if>
+			</then>
+			</if>
+
+		</THEN>
+		<ELSE>
+			
+			<!-- make a list out of filter values -->
+			<IF COND="IsList.lFilterList=true">
+			<THEN>
+				<IF COND="lFilterList.#numRows!=0">
+				<THEN>
+					<LOOP LIST="lFilterList">
+						<FILTERINFO.GETATTRIBUTEINFO NAME="oFilterInfo" ID="lFilterList.assetid" LISTVARNAME="lFilteredAttrs"/>
+						<IF COND="IsList.lFilteredAttrs=true">
+						<THEN>
+							<IF COND="lFilteredAttrs.#numRows!=0">
+							<THEN>
+								<LOOP LIST="lFilteredAttrs">
+									<!-- determine whether to display attribute names or descriptions -->
+									<callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/CheckAttributeDisplayStyle"/>
+
+									<setvar NAME="SpacerBar" VALUE="1"/>
+									<setvar NAME="AttrID" VALUE="lFilteredAttrs.assetid"/>
+									<setvar NAME="AttrName" VALUE="lFilteredAttrs.name"/>
+									<setvar NAME="AttrDesc" VALUE="lFilteredAttrs.description"/>
+									<setvar NAME="type" VALUE="lFilteredAttrs.type"/>
+									<setvar NAME="uploaddir" VALUE="lFilteredAttrs.uploaddir"/>
+									<setvar NAME="attrassettype" VALUE="lFilteredAttrs.assettypename"/>
+									<setvar NAME="attrassettdef" VALUE="lFilteredAttrs.assettypedef"/>
+									<setvar NAME="AttrTypeID" VALUE="lFilteredAttrs.attributetype"/>
+									<setvar NAME="EditingStyle" VALUE="single"/>
+									<IF COND="Variables.type=blob">
+									<THEN>
+										<SETVAR NAME="type" VALUE="url"/>
+									</THEN>
+									</IF>
+									<IF COND="lFilteredAttrs.multiple=T">
+									<THEN>
+										<setvar NAME="EditingStyle" VALUE="multiple"/>
+									</THEN>
+									</IF>
+									<setvar NAME="RequiredAttr" VALUE="true"/>
+									<IF COND="lFilteredAttrs.required=F">
+									<THEN>
+										<setvar NAME="RequiredAttr" VALUE="false"/>
+									</THEN>
+									</IF>
+
+									<!-- try multi, try single, skip -->
+
+									<SETVAR NAME="errno" VALUE="0"/>
+									<!--
+										ContentDetails:DAttribute_1025295073206Bar:Total = 1
+										ContentDetails:DAttribute_1025295073206Bar:0 = Bar
+									-->
+									<IF COND="Variables.type=url">
+									<THEN>
+										<SETVAR NAME="errno" VALUE="0"/>
+										<ICS.RESOLVEVARIABLES NAME="$(Variables.ContentDetails:DAttribute_$(lFilterList.assetid)$(Variables.AttrName):Total)" OUTPUT="currentVal" DELIMITED="true"/>
+										<IF COND="Variables.errno=0">
+										<THEN>
+											<IF COND="Variables.currentVal!=0">
+											<THEN>
+												<FLEXASSET.GETATTRIBUTE NAME="theCurrentAsset" ID="lFilteredAttrs.assetid" FILTERID="lFilterList.assetid" LISTVARNAME="AttrValueList"/>
+												<IF COND="AttrValueList.#numRows!=0">
+												<THEN>
+													<SETVAR NAME="_SkipNext_" VALUE="false"/>
+													<ASSET.LIST TYPE="Variables.filtertype" FIELD1="id" VALUE1="lFilterList.assetid" LIST="currentFilter"/>
+													<SETVAR NAME="showFilter" VALUE="currentFilter.name"/>
+												</THEN>
+												<ELSE>
+													<SETVAR NAME="_SkipNext_" VALUE="true"/>
+												</ELSE>
+												</IF>
+											</THEN>
+											<ELSE>
+												<SETVAR NAME="_SkipNext_" VALUE="true"/>
+											</ELSE>
+											</IF>
+										</THEN>
+										<ELSE>
+											<!-- try single url -->
+											<SETVAR NAME="errno" VALUE="0"/>
+											<ICS.RESOLVEVARIABLES NAME="$(Variables.ContentDetails:DAttribute_$(lFilterList.assetid)$(Variables.AttrName)_file)" OUTPUT="currentVal" DELIMITED="true"/>
+											<IF COND="Variables.errno=0">
+											<THEN>
+												<FLEXASSET.GETATTRIBUTE NAME="theCurrentAsset" ID="lFilteredAttrs.assetid" FILTERID="lFilterList.assetid" LISTVARNAME="AttrValueList"/>
+												<IF COND="AttrValueList.#numRows!=0">
+												<THEN>
+													<SETVAR NAME="_SkipNext_" VALUE="false"/>
+													<ASSET.LIST TYPE="Variables.filtertype" FIELD1="id" VALUE1="lFilterList.assetid" LIST="currentFilter"/>
+													<SETVAR NAME="showFilter" VALUE="currentFilter.name"/>
+												</THEN>
+												</IF>
+											</THEN>
+											<ELSE>
+												<SETVAR NAME="_SkipNext_" VALUE="true"/>
+											</ELSE>
+											</IF>
+										</ELSE>
+										</IF>
+									</THEN>
+									<ELSE>
+										<LISTOBJECT.CREATE NAME="loCurrentValues" COLUMNS="value"/>
+										<SETVAR NAME="errno" VALUE="0"/>
+										<ICS.RESOLVEVARIABLES NAME="$(Variables.ContentDetails:DAttribute_$(lFilterList.assetid)$(Variables.AttrName):Total)" OUTPUT="currentVal" DELIMITED="true"/>
+										<IF COND="Variables.errno=0">
+										<THEN>
+											<IF COND="Variables.currentVal!=0">
+											<THEN>
+												<SETCOUNTER NAME="valTotal" VALUE="0"/>
+												<LOOP COUNT="Variables.currentVal">
+													<IF COND="lFilteredAttrs.valuestyle=O">
+													<THEN>
+														<ICS.RESOLVEVARIABLES NAME="$(Variables.ContentDetails:DAttribute_$(lFilterList.assetid)$(Variables.AttrName):$(Counters.valTotal):data)" OUTPUT="currentVal" DELIMITED="true"/>
+													</THEN>
+													<ELSE>
+														<ICS.RESOLVEVARIABLES NAME="$(Variables.ContentDetails:DAttribute_$(lFilterList.assetid)$(Variables.AttrName):$(Counters.valTotal))" OUTPUT="currentVal" DELIMITED="true"/>
+													</ELSE>
+													</IF>
+													<LISTOBJECT.ADDROW NAME="loCurrentValues" value="Variables.currentVal"/>
+													<INCCOUNTER NAME="valTotal" VALUE="1"/>
+												</LOOP>
+												<SETVAR NAME="_SkipNext_" VALUE="false"/>
+												<ASSET.LIST TYPE="Variables.filtertype" FIELD1="id" VALUE1="lFilterList.assetid" LIST="currentFilter"/>
+												<SETVAR NAME="showFilter" VALUE="currentFilter.name"/>
+											</THEN>
+											<ELSE>
+												<SETVAR NAME="_SkipNext_" VALUE="true"/>
+											</ELSE>
+											</IF>
+										</THEN>
+										<ELSE>
+											<!-- try single non url -->
+											<SETVAR NAME="errno" VALUE="0"/>
+											<ICS.RESOLVEVARIABLES NAME="$(Variables.ContentDetails:DAttribute_$(lFilterList.assetid)$(Variables.AttrName))" OUTPUT="currentVal" DELIMITED="true"/>
+											<IF COND="Variables.errno=0">
+											<THEN>
+												<LISTOBJECT.ADDROW NAME="loCurrentValues" value="Variables.currentVal"/>
+												<SETVAR NAME="_SkipNext_" VALUE="false"/>
+												<ASSET.LIST TYPE="Variables.filtertype" FIELD1="id" VALUE1="lFilterList.assetid" LIST="currentFilter"/>
+												<SETVAR NAME="showFilter" VALUE="currentFilter.name"/>
+											</THEN>
+											<ELSE>
+												<SETVAR NAME="_SkipNext_" VALUE="true"/>
+											</ELSE>
+											</IF>
+										</ELSE>
+										</IF>
+										<LISTOBJECT.TOLIST NAME="loCurrentValues" LISTVARNAME="AttrValueList"/>
+									</ELSE>
+									</IF>
+
+									<IF COND="Variables._SkipNext_!=true">
+									<THEN>
+										<setvar NAME="doDefaultDisplay" VALUE="yes"/>
+										<CALLELEMENT NAME="OpenMarket/Gator/FlexibleAssets/Common/ShowAttributesCD"/>
+									</THEN>
+									</IF>
+								</LOOP>
+							</THEN>
+							</IF>
+						</THEN>
+						</IF>
+					</LOOP>
+				</THEN>
+				</IF>
+			</THEN>
+			</IF>
+		</ELSE>
+		</IF>
+	</then>
+	</if>
+	<DEBABBLE VALUE="true"/>
+</FTCS>

@@ -1,0 +1,32 @@
+<object-stream>
+  <com.fatwire.realtime.ResourceDataImpl>
+    <id class="string">OpenMarket/Gator/UIFramework/LoadActiveList</id>
+    <resourceType>ELEMENTCATALOG</resourceType>
+    <deps class="empty-set"/>
+    <data class="com.openmarket.xcelerate.common.ElementCatalogEntry" serialization="custom">
+      <com.openmarket.xcelerate.common.ElementCatalogEntry>
+        <int>1</int>
+        <string>OpenMarket/Gator/UIFramework/LoadActiveList</string>
+        <string>Active List</string>
+        <string></string>
+        <string></string>
+        <string>OpenMarket\Gator\UIFramework\LoadActiveList.xml</string>
+        <string></string>
+        <string></string>
+      </com.openmarket.xcelerate.common.ElementCatalogEntry>
+    </data>
+  </com.fatwire.realtime.ResourceDataImpl>
+</object-stream>
+<!--==================___ METADATA ___================
+<dependencies>
+  <list/>
+</dependencies>
+==================______________________==================
+#
+#Mon Jan 13 18:18:41 UTC 2014
+storable0=/ELEMENTS/OpenMarket/Gator/UIFramework/LoadActiveList.xml|null|_storable_type\=%2FELEMENTS%2FOpenMarket%2FGator%2FUIFramework%2FLoadActiveList.xml
+@hashval=1705725420
+key=@ELEMENTCATALOG-OpenMarket/Gator/UIFramework/LoadActiveList
+type=ELEMENTCATALOG
+
+==================___ END METADATA ___==================-->

@@ -1,0 +1,32 @@
+<object-stream>
+  <com.fatwire.realtime.ResourceDataImpl>
+    <id class="string">OpenMarket/Xcelerate/AssetType/Template/ContentFormSetVar</id>
+    <resourceType>ELEMENTCATALOG</resourceType>
+    <deps class="empty-set"/>
+    <data class="com.openmarket.xcelerate.common.ElementCatalogEntry" serialization="custom">
+      <com.openmarket.xcelerate.common.ElementCatalogEntry>
+        <int>1</int>
+        <string>OpenMarket/Xcelerate/AssetType/Template/ContentFormSetVar</string>
+        <string>ContentForm set variables</string>
+        <string></string>
+        <string></string>
+        <string>OpenMarket\Xcelerate\AssetType\Template\ContentFormSetVar.xml</string>
+        <string></string>
+        <string></string>
+      </com.openmarket.xcelerate.common.ElementCatalogEntry>
+    </data>
+  </com.fatwire.realtime.ResourceDataImpl>
+</object-stream>
+<!--==================___ METADATA ___================
+<dependencies>
+  <list/>
+</dependencies>
+==================______________________==================
+#
+#Mon Jan 13 18:18:39 UTC 2014
+storable0=/ELEMENTS/OpenMarket/Xcelerate/AssetType/Template/ContentFormSetVar.xml|null|_storable_type\=%2FELEMENTS%2FOpenMarket%2FXcelerate%2FAssetType%2FTemplate%2FContentFormSetVar.xml
+@hashval=-682420009
+key=@ELEMENTCATALOG-OpenMarket/Xcelerate/AssetType/Template/ContentFormSetVar
+type=ELEMENTCATALOG
+
+==================___ END METADATA ___==================-->

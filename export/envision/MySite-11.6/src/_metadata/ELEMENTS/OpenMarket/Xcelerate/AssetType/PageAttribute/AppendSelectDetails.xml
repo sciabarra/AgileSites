@@ -1,0 +1,129 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateB/install/Gator/Populate/ElementCatalog/OpenMarket/Xcelerate/AssetType/PageAttribute/AppendSelectDetails.xml $ 
+$Revision: 19 $ 
+$Modtime: 11/01/02 7:49p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- AppendSelectDetails.xml
+-
+- DESCRIPTION
+-	 The basic idea: start with a minimum, default
+-    query. Then append additional criteria depending
+-    on fields that have been selected in the search
+-    form
+-
+- HISTORY 
+-->
+
+<!-- Set the table name for SQLEXP use -->
+<SETVAR NAME="tablename" VALUE="Variables.AssetType"/>
+
+<!-- ---------------------- -->
+<!-- Asset table search -->
+<!-- ---------------------- -->
+
+<!-- To search for a standard column in the Variables.AssetType table:
+  -- 
+  -- Every row in the following list corresponds to a search parameter. Each
+  -- row has four columns: formname, columnname, guiname, operator.
+  --
+  -- formname is the name of the input field in SearchForm
+  -- columnname is the database columnname in the table named <Variables.AssetType>
+  -- guiname is the user-friendly display name
+  -- operator is the SQL verb to use in the SQLEXP statement
+  --
+  -- The list must be named 'srchFlds'
+-->
+
+<LISTOBJECT.CREATE NAME="flds" COLUMNS="formname,columnname,guiname,operator"/>
+ 
+
+  
+<XLAT.LOOKUP KEY="dvin/AT/Common/ID" VARNAME="guiid"/>
+<LISTOBJECT.ADDROW NAME="flds" formname="Id" columnname="id" guiname="Variables.guiid" operator="="/>
+
+<XLAT.LOOKUP  KEY="dvin/AT/Common/Name"  VARNAME="guiName"/>
+<LISTOBJECT.ADDROW NAME="flds" formname="Name" columnname="name" guiname="Variables.guiName" operator="LIKE"/>
+
+<XLAT.LOOKUP  KEY="dvin/FlexibleAssets/Attributes/AttrEditornocolon"  VARNAME="guiName"/>
+<LISTOBJECT.ADDROW NAME="flds" formname="AttrTypes"   columnname="attributetype"  guiname="Variables.guiName"  operator="="/>
+
+<XLAT.LOOKUP KEY="dvin/Common/Description" VARNAME="guiDesc"/>
+<LISTOBJECT.ADDROW NAME="flds" formname="Description" columnname="description" guiname="Variables.guiDesc" operator="LIKE"/>
+
+
+ <XLAT.LOOKUP KEY="dvin/FlexibleAssets/Common/FlexDefinition" VARNAME="guiflextmpl"/>
+<LISTOBJECT.ADDROW NAME="flds" formname="flextemplateid" columnname="Variables.guiflextmpl" guiname="Variables.guiflextmpl" operator="="/>
+ 
+ <LISTOBJECT.TOLIST NAME="flds" LISTVARNAME="srchFlds"/>
+
+
+
+<!-- ---------------------------- -->
+<!-- Asset Extension table search -->
+<!-- ---------------------------- -->
+
+<!-- To search for a standard column in the Variables.AssetType_Extension table:
+  -- 
+  -- Every row in the following list corresponds to a search parameter. Each
+  -- row has four columns: formname, columnname, guiname, operator.
+  --
+  -- formname is the name of the input field in SearchForm
+  -- columnname is the database columnname in the table named <Variables.AssetType>_Extension
+  -- guiname is the user-friendly display name
+  -- operator is the SQL verb to use in the SQLEXP statement
+  --
+  -- The list must be named 'srchExtnFlds'
+-->
+
+<LISTOBJECT.CREATE NAME="flds" COLUMNS="formname,columnname,guiname,operator"/>
+
+<XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/NumberValue" VARNAME="guiName"/>
+<LISTOBJECT.ADDROW NAME="flds" formname="ValueStyle" columnname="valuestyle" guiname="Variables.guiName" operator="="/>
+
+<XLAT.LOOKUP KEY="dvin/TreeApplet/AssetTypes" VARNAME="guiName"/>
+<LISTOBJECT.ADDROW NAME="flds" formname="AssetTypes" columnname="assettypename" guiname="Variables.guiName" operator="="/>
+
+
+<XLAT.LOOKUP KEY="dvin/Common/Type" VARNAME="guiName"/>
+<LISTOBJECT.ADDROW NAME="flds" formname="Type" columnname="type" guiname="Variables.guiName" operator="="/>
+
+
+<XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/EditingStyleNocolon" VARNAME="guiName"/>
+<LISTOBJECT.ADDROW NAME="flds" formname="Editing" columnname="editing" guiname="Variables.guiName" operator="="/>
+
+
+<XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/StorageStylenocolon" VARNAME="guiName"/>
+<LISTOBJECT.ADDROW NAME="flds" formname="Storage" columnname="storage" guiname="Variables.guiName" operator="="/>
+
+
+<XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/ExternalIDnocolon" VARNAME="guiName"/>
+<LISTOBJECT.ADDROW NAME="flds" formname="ExternalId" columnname="externalid" guiname="Variables.guiName" operator="="/>
+
+
+<XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/ExternalTablenocolon" VARNAME="guiName"/>
+<LISTOBJECT.ADDROW NAME="flds" formname="ExternalTable" columnname="externaltable" guiname="Variables.guiName" operator="LIKE"/>
+
+
+<XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/ExternalColumnnocolon" VARNAME="guiName"/>
+<LISTOBJECT.ADDROW NAME="flds" formname="ExternalColumn" columnname="externalcolumn" guiname="Variables.guiName" operator="LIKE"/>
+<LISTOBJECT.TOLIST NAME="flds" LISTVARNAME="srchExtnFlds"/>
+
+
+ 
+
+<!-- call common append procedure, this knows what to do with the lists above -->
+<CALLELEMENT NAME="OpenMarket/Gator/FlexibleAssets/Common/AppendSelectDetailsCommon"/>
+
+
+
+</FTCS>
+

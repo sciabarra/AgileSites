@@ -1,0 +1,345 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateD/install/Gator/Populate/ElementCatalog/OpenMarket/Gator/FlexibleAssets/Attributes/ContentDetails.xml $ 
+$Revision: 60 $ 
+$Modtime: 6/24/04 2:18p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- ContentDetails.xml
+-
+- DESCRIPTION
+-	
+-
+- HISTORY 
+-->
+
+<!-- Action bar -->
+<div dojoType="dijit.layout.BorderContainer" class="bordercontainer">
+<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ActionsBar">
+	<argument NAME="Screen" VALUE="Inspect"/>
+	<argument NAME="NoPreview" VALUE="true"/>
+</callelement>
+<div dojoType="dijit.layout.ContentPane" region="center">		
+<table class="width70BottomExMargin" border="0" cellpadding="0" cellspacing="0">
+<ASSET.GETASSETTYPE NAME="Variables.assetname" OUTNAME="at"/>
+<ASSETTYPE.GET NAME="at" FIELD="description" OUTPUT="at:description"/>
+	<!-- page title w/ asset name -->
+	<assettype.list LIST="ThisAsset" FIELD1="assettype" VALUE1="Variables.AssetType"/>
+	<tr>
+		<td><span class="title-text"><STRING.STREAM VALUE="Variables.at:description"/>:</span>&nbsp;<span class="title-value-text"><STRING.STREAM VARIABLE="ContentDetails:name"/></span></td>
+	</tr>
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/TitleBar">
+		<argument NAME="SpaceBelow" VALUE="No"/>
+	</callelement>
+	
+	<!-- attribute inspection form -->
+	<tr>
+		<td><table border="0" cellpadding="0" cellspacing="0">
+			 <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>	
+			<tr>
+				<td class="form-label-text"><span class="alert-color">*</span><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/Name"/></td>
+				<td><img height="1" width="5" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+				<td class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:name"/></td>
+			</tr>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/Description"/></td>
+				<td></td>
+				<td class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:description"/></td>
+			</tr>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+   				<callelement NAME="OpenMarket/Xcelerate/Actions/Util/ShowStatusCode"/>
+			</tr>			  
+
+			<!--<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>-->
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>	
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/ID"/></td>
+				<td></td>
+				<td class="form-inset"><STRING.STREAM VARIABLE="id"/></td>
+			</tr>
+
+			<callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/SiteContentDetails"/>
+			
+			<!--<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacerBar"/>-->
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>	
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/AttributeType"/></td>
+				<td></td>
+				<td class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:type"/></td>
+			</tr>
+  		
+			<IF COND="Variables.ContentDetails:type=asset">
+			<THEN>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/AssetType"/> </td>
+					<td></td>
+					<assettype.list LIST="AssetTypesList" FIELD1="assettype" VALUE1="Variables.ContentDetails:assettypename"/>
+					<IF COND="IsList.AssetTypesList=true">
+					<THEN>
+						<td class="form-inset"><STRING.STREAM LIST="AssetTypesList" COLUMN="description"/></td>
+					</THEN>
+					</IF>
+				</tr>
+
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/AssetSubTypes"/> </td>
+					<td></td>
+					<td class="form-inset">
+						<if COND="Variables.ContentDetails:assetsubtypename:Total=0">
+						<then>
+							<XLAT.STREAM KEY="dvin/Common/Any"/>
+						</then>
+						<else>
+							<setvar NAME="sawvalue" VALUE="false"/>
+							<setcounter NAME="thecount" VALUE="0"/>
+							<loop COUNT="Variables.ContentDetails:assetsubtypename:Total">
+								<if COND="Variables.sawvalue=true">
+								<then>
+									<br/>
+								</then>
+								<else>
+									<setvar NAME="sawvalue" VALUE="true"/>
+								</else>
+								</if>
+								<STRING.STREAM VARIABLE="ContentDetails:assetsubtypename:Counters.thecount"/>
+								<inccounter NAME="thecount" VALUE="1"/>
+							</loop>
+						</else>
+						</if>
+					</td>
+				</tr>
+
+				<setvar NAME="atdescription"  VALUE="Variables.at:description"/>
+				<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+				<tr>
+					<td class="form-label-text">
+						<XLAT.STREAM KEY="dvin/UI/Admin/DependencyType"/>:
+					</td>
+					<td></td>
+					<td class="form-inset">
+						<IF COND="Variables.ContentDetails:deptype=V">
+						<THEN>
+							<XLAT.STREAM KEY="dvin/AT/Common/Exact"/>
+						</THEN>
+						<ELSE>
+							<XLAT.STREAM KEY="dvin/AT/Common/Exists"/>
+						</ELSE>
+						</IF>
+					</td>
+				</tr>
+
+			</THEN>
+			</IF>
+         
+            <IF COND="Variables.ContentDetails:type=url">
+			<THEN>
+    			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+    			<tr>
+    				<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/UploadDirectory"/> </td>
+    				<td></td>
+    				<td class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:upload"/></td>
+    			</tr>
+            </THEN>
+            </IF>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/NumberofValues"/> </td>
+				<td></td>
+
+				<if COND="Variables.ContentDetails:valuestyle=S">
+				<then>
+					<XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/single" VARNAME="formvalue"/>
+				</then>
+				</if>
+				<if COND="Variables.ContentDetails:valuestyle=N">
+				<then>
+					<XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/singleunique" VARNAME="formvalue"/>
+				</then>
+				</if>
+				<if COND="Variables.ContentDetails:valuestyle=O">
+				<then>
+					<XLAT.LOOKUP KEY="dvin/FlexibleAssets/Attributes/multiple" VARNAME="formvalue"/>
+				</then>
+				</if>
+				<td class="form-inset"><STRING.STREAM VARIABLE="formvalue"/></td>
+			</tr>
+
+			<if COND="Variables.ContentDetails:attributetype!=Variables.empty">
+			<then>
+				<asset.list TYPE="AttrTypes" LIST="AttrList" FIELD1="id" VALUE1="Variables.ContentDetails:attributetype"/>
+				<if COND="Variables.errno=0">
+				<then>
+					<setvar NAME="OurAttrType" VALUE="AttrList.name"/>
+				</then>
+				<else>
+					<setvar NAME="OurAttrType" VALUE="Error Variables.errno for (AttrTypes)Variables.ContentDetails:attributetype"/>
+				</else>
+				</if>
+			</then>
+			</if>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/AttrEditor"/></td>
+				<td></td>
+				<td class="form-inset"><STRING.STREAM VARIABLE="OurAttrType"/></td>
+			</tr>
+			
+			<callelement NAME="OpenMarket/Gator/FlexibleAssets/Common/GetTagNameByAttributeEditorId">
+				<argument NAME="AttrEditorId" VALUE="Variables.ContentDetails:attributetype"/>
+			</callelement>
+			<SETVAR NAME="errno" VALUE="0"/>
+           	<ISINLIST ITEM="Variables.ContentDetails:type" STR="blob,text,url" />
+         	  	<if COND="Variables.errno=1">
+			<then>
+				<SETVAR NAME="errno" VALUE="0"/>
+            	<ISINLIST ITEM="Variables.AttrEditorName" STR="CKEDITOR,TEXTAREA" />
+            	<REMOVEVAR NAME="Variables.AttrEditorName"/>
+			</then>
+			</if>
+				
+            <IF COND="Variables.errno=1">
+            <THEN>
+                <callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+                <td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/AllowEmbeddedLinks"/></td>
+				<td></td>
+				<td class="form-inset">
+                    <IF COND="Variables.ContentDetails:embedtype=H">
+                    <THEN><XLAT.STREAM KEY="dvin/Common/lcyes"/></THEN>
+                    <ELSE><XLAT.STREAM KEY="dvin/Common/lcno"/></ELSE>
+                    </IF>
+                </td>
+                <SETVAR NAME="errno" VALUE="0" />
+            </THEN>
+            </IF>
+            
+			<!-- 
+			commenting out this section - deprecated since CS7.0
+
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/ContentType"/>:</td>
+				<td></td>
+				<td class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:contenttype"/>
+				</td>
+			</tr>
+
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/SearchEngine"/></td>
+				<td></td>
+				<td class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:enginename"/></td>
+			</tr>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/CharacterSet"/></td>
+				<td></td>
+				<td class="form-inset"><STRING.STREAM VARIABLE="ContentDetails:charsetname"/></td>
+			</tr>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/ConversionEnginetoraw"/>:</td>
+				<td></td>
+				<td class="form-inset">
+					<STRING.STREAM VARIABLE="ContentDetails:searchconv"/>
+ 				</td>
+			</tr>
+			 -->
+			
+			<!-- Diff not yet implemented -sjc
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/ConversionEnginetoHTML"/>:</td>
+				<td></td>
+				<td class="form-inset">
+					<STRING.STREAM VARIABLE="ContentDetails:diffconv"/>
+				</td>
+			</tr>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/DiffPresentation"/>:</td>
+				<td></td>
+				<td class="form-inset">
+					<IF COND="Variables.ContentDetails:diffpres=Variables.empty">
+					<THEN>
+						<XLAT.STREAM KEY="dvin/Common/None"/>
+					</THEN>
+					<ELSE>
+						<IF COND="Variables.ContentDetails:diffpres=I">
+						<THEN>
+							<XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/Inline"/>
+						</THEN>
+						<ELSE>
+							<IF COND="Variables.ContentDetails:diffpres=S">
+							<THEN>
+								<XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/Summary"/>
+							</THEN>
+							<ELSE>
+								<IF COND="Variables.ContentDetails:diffpres=W">
+								<THEN>
+									<XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/Window"/>
+								</THEN>
+								</IF>
+							</ELSE>
+							</IF>
+						</ELSE>
+						</IF>
+					</ELSE>
+					</IF>
+				</td>
+			</tr>
+			-->
+	        <ASSOCNAMEDMANAGER.LIST  LISTVARNAME="associations" TYPE="Variables.AssetType"/>
+            <IF COND="associations.#numRows!=0">
+			<THEN>
+				<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/AssetMgt/ShowAssetChildren">
+					<ARGUMENT NAME="assetname" VALUE="theCurrentAsset"/>
+				</CALLELEMENT>
+			</THEN>
+			</IF>
+			<!-- Analyics Performance indicator -->
+			<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/form/ShowAnalyticsKPI"/>
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>	
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/Created"/></td>
+				<td></td>
+                <DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:createddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:createddate"/>
+				<td class="form-inset"><XLAT.STREAM KEY="dvin/FlexibleAssets/FlexAssets/Bycreatedby"/> </td>
+			</tr>
+
+			<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/RowSpacer"/>
+			<tr>
+				<td class="form-label-text"><XLAT.STREAM KEY="dvin/FlexibleAssets/Attributes/Modified"/> </td>
+				<td></td>
+                <DATEFORMAT.GETDATETIME NAME="_FormatDate_" VALUE="Variables.ContentDetails:updateddate" VALUETYPE="jdbcdate"  VARNAME="ContentDetails:updateddate"/>
+                <td class="form-inset"><XLAT.STREAM KEY="dvin/UI/ContentDetailsupdateddatebyupdatedby"/></td>
+			</tr>
+
+		</table><!--end of body--></td>
+	</tr>
+
+	<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/FooterBar"/>
+
+	<tr>
+		<td><img height="10" width="1" src="Variables.cs_imagedir/graphics/common/screen/dotclear.gif" REPLACEALL="Variables.cs_imagedir"/></td>
+	</tr>
+</table>
+</div>
+</div>
+</FTCS>
+

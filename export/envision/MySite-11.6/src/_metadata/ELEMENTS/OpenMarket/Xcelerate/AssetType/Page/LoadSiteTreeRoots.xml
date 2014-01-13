@@ -1,0 +1,143 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Page/LoadSiteTreeRoots
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<PUBLICATION.LOAD NAME="publication" FIELD="id" VALUE="SessionVariables.pubid"/>
+<PUBLICATION.GET NAME="publication" FIELD="name" OUTPUT="pubname"/>
+<PUBLICATION.GET NAME="publication" FIELD="description" OUTPUT="pubdesc"/>
+		
+<REMOVEVAR NAME="LoadURL"/>
+<REMOVEVAR NAME="ExecuteURL"/>
+<REMOVEVAR NAME="executeFunction" />
+
+<callelement NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+			<argument NAME="AdHoc" VALUE="SiteName"/>
+			<argument NAME="TreeNodeID" VALUE="Variables.empty"/>
+</callelement>
+
+<XLAT.LOOKUP KEY="dvin/TreeApplet/PubnameSite" ENCODE="false" VARNAME="_XLAT_"/>
+<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+			<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+			<ARGUMENT NAME="Description" VALUE="Variables.pubdesc"/>
+			<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>		
+</CALLELEMENT>
+		
+<!-- Create the Placed Pages and Unplaced Page ROOT dummy nodes -->
+	
+
+<SITEPLAN.ROOT LIST="PubRoot" OBJECTID="SessionVariables.pubid"/>
+	
+<setvar NAME="tablename" VALUE="SitePlanTree"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+	<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+	<ARGUMENT NAME="type" VALUE="Long"/>
+</CALLELEMENT>
+<IF COND="Variables.validatedstatus=true">
+<THEN>
+	<execsql LIST="mylist"
+		SQL="SELECT COUNT(*) as mycount FROM  SitePlanTree
+		WHERE nparentid = PubRoot.nid AND ncode = 'Placed'"/>
+</THEN>
+</IF>
+	
+<IF COND="IsList.mylist=true">
+<THEN>
+	<IF COND="mylist.mycount!=0">
+	<THEN>
+		<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+			<satellite.argument name="AssetType" value="Variables.AssetType"/>
+			<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/Variables.AssetType/LoadSiteTree"/>
+			<satellite.argument name="op" value="load"/>
+			<satellite.argument name="loadpages" value="Placed"/>
+		</SATELLITE.LINK>
+	  </THEN>
+	  </IF>
+</THEN>
+</IF>
+
+	
+<callelement NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+	<argument NAME="AdHoc" VALUE="PlacedPages"/>
+	<argument NAME="TreeNodeID" VALUE="Variables.empty"/>
+</callelement>
+ 
+ 
+<XLAT.LOOKUP KEY="dvin/TreeApplet/PlacedPages" ENCODE="false" VARNAME="_XLAT_"/>
+	
+<!--  Generate the "PlacePage" Root Dummy Node  -->
+<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+	<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+	<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+    <ARGUMENT NAME="OKActions" VALUE="refresh"/>
+	<ARGUMENT NAME="okFunctions" VALUE="treerefresh" />  	
+	<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/placedpage.png"/>
+	<ARGUMENT NAME="RefreshKeys" VALUE="PlacedPages"/>
+	
+	<!--  SitePlanTree SPN Node Record identifier    -->
+	<ARGUMENT NAME="nid" VALUE="PubRoot.nid"/>
+	<ARGUMENT NAME="oid" VALUE="PubRoot.oid"/>	
+	<ARGUMENT NAME="otype" VALUE="PubRoot.otype"/>		
+	<ARGUMENT NAME="oversion" VALUE="PubRoot.oversion"/>
+		
+</CALLELEMENT>
+		
+<setvar NAME="tablename" VALUE="SitePlanTree"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+	<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+	<ARGUMENT NAME="type" VALUE="Long"/>
+</CALLELEMENT>
+<IF COND="Variables.validatedstatus=true">
+<THEN>
+	<execsql LIST="mylist"
+		SQL="SELECT COUNT(*) as mycount FROM  SitePlanTree
+		WHERE nparentid = PubRoot.nid AND ncode = 'UnPlaced'"/>
+</THEN>
+</IF>
+
+<REMOVEVAR NAME="LoadURL"/>
+<REMOVEVAR NAME="ExecuteURL"/>
+<IF COND="IsList.mylist=true">
+<THEN>
+	<IF COND="mylist.mycount!=0">
+	<THEN>
+		<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+			<satellite.argument name="AssetType" value="Variables.AssetType"/>
+			<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/Variables.AssetType/LoadSiteTree"/>
+			<satellite.argument name="op" value="load"/>
+			<satellite.argument name="loadpages" value="Unplaced"/>
+		</SATELLITE.LINK>
+	</THEN>
+	</IF>
+</THEN>
+</IF>
+		
+<callelement NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+	<argument NAME="AdHoc" VALUE="UnplacedPages"/>
+	<argument NAME="TreeNodeID" VALUE="Variables.empty"/>
+</callelement>
+		
+<XLAT.LOOKUP KEY="dvin/TreeApplet/UnplacedPages" ENCODE="false" VARNAME="_XLAT_"/>
+
+<!--  Generate the "UnPlacePages" Root Dummy Node  -->				
+<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+	<ARGUMENT NAME="Label" VALUE="Variables._XLAT_"/>
+	<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+	<ARGUMENT NAME="OKActions" VALUE="refresh"/>
+ 	<ARGUMENT NAME="okFunctions" VALUE="treerefresh" />
+	<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/unplacedpage.png"/>
+	<ARGUMENT NAME="RefreshKeys" VALUE="UnplacedPages"/>
+	<!--  SPN Dummy Node no record in SitePlanTree  -->
+	<ARGUMENT NAME="nid" VALUE="0"/>
+	<ARGUMENT NAME="oid" VALUE="0"/>	
+	<ARGUMENT NAME="oversion" VALUE="0"/>	
+</CALLELEMENT>
+
+</FTCS>

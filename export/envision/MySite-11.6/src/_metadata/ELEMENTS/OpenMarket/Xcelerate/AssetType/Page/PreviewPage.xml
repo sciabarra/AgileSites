@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Page/PreviewPage
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+<PROPERTY.GET PARAM="xcelerate.treeType" INIFILE="futuretense_xcel.ini" VARNAME="proptreetype"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/UIFramework/SetTreeVariablesVariables.proptreetype">
+</CALLELEMENT>
+
+<IF COND="Variables.cantbepreviewed=true">
+	<THEN>
+		<callelement NAME="OpenMarket/Xcelerate/UIFramework/Util/ShowMessage">
+			<argument NAME="elem" VALUE="CantPreviewNode"/>
+			<argument NAME="severity" VALUE="info"/>
+			<argument NAME="AssetType" VALUE="Variables.AssetType"/>
+		</callelement>
+	</THEN>
+	<ELSE>
+		<CALLELEMENT NAME="OpenMarket/Xcelerate/Actions/Publish/Render">
+			<ARGUMENT NAME="c" VALUE="Variables.AssetType"/>
+			<ARGUMENT NAME="cid" VALUE="Variables.id"/>
+		</CALLELEMENT>
+	</ELSE>
+
+</IF>
+
+</FTCS> 

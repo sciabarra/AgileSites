@@ -24,6 +24,6 @@ public class $subtype;format="deprefix"$$template$ extends Element {
 	public String apply(Env e) {
 		Picker html = Picker.load("/$site;format="normalize"$/simple.html" , "#detail");
 		Asset a = e.getAsset();
-		return html.html(a, e);
+		return html.html(a, e, model(arg("Text",a.getString("$site$_Text"))));
 	}
 }

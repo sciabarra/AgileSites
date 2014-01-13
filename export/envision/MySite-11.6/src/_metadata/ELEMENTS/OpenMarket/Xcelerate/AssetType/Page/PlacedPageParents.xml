@@ -1,0 +1,108 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/Page/PlacedPageParents
+-
+- INPUT
+-
+- OUTPUT
+-
+-->
+
+<!-- loadexecuted will be assigned to true to Signal that we handled the request -->
+<SETVAR NAME="loadexecuted" VALUE="true"/>
+			
+<SITEPLAN.ROOT LIST="PubRoot" OBJECTID="SessionVariables.pubid"/>
+				
+<setvar NAME="nodecount" VALUE="0"/>
+<setvar NAME="tablename" VALUE="SitePlanTree"/>
+<CALLELEMENT NAME="OpenMarket/Xcelerate/Util/validateFields">
+	<ARGUMENT NAME="columnvalue" VALUE="PubRoot.nid"/>
+	<ARGUMENT NAME="type" VALUE="Long"/>
+</CALLELEMENT>
+<IF COND="Variables.validatedstatus=true">
+<THEN>
+	<execsql LIST="mylist"
+		SQL="SELECT COUNT(*) as mycount FROM  SitePlanTree
+		WHERE nparentid = PubRoot.nid AND ncode = 'Placed'"/>
+</THEN>
+</IF>
+						
+<IF COND="IsList.mylist=true">
+<THEN>					
+	<IF COND="mylist.mycount!=0">
+	<THEN>
+		<setvar NAME="nodecount" VALUE="mylist.mycount"/>
+	</THEN>
+	</IF>
+</THEN>
+</IF>
+
+<SITEPLAN.LOAD NAME="thePubNode" NODEID="PubRoot.nid"/>
+<SITEPLAN.CHILDREN NAME="thePubNode" LIST="children" CODE="Placed" ORDER="nrank"/>
+							
+<IF COND="IsList.children=true">
+<THEN>
+	<IF COND="children.#numRows!=0">
+	<THEN>
+		<LOOP LIST="children">
+							
+			<SITEPLAN.LOAD NAME="thePage" NODEID="children.nid"/>
+			<ASSET.LOAD NAME="currentChild" TYPE="children.otype" OBJECTID="children.oid"/>
+			<ASSET.GET NAME="currentChild" FIELD="name" OUTPUT="currentName"/>
+			<ASSET.GET NAME="currentChild" FIELD="description" OUTPUT="currentDesc"/>			
+			<SITEPLAN.CHILDREN NAME="thePage" LIST="grandchildren" CODE="Placed" ORDER="nrank"/>
+							
+			<REMOVEVAR NAME="LoadURL"/>
+			<IF COND="IsList.grandchildren=true">
+			<THEN>
+				<IF COND="grandchildren.#numRows!=0">
+				<THEN>
+						<SATELLITE.LINK ASSEMBLER="query" pagename="OpenMarket/Gator/UIFramework/LoadTab" outstring="LoadURL">
+							<satellite.argument name="AssetType" value="children.otype"/>
+							<satellite.argument name="populate" value="OpenMarket/Xcelerate/AssetType/children.otype/LoadSiteTree"/>
+							<satellite.argument name="op" value="load"/>
+							<satellite.argument name="loadpages" value="children.nid"/>
+						</SATELLITE.LINK>													
+				</THEN>
+				</IF>
+			</THEN>				
+			</IF>
+							
+			<SETVAR NAME="oldat" VALUE="Variables.AssetType"/>
+			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNodeID" SCOPED="STACKED">
+					<ARGUMENT NAME="ID" VALUE="children.oid"/>
+					<ARGUMENT NAME="AssetType" VALUE="children.otype"/>
+					<ARGUMENT NAME="TreeNodeID" VALUE="Variables.empty"/>
+			</CALLELEMENT>
+			<SETVAR NAME="AssetType" VALUE="Variables.oldat"/>
+										
+			<CALLELEMENT NAME="OpenMarket/Gator/UIFramework/BuildTreeNode">
+					<ARGUMENT NAME="Label" VALUE="Variables.currentName"/>
+					<ARGUMENT NAME="Description" VALUE="Variables.currentDesc"/>
+					<ARGUMENT NAME="ID" VALUE="Variables.TreeNodeID"/>
+					
+					<ARGUMENT NAME="okFunctions" VALUE="edit;delete;treerefresh" />
+				
+					<ARGUMENT NAME="executeFunction" VALUE="Variables.cs_defaultFunctionChild" />
+					<ARGUMENT NAME="Image" VALUE="Variables.cs_imagedir/OMTree/TreeImages/AssetTypes/children.otype.png"/>
+					<ARGUMENT NAME="RefreshKeys" VALUE="children.oid;children.nid"/> 
+					
+					<!--  
+						  SitePlanTree SPN Node Record identifier  
+						  Used to detect, track and manage 
+					      spn dnd stale nodes 
+					-->
+					<ARGUMENT NAME="nid" VALUE="children.nid"/>
+					<ARGUMENT NAME="oid" VALUE="children.oid"/>
+					<ARGUMENT NAME="otype"  VALUE="children.otype"/>
+					<ARGUMENT NAME="oversion" VALUE="children.oversion"/>	
+			</CALLELEMENT>
+		</LOOP>
+	</THEN>
+	</IF>
+</THEN>
+</IF>			
+			
+</FTCS>
