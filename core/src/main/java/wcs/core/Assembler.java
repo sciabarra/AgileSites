@@ -276,7 +276,8 @@ public class Assembler implements com.fatwire.cs.core.uri.Assembler {
 			if (log.debug())
 				log.debug("assemble: buildBlobUri prefix=%s, where=%s", prefix,
 						where);
-			return buildBlobUri(prefix, where);
+            URI uri =  buildBlobUri(prefix, where);
+            return uri != null ? uri : qa.assemble(def);
 		}
 
 		// get site/url, fallback to c/cid if not found
