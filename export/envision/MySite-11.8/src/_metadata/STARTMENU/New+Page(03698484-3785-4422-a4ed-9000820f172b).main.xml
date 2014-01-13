@@ -1,10 +1,10 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
-    <id class="string">1374098078394</id>
+    <id class="string">1374098078551</id>
     <resourceType>STARTMENU</resourceType>
     <deps class="empty-set"/>
     <data class="com.openmarket.xcelerate.startmenu.StartMenuItem">
-      <id>1374098078394</id>
+      <id>1374098078551</id>
       <uid>03698484-3785-4422-a4ed-9000820f172b</uid>
       <name>New Page</name>
       <assetType>Page</assetType>
@@ -12,8 +12,8 @@
       <legalSites class="com.openmarket.xcelerate.common.SiteList">
         <hashtable>
           <entry>
-            <long>1374097567472</long>
-            <long>1374097567472</long>
+            <long>1374098079929</long>
+            <long>1374098079929</long>
           </entry>
           <entry>
             <long>1351275793143</long>
@@ -57,6 +57,10 @@
       </participantChoices>
       <siteChoices class="com.openmarket.xcelerate.common.SiteList">
         <hashtable>
+          <entry>
+            <long>1374098079929</long>
+            <long>1374098079929</long>
+          </entry>
           <entry>
             <long>1351275793143</long>
             <long>1351275793143</long>

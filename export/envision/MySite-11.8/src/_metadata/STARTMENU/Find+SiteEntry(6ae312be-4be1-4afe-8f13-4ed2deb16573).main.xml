@@ -1,10 +1,10 @@
 <object-stream>
   <com.fatwire.realtime.ResourceDataImpl>
-    <id class="string">1374097567619</id>
+    <id class="string">1374098064249</id>
     <resourceType>STARTMENU</resourceType>
     <deps class="empty-set"/>
     <data class="com.openmarket.xcelerate.startmenu.StartMenuItem">
-      <id>1374097567619</id>
+      <id>1374098064249</id>
       <uid>6ae312be-4be1-4afe-8f13-4ed2deb16573</uid>
       <name>Find SiteEntry</name>
       <assetType>SiteEntry</assetType>
@@ -12,8 +12,16 @@
       <legalSites class="com.openmarket.xcelerate.common.SiteList">
         <hashtable>
           <entry>
-            <long>1374097567472</long>
-            <long>1374097567472</long>
+            <long>1374098079929</long>
+            <long>1374098079929</long>
+          </entry>
+          <entry>
+            <long>1322052581735</long>
+            <long>1322052581735</long>
+          </entry>
+          <entry>
+            <long>1351275793143</long>
+            <long>1351275793143</long>
           </entry>
         </hashtable>
       </legalSites>
@@ -54,8 +62,16 @@
       <siteChoices class="com.openmarket.xcelerate.common.SiteList">
         <hashtable>
           <entry>
-            <long>1374097567472</long>
-            <long>1374097567472</long>
+            <long>1374098079929</long>
+            <long>1374098079929</long>
+          </entry>
+          <entry>
+            <long>1322052581735</long>
+            <long>1322052581735</long>
+          </entry>
+          <entry>
+            <long>1351275793143</long>
+            <long>1351275793143</long>
           </entry>
         </hashtable>
       </siteChoices>
@@ -76,6 +92,6 @@
 #
 key=@STARTMENU-6ae312be-4be1-4afe-8f13-4ed2deb16573
 type=STARTMENU
-sites=MySite
+sites=MySite,avisports,Demo
 
 ==================___ END METADATA ___==================-->

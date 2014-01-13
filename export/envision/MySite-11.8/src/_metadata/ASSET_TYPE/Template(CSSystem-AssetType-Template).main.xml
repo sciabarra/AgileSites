@@ -11,7 +11,7 @@
         <description>Template</description>
         <usesearchindex>0</usesearchindex>
         <indexfile></indexfile>
-        <urldescriptorspec>z:\AgileSitesJSK\1.8\11.8\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp16\dcs191456427183863137.tmp</urldescriptorspec>
+        <urldescriptorspec>Z:\AgileSitesJSK\1.8\11.8\App_Server\apache-tomcat-7.0.42\Sites\temp\fwcs-tmp\temp14\dcs7599497609133322606.tmp</urldescriptorspec>
         <canbechild>F</canbechild>
         <uid>CSSystem-AssetType-Template</uid>
         <useDimension></useDimension>
@@ -250,7 +250,7 @@
             <null/>
             <null/>
             <null/>
-            <string>OpenMarket\Xcelerate\AssetType\Template\SelectSummary.sql</string>
+            <string>OpenMarket\Xcelerate\AssetType\Template\SelectSummary,0.sql</string>
             <null/>
             <null/>
             <null/>

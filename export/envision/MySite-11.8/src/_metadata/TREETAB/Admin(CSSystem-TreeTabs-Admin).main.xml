@@ -49,16 +49,16 @@
       <sites class="com.openmarket.xcelerate.common.SiteList">
         <hashtable>
           <entry>
+            <long>1374098079929</long>
+            <long>1374098079929</long>
+          </entry>
+          <entry>
             <long>1322052581735</long>
             <long>1322052581735</long>
           </entry>
           <entry>
             <long>1253041378564</long>
             <long>1253041378564</long>
-          </entry>
-          <entry>
-            <long>1374097567472</long>
-            <long>1374097567472</long>
           </entry>
           <entry>
             <long>1112198287026</long>
@@ -90,16 +90,16 @@
             <sites class="com.openmarket.xcelerate.common.SiteList">
               <hashtable>
                 <entry>
+                  <long>1374098079929</long>
+                  <long>1374098079929</long>
+                </entry>
+                <entry>
                   <long>1322052581735</long>
                   <long>1322052581735</long>
                 </entry>
                 <entry>
                   <long>1253041378564</long>
                   <long>1253041378564</long>
-                </entry>
-                <entry>
-                  <long>1374097567472</long>
-                  <long>1374097567472</long>
                 </entry>
                 <entry>
                   <long>1112198287026</long>

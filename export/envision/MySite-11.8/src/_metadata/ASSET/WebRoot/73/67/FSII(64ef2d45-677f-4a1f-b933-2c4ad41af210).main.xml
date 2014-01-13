@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>WebRoot:1359598284606</id>
+    <name>FSII</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2013-01-31T07:24:30.110Z</createddate>
+    <description></description>
+    <publist>0</publist>
+    <publist>FirstSiteII</publist>
+    <publist>AdminSite</publist>
+    <publist>avisports</publist>
+    <publist>Demo</publist>
+    <publist>MySite</publist>
+    <status>ED</status>
+    <subtype></subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2013-01-31T22:18:18.647Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>64ef2d45-677f-4a1f-b933-2c4ad41af210</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1359598284606</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Webreference</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>rooturl</name>
+        <data>
+            <stringValue>http://localhost:9080/cs/fsii</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>virtualrooturls</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>publication</name>
+        <data>
+            <blobValue>
+                <filename>FSII.publication(64ef2d45-677f-4a1f-b933-2c4ad41af210)._blob</filename>
+                <foldername></foldername>
+                <filedata></filedata>
+            </blobValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>category</name>
+        <data>
+            <stringValue>g</stringValue>
+        </data>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <linked-hash-set>
+    <dependency>
+      <depType>N</depType>
+      <resType>WebRoot</resType>
+      <resId>1359598284606</resId>
+      <uid>64ef2d45-677f-4a1f-b933-2c4ad41af210</uid>
+    </dependency>
+  </linked-hash-set>
+</dependencies>
+==================______________________==================
+#
+storable0=ASSET/WebRoot/73/67/FSII.publication(64ef2d45-677f-4a1f-b933-2c4ad41af210)._blob||_storable_type\=FSII.publication%2864ef2d45-677f-4a1f-b933-2c4ad41af210%29._blob&_blob_prop\=publication&_value_count\=S
+key=WebRoot-64ef2d45-677f-4a1f-b933-2c4ad41af210
+type=ASSETDATA
+sites=0
+
+==================___ END METADATA ___==================-->

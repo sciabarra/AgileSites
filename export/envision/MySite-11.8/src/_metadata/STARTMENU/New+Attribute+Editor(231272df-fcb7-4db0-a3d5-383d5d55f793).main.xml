@@ -12,12 +12,12 @@
       <legalSites class="com.openmarket.xcelerate.common.SiteList">
         <hashtable>
           <entry>
-            <long>1322052581735</long>
-            <long>1322052581735</long>
+            <long>1374098079929</long>
+            <long>1374098079929</long>
           </entry>
           <entry>
-            <long>1374097567472</long>
-            <long>1374097567472</long>
+            <long>1322052581735</long>
+            <long>1322052581735</long>
           </entry>
           <entry>
             <long>1351275793143</long>
@@ -69,6 +69,14 @@
       <siteChoices class="com.openmarket.xcelerate.common.SiteList">
         <hashtable>
           <entry>
+            <long>1374098079929</long>
+            <long>1374098079929</long>
+          </entry>
+          <entry>
+            <long>1322052581735</long>
+            <long>1322052581735</long>
+          </entry>
+          <entry>
             <long>1351275793143</long>
             <long>1351275793143</long>
           </entry>
@@ -91,6 +99,6 @@
 #
 key=@STARTMENU-231272df-fcb7-4db0-a3d5-383d5d55f793
 type=STARTMENU
-sites=avisports,MySite,Demo
+sites=MySite,avisports,Demo
 
 ==================___ END METADATA ___==================-->
