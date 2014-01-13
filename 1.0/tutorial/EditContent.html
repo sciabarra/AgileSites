@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="author" content="Michele Sciabarra" />
+    <title>EditContent</title>
+
+    <link rel="stylesheet" href="../assets/themes/dinky/css/styles.css">
+    <link rel="stylesheet" href="../assets/themes/dinky/css/pygment_trac.css">
+    <script src="../assets/themes/dinky/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-10041673-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="../index.html">AgileSites</a></h1>
+        <p class="header">the Easy framework for Agile development with Oracle WebCenter Sites</p>
+        <ul>
+            <li><a href="../download.html">Download</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../tutorial.html">Tutorial</a></li>
+            <li><a href="../documentation.html">Documentation</a></li>
+            <li><a href="https://github.com/sciabarra/AgileSites/issues">Issues</a></li>
+            <li><a href="http://www.linkedin.com/groups/AgileSites-Fatwire-WebCenter-Sites-ATG-5120720">Group</a></li>
+            <li><a href="https://twitter.com/AgileSitesFw">Twitter</a></li>
+            <li><a href="http://www.sciabarra.com/fatwire/">Blog</a></li>
+            <li><a href="http://github.com/sciabarra/AgileSites">GitHub</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+
+        </ul>
+        
+      </header>
+
+      <section>
+      
+<section>
+  <h1>EditContent</h1>
+
+  <h5>Prev:  <a href="Testing.html">Testing</a>.</h5>
+
+<p>In this section we will see how to invoke insite editing for attributes in some common cases.</p>
+
+<h2>Editing a string or a text</h2>
+
+<p>If you have an attribute that can be rendered as a string, with <code>a.getString(&quot;Attribute&quot;, index)</code>, then you can render it as an editable attibute with:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">a</span><span class="o">.</span><span class="na">editString</span><span class="o">(</span><span class="s">&quot;Attribute&quot;</span><span class="o">,</span> <span class="n">index</span><span class="o">,</span> 
+<span class="s">&quot;{noValueIndicator: \&quot;Enter Attribute\&quot;}&quot;</span><span class="o">)</span>
+</code></pre></div>
+<p>The third parameter is a json string. Parameters are detailed in the Sites Developers Guide. In the example the value is the text that is shown when the field is not initialized.</p>
+
+<h2>Editing a text area</h2>
+
+<p>If you have an attribute that can be rendered as a string, with <code>a.getString(&quot;Attribute&quot;)</code>, then you can edit it with the CKEditor using:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">a</span><span class="o">.</span><span class="na">editText</span><span class="o">(</span><span class="s">&quot;Attribute&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">)</span>
+</code></pre></div>
+<p>Again the second argument is the json parameter that is passed to the widget and it is heavily customisable. Please check Sites Developer Guide for details.</p>
+
+<h2>Creating a slot</h2>
+
+<p>In the previous section we saw how to invoke template on a linked asset. With Sites it is possible to create instead a slot where you drag an asset to link it.</p>
+
+<p>You have to trasform a call like this:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">a</span><span class="o">.</span><span class="na">getAsset</span><span class="o">(</span><span class="s">&quot;Related&quot;</span><span class="o">,</span> <span class="n">index</span><span class="o">,</span> <span class="s">&quot;Page&quot;</span><span class="o">).</span><span class="na">call</span><span class="o">(</span><span class="s">&quot;DmSummary&quot;</span><span class="o">)</span>
+</code></pre></div>
+<p>into this:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">a</span><span class="o">.</span><span class="na">slot</span><span class="o">(</span><span class="s">&quot;Related&quot;</span><span class="o">,</span> <span class="n">index</span><span class="o">,</span> <span class="s">&quot;Page&quot;</span><span class="o">,</span> <span class="s">&quot;DmSummary&quot;</span><span class="o">,</span> <span class="s">&quot;Drag a Page Here&quot;</span><span class="o">));</span>
+</code></pre></div>
+<p>Please note that:</p>
+
+<ul>
+<li>the third parameter is the type <code>Page</code> of the linked asset</li>
+<li>the fourth parametes is the template name <code>DmSummary</code> </li>
+<li>the fitfh parameter is the text to display when the slot is empty</li>
+</ul>
+
+<h2>Slot list and slot empty</h2>
+
+<p>When you want to edit a list of linked asset (a multiple attribute of type Asset), you can use the <code>a.getSlotList</code> as a methods. However, since the slot list does not allow to add additional elements with drag-and-drop, normally there is also a related <code>a.getSlotEmpty</code> to add additional assets showing an always empty slot. </p>
+
+<p>The typical usage of slotList/slotEmpty is as follow:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">html</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;#related-container&quot;</span><span class="o">,</span>
+  <span class="n">a</span><span class="o">.</span><span class="na">slotList</span><span class="o">(</span><span class="s">&quot;Related&quot;</span><span class="o">,</span> <span class="s">&quot;Page&quot;</span><span class="o">,</span> 
+    <span class="s">&quot;DmSummary&quot;</span><span class="o">));</span>
+<span class="n">html</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;#related-container&quot;</span><span class="o">,</span> 
+  <span class="n">a</span><span class="o">.</span><span class="na">slotEmpty</span><span class="o">(</span><span class="s">&quot;Related&quot;</span><span class="o">,</span> <span class="s">&quot;Page&quot;</span><span class="o">,</span>
+    <span class="s">&quot;DmSummary&quot;</span><span class="o">,</span> 
+    <span class="s">&quot;Drag a Page here. Save to add more.&quot;</span><span class="o">));</span>
+</code></pre></div>
+<p>This code shows an editable list of assets, followed by an empty slot. The user can add new slots to the list dragging in the empty slot, and then can reorder and delete existing assets, editing the list that pops up clicking on the list.</p>
+
+<h5>Next:  <a href="Navigation.html">Navigation</a></h5>
+
+
+  
+</section>
+
+
+         <p style="font-size: 80%; text-align: center;">
+            <b>AgileSites</b> - Written by <a href="http://linkedin.com/in/msciab">Michele Sciabarr&agrave;</a> - &copy; 2013 <a href="http://www.sciabarra.com">Sciabarra srl</a><br>Open Source Software releases under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>
+            <br>Credits: Hosted on <a href="http://pages.github.com/">GitHub Pages</a> using the <a href="https://github.com/sodabrew/theme-dinky">Dinky theme</a> for <a href="http://jekyllbootstrap.com/">Jekyll Bootstrap</a></small>
+          </p>
+      </section>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
+

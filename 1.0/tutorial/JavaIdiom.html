@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="author" content="Michele Sciabarra" />
+    <title>JavaIdiom</title>
+
+    <link rel="stylesheet" href="../assets/themes/dinky/css/styles.css">
+    <link rel="stylesheet" href="../assets/themes/dinky/css/pygment_trac.css">
+    <script src="../assets/themes/dinky/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-10041673-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="../index.html">AgileSites</a></h1>
+        <p class="header">the Easy framework for Agile development with Oracle WebCenter Sites</p>
+        <ul>
+            <li><a href="../download.html">Download</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../tutorial.html">Tutorial</a></li>
+            <li><a href="../documentation.html">Documentation</a></li>
+            <li><a href="https://github.com/sciabarra/AgileSites/issues">Issues</a></li>
+            <li><a href="http://www.linkedin.com/groups/AgileSites-Fatwire-WebCenter-Sites-ATG-5120720">Group</a></li>
+            <li><a href="https://twitter.com/AgileSitesFw">Twitter</a></li>
+            <li><a href="http://www.sciabarra.com/fatwire/">Blog</a></li>
+            <li><a href="http://github.com/sciabarra/AgileSites">GitHub</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+
+        </ul>
+        
+      </header>
+
+      <section>
+      
+<section>
+  <h1>JavaIdiom</h1>
+
+  <h5>Prev:  <a href="NewTemplate.html">New Template</a></h5>
+
+<p>The AgileSites API uses a modern style of Java coding, with fluent interfaces, static imports and value classes without getter and setter.</p>
+
+<p>In this section we introduce the peculiar Java idioms used in the API.</p>
+
+<h2>Static imports</h2>
+
+<p>In every class you should add this line:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="kn">import</span> <span class="nn">static</span> <span class="n">wcs</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">Common</span><span class="o">.*</span>
+</code></pre></div>
+<p>This static import will include some common static methods that can be used as functions and will make easier to use the API.</p>
+
+<p>Even if there is no such a thing like a proper function in Java, I will call in this seciont the imported static methods &quot;functions&quot;.</p>
+
+<h3><code>ifn</code> and <code>nn</code></h3>
+
+<p>In java you have to check often if something is null or not. The <code>ifn</code> function does exactly this. For example, the following will check if <code>l</code> is null and if it is not the it will converted to 0. </p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">String</span> <span class="n">cid</span> <span class="o">=</span> <span class="n">ifn</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getId</span><span class="o">(</span><span class="s">&quot;Related&quot;</span><span class="o">),</span> <span class="mi">0</span><span class="n">l</span><span class="o">).</span><span class="na">toString</span><span class="o">()</span>
+</code></pre></div>
+<p>Note that the whole stuff is a bit tricky with types. Both the parameters of <code>ifn</code> are objects, so the <code>0l</code> will be autoboxed to a <code>Long</code>. The result will be converted to a string avoiding the check for null using the <code>toString</code> method always available. If you need a type different than String you will have to add a cast in front of <code>ifn</code></p>
+
+<p>For the specific case (very frequent) of avoiding a null string, converting it in a empty (but not null) string there is the <code>nn</code> function. For example:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">html</span><span class="o">.</span><span class="na">replace</span><span class="o">(</span><span class="s">&quot;somewhere&quot;</span><span class="o">,</span> <span class="n">nn</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;Title&quot;</span><span class="o">)))</span>
+</code></pre></div>
+<p>In this way you can prevent a null pointer converting the eventual null value returned in an empty string.</p>
+
+<h3><code>id</code></h3>
+
+<p>The function: </p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">id</span><span class="o">(</span><span class="s">&quot;Page&quot;</span><span class="o">,</span> <span class="mi">123456</span><span class="n">l</span><span class="o">)</span>
+</code></pre></div>
+<p>returns an instance of classe wcs.core.Id. This is simpler that invoking new Id(&quot;Page&quot;, 123456l). There are a number of API calls that expect an instance of class <code>Id</code>, most notably SitePlan&#39;s.</p>
+
+<p>Please note that the class <code>Id</code> is a value class whose fields are public, so you access the 2 fields <code>c</code> and <code>cid</code> as <code>id.c</code> and <code>id.cid</code> (cid is a Long, so you need to verify it is not null, compare with equals and convert to String with toString() when needed).</p>
+
+<h3><code>arg</code></h3>
+
+<p>There are numerous cases when a sequence of pairs key/value must be provided. For example, when invoking a CSElement specifying <code>c</code> and <code>cid</code>.</p>
+
+<p>Using the function <code>arg</code> you can write the call like this:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">e</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="s">&quot;DmSummary&quot;</span><span class="o">,</span> <span class="n">arg</span><span class="o">(</span><span class="s">&quot;c&quot;</span><span class="o">,</span> <span class="n">id</span><span class="o">.</span><span class="na">c</span><span class="o">),</span> <span class="n">arg</span><span class="o">(</span><span class="s">&quot;cid&quot;</span><span class="o">,</span> <span class="n">id</span><span class="o">.</span><span class="na">cid</span><span class="o">.</span><span class="na">toString</span><span class="o">()))</span>
+</code></pre></div>
+<p>The function <code>arg</code> actually creates an instance of class <code>Arg</code> that is a value class with 2 public fields: <code>k</code> and <code>v</code>. The call is declared as having a variable number of arguments of type arg (declaration: <code>Arg...args</code>)</p>
+
+<h3><code>range</code></h3>
+
+<p>A common code pattern, used for example to iterate all the occurrences of a Fatwire List (accessibile in the enviroment) is:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="nl">i:</span> <span class="n">e</span><span class="o">.</span><span class="na">getRange</span><span class="o">(</span><span class="s">&quot;List&quot;</span><span class="o">))</span>  <span class="o">{</span>
+  <span class="n">String</span> <span class="n">x</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;List&quot;</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="s">&quot;value&quot;</span><span class="o">));</span>
+  <span class="c1">// use x</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>Here you can note the range that is an iterator that  produces a sequence of integers. Since multiple attributes and sequences are accessed by index, it is pretty useful (and easier to use than a classical <code>for</code> loop with numeric integers).</p>
+
+<h3><code>tmp()</code></h3>
+
+<p>The <code>tmp()</code> function generates a variable name that is always different so it is unique. </p>
+
+<p>It is useful when you need to store a value generated by a tag in a temporary Fatwire variable and you don&#39;t want to risk conflicts with variable names. Note the generated names starts with &quot;_&quot; so just avoid it in your variable names to avoid conflict.</p>
+
+<p>See the Asset Tag paragraph in this section for an example of a common use.</p>
+
+<h2>Logging</h2>
+
+<p>AgileSites has his own logging wrapper that can send logs to a visual log viewer, described <a href="Testing.html">here</a></p>
+
+<p>To use it, you must use the  <code>wcs.core.Log</code> class, that can send logs to a log viewer, in addition to standard logging.</p>
+
+<p>The code to use logs is very similar to stardard practices. In your application code, for the class <code>X</code> add the following code at the beginning of your class:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">wcs</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">Log</span> <span class="n">log</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">Log</span><span class="o">.</span><span class="na">getLog</span><span class="o">(</span><span class="n">X</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</code></pre></div>
+<p>Then you can use the following logging methods:</p>
+
+<ul>
+<li><code>log.error</code></li>
+<li><code>log.warn</code></li>
+<li><code>log.info</code></li>
+<li><code>log.debug</code></li>
+<li><code>log.trace</code></li>
+</ul>
+
+<p>Note that all the logging methods are actually using a format string and a variable number of arguments, so you can use is as the <code>StringFormat.printf</code>. For example:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;c=%s cid=%d&quot;</span><span class="o">,</span> <span class="n">id</span><span class="o">.</span><span class="na">c</span><span class="o">,</span> <span class="n">id</span><span class="o">.</span><span class="na">cid</span><span class="o">)</span>
+</code></pre></div>
+<h2>Invoking Tags</h2>
+
+<p>The complete Fatwire API described in tag documentation for JSP is available from Java code within AgileSites. Every method will receive an <code>Env</code> object that is a wrapper around an <code>ICS</code> object, and the current <code>ics</code> is available as the field <code>e.ics</code> of the current <code>Env</code>.</p>
+
+<p>Using <code>ICS</code> is possible to use both the Asset API and all the tag libraries. While the Asset API is usable exactly as described in the developer manual (being a Java API) the numerous tag libraries are not, so AgileSites provides a wrapper. </p>
+
+<p>Currently the tag libraries are available either in JSP or in XML in form like this:</p>
+
+<p>Sites JSP:</p>
+<div class="highlight"><pre><code class="jsp language-jsp" data-lang="jsp"><span class="nt">&lt;asset:load</span> <span class="na">name=</span><span class="s">&quot;a&quot;</span> <span class="na">type=</span><span class="s">&quot;Page&quot;</span> <span class="na">objectid=</span><span class="s">&quot;12345&quot;</span><span class="nt">/&gt;</span>
+</code></pre></div>
+<p>Sites XML:</p>
+<div class="highlight"><pre><code class="xml language-xml" data-lang="xml"><span class="nt">&lt;asset.load</span> <span class="na">name=</span><span class="s">&quot;a&quot;</span> <span class="na">type=</span><span class="s">&quot;Page&quot;</span> <span class="na">objectid=</span><span class="s">&quot;12345&quot;</span><span class="nt">/&gt;</span>
+</code></pre></div>
+<p>Tags in fatwire are divided in libraries. For each tag the documentation lists all the available attributes with her meaning.</p>
+
+<p>All the tag are available in AgileSites from java importing the package <code>wcs.core.tag.*</code>. </p>
+
+<p>For each library <code>library:</code> there is a corresponding class <code>LibraryTag</code> (for example, for <code>asset:</code> there is <code>AssetTag</code>, for <code>assetset:</code> there is <code>AssetsetTag</code> and so on. Note that only the first letter is capitalized: it is <strong>not</strong> <code>AssetSetTag</code>.</p>
+
+<p>For each library, tags are accessible as static methods. So the tag <code>asset:load</code> is accessible as <code>AssetTag.load()</code>, the tag <code>assetset:getmultiplevalues</code> as <code>AssetsetTag.getmultiplevalues()</code> and so on.</p>
+
+<p>You can then pass attributes to the tag invoking a sequence of chained methods, whose name is the attribute name. The sequence must end with the &#39;run&#39; method that needs the current <code>ICS</code> instance to run. </p>
+
+<p>For example the equivalent of </p>
+<div class="highlight"><pre><code class="jsp language-jsp" data-lang="jsp"><span class="nt">&lt;asset:load</span> <span class="na">name=</span><span class="s">&quot;a&quot;</span> <span class="na">type=</span><span class="s">&quot;Page&quot;</span> <span class="na">objectid=</span><span class="s">&quot;123456&quot;</span><span class="nt">/&gt;</span>
+</code></pre></div>
+<p>is (assuming that is <code>Env e</code>):</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">AssetTag</span><span class="o">.</span><span class="na">load</span><span class="o">().</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;a&quot;&quot;).type(&quot;</span><span class="n">Page</span><span class="s">&quot;).objectid(&quot;</span><span class="mi">123456</span><span class="err">&quot;</span><span class="o">).</span><span class="na">run</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">ics</span><span class="o">);</span>
+</code></pre></div>
+<p>Note that arguments are always string, so for example a Long as in <code>id.cid</code> must be passed as <code>id.cid.toString()</code>.</p>
+
+<p>Each tag  provides a method for each attribute defined in the tld. However it is also possible to pass arbitrary attribute values (accepted by some tags like  calls) with <code>set(key,value)</code>. </p>
+
+<p>So this is equivalent, except you define the attribute with a string instead of calling a method.</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">AssetTag</span><span class="o">.</span><span class="na">load</span><span class="o">().</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;a&quot;&quot;).set(&quot;</span><span class="n">type</span><span class="s">&quot;, &quot;</span><span class="n">Page</span><span class="s">&quot;).set(&quot;</span><span class="n">objectid</span><span class="s">&quot;, &quot;</span><span class="mi">123456</span><span class="err">&quot;</span><span class="o">).</span><span class="na">run</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">ics</span><span class="o">);</span>
+</code></pre></div>
+<h3>Read a value generated from a tag</h3>
+
+<p>A very common occurrence with tags is returning a value storing it in a variable. You need to read the variable to use the value.</p>
+
+<p>Here is an example of the common pattern you would use, using for example <code>asset:get</code> and </p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">String</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="na">tmp</span><span class="o">();</span> 
+<span class="n">AssetTag</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">).</span><span class="na">field</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">).</span><span class="na">output</span><span class="o">(</span><span class="n">tmp</span><span class="o">).</span><span class="na">run</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">ics</span><span class="o">);</span> 
+<span class="k">return</span> <span class="n">e</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">tmp</span><span class="o">);</span>
+</code></pre></div>
+<p>Because this is so common there is the following shortcut:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="k">return</span> <span class="n">AssetTag</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">).</span><span class="na">field</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">).</span><span class="na">eval</span><span class="o">(</span><span class="s">&quot;output&quot;</span><span class="o">,</span><span class="n">e</span><span class="o">.</span><span class="na">ics</span><span class="o">)</span>
+</code></pre></div>
+<p>This shortcut works exactly as the previous example: a temporary variable will be generated and stored as the value of the <code>output</code> attribute in the previous example. Then the tag will be executed, the value of the variable read and returned.</p>
+
+<h5>Next: <a href="Picker.html">Picker</a></h5>
+
+
+  
+</section>
+
+
+         <p style="font-size: 80%; text-align: center;">
+            <b>AgileSites</b> - Written by <a href="http://linkedin.com/in/msciab">Michele Sciabarr&agrave;</a> - &copy; 2013 <a href="http://www.sciabarra.com">Sciabarra srl</a><br>Open Source Software releases under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>
+            <br>Credits: Hosted on <a href="http://pages.github.com/">GitHub Pages</a> using the <a href="https://github.com/sodabrew/theme-dinky">Dinky theme</a> for <a href="http://jekyllbootstrap.com/">Jekyll Bootstrap</a></small>
+          </p>
+      </section>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
+

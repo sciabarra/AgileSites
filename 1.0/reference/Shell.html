@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="author" content="Michele Sciabarra" />
+    <title>Shell</title>
+
+    <link rel="stylesheet" href="../assets/themes/dinky/css/styles.css">
+    <link rel="stylesheet" href="../assets/themes/dinky/css/pygment_trac.css">
+    <script src="../assets/themes/dinky/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-10041673-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="../index.html">AgileSites</a></h1>
+        <p class="header">the Easy framework for Agile development with Oracle WebCenter Sites</p>
+        <ul>
+            <li><a href="../download.html">Download</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../tutorial.html">Tutorial</a></li>
+            <li><a href="../documentation.html">Documentation</a></li>
+            <li><a href="https://github.com/sciabarra/AgileSites/issues">Issues</a></li>
+            <li><a href="http://www.linkedin.com/groups/AgileSites-Fatwire-WebCenter-Sites-ATG-5120720">Group</a></li>
+            <li><a href="https://twitter.com/AgileSitesFw">Twitter</a></li>
+            <li><a href="http://www.sciabarra.com/fatwire/">Blog</a></li>
+            <li><a href="http://github.com/sciabarra/AgileSites">GitHub</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+
+        </ul>
+        
+      </header>
+
+      <section>
+      
+<section>
+  <h1>Shell</h1>
+
+  <h1>Agile Shell</h1>
+
+<p>(Draft)</p>
+
+<p>Documentation of the commands in the shell.</p>
+
+<h2>setup</h2>
+
+<ul>
+<li><p>wcs-setup-offline [satellite] [silent]</p></li>
+<li><p>wcs-setup-online [silent]</p></li>
+</ul>
+
+<h2>compile</h2>
+
+<p>Main compilation method:</p>
+
+<ul>
+<li>wcs-package-jar</li>
+</ul>
+
+<p>to be used in continuos mode (<code>~ wcs-package-jar</code>)</p>
+
+<ul>
+<li>wcs-deploy</li>
+</ul>
+
+<p>-- wcs-package-jar
+-- wcs-copy-static
+-- wcs-update-model</p>
+
+<h2>log</h2>
+
+<ul>
+<li><p>wcs-log view</p></li>
+<li><p>wcs-log list</p></li>
+<li><p>wcs-log trace mysite</p></li>
+<li><p>wcs-log trace wcs 4445</p></li>
+</ul>
+
+<h2>csdt</h2>
+
+<ul>
+<li>wcs-dt </li>
+</ul>
+
+<p>default: listcs</p>
+
+<ul>
+<li><p>wcs-dt listcs [asset-selector ...]</p></li>
+<li><p>wcs-dt listds [asset-selector ...]</p></li>
+<li><p>wcs-dt export [asset-selector ...]</p></li>
+</ul>
+
+<p>default: @SITE @ASSET<em>TYPE @ALL</em>ASSET @ALL_NONASSET</p>
+
+<ul>
+<li>wcs-dt import [asset-selector ...]</li>
+</ul>
+
+<p>default: @SITE @ASSET<em>TYPE @ALL</em>ASSET @ALL_NONASSET</p>
+
+<ul>
+<li>wcs-dt import [asset-selector ...]</li>
+</ul>
+
+
+  
+</section>
+
+
+         <p style="font-size: 80%; text-align: center;">
+            <b>AgileSites</b> - Written by <a href="http://linkedin.com/in/msciab">Michele Sciabarr&agrave;</a> - &copy; 2013 <a href="http://www.sciabarra.com">Sciabarra srl</a><br>Open Source Software releases under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>
+            <br>Credits: Hosted on <a href="http://pages.github.com/">GitHub Pages</a> using the <a href="https://github.com/sodabrew/theme-dinky">Dinky theme</a> for <a href="http://jekyllbootstrap.com/">Jekyll Bootstrap</a></small>
+          </p>
+      </section>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
+

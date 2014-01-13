@@ -1,2 +1,4 @@
-javadoc -subpackages "wcs" -d javadoc $(grep -v '#' javadoc.files) 
+javadoc -subpackages "wcs" -d javadoc $(cat javadoc.files) 
+
+
 

@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="author" content="Michele Sciabarra" />
+    <title>FAQ</title>
+
+    <link rel="stylesheet" href="../assets/themes/dinky/css/styles.css">
+    <link rel="stylesheet" href="../assets/themes/dinky/css/pygment_trac.css">
+    <script src="../assets/themes/dinky/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-10041673-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="../index.html">AgileSites</a></h1>
+        <p class="header">the Easy framework for Agile development with Oracle WebCenter Sites</p>
+        <ul>
+            <li><a href="../download.html">Download</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../tutorial.html">Tutorial</a></li>
+            <li><a href="../documentation.html">Documentation</a></li>
+            <li><a href="https://github.com/sciabarra/AgileSites/issues">Issues</a></li>
+            <li><a href="http://www.linkedin.com/groups/AgileSites-Fatwire-WebCenter-Sites-ATG-5120720">Group</a></li>
+            <li><a href="https://twitter.com/AgileSitesFw">Twitter</a></li>
+            <li><a href="http://www.sciabarra.com/fatwire/">Blog</a></li>
+            <li><a href="http://github.com/sciabarra/AgileSites">GitHub</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+
+        </ul>
+        
+      </header>
+
+      <section>
+      
+<section>
+  <h1>FAQ</h1>
+
+  <h2>Where are the binaries? I see only the sources in the download page</h2>
+
+<p>The framework is, by design, source only. The build will create actually 2 jars, one is the core and will be deployed (by the integrated installer) inside the WebCenter Sites webapp. Another jar is built and deployed in the shared folder and contains you application logic. This jar is continously built and deployed by the <code>wcs-package-jar</code> command. Both the jar are built automatically by an heavily tested automated build.</p>
+
+<p>The framework creates 3 projects, one (<code>agilesites-app</code>) is where you should put your user code. If you want to extend the framework (something in a sense part of the design), you should place your changes in <code>agilesites-api</code>. Consider contribuiting your changes if you extend the framework  (you will required to place your changes under the Apache License 2.0). You are not expected to change the <code>agilesites-core</code>.</p>
+
+<h2>On Mac OSX (and potentially in other systems) after the installation the JumpStart is broken (I cannot even log in)</h2>
+
+<p>JAVA_HOME points to java version or in the path there is a different java version than the one used by JumpStart Kit.</p>
+
+<p>Typical symptom is this exception:</p>
+
+<p>java.lang.NoClassDefFoundError: Could not initialize class COM.FutureTense.Servlet.ServletRequest</p>
+
+<p>This problem happens mostly on  OSX Lion and Mountain Lion: if you install Oracle JDK 1.7, in the path there is java 1.7. But this may happen also in other systems.</p>
+
+<p>JumpStart up to version 11gR1 on a Mac installs using the existing java 1.6.  As a result, AgileSites build a core with JDK 1.7 but JSK will runs under 1.6 and will be unable to read classes compiled with JDK 1.7.</p>
+
+<p>To solve the issue on Mac OSX, first clean everthing unsing the clean.sh  script, then edit the agilesites.sh script and add this the beginning of the script:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home
+export PATH=$JAVA_HOME/bin:$PATH 
+</code></pre></div>
+<p>Then start the shell again and repeat the installation procedure.</p>
+
+<h2>How do I add a custom library to the framework?</h2>
+
+<p>You need to locate it in a repository accessible by maven, using websites like <a href="http://mvnrepository.com">MVN repository</a>. Assuming you want something like, for example, jfreechart, locate it and locate its sbt dependency. In the site you will find a string like this:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">libraryDependencies += &quot;jfree&quot; % &quot;jfreechart&quot; % &quot;1.0.13&quot;         
+</code></pre></div>
+<p>Then open the file <code>project/AgileSitesBuild</code> and  locate the:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">val coreDependencies = Seq(
+    &quot;javax.servlet&quot; % &quot;servlet-api&quot; % &quot;2.5&quot;,
+</code></pre></div>
+<p>add your dependency at the beginning as follows:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">val coreDependencies = Seq(
+    &quot;jfree&quot; % &quot;jfreechart&quot; % &quot;1.0.13&quot;,
+    &quot;javax.servlet&quot; % &quot;servlet-api&quot; % &quot;2.5&quot;,
+</code></pre></div>
+<p>Note you dropped the <code>libraryDependencies +=</code> and added a comma to the end.</p>
+
+<p>This is enough to download the jar and use it for compilation.  If you want also to deploy in the application server together the other jars, you need to add in the deployment filter.</p>
+
+<p>Locate the </p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">val addFilterSetup = &quot;scala-library*&quot; ||
+</code></pre></div>
+<p>and add:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">val addFilterSetup = &quot;jfreechart*&quot; || &quot;scala-library*&quot; ||
+</code></pre></div>
+<p>This filter is used to select the jars to add to the Sites webapp, so you use only the initial part of name of the jar without the version.</p>
+
+<p><strong>NOTE</strong> if a jar has additional dependent jars that are required to run it, you need to add those to the filter, too.</p>
+
+<p>Finally you can use them. Shut down the application server, enter in the shell and execute:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">reload
+update
+eclipse
+wcs-setup-offline
+</code></pre></div>
+<p>Restart the application server, refresh your eclipse project and enjoy using your new library both in the project and in the deployment.</p>
+
+<h2>How can I delete a template, layout or a cselement created by the generator?</h2>
+
+<p>The <code>wcs-generate</code> for templates, cselements and layouts generates normally just 2 classes, one is the actual element class and another is the test class. In addition, they add the class name in the list of classes to be deployed and the test name in the list of tests to be run.</p>
+
+<p>So removing a class for example with name SampleLayout for site <code>mysite</code> involves removing the 2 files</p>
+
+<ul>
+<li><code>app/src/main/java/mysite/element/SampleLayout</code></li>
+<li><code>app/src/main/java/mysite/element/SampleLayout</code></li>
+</ul>
+
+<p>Then editing the 2 files</p>
+
+<ul>
+<li><code>app/src/main/resources/mysite/elements.txt</code></li>
+<li><code>app/src/main/resources/mysite/tests</code></li>
+</ul>
+
+<p>and removing the entries for <code>mysite.element.SampleLatyout</code> and <code>mysite.tests.SampleLayoutTest</code>respectively.</p>
+
+<h2>The compilation has some wierd behaviours</h2>
+
+<p>Sometimes the compilation system get confused by intensive changes done to the source code. If the behavious appears illogical, you can try exiting from the shell cleaning up everything running the <code>clean.bat</code> or the <code>clean.sh</code> script.</p>
+
+<p><strong>Warning</strong>: this will remove all the jars and a somewhat time consuming rebuild will be then performed when you access the shell again.</p>
+
+<h2>I have an error saying &quot;agilesites-core&quot; is a missing dependency</h2>
+
+<p>When you start the shell, the script will build the core library if it is not already there. However, if you are not connected to internet (for example you are behind a proxy without direct access to internet) the initial build may file and the core library ends up not being build.</p>
+
+<p>Ensure java can access the internet (for example configuring a proxy for Java), exit the agile shell, execute the <code>clean</code> batch/shell script and then run again the <code>agileshell</code>.  After those steps the build should rebuild correctly.</p>
+
+<h2>No Such Resource when importing the Demo site</h2>
+
+<p>Before importing, you need to run the <code>wcs-setup-offline</code> that will set the CSDT export folder to the export folder in the AgileSites directory.</p>
+
+<p>In build.sbt the sites imported is defined by:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">wcsSites := &quot;Demo&quot;
+</code></pre></div>
+<p>The CSDT workspace name is then given by the <code>wcsSites</code> name (plus the Sites version number)</p>
+
+<p>Ensure you performed the installation (so in <code>futuretense.ini</code> the <code>csdt.exportfolder</code> has been changed to /export after wcs-setup-offilne) then check that in the expoort/envision folder there is <code>Demo-11g</code></p>
+
+<p>Note that when you change current sites, you need to repeat the <code>wcs-setup-offilne</code> because it has to change some properties.</p>
+
+
+  
+</section>
+
+
+         <p style="font-size: 80%; text-align: center;">
+            <b>AgileSites</b> - Written by <a href="http://linkedin.com/in/msciab">Michele Sciabarr&agrave;</a> - &copy; 2013 <a href="http://www.sciabarra.com">Sciabarra srl</a><br>Open Source Software releases under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>
+            <br>Credits: Hosted on <a href="http://pages.github.com/">GitHub Pages</a> using the <a href="https://github.com/sodabrew/theme-dinky">Dinky theme</a> for <a href="http://jekyllbootstrap.com/">Jekyll Bootstrap</a></small>
+          </p>
+      </section>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
+

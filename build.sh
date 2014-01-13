@@ -1,4 +1,4 @@
-H=../1.0
+H=../1.8
 cp $H/*.md _includes
 cp $H/doc/*.md .
 cp -rvf $H/doc/img .
@@ -16,4 +16,4 @@ echo "---" ;\
 cat $i ) | sed -e 's!\.md!\.html!g' | perl -pe 's!\.?\./img/!/img/!g'  >$b
 echo $b
 done ; done
-jekyll serve
+jekyll serve -w

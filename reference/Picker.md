@@ -58,7 +58,6 @@ Picker.create("<h1>Title<h1>")
 
 ### html() and outerHtml()
 
-
 If you load a snippet of html like this
 
 ```java
@@ -78,6 +77,33 @@ If you instead use `p.html()` you will output only the inner part of the loaded 
 ```html
 <h1>Hello</h1>
 ```
+
+## Moustache replacement
+
+The picker can perform a replacement using the "moustache" syntax.
+
+Anything that in the html has the format `{{Something}}` can be replaced by a value coming from a source passed to the method `html` and `outerHtml`.
+
+The source is a object that implements the interface `Content`. Note that both `Asset` and `Env` implements this interface so you can pass them as a source.
+
+You can also create a new `Content` on the fly using `model(arg("Key", "Value"), arg("Key", "Value"))` (`model` and `arg` are defined in the `import static wcs.Api.*`).
+
+As an example, if you have this snippet of html in a template:
+
+
+```html
+<h1>{{Title}}</h1>
+<b>by {{author}}</b>
+<p>{{Body}}<p>
+```
+
+Now, assume that you have an asset `a` with an attribute named "Body" and a variable "author" in the current enviroment (in variable `e`). Also you want to set the title from the name of the asset. You can then do this way:
+
+```java
+html.outerHtml(e, a, model(arg("Title", a.getName()))
+```
+
+The variable `Title` will be then located in the name, the variable `author` will be extracted from the enviroment and the attribute `Body` from the attribute `Body` of the asset.
 
 ## Selectors 
 
@@ -127,11 +153,9 @@ You use selectors almost everywhere:
     
 Note that the above indexed pseudo-selectors are 0-based, that is, the first element is at index 0, the second at 1, etc.
 
-
 ## Replacements
 
 Let's see which replacements methods are available with some samples
-
 
 ### replace
 

@@ -2,7 +2,7 @@
 layout: page
 title: ReadContent
 ---
-##### Prev:  [Picker](Picker.html).
+##### Prev:  [Picker](Picker.html) - Next:  [Testing](Testing.html)
 
 In this section we will see how to create content specific for the home page.
 
@@ -73,25 +73,57 @@ Basically the `apply` method receive an `Env` that is a facade to access all the
 There are other methods and features in the `Env`, most notably it allows to access to variables (`e.getString("List"`) and lists (`e.getString("List", index, "field"`). 
 
 
-## Rendering the attribute
+## Rendering the attribute with moustache syntax
 
+For a quick introductory example a common usage is to pick a template, select the content then replace the title with the attribute Title. 
 
-For a quick introductory example a common usage is to pick a template, select the content then replace the title with the attribute title. Here `a.getString("Title")` returns the title attribute but it will be explained next. The typical Picker usage is then:
+The typical Picker usage is then the following.
 
-```java
-// load the given template and then restrict to the element with id=body
-Picker p = Picker.load("/site/template.html", "#body");
-// replace the html of the title with the actual title attribute
-p.replace("#title", a.getString("Title");
-// return the html
-return p.html();
+First, put in the html mockup a "marker", usually named as the attribute you want to render.
+
+```html
+<div id="title">
+<h1>{{Title}}</h1>
+</div>
 ```
 
-Note that picker uses a fluent interface, and almost all the methods returns itself so the precedent example can be written:
+Then use is the code you write to render to render the html placing in the content of the attribute Title in it.
 
 ```java
-return Picker.load("/site/template.html", "#body")
-   .replace("#title", a.getString("Title").htlm();
+// load the current asset
+Asset a = e.getAsset();
+// load the given mockup  restricting to the element with id=body
+Picker p = Picker.load("/site/template.html", "#title");
+// do here eventually some changes to the code - see below
+// return the html passing the current asset as the model
+return p.html(a);
+```
+Note that the html() method will take a sequence of "contents" (implementing the interface `Content`). The `Asset` is a `Content`, but it is also the  `Env` and you can create on the fly content with `model(arg("Title","value")).
+
+The Picker will then look to all the variables marked with `{{Var}}` to extract the corresponding value (stopping when the first is found). From an asset will extract an attribute name. From an Env it will extract a variable.
+
+If you want to give a different name, just create a model with the name you want. So for example if you want to replace `{{Description}}` with the asset description (that is not an attribute, use)
+
+
+```java
+return p.html(model(arg("Description", a.getDescription()));
+```
+
+**NOTE** The picker uses a fluent interface, and almost all the methods returns itself so the precedent example can be written:
+
+```java
+return Picker.load("/site/template.html", "#body").html(e.getAsset())
+```
+
+**NOTE** The `html()` method returns the inner of the selected snippet of html. So if you select `#title` the returned html is `<h1>Title</h1>`. Use outerHtml() if you want also the div.
+
+### Render the attribute using replacements
+
+If you prefer not to change the html, you can instead use a replacement directly in the html, as below
+
+```java
+// replace the html of the title with the actual title attribute
+p.replace("#title", a.getString("Title");
 ```
 
 Multiple attributes are rendered using this code pattern:
@@ -102,6 +134,8 @@ for(int i: a.getRange("Title"))  {
   // use x
 }
 ````
+
+You tipically need replacements to handle multiple attributes
 
 ## Rendering an Image
 
@@ -121,24 +155,19 @@ else
 	html.attr("#image-main", "src", image);
 ```
 
-
 ## Invoking a template
 
-When you have an attribute of type asset, you can render the linked template loading the template with `a.getAsset("Related","Page")` then invoking the template with `a.call("DmSummary")`. Note that:
+When you have an attribute of type asset, you can render the linked template loading the template with `a.getAsset("Related","Page")` then invoking the template with `a.call("Summary")`. 
+
+Note that:
 
 - the `a.getAsset` requires you specify the type of the linked asset, since it is not stored in the attribute (only the id is)
 - you need to call the template by name using the loaded asset
 
-The standard code to render a linked asset is (assuming the asset is of type `Page` using the `DmSummary` template) is then:
-
+The standard code to render a linked asset is (assuming the asset is of type `Page` using the `Summary` template) is then:
 
 ```java
-a.getAsset("Related", "Page").call("DmSummary")
+a.getAsset("Related", "Page").call("Summary")
 ```
 
-
-##### Next:  [Testing](Testing.html)
-
-
-
-
+The call is aware of the conventions: tipically the name of the template will be tipically `MySite_Summary` but the call will automatically add the prefix.

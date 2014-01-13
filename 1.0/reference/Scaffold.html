@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="author" content="Michele Sciabarra" />
+    <title>Scaffold</title>
+
+    <link rel="stylesheet" href="../assets/themes/dinky/css/styles.css">
+    <link rel="stylesheet" href="../assets/themes/dinky/css/pygment_trac.css">
+    <script src="../assets/themes/dinky/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-10041673-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="../index.html">AgileSites</a></h1>
+        <p class="header">the Easy framework for Agile development with Oracle WebCenter Sites</p>
+        <ul>
+            <li><a href="../download.html">Download</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../tutorial.html">Tutorial</a></li>
+            <li><a href="../documentation.html">Documentation</a></li>
+            <li><a href="https://github.com/sciabarra/AgileSites/issues">Issues</a></li>
+            <li><a href="http://www.linkedin.com/groups/AgileSites-Fatwire-WebCenter-Sites-ATG-5120720">Group</a></li>
+            <li><a href="https://twitter.com/AgileSitesFw">Twitter</a></li>
+            <li><a href="http://www.sciabarra.com/fatwire/">Blog</a></li>
+            <li><a href="http://github.com/sciabarra/AgileSites">GitHub</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+
+        </ul>
+        
+      </header>
+
+      <section>
+      
+<section>
+  <h1>Scaffold</h1>
+
+  <p>(Draft)</p>
+
+<p>This document is a reference guide of the code generated with scaffolding.</p>
+
+<h2>Scaffold <code>site</code></h2>
+
+<p>The generated code is in the <code>agilesites-app</code> project, in the source folder <code>src/main/java</code> in the package with the name you chose (in this case <code>mysite</code>).</p>
+
+<p><img src="../img/snap6038.png" alt="Generated Project Files"></p>
+
+<p>The generated project has 3 packages:</p>
+
+<ul>
+<li><code>mysite</code></li>
+<li><code>mysite.element</code></li>
+<li><code>mysite.test</code></li>
+</ul>
+
+<p>Let&#39;s discuss the default content of the three packages</p>
+
+<h3><code>mysite</code> classes</h3>
+
+<p>In the package <code>mysite</code> there are 3 (mandatory) files:</p>
+
+<ul>
+<li><code>Config</code></li>
+<li><code>Setup</code></li>
+<li><code>Router</code></li>
+</ul>
+
+<p>The <code>Config</code> is the holder of configuration files. It provides the site name and some important methods detailes in the API. You are not expected to change it, unless you need to customise the Configuration.</p>
+
+<p>The <code>Setup</code> code will be executed to setup your site templates when you you execute the <code>wcs-deploy</code> command. You are not expected to change it unless you need to add custom initialization. </p>
+
+<p>The <code>Setup</code>reads the resource file <code>src/main/resources/elements.txt</code> and install all the elements listed there.</p>
+
+<p>The <code>Router</code> is responsible for translating URL in assets or other invocations (for example Ajax calls), and for generating the mapping of an asset into an URL. Please check the <a href="Architecture.html">architecture</a> to fully understand the role of the router. </p>
+
+<p>The default <code>Router.route</code> maps Page names in URL and viceversa. The default code read the url portion managed by the router and looks for a page whose name matches the name.</p>
+
+<p>The default <code>Router.link</code> does the opposite: provided an asset Page, it will return its name as url fragment for locating it.</p>
+
+<p>The router can be extended to manage arbitrary and complex URL mappings.</p>
+
+<h3><code>mysite.element</code> classes</h3>
+
+<p>The standard wizard will generate 3 classes:</p>
+
+<ul>
+<li><code>Wrapper</code></li>
+<li><code>Tester</code></li>
+<li><code>Error</code></li>
+</ul>
+
+<p>Those 3 classes are all CSElements. In the code of the class there is the configuration of the CSElement and the actual CSElement was created whey you performed the <code>wcs-deploy</code> step. </p>
+
+<p>If you inspect with the Admin in the Dev tab what has been created you will see the following SiteEntry </p>
+
+<p><img src="../img/snap5765.png" alt="Standard CSElement and SiteEntry"></p>
+
+<p>Please check the <a href="Architecture.html">Architecture</a> document to understand how they fit in the big picture.</p>
+
+<p>The <code>Wrapper</code> is invoked by the <code>Router</code> after the routing is performend. The <code>Wrapper</code> is supposed to be unchached so it must contains no or very limited data access (definitely <em>not</em> flex asset field extraction).</p>
+
+<p><code>Error</code> is invoked through the wrapper  when no asset has been.</p>
+
+<p>And finally the <code>Tester</code> is invoked with <code>/cs/Satellite?pagename=site-tester</code> (change <em>site</em> with the lower-case version of your site name) to run tests.</p>
+
+<h3><code>mysite.tests</code> classes</h3>
+
+<p>Default test classes.</p>
+
+<h2>Scaffold <code>layout</code></h2>
+
+<p>Generate a new layout template, with a test.</p>
+
+<h2>Scaffold <code>template</code></h2>
+
+<p>Generate a new internal template, with a test</p>
+
+<h2>Scaffold <code>cselement</code></h2>
+
+<p>Generate a new cselement, with a test</p>
+
+
+  
+</section>
+
+
+         <p style="font-size: 80%; text-align: center;">
+            <b>AgileSites</b> - Written by <a href="http://linkedin.com/in/msciab">Michele Sciabarr&agrave;</a> - &copy; 2013 <a href="http://www.sciabarra.com">Sciabarra srl</a><br>Open Source Software releases under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>
+            <br>Credits: Hosted on <a href="http://pages.github.com/">GitHub Pages</a> using the <a href="https://github.com/sodabrew/theme-dinky">Dinky theme</a> for <a href="http://jekyllbootstrap.com/">Jekyll Bootstrap</a></small>
+          </p>
+      </section>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
+

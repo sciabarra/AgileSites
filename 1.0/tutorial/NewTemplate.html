@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="author" content="Michele Sciabarra" />
+    <title>NewTemplate</title>
+
+    <link rel="stylesheet" href="../assets/themes/dinky/css/styles.css">
+    <link rel="stylesheet" href="../assets/themes/dinky/css/pygment_trac.css">
+    <script src="../assets/themes/dinky/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-10041673-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="../index.html">AgileSites</a></h1>
+        <p class="header">the Easy framework for Agile development with Oracle WebCenter Sites</p>
+        <ul>
+            <li><a href="../download.html">Download</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../tutorial.html">Tutorial</a></li>
+            <li><a href="../documentation.html">Documentation</a></li>
+            <li><a href="https://github.com/sciabarra/AgileSites/issues">Issues</a></li>
+            <li><a href="http://www.linkedin.com/groups/AgileSites-Fatwire-WebCenter-Sites-ATG-5120720">Group</a></li>
+            <li><a href="https://twitter.com/AgileSitesFw">Twitter</a></li>
+            <li><a href="http://www.sciabarra.com/fatwire/">Blog</a></li>
+            <li><a href="http://github.com/sciabarra/AgileSites">GitHub</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+
+        </ul>
+        
+      </header>
+
+      <section>
+      
+<section>
+  <h1>NewTemplate</h1>
+
+  <h5>Prev:  <a href="NewSite.html">New Site</a>.</h5>
+
+<p>In the previous section we created the skeleton of the site. There is no content in it, so if you try to access to any page you will get, of course, page not found.</p>
+
+<p>We are now ready to define the content model then create some content to render a home page.</p>
+
+<h2>Content Model: Page Definitions</h2>
+
+<p>A site is organized as a hierarchy of Pages. Typically you have the Home Page, then some Section Pages, sometimes also subsectiions, and finally content pages.</p>
+
+<p>This means there are different types of Pages, and each type has usually a different collection of data associated to it.</p>
+
+<p>In Sites, we model the concept that Pages can be of a different &quot;kind&quot;, creating a Page Definition.</p>
+
+<p>A Page definition is technically a subtype of the Page asset type, while Page is the asset type. You define an asset subtype of Pages creating an instance of another asset type, the Page Definition.</p>
+
+<p>We will see later that each page definition has also an associated set of attributes that defines the content specific for each Page subtype. For now, we will only create a new Page defintion, specific for the Home Page.</p>
+
+<h3>Creating the MyHome content definition</h3>
+
+<p>Switch to the Administrative interface, clicking on the icon shown below in the application bar:</p>
+
+<p><img src="../img/snap2093.png" alt="Admin"></p>
+
+<p>Click on the <strong>New</strong> link in the toolbar, and then finally click on the <strong>New Page Definition</strong> link in the list of the new items.</p>
+
+<p><img src="../img/snap1821.png" alt="New Page Definition"></p>
+
+<p>You can create a new page definition. 
+Create <code>MyHome</code> page definition: </p>
+
+<p><img src="../img/snap6106.png" alt="My Home"></p>
+
+<p><strong>Note</strong> Since if there are 2 definitions with the same name in different results in problems  it is recommended you name all the content definitions with the site prefix, in order to reduce non-unique name conflicts.</p>
+
+<h2>Generate and deploy layout</h2>
+
+<p>We now need to create the template to render the home page. Templates that can be used to render an asset directly are the layouts.</p>
+
+<p>Since you need to create a template and then a class, and furthermore you need also to create a test for it, there is a generator to simplify the operation.</p>
+
+<p>The command to generate a layout is simply:</p>
+
+<p><code>wcs-generate layout</code></p>
+
+<p>The shell will ask for some parameters, use the following answers:</p>
+
+<ul>
+<li>subtype: MyHome</li>
+<li>site: MySite</li>
+<li>type: Page</li>
+</ul>
+
+<p>Once done, you can deploy the generated templates with the command</p>
+
+<p><code>wcs-deploy</code></p>
+
+<h2>Create the home page</h2>
+
+<p>Now you are read to create the nome Page. Go in the contributor interface clicking on the icon in the top bar to the right.</p>
+
+<p><img src="../img/snap7755.png" alt="Contributor Interface"></p>
+
+<p>Click on the toolbar on New
+Give <code>Home</code> as name and select the (only) available template <code>MyHomeLayout</code></p>
+
+<p><img src="../img/snap6677.png" alt="New Layout"></p>
+
+<p>Verify that in meta data section the page defintion is <code>MyHome</code>. </p>
+
+<p><img src="../img/snap5365.png" alt="Page Definition is MyHome"></p>
+
+<p>The Page Definition  has been assigned automatically because it is the only available page definition. However when more than a single Page Definition is available, the system will ask to choose one.</p>
+
+<p>Now, set in the Description field the value &quot;Home Page&quot;</p>
+
+<p><img src="../img/snap3950.png" alt="Description"></p>
+
+<p>Now test the generated template works, clicking on the switch to select the web view. This is what you should see: </p>
+
+<p><img src="../img/snap5968.png" alt="Description"></p>
+
+<h5>Next: <a href="JavaIdiom.html">Java Idiom</a></h5>
+
+
+  
+</section>
+
+
+         <p style="font-size: 80%; text-align: center;">
+            <b>AgileSites</b> - Written by <a href="http://linkedin.com/in/msciab">Michele Sciabarr&agrave;</a> - &copy; 2013 <a href="http://www.sciabarra.com">Sciabarra srl</a><br>Open Source Software releases under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>
+            <br>Credits: Hosted on <a href="http://pages.github.com/">GitHub Pages</a> using the <a href="https://github.com/sodabrew/theme-dinky">Dinky theme</a> for <a href="http://jekyllbootstrap.com/">Jekyll Bootstrap</a></small>
+          </p>
+      </section>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
+

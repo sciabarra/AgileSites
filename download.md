@@ -6,15 +6,11 @@ group: navigation
 {% include JB/setup %}
 
 
-## Releases to download:
+## Stable release
+- [v1.8](https://github.com/sciabarra/AgileSites/archive/v1.8.zip) **Recommended**
 
-- [v1.0.0a](https://github.com/sciabarra/AgileSites/archive/v1.0.0a.zip) **Recommended**
-
-**This release is tested with 11.1.1.6.1* 
-
-The upcoming 1.0.8 (scheduled for november 2013) will support also 11.1.1.8.0. 
-
-We have plans to support also 7.6.2, if you are interested please let us know.
+## Past releases
+- [v1.0.0a](https://github.com/sciabarra/AgileSites/archive/v1.0.0a.zip) 
 
 ## Installation 
 
@@ -24,7 +20,18 @@ OR
 
 - If you are in a hurry, watch the installation video.
 
-<iframe width="840" height="630" src="http://www.youtube.com/embed/7gPD0KfzmSw" frameborder="0" allowfullscreen></iframe>
+**NOTE** the video must be updated to 1.8: it does not show the configurator and it is incorrect in the commands to give: they are now `wcs-setup` and `wcs-deploy`.
+
+<div id="containingBlock">
+  <div class="videoWrapper">
+    <object width="840" height="630" >
+      <param name="movie" value="http://www.youtube.com/v/7gPD0KfzmSw&hl=en&fs=1"></param>
+      <param name="allowFullScreen" value="true"></param>
+      <param name="allowscriptaccess" value="always"></param>
+      <embed src="http://www.youtube.com/v/7gPD0KfzmSw&hl=en&fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="840" height="630" ></embed>
+    </object>
+  </div>
+</div>
 
 ## You can then:
 

@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="author" content="Michele Sciabarra" />
+    <title>NewSite</title>
+
+    <link rel="stylesheet" href="../assets/themes/dinky/css/styles.css">
+    <link rel="stylesheet" href="../assets/themes/dinky/css/pygment_trac.css">
+    <script src="../assets/themes/dinky/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-10041673-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="../index.html">AgileSites</a></h1>
+        <p class="header">the Easy framework for Agile development with Oracle WebCenter Sites</p>
+        <ul>
+            <li><a href="../download.html">Download</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../tutorial.html">Tutorial</a></li>
+            <li><a href="../documentation.html">Documentation</a></li>
+            <li><a href="https://github.com/sciabarra/AgileSites/issues">Issues</a></li>
+            <li><a href="http://www.linkedin.com/groups/AgileSites-Fatwire-WebCenter-Sites-ATG-5120720">Group</a></li>
+            <li><a href="https://twitter.com/AgileSitesFw">Twitter</a></li>
+            <li><a href="http://www.sciabarra.com/fatwire/">Blog</a></li>
+            <li><a href="http://github.com/sciabarra/AgileSites">GitHub</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+
+        </ul>
+        
+      </header>
+
+      <section>
+      
+<section>
+  <h1>NewSite</h1>
+
+  <h5>Prev: <a href="Prerequisites.html">Prerequisites</a></h5>
+
+<p>In this section we describe which steps are needed in order to create a new site, both in Site and in AgileSites, and start development.</p>
+
+<h2>Choose a name and a prefix</h2>
+
+<p>The first step is naming your new site. Here I am assume your choice is <strong>MySite</strong>. Of course you need to change samples accordingly to your decision if you choose a different name.</p>
+
+<p>Also you need to choose a prefix that you will use consistently to name specific assets of your sites (most notably types, content definitions, attributes). </p>
+
+<p>The prefix is a common conventions used to avoid name clashes. Here I will use the prefix <em>My</em>.</p>
+
+<p><strong>NOTE</strong> We experienced problems when Content Definitions or Attributes have the same name in 2 different sites. So we recommend to use always a prefix when naming Types, Attributes, Content and Parent definitions, in order to guarantee the uniqueness of the names. Templates are also automatically named with a prefix when created by the deployer (see later in this tutorial).</p>
+
+<h2>Configure a new site and a virtual host</h2>
+
+<p>Edit the <code>build.sbt</code> and put your site name in the <code>wcsSites</code> variable. For example:</p>
+
+<p><code>
+wcsSites in ThisBuild := &quot;MySite&quot;
+</code></p>
+
+<p>If you have a virtual host configured (with satellite and apache in place) for your new site then you should also configure virtual hosts mapping.</p>
+
+<p>For example if you have a front-end url <code>http://www.mysite.com</code> for the site <code>MySite</code> you should add a line mapping the site to the </p>
+
+<p><code>
+wcsVirtualHosts in ThisBuild += (&quot;MySite&quot; -&gt; &quot;http://www.mysite.com&quot;)
+</code></p>
+
+<p>You can remove others sites but if they were already installed the installer won&#39;t remove configurations for them so they will be still be available in your instance of the application server.</p>
+
+<h2>Reinstall to update configurations</h2>
+
+<p><strong>THIS STEP IS IMPORTANT</strong></p>
+
+<p>After changing the name  of the current site, you <strong>need</strong> to reinstall. Installation is needed in order to create  the appropriate configurations. </p>
+
+<p><strong>EXIT THE SHELL</strong> (in order to reload the configuration file) then follow the reinstallation steps (check the <a href="../install.html">Installation Guide</a> for more details).</p>
+
+<p>This is a reminder if you have already read it.</p>
+
+<p>On Content Server (Sites):</p>
+
+<ul>
+<li>shut down the application server running Sites,</li>
+<li>execute again the <code>wcs-setup-offline</code> command</li>
+<li>restart it<br></li>
+<li>execute again the <code>wcs-setup-online</code> command.</li>
+</ul>
+
+<p>On Satellite Server:</p>
+
+<ul>
+<li>shut down the application server running Sites</li>
+<li>execute again the <code>wcs-setup-offline satellite</code> command</li>
+<li>restart it<br></li>
+</ul>
+
+<h2>Create a site in Sites</h2>
+
+<p>After the configuration and the installation of the configuration, you can now create a new site.</p>
+
+<p>Access to the Sites admin (see the image below).</p>
+
+<p><img src="../img/snap8769.png" alt="Admin Site Creation"></p>
+
+<p>Create a new site with the chosen name (in this case <em>MySite</em>), enabling at least the following assets:</p>
+
+<ul>
+<li>Template</li>
+<li>CSElement</li>
+<li>SiteEntry</li>
+<li>AttrTypes </li>
+<li>Page</li>
+<li>PageAttribute</li>
+<li>PageDefinitions</li>
+</ul>
+
+<p><img src="../img/snap4206.png" alt="Asset Type enabling"></p>
+
+<p>After creating the site, you need also to create an user and assign to that user at the minimum the following roles for your site <em>MySite</em></p>
+
+<ul>
+<li>AdvancedUser</li>
+<li>SitesUser</li>
+<li>GeneralAdmin</li>
+</ul>
+
+<p><img src="../img/snap5044.png" alt="Roles enabling for the new site"></p>
+
+<p>Once done you need to log out and then log in again to select your new site as the active site.</p>
+
+<h2>Generate the AgileSites site code</h2>
+
+<p>Once created the site in Sites, you can use generate the site code from the shell with the command:</p>
+
+<p><code>wcs-generate site</code></p>
+
+<p>A popup will appear asking for the site name (use <code>MySite</code> or your own) and the site prefix (use <code>My</code> or your own).</p>
+
+<p>Then you need to deploy templates and cselements for the site.</p>
+
+<p><code>wcs-deploy</code></p>
+
+<p>You can learn more on the generated source <a href="../reference/Scaffold.html">here</a>.</p>
+
+<h2>Access the new site and the tester</h2>
+
+<p>Accessing the site with </p>
+
+<blockquote>
+<p>http://localhost:8080/cs/Satellite/mysite</p>
+</blockquote>
+
+<p>You should see the following screenshot:</p>
+
+<p><img src="../img/snap3695.png" alt="Default Error Page"></p>
+
+<p>It is normal since you do not have yet any page, so the Error Page is displayed, declaring it cannot find the home page (that does not yet exist).</p>
+
+<p>You can then invoke the tester with:</p>
+
+<blockquote>
+<p>http://localhost:8080/cs/ContentServer?pagename=mysite-tester</p>
+</blockquote>
+
+<p>(in general the pagename is the lowercase version of your site name with concatenated &quot;-tester&quot;).</p>
+
+<p>You should see this screenshot:</p>
+
+<p><img src="../img/snap2246.png" alt="Tester"></p>
+
+<p>Clicking on &quot;Run All Tests&quot; you should expect no errors:</p>
+
+<p><img src="../img/snap2543.png" alt="Run All Tests"></p>
+
+<p>You can also select a few tests and run only the selected tests clicking on &quot;Run Some Tests&quot;. Try it.</p>
+
+<h2>Importing the project in eclipse</h2>
+
+<p><strong>Note</strong>: you need the eclipse plugin <a href="http://www.scala-ide.org" title="Scala IDE">http://www.scala-ide.org</a> to use the generated eclipse project. Projects are currently Java only, but planned extensions of the framework will allow also Scala coding. </p>
+
+<p>Once the new site and the new project has been created you can generate configuration files for your IDE. Execute the command in the shell:</p>
+
+<p><code>eclipse</code></p>
+
+<p>Using eclipse you can then select the following sequence of options to import the projects in Eclipse:</p>
+
+<blockquote>
+<p>File | Import | General | Existing Projects </p>
+</blockquote>
+
+<p>opening the main directory of AgileSites. You should see the following screenshot:</p>
+
+<p><img src="../img/snap4673.png" alt="Import AgileSites projects"></p>
+
+<p>then selecting the folder where you unzipped AgileSites, you should see 3 projects.</p>
+
+<p><img src="../img/snap6285.png" alt="Import"></p>
+
+<p>Select all of them. You will work mostly only on the <code>agilesites-app</code> project for implementing your application code. However other projects are required for compilation.</p>
+
+<p>You may change the <code>agilesites-api</code> code if you want to extend the framework adding your functionalities. If you do so, consider contribute them to the project. 
+You are not expected to change the <code>agilesites-core</code> code except for adding very low level functionality. </p>
+
+<h5>Next:  <a href="NewTemplate.html">New Template</a></h5>
+
+
+  
+</section>
+
+
+         <p style="font-size: 80%; text-align: center;">
+            <b>AgileSites</b> - Written by <a href="http://linkedin.com/in/msciab">Michele Sciabarr&agrave;</a> - &copy; 2013 <a href="http://www.sciabarra.com">Sciabarra srl</a><br>Open Source Software releases under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>
+            <br>Credits: Hosted on <a href="http://pages.github.com/">GitHub Pages</a> using the <a href="https://github.com/sodabrew/theme-dinky">Dinky theme</a> for <a href="http://jekyllbootstrap.com/">Jekyll Bootstrap</a></small>
+          </p>
+      </section>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
+

@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="author" content="Michele Sciabarra" />
+    <title>Rendering</title>
+
+    <link rel="stylesheet" href="../assets/themes/dinky/css/styles.css">
+    <link rel="stylesheet" href="../assets/themes/dinky/css/pygment_trac.css">
+    <script src="../assets/themes/dinky/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-10041673-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="../index.html">AgileSites</a></h1>
+        <p class="header">the Easy framework for Agile development with Oracle WebCenter Sites</p>
+        <ul>
+            <li><a href="../download.html">Download</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../tutorial.html">Tutorial</a></li>
+            <li><a href="../documentation.html">Documentation</a></li>
+            <li><a href="https://github.com/sciabarra/AgileSites/issues">Issues</a></li>
+            <li><a href="http://www.linkedin.com/groups/AgileSites-Fatwire-WebCenter-Sites-ATG-5120720">Group</a></li>
+            <li><a href="https://twitter.com/AgileSitesFw">Twitter</a></li>
+            <li><a href="http://www.sciabarra.com/fatwire/">Blog</a></li>
+            <li><a href="http://github.com/sciabarra/AgileSites">GitHub</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+
+        </ul>
+        
+      </header>
+
+      <section>
+      
+<section>
+  <h1>Rendering</h1>
+
+  <p>The following image describes the standard rendering process: </p>
+
+<p><img src="../img/rendering.png" alt="Rendering model"></p>
+
+<p>Requests are captured by the user assembler that invokes the <code>Router.route</code> method to decide how to render the url request.</p>
+
+<p>The router task is decoding the url, selecting the c/cid and then invoking the Wrapper with the appropiate parameters. Normally you have only one wrapper but it is not uncommon to have more than once (for example one wrapper for desktop and another for mobile).</p>
+
+<p>The Wrapper will usually  render the non-visibile part of the html page, and will select the layout to use (usually reading the template field of the current asset).</p>
+
+<p>The Layout (that is usually different for each asset type and subtype) renders the general skeleton on the page, including various navigations.</p>
+
+<p>As a convention, the main body of the page is usually rendered by a Detail template who in turn can have related Item and SubItem. Finally when a linked asset is reached, then the Link will be generated using the <code>Asset.getUrl</code> method. Note that this method will in turn call the <code>Router.link</code> method to an asset c/cid can be translated in a string that can be handler properly by the <code>Router.route</code> method.</p>
+
+<h2>Router</h2>
+
+<p>Here we give a  look to the router. It has 2 functions: decoding  (<code>route</code> method) urls in assets and encoding then in url (<code>link</code> method).</p>
+
+<h3>Router.route</h3>
+
+<p>The router purpose is decoding the url and translate an url in an asset to be rendered.</p>
+
+<p>The default route assumes requests coming from the web have one of the following formats:</p>
+
+<ul>
+<li>http://www.mysite.com/cs/Satellite/mysite</li>
+<li>http://www.mysite.com/cs/Satellite/mysite/PageName</li>
+<li>http://www.mysite.com/cs/Satellite/site/AssetType/AssetType</li>
+</ul>
+
+<p>The router will receive only the part of the url after the prefix <code>http://www.site.com/cs/Satellite/site</code> and will translate it in an invokation of the <code>Wrapper</code> with <code>c</code> and <code>cid</code> of the entry poing asset.</p>
+
+<p>So the default code will take strings like &quot;&quot;,  &quot;/Hello&quot; or &quot;/News/Welcome&quot; and look for an asset by name. The empty string will return c/cid of the Page asset named Home, the &quot;/Hello&quot; will return the &quot;Page&quot; named &quot;Hello&quot; and the &quot;/News/Welcome&quot; will return an (eventual) asset &quot;Demo_News&quot; with name &quot;Welcome&quot;.</p>
+
+<p>Of course the router code can be changed to better fit your purposes.</p>
+
+<p><strong>NOTE</strong> The <code>/cs/Satellite/site</code> part is normally removed by the Apache web server with a proxy rule like</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;VirtualHost www.site.com&gt;
+ProxyPass / http://appserver:8080/cs/Satellite/mysite
+&lt;/VirtualHost&gt;
+</code></pre></div>
+<h3>Router.link</h3>
+
+<p>The router link method is invoked when generating a link to render a specific asset. It receives the c/cid of the asset that should be rendered and translates it in the url part that follows the prefix (<code>http://www.mysite.com/cs/Satellite/mysite</code>). The default implementation is pretty simple: it takes the name of the asset and returns it if it is a Page, otherwise it will add the asset name (wthout a prefix). As a special case, a Page named Home is returned as the empty string.</p>
+
+
+  
+</section>
+
+
+         <p style="font-size: 80%; text-align: center;">
+            <b>AgileSites</b> - Written by <a href="http://linkedin.com/in/msciab">Michele Sciabarr&agrave;</a> - &copy; 2013 <a href="http://www.sciabarra.com">Sciabarra srl</a><br>Open Source Software releases under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>
+            <br>Credits: Hosted on <a href="http://pages.github.com/">GitHub Pages</a> using the <a href="https://github.com/sodabrew/theme-dinky">Dinky theme</a> for <a href="http://jekyllbootstrap.com/">Jekyll Bootstrap</a></small>
+          </p>
+      </section>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
+

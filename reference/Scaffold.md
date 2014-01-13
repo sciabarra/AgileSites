@@ -2,10 +2,8 @@
 layout: page
 title: Scaffold
 ---
-(Draft)
 
 This document is a reference guide of the code generated with scaffolding.
-
 
 ## Scaffold `site`
 
@@ -73,11 +71,9 @@ Default test classes.
 
 Generate a new layout template, with a test.
 
-
 ## Scaffold `template`
 
 Generate a new internal template, with a test
-
 
 ## Scaffold `cselement`
 

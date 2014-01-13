@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="author" content="Michele Sciabarra" />
+    <title>Picker</title>
+
+    <link rel="stylesheet" href="../assets/themes/dinky/css/styles.css">
+    <link rel="stylesheet" href="../assets/themes/dinky/css/pygment_trac.css">
+    <script src="../assets/themes/dinky/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-10041673-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="../index.html">AgileSites</a></h1>
+        <p class="header">the Easy framework for Agile development with Oracle WebCenter Sites</p>
+        <ul>
+            <li><a href="../download.html">Download</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../tutorial.html">Tutorial</a></li>
+            <li><a href="../documentation.html">Documentation</a></li>
+            <li><a href="https://github.com/sciabarra/AgileSites/issues">Issues</a></li>
+            <li><a href="http://www.linkedin.com/groups/AgileSites-Fatwire-WebCenter-Sites-ATG-5120720">Group</a></li>
+            <li><a href="https://twitter.com/AgileSitesFw">Twitter</a></li>
+            <li><a href="http://www.sciabarra.com/fatwire/">Blog</a></li>
+            <li><a href="http://github.com/sciabarra/AgileSites">GitHub</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+
+        </ul>
+        
+      </header>
+
+      <section>
+      
+<section>
+  <h1>Picker</h1>
+
+  <p>The Picker is the template engine provided by AgileSites to implement the &quot;original html&quot; templating features.</p>
+
+<p>The actual library implementing the Picker is the <a href="http://jsoup.org">JSoup Library</a> and inherits its selector syntax. All the available selectors are  described <a href="http://jsoup.org/apidocs/org/jsoup/select/Selector.html">in detail here</a></p>
+
+<p>Here there is a guide to the Picker, including a reference list for the selector syntax, literally copied from <a href="http://jsoup.org/cookbook/extracting-data/selector-syntax">here</a> is available next, and a guide to the available methods.</p>
+
+<p>For the examples, please consider the <code>/sample.html</code> resource is the following:</p>
+<div class="highlight"><pre><code class="html language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;title&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>Hello<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>How are you?<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;menu&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+        <span class="nt">&lt;li&gt;</span>First<span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;li&gt;</span>Second<span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;li&gt;</span>Third<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div>
+<p>and that the selector syntax <code>#content</code> will select the part of the html with <code>id=&quot;content&quot;</code></p>
+
+<h2>Input/Output</h2>
+
+<p>Picker mostly load snippets of html, parse them allowing to replace it with the content taken from the CMS and finally returns the HTML as string.</p>
+
+<p>Html resources are bundled in the jar of the application. More specifically all the .html and .htm files placed under the directory <code>app/src/main/static</code> are packaged in the jar.</p>
+
+<p>You need to use an absolute path inside the jar to locate resources, using direct slashes.</p>
+
+<p>Here some samples of loading:</p>
+
+<p>Load the html from a resource in the jar (packaged from the original placed under <code>app/src/main/static/mysite/template.html</code>)</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">Picker</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">&quot;/mysite/resource.html&quot;</span><span class="o">)</span>
+</code></pre></div>
+<p>Load from the same resource as before the html block identified by the selector &quot;#content&quot; (see below for the selectors):</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">Picker</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">&quot;/mysite/resource.html&quot;</span><span class="o">,</span> <span class="s">&quot;#content&quot;</span><span class="o">)</span>
+</code></pre></div>
+<p>You can create a picker using literal html if you need it (typically if it is a small piece of html):</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">Picker</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">&quot;&lt;h1&gt;Title&lt;h1&gt;&quot;</span><span class="o">)</span>
+</code></pre></div>
+<h3>html() and outerHtml()</h3>
+
+<p>If you load a snippet of html like this</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">Picker</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Picker</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">&quot;/sample.html&quot;</span><span class="o">,</span> <span class="s">&quot;#title&quot;</span><span class="o">)</span>
+</code></pre></div>
+<p>To get the whole block selected you use <code>p.outerHtml()</code>:</p>
+<div class="highlight"><pre><code class="html language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;title&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>Hello<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div>
+<p>If you instead use <code>p.html()</code> you will output only the inner part of the loaded html.</p>
+<div class="highlight"><pre><code class="html language-html" data-lang="html"><span class="nt">&lt;h1&gt;</span>Hello<span class="nt">&lt;/h1&gt;</span>
+</code></pre></div>
+<h2>Selectors</h2>
+
+<p>The picker uses the css selector syntax (very similar to the syntax used by the jQuery library) to locate parts of html you want to change.</p>
+
+<p>You use selectors almost everywhere:</p>
+
+<ul>
+<li><code>Picker.load(resource, selector)</code>: load a resource then select to the part of the html identified by the <strong>selector</strong></li>
+<li><code>Picker.select(selector)</code>: restrict to the part of the html identified by the <strong>selector</strong></li>
+<li><code>Picker.replace(selector, string)</code>: replace the part indentifed by the <strong>selector</strong> with the <strong>string</strong></li>
+</ul>
+
+<h3>Selector overview</h3>
+
+<ul>
+<li>  <strong>tagname</strong>: find elements by tag, e.g. a</li>
+<li>  <strong>ns|tag</strong>: find elements by tag in a namespace, e.g. fb|name finds <a href="fb:name">fb:name</a> elements</li>
+<li>  <strong>#id</strong>: find elements by ID, e.g. #logo</li>
+<li>  <strong>.class</strong>: find elements by class name, e.g. .masthead</li>
+<li>  <strong>[attribute]</strong>: elements with attribute, e.g. [href]</li>
+<li> <strong>[^attr]</strong>: elements with an attribute name prefix, e.g. [^data-] finds elements with HTML5 dataset attribute</li>
+<li><p><strong>[attr^=value]</strong>, <strong>[attr$=value]</strong>, <strong>[attr*=value]</strong>: elements with attributes that start with, end with, or contain the value, e.g. [href*=/path/]</p></li>
+<li><p><strong>[attr=value]</strong>: elements with attribute value </p></li>
+<li><p><strong>[attr~=regex]</strong>: elements with attribute values that match the regular expression; e.g. img[src~=(?i).(png|jpe?g)]</p></li>
+<li><p>*: all elements, </p></li>
+</ul>
+
+<h3>Selector combinations</h3>
+
+<ul>
+<li>   <strong>el#id</strong>: elements with ID, e.g. div#logo</li>
+<li>   <strong>el.class</strong>: elements with class, e.g. div.masthead</li>
+<li>   <strong>el[attr]</strong>: elements with attribute, e.g. a[href]</li>
+<li>   <strong>parent &gt; child</strong>: child elements that descend directly from parent, e.g. div.content &gt; p finds p elements; and body &gt; * finds the direct children of the body tag</li>
+<li>   <strong>siblingA + siblingB</strong>: finds sibling B element immediately preceded by sibling A, e.g. div.head + div</li>
+<li>   <strong>siblingA ~ siblingX</strong>: finds sibling X element preceded by sibling A, e.g. h1 ~ p</li>
+<li>   <strong>el, el, el</strong>: group multiple selectors, find unique elements that match any of the selectors; e.g. div.masthead, div.logo</li>
+</ul>
+
+<h3>Pseudo selectors</h3>
+
+<ul>
+<li> <strong>:lt(n)</strong>: find elements whose sibling index (i.e. its position in the DOM tree relative to its parent) is less than n; e.g. td:lt(3)</li>
+<li> <strong>:gt(n)</strong>: find elements whose sibling index is greater than n; e.g. div p:gt(2)</li>
+<li> <strong>:eq(n)</strong>: find elements whose sibling index is equal to n; e.g. form input:eq(1)</li>
+<li> <strong>:has(selector)</strong>: find elements that contain elements matching the selector; e.g. div:has(p)</li>
+<li> <strong>:not(selector)</strong>: find elements that do not match the selector; e.g. div:not(.logo)</li>
+<li> <strong>:contains(text)</strong>: find elements that contain the given text. The search is case-insensitive; e.g. p:contains(jsoup)</li>
+<li> <strong>:containsOwn(text)</strong>: find elements that directly contain the given text</li>
+<li> <strong>:matches(regex)</strong>: find elements whose text matches the specified regular expression; e.g. div:matches((?i)login)</li>
+<li> <strong>:matchesOwn(regex)</strong>: find elements whose own text matches the specified regular expression</li>
+</ul>
+
+<p>Note that the above indexed pseudo-selectors are 0-based, that is, the first element is at index 0, the second at 1, etc.</p>
+
+<h2>Replacements</h2>
+
+<p>Let&#39;s see which replacements methods are available with some samples</p>
+
+<h3>replace</h3>
+
+<p>Replace is the most used method:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">Picker</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">&quot;/sample.html&quot;</span><span class="o">,</span> <span class="s">&quot;#content&quot;</span><span class="o">)</span>
+<span class="o">.</span><span class="na">replace</span><span class="o">(</span><span class="s">&quot;p&quot;</span><span class="o">,</span> <span class="s">&quot;welcome&quot;</span><span class="o">)</span>
+<span class="o">.</span><span class="na">outerHtml</span><span class="o">()</span>
+</code></pre></div>
+<p>Result:</p>
+<div class="highlight"><pre><code class="html language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;p&gt;</span>welcome.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>  
+</code></pre></div>
+<h3>single, remove, before, after</h3>
+
+<p>You can return a single instance of a sequence of items, append, prepend and remove items.</p>
+
+<p>Check those examples:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">Picker</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Picker</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">&quot;/sample.html&quot;</span><span class="o">,</span> <span class="s">&quot;#menu li&quot;</span><span class="o">);</span>
+<span class="n">p</span><span class="o">.</span><span class="na">single</span><span class="o">(</span><span class="s">&quot;li&quot;</span><span class="o">).</span><span class="na">html</span><span class="o">();</span>
+</code></pre></div>
+<p>Result:</p>
+<div class="highlight"><pre><code class="html language-html" data-lang="html"><span class="nt">&lt;ul&gt;</span>
+  <span class="nt">&lt;li&gt;</span>First<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</code></pre></div>
+<p>Code:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">p</span><span class="o">.</span><span class="na">after</span><span class="o">(</span><span class="s">&quot;li&quot;</span><span class="o">,</span> <span class="s">&quot;&lt;li id=\&quot;second\&quot;&gt;Second&lt;/li&gt;&quot;</span><span class="o">);</span> 
+<span class="n">p</span><span class="o">.</span><span class="na">before</span><span class="o">(</span><span class="s">&quot;#second&quot;</span><span class="o">,</span> <span class="s">&quot;&lt;li&gt;One and Half&lt;/li&gt;&quot;</span><span class="o">);</span>
+<span class="n">p</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="s">&quot;li:eq(1)&quot;</span><span class="o">)</span>
+<span class="n">p</span><span class="o">.</span><span class="na">html</span><span class="o">();</span>
+</code></pre></div><div class="highlight"><pre><code class="html language-html" data-lang="html"><span class="nt">&lt;ul&gt;</span>
+ <span class="nt">&lt;li&gt;</span>One and Half<span class="nt">&lt;/li&gt;</span>
+ <span class="nt">&lt;li</span> <span class="na">id=</span><span class="s">&quot;second&quot;</span><span class="nt">&gt;</span>Second<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</code></pre></div>
+<h3>Attributes</h3>
+
+<p>Some samples of replacement and removal of attributes:</p>
+
+<p>Code:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">Picker</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">&quot;/sample.html&quot;</span><span class="o">,</span> <span class="s">&quot;#title&quot;</span><span class="o">)</span>
+<span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="s">&quot;h1&quot;</span><span class="o">,</span> <span class="s">&quot;demo&quot;</span><span class="o">)</span>
+<span class="o">.</span><span class="na">attr</span><span class="o">(</span><span class="s">&quot;h1&quot;</span><span class="o">,</span> <span class="s">&quot;test&quot;</span><span class="o">,</span> <span class="s">&quot;demo&quot;</span><span class="o">)</span>
+<span class="o">.</span><span class="na">removeAttrs</span><span class="o">(</span><span class="s">&quot;div&quot;</span><span class="o">,</span> <span class="s">&quot;id&quot;</span><span class="o">)</span>
+<span class="o">.</span><span class="na">outerHtml</span><span class="o">();</span>
+</code></pre></div>
+<p>Results:</p>
+<div class="highlight"><pre><code class="html language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;replaced&quot;</span><span class="nt">&gt;</span>
+   <span class="nt">&lt;h1</span> <span class="na">test=</span><span class="s">&quot;demo&quot;</span> <span class="na">class=</span><span class="s">&quot; demo&quot;</span><span class="nt">&gt;</span>Hello<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div>
+<h3>select, up</h3>
+
+<p>Picker lets you to <strong>temporarily</strong> restrict to a part of the html you are working with, with <code>p.select(selector)</code>. </p>
+
+<p>All the replacements then will happen only in the selected part. You can restrict further with other select, and you can come up to the stack of the selections with up.</p>
+
+<p><strong>NOTE</strong> the selections does not affect the output: <code>p.html()</code> and <code>p.outerHtml()</code> will return the whole originally loaded snippet of html.</p>
+
+
+  
+</section>
+
+
+         <p style="font-size: 80%; text-align: center;">
+            <b>AgileSites</b> - Written by <a href="http://linkedin.com/in/msciab">Michele Sciabarr&agrave;</a> - &copy; 2013 <a href="http://www.sciabarra.com">Sciabarra srl</a><br>Open Source Software releases under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>
+            <br>Credits: Hosted on <a href="http://pages.github.com/">GitHub Pages</a> using the <a href="https://github.com/sodabrew/theme-dinky">Dinky theme</a> for <a href="http://jekyllbootstrap.com/">Jekyll Bootstrap</a></small>
+          </p>
+      </section>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
+

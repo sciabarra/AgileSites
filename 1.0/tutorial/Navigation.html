@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="author" content="Michele Sciabarra" />
+    <title>Navigation</title>
+
+    <link rel="stylesheet" href="../assets/themes/dinky/css/styles.css">
+    <link rel="stylesheet" href="../assets/themes/dinky/css/pygment_trac.css">
+    <script src="../assets/themes/dinky/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-10041673-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="../index.html">AgileSites</a></h1>
+        <p class="header">the Easy framework for Agile development with Oracle WebCenter Sites</p>
+        <ul>
+            <li><a href="../download.html">Download</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../tutorial.html">Tutorial</a></li>
+            <li><a href="../documentation.html">Documentation</a></li>
+            <li><a href="https://github.com/sciabarra/AgileSites/issues">Issues</a></li>
+            <li><a href="http://www.linkedin.com/groups/AgileSites-Fatwire-WebCenter-Sites-ATG-5120720">Group</a></li>
+            <li><a href="https://twitter.com/AgileSitesFw">Twitter</a></li>
+            <li><a href="http://www.sciabarra.com/fatwire/">Blog</a></li>
+            <li><a href="http://github.com/sciabarra/AgileSites">GitHub</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+
+        </ul>
+        
+      </header>
+
+      <section>
+      
+<section>
+  <h1>Navigation</h1>
+
+  <h5>Prev:  <a href="EditContent.html">Edit Content</a>.</h5>
+
+<p>In this section we will see how to create links and how to use them to build naviations.</p>
+
+<h2>Create a Link</h2>
+
+<p>The general rule to create a link is using the method <code>Asset.getUrl</code>. However you generally need to load the asset to do this. </p>
+
+<p>Since you generally generate links for assets pointed by attributes, this is the typical code you write:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">a</span><span class="o">.</span><span class="na">getAsset</span><span class="o">(</span><span class="s">&quot;Related&quot;</span><span class="o">,</span> <span class="s">&quot;Page&quot;</span><span class="o">).</span><span class="na">getUrl</span><span class="o">()</span>
+</code></pre></div>
+<p>Another option is to use the <code>Env.getUrl(id)</code>. To use this method, you need an id. You use this method when you navigate the siteplan.</p>
+
+<p><strong>NOTE</strong> Be aware of dependencies when you retrieve assets by id. The pagelet you generate will depend on them, and if you change the linked asset then the pagelet must be invalidated.</p>
+
+<p>Once you got the url, you can use it to set the href attribute.</p>
+
+<h2>SitePlan</h2>
+
+<p>The <code>SitePlan</code> class helps you to navigate in the siteplan. </p>
+
+<p>You get a siteplan instance with <code>e.getSitePlan()</code>. The SitePlan has a concept of current node in the siteplan, and by default it is the current site.  You can then do the following:</p>
+
+<ul>
+<li><code>sp.children()</code> returns the children of the current nodem as an array of Ids</li>
+<li><code>sp.goTo(id)</code> lets you to change the current id</li>
+<li><code>sp.getPath()</code> return the path (as an array of id) from the current asset up to the root. </li>
+</ul>
+
+<p>Note that in the path the current node is excluded so when you are at the root, the path is an array of zero elements.</p>
+
+<h2>Top Level Menu</h2>
+
+<p>Using the SitePlan this is the code to create the top level menu, that create a StringBuilder with to Pages located to the top level of the site plan:</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
+<span class="n">SitePlan</span> <span class="n">sp</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getSitePlan</span><span class="o">();</span>
+<span class="k">for</span> <span class="o">(</span><span class="n">Id</span> <span class="n">id</span> <span class="o">:</span> <span class="n">sp</span><span class="o">.</span><span class="na">children</span><span class="o">())</span> <span class="o">{</span>
+    <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getAsset</span><span class="o">(</span><span class="n">id</span><span class="o">).</span><span class="na">getName</span><span class="o">();</span>
+    <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span>
+      <span class="n">format</span><span class="o">(</span><span class="s">&quot;&lt;a href=&#39;%s&#39;&gt;%s&lt;/a&gt; |&quot;</span><span class="o">,</span> 
+              <span class="n">e</span><span class="o">.</span><span class="na">getUrl</span><span class="o">(</span><span class="n">id</span><span class="o">),</span> <span class="n">name</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div>
+<h5>Next:  <a href="../tutorial.html">Tutorial Index</a></h5>
+
+
+  
+</section>
+
+
+         <p style="font-size: 80%; text-align: center;">
+            <b>AgileSites</b> - Written by <a href="http://linkedin.com/in/msciab">Michele Sciabarr&agrave;</a> - &copy; 2013 <a href="http://www.sciabarra.com">Sciabarra srl</a><br>Open Source Software releases under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>
+            <br>Credits: Hosted on <a href="http://pages.github.com/">GitHub Pages</a> using the <a href="https://github.com/sodabrew/theme-dinky">Dinky theme</a> for <a href="http://jekyllbootstrap.com/">Jekyll Bootstrap</a></small>
+          </p>
+      </section>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
+

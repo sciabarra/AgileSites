@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="author" content="Michele Sciabarra" />
+    <title>Install</title>
+
+    <link rel="stylesheet" href="assets/themes/dinky/css/styles.css">
+    <link rel="stylesheet" href="assets/themes/dinky/css/pygment_trac.css">
+    <script src="assets/themes/dinky/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-10041673-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="index.html">AgileSites</a></h1>
+        <p class="header">the Easy framework for Agile development with Oracle WebCenter Sites</p>
+        <ul>
+            <li><a href="download.html">Download</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="tutorial.html">Tutorial</a></li>
+            <li><a href="documentation.html">Documentation</a></li>
+            <li><a href="https://github.com/sciabarra/AgileSites/issues">Issues</a></li>
+            <li><a href="http://www.linkedin.com/groups/AgileSites-Fatwire-WebCenter-Sites-ATG-5120720">Group</a></li>
+            <li><a href="https://twitter.com/AgileSitesFw">Twitter</a></li>
+            <li><a href="http://www.sciabarra.com/fatwire/">Blog</a></li>
+            <li><a href="http://github.com/sciabarra/AgileSites">GitHub</a></li>
+            <li><a href="contact.html">Contact</a></li>
+
+        </ul>
+        
+      </header>
+
+      <section>
+      
+<section>
+  <h1>Install</h1>
+
+  <h2>Download</h2>
+
+<p>AgileSites is distributed as a source zip from GitHub.</p>
+
+<p>You need to download a stable release of AgileSites from GitHub. Stable releases are <a href="download.html">listed here</a></p>
+
+<p>It is recommended you pick the latest stable version, 
+unzip it in a folder of your choice where you put your projects. Then read on to learn how to configure it.</p>
+
+<h2>Configuration</h2>
+
+<p>You need a <code>build.sbt</code> where you specify paths in your installation. </p>
+
+<p>First step is to copy <code>build.sbt.dist</code> into <code>build.sbt</code> and edit it.</p>
+
+<p>You need to provide details on your installation.</p>
+
+<p>Default values are fine if you are using JumpStart Kit 11gR1 installed the default location, using the default <code>fwadmin</code> user and the default password.</p>
+
+<p>If you changed the defaults, you need to configure paths and users in the <code>build.sbt</code>, so the AgileSites installer will locate your Sites installation and update properly.</p>
+
+<p>You can skip all the options for the Apache and Satellite front end if you are installing for development only.</p>
+
+<p>For development those components are optional, so you just need to ensure the <code>wcsUrl</code> points to your local development environment (please check the port if you are not using 8080)</p>
+
+<p>You can read about Satellite and Apache front end installation in the <a href="reference/Deployment.html">deployment reference</a>.</p>
+
+<p>You can read details of the configuration in the <a href="reference/Configuration.html">configuration reference</a> to understand each parameter if you have doubts.</p>
+
+<h2>Installation</h2>
+
+<p>Ensure you have a connection to internet and start the AgileShell running either <code>agilesites.bat</code> or <code>agilesites.sh</code></p>
+
+<p><strong>NOTE</strong> The first time the shell is started, it will take some time before you get an answer, since it will download jar dependencies and build the core library. </p>
+
+<p><strong>HINT</strong> If you are performing an installation using an existing code base, you can force the source to a safe state before stating the shell running the <code>clean.bat</code> or <code>clean.sh</code> script.</p>
+
+<p>Once you get the prompt, ensure the applications server where Sites is installed is <strong><em>not running</em></strong> and execute</p>
+
+<p><code>wcs-setup-offline</code></p>
+
+<p><strong>HINT</strong> If you get errors or exceptions, please review the paths carefully. A wrong path is by far the most common cause of failing installation.</p>
+
+<p><strong>NOTE</strong> The installer pops up a dialog box. If you are installing on a server without a GUI, you can skip the dialog box (and the warnings) using <code>wcs-setup-offline silent</code>  </p>
+
+<p>Now you can start the application server. Since it can takes some time before it is active, it is useful to invoke the <code>HelloCS</code> servlet and wait until you get an answer. In a default local install the servlet can be reached as:</p>
+
+<blockquote>
+<p>http://localhost:8080/cs/HelloCS</p>
+</blockquote>
+
+<p>You </p>
+
+<p>Once you get an answer from the application server</p>
+
+<p><code>wcs-setup-online</code></p>
+
+<p><strong>NOTE</strong> currently the shell shows some error messages about missing configuration files for log4j and ehcache. This is actually normal, so you can ignore those erros.</p>
+
+<p>Check for this image to confirm successful setup online:</p>
+
+<p><img src="img/snap1188.png" alt="Successful import"></p>
+
+<p>This will complete the installation of the framework.</p>
+
+<p>You can now create a new site following the <a href="tutorial.html">tutorial</a> or go on this document to learn how to import the demo site.</p>
+
+<h2>Importing the Demo site (Optional)</h2>
+
+<p>Importing a site on a server where AgileSites is already installed needs  2 steps:</p>
+
+<ul>
+<li>import the content model (with csdt)</li>
+<li>deploy the code </li>
+</ul>
+
+<p>The site imported is the one pointed by the <code>wcsSites</code> variable in the <code>build.sbt</code> configuration file.</p>
+
+<p>You can  (optionally) import the Demo site for reference.</p>
+
+<p>Before starting ensure that in build.sbt there is the line</p>
+
+<blockquote>
+<p><code>wcsSites in ThisBuild := &quot;Demo&quot;</code></p>
+</blockquote>
+
+<p>Then import the site using the CSDT with</p>
+
+<p><code>wcs-dt import</code></p>
+
+<p><strong>NOTE</strong> If you have installed sample sites like FirstSiteII or Avisports then you may get an error message because a treetab of the Demo is already present in the sample sites.</p>
+
+<p>Finally deploy the code with</p>
+
+<p><code>wcs-deploy</code></p>
+
+<p>Check the site is up and running with:</p>
+
+<blockquote>
+<p>http://localhost:8080/cs/Satellite/demo</p>
+</blockquote>
+
+<p><img src="img/snap0469.png" alt="Demo Site"></p>
+
+<p>Run tests accessing to  </p>
+
+<blockquote>
+<p>http://localhost:8080/cs/ContentServer?pagename=demo-tester</p>
+</blockquote>
+
+<p>then click on &quot;Run All Tests&quot; and expect 0 tests failed.</p>
+
+<h2>Apache and Satellite</h2>
+
+<p>The installation for development is complete but for live deployment you need to configure also Satellite Server and Apache.</p>
+
+<p>You can learn how to configure a Satellite and Apache front end installation in the <a href="reference/Deployment.html">deployment reference</a>.</p>
+
+
+  
+</section>
+
+
+         <p style="font-size: 80%; text-align: center;">
+            <b>AgileSites</b> - Written by <a href="http://linkedin.com/in/msciab">Michele Sciabarr&agrave;</a> - &copy; 2013 <a href="http://www.sciabarra.com">Sciabarra srl</a><br>Open Source Software releases under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>
+            <br>Credits: Hosted on <a href="http://pages.github.com/">GitHub Pages</a> using the <a href="https://github.com/sodabrew/theme-dinky">Dinky theme</a> for <a href="http://jekyllbootstrap.com/">Jekyll Bootstrap</a></small>
+          </p>
+      </section>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
+

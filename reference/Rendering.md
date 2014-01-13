@@ -12,7 +12,6 @@ The router task is decoding the url, selecting the c/cid and then invoking the W
 
 The Wrapper will usually  render the non-visibile part of the html page, and will select the layout to use (usually reading the template field of the current asset).
 
-
 The Layout (that is usually different for each asset type and subtype) renders the general skeleton on the page, including various navigations.
 
 As a convention, the main body of the page is usually rendered by a Detail template who in turn can have related Item and SubItem. Finally when a linked asset is reached, then the Link will be generated using the `Asset.getUrl` method. Note that this method will in turn call the `Router.link` method to an asset c/cid can be translated in a string that can be handler properly by the `Router.route` method.

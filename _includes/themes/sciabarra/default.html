@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="author" content="{{ site.author.name }}" />
+    <link rel="shortcut icon" href="{{ ASSET_PATH }}/img/favicon.png"/>
+    <title>{{ page.title }}</title>
+
+    <link rel="stylesheet" media="screen" href="{{ ASSET_PATH }}/css/bootstrap.css">
+    <link rel="stylesheet" href="{{ ASSET_PATH }}/css/bootstrap-responsive.css">
+    <link rel="stylesheet" href="{{ ASSET_PATH }}/css/styles.css">
+    
+    <script src="{{ ASSET_PATH }}/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    
+    {% include JB/analytics %}
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="{{ HOME_PATH }}">{{ site.title }}</a></h1>
+        <p class="header">{{ site.tagline }}</p>
+       
+        {% if site.ads.google %}
+        <div class="misc ad">
+          <script type="text/javascript"><!--
+            google_ad_client = "{{ site.ads.google.client }}";
+            google_ad_slot = "{{ site.ads.google.slot }}";
+            google_ad_width = {{ site.ads.google.width }};
+            google_ad_height = {{ site.ads.google.height }};
+            //-->
+          </script>
+          <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+        </div>
+        {% endif %}
+      </header>
+
+      <section>
+      {{ content }}
+         	 <p style="font-size: 80%; text-align: left;">
+              <b>AgileSites</b> - Written by <a href="http://linkedin.com/in/msciab">Michele Sciabarr&agrave;</a> 
+              - &copy; 2014 <a href="http://www.sciabarra.com">Sciabarra ltd</a>
+              Open Source Software releases under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>
+              Credits: Hosted on <a href="http://pages.github.com/">GitHub Pages</a> 
+              using the  <a href="http://jekyllbootstrap.com/">Jekyll Bootstrap</a></small>
+            </p>     
+      </section>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
