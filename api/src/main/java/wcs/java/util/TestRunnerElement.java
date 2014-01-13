@@ -39,6 +39,7 @@ public abstract class TestRunnerElement extends wcs.java.Element {
 
 		return "<h1>Test Runner</h1>"
 				+ "<form method=\"get\">\n"
+				+ "<input type='hidden' name='d'>\n"
 				+ "<input type='submit' value='Run All Tests'>"
 				+ "<input name='pagename' type='hidden' value='"
 				+ pagename

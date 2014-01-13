@@ -45,10 +45,6 @@ public class ContentLayout extends Element {
 				"{noValueIndicator: \"Enter Teaser\"}"));
 		html.replace("#teaser-body2", a.editString("TeaserText", 2,
 				"{noValueIndicator: \"Enter Teaser Text\"}"));
-        html.replace("#teaser-title3", a.editString("TeaserTitle", 3,
-                "{noValueIndicator: \"Enter Teaser\"}"));
-        html.replace("#teaser-body3", a.editString("TeaserText", 3,
-                "{noValueIndicator: \"Enter Teaser Text\"}"));
 
 		html.remove("div.related");
 		html.append("#related-container",

@@ -28,8 +28,8 @@ public class ContentSeeAlsoTest extends TestElement {
 	}
 
 	@Test
-	public void testAboutLink() {
+	public void testAboutLink() {		
 		parse(it.apply(env("/About")));
-		assertAttrContains("a", "href", "/About");
+		assertAttrContains("a", "href", "About");
 	}
 }
