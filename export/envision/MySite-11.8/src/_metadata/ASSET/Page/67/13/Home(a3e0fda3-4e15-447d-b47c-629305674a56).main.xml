@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>Page:1374098079492</id>
+    <name>Home</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2014-01-13T21:13:04.434Z</createddate>
+    <description>Home Page</description>
+    <publist>MySite</publist>
+    <status>PL</status>
+    <subtype>MySite_Content</subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2014-01-13T21:13:04.434Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue>MySite_ContentLayout</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>a3e0fda3-4e15-447d-b47c-629305674a56</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1374098079492</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SegRating</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Webreference</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>category</name>
+        <data>
+            <stringValue>acct</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SPTParent</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>SPTRank</name>
+        <data>
+            <integerValue>1</integerValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SPTNCode</name>
+        <data>
+            <stringValue>UnPlaced</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>flextemplateid</name>
+        <data>
+            <stringValue>PageDefinition:1374098079042</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>MySite_Title</name>
+        <data>
+            <stringValue>Home Page Title</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>MySite_Text</name>
+        <data>
+            <stringValue>Home Page Text</stringValue>
+        </data>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <linked-hash-set>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1374098078297</resId>
+      <uid>4a4ee922-5ac9-4cd6-b7b0-05015acab5a2</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1374098079037</resId>
+      <uid>c4f84ab9-a1a5-4f33-ac70-b0bf1e8ff59d</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageDefinition</resType>
+      <resId>1374098079042</resId>
+      <uid>042318ed-c02a-4ccf-a500-57fe513da7b7</uid>
+    </dependency>
+    <dependency>
+      <depType>N</depType>
+      <resType>Page</resType>
+      <resId>1374098079492</resId>
+      <uid>a3e0fda3-4e15-447d-b47c-629305674a56</uid>
+    </dependency>
+  </linked-hash-set>
+</dependencies>
+==================______________________==================
+#
+key=Page-a3e0fda3-4e15-447d-b47c-629305674a56
+type=ASSETDATA
+sites=MySite
+
+==================___ END METADATA ___==================-->
