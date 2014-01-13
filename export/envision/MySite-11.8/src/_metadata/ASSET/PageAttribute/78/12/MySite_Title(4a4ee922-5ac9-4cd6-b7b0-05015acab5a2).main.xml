@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>PageAttribute:1374097567721</id>
-    <name>Text</name>
+    <id>PageAttribute:1374098078029</id>
+    <name>MySite_Title</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-12-07T08:43:03.163Z</createddate>
-    <description>Text</description>
+    <createddate>2013-12-07T08:42:07.457Z</createddate>
+    <description>Title</description>
     <publist>MySite</publist>
-    <status>PL</status>
+    <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-12-07T08:43:03.163Z</updateddate>
+    <updateddate>2014-01-13T19:11:04.406Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -53,13 +53,13 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>c4f84ab9-a1a5-4f33-ac70-b0bf1e8ff59d</stringValue>
+            <stringValue>4a4ee922-5ac9-4cd6-b7b0-05015acab5a2</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1374097567721</longValue>
+            <longValue>1374098078029</longValue>
         </data>
     </attribute>
     <attribute>
@@ -175,7 +175,7 @@
     <attribute>
         <name>type</name>
         <data>
-            <stringValue>text</stringValue>
+            <stringValue>string</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -199,14 +199,14 @@
     <dependency>
       <depType>N</depType>
       <resType>PageAttribute</resType>
-      <resId>1374097567721</resId>
-      <uid>c4f84ab9-a1a5-4f33-ac70-b0bf1e8ff59d</uid>
+      <resId>1374098078029</resId>
+      <uid>4a4ee922-5ac9-4cd6-b7b0-05015acab5a2</uid>
     </dependency>
   </linked-hash-set>
 </dependencies>
 ==================______________________==================
 #
-key=PageAttribute-c4f84ab9-a1a5-4f33-ac70-b0bf1e8ff59d
+key=PageAttribute-4a4ee922-5ac9-4cd6-b7b0-05015acab5a2
 type=ASSETDATA
 sites=MySite
 
