@@ -153,13 +153,18 @@ trait AgileSitesUtil {
   }
 
   // select jars for the setup offline
-  def setupCopyJarsWeb(webapp: String, classpathFiles: Seq[File]) {
+  def setupCopyJarsWeb(webapp: String, classpathFiles: Seq[File], version: String) {
 
     val destlib = file(webapp) / "WEB-INF" / "lib"
 
-    val addJars = classpathFiles.filter( _.getName.startsWith("agilesites-core") )
+    val addJars = classpathFiles.filter( _.getName.startsWith("agilesites-core-"+version) )
     
     val removeJars = destlib.listFiles.filter(_.getName.toLowerCase.startsWith("agilesites-core"))
+
+    val f1 = classpathFiles.filter(_.getName.startsWith("agilesites"))
+    println("files "+f1)
+    println("add "+addJars)
+    println("remove "+removeJars)
 
     setupCopyJars(destlib, addJars, removeJars)
   

@@ -322,11 +322,11 @@ trait AgileSitesSupport extends AgileSitesUtil {
   // copy jars in the webapp lib folder
   lazy val wcsCopyJarsWeb = TaskKey[Unit]("wcs-copyjars-web", "WCS Copy Jars to WEB-INF/lib")
   val wcsCopyJarsWebTask = wcsCopyJarsWeb <<= 
-    (wcsHello, managedClasspath in Runtime, wcsWebapp) map {
-      (hello, classpath, webapp) =>
+    (wcsHello, fullClasspath in Compile, wcsWebapp, wcsVersion) map {
+      (hello, classpath, webapp, version) =>
        if(!hello.isEmpty)
           throw new Exception("Web Center Sites must be offline.")
-       setupCopyJarsWeb(webapp, classpath.files)
+       setupCopyJarsWeb(webapp, classpath.files, version)
   }
 
   // copy jars in the agilesites lib 
@@ -350,8 +350,6 @@ trait AgileSitesSupport extends AgileSitesUtil {
           (args, _, _, classes,
            sites, version, home, shared, webapp, url,
            flexBlobs, staticBlobs, virtualHosts, jar, _) =>
-
-
 
             val static = (file(shared) / "Storage" / "Static") getAbsolutePath
 

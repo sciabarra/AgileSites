@@ -60,8 +60,15 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     publishMavenStyle := true,
     includeFilterUnmanagedJars,
     unmanagedBaseTask,
+    version <<= (wcsVersion) { x => x +  "_" + v },
     unmanagedJarsTask)
- 
+
+  val libdepsSettings = Seq(
+     libraryDependencies <++= (wcsVersion) { x => Seq(
+           "com.sciabarra" % "agilesites-core" % (x + "_" + v),
+           "com.sciabarra" % "agilesites-api" % (x + "_" + v) withSources())})
+   
+
   import javadoc.JavadocPlugin.javadocSettings
   import javadoc.JavadocPlugin.javadocTarget
 
@@ -71,7 +78,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("core"),
     settings = coreSettings ++ Seq(
       name := "agilesites-core",
-      version <<= (wcsVersion) { x => x +  "_" + v },
       libraryDependencies ++= coreDependencies,
       publishArtifact in packageDoc := false,
       crossPaths := false,
@@ -84,8 +90,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     id = "api",
     base = file("api"),
     settings = coreSettings ++ Seq(
-     name := "agilesites-api",
-     version := v,
+     name := "agilesites-api",   
      libraryDependencies <++= (wcsVersion) { x => 
        Seq("com.sciabarra" % "agilesites-core" % (x + "_" + v) )
      },
@@ -96,18 +101,14 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
      EclipseKeys.skipProject := true,
      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
 
- 
   /// APP 
   lazy val app: Project = Project(
     id = "app",
     base = file("app"),
-    settings = coreSettings ++ Seq(
+    settings = coreSettings ++
+      libdepsSettings ++ Seq(
       javacOptions ++= Seq("-g"), 
       name := "agilesites-app",
-      version := v,
-      libraryDependencies <++= (wcsVersion) { x => Seq(
-           "com.sciabarra" % "agilesites-core" % (x + "_" + v),
-           "com.sciabarra" % "agilesites-api" % v withSources())},
       wcsGenerateIndexTask,
       wcsCopyHtmlTask,
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
@@ -117,33 +118,31 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     id = "all",
     base = file("."),
     settings = coreSettings ++
+      libdepsSettings ++
       assemblySettings ++ 
+      net.virtualvoid.sbt.graph.Plugin.graphSettings ++
       scaffoldSettings ++ Seq(
-       javacOptions ++= Seq("-g"), 
-       name := "agilesites-all",
-       version := v,
-       libraryDependencies <++= (wcsVersion) { x => Seq(
-           "com.sciabarra" % "agilesites-core" % (x + "_" + v),
-           "com.sciabarra" % "agilesites-api" % v withSources())},
-       wcsCsdtTask,
-       wcsVirtualHostsTask,
-       wcsCopyJarsWebTask,
-       wcsCopyJarsLibTask,
-       wcsHelloTask,
-       wcsCatalogManagerTask,
-       wcsSetupTask,
-       wcsWebappSatelliteTask,
-       wcsSetupSatelliteTask,
-       wcsDeployTask,
-       wcsCopyStaticTask,
-       wcsAssemblyJarTask,
-       wcsUpdateAssetsTask,
-       wcsLogTask,
-       excludedJars in assembly <<= (fullClasspath in assembly),
-       watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").get),
-       EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
-       EclipseKeys.skipProject := false,
-       wcsSetupOffline := {  println("Please use wcs-setup instead") },
-       wcsSetupOnline := {  println("Please use wcs-deploy instead") },
-       assembleArtifact in packageScala := false)) dependsOn (app) aggregate (app, api)
+      javacOptions ++= Seq("-g"), 
+      name := "agilesites-all",      
+      wcsCsdtTask,
+      wcsVirtualHostsTask,
+      wcsCopyJarsWebTask,
+      wcsCopyJarsLibTask,
+      wcsHelloTask,
+      wcsCatalogManagerTask,
+      wcsSetupTask,
+      wcsWebappSatelliteTask,
+      wcsSetupSatelliteTask,
+      wcsDeployTask,
+      wcsCopyStaticTask,
+      wcsAssemblyJarTask,
+      wcsUpdateAssetsTask,
+      wcsLogTask,
+      excludedJars in assembly <<= (fullClasspath in assembly),
+      watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").get),
+      EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
+      EclipseKeys.skipProject := false,
+      wcsSetupOffline := {  println("Please use wcs-setup instead") },
+      wcsSetupOnline := {  println("Please use wcs-deploy instead") },
+      assembleArtifact in packageScala := false)) dependsOn (app) aggregate (app, api)
 }
