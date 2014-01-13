@@ -32,5 +32,10 @@ This will export all the pages of the current work site in the workspace contain
 
 # Importing
 
-After export, everything will be stored in the folder `export/envision/<workspace>` and can then be put in revision control.
+After export, everything will be stored in the folder `export/envision/<workspace>` and can then be put under revision control.
 
+You can then reimpoirt it in your local environment or on a live site with the command:
+
+```
+wcs-dt import #MySite !MySite @ALL
+```
