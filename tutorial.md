@@ -19,4 +19,4 @@ how to export the result with CSDT
 
 ## What is next?
 
-Check [here](reference.html) for reference documentation.
+Check [here](reference.html) for full documentation.

@@ -88,8 +88,6 @@ If instead you are using WebCenter Sites 11.1.1.6.x to import the demo site all 
 wcs-dt import #Demo-11.6 !Demo @ALL
 ```
 
-![Successful import](/img/snap1188.png)
-
 Once you have installed the core library and eventually imported the demo site, you can complete the installation running
 
 ```
@@ -101,6 +99,8 @@ If you have imported the demo site, you can check if it is now up and running wi
 > http://localhost:9080/cs/Satellite/demo
 
 Change the port according your actual installed host, port and path.
+
+![Demo Site](/img/snap0469.png)
 
 Run tests accessing to  
 
