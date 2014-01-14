@@ -1,6 +1,6 @@
 ---
 layout: page
-title: AgileSites
+title: AgileSites 1.8
 tagline: the Easy framework for  Agile development with Oracle  WebCenter Sites (formerly Fatwire)
 ---
 {% include JB/setup %}
