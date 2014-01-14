@@ -102,8 +102,6 @@ If you have imported the demo site, you can check if it is now up and running wi
 
 Change the port according your actual installed host, port and path.
 
-![Demo Site](/img/snap0469.png)
-
 Run tests accessing to  
 
 > http://localhost:8080/cs/ContentServer?pagename=Demo_Tester
