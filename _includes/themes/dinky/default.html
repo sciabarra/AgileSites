@@ -1,151 +1,140 @@
   <!DOCTYPE html>
   <html>
-    <head>
-      <meta charset="utf-8" />
-      <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-      <meta name="author" content="{{ site.author.name }}" />
-      <link rel="shortcut icon" href="{{ ASSET_PATH }}/images/favicon.png"/>
-      <title>{{ page.title }}</title>
-  
-      <link rel="stylesheet" media="screen" href="{{ ASSET_PATH }}/css/bootstrap.css">
-      <link rel="stylesheet" href="{{ ASSET_PATH }}/css/bootstrap-responsive.css">
-      <link rel="stylesheet" href="{{ ASSET_PATH }}/css/style.css">
-      
-      <script src="{{ ASSET_PATH }}/js/scale.fix.js"></script>
-      <script src="http://code.jquery.com/jquery.js"> </script>
-     <script src="http://www.sciabarra.com/fatwire/wp-content/themes/sciabarra/js/bootstrap.min.js">  </script>
-      <script src="http://www.sciabarra.com/fatwire/wp-content/themes/sciabarra/js/sciabarra.js"></script>
-      <script src="http://code.jquery.com/jquery.min.js"></script>
-      <style>
-#containingBlock {
-  width:90%;
-}
-.videoWrapper {
-  position: relative;
-  padding-bottom: 56.25%;
-  padding-top: 25px;
-  height: 0;
-}
-.videoWrapper object,
-.videoWrapper embed {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-      </style>
-      <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="author" content="{{ site.author.name }}" />
+    <link rel="shortcut icon" href="{{ ASSET_PATH }}/images/favicon.png"/>
+    <title>{{ page.title }}</title>
+
+    <link rel="stylesheet" media="screen" href="{{ ASSET_PATH }}/css/bootstrap.css">
+    <link rel="stylesheet" href="{{ ASSET_PATH }}/css/bootstrap-responsive.css">
+    <link rel="stylesheet" href="{{ ASSET_PATH }}/css/style.css">
+
+    <script src="{{ ASSET_PATH }}/js/scale.fix.js"></script>
+    <script src="http://code.jquery.com/jquery.js"> </script>
+    <script src="http://www.sciabarra.com/fatwire/wp-content/themes/sciabarra/js/bootstrap.min.js">  </script>
+    <script src="http://www.sciabarra.com/fatwire/wp-content/themes/sciabarra/js/sciabarra.js"></script>
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <style>
+
+      #containingBlock {
+        width:90%;
+      }
+      .videoWrapper {
+        position: relative;
+        padding-bottom: 56.25%;
+        padding-top: 25px;
+        height: 0;
+      }
+      .videoWrapper object,
+      .videoWrapper embed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
       <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
       <![endif]-->
-  
+
       
       {% include JB/analytics %}
     </head>
     <body>
-    <div class="navbar-wrapper">
-      <div class="container">
+      <div class="navbar-wrapper">
+        <div class="container">
           <div class="navbar">
-              <div class="container">
-  
-                  <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                      <span class="icon-th-list"></span>
-                  </a>
-  
-                  <div class="brand">
-                      <a href="http://www.sciabarra.com"><img src="{{ ASSET_PATH }}/images/logo-sciabarra.png"> </a>
-                  </div>
-                  <div class="nav-collapse collapse">
-                      
-  
-                      <ul class="nav pull-right">
-  							<li><a href="http://www.agilesites.org">news</a></li>
-  						<li><a href="/download.html">download</a></li>
-              <li><a href="/documentation.html">documentation</a></li>
-              <li><a href="/tutorial.html">tutorial</a></li>
-              <li><a href="http://www.linkedin.com/groups/AgileSites-Fatwire-WebCenter-Sites-ATG-5120720">community</a></li>
-  						<li><a href="http://www.sciabarra.com/fatwire">blog</a></li>
-              <li><a href="https://github.com/sciabarra/AgileSites">issues</a></li>
-  						<li><a href="http://www.sciabarra.com/contactform/contactform.php">support</a></li>
-  					 </ul>
-  
-                  </div>
-  
+            <div class="container">
+
+              <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-th-list"></span>
+              </a>
+
+              <div class="brand">
+                <a href="http://www.agilesites.org"><img src="{{ ASSET_PATH }}/images/logo-sciabarra.png"> </a>
               </div>
-          </div>
-      </div>
-  </div>
+              <div class="nav-collapse collapse">
+
+
+                <ul class="nav pull-right">
+                 <li><a href="/index.html">home</a></li>
+                 <li><a href="/download.html">download</a></li>
+                 <li><a href="/documentation.html">docs</a></li>
+                 <li><a href="/tutorial.html">tutorial</a></li>
+                 <li><a href="http://www.linkedin.com/groups/AgileSites-Fatwire-WebCenter-Sites-ATG-5120720">community</a></li>
+                 <li><a href="http://www.sciabarra.com/fatwire">blog</a></li>
+                 <li><a href="https://github.com/sciabarra/AgileSites">issues</a></li>
+                 <li><a href="http://www.sciabarra.com/contactform/contactform.php">support</a></li>
+                 <li><a href="http://www.sciabarra.com/about.php">company</a></li>
+               </ul>
+
+             </div>
+
+           </div>
+         </div>
+       </div>
+     </div>
   <!-- Carousel
   ================================================== -->
   <div id="myCarousel" class="carousel slide" data-interval="10000">
-  
-      <div class="item active">
-          <img src="{{ ASSET_PATH }}/images/cignonero1.png" alt="">
-          
-          <div class="container">
-              <div class="carousel-caption">
-                  <h1>AgileSites.</h1>
-  
-                  <p class="lead">the Easy framework for Agile development with Oracle WebCenter Sites</p>
-              </div>
-          </div>
+
+    <div class="item active">
+      <img src="{{ ASSET_PATH }}/images/sfondo.png" alt="">
+
+      <div class="container">
+        <div class="carousel-caption">
+          <h1>AgileSites.</h1>
+
+          <p class="lead">the Easy framework for Agile development with Oracle WebCenter Sites</p>
+        </div>
       </div>
+    </div>
   </div>
   <!-- /.carousel -->
-  			
-  			
-  		</header>
-  		<!-- end header -->
-      
-      <!-- start content -->
-  	<div class="container marketing">
-  
-      <div id="pagecontent" class="row">
-          <div class="span8">
-              <div class="block">
-              <!-- blocco centrale inizio -->
-              <section>
-        {{ content }}
+
+
+</header>
+<!-- end header -->
+
+<!-- start content -->
+<div class="container marketing">
+
+  <div id="pagecontent" class="row">
+    <div class="span8">
+      <div class="block">
+        <!-- blocco centrale inizio -->
+        <section>
+          {{ content }}
           
         </section>
-  				</div>
-          <!-- Fine blocco centrale -->
-           </div>
-              <div class="span4">
-                
-                  
-      
-                    <a class="twitter-timeline" href="https://twitter.com/AgileSitesFw" data-widget-id="419530496498860033">Tweets by @AgileSitesFw</a>
-                    
-                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+      </div>
+      <!-- Fine blocco centrale -->
+    </div>
+    <div class="span4" > 
+    <div style="padding-right:10px; margin-top:60px;">  
+      <a class="twitter-timeline" style="padding-right:10px" href="https://twitter.com/AgileSitesFw" data-widget-id="419530496498860033">Tweets by @AgileSitesFw</a>
 
-             	    
-  				
-  				
-  				<div>
-  					 
-        
-  
-        
-      </div>
-   					
-  
-      </div>
-      </div>
-  		<!-- end content -->
-  		 </div>
-  		<!-- start footer -->
-  		<footer id="foot" class="container">
-      
-  		 <p style="font-size: 80%; text-align: left;">
-              <b>AgileSites</b> - Written by <a href="http://linkedin.com/in/msciab">Michele Sciabarr&agrave;</a> 
-              - &copy; 2014 <a href="http://www.sciabarra.com">Sciabarra ltd</a>
-              Open Source Software releases under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>
-              Credits: Hosted on <a href="http://pages.github.com/">GitHub Pages</a> 
-              using the  <a href="http://jekyllbootstrap.com/">Jekyll Bootstrap</a></small>
-            </p>    
-  		</footer>
-  		<!-- end footer --> 		
-    </body>
-  </html>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    </div>
+  </div>
+  <!-- end content -->
+</div>
+<!-- start footer -->
+<footer id="foot" class="container">
+
+ <p>
+  <b>AgileSites</b> - Written by <a href="http://linkedin.com/in/msciab">Michele Sciabarr&agrave;</a> 
+  - &copy; 2014 <a href="http://www.sciabarra.com">Sciabarra ltd</a>
+  Open Source Software releases under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>
+  Credits: Hosted on <a href="http://pages.github.com/">GitHub Pages</a> 
+  using the  <a href="http://jekyllbootstrap.com/">Jekyll Bootstrap</a></small>
+</p>    
+</footer>
+<!-- end footer --> 		
+</body>
+</html>
