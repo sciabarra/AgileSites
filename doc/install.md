@@ -84,8 +84,6 @@ If instead you are using WebCenter Sites 11.1.1.6.x to import the demo site all 
 wcs-dt import #Demo-11.6 !Demo @ALL
 ```
 
-![Successful import](../img/snap1188.png)
-
 Once you have installed the core library and eventually imported the demo site, you can complete the installation running
 
 ```
