@@ -131,6 +131,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       wcsHelloTask,
       wcsCatalogManagerTask,
       wcsSetupTask,
+       wcsPopulateTask,
       wcsWebappSatelliteTask,
       wcsSetupSatelliteTask,
       wcsDeployTask,

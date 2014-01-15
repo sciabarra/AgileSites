@@ -82,15 +82,22 @@ trait AgileSitesSupport extends AgileSitesUtil {
   lazy val wcsCsdt = InputKey[Unit]("wcs-dt", "WCS Development Tool")
   val wcsCsdtTask = wcsCsdt <<= inputTask {
     (argTask: TaskKey[Seq[String]]) =>
-      (argTask, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
-        (args, version, url, sites, user, password, classpath, s, runner) =>
+      (argTask, wcsHome, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
+        (args, home, version, url, sites, user, password, classpath, s, runner) =>
 
           val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d|spring-\\d|commons-logging-|servlet-api|sites-security|esapi-|cs-|http(client|core|mime)-).*.jar$".r;
           val seljars = classpath.files.filter(f => !re.findAllIn(f.getName).isEmpty)
-          val sitesSearch = (( "!" + sites) +: args).reverse.filter(_.startsWith("!")).head.substring(1)
-          val workspaces = (file("export") / "envision").listFiles.filter(_.isDirectory).map(_.getName)
-          val workspaceSearch = ("#cs_workspace" +: args).reverse.filter(_.startsWith("#")).head.substring(1)
-          val workspace = workspaces.filter( _.indexOf(workspaceSearch) != -1)
+          
+          val workspaces = (file(home) / "export" / "envision").listFiles.filter(_.isDirectory).map(_.getName)
+          val workspaceSearch = ("#cs_workspace#" +: args).reverse.filter(_.startsWith("#")).head.substring(1)
+          
+          val (defaultSite, workspace) = if(!workspaceSearch.endsWith("#"))
+              workspaceSearch -> workspaces.filter( _.indexOf(workspaceSearch) != -1) 
+          else workspaceSearch.init -> workspaces.filter(_ == workspaceSearch.init) 
+
+
+          val fromSites = (( "!" + defaultSite) +: args).reverse.filter(_.startsWith("!")).head.substring(1)
+          val toSites = (( "^" + fromSites) +: args).reverse.filter(_.startsWith("^")).head.substring(1)
 
           //println(workspaceSearch)
           //println(workspace.mkString(" "))
@@ -100,12 +107,12 @@ trait AgileSitesSupport extends AgileSitesUtil {
                        seljars, args.drop(1), s.log)(runner)
 
           } else if(args.size == 0) {
-            println("""usage: wcs-dt  [<cmd>]  [<selector> ...] [#<workspace>] [!<sites>]
-                       | <workspace> can be a substring of available workspaces,
+            println("""usage:wcs-dt [<cmd>]  [<selector> ...] [#<workspace>[#]] [!<from-sites>] [^<to-sites>]
+                       | <workspace> is a substring of available workspaces, use #workspace# for an exact match
                        |   default workspace is: cs_workspace
                        |   available workspaces are: %s
-                       | <sites> is a comma separated list of sites defined, 
-                       |   defaults to '%s' 
+                       | <from-sites> and <to-sites> is a comma separated list of sites defined, 
+                       |   <from-sites> defaults to <workspace>, <to-sites> default to <from-sites> 
                        | <cmd> is one of 'listcs', 'listds', 'import', 'export', 'mkws'
                        |    defaults to 'listcs'
                        | <selector> check developer tool documentation for complete syntax
@@ -113,7 +120,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
                        |    the special form are
                        |      @SITE @ASSET_TYPE @ALL_ASSETS @STARTMENU @TREETAB
                        |  and also additional @ALL for all of them
-                       |""".stripMargin.format(workspaces.mkString("'", "', '", "'"), sitesSearch))
+                       |""".stripMargin.format(workspaces.mkString("'", "', '", "'")))
           } else if (workspace.size == 0)
             println("workspace " + workspaceSearch + " not found - create it with mkws <workspace>")
           else if (workspace.size > 1)
@@ -135,7 +142,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
                 }
             }
 
-            val args1 = args.filter(!_.startsWith("#")).filter(!_.startsWith("!"))
+            val args1 = args.filter(!_.startsWith("#")).filter(!_.startsWith("!")).filter(!_.startsWith("^"))
             val firstArg = if (args1.size > 0) args1(0) else "listcs"
             val resources = firstArg match {
               case "listcs" => processArgs(args1)
@@ -146,7 +153,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
                 if(args1.size==1) {
                  println("please specify workspace name")
                 } else {
-                  val ws = file("export") / "envision" / args1(1)
+                  val ws = file(home)  / "export" / "envision" / args1(1)
                   if(ws.exists)
                     println("nothing to do - workspace "+args1(1)+" exists")
                   else {
@@ -169,7 +176,8 @@ trait AgileSitesSupport extends AgileSitesUtil {
                 "password=" + password,
                 "cmd=" + firstArg,
                 "resources=" + res,
-                "fromSites=" + sitesSearch,
+                "fromSites=" + fromSites,
+                "toSites=" + toSites,
                 "datastore=" + workspace.head)
 
               s.log.debug(seljars.mkString("\n"))
@@ -220,6 +228,18 @@ trait AgileSitesSupport extends AgileSitesUtil {
           catalogManager(url, user, pass, classpath.files, args, s.log)    
       }
   }
+
+
+  lazy val wcsPopulate = TaskKey[Unit]("wcs-populate", "WCS Catalog Manager Populate")
+  val wcsPopulateTask = wcsPopulate <<= 
+     (wcsHello, wcsHome, wcsUrl,  wcsUser, wcsPassword, fullClasspath in Compile, streams) map {
+        (hello, home, url, user, pass, classpath, s) =>
+          if(hello.isEmpty)
+            throw new Exception("Web Center Sites must be online.")
+          catalogManager(url, user, pass, classpath.files, Seq("import_all"), s.log)
+          ( file(home) / "populate.done" ).createNewFile
+  }
+
 
   /// note the same name for package and assembly
   /// but assembly used in top level, package used in subprojects
