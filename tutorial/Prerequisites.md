@@ -6,7 +6,7 @@ title: Prerequisites
 
 In this section we list the prerequisites needed before starting to use this framework.
 
-### Java Development Kit  7
+## Java Development Kit  7
 
 The framework currently requires a java development kit version 7 or greater. You need to compile code so an actual Java Development Kit is needed, not just a java runtime
 
