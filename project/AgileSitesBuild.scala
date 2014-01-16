@@ -15,7 +15,9 @@ import giter8.ScaffoldPlugin.scaffoldSettings
 object AgileSitesBuild extends Build with AgileSitesSupport {
 
   // jars to be added to the library setup
-  val setupFilter =  "agilesites-api*" || "junit*" || "hamcrest*"
+  val setupFilter =  "agilesites-api*" || "junit*" || "hamcrest*" ||
+   "scala-library*" || "akka-actor*" || "akka-remote*" ||
+   "netty*" || "protobuf*" ||  "uncommons-math*" || "config*"
 
   ///  core dependencies - those are used for compiling
   val coreDependencies = Seq(
@@ -31,6 +33,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "org.apache.httpcomponents" % "httpcore" % "4.1.2",
     "org.apache.httpcomponents" % "httpmime" % "4.1.2",
     "org.apache.james" % "apache-mime4j" % "0.5",
+    "com.typesafe.akka" % "akka-actor_2.10" % "2.2.3", 
+    "com.typesafe.akka" % "akka-remote_2.10" % "2.2.3", 
+    "com.typesafe.akka" % "akka-testkit_2.10" % "2.2.3" % "test", 
     "junit" % "junit" % "4.11" % "test",
     "com.novocode" % "junit-interface" % "0.10" % "test")
 
@@ -52,7 +57,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     jar => Attributed.blank(file(jar))
   }
 
-  val coreSettings = Defaults.defaultSettings ++ net.virtualvoid.sbt.graph.Plugin.graphSettings ++ Seq(
+  val coreSettings = Defaults.defaultSettings ++ 
+   net.virtualvoid.sbt.graph.Plugin.graphSettings ++ 
+   Seq(
     resolvers += "Local Maven Repository" at "file:///"+(file("project").absolutePath)+"/repo",
     scalaVersion := "2.10.2",
     organization := "com.sciabarra",
@@ -122,6 +129,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       assemblySettings ++ 
       net.virtualvoid.sbt.graph.Plugin.graphSettings ++
       scaffoldSettings ++ Seq(
+      libraryDependencies ++= coreDependencies,
       javacOptions ++= Seq("-g"), 
       name := "agilesites-all",      
       wcsCsdtTask,
@@ -131,7 +139,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       wcsHelloTask,
       wcsCatalogManagerTask,
       wcsSetupTask,
-       wcsPopulateTask,
+      wcsPopulateTask,
       wcsWebappSatelliteTask,
       wcsSetupSatelliteTask,
       wcsDeployTask,
