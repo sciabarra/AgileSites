@@ -275,7 +275,7 @@ public class Picker {
 		return top.toString();
 	}
 
-	private static Pattern moupat = Pattern.compile("\\{\\{(\\w+)\\}\\}");
+	private static Pattern moupat = Pattern.compile("\\{[\\{%](\\w+)[\\}%]\\}");
 
 	private static String moustache(String s, Content... contents) {
 		StringBuffer sb = new StringBuffer();
@@ -294,6 +294,7 @@ public class Picker {
 		}
 		m.appendTail(sb);
 		return sb.toString();
+		
 	}
 
 	/**
