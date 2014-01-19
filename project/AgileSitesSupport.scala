@@ -153,7 +153,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
                 if(args1.size==1) {
                  println("please specify workspace name")
                 } else {
-                  val ws = file(home)  / "export" / "envision" / args1(1)
+                  val ws = file("export") / "envision" / args1(1)
                   if(ws.exists)
                     println("nothing to do - workspace "+args1(1)+" exists")
                   else {
