@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+<FTCS Version="1.1">
+<!-- OpenMarket/Xcelerate/AssetType/PAttributes/ContentForm
+--
+-- INPUT
+--
+-- OUTPUT
+--
+-->
+
+<callelement NAME="OpenMarket/Gator/FlexibleAssets/Attributes/ContentForm"/>
+
+</FTCS> 

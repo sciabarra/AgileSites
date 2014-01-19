@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<!DOCTYPE FTCS SYSTEM "futuretense_cs.dtd">
+
+<FTCS Version="1.1">
+<!-- 
+$Logfile: /VerticalApps/XcelerateA/install/Gator/Populate/ElementCatalog/OpenMarket/Gator/FlexibleAssets/AssetMaker/FlexTmpls/AppendSelectDetails.xml $ 
+$Revision: 5 $ 
+$Modtime: 11/16/01 5:58p $ 
+-->
+
+<!--
+- Confidential and Proprietary Information of FutureTense Inc.
+-					All Rights Reserved.
+-
+- AppendSelectDetails.xml
+-
+- DESCRIPTION
+-	 The basic idea: start with a minimum, default
+-    query. Then append additional criteria depending
+-    on fields that have been selected in the search
+-    form
+-
+- HISTORY 
+-->
+
+<callelement NAME="OpenMarket/Gator/FlexibleAssets/FlexTmpls/AppendSelectDetails"/>
+</FTCS>

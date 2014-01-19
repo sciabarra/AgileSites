@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
+    <id>Page:1374098082124</id>
+    <name>Phonecat</name>
+    <createdby>fwadmin</createdby>
+    <createddate>2014-01-19T15:02:22.775Z</createddate>
+    <description></description>
+    <publist>Hubby</publist>
+    <status>PL</status>
+    <subtype>Hubby_Phonecat</subtype>
+    <updatedby>fwadmin</updatedby>
+    <updateddate>2014-01-19T15:02:22.775Z</updateddate>
+    <attribute>
+        <name>startdate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>enddate</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>filename</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>path</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>template</name>
+        <data>
+            <stringValue>Hubby_PhonecatLayout</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldoc</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>externaldoctype</name>
+        <data>
+            <stringValue></stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>urlexternaldocxml</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fw_uid</name>
+        <data>
+            <stringValue>d1e27b63-e962-4dfc-9238-3dd76c742209</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>id</name>
+        <data>
+            <longValue>1374098082124</longValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SegRating</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Webreference</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>category</name>
+        <data>
+            <stringValue>acct</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SPTParent</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>SPTRank</name>
+        <data>
+            <integerValue>1</integerValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>SPTNCode</name>
+        <data>
+            <stringValue>UnPlaced</stringValue>
+        </data>
+    </attribute>
+    <attribute>
+        <name>flextemplateid</name>
+        <data>
+            <stringValue>PageDefinition:1374098082062</stringValue>
+        </data>
+    </attribute>
+    <associations>
+        <href>myPathassociations</href>
+    </associations>
+</ns2:assetBean>
+
+<!--==================___ METADATA ___================
+<dependencies>
+  <linked-hash-set>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageDefinition</resType>
+      <resId>1374098082062</resId>
+      <uid>d1a32e51-d71f-463b-9ecf-29302ff3f394</uid>
+    </dependency>
+    <dependency>
+      <depType>N</depType>
+      <resType>Page</resType>
+      <resId>1374098082124</resId>
+      <uid>d1e27b63-e962-4dfc-9238-3dd76c742209</uid>
+    </dependency>
+  </linked-hash-set>
+</dependencies>
+==================______________________==================
+#
+key=Page-d1e27b63-e962-4dfc-9238-3dd76c742209
+type=ASSETDATA
+sites=Hubby
+
+==================___ END METADATA ___==================-->
