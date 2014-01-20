@@ -523,13 +523,4 @@ trait AgileSitesSupport extends AgileSitesUtil {
       httpServe(base, s.log, run)
   }
 
-
-/*
-      val base = (file(src.getAbsolutePath) / "static").getAbsolutePath
-      val jars = Seq( (file("bin") / "nanohttpd-2.0.5.jar"), file("bin") / "nanohttpd-webserver-2.0.5.jar" )
-      val args = Seq("-d", base, "-p", "8181")
-      println("Serving in port 8181 the folder "+base)
-      Run.run("fi.iki.elonen.SimpleWebServer", jars, args, s.log)(run)
-      ()
-*/
 }

@@ -37,7 +37,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "com.typesafe.akka" % "akka-remote_2.10" % "2.2.3", 
     "com.typesafe.akka" % "akka-testkit_2.10" % "2.2.3" % "test", 
     "junit" % "junit" % "4.11" % "test",
-    "net.sourceforge.winstone" % "winstone" % "0.9.10" % "test",
     "com.novocode" % "junit-interface" % "0.10" % "test")
 
   // configuring WCS jars as unmanaged lib from sites directory
