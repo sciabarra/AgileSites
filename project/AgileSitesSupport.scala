@@ -188,6 +188,8 @@ trait AgileSitesSupport extends AgileSitesUtil {
       }
   }
 
+
+
   // hello
   val wcsHello = TaskKey[Option[String]]("wcs-hello", "WCS Hello")
   val wcsHelloTask = wcsHello <<= (wcsUrl) map {
@@ -495,4 +497,39 @@ trait AgileSitesSupport extends AgileSitesUtil {
             println(httpCall("Log", cmd.get, url, user, pass))
           }
       }
+
+
+  def httpServe(base: String, log: Logger, run: ScalaRun) {
+    val jars = Seq(  file("bin") / "nanohttpd-2.0.5.jar", 
+                     file("bin") / "nanohttpd-webserver-2.0.5.jar" )
+    val args = Seq("-d", base, "-p", "8181")
+    println("Serving in port 8181 the folder "+base)
+    Run.run("fi.iki.elonen.SimpleWebServer", jars, args, log)(run)
   }
+
+  val wcsServe = TaskKey[Unit]("wcs-serve", "WCS Serve static folder")
+
+  val wcsServeTask = wcsServe in Compile <<= 
+   (sourceDirectory in Compile, streams, runner) map {
+     (src, s, run) =>
+      val base = (file(src.getAbsolutePath) / "static").getAbsolutePath
+      httpServe(base, s.log, run)
+  }
+
+  val wcsServeTestTask = wcsServe in Test <<= 
+   (sourceDirectory in Test, streams, runner) map {
+     (src, s, run) =>
+      val base = (file(src.getAbsolutePath) / "static").getAbsolutePath
+      httpServe(base, s.log, run)
+  }
+
+
+/*
+      val base = (file(src.getAbsolutePath) / "static").getAbsolutePath
+      val jars = Seq( (file("bin") / "nanohttpd-2.0.5.jar"), file("bin") / "nanohttpd-webserver-2.0.5.jar" )
+      val args = Seq("-d", base, "-p", "8181")
+      println("Serving in port 8181 the folder "+base)
+      Run.run("fi.iki.elonen.SimpleWebServer", jars, args, s.log)(run)
+      ()
+*/
+}
