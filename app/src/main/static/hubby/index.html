@@ -1,23 +1,19 @@
 <!doctype html>
-<html lang="en" ng-app>
+<html lang="en" ng-app="phonecatApp">
 <head>
   <meta charset="utf-8">
-  <title>My HTML File</title>
+  <title>Google Phone Gallery</title>
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/bootstrap.css">
   <script src="lib/angular/angular.js"></script>
+  <script src="js/controllers.js"></script>
 </head>
-<body>
-
-  <h1>{%Title%}</h1>
-
-  <p>Nothing here {{'yet' + '!'}}</p>
-  
-  <ul for="Title" in="i">
-    <li>{%Title[i]%}</li>
-  </p>
-  
-  <p>2+2={{ 2 + 2 }}</p>
-
+<body ng-controller="PhoneListCtrl">
+  <ul>
+    <li ng-repeat="phone in phones">
+      <span>{{phone.name}}</span>
+      <p>{{phone.snippet}}</p>
+    </li>
+  </ul>
 </body>
 </html>

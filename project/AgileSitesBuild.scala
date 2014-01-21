@@ -119,7 +119,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       wcsGenerateIndexTask,
       wcsCopyHtmlTask,
       wcsServeTask,
-      wcsServeTestTask,      
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
 
   /// ALL

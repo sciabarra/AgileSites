@@ -295,4 +295,13 @@ trait AgileSitesUtil {
         Fork.java(None, all, Some(new java.io.File(".")), log)  
   }
 
+
+ def httpServe(port: Int, folders: Array[String], log: Logger, run: ScalaRun) {
+    val jars = Seq(  file("bin") / "nanohttpd-2.0.5.jar", 
+                     file("bin") / "nanohttpd-webserver-2.0.5.jar" )
+    val args = Seq("-p", ""+port) ++ folders.flatMap( Seq("-d", _) )
+    println("Serving in port "+port+" the folders:")
+    for(folder <- folders) println(" "+folder)
+    Run.run("fi.iki.elonen.SimpleWebServer", jars, args, log)(run)
+  }
 }
