@@ -25,11 +25,11 @@ trait AgileSitesSupport extends AgileSitesUtil {
   lazy val wcsStaticBlobs = SettingKey[String]("wcs-static-blobs", "WCS Static Blobs Regexp")
   lazy val wcsCsdtJar = SettingKey[String]("wcs-csdt-jar", "WCS CSDT Jar")
   lazy val wcsVirtualHosts = SettingKey[Seq[Tuple2[String, String]]]("wcs-virtual-hosts", "WCS Virtual Host mapping")
+  lazy val wcsWebdriverOptions = SettingKey[Seq[String]]("wcs-webdriver-options", "WCS webdriver options")
+
+
   lazy val wcsVirtualHostsTask = wcsVirtualHosts := Seq[Tuple2[String, String]]()
-  
-  lazy val wcsSetupOffline = TaskKey[Unit]("wcs-setup-offline", "Legacy WCS Setup Offline")
-  lazy val wcsSetupOnline = TaskKey[Unit]("wcs-setup-online", "Legacy WCS Setup Offline")
-  
+     
   // the satellite webapp defaults to a sister /cs webapp named /ss).getParentFile / "ss").getAbsolutePath }
   lazy val wcsWebappSatellite = TaskKey[String]("wcs-webapp-satellite", "WCS Satellite Webapp")
   val wcsWebappSatelliteTask = wcsWebappSatellite <<= (wcsWebapp) map {
@@ -498,8 +498,6 @@ trait AgileSitesSupport extends AgileSitesUtil {
           }
       }
 
-
-
   val wcsServe = TaskKey[Unit]("wcs-serve", "WCS Serve static folder")
 
   val wcsServeTask = wcsServe in Test <<= 
@@ -510,4 +508,60 @@ trait AgileSitesSupport extends AgileSitesUtil {
       httpServe(8181, Array(base1, base2), s.log, run)
   }
 
+  lazy val wcsWebdriver = InputKey[Unit]("wcs-webdriver", "Lauch WebDriver")
+  val wcsWebdriverTask = wcsWebdriver <<= inputTask { (argsTask: TaskKey[Seq[String]]) =>
+    (argsTask, wcsWebdriverOptions, streams, runner) map {
+      (args, params, s, run) =>
+        args.headOption match {
+          case None => println("usage: start|stop|status")
+          case Some("status") =>
+            try {
+              new java.net.ServerSocket(45454).close
+              println("webdriver not running")
+            } catch {
+              case e: Throwable => 
+                 //e.printStackTrace
+                 println("webdriver running")
+            }           
+
+          case Some("stop") =>
+            try {
+              def sock = new java.net.Socket("127.0.0.1",45454)
+              sock.close
+            } catch {
+              case e: Throwable => 
+                 // e.printStackTrace
+                 println("webdriver not running")
+            }           
+
+          case Some("start") => 
+            val jar = file("bin") / "selenium-server-standalone-2.39.0.jar"
+            val cmd = Seq("-cp", jar.getAbsolutePath, "org.openqa.grid.selenium.GridLauncher")
+            val thread = new Thread() {
+              override def run() {
+                 try {
+                   val sock = new java.net.ServerSocket(45454)
+                   val process = Fork.java.fork(None, 
+                      cmd ++ params, 
+                      Some(new java.io.File(".")), 
+                      Map(), true, StdoutOutput)  
+                   println("*** webdriver started ***")
+                   // wait for a connection then close the socket and the process
+                   sock.accept()
+                   //println("closing")
+                   sock.close()
+                   //println("stopping")
+                   process.destroy()
+                   println("*** webdriver stopped ***")
+                 } catch {
+                   case e: Throwable => 
+                    //e.printStackTrace
+                    println("webdriver already running")
+                 }
+              }
+            }
+            thread.start
+        }
+      } 
+    }
 }

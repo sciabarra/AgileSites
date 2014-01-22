@@ -35,6 +35,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "org.apache.james" % "apache-mime4j" % "0.5",
     "com.typesafe.akka" % "akka-actor_2.10" % "2.2.3", 
     "com.typesafe.akka" % "akka-remote_2.10" % "2.2.3", 
+    //"org.seleniumhq.selenium" % "selenium-java" % "2.39.0",
+    "org.fluentlenium" % "fluentlenium-core" % "0.9.1" % "test",
+    "org.fluentlenium" % "fluentlenium-festassert" % "0.9.1" % "test",
     "com.typesafe.akka" % "akka-testkit_2.10" % "2.2.3" % "test", 
     "junit" % "junit" % "4.11" % "test",
     "com.novocode" % "junit-interface" % "0.10" % "test")
@@ -147,12 +150,11 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       wcsCopyStaticTask,
       wcsAssemblyJarTask,
       wcsUpdateAssetsTask,
+      wcsWebdriverTask,
       wcsLogTask,
       excludedJars in assembly <<= (fullClasspath in assembly),
       watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").get),
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
       EclipseKeys.skipProject := false,
-      wcsSetupOffline := {  println("Please use wcs-setup instead") },
-      wcsSetupOnline := {  println("Please use wcs-deploy instead") },
       assembleArtifact in packageScala := false)) dependsOn (app) aggregate (app, api)
 }
