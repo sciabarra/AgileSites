@@ -88,7 +88,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
           val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d|spring-\\d|commons-logging-|servlet-api|sites-security|esapi-|cs-|http(client|core|mime)-).*.jar$".r;
           val seljars = classpath.files.filter(f => !re.findAllIn(f.getName).isEmpty)
           
-          val workspaces = (file(home) / "export" / "envision").listFiles.filter(_.isDirectory).map(_.getName)
+          val workspaces = (file("export") / "envision").listFiles.filter(_.isDirectory).map(_.getName)
           val workspaceSearch = ("#cs_workspace#" +: args).reverse.filter(_.startsWith("#")).head.substring(1)
           
           val (defaultSite, workspace) = if(!workspaceSearch.endsWith("#"))
@@ -153,7 +153,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
                 if(args1.size==1) {
                  println("please specify workspace name")
                 } else {
-                  val ws = file(home)  / "export" / "envision" / args1(1)
+                  val ws = file("export") / "envision" / args1(1)
                   if(ws.exists)
                     println("nothing to do - workspace "+args1(1)+" exists")
                   else {

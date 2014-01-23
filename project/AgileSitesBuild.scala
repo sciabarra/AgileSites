@@ -15,7 +15,7 @@ import giter8.ScaffoldPlugin.scaffoldSettings
 object AgileSitesBuild extends Build with AgileSitesSupport {
 
   // jars to be added to the library setup
-  val setupFilter =  "agilesites-api*" || "junit*" || "hamcrest*"
+  val setupFilter =  "agilesites-api*" || "junit*" || "hamcrest*" 
 
   ///  core dependencies - those are used for compiling
   val coreDependencies = Seq(
@@ -26,6 +26,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "org.springframework" % "spring-test" % "2.5.5",
     "commons-logging" % "commons-logging" % "1.1.1",
     "log4j" % "log4j" % "1.2.16",
+    "com.typesafe.akka" % "akka-actor_2.10" % "2.2.3",
     "commons-httpclient" % "commons-httpclient" % "3.1",
     "org.apache.httpcomponents" % "httpclient" % "4.1.2",
     "org.apache.httpcomponents" % "httpcore" % "4.1.2",
