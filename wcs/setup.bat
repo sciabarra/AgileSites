@@ -6,7 +6,7 @@ set PATH="%JAVA_HOME%"\bin;%PATH%
 java -version
 if errorlevel 9009 if not errorlevel 9010 goto notfoundjava
 copy install.ini Sites
-copy omii.ini Sites
+copy home\ominstallinfo\omii.ini Sites
 cd Sites
 call csinstall -silent
 goto pause
