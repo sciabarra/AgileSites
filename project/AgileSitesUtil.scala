@@ -296,12 +296,32 @@ trait AgileSitesUtil {
   }
 
 
- def httpServe(port: Int, folders: Array[String], log: Logger, run: ScalaRun) {
-    val jars = Seq(  file("bin") / "nanohttpd-2.0.5.jar", 
-                     file("bin") / "nanohttpd-webserver-2.0.5.jar" )
-    val args = Seq("-p", ""+port) ++ folders.flatMap( Seq("-d", _) )
-    println("Serving in port "+port+" the folders:")
-    for(folder <- folders) println(" "+folder)
-    Run.run("fi.iki.elonen.SimpleWebServer", jars, args, log)(run)
+ def httpServe(port: Int, folders: Array[String], log: Logger) = {
+    val jar1 = (file("bin") / "nanohttpd-2.0.5.jar").getAbsolutePath
+    val jar2 = (file("bin") / "nanohttpd-webserver-2.0.5.jar" ).getAbsolutePath
+    val jvmParams = Seq( "-cp", jar1+ java.io.File.pathSeparator + jar2);
+    val params = Seq("-p", ""+port) ++ folders.flatMap( Seq("-d", _) )
+    val mainClass = Seq("fi.iki.elonen.SimpleWebServer")
+    //Run.run("fi.iki.elonen.SimpleWebServer", jars, args, log)(run)
+
+    Fork.java.fork(None, 
+              jvmParams ++ mainClass ++ params, 
+              Some(new java.io.File(".")), 
+              Map(), true, StdoutOutput)
+  }
+
+  def webDriver(port: Int, log: Logger) = {
+      val jar = file("bin") / "selenium-server-standalone-2.39.0.jar"
+      val jvmParams = 
+         Seq("-Dwebdriver.chrome.driver=bin/chromedriver.exe",
+             "-cp", jar.getAbsolutePath)
+      val mainClass = Seq("org.openqa.grid.selenium.GridLauncher")
+      val params = Seq("-port", ""+port) 
+
+      Fork.java.fork(None, 
+              jvmParams ++ mainClass ++ params, 
+              Some(new java.io.File(".")), 
+              Map(), true, StdoutOutput)
   }
 }
+

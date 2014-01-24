@@ -24,10 +24,8 @@ trait AgileSitesSupport extends AgileSitesUtil {
   lazy val wcsFlexBlobs = SettingKey[String]("wcs-flex-blobs", "WCS Flex Blobs Regexp")
   lazy val wcsStaticBlobs = SettingKey[String]("wcs-static-blobs", "WCS Static Blobs Regexp")
   lazy val wcsCsdtJar = SettingKey[String]("wcs-csdt-jar", "WCS CSDT Jar")
+
   lazy val wcsVirtualHosts = SettingKey[Seq[Tuple2[String, String]]]("wcs-virtual-hosts", "WCS Virtual Host mapping")
-  lazy val wcsWebdriverOptions = SettingKey[Seq[String]]("wcs-webdriver-options", "WCS webdriver options")
-
-
   lazy val wcsVirtualHostsTask = wcsVirtualHosts := Seq[Tuple2[String, String]]()
      
   // the satellite webapp defaults to a sister /cs webapp named /ss).getParentFile / "ss").getAbsolutePath }
@@ -498,65 +496,63 @@ trait AgileSitesSupport extends AgileSitesUtil {
           }
       }
 
-  val wcsServe = TaskKey[Unit]("wcs-serve", "WCS Serve static folder")
-
-  val wcsServeTask = wcsServe in Test <<= 
-   (sourceDirectory in Compile, sourceDirectory in Test, streams, runner) map {
-     (src1, src2, s, run) =>
-      val base1 = (file(src1.getAbsolutePath) / "static").getAbsolutePath
-      val base2 = (file(src2.getAbsolutePath) / "static").getAbsolutePath
-      httpServe(8181, Array(base1, base2), s.log, run)
-  }
-
-  lazy val wcsWebdriver = InputKey[Unit]("wcs-webdriver", "Lauch WebDriver")
-  val wcsWebdriverTask = wcsWebdriver <<= inputTask { (argsTask: TaskKey[Seq[String]]) =>
-    (argsTask, wcsWebdriverOptions, streams, runner) map {
-      (args, params, s, run) =>
+  lazy val wcsServe = InputKey[Unit]("wcs-serve", "Launch WebServer & WebDriver")
+  val wcsServeTask = wcsServe <<= inputTask { (argsTask: TaskKey[Seq[String]]) =>
+    (argsTask, baseDirectory, streams) map {
+      (args, base, s) =>
         args.headOption match {
           case None => println("usage: start|stop|status")
           case Some("status") =>
             try {
-              new java.net.ServerSocket(45454).close
-              println("webdriver not running")
+              new java.net.ServerSocket(8183).close
+              println("webdriver/webserver not running")
             } catch {
               case e: Throwable => 
                  //e.printStackTrace
-                 println("webdriver running")
+                 println("webdriver/webserver running")
             }           
 
           case Some("stop") =>
             try {
-              def sock = new java.net.Socket("127.0.0.1",45454)
+              def sock = new java.net.Socket("127.0.0.1",8183)
               sock.close
             } catch {
               case e: Throwable => 
                  // e.printStackTrace
-                 println("webdriver not running")
+                 println("webdriver/webserver not running")
             }           
 
           case Some("start") => 
-            val jar = file("bin") / "selenium-server-standalone-2.39.0.jar"
-            val cmd = Seq("-cp", jar.getAbsolutePath, "org.openqa.grid.selenium.GridLauncher")
+  
             val thread = new Thread() {
               override def run() {
                  try {
-                   val sock = new java.net.ServerSocket(45454)
-                   val process = Fork.java.fork(None, 
-                      cmd ++ params, 
-                      Some(new java.io.File(".")), 
-                      Map(), true, StdoutOutput)  
-                   println("*** webdriver started ***")
+                   val sock = new java.net.ServerSocket(8183)
+                   val folders = Array(
+                      (base / "src" / "main" / "static").getAbsolutePath,
+                      (base / "src" / "test" / "static").getAbsolutePath)
+                 
+                   println("*** webdriver starting in port 8182 ***")
+                   val webdriver = webDriver(8182, s.log)
+
+                   println("*** webserver starting in port 8181 with the folders:")
+                   for(folder <- folders) println("*** -"+folder)  
+                   val httpserve = httpServe(8181, folders, s.log)
+      
                    // wait for a connection then close the socket and the process
                    sock.accept()
                    //println("closing")
                    sock.close()
                    //println("stopping")
-                   process.destroy()
+
+                   httpserve.destroy()
+                   println("*** webserver stopped ***")
+                   webdriver.destroy()
                    println("*** webdriver stopped ***")
                  } catch {
                    case e: Throwable => 
                     //e.printStackTrace
-                    println("webdriver already running")
+                    println("webdriver/webserver already running")
                  }
               }
             }

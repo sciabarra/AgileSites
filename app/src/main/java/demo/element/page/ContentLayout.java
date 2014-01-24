@@ -2,11 +2,13 @@ package demo.element.page;
 import static wcs.Api.*;
 import wcs.api.Asset;
 import wcs.api.Env;
+import wcs.api.Id;
 import wcs.api.Index;
 import wcs.api.Log;
 import wcs.java.AssetSetup;
 import wcs.java.Element;
 import wcs.java.Picker;
+import wcs.java.SitePlan;
 import wcs.java.Template;
 
 @Index("demo/elements.txt")
@@ -72,6 +74,13 @@ public class ContentLayout extends Element {
 						arg("cid", a.getCid().toString())));
 		html.replace("#tree", e.call("Tree"));
 
+		
+		SitePlan sp = (wcs.java.SitePlan) e.getSitePlan();
+		Id[] desc = sp.descendant(10000);
+		System.out.println("desc#"+desc.length);
+		for (Id id : desc)
+			System.out.println(id);
+			
 		return html.dump(log).html();
 	}
 

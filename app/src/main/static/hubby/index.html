@@ -12,11 +12,11 @@
 <div class="container-fluid">
  <div class="row-fluid">
   <div class="span2">
-    Search: <input ng-model="query">
+    Search: <input id="search" ng-model="query">
   </div>
   <div class="span10">
-    <ul>
-      <li ng-repeat="phone in phones | filter:query">
+    <ul id="results">
+      <li  ng-repeat="phone in phones | filter:query">
         <span>{{phone.name}}</span>
         <p>{{phone.snippet}}</p>
       </li>
