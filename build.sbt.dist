@@ -7,7 +7,7 @@ wcsSites in ThisBuild := "Demo"
 
 // url to content server - NO slashes at the end please 
 // the url must allow access to ContentServer, CatalogManager and Satellite
-wcsUrl in ThisBuild := "http://localhost:8080/cs"
+wcsUrl in ThisBuild := "http://localhost:8181/cs"
 
 // user to import/export
 wcsUser in ThisBuild := "fwadmin"
@@ -15,23 +15,20 @@ wcsUser in ThisBuild := "fwadmin"
 // password to import/export
 wcsPassword in ThisBuild := "xceladmin"
 
-// Fatwire/Sites version - currently supported 7.5.0 and 11.1.1.6.0
-wcsVersion in ThisBuild := "11.1.1.6.0"
+// Fatwire/Sites version - currently supported 11.1.1.6.0 and 11.1.1.8.0
+wcsVersion in ThisBuild := "11.1.1.8.0"
 
 // home directory of WCS - leave it to
-wcsHome in ThisBuild := "C:/Oracle/WebCenter/Sites/11gR1/Sites/11.1.1.6.1"
+wcsHome in ThisBuild := "wcs/home"
 
 // shared folder
-wcsShared in ThisBuild := "C:/Oracle/WebCenter/Sites/11gR1/Sites/11.1.1.6.1/Shared"
+wcsShared in ThisBuild := "wcs/shared"
 
 // webapp directory of WebCenter Sites 
-wcsWebapp in ThisBuild := "C:/Oracle/WebCenter/Sites/11gR1/App_Server/apache-tomcat-6.0.32/webapps/cs"
+wcsWebapp in ThisBuild := "wcs/webapps/cs"
 
 // location of the csdt-client jar
-wcsCsdtJar in ThisBuild := "C:/Oracle/WebCenter/Sites/11gR1/Sites/11.1.1.6.1/csdt-client-1.2.2.jar"
-
-// webdriver options
-wcsWebdriverOptions  := Seq("-port", "4545")
+wcsCsdtJar in ThisBuild := "wcs/home/csdt-client-1.2.2.jar"
 
 // this regexp must mach the numeric id of the flex blob 
 // the first group must be the numeric id of the flex blob
