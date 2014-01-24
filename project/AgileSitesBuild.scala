@@ -12,7 +12,7 @@ import sys.process._
 import scala.xml.transform.RewriteRule
 import giter8.ScaffoldPlugin.scaffoldSettings
 
-object AgileSitesBuild extends Build with AgileSitesSupport {
+object AgileSitesBuild extends Build with AgileSitesSupport with Sites {
 
   // jars to be added to the library setup
   val setupFilter =  "agilesites-api*" || "junit*" || "hamcrest*" ||
@@ -76,8 +76,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
 
   val libdepsSettings = Seq(
      libraryDependencies <++= (wcsVersion) { x => Seq(
-           "com.sciabarra" % "agilesites-core" % (x + "_" + v),
-           "com.sciabarra" % "agilesites-api" % (x + "_" + v) withSources())})
+       "com.sciabarra" % "agilesites-core" % (x + "_" + v),
+       "com.sciabarra" % "agilesites-api" % (x + "_" + v) withSources())})
    
 
   import javadoc.JavadocPlugin.javadocSettings
@@ -122,8 +122,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       name := "agilesites-app",
       wcsGenerateIndexTask,
       wcsCopyHtmlTask,
-      wcsServeTask,
       EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
+
 
   /// ALL
   lazy val all: Project = Project(
@@ -134,9 +134,10 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       assemblySettings ++ 
       net.virtualvoid.sbt.graph.Plugin.graphSettings ++
       scaffoldSettings ++ Seq(
-        libraryDependencies ++= coreDependencies,
+        libraryDependencies ++= coreDependencies ++ wcsDependencies,
         javacOptions ++= Seq("-g"), 
-        name := "agilesites-all",      
+        name := "agilesites-all",
+        wcsWcsTask,      
         wcsCsdtTask,
         wcsVirtualHostsTask,
         wcsCopyJarsWebTask,
@@ -152,6 +153,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
         wcsAssemblyJarTask,
         wcsUpdateAssetsTask,
         wcsLogTask,
+        wcsServeTask,
         excludedJars in assembly <<= (fullClasspath in assembly),
         watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").get),
         EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,

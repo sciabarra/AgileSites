@@ -296,7 +296,7 @@ trait AgileSitesUtil {
   }
 
 
- def httpServe(port: Int, folders: Array[String], log: Logger) = {
+ def httpServe(port: Int, folders: Array[String]) = {
     val jar1 = (file("bin") / "nanohttpd-2.0.5.jar").getAbsolutePath
     val jar2 = (file("bin") / "nanohttpd-webserver-2.0.5.jar" ).getAbsolutePath
     val jvmParams = Seq( "-cp", jar1+ java.io.File.pathSeparator + jar2);
@@ -310,7 +310,34 @@ trait AgileSitesUtil {
               Map(), true, StdoutOutput)
   }
 
-  def webDriver(port: Int, log: Logger) = {
+
+  def tomcatServe(port: Int, classpath: Seq[File], webapps: Seq[String]) = {
+    val tomcatFilter = "tomcat-*" || "hsqldb*"
+    val cp = classpath.
+         filter(x => x.isDirectory || (tomcatFilter accept x)).
+         map(_.getAbsolutePath).
+         mkString(java.io.File.pathSeparator)
+
+         //val root = (file("app") / "src" / "main" / "static").getAbsolutePath
+         //val test = "@test="+(file("app") / "src" / "test" / "static").getAbsolutePath
+         
+         val temp = (file("wcs")).getAbsolutePath
+         val args = Seq(port.toString, temp) ++ webapps
+         val cmd = "-cp" :: cp :: "wcs.SitesTomcat" :: args.toList 
+               
+         import java.io._
+         val fw = new FileWriter("tomcat.bat")
+         fw.write(cmd.mkString("java ", " ", "\n"))
+         fw.close
+
+          Fork.java.fork(None, 
+            cmd, 
+            Some(new java.io.File(".")), 
+            Map(), true, StdoutOutput)
+
+  }
+
+  def webDriver(port: Int) = {
       val jar = file("bin") / "selenium-server-standalone-2.39.0.jar"
       val jvmParams = 
          Seq("-Dwebdriver.chrome.driver=bin/chromedriver.exe",

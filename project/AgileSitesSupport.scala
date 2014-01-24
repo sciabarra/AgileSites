@@ -186,8 +186,6 @@ trait AgileSitesSupport extends AgileSitesUtil {
       }
   }
 
-
-
   // hello
   val wcsHello = TaskKey[Option[String]]("wcs-hello", "WCS Hello")
   val wcsHelloTask = wcsHello <<= (wcsUrl) map {
@@ -498,8 +496,8 @@ trait AgileSitesSupport extends AgileSitesUtil {
 
   lazy val wcsServe = InputKey[Unit]("wcs-serve", "Launch WebServer & WebDriver")
   val wcsServeTask = wcsServe <<= inputTask { (argsTask: TaskKey[Seq[String]]) =>
-    (argsTask, baseDirectory, streams) map {
-      (args, base, s) =>
+    (argsTask, fullClasspath in Compile, baseDirectory, streams) map {
+      (args, classpath, base, s) =>
         args.headOption match {
           case None => println("usage: start|stop|status")
           case Some("status") =>
@@ -528,17 +526,18 @@ trait AgileSitesSupport extends AgileSitesUtil {
               override def run() {
                  try {
                    val sock = new java.net.ServerSocket(8183)
-                   val folders = Array(
-                      (base / "src" / "main" / "static").getAbsolutePath,
-                      (base / "src" / "test" / "static").getAbsolutePath)
+                   val root = (base / "app" / "src" / "main" / "static").getAbsolutePath
+                   val test = (base / "app" / "src" / "test" / "static").getAbsolutePath
                  
                    println("*** webdriver starting in port 8182 ***")
-                   val webdriver = webDriver(8182, s.log)
+                   val webdriver = webDriver(8182)
 
-                   println("*** webserver starting in port 8181 with the folders:")
-                   for(folder <- folders) println("*** -"+folder)  
-                   val httpserve = httpServe(8181, folders, s.log)
-      
+                   println("*** webserver starting in port 8181 ***")
+                   //for(folder <- folders) println("*** -"+folder)  
+                   
+                   //val httpserve = httpServe(8181, Array(root,test), s.log)
+                  val httpserve = tomcatServe(8181, classpath.files, Seq("="+root, "test="+test))
+
                    // wait for a connection then close the socket and the process
                    sock.accept()
                    //println("closing")
