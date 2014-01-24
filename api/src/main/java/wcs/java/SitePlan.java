@@ -92,6 +92,27 @@ public class SitePlan implements wcs.api.SitePlan {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see wcs.java.ISitePlan#children()
+	 */
+	public Id[] descendant(int level) {
+		log.trace("all pages!");
+		String name = tmp();
+		String list = tmp();
+		SiteplanTag.load().name(name).nodeid(currentNid).run(i);
+		SiteplanTag.listpages().name(name).placedlist(list).level(""+level).run(i);
+		List<Id> nodes = new LinkedList<Id>();
+		for (int i : e.getRange(list)) {
+			String c = e.getString(list, i, "AssetType");
+			Long cid = e.getLong(list, i, "Id");
+			nodes.add(i - 1, new Id(c, cid));
+		}
+		return nodes.toArray(new Id[nodes.size()]);
+	}
+
+	
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see wcs.java.ISitePlan#path()
 	 */
 	@Override
