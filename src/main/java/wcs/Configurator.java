@@ -196,8 +196,9 @@ public class Configurator extends JFrame implements ActionListener {
 					if (iniFile.getProperty("CSInstallAppServerType")
 							.startsWith("tomcat")) {
 							
-						webApp = iniFile.getProperty("CSInstallAppServerPath")
-								+ "/webapps" + iniFile.getProperty("sCgiPath");
+						webApp = iniFile.getProperty("CSInstallAppServerPath");
+					    if(!webApp.endsWith("/")) webApp = webApp + "/";
+					    webApp = webApp + "webapps" + iniFile.getProperty("sCgiPath");
 					}
 
 				} catch (Exception e) {
@@ -215,8 +216,16 @@ public class Configurator extends JFrame implements ActionListener {
 				}		    
 
 			} else if (son.getName().endsWith(".jar")
-					&& son.getName().startsWith("csdt-client"))
+					&& son.getName().startsWith("csdt-client")) {
 				jarFile = son.getAbsolutePath();
+
+				// heuristic to choose the right version
+				if(jarFile.endsWith("-1.2.2.jar"))
+					version = "11.1.1.6.0";
+				if(jarFile.endsWith("-11.1.1.8.0.jar"))
+					version = "11.1.1.8.0";
+
+			}
 		}
 	}
 

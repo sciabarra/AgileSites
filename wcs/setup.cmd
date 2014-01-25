@@ -8,15 +8,15 @@ if errorlevel 9009 if not errorlevel 9010 goto notfoundjava
 set REPLACE=%~dp0
 set REPLACE=%REPLACE:\=/%
 copy install.ini Sites
-java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <home\ominstallinfo\omii.ini >Sites\omii.ini
+java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <omii.ini >home\ominstallinfo\omii.ini
+java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <omii.ini >Sites\omii.ini
 java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <context.xml >webapps\cs\META-INF\context.xml
 java -cp ..\bin\wcs.jar wcs.Unzip Sites\csdt.zip home
 cd ..
 java -cp bin\wcs.jar wcs.Configurator wcs
 cd wcs
-rem java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <..\build.sbt.dist >..\build.sbt
-rem cd Sites
-rem call csinstall -silent
+cd Sites
+call csinstall -silent
 goto pause
 :notfoundsites
 echo Sites installer not found.

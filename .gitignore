@@ -11,6 +11,7 @@ build.sbt
 .settings/
 .metadata
 report.xml
+tomcat.bat
 # sbt specific
 api/scaffolds/cselement/default.properties
 api/scaffolds/layout/default.properties
