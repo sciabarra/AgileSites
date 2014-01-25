@@ -312,7 +312,7 @@ trait AgileSitesUtil {
 
 
   def tomcatServe(port: Int, classpath: Seq[File], webapps: Seq[String]) = {
-    val tomcatFilter = "tomcat-*" || "hsqldb*"
+    val tomcatFilter = "tomcat-*" || "hsqldb-*" || "ecj-*"
     val cp = classpath.
          filter(x => x.isDirectory || (tomcatFilter accept x)).
          map(_.getAbsolutePath).

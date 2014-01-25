@@ -12,7 +12,7 @@ import sys.process._
 import scala.xml.transform.RewriteRule
 import giter8.ScaffoldPlugin.scaffoldSettings
 
-object AgileSitesBuild extends Build with AgileSitesSupport with Sites {
+object AgileSitesBuild extends Build with AgileSitesSupport {
 
   // jars to be added to the library setup
   val setupFilter =  "agilesites-api*" || "junit*" || "hamcrest*" ||
@@ -38,6 +38,12 @@ object AgileSitesBuild extends Build with AgileSitesSupport with Sites {
     "org.seleniumhq.selenium" % "selenium-java" % "2.39.0",
     "org.fluentlenium" % "fluentlenium-core" % "0.9.1",
     "org.fluentlenium" % "fluentlenium-festassert" % "0.9.1",
+    "org.apache.tomcat" % "tomcat-catalina" % "7.0.34",
+    "org.apache.tomcat" % "tomcat-dbcp" % "7.0.34",
+    "org.apache.tomcat.embed" % "tomcat-embed-core" % "7.0.34",
+    "org.apache.tomcat.embed" % "tomcat-embed-logging-juli" % "7.0.34",
+    "org.apache.tomcat.embed" % "tomcat-embed-jasper" % "7.0.34",
+    "org.hsqldb" % "hsqldb" % "1.8.0.10",
     "com.typesafe.akka" % "akka-testkit_2.10" % "2.2.3" % "test", 
     "junit" % "junit" % "4.11" % "test",
     "com.novocode" % "junit-interface" % "0.10" % "test")
@@ -134,10 +140,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport with Sites {
       assemblySettings ++ 
       net.virtualvoid.sbt.graph.Plugin.graphSettings ++
       scaffoldSettings ++ Seq(
-        libraryDependencies ++= coreDependencies ++ wcsDependencies,
+        libraryDependencies ++= coreDependencies,
         javacOptions ++= Seq("-g"), 
         name := "agilesites-all",
-        wcsWcsTask,      
         wcsCsdtTask,
         wcsVirtualHostsTask,
         wcsCopyJarsWebTask,

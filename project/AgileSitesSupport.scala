@@ -526,17 +526,21 @@ trait AgileSitesSupport extends AgileSitesUtil {
               override def run() {
                  try {
                    val sock = new java.net.ServerSocket(8183)
-                   val root = (base / "app" / "src" / "main" / "static").getAbsolutePath
-                   val test = (base / "app" / "src" / "test" / "static").getAbsolutePath
                  
                    println("*** webdriver starting in port 8182 ***")
                    val webdriver = webDriver(8182)
 
                    println("*** webserver starting in port 8181 ***")
                    //for(folder <- folders) println("*** -"+folder)  
+                   val root = (base / "app" / "src" / "main" / "static").getAbsolutePath
+                   val test = (base / "app" / "src" / "test" / "static").getAbsolutePath
+                   val cs   = (base / "wcs" / "webapps" / "cs" ).getAbsolutePath
+                   val cas  = (base / "wcs" / "webapps" / "cas").getAbsolutePath
+               
+                   val webapps = Seq("="+root, "test="+test, "cs="+cs, "cas="+cas)
                    
                    //val httpserve = httpServe(8181, Array(root,test), s.log)
-                  val httpserve = tomcatServe(8181, classpath.files, Seq("="+root, "test="+test))
+                   val httpserve = tomcatServe(8181, classpath.files, webapps)
 
                    // wait for a connection then close the socket and the process
                    sock.accept()
