@@ -7,12 +7,13 @@ Checking csDataSource:
     {
         javax.naming.Context ctx 
            = new javax.naming.InitialContext();
-        javax.naming.Context envContext  
-           = (javax.naming.Context)ctx.lookup("java:/comp/env");
         javax.sql.DataSource ds 
-           = (javax.sql.DataSource)envContext
-            .lookup("jdbc/csDataSource");
+           = (javax.sql.DataSource)ctx
+            .lookup("java:/comp/env/csDataSource");
         out.println(ds.toString());
+        java.sql.Connection con = ds.getConnection();
+        out.println(con.toString());
+        con.close();
     }
     catch (Exception e)
     {

@@ -1,14 +1,17 @@
-@echo off
+rem @echo off
 if not exist Sites\csinstall.bat goto notfoundsites
 if not defined JAVA_HOME goto nojavahome
 set PATH="%JAVA_HOME%"\bin;%PATH%
 :nojavahome
 java -version
 if errorlevel 9009 if not errorlevel 9010 goto notfoundjava
+set REPLACE=%~dp0
+set REPLACE=%REPLACE:\=/%
 copy install.ini Sites
-copy home\ominstallinfo\omii.ini Sites
-cd Sites
-call csinstall -silent
+java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <home\ominstallinfo\omii.ini >Sites\omii.ini
+java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <context.xml >webapps\cs\META-INF\context.xml
+rem cd Sites
+rem call csinstall -silent
 goto pause
 :notfoundsites
 echo Sites installer not found.

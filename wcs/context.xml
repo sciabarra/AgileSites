@@ -8,5 +8,5 @@
      username="sa"
      password=""
      driverClassName="org.hsqldb.jdbcDriver"
-     url="jdbc:hsqldb:wcs/shared/data/csDB"/>
+     url="jdbc:hsqldb:../shared/data/csDB"/>
 </Context>

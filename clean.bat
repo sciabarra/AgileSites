@@ -14,4 +14,3 @@ rd /s /q core\target
 rd /s /q project\boot
 rd /s /q project\project
 rd /s /q project\repo
-del bin\*.class
