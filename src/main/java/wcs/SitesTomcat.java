@@ -30,16 +30,17 @@ class SitesTomcat  {
   		if(!ctx.startsWith("/") && !ctx.equals(""))
   			ctx = "/"+ctx;
   		String path = args[i].substring(p+1);
-   		System.out.println("*** "+ctx+" -> "+path);
+      File filepath = new File(path);
+      if(!filepath.exists())
+        continue;
+      System.out.println("* "+ctx+" -> "+path);
 		  Context context = tomcat.addWebapp(ctx, path);
-      File config = new File(new File(new File(path), "META-INF"), "context.xml");
+      File config = new File(new File(filepath, "META-INF"), "context.xml");
       if(config.exists()) {
          java.net.URL url = config.toURI().toURL();
          context.setConfigFile(url);
-         System.out.println("FOUND "+ctx+" with "+url);
-      } else {        
-         System.out.println("not found "+ctx+" with "+config);
-      }
+         System.out.println("** with context.xml");
+      } 
   	}
 
   	tomcat.start();

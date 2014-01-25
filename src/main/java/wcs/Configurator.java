@@ -113,6 +113,12 @@ public class Configurator extends JFrame implements ActionListener {
 	String webApp = null;
 	String version = "unknown";
 	String site = null;
+	String defaultpw = null;
+
+    public Configurator(String topdir) {
+    	defaultpw = "xceladmin";
+    	searchIniJar(new File(topdir));
+    }
 
 	private void selectFolder0() {
 		if (dirChooser.showDialog(this, "Select") != JFileChooser.APPROVE_OPTION)
@@ -230,18 +236,22 @@ public class Configurator extends JFrame implements ActionListener {
 
 	private void configure() {
 
-		String pw = JOptionPane.showInputDialog(this,
+		String pw = defaultpw;
+		if(pw==null) 
+			     pw = JOptionPane.showInputDialog(this,
 				"Password for " + iniFile.getProperty("CSInstallAppName"),
 				"Password Request", 1);
+
 		if (pw == null)
 			return;
 
-		site = JOptionPane.showInputDialog(this,
+		if(site==null)
+		  site = JOptionPane.showInputDialog(this,
 				"Input your custom site name here.\n"+
 				"Leave blank if you plan to add a custom site later.",
 				"Your Custom Site", 1);
 
-		if(site!=null)
+		if(site!=null && site.length()>0)
 		 	JOptionPane.showMessageDialog(null, "The site "+site
 				+" will be configured in the framework.\n"
 				+"However you still need to create this site in Sites,\n" 
@@ -298,11 +308,15 @@ public class Configurator extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
+		final String arg = args.length<1 ? null : args[0]; 
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new Configurator().setVisible(true);
+				if(arg==null)
+				  new Configurator().setVisible(true);
+				else 
+				  new Configurator(arg).configure();
 			}
 		});
 	}

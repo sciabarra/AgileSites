@@ -16,19 +16,19 @@ wcsUser in ThisBuild := "fwadmin"
 wcsPassword in ThisBuild := "xceladmin"
 
 // Fatwire/Sites version - currently supported 11.1.1.6.0 and 11.1.1.8.0
-wcsVersion in ThisBuild := "11.1.1.8.0"
+wcsVersion in ThisBuild := "11.1.1.6.1"
 
 // home directory of WCS - leave it to
-wcsHome in ThisBuild := "wcs/home"
+wcsHome in ThisBuild := "../home"
 
 // shared folder
-wcsShared in ThisBuild := "wcs/shared"
+wcsShared in ThisBuild := "../shared"
 
 // webapp directory of WebCenter Sites 
-wcsWebapp in ThisBuild := "wcs/webapps/cs"
+wcsWebapp in ThisBuild := "../webapps/cs"
 
 // location of the csdt-client jar
-wcsCsdtJar in ThisBuild := "wcs/home/csdt-client-1.2.2.jar"
+wcsCsdtJar in ThisBuild := "../home/csdt-client-1.2.2.jar"
 
 // this regexp must mach the numeric id of the flex blob 
 // the first group must be the numeric id of the flex blob
@@ -50,4 +50,3 @@ wcsStaticBlobs in ThisBuild := """^(.*\.(css|js|jpg|png|gif))$"""
 // wcsVirtualHosts += ("Demo" -> "http://demo.loc")
 
 // leave an empty line to support appending extra commands at the end
-

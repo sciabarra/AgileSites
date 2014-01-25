@@ -1,4 +1,4 @@
-rem @echo off
+@echo off
 if not exist Sites\csinstall.bat goto notfoundsites
 if not defined JAVA_HOME goto nojavahome
 set PATH="%JAVA_HOME%"\bin;%PATH%
@@ -10,6 +10,11 @@ set REPLACE=%REPLACE:\=/%
 copy install.ini Sites
 java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <home\ominstallinfo\omii.ini >Sites\omii.ini
 java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <context.xml >webapps\cs\META-INF\context.xml
+java -cp ..\bin\wcs.jar wcs.Unzip Sites\csdt.zip home
+cd ..
+java -cp bin\wcs.jar wcs.Configurator wcs
+cd wcs
+rem java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <..\build.sbt.dist >..\build.sbt
 rem cd Sites
 rem call csinstall -silent
 goto pause
