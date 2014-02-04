@@ -91,10 +91,11 @@ trait AgileSitesSupport extends AgileSitesUtil {
           val workspaces = (file("export") / "envision").listFiles.filter(_.isDirectory).map(_.getName)
           val workspaceSearch = ("#cs_workspace#" +: args).reverse.filter(_.startsWith("#")).head.substring(1)
           
-          val (defaultSite, workspace) = if(!workspaceSearch.endsWith("#"))
-              workspaceSearch -> workspaces.filter( _.indexOf(workspaceSearch) != -1) 
-          else workspaceSearch.init -> workspaces.filter(_ == workspaceSearch.init) 
+          val workspace = if(!workspaceSearch.endsWith("#"))
+              workspaces.filter( _.indexOf(workspaceSearch) != -1) 
+          else workspaces.filter(_ == workspaceSearch.init) 
 
+          val defaultSite = sites.split(",").head
 
           val fromSites = (( "!" + defaultSite) +: args).reverse.filter(_.startsWith("!")).head.substring(1)
           val toSites = (( "^" + fromSites) +: args).reverse.filter(_.startsWith("^")).head.substring(1)
@@ -194,7 +195,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
     (url) => 
       try {
         val res = httpCallRaw(url + "/HelloCS")
-        var re = """(?s).*java\.version=([\w\.-_]+).*""".r
+        var re = """(?s).*java\.version=([\w\.\-_]+).*""".r
         res match {
           case re(ver) =>
             val prp = System.getProperty("java.version") 
