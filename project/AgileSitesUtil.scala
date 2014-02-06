@@ -122,6 +122,33 @@ trait AgileSitesUtil {
 
   }
 
+    // configure futurentense.ini
+  def switchFutureTenseIni2Hsql(home: String) {
+
+    val prpFile = file(home) / "futuretense.ini"
+    val prp = new java.util.Properties
+    prp.load(new java.io.FileReader(prpFile))
+    prp.setProperty("cc.bigint",        "BIGINT");
+    prp.setProperty("cc.bigtext",       "LONGVARCHAR");
+    prp.setProperty("cc.blob",          "LONGVARBINARY");
+    prp.setProperty("cc.datetime",      "TIMESTAMP");
+    prp.setProperty("cc.double",        "FLOAT");
+    prp.setProperty("cc.integer",       "INTEGER");
+    prp.setProperty("cc.maxvarcharsize","2147483647");
+    prp.setProperty("cc.null",          "");
+    prp.setProperty("cc.numeric",       "NUMERIC");
+    prp.setProperty("cc.primary",       "PRIMARY KEY");
+    prp.setProperty("cc.rename",        "ALTER TABLE %1 RENAME TO %2");
+    prp.setProperty("cc.smallint",      "SMALLINT");
+    prp.setProperty("cc.unique",        "");
+    prp.setProperty("cs.dbtype",        "HSQLDB");
+    println("~ for HSQLDB " + prpFile)
+    prp.store(new java.io.FileWriter(prpFile),
+      "updated by AgileSites setup")
+  }
+
+
+
   // create a static configuration file
   def setupAgileSitesPrp(dir: String, shared: String, sites: String, static: String, flexBlobs: String, staticBlobs: String) {
     val prpFile = file(dir) / "WEB-INF" / "classes" / "agilesites.properties"
@@ -310,8 +337,8 @@ trait AgileSitesUtil {
               Map(), true, StdoutOutput)
   }
 
-
   def tomcatServe(port: Int, classpath: Seq[File], webapps: Seq[String]) = {
+    
     import java.io.File.pathSeparator
     val tomcatFilter = "tomcat-*" || "hsqldb-*" || "ecj-*"
     val eclasspath = classpath ++ Seq(file("wcs") / "home" / "bin") 
@@ -319,25 +346,26 @@ trait AgileSitesUtil {
          filter(x => x.isDirectory || (tomcatFilter accept x)).
          map(_.getAbsolutePath).
          mkString(pathSeparator)
-  
-         //val root = (file("app") / "src" / "main" / "static").getAbsolutePath
-         //val test = "@test="+(file("app") / "src" / "test" / "static").getAbsolutePath
-         
-         val temp = (file("wcs")).getAbsolutePath
-         val args = Seq(port.toString, temp) ++ webapps
-         val cmd = "-cp" :: cp :: "wcs.SitesTomcat" :: args.toList 
+
+    val temp = (file("wcs") / "temp")
+    temp.mkdirs
+
+    val td = "-Djava.io.tmpdir="+(temp.getAbsolutePath)  
+    val args = Seq(port.toString) ++ webapps
+    val cmd = List("-cp", cp, td, "wcs.SitesTomcat") ++ args.toList 
                
-         import java.io._
-         val fw = new FileWriter("tomcat.bat")
-         fw.write(cmd.mkString("java ", " ", "\n"))
-         fw.close
+    import java.io._
+    val fw = if(File.pathSeparator == ';')  
+      new FileWriter("run.bat")
+    else new FileWriter("run.sh")
+    fw.write(cmd.mkString("java ", " ", "\n"))
+    fw.close
 
-          Fork.java.fork(None, 
-            cmd, 
-            Some(new java.io.File(".")), 
-            Map(), true, StdoutOutput)
 
-  }
+    Fork.java.fork(None, cmd, 
+      Some(new java.io.File(".")), 
+      Map(), true, StdoutOutput)
+   }
 
   def webDriver(port: Int) = {
       val jar = file("bin") / "selenium-server-standalone-2.39.0.jar"

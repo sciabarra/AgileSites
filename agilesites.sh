@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "Not updated"
+exit
 if test -n "$JAVA_HOME"
 then export PATH="$JAVA_HOME/bin:wcs/home/bin:$PATH"
 fi

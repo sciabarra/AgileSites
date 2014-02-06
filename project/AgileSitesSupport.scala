@@ -89,10 +89,11 @@ trait AgileSitesSupport extends AgileSitesUtil {
           val workspaces = (file("export") / "envision").listFiles.filter(_.isDirectory).map(_.getName)
           val workspaceSearch = ("#cs_workspace#" +: args).reverse.filter(_.startsWith("#")).head.substring(1)
           
-          val (defaultSite, workspace) = if(!workspaceSearch.endsWith("#"))
-              workspaceSearch -> workspaces.filter( _.indexOf(workspaceSearch) != -1) 
-          else workspaceSearch.init -> workspaces.filter(_ == workspaceSearch.init) 
+          val workspace = if(!workspaceSearch.endsWith("#"))
+              workspaces.filter( _.indexOf(workspaceSearch) != -1) 
+          else workspaces.filter(_ == workspaceSearch.init) 
 
+          val defaultSite = sites.split(",").head
 
           val fromSites = (( "!" + defaultSite) +: args).reverse.filter(_.startsWith("!")).head.substring(1)
           val toSites = (( "^" + fromSites) +: args).reverse.filter(_.startsWith("^")).head.substring(1)
@@ -192,7 +193,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
     (url) => 
       try {
         val res = httpCallRaw(url + "/HelloCS")
-        var re = """(?s).*java\.version=([\w\.-_]+).*""".r
+        var re = """(?s).*java\.version=([\w\.\-_]+).*""".r
         res match {
           case re(ver) =>
             val prp = System.getProperty("java.version") 
@@ -235,7 +236,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
           if(hello.isEmpty)
             throw new Exception("Web Center Sites must be online.")
           catalogManager(url, user, pass, classpath.files, Seq("import_all"), s.log)
-          ( file(home) / "populate.done" ).createNewFile
+          file("populate.done").createNewFile
   }
 
 
@@ -323,7 +324,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
         if (hello.isEmpty)
           throw new Exception("WebCenter Site must be online.")
         // pupulate with support elements 
-        val flag = file(home) / "populate.done"
+        val flag = file("populate.done")
         if(!flag.exists) {
           catalogManager(url, user, pass, classpath.files, Seq("import_all"), s.log)
           flag.createNewFile
@@ -377,12 +378,10 @@ trait AgileSitesSupport extends AgileSitesUtil {
               (site, url + "/Satellite/" + normalizeSiteName(site))
             } toSeq
 
-
             setupMkdirs(shared, version, sites)
             setupServletRequest(webapp, sites, vhosts, flexBlobs, staticBlobs)
             setupAgileSitesPrp(webapp, shared, sites, static, flexBlobs, staticBlobs)
             setupFutureTenseIni(home, shared, static,  sites, version)
-
 
             // remove any other jar starting with agilesites-all-assembly 
             // remnants of the past
@@ -398,9 +397,8 @@ trait AgileSitesSupport extends AgileSitesUtil {
                 }
             }
 
-
-            // remove pupulate mark if there
-            ( file(home) / "populate.done" ).delete
+            // mark setup and remove pupulate mark if there
+            file("populate.done").delete
 
             println("""**** Setup Complete.
                 |**** Please restart your application server.
@@ -421,7 +419,6 @@ trait AgileSitesSupport extends AgileSitesUtil {
        flexBlobs, staticBlobs, virtualHosts) =>
 
             println("*** Installing AgileSites for WebCenter Sites Satellite ***");
-
             setupServletRequest(webapp, sites, virtualHosts, flexBlobs, staticBlobs)
             //setupAgileSitesPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs) //not used for now
             println("*** Installation Complete. \n**** Please restart your satellite server.")
@@ -496,8 +493,8 @@ trait AgileSitesSupport extends AgileSitesUtil {
 
   lazy val wcsServe = InputKey[Unit]("wcs-serve", "Launch WebServer & WebDriver")
   val wcsServeTask = wcsServe <<= inputTask { (argsTask: TaskKey[Seq[String]]) =>
-    (argsTask, fullClasspath in Compile, baseDirectory, streams) map {
-      (args, classpath, base, s) =>
+    (argsTask, fullClasspath in Compile, baseDirectory, wcsHome, wcsUrl, streams) map {
+      (args, classpath, base, home, url, s) =>
         args.headOption match {
           case None => println("usage: start|stop|status")
           case Some("status") =>
@@ -521,7 +518,13 @@ trait AgileSitesSupport extends AgileSitesUtil {
             }           
 
           case Some("start") => 
-  
+   
+            val hsqlflag = (file(home) / "hsql.switch")
+            if( hsqlflag.exists) {
+              switchFutureTenseIni2Hsql(home)
+              hsqlflag.delete
+            }
+
             val thread = new Thread() {
               override def run() {
                  try {
@@ -548,10 +551,11 @@ trait AgileSitesSupport extends AgileSitesUtil {
                    sock.close()
                    //println("stopping")
 
-                   httpserve.destroy()
+                   httpserve.destroy()     
                    println("*** webserver stopped ***")
                    webdriver.destroy()
                    println("*** webdriver stopped ***")
+
                  } catch {
                    case e: Throwable => 
                     //e.printStackTrace
@@ -560,6 +564,8 @@ trait AgileSitesSupport extends AgileSitesUtil {
               }
             }
             thread.start
+            println(" *** Waiting for startup complete ***")
+            println(httpCallRaw(url + "/HelloCS"))            
         }
       } 
     }

@@ -35,19 +35,18 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "org.apache.james" % "apache-mime4j" % "0.5",
     "com.typesafe.akka" % "akka-actor_2.10" % "2.2.3", 
     "com.typesafe.akka" % "akka-remote_2.10" % "2.2.3", 
-    "org.seleniumhq.selenium" % "selenium-java" % "2.39.0",
-    "org.fluentlenium" % "fluentlenium-core" % "0.9.1",
-    "org.fluentlenium" % "fluentlenium-festassert" % "0.9.1",
+    "com.typesafe.akka" % "akka-testkit_2.10" % "2.2.3" % "test",
     "org.apache.tomcat" % "tomcat-catalina" % "7.0.34",
     "org.apache.tomcat" % "tomcat-dbcp" % "7.0.34",
     "org.apache.tomcat.embed" % "tomcat-embed-core" % "7.0.34",
     "org.apache.tomcat.embed" % "tomcat-embed-logging-juli" % "7.0.34",
     "org.apache.tomcat.embed" % "tomcat-embed-jasper" % "7.0.34",
     "org.hsqldb" % "hsqldb" % "1.8.0.10",
-    "com.typesafe.akka" % "akka-testkit_2.10" % "2.2.3" % "test", 
-    "junit" % "junit" % "4.11" % "test",
-    "com.novocode" % "junit-interface" % "0.10" % "test")
-
+    "org.seleniumhq.selenium" % "selenium-java" % "2.39.0",
+    "org.fluentlenium" % "fluentlenium-core" % "0.9.1",
+    "org.fluentlenium" % "fluentlenium-festassert" % "0.9.1",
+    "com.novocode" % "junit-interface" % "0.10")
+ 
   // configuring WCS jars as unmanaged lib from sites directory
   val unmanagedFilter = "log4j-*" || "slf4j*" || "spring-*" || "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
     "wem-sso-api-*" || "rest-api-*" || "cas-client-*" || "assetapi*" || "xstream*" ||
@@ -67,28 +66,25 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   }
 
   val coreSettings = Defaults.defaultSettings ++ 
-   net.virtualvoid.sbt.graph.Plugin.graphSettings ++ 
-   Seq(
-    resolvers += "Local Maven Repository" at "file:///"+(file("project").absolutePath)+"/repo",
-    scalaVersion := "2.10.2",
-    organization := "com.sciabarra",
-    publishTo := Some(Resolver.file("repo",  new File( "project/repo" )) ),
-    publishMavenStyle := true,
-    includeFilterUnmanagedJars,
-    libraryDependencies ++= coreDependencies,
-    unmanagedBaseTask,
-    version <<= (wcsVersion) { x => x +  "_" + v },
-    unmanagedJarsTask)
+    net.virtualvoid.sbt.graph.Plugin.graphSettings ++ Seq(
+      resolvers += "Local Maven Repository" at "file:///"+(file("project").absolutePath)+"/repo",
+      scalaVersion := "2.10.2",
+      organization := "com.sciabarra",
+      publishTo := Some(Resolver.file("repo",  new File( "project/repo" )) ),
+      publishMavenStyle := true,
+      javacOptions in Compile := Seq("-encoding", "UTF-8", "-g"), 
+      javacOptions in Compile in doc := Seq("-encoding", "UTF-8"),
+      includeFilterUnmanagedJars,
+      unmanagedBaseTask,
+      version <<= (wcsVersion) { x => x +  "_" + v },
+      unmanagedJarsTask)
 
   val libdepsSettings = Seq(
      libraryDependencies <++= (wcsVersion) { x => Seq(
+       "com.novocode" % "junit-interface" % "0.10",
        "com.sciabarra" % "agilesites-core" % (x + "_" + v),
        "com.sciabarra" % "agilesites-api" % (x + "_" + v) withSources())})
    
-
-  import javadoc.JavadocPlugin.javadocSettings
-  import javadoc.JavadocPlugin.javadocTarget
-
   /// CORE
   lazy val core: Project = Project(
     id = "core",
@@ -98,7 +94,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       libraryDependencies ++= coreDependencies,
       publishArtifact in packageDoc := false,
       crossPaths := false,
-	    javacOptions ++= Seq("-encoding", "UTF-8", "-g"),
       coreGeneratorTask,
       EclipseKeys.skipProject := true))
 
@@ -112,7 +107,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
        Seq("com.sciabarra" % "agilesites-core" % (x + "_" + v) )
      },
      publishArtifact in packageDoc := false,
-     javacOptions ++= Seq("-g"),
      crossPaths := false,
      wcsPackageJarTask,
      EclipseKeys.skipProject := true,
@@ -124,12 +118,10 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     base = file("app"),
     settings = coreSettings ++
       libdepsSettings ++ Seq(
-      javacOptions ++= Seq("-g"), 
-      name := "agilesites-app",
-      wcsGenerateIndexTask,
-      wcsCopyHtmlTask,
-      EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
-
+        name := "agilesites-app",
+        wcsGenerateIndexTask,
+        wcsCopyHtmlTask,
+        EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
 
   /// ALL
   lazy val all: Project = Project(
@@ -140,8 +132,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       assemblySettings ++ 
       net.virtualvoid.sbt.graph.Plugin.graphSettings ++
       scaffoldSettings ++ Seq(
-        libraryDependencies ++= coreDependencies,
-        javacOptions ++= Seq("-g"), 
         name := "agilesites-all",
         wcsCsdtTask,
         wcsVirtualHostsTask,

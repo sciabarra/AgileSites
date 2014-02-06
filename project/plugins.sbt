@@ -5,11 +5,10 @@ resolvers += {
   Resolver.url("artifactory", url("http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases"))(Resolver.ivyStylePatterns)
 }
 
-libraryDependencies += "commons-httpclient" % "commons-httpclient" % "3.1"
-
-libraryDependencies += "commons-io" % "commons-io" % "2.4"
-
-libraryDependencies += "org.clapper" % "scalasti_2.9.1" % "0.5.8"
+libraryDependencies ++= Seq(
+   "commons-httpclient" % "commons-httpclient" % "3.1",
+   "commons-io" % "commons-io" % "2.4",
+   "org.clapper" % "scalasti_2.9.1" % "0.5.8")
 
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.1.2")
 
