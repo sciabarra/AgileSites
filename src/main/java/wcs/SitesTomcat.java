@@ -19,7 +19,6 @@ class SitesTomcat  {
 
   	Tomcat tomcat = new Tomcat();
 
-
     tomcat.setPort(port);
     tomcat.setBaseDir(base);
     tomcat.enableNaming();

@@ -351,9 +351,11 @@ trait AgileSitesUtil {
     val temp =  home / "temp"
     temp.mkdirs
 
-    val td = "-Djava.io.tmpdir="+(temp.getAbsolutePath)  
-    val args = Seq(port.toString, home.getAbsolutePath) ++ webapps
-    val cmd = List("-cp", cp, td, "wcs.SitesTomcat") ++ args.toList 
+    val opts = "-cp" :: cp :: 
+      "-Djava.io.tmpdir="+(temp.getAbsolutePath) :: 
+      "-Xms256m" :: "-Xmx1024m" :: Nil
+    val args = Seq("wcs.SitesTomcat", port.toString, home.getAbsolutePath) ++ webapps
+    val cmd = opts.toList ++ args.toList 
                
     import java.io._
     

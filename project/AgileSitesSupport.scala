@@ -417,7 +417,6 @@ trait AgileSitesSupport extends AgileSitesUtil {
       (args, _, classes,
        sites, version, webapp,
        flexBlobs, staticBlobs, virtualHosts) =>
-
             println("*** Installing AgileSites for WebCenter Sites Satellite ***");
             setupServletRequest(webapp, sites, virtualHosts, flexBlobs, staticBlobs)
             //setupAgileSitesPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs) //not used for now
@@ -500,13 +499,21 @@ trait AgileSitesSupport extends AgileSitesUtil {
           case Some("status") =>
             try {
               new java.net.ServerSocket(8183).close
-              println("webdriver/webserver not running")
+              println("tomcat not running")
             } catch {
               case e: Throwable => 
                  //e.printStackTrace
-                 println("webdriver/webserver running")
+                 println("tomcat running")
+            }
+            try {
+              new java.net.ServerSocket(8184).close
+              println("webdriver not running")
+            } catch {
+              case e: Throwable => 
+                 //e.printStackTrace
+                 println("webdriver running")
             }           
-
+           
           case Some("stop") =>
             try {
               def sock = new java.net.Socket("127.0.0.1",8183)
@@ -514,36 +521,41 @@ trait AgileSitesSupport extends AgileSitesUtil {
             } catch {
               case e: Throwable => 
                  // e.printStackTrace
-                 println("webdriver/webserver not running")
+                 println("tomcat not running")
+            }           
+            try {
+              def sock = new java.net.Socket("127.0.0.1",8184)
+              sock.close
+            } catch {
+              case e: Throwable => 
+                 // e.printStackTrace
+                 println("webdriver not running")
             }           
 
           case Some("start") => 
    
+            // switch to hsql if needed
             val hsqlflag = (file(home) / "hsql.switch")
             if( hsqlflag.exists) {
               switchFutureTenseIni2Hsql(home)
               hsqlflag.delete
             }
 
-            val thread = new Thread() {
+            // start tomcat
+            val tomcat = new Thread() {
               override def run() {
                  try {
                    val sock = new java.net.ServerSocket(8183)
-                 
-                   println("*** webdriver starting in port 8182 ***")
-                   val webdriver = webDriver(8182)
-
-                   println("*** webserver starting in port 8181 ***")
+                
+                   println("*** tomcat starting in port 8181 ***")
                    //for(folder <- folders) println("*** -"+folder)  
                    val root = (base / "app" / "src" / "main" / "static").getAbsolutePath
                    val test = (base / "app" / "src" / "test" / "static").getAbsolutePath
                    val cs   = (base / "wcs" / "webapps" / "cs" ).getAbsolutePath
                    val cas  = (base / "wcs" / "webapps" / "cas").getAbsolutePath
-               
+
                    val webapps = Seq("="+root, "test="+test, "cs="+cs, "cas="+cas)
-                   
-                   //val httpserve = httpServe(8181, Array(root,test), s.log)
-                   val httpserve = tomcatServe(8181, classpath.files, webapps)
+                   val tomcatProcess = tomcatServe(8181, classpath.files, webapps)
 
                    // wait for a connection then close the socket and the process
                    sock.accept()
@@ -551,21 +563,50 @@ trait AgileSitesSupport extends AgileSitesUtil {
                    sock.close()
                    //println("stopping")
 
-                   httpserve.destroy()     
-                   println("*** webserver stopped ***")
-                   webdriver.destroy()
+                   tomcatProcess.destroy()     
+                   println("*** tomcat stopped ***")
+ 
+                 } catch {
+                   case e: Throwable => 
+                    //e.printStackTrace
+                    println("!!! tomcat already running")
+                 }
+              }
+            }
+            tomcat.start
+
+            val webdriver = new Thread() {
+              override def run() {
+                 try {
+                   val sock = new java.net.ServerSocket(8184)
+                 
+                   println("*** webdriver starting in port 8182 ***")
+                   val webdriverProcess = webDriver(8182)
+
+                   // wait for a connection then close the socket and the process
+                   sock.accept()
+                   //println("closing")
+                   sock.close()
+                   //println("stopping")
+
+                   webdriverProcess.destroy()
                    println("*** webdriver stopped ***")
 
                  } catch {
                    case e: Throwable => 
                     //e.printStackTrace
-                    println("webdriver/webserver already running")
+                    println("!!! webdriver already running")
                  }
               }
             }
-            thread.start
-            println(" *** Waiting for startup complete ***")
-            println(httpCallRaw(url + "/HelloCS"))            
+            webdriver.start
+
+            // wait for cs startup if deployed
+            if( (file("wcs") / "webapps" / "cs").isDirectory ) {
+              println(" *** Waiting for CS startup complete ***")
+              println(httpCallRaw(url + "/HelloCS"))            
+            }
+
         }
       } 
     }
