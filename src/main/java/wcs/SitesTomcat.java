@@ -14,10 +14,14 @@ class SitesTomcat  {
   		System.exit(0);
   	}
 
+    int port = Integer.parseInt(args[0]);
+    String base = args[1];
+
   	Tomcat tomcat = new Tomcat();
 
-    tomcat.setPort(Integer.parseInt(args[0]));
-    tomcat.setBaseDir(args[1]);
+
+    tomcat.setPort(port);
+    tomcat.setBaseDir(base);
     tomcat.enableNaming();
 
   	for(int i = 2; i< args.length; i++) {
@@ -34,7 +38,7 @@ class SitesTomcat  {
       if(!filepath.exists())
         continue;
       System.out.println("* "+ctx+" -> "+path);
-		  Context context = tomcat.addWebapp(ctx, path);
+		  Context context = tomcat.addWebapp(tomcat.getHost(), ctx, path);
       File config = new File(new File(filepath, "META-INF"), "context.xml");
       if(config.exists()) {
          java.net.URL url = config.toURI().toURL();

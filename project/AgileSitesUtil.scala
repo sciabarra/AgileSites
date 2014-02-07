@@ -347,24 +347,26 @@ trait AgileSitesUtil {
          map(_.getAbsolutePath).
          mkString(pathSeparator)
 
-    val temp = (file("wcs") / "temp")
+    val home =  file("wcs")
+    val temp =  home / "temp"
     temp.mkdirs
 
     val td = "-Djava.io.tmpdir="+(temp.getAbsolutePath)  
-    val args = Seq(port.toString) ++ webapps
+    val args = Seq(port.toString, home.getAbsolutePath) ++ webapps
     val cmd = List("-cp", cp, td, "wcs.SitesTomcat") ++ args.toList 
                
     import java.io._
-    val fw = if(File.pathSeparator == ';')  
-      new FileWriter("run.bat")
-    else new FileWriter("run.sh")
+    
+    def sel(x: String, y: String) = if(File.pathSeparator == ";") x else y
+    val fw = new FileWriter("run."+sel("bat","sh"))
+    fw.write(sel("set ","")+"CATALINA_HOME=\""+home.getAbsolutePath+"\"\n")
     fw.write(cmd.mkString("java ", " ", "\n"))
     fw.close
 
-
     Fork.java.fork(None, cmd, 
-      Some(new java.io.File(".")), 
-      Map(), true, StdoutOutput)
+      Some(home), 
+      Map("CATALINA_HOME" -> home.getAbsolutePath), 
+      true, StdoutOutput)
    }
 
   def webDriver(port: Int) = {

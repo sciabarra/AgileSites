@@ -9,7 +9,7 @@ set REPLACE=%~dp0
 set REPLACE=%REPLACE:\=/%
 copy install.ini Sites
 del home\*.done
-echo >hsql.switch 
+echo >home\hsql.switch 
 java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <omii.ini >home\ominstallinfo\omii.ini
 java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <omii.ini >Sites\omii.ini
 java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <context.xml >webapps\cs\META-INF\context.xml
