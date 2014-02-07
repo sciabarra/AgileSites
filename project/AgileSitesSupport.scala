@@ -244,7 +244,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
   /// but assembly used in top level, package used in subprojects
  
   // package jar task - build the jar and copy it  to destination 
-  lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
+  lazy val wcsAssemblyJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
   val wcsAssemblyJarTask = wcsAssemblyJar <<=
     (assembly, wcsShared, streams) map {
       (jar, shared, s) =>
@@ -259,7 +259,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
     }
 
   // package jar task - build the jar and copy it  to destination 
-  lazy val wcsAssemblyJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
+  lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
   val wcsPackageJarTask = wcsPackageJar <<=
     (Keys.`package` in Compile, wcsShared, streams) map {
       (jar, shared, s) =>

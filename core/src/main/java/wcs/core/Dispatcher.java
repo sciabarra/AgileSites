@@ -58,7 +58,9 @@ public class Dispatcher {
 	 */
 	public Dispatcher(File jarDir, int reload) {
 		log.debug("[Dispatcher.<init>] jarDir=%s reload=%d", jarDir, reload);
-		loader = new Loader(jarDir, reload, getClass().getClassLoader());
+		loader = new Loader(jarDir, reload, 
+				Thread.currentThread().getContextClassLoader()
+				/*getClass().getClassLoader()*/);
 		log.debug("[Dispatcher.<init>] got loader");
 	}
 

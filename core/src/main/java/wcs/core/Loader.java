@@ -10,12 +10,13 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.xeustechnologies.jcl.JarClassLoader;
 
 import wcs.api.Log;
 
@@ -55,7 +56,7 @@ public class Loader {
 	 * @param cl
 	 *            parent classloader
 	 */
-	public Loader(File dir, int interval, ClassLoader cl) {
+	public Loader(File dir, int interval, final ClassLoader cl) {
 		jarDir = dir;
 		libDir = new File(dir, "lib");
 
@@ -203,14 +204,9 @@ public class Loader {
 					}
 				}
 
-				// switch the class loader
-				ClassLoader oldClassLoader = currentClassLoader;
-				currentClassLoader = new URLClassLoader(toUrlArray(list),
-						parentClassLoader);
-				if (oldClassLoader != parentClassLoader
-						&& oldClassLoader instanceof URLClassLoader)
-					((URLClassLoader) oldClassLoader).close();
-
+				// create a class loader according the current choice
+				log.error("using JCL classloader without parent");
+				currentClassLoader = new JarClassLoader(toUrlArray(list));
 				currentSpoolDir = newSpoolDir;
 				cleanup();
 
@@ -225,22 +221,8 @@ public class Loader {
 	 * Close the current classloader, freeing the underlying opened jars.
 	 */
 	public void close() {
-
-		// close current classloader
-		if (currentClassLoader instanceof URLClassLoader) {
-			((JarClassLoader) currentClassLoader).close();
-			currentClassLoader = parentClassLoader;
-		}
-
-		if (currentClassLoader instanceof URLClassLoader) {
-			try {
-				((URLClassLoader) currentClassLoader).close();
-			} catch (IOException e) {
-				log.error(e, "Loader.close");
-			}
-			currentClassLoader = parentClassLoader;
-		}
-
+		if (log.trace())
+			log.trace("called Loader.close - currently do nothing");
 	}
 
 	private FileFilter onlyJars = new FileFilter() {
@@ -334,11 +316,12 @@ public class Loader {
 	 * @return
 	 */
 	public Class<?> loadClass(String classname) {
+		ClassLoader cl = getClassLoader();
 		try {
-			ClassLoader cl = getClassLoader();
 			if (log.trace())
 				log.trace("loading %s", classname);
-			return Class.forName(classname, true, cl);
+			return cl.loadClass(classname);
+			// Class.forName(classname, true, cl);
 		} catch (ClassNotFoundException ex) {
 			log.error(ex, "[Loader.loadClass]");
 			return null;

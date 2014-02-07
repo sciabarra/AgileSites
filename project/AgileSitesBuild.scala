@@ -15,14 +15,17 @@ import giter8.ScaffoldPlugin.scaffoldSettings
 object AgileSitesBuild extends Build with AgileSitesSupport {
 
   // jars to be added to the library setup
-  val setupFilter =  "agilesites-api*" || "junit*" || "hamcrest*" ||
-   "scala-library*" || "akka-actor*" || "akka-remote*" ||
-   "netty*" || "protobuf*" ||  "uncommons-math*" || "config*"
+  val webappFilter=  "agilesites-core*" || "jcl-core*"
+
+  val setupFilter =  "agilesites-api*" || "junit*" || "hamcrest*" || "scala-library*" 
+
+   //|| "akka-actor*" || "akka-remote*" ||
+   //"netty*" || "protobuf*" ||  "uncommons-math*" || "config*"
 
   ///  core dependencies - those are used for compiling
   val coreDependencies = Seq(
     "javax.servlet" % "servlet-api" % "2.5",
-    "junit" % "junit" % "4.4",
+    "org.xeustechnologies" % "jcl-core" % "2.2.1",
     "org.hamcrest" % "hamcrest-all" % "1.3",
     "org.springframework" % "spring" % "2.5.5",
     "org.springframework" % "spring-test" % "2.5.5",
@@ -45,6 +48,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "org.seleniumhq.selenium" % "selenium-java" % "2.39.0",
     "org.fluentlenium" % "fluentlenium-core" % "0.9.1",
     "org.fluentlenium" % "fluentlenium-festassert" % "0.9.1",
+    "junit" % "junit" % "4.11",
     "com.novocode" % "junit-interface" % "0.10")
  
   // configuring WCS jars as unmanaged lib from sites directory

@@ -184,9 +184,9 @@ trait AgileSitesUtil {
 
     val destlib = file(webapp) / "WEB-INF" / "lib"
 
-    val addJars = classpathFiles.filter( _.getName.startsWith("agilesites-core") )
+    val addJars = classpathFiles.filter(AgileSitesBuild.webappFilter accept _ )
     
-    val removeJars = destlib.listFiles.filter(_.getName.toLowerCase.startsWith("agilesites-core"))
+    val removeJars = destlib.listFiles.filter(AgileSitesBuild.webappFilter accept _)
 
     setupCopyJars(destlib, addJars, removeJars)
   
@@ -353,7 +353,7 @@ trait AgileSitesUtil {
 
     val opts = "-cp" :: cp :: 
       "-Djava.io.tmpdir="+(temp.getAbsolutePath) :: 
-      "-Xms256m" :: "-Xmx1024m" :: Nil
+      "-Xms256m" :: "-Xmx1024m" ::  Nil
     val args = Seq("wcs.SitesTomcat", port.toString, home.getAbsolutePath) ++ webapps
     val cmd = opts.toList ++ args.toList 
                
