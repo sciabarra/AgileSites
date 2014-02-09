@@ -268,7 +268,6 @@ public class Configurator extends JFrame implements ActionListener {
 				+"\nas described in the tutorial, section New Site.", 
 				"IMPORTANT", JOptionPane.INFORMATION_MESSAGE);
 
-
 		String url = iniFile.getProperty("CSConnectString");
 		if(url.endsWith("/")) url = url.substring(0, url.length()-1);
 
@@ -310,7 +309,8 @@ public class Configurator extends JFrame implements ActionListener {
 			fw.close();
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, e.getMessage(),
+			e.printStackTrace();
+	 		JOptionPane.showMessageDialog(this, e.getMessage(),
 					"CANNOT CONFIGURE", JOptionPane.ERROR_MESSAGE);
 		}
 		System.exit(0);

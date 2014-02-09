@@ -16,7 +16,7 @@ wcsUser in ThisBuild := "fwadmin"
 wcsPassword in ThisBuild := "xceladmin"
 
 // Fatwire/Sites version - currently supported 11.1.1.6.0 and 11.1.1.8.0
-wcsVersion in ThisBuild := "11.1.1.6.1"
+wcsVersion in ThisBuild := "11.1.1.8.0"
 
 // home directory of WCS - leave it to
 wcsHome in ThisBuild := "../home"

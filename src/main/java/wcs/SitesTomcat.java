@@ -2,7 +2,7 @@ package wcs;
 
 import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.Context;
-
+import java.net.*;
 import java.io.*;
 
 class SitesTomcat  {
@@ -14,10 +14,9 @@ class SitesTomcat  {
   		System.exit(0);
   	}
 
-    int port = Integer.parseInt(args[0]);
+    final int port = Integer.parseInt(args[0]);
+    final Tomcat tomcat = new Tomcat();
     String base = args[1];
-
-  	Tomcat tomcat = new Tomcat();
 
     tomcat.setPort(port);
     tomcat.setBaseDir(base);
@@ -46,9 +45,23 @@ class SitesTomcat  {
       } 
   	}
 
+    // stopping socket
+    new Thread() {
+      public void run() {
+        try { 
+         ServerSocket serv = new ServerSocket(port+1);
+         Socket sock = serv.accept();
+         tomcat.stop();
+         sock.getOutputStream().write('\n');
+         sock.close();
+        } catch(Exception ex) {
+          ex.printStackTrace();
+        }
+        System.exit(0); 
+      }
+    }.start();
   	tomcat.start();
   	tomcat.getServer().await();
-
   }
 
 }

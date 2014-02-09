@@ -5,14 +5,14 @@ set PATH="%JAVA_HOME%"\bin;%PATH%
 :nojavahome
 java -version
 if errorlevel 9009 if not errorlevel 9010 goto notfoundjava
-set REPLACE=%~dp0
-set REPLACE=%REPLACE:\=/%
+set BASE=%~dp0
+set REPLACE=%BASE:\=/%
 copy install.ini Sites
 del home\*.done
-echo >home\hsql.switch 
-java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <omii.ini >home\ominstallinfo\omii.ini
-java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <omii.ini >Sites\omii.ini
-java -cp ..\bin\wcs.jar wcs.Replacer ../ "%REPLACE%" <context.xml >webapps\cs\META-INF\context.xml
+echo >home\hsql.flag
+echo >home\setup.flag
+java -cp ..\bin\wcs.jar wcs.Silent %BASE% misc\silentinstaller\generic_omii.ini Sites\install.ini Sites\omii.ini
+java -cp ..\bin\wcs.jar wcs.Replacer ../ %REPLACE% <context.xml >webapps\cs\META-INF\context.xml
 java -cp ..\bin\wcs.jar wcs.Unzip Sites\csdt.zip home
 cd ..
 java -cp bin\wcs.jar wcs.Configurator wcs

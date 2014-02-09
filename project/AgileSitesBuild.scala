@@ -64,10 +64,20 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   val unmanagedBaseTask = unmanagedBase in Compile <<= wcsWebapp {
     base => file(base) / "WEB-INF" / "lib"
   }
+  
+  val toolsJar = file(System.getProperty("java.home")) / ".." / "lib" / "tools.jar"
+  val classesJar = file(System.getProperty("java.home")) / ".." / "Classes" / "classes.jar"
 
-  val unmanagedJarsTask = unmanagedJars in Compile <+= wcsCsdtJar map {
-    jar => Attributed.blank(file(jar))
+  val unmanagedJarsTask = unmanagedJars in Compile <++= wcsCsdtJar map {
+    jar => 
+
+       val tools = if(toolsJar.exists) Attributed.blank(toolsJar) 
+         else if(classesJar.exists) Attributed.blank(classesJar) 
+         else throw new Exception("cannot locate java compiler - is JAVA_HOME a JDK instead of a JRE?")
+
+       Seq(Attributed.blank(file(jar)), tools)
   }
+
 
   val coreSettings = Defaults.defaultSettings ++ 
     net.virtualvoid.sbt.graph.Plugin.graphSettings ++ Seq(
@@ -131,11 +141,13 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
   lazy val all: Project = Project(
     id = "all",
     base = file("."),
+ 
     settings = coreSettings ++
       libdepsSettings ++
       assemblySettings ++ 
       net.virtualvoid.sbt.graph.Plugin.graphSettings ++
       scaffoldSettings ++ Seq(
+        //commands ++= Seq(wcsServeCommand),
         name := "agilesites-all",
         wcsCsdtTask,
         wcsVirtualHostsTask,
@@ -152,6 +164,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
         wcsAssemblyJarTask,
         wcsUpdateAssetsTask,
         wcsLogTask,
+        wcsSeleniumTask,
         wcsServeTask,
         excludedJars in assembly <<= (fullClasspath in assembly),
         watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").get),
