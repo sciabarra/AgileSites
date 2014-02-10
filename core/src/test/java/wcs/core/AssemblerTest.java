@@ -59,7 +59,6 @@ public class AssemblerTest {
 		d = as.disassemble(uri("/1234.gif"), ContainerType.SERVLET);
 		out.println(d.getParameterNames());
 		
-		
 		d = as.disassemble(uri("/test.js"), ContainerType.SERVLET);
 		out.println(d.getParameterNames());
 

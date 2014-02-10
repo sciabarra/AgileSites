@@ -1,6 +1,7 @@
 Here there are more detailed information than you ever wanted to know.
 
 - [FAQ](reference/FAQ.md): frequently asked questions, with answers
+- [QuickStart](reference/QuickStart.md): how to be quickly  up and running
 - [Architecture](reference/Architecture.md): understanding how the framework works
 - [Rendering](reference/Rendering.md): the rendering process that is implemented by the framework
 - [Configuration](reference/Configuration.md): all the available configuration options

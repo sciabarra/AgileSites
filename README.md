@@ -1,4 +1,4 @@
-#  AgileSites 1.8
+#  AgileSites 1.8.1
 
 Welcome to **AgileSites**, the Open Source framework for Agile development with Oracle WebCenter Sites (formerly Fatwire Content Server).
 
@@ -9,10 +9,12 @@ The framework is released under the commercial friendly Apache License 2.0.
 
 Read on this page if you want to know more about this framework.
 
+If you are in a [hurry to try it](http://www.agilesites.org/releases/QuickStart.html), follow the linked directions. 
+
 If you already know what is it, then you can:
 
 - Read [what is new](http://www.agilesites.org/releases.html).
-- [Install it](http://www.agilesites.org/install.html) following the linked instructions.
+- [Install it](http://www.agilesites.org/install.html) reading the detailed installation guide.
 - [Learn about it](http://www.agilesites.org/tutorial.html) reading a tutorial.
 - [Check references](http://www.agilesites.org/reference.html) for in-depth documentation.
 - [Browse the API](http://www.agilesites.org/javadoc/) reading the JavaDocs
