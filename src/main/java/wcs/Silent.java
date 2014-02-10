@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Enumeration;
 
 public class Silent {
 
@@ -45,27 +46,16 @@ public class Silent {
 		baseIni.setProperty("CSInstallDatabaseType", "HSQLDB");
 
 		// disable
-		baseIni.setProperty("CCSampleAssetsBF","false");
-		baseIni.setProperty("FSEngagetoreSchema","false");
-		baseIni.setProperty("Avisports","false");
-		baseIni.setProperty("MSSampleSiteBF","false");
-		baseIni.setProperty("DMSampleAssets","false");
-		baseIni.setProperty("CCSampleAssets","false");
-		baseIni.setProperty("FSStoreDemoData","false");
-		baseIni.setProperty("MSSampleAssetsBF","false");
-		baseIni.setProperty("FSEngageStoreDemoData","false");
-		baseIni.setProperty("CommerceConnector","false");
-		baseIni.setProperty("CCSampleSiteHW","false");
-		baseIni.setProperty("MSSampleSiteGE","false");
-		baseIni.setProperty("CCSampleSiteBF","false");
-		baseIni.setProperty("FSStoreSchema","false");
-		baseIni.setProperty("FSCore","false");
-		baseIni.setProperty("FSSiteView","false");
-		baseIni.setProperty("FSDocSchema","false");
-		baseIni.setProperty("FSAnalytics","false");
-		baseIni.setProperty("CatCSampleAssets","false");
-		baseIni.setProperty("FSDocDemoData","false");
-		baseIni.setProperty("CCSampleAssetsHW","false");
+		baseIni.setProperty("CommerceConnector", "false");
+		baseIni.setProperty("Avisports", "false");
+		for (Enumeration<?> e = baseIni.propertyNames(); 
+			e.hasMoreElements();) {
+			String p = e.nextElement().toString();
+			if(p.startsWith("FS") || p.indexOf("Sample")!=-1) {
+				baseIni.setProperty(p, "false");
+				System.out.println(p+"=false");
+			}
+		}	
 
 		// those are to make happy the configurator
 		baseIni.setProperty("CSConnectString", "http://localhost:8181/cs");
