@@ -554,13 +554,14 @@ trait AgileSitesSupport extends AgileSitesUtil {
               }
             }
             tomcat.start
-
+ 	          Thread.sleep(3000);
             // wait for cs startup if deployed
             if( (file("wcs") / "webapps" / "cs").isDirectory ) {
               println(" *** Waiting for CS startup complete ***")
               println(httpCallRaw(url + "/HelloCS"))            
             }
-
+        case Some(thing) =>
+            println("usage: start|stop|status")
         }
       }
     }
