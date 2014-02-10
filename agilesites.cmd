@@ -1,16 +1,13 @@
 @echo off
+set SCRIPT_DIR=%~dp0
 if not defined JAVA_HOME goto nojavahome
-set PATH="%JAVA_HOME%"\bin;%PATH%
+set PATH="%JAVA_HOME%"\bin;"%SCRIPT_DIR%"\wcs\home\bin;%PATH%
 :nojavahome
 java -version
 if errorlevel 9009 if not errorlevel 9010 goto notfoundjava
-javac -version
-if errorlevel 9009 if not errorlevel 9010 goto notfoundjavac
 if exist build.sbt goto foundbuildsbt
-javac -d bin bin\Configurator.java 
-java -cp bin Configurator
+java -cp bin\wcs.jar wcs.Configurator
 :foundbuildsbt
-set SCRIPT_DIR=%~dp0
 java -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=project\boot -Dsbt.ivy.home=project\ivy2 -jar "%SCRIPT_DIR%bin\sbt-launch.jar" core/publish api/publish app/publish
 :corebuilt
 java -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=project\boot -Dsbt.ivy.home=project\ivy2 -jar "%SCRIPT_DIR%bin\sbt-launch.jar" %*

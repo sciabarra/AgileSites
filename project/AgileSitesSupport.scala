@@ -27,9 +27,6 @@ trait AgileSitesSupport extends AgileSitesUtil {
   lazy val wcsVirtualHosts = SettingKey[Seq[Tuple2[String, String]]]("wcs-virtual-hosts", "WCS Virtual Host mapping")
   lazy val wcsVirtualHostsTask = wcsVirtualHosts := Seq[Tuple2[String, String]]()
   
-  lazy val wcsSetupOffline = TaskKey[Unit]("wcs-setup-offline", "Legacy WCS Setup Offline")
-  lazy val wcsSetupOnline = TaskKey[Unit]("wcs-setup-online", "Legacy WCS Setup Offline")
-  
   // the satellite webapp defaults to a sister /cs webapp named /ss).getParentFile / "ss").getAbsolutePath }
   lazy val wcsWebappSatellite = TaskKey[String]("wcs-webapp-satellite", "WCS Satellite Webapp")
   val wcsWebappSatelliteTask = wcsWebappSatellite <<= (wcsWebapp) map {
@@ -246,7 +243,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
   /// but assembly used in top level, package used in subprojects
  
   // package jar task - build the jar and copy it  to destination 
-  lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
+  lazy val wcsAssemblyJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
   val wcsAssemblyJarTask = wcsAssemblyJar <<=
     (assembly, wcsShared, streams) map {
       (jar, shared, s) =>
@@ -261,7 +258,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
     }
 
   // package jar task - build the jar and copy it  to destination 
-  lazy val wcsAssemblyJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
+  lazy val wcsPackageJar = TaskKey[String]("wcs-package-jar", "WCS package jar")
   val wcsPackageJarTask = wcsPackageJar <<=
     (Keys.`package` in Compile, wcsShared, streams) map {
       (jar, shared, s) =>
@@ -361,16 +358,14 @@ trait AgileSitesSupport extends AgileSitesUtil {
   }
 
 
-  lazy val wcsSetup = InputKey[Unit]("wcs-setup", "WCS Setup Offline")
-  val wcsSetupTask = wcsSetup <<= inputTask {
-    (argTask: TaskKey[Seq[String]]) =>
-      (argTask, 
-        wcsCopyJarsWeb, wcsCopyJarsLib, classDirectory in Compile,
+  lazy val wcsSetup = TaskKey[Unit]("wcs-setup", "WCS Setup Offline")
+  val wcsSetupTask = wcsSetup <<= 
+      (wcsCopyJarsWeb, wcsCopyJarsLib, wcsCopyStatic, classDirectory in Compile,
         wcsSites, wcsVersion, wcsHome, wcsShared, wcsWebapp, wcsUrl,
-         wcsFlexBlobs, wcsStaticBlobs, wcsVirtualHosts, wcsPackageJar, wcsCopyStatic) map {
-          (args, _, _, classes,
+         wcsFlexBlobs, wcsStaticBlobs, wcsVirtualHosts, wcsPackageJar) map {
+          (_, _, _, classes,
            sites, version, home, shared, webapp, url,
-           flexBlobs, staticBlobs, virtualHosts, jar, _) =>
+           flexBlobs, staticBlobs, virtualHosts, jar) =>
 
             val static = (file(shared) / "Storage" / "Static") getAbsolutePath
 
@@ -408,19 +403,14 @@ trait AgileSitesSupport extends AgileSitesUtil {
             println("""**** Setup Complete.
                 |**** Please restart your application server.
                 |**** You need to complete installation with "wcs-deploy".""".stripMargin)
-
-        }
   }
 
   // setup task
-  lazy val wcsSetupSatellite = InputKey[Unit]("wcs-setup-satellite", "WCS Setup Satellite Offline")
-  val wcsSetupSatelliteTask = wcsSetupSatellite <<= inputTask {
-    (argTask: TaskKey[Seq[String]]) =>
-      (argTask, wcsCopyJarsWeb, classDirectory in Compile,
-       wcsSites, wcsVersion, wcsWebappSatellite,
+  lazy val wcsSetupSatellite = TaskKey[Unit]("wcs-setup-satellite", "WCS Setup Satellite Offline")
+  val wcsSetupSatelliteTask = wcsSetupSatellite <<= 
+    (wcsCopyJarsWeb, classDirectory in Compile, wcsSites, wcsVersion, wcsWebappSatellite,
        wcsFlexBlobs, wcsStaticBlobs, wcsVirtualHosts) map {
-      (args, _, classes,
-       sites, version, webapp,
+      (_, classes, sites, version, webapp,
        flexBlobs, staticBlobs, virtualHosts) =>
 
             println("*** Installing AgileSites for WebCenter Sites Satellite ***");
@@ -428,7 +418,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
             setupServletRequest(webapp, sites, virtualHosts, flexBlobs, staticBlobs)
             //setupAgileSitesPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs) //not used for now
             println("*** Installation Complete. \n**** Please restart your satellite server.")
-        }
+        
   }
 
 
@@ -496,4 +486,83 @@ trait AgileSitesSupport extends AgileSitesUtil {
             println(httpCall("Log", cmd.get, url, user, pass))
           }
       }
+
+
+  lazy val wcsServe = InputKey[Unit]("wcs-serve", "Launch WebServer")
+  val wcsServeTask = wcsServe <<= inputTask { (argsTask: TaskKey[Seq[String]]) =>
+    (argsTask, fullClasspath in Compile, baseDirectory, wcsHome, wcsUrl, streams) map {
+      (args, classpath, base, home, url, s) =>
+
+        args.headOption match {
+
+          case None => println("usage: start|stop|status")
+          
+          case Some("status") =>
+
+            try {
+              new java.net.ServerSocket(8182).close
+              println("tomcat not running")
+            } catch {
+              case e: Throwable => 
+                 //e.printStackTrace
+                 println("tomcat running")
+            }
+
+          case Some("stop") =>
+            try {
+              println("*** stopping tomcat ***")
+              def sock = new java.net.Socket("127.0.0.1",8182)
+              sock.getInputStream.read
+              sock.close
+              println("*** stopped tomcat ***")
+            } catch {
+              case e: Throwable => 
+                 // e.printStackTrace
+                 println("tomcat not running")
+            }           
+ 
+          case Some("start") => 
+   
+            // switch to hsql if needed
+            val hsqlflag = (file(home) / "hsql.flag")
+            if( hsqlflag.exists) {
+              switchFutureTenseIni2Hsql(home)
+              hsqlflag.delete
+              println("*** switched to hsql ***")
+            }
+
+            // start tomcat
+            val tomcat = new Thread() {
+              override def run() {
+                 try {
+                
+                   println("*** tomcat starting in port 8181 ***")
+                   //for(folder <- folders) println("*** -"+folder)  
+                   val root = (base / "app" / "src" / "main" / "static").getAbsolutePath
+                   val test = (base / "app" / "src" / "test" / "static").getAbsolutePath
+                   val cs   = (base / "wcs" / "webapps" / "cs" ).getAbsolutePath
+                   val cas  = (base / "wcs" / "webapps" / "cas").getAbsolutePath
+
+                   val webapps = Seq("="+root, "test="+test, "cs="+cs, "cas="+cas)
+                   val tomcatProcess = tomcatServe(8181, classpath.files, webapps)
+ 
+                 } catch {
+                   case e: Throwable => 
+                    //e.printStackTrace
+                    println("!!! tomcat already running")
+                 }
+              }
+            }
+            tomcat.start
+
+            // wait for cs startup if deployed
+            if( (file("wcs") / "webapps" / "cs").isDirectory ) {
+              println(" *** Waiting for CS startup complete ***")
+              println(httpCallRaw(url + "/HelloCS"))            
+            }
+
+        }
+      }
+    }
+  
   }

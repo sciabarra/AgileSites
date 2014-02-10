@@ -122,6 +122,33 @@ trait AgileSitesUtil {
 
   }
 
+    // configure futurentense.ini
+  def switchFutureTenseIni2Hsql(home: String) {
+
+    val prpFile = file(home) / "futuretense.ini"
+    val prp = new java.util.Properties
+    prp.load(new java.io.FileReader(prpFile))
+    prp.setProperty("cc.bigint",        "BIGINT");
+    prp.setProperty("cc.bigtext",       "LONGVARCHAR");
+    prp.setProperty("cc.blob",          "LONGVARBINARY");
+    prp.setProperty("cc.datetime",      "TIMESTAMP");
+    prp.setProperty("cc.double",        "FLOAT");
+    prp.setProperty("cc.integer",       "INTEGER");
+    prp.setProperty("cc.maxvarcharsize","2147483647");
+    prp.setProperty("cc.null",          "");
+    prp.setProperty("cc.numeric",       "NUMERIC");
+    prp.setProperty("cc.primary",       "PRIMARY KEY");
+    prp.setProperty("cc.rename",        "ALTER TABLE %1 RENAME TO %2");
+    prp.setProperty("cc.smallint",      "SMALLINT");
+    prp.setProperty("cc.unique",        "");
+    prp.setProperty("cs.dbtype",        "HSQLDB");
+    println("~ for HSQLDB " + prpFile)
+    prp.store(new java.io.FileWriter(prpFile),
+      "updated by AgileSites setup")
+  }
+
+
+
   // create a static configuration file
   def setupAgileSitesPrp(dir: String, shared: String, sites: String, static: String, flexBlobs: String, staticBlobs: String) {
     val prpFile = file(dir) / "WEB-INF" / "classes" / "agilesites.properties"
@@ -157,9 +184,9 @@ trait AgileSitesUtil {
 
     val destlib = file(webapp) / "WEB-INF" / "lib"
 
-    val addJars = classpathFiles.filter( _.getName.startsWith("agilesites-core") )
+    val addJars = classpathFiles.filter(AgileSitesBuild.webappFilter accept _ )
     
-    val removeJars = destlib.listFiles.filter(_.getName.toLowerCase.startsWith("agilesites-core"))
+    val removeJars = destlib.listFiles.filter(AgileSitesBuild.webappFilter accept _)
 
     setupCopyJars(destlib, addJars, removeJars)
   
@@ -295,4 +322,41 @@ trait AgileSitesUtil {
         Fork.java(None, all, Some(new java.io.File(".")), log)  
   }
 
+
+
+  def tomcatServe(port: Int, classpath: Seq[File], webapps: Seq[String]) = {
+    
+    import java.io.File.pathSeparator
+    val tomcatFilter = "tomcat-*" || "hsqldb-*" || "ecj-*"
+    val eclasspath = classpath ++ Seq(file("wcs") / "home" / "bin") 
+    val cp = eclasspath.
+         filter(x => x.isDirectory || (tomcatFilter accept x)).
+         map(_.getAbsolutePath).
+         mkString(pathSeparator)
+
+    val home =  file("wcs")
+    val temp =  home / "temp"
+    temp.mkdirs
+
+    val opts = "-cp" :: cp :: 
+      "-Djava.io.tmpdir="+(temp.getAbsolutePath) :: 
+      "-Xms256m" :: "-Xmx1024m" ::  Nil
+    val args = Seq("wcs.SitesTomcat", port.toString, home.getAbsolutePath) ++ webapps
+    val cmd = opts.toList ++ args.toList 
+               
+    import java.io._
+    
+    def sel(x: String, y: String) = if(File.pathSeparator == ";") x else y
+    val fw = new FileWriter("run."+sel("bat","sh"))
+    fw.write(sel("set ","")+"CATALINA_HOME=\""+home.getAbsolutePath+"\"\n")
+    fw.write(cmd.mkString("java ", " ", "\n"))
+    fw.close
+
+    Fork.java.fork(None, cmd, 
+      Some(home), 
+      Map("CATALINA_HOME" -> home.getAbsolutePath), 
+      true, StdoutOutput)
+   }
+
 }
+

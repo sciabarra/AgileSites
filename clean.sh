@@ -3,7 +3,6 @@ echo Please exit from Eclipse or any other IDE before.
 echo After the cleanup you may need to repeat the wcs-setup-offline
 echo Press control-c if you are unsure otherwise control-d
 read
-rm bin/*.class
 rm -Rvf target
 rm -Rvf project/target
 rm -Rvf app/target
