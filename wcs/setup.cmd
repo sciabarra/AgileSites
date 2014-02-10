@@ -7,7 +7,6 @@ java -version
 if errorlevel 9009 if not errorlevel 9010 goto notfoundjava
 set BASE=%~dp0
 set REPLACE=%BASE:\=/%
-copy install.ini Sites
 del home\*.done
 echo >home\hsql.flag
 echo >home\setup.flag
