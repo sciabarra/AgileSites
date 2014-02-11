@@ -61,7 +61,7 @@ Do not change or remove anything, just a
 After unarchiving there should be 3 *additional* folders. Check there are the following folders:
 
 - `Sites`
-- `SitesExplorer
+- `SitesExplorer`
 - `misc`
 
 
