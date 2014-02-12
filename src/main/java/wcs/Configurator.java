@@ -116,7 +116,7 @@ public class Configurator extends JFrame implements ActionListener {
 	String defaultpw = null;
 
     public Configurator(String topdir) {
-    	defaultpw = "xceladmin";
+    	defaultpw = "password";
     	searchIniJar(new File(topdir));
     }
 
@@ -248,8 +248,8 @@ public class Configurator extends JFrame implements ActionListener {
 		String pw = defaultpw;
 		if(pw==null) 
 			     pw = JOptionPane.showInputDialog(this,
-				"Password for " + iniFile.getProperty("CSInstallAppName"),
-				"Password Request", 1);
+					"Password for ContentServer (SiteGod) user",
+					"Password Request", 1);
 
 		if (pw == null)
 			return;
@@ -283,7 +283,7 @@ public class Configurator extends JFrame implements ActionListener {
 							+ q(url));
 				} else if (line.startsWith("wcsUser ")) {
 					fw.write("wcsUser in ThisBuild := "
-							+ q(iniFile.getProperty("CSInstallAppName")));
+							+ q("ContentServer"));
 				} else if (line.startsWith("wcsPassword ")) {
 					fw.write("wcsPassword in ThisBuild := " + q(pw));
 				} else if (line.startsWith("wcsHome ")) {

@@ -35,8 +35,8 @@ public class Loader {
 	private File jarDir;
 	private File libDir;
 	private long nextCheck = 0;
-	private long jarTimeStamp;
 	private int reloadInterval = 0;
+	private long jarTimeStamp;
 
 	private ClassLoader parentClassLoader;
 	private ClassLoader currentClassLoader;
@@ -205,7 +205,6 @@ public class Loader {
 				}
 
 				// create a class loader according the current choice
-				log.error("using JCL classloader without parent");
 				currentClassLoader = new JarClassLoader(toUrlArray(list));
 				currentSpoolDir = newSpoolDir;
 				cleanup();
@@ -326,5 +325,12 @@ public class Loader {
 			log.error(ex, "[Loader.loadClass]");
 			return null;
 		}
+	}
+
+	/**
+	 * Return the timestamp of the more recently modified jar
+	 */
+	public long getTimeStamp() {
+		return jarTimeStamp;
 	}
 }

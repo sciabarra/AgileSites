@@ -14,23 +14,30 @@ import giter8.ScaffoldPlugin.scaffoldSettings
 
 object AgileSitesBuild extends Build with AgileSitesSupport {
 
+ // jars to be added to the wcs-setup
+  val webappFilter=  "agilesites-core*" || "jcl-core*" 
+
   // jars to be added to the library setup
-  val webappFilter=  "agilesites-core*" || "jcl-core*"
+  val setupFilter =   "agilesites-api*" || "junit*"   || "hamcrest*"      || 
+     "akka-actor*" || "akka-remote*"    || "config*"  || "scala-library*" ||
+     "netty*"      || "uncommons-math*" || "protobuf*"        
 
-  val setupFilter =  "agilesites-api*" || "junit*" || "hamcrest*" || "scala-library*" 
+  // configuring WCS jars as unmanaged lib from sites directory
+  val unmanagedFilter = "log4j-*"   || "slf4j*"        || "spring-*"  || "commons-*"   || "http-*"         || "jsoup*"  || "cs-*"    ||
+    "wem-sso-api-*" || "rest-api-*" || "cas-client-*"  || "assetapi*" || "xstream*"    || "sites-*"        || "esapi-*" ||
+    "ics.jar"       || "cs.jar"     || "xcelerate.jar" || "gator.jar" || "visitor.jar" || "ehcache-*"   
 
-   //|| "akka-actor*" || "akka-remote*" ||
-   //"netty*" || "protobuf*" ||  "uncommons-math*" || "config*"
 
   ///  core dependencies - those are used for compiling
   val coreDependencies = Seq(
+    "log4j" % "log4j" % "1.2.16",
     "javax.servlet" % "servlet-api" % "2.5",
-    "org.xeustechnologies" % "jcl-core" % "2.2.1",
+    "junit" % "junit" % "4.11",
     "org.hamcrest" % "hamcrest-all" % "1.3",
+    //"com.novocode" % "junit-interface" % "0.10",
     "org.springframework" % "spring" % "2.5.5",
     "org.springframework" % "spring-test" % "2.5.5",
     "commons-logging" % "commons-logging" % "1.1.1",
-    "log4j" % "log4j" % "1.2.16",
     "commons-httpclient" % "commons-httpclient" % "3.1",
     "org.apache.httpcomponents" % "httpclient" % "4.1.2",
     "org.apache.httpcomponents" % "httpcore" % "4.1.2",
@@ -48,16 +55,10 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "org.seleniumhq.selenium" % "selenium-java" % "2.39.0",
     "org.fluentlenium" % "fluentlenium-core" % "0.9.1",
     "org.fluentlenium" % "fluentlenium-festassert" % "0.9.1",
-    "junit" % "junit" % "4.11",
-    "com.novocode" % "junit-interface" % "0.10")
+    "org.xeustechnologies" % "jcl-core" % "2.2.1")
  
-  // configuring WCS jars as unmanaged lib from sites directory
-  val unmanagedFilter = "log4j-*" || "slf4j*" || "spring-*" || "commons-*" || "http-*" || "jsoup*" || "cs-*" ||
-    "wem-sso-api-*" || "rest-api-*" || "cas-client-*" || "assetapi*" || "xstream*" ||
-    "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar" || "ehcache-*" || "sites-*" || "esapi-*"
-
   /// END CHANGES
-  val v = "1.8"
+  val v = "1.8-akka"
 
   val includeFilterUnmanagedJars = includeFilter in unmanagedJars := unmanagedFilter
 
@@ -70,11 +71,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
 
   val unmanagedJarsTask = unmanagedJars in Compile <++= wcsCsdtJar map {
     jar => 
-
        val tools = if(toolsJar.exists) Attributed.blank(toolsJar) 
          else if(classesJar.exists) Attributed.blank(classesJar) 
          else throw new Exception("cannot locate java compiler - is JAVA_HOME a JDK instead of a JRE?")
-
        Seq(Attributed.blank(file(jar)), tools)
   }
 
@@ -94,7 +93,8 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       unmanagedJarsTask)
 
   val libdepsSettings = Seq(
-     libraryDependencies <++= (wcsVersion) { x => Seq(
+     libraryDependencies <++= (wcsVersion, scalaVersion) { (x,sv) => Seq(
+       "org.scala-lang" % "scala-library" % sv,
        "com.novocode" % "junit-interface" % "0.10",
        "com.sciabarra" % "agilesites-core" % (x + "_" + v),
        "com.sciabarra" % "agilesites-api" % (x + "_" + v) withSources())})
@@ -135,7 +135,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
         name := "agilesites-app",
         wcsGenerateIndexTask,
         wcsCopyHtmlTask,
-        EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
+        EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala))
 
   /// ALL
   lazy val all: Project = Project(
@@ -147,7 +147,6 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
       assemblySettings ++ 
       net.virtualvoid.sbt.graph.Plugin.graphSettings ++
       scaffoldSettings ++ Seq(
-        //commands ++= Seq(wcsServeCommand),
         name := "agilesites-all",
         wcsCsdtTask,
         wcsVirtualHostsTask,
@@ -164,11 +163,11 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
         wcsAssemblyJarTask,
         wcsUpdateAssetsTask,
         wcsLogTask,
-        wcsSeleniumTask,
         wcsServeTask,
         excludedJars in assembly <<= (fullClasspath in assembly),
         watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").get),
         EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
         EclipseKeys.skipProject := false,
-        assembleArtifact in packageScala := false)) dependsOn (app) aggregate (app, api)
+        assembleArtifact in packageScala := false
+      )) dependsOn (app) aggregate (app, api)
 }

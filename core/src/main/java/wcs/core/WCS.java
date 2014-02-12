@@ -124,6 +124,27 @@ public class WCS {
 	}
 
 	/**
+	 * Services
+	 * 
+	 * @param ics
+	 * @param clazz
+	 * @return
+	 * @throws Exception
+	 */
+	public static String service(ICS ics, String className) throws Exception {
+		if (log.debug())
+			log.debug("[WCS.service]");
+		Dispatcher dispatcher = Dispatcher.getDispatcher(ics);
+		if (dispatcher != null) {
+			return dispatcher.service(ics, className);
+		} else {
+			if (log.debug())
+				log.debug("[WCS.service] Not found jar.");
+		}
+		return null;
+	}
+
+	/**
 	 * Return a router for the site. It uses the current site variable
 	 * 
 	 * @param site

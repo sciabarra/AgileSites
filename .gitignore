@@ -13,7 +13,6 @@ build.sbt
 report.xml
 run.bat
 run.sh
-populate.done
 # sbt specific
 api/scaffolds/cselement/default.properties
 api/scaffolds/layout/default.properties

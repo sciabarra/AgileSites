@@ -1,7 +1,6 @@
 package wcs.build
 
 import sbt._
-import Process._
 import Keys._
 import Dialog._
 
@@ -237,7 +236,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
           if(hello.isEmpty)
             throw new Exception("Web Center Sites must be online.")
           catalogManager(url, user, pass, classpath.files, Seq("import_all"), s.log)
-          file("populate.done").createNewFile
+          ( file(home) / "populate.done" ).createNewFile
   }
 
 
@@ -325,7 +324,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
         if (hello.isEmpty)
           throw new Exception("WebCenter Site must be online.")
         // pupulate with support elements 
-        val flag = file("populate.done")
+        val flag = file(home) / "populate.done"
         if(!flag.exists) {
           catalogManager(url, user, pass, classpath.files, Seq("import_all"), s.log)
           flag.createNewFile
@@ -369,8 +368,6 @@ trait AgileSitesSupport extends AgileSitesUtil {
            sites, version, home, shared, webapp, url,
            flexBlobs, staticBlobs, virtualHosts, jar) =>
 
-            val static = (file(shared) / "Storage" / "Static") getAbsolutePath
-
             println("*** Installing AgileSites for WebCenter Sites ***");
 
             val vhosts = (sites split ",") map { site =>
@@ -378,9 +375,9 @@ trait AgileSitesSupport extends AgileSitesUtil {
             } toSeq
 
             setupMkdirs(shared, version, sites)
+            setupAgileSitesPrp(webapp, Some(shared), sites, vhosts, flexBlobs, staticBlobs)
             setupServletRequest(webapp, sites, vhosts, flexBlobs, staticBlobs)
-            setupAgileSitesPrp(webapp, shared, sites, static, flexBlobs, staticBlobs)
-            setupFutureTenseIni(home, shared, static,  sites, version)
+            setupFutureTenseIni(home, shared, sites, version)
 
             // remove any other jar starting with agilesites-all-assembly 
             // remnants of the past
@@ -396,8 +393,9 @@ trait AgileSitesSupport extends AgileSitesUtil {
                 }
             }
 
-            // mark setup and remove pupulate mark if there
-            file("populate.done").delete
+
+            // remove pupulate mark if there
+            ( file(home) / "populate.done" ).delete
 
             println("""**** Setup Complete.
                 |**** Please restart your application server.
@@ -412,10 +410,9 @@ trait AgileSitesSupport extends AgileSitesUtil {
       (_, classes, sites, version, webapp,
        flexBlobs, staticBlobs, virtualHosts) =>
             println("*** Installing AgileSites for WebCenter Sites Satellite ***");
+            setupAgileSitesPrp(webapp, None, sites, virtualHosts, flexBlobs, staticBlobs)
             setupServletRequest(webapp, sites, virtualHosts, flexBlobs, staticBlobs)
-            //setupAgileSitesPrp(webapp, sites, static, appjar, flexBlobs, staticBlobs) //not used for now
             println("*** Installation Complete. \n**** Please restart your satellite server.")
-        
   }
 
 

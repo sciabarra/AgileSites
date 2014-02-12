@@ -13,7 +13,7 @@ Level level = Level.INFO;
 Map<String, String> map = (Map<String,String>)application.getAttribute("logmap");
 if(map==null) map = new HashMap<String,String>();
 
-if(ics.UserIsMember("xceladmin,xceleditor") && op!=null) {
+if(ics.UserIsMember("xceladmin,xceleditor,SiteGod") && op!=null) {
 	
 	Logger logger;
 	

@@ -103,7 +103,7 @@ trait AgileSitesUtil {
   }
 
   // configure futurentense.ini
-  def setupFutureTenseIni(home: String, shared: String, sites: String, static: String, version: String) {
+  def setupFutureTenseIni(home: String, shared: String, sites: String,  version: String) {
 
     val prpFile = file(home) / "futuretense.ini"
     val prp = new java.util.Properties
@@ -113,7 +113,6 @@ trait AgileSitesUtil {
 
     prp.setProperty("agilesites.dir", jardir.getAbsolutePath);
     prp.setProperty("agilesites.poll", "1000");
-    prp.setProperty("agilesites.static", file(static).getAbsolutePath);
     prp.setProperty("cs.csdtfolder", file("export").getAbsolutePath)
 
     println("~ " + prpFile)
@@ -148,9 +147,10 @@ trait AgileSitesUtil {
   }
 
 
-
   // create a static configuration file
-  def setupAgileSitesPrp(dir: String, shared: String, sites: String, static: String, flexBlobs: String, staticBlobs: String) {
+  def setupAgileSitesPrp(dir: String, shared: Option[String], 
+     sites: String, sitesSeq: Seq[Tuple2[String, String]], 
+     flexBlobs: String, staticBlobs: String) {
     val prpFile = file(dir) / "WEB-INF" / "classes" / "agilesites.properties"
     val prp = new java.util.Properties
 
@@ -159,10 +159,21 @@ trait AgileSitesUtil {
 
     prp.setProperty("agilesites.sites", sites);
     prp.setProperty("agilesites.webapp", dir);
-    prp.setProperty("agilesites.dir", (file(shared) / "agilesites").getAbsolutePath );
-    prp.setProperty("agilesites.static", file(static).getAbsolutePath);
     prp.setProperty("agilesites.blob.flex", flexBlobs)
     prp.setProperty("agilesites.blob.static", staticBlobs)
+
+    for ((k, v) <- sitesSeq) {
+      prp.setProperty("agilesites.site." + normalizeSiteName(k), v)
+      prp.setProperty("agilesites.name." + normalizeSiteName(k), k)
+    }
+
+    prp.setProperty("agilesites.poll", "1000");
+    if(shared!=None) {
+      val jardir = file(shared.get) / "agilesites"
+      val static = file(shared.get) / "Storage" / "Static"
+      prp.setProperty("agilesites.dir", jardir.getAbsolutePath);
+      prp.setProperty("agilesites.static", static.getAbsolutePath);
+    }
 
     println("~ " + prpFile)
     prp.store(new java.io.FileWriter(prpFile),

@@ -1,12 +1,17 @@
 package wcs.core;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
+import wcs.Api;
 import wcs.api.Call;
 import wcs.api.Element;
 import wcs.api.Log;
 import wcs.api.Router;
+import wcs.core.Service;
 import COM.FutureTense.Interfaces.ICS;
 
 public class Dispatcher {
@@ -58,9 +63,9 @@ public class Dispatcher {
 	 */
 	public Dispatcher(File jarDir, int reload) {
 		log.debug("[Dispatcher.<init>] jarDir=%s reload=%d", jarDir, reload);
-		loader = new Loader(jarDir, reload, 
-				Thread.currentThread().getContextClassLoader()
-				/*getClass().getClassLoader()*/);
+		loader = new Loader(jarDir, reload, Thread.currentThread()
+				.getContextClassLoader()
+		/* getClass().getClassLoader() */);
 		log.debug("[Dispatcher.<init>] got loader");
 	}
 
@@ -74,6 +79,11 @@ public class Dispatcher {
 		loader = new Loader();
 		log.debug("[Dispatcher.<init>] got loader");
 	}
+
+	/**
+	 * Call a service class (wcs.hubby.Service) shutting down a past instance
+	 * and initializing a new one.
+	 */
 
 	/**
 	 * Call the given class after reloading the jar and creating a wrapper for
@@ -108,6 +118,84 @@ public class Dispatcher {
 					+ "</p>\n<p>Message: " + e.getMessage() + "</p>\n";
 		}
 
+	}
+
+	private long lastModifiedClassloader = 0;
+	private Map<String, Service> serviceMap = new HashMap<String, Service>();
+
+	/**
+	 * Call the given class after reloading the jar and creating a wrapper for
+	 * ICS and the Element
+	 * 
+	 * @param ics
+	 * @return
+	 */
+	public String service(ICS ics, String className) {
+		
+		// get the classloader and update timestamp
+		ClassLoader cl = loader.getClassLoader();
+
+		StringBuilder sb = new StringBuilder();
+
+		// stopping services if they are now to be replaced
+		if (loader.getTimeStamp() > lastModifiedClassloader) {
+			// stopping all the services
+			for (Entry<String, Service> entry : serviceMap.entrySet()) {
+				if (log.trace())
+					log.trace("stopping service %s", entry.getKey());
+				sb.append("STOP ").append(entry.getKey()).append(": ");
+				try {
+					sb.append(entry.getValue().stop(ics));
+				} catch (Exception ex) {
+					log.error("[Dispatch.service] STOP ", ex);
+					sb.append(Api.ex2str(ex));
+				}
+				sb.append("\n");
+				serviceMap.remove(entry.getKey());
+			}
+			// mark the current one as the last modified
+			lastModifiedClassloader = loader.getTimeStamp();
+		}
+
+		// checking status of existing services
+		Service service = serviceMap.get(className);
+		if (service != null) {
+			sb.append("STATUS ").append(className).append(": ");
+			try {
+				if (log.trace())
+					log.trace("status service %s", className);
+				sb.append(service.status(ics));
+			} catch (Exception ex) {
+				log.error("[Dispatch.service] STATUS ", ex);
+				sb.append(Api.ex2str(ex));
+			}
+			sb.append("\n");
+			return sb.toString();
+		}
+
+		// creating and starting a new service
+		sb.append("START ").append(className).append(": ");
+		try {
+			@SuppressWarnings("rawtypes")
+			Class clazz = Class.forName(className, true, cl);
+			Object obj = clazz.newInstance();
+			// cast and execute
+			if (obj instanceof Service) {
+				if (log.trace())
+					log.trace("start service %s", className);
+				service = (Service) obj;
+				sb.append(service.start(ics));
+				serviceMap.put(className, service);
+				sb.append("\n");
+			} else {
+				log.warn("%s not a Service ", className);
+				sb.append("!!! " + className + " not a Service, is "+obj.getClass());
+			}
+		} catch (Exception ex) {
+			log.error("[Dispatch.service] START ", ex);
+			sb.append(Api.ex2str(ex));
+		}
+		return sb.toString();
 	}
 
 	/**
@@ -183,14 +271,15 @@ public class Dispatcher {
 				// cast to Setup and execute
 				Class<?> clazz = loadClass(className);
 				Object obj = null;
-				if(clazz!=null) obj = clazz.newInstance();
-				if (obj!=null && obj instanceof wcs.core.Setup) {
+				if (clazz != null)
+					obj = clazz.newInstance();
+				if (obj != null && obj instanceof wcs.core.Setup) {
 					log.debug("[Dispatcher.deploy] obj is a wcs.core.Setup");
 					Setup setup = (wcs.core.Setup) obj;
 					msg.append(setup.exec(ics, site, user, pass));
 				} else {
 					log.debug("[Dispatcher.deploy] obj is NOT a wcs.core.Setup");
-					msg.append("*** Not Found Setup for " + site+"\n");
+					msg.append("*** Not Found Setup for " + site + "\n");
 				}
 			} catch (Exception e) {
 				log.error(e, "[Dispatcher.deploy]");

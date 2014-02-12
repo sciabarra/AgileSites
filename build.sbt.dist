@@ -10,10 +10,10 @@ wcsSites in ThisBuild := "Demo"
 wcsUrl in ThisBuild := "http://localhost:8181/cs"
 
 // user to import/export
-wcsUser in ThisBuild := "fwadmin"
+wcsUser in ThisBuild := "ContentServer"
 
 // password to import/export
-wcsPassword in ThisBuild := "xceladmin"
+wcsPassword in ThisBuild := "password"
 
 // Fatwire/Sites version - currently supported 11.1.1.6.0 and 11.1.1.8.0
 wcsVersion in ThisBuild := "11.1.1.8.0"
@@ -28,7 +28,7 @@ wcsShared in ThisBuild := "../shared"
 wcsWebapp in ThisBuild := "../webapps/cs"
 
 // location of the csdt-client jar
-wcsCsdtJar in ThisBuild := "../home/csdt-client-1.2.2.jar"
+wcsCsdtJar in ThisBuild := "../home/csdt-client-11.1.1.8.0.jar"
 
 // this regexp must mach the numeric id of the flex blob 
 // the first group must be the numeric id of the flex blob
