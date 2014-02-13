@@ -1,6 +1,9 @@
 #!/bin/bash
+BASE="$(dirname $0)"
+BASE="$(cd $BASE; pwd)"
+export PATH="$BASE/bin:$BASE/wcs/home/bin:$PATH"
 if test -n "$JAVA_HOME"
-then export PATH="$JAVA_HOME/bin:wcs/home/bin:$PATH"
+then export PATH="$JAVA_HOME/bin:$PATH"
 fi
 if ! java -version
 then echo java not found. Please install JDK and set JAVA_HOME ; exit
