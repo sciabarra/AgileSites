@@ -5,8 +5,9 @@ AgileSites is distributed as a source zip from GitHub.
 You need to download a stable release of AgileSites from GitHub. 
 Stable releases are [listed here](http://www.agilesites.org/download.html)
 
-It is recommended you pick the latest stable version, 
-unzip it in a folder of your choice where you put your projects. Then read on to learn how to configure and install it.
+It is recommended you pick the latest stable version,  unzip it in a folder of your choice where you put your projects. 
+
+Then read on to learn how to configure and install it.
 
 AgileSites can be used with an existing instance of Sites or with Jump Start Kit and must be configured to use it.
 
@@ -53,13 +54,16 @@ http://www.oracle.com/technetwork/middleware/webcenter/sites/downloads/index.htm
 
 2. Unzip the distribution package, then locate inside the `WCS_Sites*.zip` file
 
-3. Unzip the content of the `WCS_Sites*.zip` archive in the `wcs` folder.
- 
-After unarchiving check there are the following folders:
+3. Unzip the content of the `WCS_Sites*.zip` archive in the `wcs` subfolder of the folder where you unarchived AgileSites.
+
+Before unarchiving you should see in the folder the files `setup.cmd`, `setup.sh`, the folder home and others.
+Do not change or remove anything, just a
+After unarchiving there should be 3 *additional* folders. Check there are the following folders:
 
 - `Sites`
-- `SitesExplorer
+- `SitesExplorer`
 - `misc`
+
 
 4. Launch the script `wcs\setup.cmd` on Windows or `wcs/setup.sh` on Linux/OSX. 
 

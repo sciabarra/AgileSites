@@ -1,4 +1,7 @@
 #!/bin/bash
+BASE="$(dirname $0)"
+cd "$BASE"
+BASE="$(pwd)"
 if ! test -e  Sites/csInstall.sh 
 then 
 	echo Sites installer not found.
@@ -9,16 +12,15 @@ fi
 if test -n "$JAVA_HOME"
 then export PATH="$JAVA_HOME/bin:$PATH"
 fi
-export PATH="wcs/home/bin:$PATH"
+export PATH="$BASE/wcs/home/bin:$PATH"
 if ! java -version
 then echo java not found. Please install JDK and set JAVA_HOME ; exit
 fi
 rm home/*.done
 touch home/hsql.flag
 touch home/setup.flag
-BASE="$(dirname $0)"
 java -cp ../bin/wcs.jar wcs.Silent "$BASE" misc/silentinstaller/generic_omii.ini Sites/install.ini Sites/omii.ini
-java -cp ../bin/wcs.jar wcs.Replacer ../ "$BASE" <context.xml >webapps/cs/META-INF/context.xml
+java -cp ../bin/wcs.jar wcs.Replacer .. "$BASE" <context.xml >webapps/cs/META-INF/context.xml
 java -cp ../bin/wcs.jar wcs.Unzip Sites/csdt.zip home
 cd ..
 java -cp bin/wcs.jar wcs.Configurator wcs
