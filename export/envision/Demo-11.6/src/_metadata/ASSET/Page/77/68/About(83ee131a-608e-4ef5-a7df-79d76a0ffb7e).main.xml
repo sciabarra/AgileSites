@@ -99,30 +99,30 @@
         </data>
     </attribute>
     <attribute>
-        <name>Title</name>
+        <name>Demo_Title</name>
         <data>
             <stringValue>About title</stringValue>
         </data>
     </attribute>
     <attribute>
-        <name>Subtitle</name>
+        <name>Demo_Subtitle</name>
         <data>
             <stringValue>About subtitle</stringValue>
         </data>
     </attribute>
     <attribute>
-        <name>Image</name>
+        <name>Demo_Image</name>
         <data/>
     </attribute>
     <attribute>
-        <name>Summary</name>
+        <name>Demo_Summary</name>
         <data>
             <stringValue>Hello, world.
 </stringValue>
         </data>
     </attribute>
     <attribute>
-        <name>Detail</name>
+        <name>Demo_Detail</name>
         <data>
             <stringValue>&lt;div&gt;
 	About us.&lt;/div&gt;
@@ -130,28 +130,28 @@
         </data>
     </attribute>
     <attribute>
-        <name>TeaserTitle</name>
+        <name>Demo_TeaserTitle</name>
         <data>
             <stringList>First</stringList>
             <stringList>Second</stringList>
         </data>
     </attribute>
     <attribute>
-        <name>TeaserText</name>
+        <name>Demo_TeaserText</name>
         <data>
             <stringList>First text</stringList>
             <stringList>Second text</stringList>
         </data>
     </attribute>
     <attribute>
-        <name>Related</name>
+        <name>Demo_Related</name>
         <data>
             <stringList>Page:1351275793658</stringList>
             <stringList>Page:1351275793648</stringList>
         </data>
     </attribute>
     <attribute>
-        <name>SeeAlso</name>
+        <name>Demo_SeeAlso</name>
         <data>
             <stringList>Page:1351275793658</stringList>
             <stringList>Page:1351275793340</stringList>

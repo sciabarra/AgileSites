@@ -99,19 +99,19 @@
         </data>
     </attribute>
     <attribute>
-        <name>Title</name>
+        <name>Demo_Title</name>
         <data>
             <stringValue>Home</stringValue>
         </data>
     </attribute>
     <attribute>
-        <name>Subtitle</name>
+        <name>Demo_Subtitle</name>
         <data>
             <stringValue>Home Page</stringValue>
         </data>
     </attribute>
     <attribute>
-        <name>Image</name>
+        <name>Demo_Image</name>
         <data>
             <blobValue>
                 <filename>Home.Image(4adc5be5-d187-4c2b-a299-670a3011382e).test.jpg</filename>
@@ -121,7 +121,7 @@
         </data>
     </attribute>
     <attribute>
-        <name>Summary</name>
+        <name>Demo_Summary</name>
         <data>
             <stringValue>&lt;p&gt;
 	This is a SUMMARY.&lt;/p&gt;
@@ -129,7 +129,7 @@
         </data>
     </attribute>
     <attribute>
-        <name>Detail</name>
+        <name>Demo_Detail</name>
         <data>
             <stringValue>&lt;div&gt;
 	This &lt;strong&gt;is&lt;/strong&gt; a &lt;em&gt;detail&lt;/em&gt;.&lt;/div&gt;
@@ -143,27 +143,27 @@
         </data>
     </attribute>
     <attribute>
-        <name>TeaserTitle</name>
+        <name>Demo_TeaserTitle</name>
         <data>
             <stringList>First Teaser</stringList>
             <stringList>Second Teaser</stringList>
         </data>
     </attribute>
     <attribute>
-        <name>TeaserText</name>
+        <name>Demo_TeaserText</name>
         <data>
             <stringList>First Teaser Text</stringList>
             <stringList>Second Teaser Text</stringList>
         </data>
     </attribute>
     <attribute>
-        <name>Related</name>
+        <name>Demo_Related</name>
         <data>
             <stringList>Page:1351275803233</stringList>
         </data>
     </attribute>
     <attribute>
-        <name>SeeAlso</name>
+        <name>Demo_SeeAlso</name>
         <data>
             <stringList>Page:1351275803233</stringList>
             <stringList>Page:1351275803232</stringList>

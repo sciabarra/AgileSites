@@ -105,19 +105,19 @@
         </data>
     </attribute>
     <attribute>
-        <name>Title</name>
+        <name>Demo_Title</name>
         <data>
             <stringValue>Home</stringValue>
         </data>
     </attribute>
     <attribute>
-        <name>Subtitle</name>
+        <name>Demo_Subtitle</name>
         <data>
             <stringValue>Home Page</stringValue>
         </data>
     </attribute>
     <attribute>
-        <name>Image</name>
+        <name>Demo_Image</name>
         <data>
             <blobValue>
                 <filename>Home.Image(50c3a5fe-0c47-410e-abc0-e14c86116a98).test.jpg</filename>
@@ -127,13 +127,13 @@
         </data>
     </attribute>
     <attribute>
-        <name>Summary</name>
+        <name>Demo_Summary</name>
         <data>
             <stringValue>This is a SUMMARY.</stringValue>
         </data>
     </attribute>
     <attribute>
-        <name>Detail</name>
+        <name>Demo_Detail</name>
         <data>
             <stringValue>&lt;div&gt;
 	Home Page&lt;/div&gt;
@@ -141,25 +141,25 @@
         </data>
     </attribute>
     <attribute>
-        <name>TeaserTitle</name>
+        <name>Demo_TeaserTitle</name>
         <data>
             <stringList>First Teaser</stringList>
             <stringList>Second Teaser</stringList>
         </data>
     </attribute>
     <attribute>
-        <name>TeaserText</name>
+        <name>Demo_TeaserText</name>
         <data>
             <stringList>First Teaser Text</stringList>
             <stringList>Second Teaser Text</stringList>
         </data>
     </attribute>
     <attribute>
-        <name>TeaserLink</name>
+        <name>Demo_TeaserLink</name>
         <data/>
     </attribute>
     <attribute>
-        <name>Related</name>
+        <name>Demo_Related</name>
         <data>
             <stringList>Page:1374098079589</stringList>
             <stringList>Page:1374098079587</stringList>
@@ -167,7 +167,7 @@
         </data>
     </attribute>
     <attribute>
-        <name>SeeAlso</name>
+        <name>Demo_SeeAlso</name>
         <data>
             <stringList>Page:1374098079578</stringList>
             <stringList>Page:1374098079660</stringList>

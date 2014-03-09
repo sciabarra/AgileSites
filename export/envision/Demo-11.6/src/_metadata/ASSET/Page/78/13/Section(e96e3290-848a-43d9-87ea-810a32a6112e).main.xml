@@ -101,23 +101,23 @@
         </data>
     </attribute>
     <attribute>
-        <name>Title</name>
+        <name>Demo_Title</name>
         <data>
             <stringValue>Section</stringValue>
         </data>
     </attribute>
     <attribute>
-        <name>Subtitle</name>
+        <name>Demo_Subtitle</name>
         <data>
             <stringValue>Section</stringValue>
         </data>
     </attribute>
     <attribute>
-        <name>Image</name>
+        <name>Demo_Image</name>
         <data/>
     </attribute>
     <attribute>
-        <name>Summary</name>
+        <name>Demo_Summary</name>
         <data>
             <stringValue>&lt;div&gt;
 	Section&lt;/div&gt;
@@ -125,7 +125,7 @@
         </data>
     </attribute>
     <attribute>
-        <name>Detail</name>
+        <name>Demo_Detail</name>
         <data>
             <stringValue>&lt;div&gt;
 	Section&lt;/div&gt;
@@ -133,19 +133,19 @@
         </data>
     </attribute>
     <attribute>
-        <name>TeaserTitle</name>
+        <name>Demo_TeaserTitle</name>
         <data/>
     </attribute>
     <attribute>
-        <name>TeaserText</name>
+        <name>Demo_TeaserText</name>
         <data/>
     </attribute>
     <attribute>
-        <name>Related</name>
+        <name>Demo_Related</name>
         <data/>
     </attribute>
     <attribute>
-        <name>SeeAlso</name>
+        <name>Demo_SeeAlso</name>
         <data>
             <stringList>Page:1351275803233</stringList>
         </data>
