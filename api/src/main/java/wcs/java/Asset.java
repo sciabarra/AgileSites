@@ -27,11 +27,10 @@ import wcs.java.util.Util;
 import COM.FutureTense.Interfaces.ICS;
 import COM.FutureTense.Interfaces.IList;
 
-public class Asset extends AssetBase implements wcs.api.Asset,
-		wcs.api.Content {
+public class Asset extends AssetBase implements wcs.api.Asset, wcs.api.Content {
 
 	private String prefix = "";
-	
+
 	private static Log log = Log.getLog(Env.class);
 
 	// the name of the asset
@@ -48,7 +47,7 @@ public class Asset extends AssetBase implements wcs.api.Asset,
 	private ICS i;
 
 	boolean insite = false;
-	
+
 	public Asset(Env env, String c, Long cid) {
 		this.e = env;
 		this.i = e.ics;
@@ -92,12 +91,12 @@ public class Asset extends AssetBase implements wcs.api.Asset,
 	 * @return
 	 */
 	private String at(String attribute) {
-		if(log.trace())
+		if (log.trace())
 			log.trace("extracting attribute " + attribute);
-		
-		if(!attribute.startsWith(prefix))
-			attribute = prefix+attribute;
-		
+
+		if (!attribute.startsWith(prefix))
+			attribute = prefix + attribute;
+
 		String attrList = as() + attribute.toUpperCase();
 		if (i.GetList(attrList) == null) {
 			String attrType = e.getConfig().getAttributeType(getC());
@@ -579,95 +578,99 @@ public class Asset extends AssetBase implements wcs.api.Asset,
 		return getBlobUrl(attribute, 1, mimeType, args);
 	}
 
-    /**
-     * String get blob url of the nth attribute
-     */
-    @Override
-    public String getBlobUrl(String attribute, int pos, String mimeType,
-                             Arg... args) {
+	/**
+	 * String get blob url of the nth attribute
+	 */
+	@Override
+	public String getBlobUrl(String attribute, int pos, String mimeType,
+			Arg... args) {
 
-        Long blobWhere = this.getCid(attribute, pos);
-        if (blobWhere == null)
-            return null;
+		Long blobWhere = this.getCid(attribute, pos);
+		if (blobWhere == null)
+			return null;
 
 		wcs.api.Config bcfg = e.getConfig();
 
-        //read the filename
-        String filename = getBlobFilename(attribute, pos);
+		// read the filename
+		String filename = getBlobFilename(attribute, pos);
 
-        // invoke tag
-        RenderTag.Getbloburl tag = RenderTag.getbloburl()
-                .blobtable(bcfg.getBlobTable(e.ics()))
-                .blobcol(bcfg.getBlobUrl(e.ics()))
-                .blobkey(WCS.normalizeSiteName(bcfg.getSite()))
-                .blobwhere(blobWhere.toString());
-        // if the mymetype is not passed it is read from the mimetypes table using the filename extension
-        if (mimeType == null || mimeType.trim().length() == 0)
-            mimeType = getBlobMimetype(filename);
+		// invoke tag
+		RenderTag.Getbloburl tag = RenderTag.getbloburl()
+				.blobtable(bcfg.getBlobTable(e.ics()))
+				.blobcol(bcfg.getBlobUrl(e.ics()))
+				.blobkey(WCS.normalizeSiteName(bcfg.getSite()))
+				.blobwhere(blobWhere.toString());
+		// if the mymetype is not passed it is read from the mimetypes table
+		// using the filename extension
+		if (mimeType == null || mimeType.trim().length() == 0)
+			mimeType = getBlobMimetype(filename);
 
-        tag.blobheader(mimeType);
-        tag.set(new Arg("blobheadername1", "Content-Disposition"),
-                new Arg("blobheadervalue1", "attachment; filename="+filename));
+		tag.blobheader(mimeType);
+		tag.set(new Arg("blobheadername1", "Content-Disposition"), new Arg(
+				"blobheadervalue1", "attachment; filename=" + filename));
 
-        // pass parameters
-        for (Arg arg : args) {
-            tag.set(arg.name.toUpperCase(), arg.value);
-        }
-        // run the tag
-        String blobUrl =  tag.eval(i, "outstr");
-        return blobUrl + "/" + filename;
-    }
+		// pass parameters
+		for (Arg arg : args) {
+			tag.set(arg.name.toUpperCase(), arg.value);
+		}
+		// run the tag
+		String blobUrl = tag.eval(i, "outstr");
+		return blobUrl + "/" + filename;
+	}
 
-    private String getBlobFilename(String attribute, int pos) {
-        Long blobWhere = this.getCid(attribute, pos);
-        if (blobWhere == null)
-            return null;
-        // invoke tag
-        BlobserviceTag.readdata().id(blobWhere.toString()).listvarname("outlist").run(i);
-        IList blobData = i.GetList("outlist");
-        String filename;
-        try {
-            filename = blobData.getValue("urldata");
-        } catch (NoSuchFieldException e1) {
-            return null;
-        }
-        return normalizeFilename(filename);
-    }
+	private String getBlobFilename(String attribute, int pos) {
+		Long blobWhere = this.getCid(attribute, pos);
+		if (blobWhere == null)
+			return null;
+		// invoke tag
+		BlobserviceTag.readdata().id(blobWhere.toString())
+				.listvarname("outlist").run(i);
+		IList blobData = i.GetList("outlist");
+		String filename;
+		try {
+			filename = blobData.getValue("urldata");
+		} catch (NoSuchFieldException e1) {
+			return null;
+		}
+		return normalizeFilename(filename);
+	}
 
-    private String normalizeFilename(String filepath) {
-        filepath = filepath.replace("\\","/");
-        String filename = filepath;
-        if (filepath.lastIndexOf("/") > 0) {
-            filename = filepath.substring(filepath.lastIndexOf("/") +1, filepath.length());
-        }
-        int version = filename.lastIndexOf(",");
-        int extensionPos = filename.lastIndexOf(".", filename.length()) ;
-        if (version > 0) {
-            String extension = "";
-            if (extensionPos > 0)
-                extension = filename.substring(extensionPos, filename.length());
-            return filename.substring(0,version) + extension;
-        }
-        return filename;
-    }
+	private String normalizeFilename(String filepath) {
+		filepath = filepath.replace("\\", "/");
+		String filename = filepath;
+		if (filepath.lastIndexOf("/") > 0) {
+			filename = filepath.substring(filepath.lastIndexOf("/") + 1,
+					filepath.length());
+		}
+		int version = filename.lastIndexOf(",");
+		int extensionPos = filename.lastIndexOf(".", filename.length());
+		if (version > 0) {
+			String extension = "";
+			if (extensionPos > 0)
+				extension = filename.substring(extensionPos, filename.length());
+			return filename.substring(0, version) + extension;
+		}
+		return filename;
+	}
 
-    private String getBlobMimetype(String filename) {
-        if (filename == null || filename.length() < 3)
-            return null;
-        String mimeType = null;
-        String ext = filename.substring(filename.lastIndexOf('.') + 1);
-        i.SetVar("extension", ext);
-        wcs.core.tag.IcsTag.selectto().table("mimetype").what("mimetype").listname("types").where("extension").run(i);
-        IList mimetypes = i.GetList("types");
-        if (mimetypes != null && mimetypes.hasData()) {
-            try {
-                mimeType = mimetypes.getValue("mimetype");
-            } catch (NoSuchFieldException e1) {
-                return null;
-            }
-        }
-        return mimeType;
-    }
+	private String getBlobMimetype(String filename) {
+		if (filename == null || filename.length() < 3)
+			return null;
+		String mimeType = null;
+		String ext = filename.substring(filename.lastIndexOf('.') + 1);
+		i.SetVar("extension", ext);
+		wcs.core.tag.IcsTag.selectto().table("mimetype").what("mimetype")
+				.listname("types").where("extension").run(i);
+		IList mimetypes = i.GetList("types");
+		if (mimetypes != null && mimetypes.hasData()) {
+			try {
+				mimeType = mimetypes.getValue("mimetype");
+			} catch (NoSuchFieldException e1) {
+				return null;
+			}
+		}
+		return mimeType;
+	}
 
 	/**
 	 * Invoke the actual slot call
@@ -685,12 +688,18 @@ public class Asset extends AssetBase implements wcs.api.Asset,
 	private String insiteCall(String type, String template, String attribute,
 			int n, String emptyText, Arg... args) {
 
+		if (!attribute.startsWith(prefix))
+			attribute = prefix + attribute;
+
+		if (!template.startsWith(prefix))
+			template = prefix + template;
+
 		try {
 			// let's start with the common parameters
 			List<Arg> list = new ArrayList<Arg>();
-            String site =  i.GetVar("site");
+			String site = i.GetVar("site");
 			list.add(arg("SITE", site));
-			list.add(arg("TNAME", site + "_" + template));
+			list.add(arg("TNAME", template));
 
 			list.add(arg("TTYPE", //
 					i.GetVar("tid") != null ? "Template" : "CSElement"));
@@ -743,7 +752,7 @@ public class Asset extends AssetBase implements wcs.api.Asset,
 		log.trace("ttype/tid=", ttype, tid);
 		List<Arg> list = new ArrayList<Arg>();
 		list.add(arg("SITE", i.GetVar("site")));
-		list.add(arg("TNAME", Util.normalizedName(site,template)));
+		list.add(arg("TNAME", Util.normalizedName(site, template)));
 		list.add(arg("C", c));
 		list.add(arg("CID", cid.toString()));
 		list.add(arg("TTYPE", ttype));
@@ -844,6 +853,9 @@ public class Asset extends AssetBase implements wcs.api.Asset,
 	 * @return
 	 */
 	private String edit(String attribute, int index, String params, Arg... args) {
+
+		if (!attribute.startsWith(prefix))
+			attribute = prefix + attribute;
 
 		// read a call or create a new call with no parameters
 		String value = e.getString(at(attribute), index, "value");

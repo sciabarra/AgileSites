@@ -114,7 +114,7 @@
         <name>Demo_Image</name>
         <data>
             <blobValue>
-                <filename>Home.Image(4adc5be5-d187-4c2b-a299-670a3011382e).test.jpg</filename>
+                <filename>Home.Demo_Image(4adc5be5-d187-4c2b-a299-670a3011382e).test.jpg</filename>
                 <foldername></foldername>
                 <filedata></filedata>
             </blobValue>
@@ -260,7 +260,7 @@
 ==================______________________==================
 #
 #Sat Jun 01 21:29:22 UTC 2013
-storable0=ASSET/Page/75/77/Home.Image(4adc5be5-d187-4c2b-a299-670a3011382e).test.jpg||_storable_type\=Home.Image%284adc5be5-d187-4c2b-a299-670a3011382e%29.test.jpg&_blob_prop\=Image&_value_count\=S
+storable0=ASSET/Page/75/77/Home.Demo_Image(4adc5be5-d187-4c2b-a299-670a3011382e).test.jpg||_storable_type\=Home.Demo_Image%284adc5be5-d187-4c2b-a299-670a3011382e%29.test.jpg&_blob_prop\=Image&_value_count\=S
 key=Page-4adc5be5-d187-4c2b-a299-670a3011382e
 type=ASSETDATA
 sites=Demo

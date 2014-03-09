@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>DeviceGroup:1358434842108</id>
+    <id>DeviceGroup:1392725625226</id>
     <name>Android Phones</name>
     <createdby>fwadmin</createdby>
     <createddate>2013-01-17T20:39:23.573Z</createddate>
     <description>Group for Android phones</description>
-    <publist>0</publist>
-    <publist>FirstSiteII</publist>
-    <publist>AdminSite</publist>
-    <publist>avisports</publist>
     <publist>Demo</publist>
-    <publist>MySite</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
@@ -64,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1358434842108</longValue>
+            <longValue>1392725625226</longValue>
         </data>
     </attribute>
     <attribute>
@@ -146,70 +141,70 @@
     <dependency>
       <depType>V</depType>
       <resType>DeviceGroup</resType>
-      <resId>1358430850827</resId>
-      <assetDate>2014-01-07 22:54:02.973</assetDate>
-      <uid>32f0bc4a-1cfc-47f3-91e7-41c01f809126</uid>
-    </dependency>
-    <dependency>
-      <depType>V</depType>
-      <resType>DeviceGroup</resType>
-      <resId>1358430851590</resId>
-      <assetDate>2014-01-07 22:54:02.828</assetDate>
-      <uid>b0b5b384-acb8-4bd0-8f7b-dc9d1b4c36cc</uid>
-    </dependency>
-    <dependency>
-      <depType>V</depType>
-      <resType>DeviceGroup</resType>
-      <resId>1358434841098</resId>
-      <assetDate>2014-01-07 22:54:02.672</assetDate>
-      <uid>cafe0088-11a7-4e81-ade6-eee48f07cc4e</uid>
-    </dependency>
-    <dependency>
-      <depType>V</depType>
-      <resType>DeviceGroup</resType>
-      <resId>1358434843096</resId>
-      <assetDate>2014-01-07 22:54:02.317</assetDate>
-      <uid>c936720c-e32d-45c4-b39a-b7ad8bcbdacc</uid>
-    </dependency>
-    <dependency>
-      <depType>V</depType>
-      <resType>DeviceGroup</resType>
-      <resId>1358491825686</resId>
-      <assetDate>2014-01-07 22:54:02.134</assetDate>
-      <uid>a9369223-00af-475b-b8a5-6959bc7c3906</uid>
-    </dependency>
-    <dependency>
-      <depType>V</depType>
-      <resType>DeviceGroup</resType>
-      <resId>1358495275261</resId>
-      <assetDate>2014-01-07 22:54:03.132</assetDate>
+      <resId>1392725625222</resId>
+      <assetDate>2014-01-07 23:54:03.132</assetDate>
       <uid>4c8a0c51-36e6-498a-9bbf-34049e5d4a2d</uid>
     </dependency>
     <dependency>
       <depType>V</depType>
       <resType>DeviceGroup</resType>
-      <resId>1365399666345</resId>
-      <assetDate>2014-01-07 22:54:01.937</assetDate>
+      <resId>1392725625223</resId>
+      <assetDate>2014-01-07 23:54:02.973</assetDate>
+      <uid>32f0bc4a-1cfc-47f3-91e7-41c01f809126</uid>
+    </dependency>
+    <dependency>
+      <depType>V</depType>
+      <resType>DeviceGroup</resType>
+      <resId>1392725625224</resId>
+      <assetDate>2014-01-07 23:54:02.828</assetDate>
+      <uid>b0b5b384-acb8-4bd0-8f7b-dc9d1b4c36cc</uid>
+    </dependency>
+    <dependency>
+      <depType>V</depType>
+      <resType>DeviceGroup</resType>
+      <resId>1392725625225</resId>
+      <assetDate>2014-01-07 23:54:02.672</assetDate>
+      <uid>cafe0088-11a7-4e81-ade6-eee48f07cc4e</uid>
+    </dependency>
+    <dependency>
+      <depType>V</depType>
+      <resType>DeviceGroup</resType>
+      <resId>1392725625227</resId>
+      <assetDate>2014-01-07 23:54:02.317</assetDate>
+      <uid>c936720c-e32d-45c4-b39a-b7ad8bcbdacc</uid>
+    </dependency>
+    <dependency>
+      <depType>V</depType>
+      <resType>DeviceGroup</resType>
+      <resId>1392725625228</resId>
+      <assetDate>2014-01-07 23:54:02.134</assetDate>
+      <uid>a9369223-00af-475b-b8a5-6959bc7c3906</uid>
+    </dependency>
+    <dependency>
+      <depType>V</depType>
+      <resType>DeviceGroup</resType>
+      <resId>1392725625229</resId>
+      <assetDate>2014-01-07 23:54:01.937</assetDate>
       <uid>3a005d0e-64ad-437e-a2f8-74743faeba4e</uid>
     </dependency>
     <dependency>
       <depType>V</depType>
       <resType>DeviceGroup</resType>
-      <resId>1365399666760</resId>
-      <assetDate>2014-01-07 22:54:01.766</assetDate>
+      <resId>1392725625230</resId>
+      <assetDate>2014-01-07 23:54:01.766</assetDate>
       <uid>b28f8bd2-9986-4181-b52f-d748894cb3d5</uid>
     </dependency>
     <dependency>
       <depType>V</depType>
       <resType>DeviceGroup</resType>
-      <resId>1365399667200</resId>
-      <assetDate>2014-01-07 22:54:01.594</assetDate>
+      <resId>1392725625231</resId>
+      <assetDate>2014-01-07 23:54:01.594</assetDate>
       <uid>1306bef7-432f-44cc-b1ca-7e849fb92b60</uid>
     </dependency>
     <dependency>
       <depType>N</depType>
       <resType>DeviceGroup</resType>
-      <resId>1358434842108</resId>
+      <resId>1392725625226</resId>
       <uid>73bba297-e30a-40c8-bfc1-d880d2a30cdc</uid>
     </dependency>
   </linked-hash-set>
@@ -218,6 +213,6 @@
 #
 key=DeviceGroup-73bba297-e30a-40c8-bfc1-d880d2a30cdc
 type=ASSETDATA
-sites=0
+sites=Demo
 
 ==================___ END METADATA ___==================-->

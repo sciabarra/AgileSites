@@ -340,7 +340,9 @@ trait AgileSitesUtil {
 
     val opts = "-cp" :: cp :: 
       "-Djava.io.tmpdir="+(temp.getAbsolutePath) :: 
-      "-Xms256m" :: "-Xmx1024m" :: "-XX:MaxPermSize=256m" ::  Nil
+      "-Xms256m" :: "-Xmx1024m" :: "-XX:MaxPermSize=256m" ::
+      "-Dorg.owasp.esapi.resources=../bin" ::  Nil
+
     val args = Seq("wcs.SitesTomcat", port.toString, home.getAbsolutePath) ++ webapps
     val cmd = opts.toList ++ args.toList 
                

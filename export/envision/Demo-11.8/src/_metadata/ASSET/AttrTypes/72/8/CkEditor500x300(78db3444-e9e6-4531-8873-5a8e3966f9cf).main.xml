@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>AttrTypes:1374098078357</id>
+    <id>AttrTypes:1392725625294</id>
     <name>CkEditor500x300</name>
     <createdby>fwadmin</createdby>
     <createddate>2013-04-17T19:47:06.034Z</createddate>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1374098078357</longValue>
+            <longValue>1392725625294</longValue>
         </data>
     </attribute>
     <attribute>
@@ -97,7 +97,7 @@
     <dependency>
       <depType>N</depType>
       <resType>AttrTypes</resType>
-      <resId>1374098078357</resId>
+      <resId>1392725625294</resId>
       <uid>78db3444-e9e6-4531-8873-5a8e3966f9cf</uid>
     </dependency>
   </linked-hash-set>

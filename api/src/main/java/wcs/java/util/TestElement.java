@@ -4,22 +4,26 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static wcs.Api.arg;
 import static wcs.Api.dumpStream;
+
+import java.io.PrintStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.LinkedList;
+import java.util.List;
+
+import junit.framework.TestCase;
+
+import org.hamcrest.CoreMatchers;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
 import wcs.Api;
 import wcs.api.Arg;
 import wcs.api.Call;
 import wcs.api.Content;
 import wcs.api.Log;
 import wcs.api.URL;
-import java.io.PrintStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.LinkedList;
-import java.util.List;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-import org.junit.matchers.JUnitMatchers;
-import junit.framework.TestCase;
 
 /**
  * Collection of test helpers for testing elements.
@@ -226,7 +230,7 @@ public class TestElement extends TestCase {
 	public void assertTextContains(String cssq, String text) {
 		String val = text(cssq);
 		if (val != null)
-			assertThat(val, JUnitMatchers.containsString(text));
+			assertThat(val, CoreMatchers.containsString(text));
 		else
 			fail("cannot find " + cssq);
 	}
@@ -268,7 +272,7 @@ public class TestElement extends TestCase {
 		if (elem != null) {
 			String attribute = elem.attr(attr);
 			if (attribute != null)
-				assertThat(attribute, JUnitMatchers.containsString(value));
+				assertThat(attribute, CoreMatchers.containsString(value));
 			else
 				fail("cannot find attribute " + attr + " in " + cssq);
 		} else

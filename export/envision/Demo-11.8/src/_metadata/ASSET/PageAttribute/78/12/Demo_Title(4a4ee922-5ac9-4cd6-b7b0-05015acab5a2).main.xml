@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>PageAttribute:1374098078882</id>
+    <id>PageAttribute:1392725625319</id>
     <name>Demo_Title</name>
     <createdby>fwadmin</createdby>
     <createddate>2013-12-07T08:42:07.457Z</createddate>
     <description>Title</description>
-    <publist>MySite</publist>
+    <publist>Demo</publist>
     <status>ED</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1374098078882</longValue>
+            <longValue>1392725625319</longValue>
         </data>
     </attribute>
     <attribute>
@@ -199,7 +199,7 @@
     <dependency>
       <depType>N</depType>
       <resType>PageAttribute</resType>
-      <resId>1374098078882</resId>
+      <resId>1392725625319</resId>
       <uid>4a4ee922-5ac9-4cd6-b7b0-05015acab5a2</uid>
     </dependency>
   </linked-hash-set>
@@ -208,6 +208,6 @@
 #
 key=PageAttribute-4a4ee922-5ac9-4cd6-b7b0-05015acab5a2
 type=ASSETDATA
-sites=MySite
+sites=Demo
 
 ==================___ END METADATA ___==================-->
