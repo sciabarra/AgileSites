@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>PageAttribute:1374098079869</id>
-    <name>SeeAlso</name>
+    <id>PageAttribute:1351275794182</id>
+    <name>Demo_TeaserLink</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-06-01T18:01:55.485Z</createddate>
-    <description>See Also</description>
+    <createddate>2013-04-21T10:36:52.620Z</createddate>
+    <description>Teaser Link</description>
     <publist>Demo</publist>
     <status>PL</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-12-22T08:53:15.164Z</updateddate>
+    <updateddate>2013-04-21T10:36:52.620Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -53,21 +53,17 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>96a78f25-3d32-47ef-80fb-c8560c8ed816</stringValue>
+            <stringValue>97f68741-014a-434a-9981-103f99ff7ff9</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1374098079869</longValue>
+            <longValue>1351275794182</longValue>
         </data>
     </attribute>
     <attribute>
         <name>fwtags</name>
-        <data/>
-    </attribute>
-    <attribute>
-        <name>Webreference</name>
         <data/>
     </attribute>
     <attribute>
@@ -195,18 +191,19 @@
 
 <!--==================___ METADATA ___================
 <dependencies>
-  <linked-hash-set>
+  <list>
     <dependency>
       <depType>N</depType>
       <resType>PageAttribute</resType>
-      <resId>1374098079869</resId>
-      <uid>96a78f25-3d32-47ef-80fb-c8560c8ed816</uid>
+      <resId>1351275794182</resId>
+      <uid>97f68741-014a-434a-9981-103f99ff7ff9</uid>
     </dependency>
-  </linked-hash-set>
+  </list>
 </dependencies>
 ==================______________________==================
 #
-key=PageAttribute-96a78f25-3d32-47ef-80fb-c8560c8ed816
+#Mon May 06 12:51:20 UTC 2013
+key=PageAttribute-97f68741-014a-434a-9981-103f99ff7ff9
 type=ASSETDATA
 sites=Demo
 

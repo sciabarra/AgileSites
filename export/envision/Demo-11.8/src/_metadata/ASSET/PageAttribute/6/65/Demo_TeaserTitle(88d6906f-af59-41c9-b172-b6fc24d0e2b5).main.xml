@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>PageAttribute:1351275803222</id>
-    <name>Image</name>
+    <id>PageAttribute:1374098079859</id>
+    <name>Demo_TeaserTitle</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-06-01T18:01:54.759Z</createddate>
-    <description>Image</description>
+    <createddate>2013-06-01T18:01:55.318Z</createddate>
+    <description>Teaser Title</description>
     <publist>Demo</publist>
     <status>PL</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-06-01T17:58:43.260Z</updateddate>
+    <updateddate>2013-12-22T08:53:15.162Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -53,17 +53,21 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>759034f7-5ad9-42ce-a9aa-f233bdd98788</stringValue>
+            <stringValue>88d6906f-af59-41c9-b172-b6fc24d0e2b5</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275803222</longValue>
+            <longValue>1374098079859</longValue>
         </data>
     </attribute>
     <attribute>
         <name>fwtags</name>
+        <data/>
+    </attribute>
+    <attribute>
+        <name>Webreference</name>
         <data/>
     </attribute>
     <attribute>
@@ -123,7 +127,7 @@
     <attribute>
         <name>valuestyle</name>
         <data>
-            <stringValue>S</stringValue>
+            <stringValue>O</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -171,7 +175,7 @@
     <attribute>
         <name>type</name>
         <data>
-            <stringValue>blob</stringValue>
+            <stringValue>string</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -191,19 +195,18 @@
 
 <!--==================___ METADATA ___================
 <dependencies>
-  <list>
+  <linked-hash-set>
     <dependency>
       <depType>N</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803222</resId>
-      <uid>759034f7-5ad9-42ce-a9aa-f233bdd98788</uid>
+      <resId>1374098079859</resId>
+      <uid>88d6906f-af59-41c9-b172-b6fc24d0e2b5</uid>
     </dependency>
-  </list>
+  </linked-hash-set>
 </dependencies>
 ==================______________________==================
 #
-#Sat Jun 01 21:29:20 UTC 2013
-key=PageAttribute-759034f7-5ad9-42ce-a9aa-f233bdd98788
+key=PageAttribute-88d6906f-af59-41c9-b172-b6fc24d0e2b5
 type=ASSETDATA
 sites=Demo
 

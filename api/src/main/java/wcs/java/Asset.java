@@ -30,6 +30,8 @@ import COM.FutureTense.Interfaces.IList;
 public class Asset extends AssetBase implements wcs.api.Asset,
 		wcs.api.Content {
 
+	private String prefix = "";
+	
 	private static Log log = Log.getLog(Env.class);
 
 	// the name of the asset
@@ -46,14 +48,16 @@ public class Asset extends AssetBase implements wcs.api.Asset,
 	private ICS i;
 
 	boolean insite = false;
-
+	
 	public Asset(Env env, String c, Long cid) {
 		this.e = env;
 		this.i = e.ics;
 		this.c = c;
 		this.cid = cid;
 		insite = env.isInsite();
-		init(i.GetVar("site"));
+		String site = i.GetVar("site");
+		prefix = site + "_";
+		init(site);
 		AssetTag.load().name(a).type(c).objectid(cid.toString()).run(i);
 		String subtype = AssetTag.getsubtype().name(a).eval(i, "OUTPUT");
 		this.subtype = subtype == null ? "" : subtype;
@@ -88,7 +92,12 @@ public class Asset extends AssetBase implements wcs.api.Asset,
 	 * @return
 	 */
 	private String at(String attribute) {
-		log.debug("extracting attribute " + attribute);
+		if(log.trace())
+			log.trace("extracting attribute " + attribute);
+		
+		if(!attribute.startsWith(prefix))
+			attribute = prefix+attribute;
+		
 		String attrList = as() + attribute.toUpperCase();
 		if (i.GetList(attrList) == null) {
 			String attrType = e.getConfig().getAttributeType(getC());

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>PageAttribute:1374098078882</id>
-    <name>Title</name>
+    <id>PageAttribute:1374098079517</id>
+    <name>Demo_Title</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-12-07T08:42:07.457Z</createddate>
+    <createddate>2013-06-01T18:01:54.834Z</createddate>
     <description>Title</description>
-    <publist>MySite</publist>
-    <status>ED</status>
+    <publist>Demo</publist>
+    <status>PL</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2014-01-07T22:54:03.623Z</updateddate>
+    <updateddate>2013-12-26T21:52:30.306Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -53,13 +53,13 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>4a4ee922-5ac9-4cd6-b7b0-05015acab5a2</stringValue>
+            <stringValue>bd9fde78-f4d8-4768-9732-a25cdd864138</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1374098078882</longValue>
+            <longValue>1374098079517</longValue>
         </data>
     </attribute>
     <attribute>
@@ -199,15 +199,15 @@
     <dependency>
       <depType>N</depType>
       <resType>PageAttribute</resType>
-      <resId>1374098078882</resId>
-      <uid>4a4ee922-5ac9-4cd6-b7b0-05015acab5a2</uid>
+      <resId>1374098079517</resId>
+      <uid>bd9fde78-f4d8-4768-9732-a25cdd864138</uid>
     </dependency>
   </linked-hash-set>
 </dependencies>
 ==================______________________==================
 #
-key=PageAttribute-4a4ee922-5ac9-4cd6-b7b0-05015acab5a2
+key=PageAttribute-bd9fde78-f4d8-4768-9732-a25cdd864138
 type=ASSETDATA
-sites=MySite
+sites=Demo
 
 ==================___ END METADATA ___==================-->

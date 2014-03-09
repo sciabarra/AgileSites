@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>PageAttribute:1374098079864</id>
-    <name>TeaserText</name>
+    <id>PageAttribute:1374098079849</id>
+    <name>Demo_Image</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-06-01T18:01:55.401Z</createddate>
-    <description>Teaser Text</description>
+    <createddate>2013-06-01T18:01:54.759Z</createddate>
+    <description>Image</description>
     <publist>Demo</publist>
     <status>PL</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-12-22T08:53:15.160Z</updateddate>
+    <updateddate>2013-12-22T08:53:15.161Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -53,13 +53,13 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>55421df3-1c5d-4566-8d36-3939df43577e</stringValue>
+            <stringValue>759034f7-5ad9-42ce-a9aa-f233bdd98788</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1374098079864</longValue>
+            <longValue>1374098079849</longValue>
         </data>
     </attribute>
     <attribute>
@@ -79,7 +79,7 @@
     <attribute>
         <name>embedtype</name>
         <data>
-            <stringValue>U</stringValue>
+            <stringValue></stringValue>
         </data>
     </attribute>
     <attribute>
@@ -127,7 +127,7 @@
     <attribute>
         <name>valuestyle</name>
         <data>
-            <stringValue>O</stringValue>
+            <stringValue>S</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -175,14 +175,12 @@
     <attribute>
         <name>type</name>
         <data>
-            <stringValue>text</stringValue>
+            <stringValue>blob</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>attributetype</name>
-        <data>
-            <stringValue>AttrTypes:1374098079801</stringValue>
-        </data>
+        <data/>
     </attribute>
     <attribute>
         <name>Arguments</name>
@@ -199,22 +197,16 @@
 <dependencies>
   <linked-hash-set>
     <dependency>
-      <depType>E</depType>
-      <resType>AttrTypes</resType>
-      <resId>1374098079801</resId>
-      <uid>c34deb4f-0be5-47aa-a5d4-ccb86e59794d</uid>
-    </dependency>
-    <dependency>
       <depType>N</depType>
       <resType>PageAttribute</resType>
-      <resId>1374098079864</resId>
-      <uid>55421df3-1c5d-4566-8d36-3939df43577e</uid>
+      <resId>1374098079849</resId>
+      <uid>759034f7-5ad9-42ce-a9aa-f233bdd98788</uid>
     </dependency>
   </linked-hash-set>
 </dependencies>
 ==================______________________==================
 #
-key=PageAttribute-55421df3-1c5d-4566-8d36-3939df43577e
+key=PageAttribute-759034f7-5ad9-42ce-a9aa-f233bdd98788
 type=ASSETDATA
 sites=Demo
 

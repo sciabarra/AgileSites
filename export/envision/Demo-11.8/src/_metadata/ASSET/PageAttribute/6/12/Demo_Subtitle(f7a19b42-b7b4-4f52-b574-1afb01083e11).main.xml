@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>PageAttribute:1374098079849</id>
-    <name>Image</name>
+    <id>PageAttribute:1374098079838</id>
+    <name>Demo_Subtitle</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-06-01T18:01:54.759Z</createddate>
-    <description>Image</description>
+    <createddate>2013-06-01T18:01:55.242Z</createddate>
+    <description>Subtitle</description>
     <publist>Demo</publist>
     <status>PL</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-12-22T08:53:15.161Z</updateddate>
+    <updateddate>2013-12-22T08:53:15.162Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -53,13 +53,13 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>759034f7-5ad9-42ce-a9aa-f233bdd98788</stringValue>
+            <stringValue>f7a19b42-b7b4-4f52-b574-1afb01083e11</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1374098079849</longValue>
+            <longValue>1374098079838</longValue>
         </data>
     </attribute>
     <attribute>
@@ -175,7 +175,7 @@
     <attribute>
         <name>type</name>
         <data>
-            <stringValue>blob</stringValue>
+            <stringValue>string</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -199,14 +199,14 @@
     <dependency>
       <depType>N</depType>
       <resType>PageAttribute</resType>
-      <resId>1374098079849</resId>
-      <uid>759034f7-5ad9-42ce-a9aa-f233bdd98788</uid>
+      <resId>1374098079838</resId>
+      <uid>f7a19b42-b7b4-4f52-b574-1afb01083e11</uid>
     </dependency>
   </linked-hash-set>
 </dependencies>
 ==================______________________==================
 #
-key=PageAttribute-759034f7-5ad9-42ce-a9aa-f233bdd98788
+key=PageAttribute-f7a19b42-b7b4-4f52-b574-1afb01083e11
 type=ASSETDATA
 sites=Demo
 

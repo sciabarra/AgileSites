@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>PageAttribute:1351275803268</id>
-    <name>TeaserText</name>
+    <id>PageAttribute:1351275803263</id>
+    <name>Demo_TeaserTitle</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-06-01T18:01:55.401Z</createddate>
-    <description>Teaser Text</description>
+    <createddate>2013-06-01T18:01:55.318Z</createddate>
+    <description>Teaser Title</description>
     <publist>Demo</publist>
     <status>PL</status>
     <subtype></subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-06-01T17:58:43.256Z</updateddate>
+    <updateddate>2013-06-01T17:58:43.271Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -53,13 +53,13 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>55421df3-1c5d-4566-8d36-3939df43577e</stringValue>
+            <stringValue>88d6906f-af59-41c9-b172-b6fc24d0e2b5</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275803268</longValue>
+            <longValue>1351275803263</longValue>
         </data>
     </attribute>
     <attribute>
@@ -75,7 +75,7 @@
     <attribute>
         <name>embedtype</name>
         <data>
-            <stringValue>U</stringValue>
+            <stringValue></stringValue>
         </data>
     </attribute>
     <attribute>
@@ -171,14 +171,12 @@
     <attribute>
         <name>type</name>
         <data>
-            <stringValue>text</stringValue>
+            <stringValue>string</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>attributetype</name>
-        <data>
-            <stringValue>AttrTypes:1351275803236</stringValue>
-        </data>
+        <data/>
     </attribute>
     <attribute>
         <name>Arguments</name>
@@ -195,23 +193,17 @@
 <dependencies>
   <list>
     <dependency>
-      <depType>E</depType>
-      <resType>AttrTypes</resType>
-      <resId>1351275803236</resId>
-      <uid>c34deb4f-0be5-47aa-a5d4-ccb86e59794d</uid>
-    </dependency>
-    <dependency>
       <depType>N</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803268</resId>
-      <uid>55421df3-1c5d-4566-8d36-3939df43577e</uid>
+      <resId>1351275803263</resId>
+      <uid>88d6906f-af59-41c9-b172-b6fc24d0e2b5</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
 #Sat Jun 01 21:29:21 UTC 2013
-key=PageAttribute-55421df3-1c5d-4566-8d36-3939df43577e
+key=PageAttribute-88d6906f-af59-41c9-b172-b6fc24d0e2b5
 type=ASSETDATA
 sites=Demo
 
