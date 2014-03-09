@@ -1,4 +1,4 @@
-This document is a quick start guide to installing everything.
+This document is a quick start guide to install Sites within AgileSites shell.
 
 - AgileSites 
 - Sites within AgileSites
@@ -11,7 +11,7 @@ This document is a quick start guide to installing everything.
 http://www.oracle.com/technetwork/middleware/webcenter/sites/downloads/index.html
 ```
 
-2. Unzip the distributioin package, then inside locate the `WCS_Sites*.zip` file
+2. Unzip the distribution package, then inside locate the `WCS_Sites*.zip` file
 
 3. Unzip the content of the `WCS_Sites*.zip` file inside the `wcs` folder. 
 After the unarchiving there should be 3 new folders:
