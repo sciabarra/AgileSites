@@ -34,11 +34,11 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "org.apache.httpcomponents" % "httpcore" % "4.1.2",
     "org.apache.httpcomponents" % "httpmime" % "4.1.2",
     "org.apache.james" % "apache-mime4j" % "0.5",
-    "org.apache.tomcat" % "tomcat-catalina" % "7.0.34",
-    "org.apache.tomcat" % "tomcat-dbcp" % "7.0.34",
-    "org.apache.tomcat.embed" % "tomcat-embed-core" % "7.0.34",
-    "org.apache.tomcat.embed" % "tomcat-embed-logging-juli" % "7.0.34",
-    "org.apache.tomcat.embed" % "tomcat-embed-jasper" % "7.0.34",
+    "org.apache.tomcat" % "tomcat-catalina" % "7.0.52",
+    "org.apache.tomcat" % "tomcat-dbcp" % "7.0.52",
+    "org.apache.tomcat.embed" % "tomcat-embed-core" % "7.0.52",
+    "org.apache.tomcat.embed" % "tomcat-embed-logging-log4j" % "7.0.52",
+    "org.apache.tomcat.embed" % "tomcat-embed-jasper" % "7.0.52",
     "org.hsqldb" % "hsqldb" % "1.8.0.10",
     "junit" % "junit" % "4.11",
     "com.novocode" % "junit-interface" % "0.10")
@@ -50,7 +50,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar" || "ehcache-*" || "sites-*" || "esapi-*"
 
   /// END CHANGES
-  val v = "1.8"
+  val v = "1.8.1"
 
   val includeFilterUnmanagedJars = includeFilter in unmanagedJars := unmanagedFilter
 

@@ -295,6 +295,7 @@ trait AgileSitesUtil {
   def writeFile(file: File, body: String, log: Logger) = {
     //println("*** %s%s****\n".format(file.toString, body))
     log.debug("+++ %s".format(file.toString))
+    file.getParentFile.mkdirs
     val w = new java.io.FileWriter(file)
     w.write(body)
     w.close
@@ -327,31 +328,35 @@ trait AgileSitesUtil {
   def tomcatServe(port: Int, classpath: Seq[File], webapps: Seq[String]) = {
     
     import java.io.File.pathSeparator
-    val tomcatFilter = "tomcat-*" || "hsqldb-*" || "ecj-*"
-    val eclasspath = classpath ++ Seq(file("wcs") / "home" / "bin") 
+    val tomcatFilter = "tomcat-*" || "hsqldb-*" || "ecj-*" || "log4j*"
+    val eclasspath =  Seq(file("wcs") / "home" / "bin") ++ classpath 
     val cp = eclasspath.
          filter(x => x.isDirectory || (tomcatFilter accept x)).
          map(_.getAbsolutePath).
          mkString(pathSeparator)
 
-    val home =  file("wcs")
-    val temp =  home / "temp"
+    val home  = file("wcs")
+    val temp  = home / "temp"
+  
     temp.mkdirs
 
     val opts = "-cp" :: cp :: 
-      "-Djava.io.tmpdir="+(temp.getAbsolutePath) :: 
+      "-Djava.io.tmpdir="+(temp.getAbsolutePath) ::
       "-Xms256m" :: "-Xmx1024m" :: "-XX:MaxPermSize=256m" ::
       "-Dorg.owasp.esapi.resources=../bin" ::  Nil
 
+
+      // "-Dlog4j.debug" 
+ 
     val args = Seq("wcs.SitesTomcat", port.toString, home.getAbsolutePath) ++ webapps
     val cmd = opts.toList ++ args.toList 
                
     import java.io._
     
     def sel(x: String, y: String) = if(File.pathSeparator == ";") x else y
-    val fw = new FileWriter("run."+sel("bat","sh"))
-    fw.write(sel("set ","")+"CATALINA_HOME=\""+home.getAbsolutePath+"\"\n")
-    fw.write(cmd.mkString("java ", " ", "\n"))
+    val fw = new FileWriter("tomcat."+sel("bat","sh"))
+    fw.write(sel("set ","")+"CATALINA_HOME=\""+home.getAbsolutePath+"\""+sel("\r\n","\n"))
+    fw.write(cmd.mkString("java ", " ", sel("\r\n","\n")))
     fw.close
 
     Fork.java.fork(None, cmd, 

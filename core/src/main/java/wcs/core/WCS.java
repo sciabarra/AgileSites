@@ -18,6 +18,11 @@ import COM.FutureTense.Interfaces.ICS;
  */
 public class WCS {
 
+	static {
+		// disable loggin in jar class loader library (jcl)
+		System.setProperty("jcl.isolateLogging", "false");
+	}
+
 	final static Log log = Log.getLog(WCS.class);
 
 	/**
