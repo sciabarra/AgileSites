@@ -33,6 +33,7 @@ public class Loader {
 	final static Log log = Log.getLog(Loader.class);
 
 	private File jarDir;
+	private File tmpDir;
 	private File libDir;
 	private long nextCheck = 0;
 	private long jarTimeStamp;
@@ -59,6 +60,12 @@ public class Loader {
 	public Loader(File dir, int interval, final ClassLoader cl) {
 		jarDir = dir;
 		libDir = new File(dir, "lib");
+		try {
+			tmpDir = Files.createTempDirectory("agilesites").toFile();
+			tmpDir.mkdirs();
+		} catch (IOException e) {
+			log.error("cannot create temp dir - nothing will work...");
+		}
 
 		// reset spool dir to a known state
 		cleanup();
@@ -71,7 +78,7 @@ public class Loader {
 	}
 
 	private void cleanup() {
-		for (File sdir : jarDir.listFiles(onlyTempDirs)) {
+		for (File sdir : tmpDir.listFiles(onlyTempDirs)) {
 			if (currentSpoolDir != null
 					&& !currentSpoolDir.getAbsolutePath().equals(
 							sdir.getAbsolutePath()))
@@ -115,11 +122,11 @@ public class Loader {
 		}
 	}
 
-	private File copyJarsToTempDir(File dir, File[] jars) throws IOException {
-		File spoolDir = new File(dir, wcs.Api.tmp());
+	private File copyJarsToTempDir(File[] jars) throws IOException {
+		File spoolDir = new File(tmpDir, wcs.Api.tmp());
 		if (!spoolDir.exists())
 			spoolDir.mkdirs();
-
+			
 		// copy files in the spool dir
 		for (File source : jars) {
 			if (source.isDirectory())
@@ -178,7 +185,7 @@ public class Loader {
 		synchronized (this) {
 			try {
 				// copy jars to a new spooldir
-				File newSpoolDir = copyJarsToTempDir(jarDir, jars);
+				File newSpoolDir = copyJarsToTempDir(jars);
 				// create a new classloader
 				List<File> list = new LinkedList<File>();
 				for (File f : newSpoolDir.listFiles(onlyJars))
@@ -196,7 +203,7 @@ public class Loader {
 				}
 
 				if (log.debug()) {
-					System.out.println("Loader: reloader " + newSpoolDir);
+					//System.out.println("Loader: reloader " + newSpoolDir);
 					log.debug("reloaded from %s", newSpoolDir.toString());
 					if (log.trace()) {
 						for (File f : list)
@@ -205,7 +212,8 @@ public class Loader {
 				}
 
 				// create a class loader according the current choice
-				log.error("using JCL classloader without parent");
+				
+				//log.error("using JCL classloader without parent");
 				currentClassLoader = new JarClassLoader(toUrlArray(list));
 				currentSpoolDir = newSpoolDir;
 				cleanup();
