@@ -1,4 +1,5 @@
 @echo off
+if exist ContentServer\csinstall.bat move ContentServer Sites
 if not exist Sites\csinstall.bat goto notfoundsites
 if not defined JAVA_HOME goto nojavahome
 set PATH="%JAVA_HOME%"\bin;%PATH%

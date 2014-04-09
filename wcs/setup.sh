@@ -2,6 +2,9 @@
 BASE="$(dirname $0)"
 cd "$BASE"
 BASE="$(pwd)"
+if test -e ContentServer/csInstall.sh
+then mv ContentServer Sites
+fi
 if ! test -e  Sites/csInstall.sh 
 then 
 	echo Sites installer not found.

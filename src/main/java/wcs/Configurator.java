@@ -220,7 +220,7 @@ public class Configurator extends JFrame implements ActionListener {
 				jarFile = son.getAbsolutePath();
 
 				// heuristic to choose the right version
-				if(jarFile.endsWith("-1.2.2.jar"))
+				if(jarFile.endsWith("-1.2.2.jar") || jarFile.endsWith("-1.2.jar"))
 					version = "11.1.1.6.0";
 				if(jarFile.endsWith("-11.1.1.8.0.jar"))
 					version = "11.1.1.8.0";
