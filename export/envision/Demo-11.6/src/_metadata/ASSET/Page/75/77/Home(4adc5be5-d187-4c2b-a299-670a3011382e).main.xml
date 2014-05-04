@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>Page:1351275803232</id>
+    <id>Page:1351276305504</id>
     <name>Home</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-06-01T18:01:55.977Z</createddate>
+    <createddate>2014-05-04T19:24:36.424Z</createddate>
     <description>Home Page</description>
     <publist>Demo</publist>
-    <status>PL</status>
+    <status>ED</status>
     <subtype>Content</subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2013-06-01T18:03:35.580Z</updateddate>
+    <updateddate>2014-05-04T19:26:00.046Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275803232</longValue>
+            <longValue>1351276305504</longValue>
         </data>
     </attribute>
     <attribute>
@@ -73,7 +73,7 @@
     <attribute>
         <name>category</name>
         <data>
-            <stringValue></stringValue>
+            <stringValue>acct</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -95,7 +95,7 @@
     <attribute>
         <name>flextemplateid</name>
         <data>
-            <stringValue>PageDefinition:1351275803278</stringValue>
+            <stringValue>PageDefinition:1351276305571</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -114,7 +114,7 @@
         <name>Demo_Image</name>
         <data>
             <blobValue>
-                <filename>Home.Demo_Image(4adc5be5-d187-4c2b-a299-670a3011382e).test.jpg</filename>
+                <filename>Home.Demo_Image(4adc5be5-d187-4c2b-a299-670a3011382e).Home.Demo_Image(50c3a5fe-0c47-410e-abc0-e14c86116a98).test.jpg</filename>
                 <foldername></foldername>
                 <filedata></filedata>
             </blobValue>
@@ -159,14 +159,14 @@
     <attribute>
         <name>Demo_Related</name>
         <data>
-            <stringList>Page:1351275803233</stringList>
+            <stringList>Page:1351276305505</stringList>
         </data>
     </attribute>
     <attribute>
         <name>Demo_SeeAlso</name>
         <data>
-            <stringList>Page:1351275803233</stringList>
-            <stringList>Page:1351275803232</stringList>
+            <stringList>Page:1351276305505</stringList>
+            <stringList>Page:1351276305504</stringList>
         </data>
     </attribute>
     <associations>
@@ -180,87 +180,87 @@
     <dependency>
       <depType>E</depType>
       <resType>Page</resType>
-      <resId>1351275803232</resId>
+      <resId>1351276305504</resId>
       <uid>4adc5be5-d187-4c2b-a299-670a3011382e</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>Page</resType>
-      <resId>1351275803233</resId>
+      <resId>1351276305505</resId>
       <uid>83ee131a-608e-4ef5-a7df-79d76a0ffb7e</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>Page</resType>
-      <resId>1351275803305</resId>
+      <resId>1351276305604</resId>
       <uid>e96e3290-848a-43d9-87ea-810a32a6112e</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803222</resId>
+      <resId>1351276305488</resId>
       <uid>759034f7-5ad9-42ce-a9aa-f233bdd98788</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803227</resId>
+      <resId>1351276305496</resId>
       <uid>bd9fde78-f4d8-4768-9732-a25cdd864138</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803235</resId>
+      <resId>1351276305507</resId>
       <uid>eeff1b67-f704-4bd4-9b6a-1d712dcea3f3</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803244</resId>
+      <resId>1351276305519</resId>
       <uid>0af911fc-942b-473a-af83-bc038e03bfe2</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803253</resId>
+      <resId>1351276305531</resId>
       <uid>9ac730ff-913a-48c7-b776-4bc63bc186ea</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803258</resId>
+      <resId>1351276305539</resId>
       <uid>f7a19b42-b7b4-4f52-b574-1afb01083e11</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803263</resId>
+      <resId>1351276305547</resId>
       <uid>88d6906f-af59-41c9-b172-b6fc24d0e2b5</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803268</resId>
+      <resId>1351276305555</resId>
       <uid>55421df3-1c5d-4566-8d36-3939df43577e</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803273</resId>
+      <resId>1351276305563</resId>
       <uid>96a78f25-3d32-47ef-80fb-c8560c8ed816</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageDefinition</resType>
-      <resId>1351275803278</resId>
+      <resId>1351276305571</resId>
       <uid>5136914e-a0f7-47d6-a014-b3c1ade5319e</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Sat Jun 01 21:29:22 UTC 2013
-storable0=ASSET/Page/75/77/Home.Demo_Image(4adc5be5-d187-4c2b-a299-670a3011382e).test.jpg||_storable_type\=Home.Demo_Image%284adc5be5-d187-4c2b-a299-670a3011382e%29.test.jpg&_blob_prop\=Image&_value_count\=S
+#Sun May 04 19:29:54 UTC 2014
+storable0=ASSET/Page/75/77/Home.Demo_Image(4adc5be5-d187-4c2b-a299-670a3011382e).Home.Demo_Image(50c3a5fe-0c47-410e-abc0-e14c86116a98).test.jpg||_storable_type\=Home.Demo_Image%284adc5be5-d187-4c2b-a299-670a3011382e%29.Home.Demo_Image%2850c3a5fe-0c47-410e-abc0-e14c86116a98%29.test.jpg&_blob_prop\=Demo_Image&_value_count\=S
 key=Page-4adc5be5-d187-4c2b-a299-670a3011382e
 type=ASSETDATA
 sites=Demo

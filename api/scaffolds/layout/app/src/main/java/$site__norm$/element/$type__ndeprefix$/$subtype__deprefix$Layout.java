@@ -27,6 +27,6 @@ public class $subtype;format="deprefix"$Layout extends Element {
 		Asset a = e.getAsset();
 	    //html.replace("#detail", a.call("ContentDetail"));
 	    //html.replace("#footer", e.call("Footer"));
-		return html.html(a, e, model(arg("Title", a.getString("$site$_Title")), arg("Text",""), arg("Footer","")));
+		return html.html(a, e, model(arg("Text",""), arg("Footer","")));
 	}
 }
