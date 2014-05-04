@@ -345,8 +345,6 @@ trait AgileSitesUtil {
       "-Xms256m" :: "-Xmx1024m" :: "-XX:MaxPermSize=256m" ::
       "-Dorg.owasp.esapi.resources=../bin" ::  Nil
 
-
-      // "-Dlog4j.debug" 
  
     val args = Seq("wcs.SitesTomcat", port.toString, home.getAbsolutePath) ++ webapps
     val cmd = opts.toList ++ args.toList 

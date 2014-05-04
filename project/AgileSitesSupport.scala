@@ -369,18 +369,24 @@ trait AgileSitesSupport extends AgileSitesUtil {
 
             val static = (file(shared) / "Storage" / "Static") getAbsolutePath
 
+            // switch to hsql if needed
+            val hsqlflag = (file(home) / "hsql.flag")
+            if(hsqlflag.exists) {
+              switchFutureTenseIni2Hsql(home)
+              hsqlflag.delete
+              println("*** switched to hsql ***")
+            }
+
             println("*** Installing AgileSites for WebCenter Sites ***");
 
             val vhosts = (sites split ",") map { site =>
               (site, url + "/Satellite/" + normalizeSiteName(site))
             } toSeq
 
-
             setupMkdirs(shared, version, sites)
             setupServletRequest(webapp, sites, vhosts, flexBlobs, staticBlobs)
             setupAgileSitesPrp(webapp, shared, sites, static, flexBlobs, staticBlobs)
             setupFutureTenseIni(home, shared, static,  sites, version)
-
 
             // remove any other jar starting with agilesites-all-assembly 
             // remnants of the past
@@ -523,14 +529,6 @@ trait AgileSitesSupport extends AgileSitesUtil {
  
           case Some("start") => 
    
-            // switch to hsql if needed
-            val hsqlflag = (file(home) / "hsql.flag")
-            if( hsqlflag.exists) {
-              switchFutureTenseIni2Hsql(home)
-              hsqlflag.delete
-              println("*** switched to hsql ***")
-            }
-
             // start tomcat
             val tomcat = new Thread() {
               override def run() {
