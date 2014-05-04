@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>PageAttribute:1351275803244</id>
+    <id>PageAttribute:1351276305519</id>
     <name>Demo_Detail</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-06-01T18:01:55.091Z</createddate>
+    <createddate>2014-05-04T19:24:36.090Z</createddate>
     <description>Detail</description>
     <publist>Demo</publist>
     <status>PL</status>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275803244</longValue>
+            <longValue>1351276305519</longValue>
         </data>
     </attribute>
     <attribute>
@@ -177,7 +177,7 @@
     <attribute>
         <name>attributetype</name>
         <data>
-            <stringValue>AttrTypes:1351275803245</stringValue>
+            <stringValue>AttrTypes:1351276305520</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -197,20 +197,20 @@
     <dependency>
       <depType>E</depType>
       <resType>AttrTypes</resType>
-      <resId>1351275803245</resId>
+      <resId>1351276305520</resId>
       <uid>78db3444-e9e6-4531-8873-5a8e3966f9cf</uid>
     </dependency>
     <dependency>
       <depType>N</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803244</resId>
+      <resId>1351276305519</resId>
       <uid>0af911fc-942b-473a-af83-bc038e03bfe2</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Sat Jun 01 21:29:20 UTC 2013
+#Sun May 04 19:29:54 UTC 2014
 key=PageAttribute-0af911fc-942b-473a-af83-bc038e03bfe2
 type=ASSETDATA
 sites=Demo

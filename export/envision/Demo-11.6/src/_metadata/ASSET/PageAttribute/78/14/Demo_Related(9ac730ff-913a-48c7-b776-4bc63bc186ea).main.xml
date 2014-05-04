@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>PageAttribute:1351275803253</id>
+    <id>PageAttribute:1351276305531</id>
     <name>Demo_Related</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-06-01T18:01:55.164Z</createddate>
+    <createddate>2014-05-04T19:24:36.115Z</createddate>
     <description>Related</description>
     <publist>Demo</publist>
     <status>PL</status>
@@ -59,7 +59,7 @@
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1351275803253</longValue>
+            <longValue>1351276305531</longValue>
         </data>
     </attribute>
     <attribute>
@@ -195,14 +195,14 @@
     <dependency>
       <depType>N</depType>
       <resType>PageAttribute</resType>
-      <resId>1351275803253</resId>
+      <resId>1351276305531</resId>
       <uid>9ac730ff-913a-48c7-b776-4bc63bc186ea</uid>
     </dependency>
   </list>
 </dependencies>
 ==================______________________==================
 #
-#Sat Jun 01 21:29:21 UTC 2013
+#Sun May 04 19:29:54 UTC 2014
 key=PageAttribute-9ac730ff-913a-48c7-b776-4bc63bc186ea
 type=ASSETDATA
 sites=Demo
