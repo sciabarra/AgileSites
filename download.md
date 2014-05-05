@@ -11,6 +11,8 @@ group: navigation
 
 ## Beta release
 - [v1.8.1-RC1](https://github.com/sciabarra/AgileSites/archive/v1.8.1-RC1.zip)
+with [Integrated Sites Installer](https://github.com/sciabarra/AgileSites/blob/1.8/doc/reference/QuickStart.md)
+
 
 
 ## Past releases
