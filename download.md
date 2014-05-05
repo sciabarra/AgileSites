@@ -9,6 +9,10 @@ group: navigation
 ## Stable release
 - [v1.8a](https://github.com/sciabarra/AgileSites/archive/v1.8a.zip) **Recommended**
 
+## Beta release
+- [v1.8.1-RC1](https://github.com/sciabarra/AgileSites/archive/v1.8.1-RC1.zip)
+
+
 ## Past releases
 - [v1.0.0a](https://github.com/sciabarra/AgileSites/archive/v1.0.0a.zip) 
 
