@@ -324,7 +324,7 @@ footer {
 	padding-left: 50px;
 }
 
-@media print, screen and (max-width: 960px) {
+@media print, screen and (max-width: 1199px) {
   
   div.wrapper {
     width:auto;
