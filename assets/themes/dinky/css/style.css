@@ -268,13 +268,17 @@ margin: 30px 10px 0px 0px;
     }
 
     .carousel .item {
-       
+       height: 150px;
     }
 
     .carousel img {
         width: auto;
         max-width: none;
-        height: 360px;
+        height: 200px;
+    }
+    
+    .carousel-caption {
+    	margin-top: 20px;
     }
 
     .featurette {
