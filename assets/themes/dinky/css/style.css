@@ -18,6 +18,10 @@ li { list-style: none; }
 
 h1, h1 a, h2, h2 a, h3, h3 a { color: #7a796a; }
 
+.container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container { width: 940px; }
+
+.icon-th-list { background-image: url("../images/glyphicons-halflings.png"); }
+
 #menu {
     background-color: #f2f2f2;
     height: 49px;
@@ -126,8 +130,7 @@ color: #7a796a;
 
 /* Offset the responsive button for proper vertical alignment */
 .navbar .btn-navbar {
-    margin-top: 10px;
-
+margin: 30px 10px 0px 0px;
 }
 
 .frm-submit {
@@ -231,6 +234,8 @@ color: #7a796a;
 
 
 @media (max-width: 979px) {
+
+.container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container { width: 724px; }
 
     .navbar { margin: 0px -20px; }
 	
