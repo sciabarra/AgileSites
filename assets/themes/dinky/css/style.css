@@ -4,7 +4,7 @@ body {
     color: #7f7f7f;
     font-family: 'PT Sans', Arial, sans-serif;
     font-size: 14px;
-    background: url("../img/bg.jpg");
+    background: url("../images/bg.jpg");
 }
 
 a {
@@ -81,7 +81,7 @@ color: #7a796a;
 
 .navbar .container {
     background-color: white;
-    background-image: url("../img/bgNav.gif");
+    background-image: url("../images/bgNav.gif");
 
 }
 
@@ -134,7 +134,7 @@ color: #7a796a;
     /* NOW */
     position: absolute;
     margin: 0;
-    background: #fff url('../img/icon-search.png') no-repeat center center;
+    background: #fff url('../images/icon-search.png') no-repeat center center;
     text-indent: -90000px;
     cursor: pointer;
     width: 20px;
@@ -151,6 +151,7 @@ color: #7a796a;
 /* Carousel base class */
 .carousel {
     margin-bottom: 0px;
+    overflow: hidden;
 }
 
 .carousel .container {
@@ -170,7 +171,7 @@ color: #7a796a;
 }
 
 .carousel .item {
-    height: 320px;
+    height: 240px;
 }
 
 .carousel img {
@@ -400,7 +401,7 @@ color: #7a796a;
     height: 310px;
 }
 
-#who { background: url('../img/bg-who.png') #f2f2f2 no-repeat bottom;
+#who { background: url('../images/bg-who.png') #f2f2f2 no-repeat bottom;
         margin-left:20px;
         margin-top: 10px;
 }
@@ -430,7 +431,7 @@ color: #7a796a;
 #who .avatar img { width: 100%; }
 
 #content .title h3 {
-    background: url('../img/bg-title-fade.png') repeat-y left;
+    background: url('../images/bg-title-fade.png') repeat-y left;
     text-align: left;
     line-height: 20px;
     padding-left: 20px;
@@ -440,7 +441,7 @@ color: #7a796a;
 }
 
 #clients .title h3 {
-    background: url('../img/bg-title-fade.png') repeat-y left;
+    background: url('../images/bg-title-fade.png') repeat-y left;
     text-align: left;
     line-height: 20px;
     padding-left: 20px;
@@ -450,7 +451,7 @@ color: #7a796a;
 }
 
 #twitter {
-    background: url('../img/bg-twitter.png') #f2f2f2 no-repeat bottom;
+    background: url('../images/bg-twitter.png') #f2f2f2 no-repeat bottom;
     text-align: center;
     float: right;
     margin:10px 20px 0px 0px;
@@ -513,6 +514,7 @@ color: #7a796a;
 #foot {
     font-size: 12px;
     height: 140px;
+    padding-top: 20px;
 }
 
 #foot .credits, #foot .certifications {
@@ -547,7 +549,7 @@ color: #7a796a;
 }
 
 #foot .git {
-    background: url('../img/bg-git.png') no-repeat 0px 0px;
+    background: url('../images/bg-git.png') no-repeat 0px 0px;
     margin-top: -20px;
     text-align: center;
     padding: 20px;
