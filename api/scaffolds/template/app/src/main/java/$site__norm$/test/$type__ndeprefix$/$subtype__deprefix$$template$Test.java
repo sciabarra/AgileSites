@@ -1,4 +1,4 @@
-package $site;format="normalize"$.test.$type;format="normalize"$;
+package $site;format="normalize"$.test.$type;format="ndeprefix"$;
 import static wcs.Api.*;
 import wcs.api.Log;
 import wcs.api.Index;
