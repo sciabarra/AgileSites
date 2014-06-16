@@ -14,9 +14,6 @@ report.xml
 run.bat
 run.sh
 # sbt specific
-api/scaffolds/cselement/default.properties
-api/scaffolds/layout/default.properties
-api/scaffolds/template/default.properties
 target/
 project/boot/
 project/repo/
