@@ -64,7 +64,6 @@ After unarchiving there should be 3 *additional* folders. Check there are the fo
 - `SitesExplorer`
 - `misc`
 
-
 4. Launch the script `wcs\setup.cmd` on Windows or `wcs/setup.sh` on Linux/OSX. 
 
 It is recommended you answer "MySite" when you asked for you new site (or the name of another site you may want to create for your own development purposes).
