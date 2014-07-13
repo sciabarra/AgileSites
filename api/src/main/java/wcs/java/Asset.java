@@ -140,7 +140,7 @@ public class Asset extends AssetBase implements wcs.api.Asset, wcs.api.Content {
 	 */
 	@Override
 	public Date getFieldDate(String name) {
-		return toDate(AssetTag.get().name(a).field("name").eval(i, "output"));
+		return toDate(AssetTag.get().name(a).field(name).eval(i, "output"));
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class Asset extends AssetBase implements wcs.api.Asset, wcs.api.Content {
 	 */
 	@Override
 	public int getFieldInt(String name) {
-		return toInt(AssetTag.get().name(a).field("name").eval(i, "output"));
+		return toInt(AssetTag.get().name(a).field(name).eval(i, "output"));
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class Asset extends AssetBase implements wcs.api.Asset, wcs.api.Content {
 	 */
 	@Override
 	public long getFieldLong(String name) {
-		return toLong(AssetTag.get().name(a).field("name").eval(i, "output"));
+		return toLong(AssetTag.get().name(a).field(name).eval(i, "output"));
 	}
 
 	/**
