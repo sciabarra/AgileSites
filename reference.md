@@ -5,6 +5,7 @@ title: Reference
 Here there are more detailed information than you ever wanted to know.
 
 - [FAQ](reference/FAQ.html): frequently asked questions, with answers
+- [QuickStart](reference/QuickStart.html): how to go up and running quickly
 - [Architecture](reference/Architecture.html): understanding how the framework works
 - [Rendering](reference/Rendering.html): the rendering process that is implemented by the framework
 - [Configuration](reference/Configuration.html): all the available configuration options

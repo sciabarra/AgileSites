@@ -8,7 +8,7 @@ for i in $H/doc/$j/*.md; do
 bb=$(basename $i)
 b=$j/$bb
 bb=${bb%%.md}
-bb=$(echo "$bb" | sed 's/.*/\u&/')
+bb=$(echo "$bb" | perl -pe 's/(.*)/\u$1/')
 ( echo "---" ;\
 echo "layout: page" ;\
 echo "title: $bb" ;\

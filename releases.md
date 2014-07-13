@@ -2,6 +2,12 @@
 layout: page
 title: Releases
 ---
+## Release Notes for 1.8.1
+
+- many bug fixes
+- universal naming convention (prefix everywhere in Sites and nowhere in AgileSites)
+- added an embedde installer for the full Sites
+
 ## Release Notes for 1.8
 
 - support 11.1.1.8.0 as well as 11.1.1.6.x

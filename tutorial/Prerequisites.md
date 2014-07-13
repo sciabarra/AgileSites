@@ -6,7 +6,7 @@ title: Prerequisites
 
 In this section we list the prerequisites needed before starting to use this framework.
 
-## Java Development Kit  7
+### Java Development Kit  7
 
 The framework currently requires a java development kit version 7 or greater. You need to compile code so an actual Java Development Kit is needed, not just a java runtime
 
@@ -26,7 +26,7 @@ JSK It is convenient because it does not requires too many resources and can be 
 
 **NOTE** It is possible to [install the full Sites in your computer](http://www.sciabarra.com/fatwire/2012/04/09/download-and-install-a-development-fatwire-instance-also-on-mac/) for development purposes. You can install it with free Oracle XE or  the free Microsoft SQLServer. It is even possible to install it with the simple, in-memory database Hypersonic SQL (note, only using **version 1.8.0**) 
 
-## Use the same JDK for both Sites and AgileSites
+## Use the sate JDK for both Sites and AgileSites
 
 It is important that you verify the java version used by the JumpStart Kit is the same that will be used by AgileSites. AgileSites will refuse to deploy anything if the version of the JDK used in Sites is different from the version used by the AgileSites shell.
 
