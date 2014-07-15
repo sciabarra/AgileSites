@@ -4,7 +4,6 @@ import sbt._
 import Keys._
 
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
-import wcs.build.AgileSitesPlugin._
 
 import sbtassembly.Plugin._
 import AssemblyKeys._
