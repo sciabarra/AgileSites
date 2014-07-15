@@ -114,10 +114,13 @@ public class Configurator extends JFrame implements ActionListener {
 	String version = "unknown";
 	String site = null;
 	String defaultpw = null;
+	boolean nomessage = false;
 
-    public Configurator(String topdir) {
+    public Configurator(String topdir, String site) {
     	defaultpw = "xceladmin";
     	searchIniJar(new File(topdir));
+    	this.site = site;
+    	nomessage = true;
     }
 
 	private void selectFolder0() {
@@ -254,13 +257,14 @@ public class Configurator extends JFrame implements ActionListener {
 		if (pw == null)
 			return;
 
-		if(site==null)
-		  site = JOptionPane.showInputDialog(this,
-				"Input your custom site name here.\n"+
-				"Leave blank if you plan to add a custom site later.",
-				"Your Custom Site", 1);
+		if(site==null || site.length()==0)
+			  site = JOptionPane.showInputDialog(this,
+					"Input your custom site name here.\n"+
+					"Leave blank if you plan to add a custom site later.",
+					"Your Custom Site", 1);
 
 		if(site!=null && site.length()>0)
+	      if(!nomessage)
 		 	JOptionPane.showMessageDialog(null, "The site "+site
 				+" will be configured in the framework.\n"
 				+"However you still need to create this site in Sites,\n" 
@@ -318,6 +322,7 @@ public class Configurator extends JFrame implements ActionListener {
 
 	public static void main(String[] args) {
 		final String arg = args.length<1 ? null : args[0]; 
+		final String site = args.length<2 ? null : args[1];
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -325,7 +330,7 @@ public class Configurator extends JFrame implements ActionListener {
 				if(arg==null)
 				  new Configurator().setVisible(true);
 				else 
-				  new Configurator(arg).configure();
+				  new Configurator(arg, site).configure();
 			}
 		});
 	}
