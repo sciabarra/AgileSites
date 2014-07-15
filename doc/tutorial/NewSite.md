@@ -6,24 +6,22 @@ In this section we describe which steps are needed in order to create a new site
 
 The first step is to choose a name for your new site. Here I am assume your choice is **MySite**. Of course if you pick a different name you need to adapt samples accordingly to your choice.
 
-**NOTE** do not use long names and do not use spaces for your site name. The site name will be used also as a prefix (see below), so it is convenient if it is show.
+**NOTE** do not use long names and do not use spaces for your site name. The site name will be used as a prefix (see below), so it is convenient if it is short.
 
-## The universal naming convention for development asset names
+## The universal naming convention for names
 
-In order to minimize conflicts when more than one site is deployes in your instance, AgileSites follows a simple naming convention:
+In order to minimize conflicts when more than one site is deployed in your instance, AgileSites follows a simple naming convention:
 
-> **everything** (except attribute names) has the site name as a prefix
+> **everything** in Sites DOES requires the site name as a prefix
+> **everything** in AgilesSites DOES NOT require the sitename as a prefix
 
-So the recommended naming convention will apply to
+This recommended naming convention will apply to:
 
 - Types
 - Subtypes
 - Content and Parent Definitions
-- Template, Site Entry and 
-
-Note that attribute names, that are referred directly all the time in code, do not require the site name.
-
-We recommend to add the site name anyway although in code you will have to use the name including the site prefix (since the prefix is not added). We may remove this exception in future releases and have a more a consistent rule also for attributes.
+- Attributes
+- Templates, Site Entries
 
 This is a set of sample names recommended for a site named MySite
 
@@ -31,9 +29,12 @@ This is a set of sample names recommended for a site named MySite
 - MySite_A (the attribute for a flex family used with MySite)
 - MySite_CD, MySite_PD (content definition types and parent definition)
 - MySite_Content, MySite_Home (actual content definitions)
-- MySite_Wrapper, MySite_ContentLayout (template and cselement names) 
+- MySite_Title, MySite_Summary (attributes) 
+- MySite_Wrapper, MySite_ContentLayout (template and cselement names)
 
 So we recommend to use always a prefix when naming Types, Attributes, Content and Parent definitions, in order to guarantee the uniqueness of the names. Templates are also automatically named with a prefix when created by the deployer (see later in this tutorial).
+
+In your code however, you will refer to your types, subtypes, attributes and definitions as as "Content", "Home", "Title", "Wrapper". The system is aware of the site name and will add it automatically when needed.
 
 ## Configure a new site and a virtual host
 
