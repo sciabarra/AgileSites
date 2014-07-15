@@ -1,7 +1,7 @@
 package wcs.build
 
 import scala.xml._
-import java.io.File
+import java.io.{FileReader, File}
 
 object Tld2Tagj {
 
@@ -102,8 +102,14 @@ public static %s %s() {
 """
 
   def apply(filename: String) = {
+
+    val saxParserFactory = javax.xml.parsers.SAXParserFactory.newInstance()
+    saxParserFactory.setNamespaceAware(false)
+    saxParserFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+    val saxParser = saxParserFactory.newSAXParser()
+
     // load file
-    val xml = XML.loadFile(filename)
+    val xml = XML.loadXML(new InputSource(new FileReader(filename)),saxParser)
 
     // lib name
     val libname = new File(filename).getName.takeWhile(_ != '.')
