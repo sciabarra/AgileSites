@@ -7,12 +7,15 @@ echo and place in this folder.
 start http://www.oracle.com/technetwork/middleware/webcenter/sites/downloads/index.html
 goto pause
 :wcs118
-echo wcs118
-goto pause
+jar xvf ofm_sites_generic_11.1.1.8.0_disk1_1of1.zip WebCenterSites_11.1.1.8.0/WCS_Sites/WCS_Sites.zip
+cd wcs
+jar xvf ..\WebCenterSites_11.1.1.8.0\WCS_Sites\WCS_Sites.zip
+goto setup
 :wcs116
 jar xvf ofm_sites_generic_11.1.1.6_bp1_disk1_1of1.zip WebCenterSites_11.1.1.6_bp1/WCS_Sites_11.1.1.6_bp1/WCS_Sites_11.1.1.6_bp1.zip
 cd wcs
 jar xvf ..\WebCenterSites_11.1.1.6_bp1\WCS_Sites_11.1.1.6_bp1\WCS_Sites_11.1.1.6_bp1.zip
+:setup
 call setup
 goto pause
 :pause

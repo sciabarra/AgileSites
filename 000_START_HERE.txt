@@ -12,7 +12,6 @@ If you have Jump Start Kit, to start, just execute either agilesites.cmd or agil
 
 If you do not have JumpStart Kit, you can download the full WebCenter Sites installation from http://www.oracle.com/technetwork/middleware/webcenter/sites/downloads/index.html and place it in the AgileSites main directory, then execute the setup.cmd bat.
 
-
 The documentation is online on http://www.agilesites.org/
 
 
