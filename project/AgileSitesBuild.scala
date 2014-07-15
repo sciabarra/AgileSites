@@ -4,6 +4,7 @@ import sbt._
 import Keys._
 
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
+import wcs.build.AgileSitesPlugin._
 
 import sbtassembly.Plugin._
 import AssemblyKeys._
@@ -87,9 +88,9 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
 
   val libdepsSettings = Seq(
      libraryDependencies <++= (wcsVersion) { x => Seq(
-       "com.novocode" % "junit-interface" % "0.10",
-           "com.sciabarra" % "agilesites-core" % (x + "_" + v),
-           "com.sciabarra" % "agilesites-api" % (x + "_" + v) withSources())})
+        "com.novocode" % "junit-interface" % "0.10",
+        "com.sciabarra" % "agilesites-core" % (x + "_" + v),
+        "com.sciabarra" % "agilesites-api" % (x + "_" + v) withSources())})
    
 
   /// CORE
@@ -158,6 +159,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
         wcsLogTask,
         wcsServeTask,
         excludedJars in assembly <<= (fullClasspath in assembly),
+        wcsUploadJarTask,
         watchSources ++= ((file("app") / "src" / "main" / "static" ** "*").get),
         EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
         EclipseKeys.skipProject := false,

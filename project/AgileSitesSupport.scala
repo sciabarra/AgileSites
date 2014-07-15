@@ -27,6 +27,8 @@ trait AgileSitesSupport extends AgileSitesUtil {
   lazy val wcsVirtualHosts = SettingKey[Seq[Tuple2[String, String]]]("wcs-virtual-hosts", "WCS Virtual Host mapping")
   lazy val wcsVirtualHostsTask = wcsVirtualHosts := Seq[Tuple2[String, String]]()
   
+  lazy val wcsUploadTarget   = SettingKey[String]("wcs-upload-target")
+
   // the satellite webapp defaults to a sister /cs webapp named /ss).getParentFile / "ss").getAbsolutePath }
   lazy val wcsWebappSatellite = TaskKey[String]("wcs-webapp-satellite", "WCS Satellite Webapp")
   val wcsWebappSatelliteTask = wcsWebappSatellite <<= (wcsWebapp) map {
@@ -271,6 +273,24 @@ trait AgileSitesSupport extends AgileSitesUtil {
         s.log.info("+++ " + destjar.getAbsolutePath)
         destjar.getAbsolutePath.toString
     }
+
+
+  // package jar task - build the jar and copy it  to destination 
+  lazy val wcsUploadJar = TaskKey[Unit]("wcs-upload-jar", "WCS upload jar")
+  val wcsUploadJarTask = wcsUploadJar <<=
+    (wcsUploadTarget, wcsAssemblyJar, streams) map {
+      (target, source, s) =>
+
+        val targetUri = new java.net.URI(target)
+        val Array(user, pass) = targetUri.getUserInfo.split(":")
+        if(!wcs.build.ScpTo.scp(source, user, pass, targetUri.getHost, targetUri.getPath))
+           s.log.error("cannot upload "+source)
+        else
+           s.log.info("uploaded "+target) 
+
+        ()
+    }
+
 
   // copy statics
   lazy val wcsCopyStatic = TaskKey[Unit]("wcs-copy-static", "WCS copy static resources")

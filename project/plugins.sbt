@@ -8,7 +8,8 @@ resolvers += {
 libraryDependencies ++= Seq(
    "commons-httpclient" % "commons-httpclient" % "3.1",
    "commons-io" % "commons-io" % "2.4",
-   "org.clapper" % "scalasti_2.9.1" % "0.5.8")
+   "org.clapper" % "scalasti_2.9.1" % "0.5.8",
+   "com.jcraft" % "jsch" % "0.1.51")
 
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.1.2")
 
@@ -16,4 +17,3 @@ addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.8.4")
 
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.7.4")
 
-addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.5.1")
