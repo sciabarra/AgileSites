@@ -18,13 +18,14 @@ cd ..
 java -cp bin\wcs.jar wcs.Configurator wcs %1
 cd wcs
 cd Sites
-del log.out
+echo >log.out
 start cmd /c "java -cp ..\..\bin\wcs.jar wcs.PressEnterSock | call csinstall -silent >log.out"
 java -cp ..\..\bin\wcs.jar wcs.WaitUntil log.out ENTER.
 cd ../..
 call agilesites.cmd "wcs-serve stop" "wcs-setup" "wcs-serve start"
 java -cp bin\wcs.jar wcs.PressEnterSock now
 java -cp bin\wcs.jar wcs.WaitUntil wcs\Sites\log.out "Installation Finished Successfully"
+start http://localhost:8181/cs/
 goto pause
 :notfoundsites
 echo Sites installer not found.
