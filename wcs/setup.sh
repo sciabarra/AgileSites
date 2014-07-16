@@ -2,6 +2,7 @@
 BASE="$(dirname $0)"
 cd "$BASE"
 BASE="$(pwd)"
+#11.6.0 compat
 if test -e ContentServer/csInstall.sh
 then mv ContentServer Sites
 fi
@@ -26,8 +27,16 @@ java -cp ../bin/wcs.jar wcs.Silent "$BASE" misc/silentinstaller/generic_omii.ini
 java -cp ../bin/wcs.jar wcs.Replacer .. "$BASE" <context.xml >webapps/cs/META-INF/context.xml
 java -cp ../bin/wcs.jar wcs.Unzip Sites/csdt.zip home
 cd ..
-java -cp bin/wcs.jar wcs.Configurator wcs
+if ! test -e build.sbt
+then java -cp bin/wcs.jar wcs.Configurator wcs $1
+fi
 cd wcs
 cd Sites
+echo "" >log.out
 chmod +x csInstall.sh
-./csInstall.sh -silent
+(java -cp ../../bin/wcs.jar wcs.PressEnterSock | ./csInstall.sh -silent >log.out)&
+cd ../..
+java -cp bin/wcs.jar wcs.WaitUntil wcs/Sites/log.out ENTER.
+./agilesites.sh "wcs-serve stop" "wcs-setup" "wcs-serve start"
+java -cp bin/wcs.jar wcs.PressEnterSock now
+java -cp bin/wcs.jar wcs.WaitUntil wcs/Sites/log.out "Installation Finished Successfully"
