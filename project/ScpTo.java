@@ -17,13 +17,13 @@ import java.io.*;
 
 public class ScpTo {
 
-  public static boolean scp(String lfile, String user, String pass,  String host, String rfile){
+  public static boolean scp(String lfile, String user, String pass,  String host, int port, String rfile){
 
     FileInputStream fis=null;
     try{
 
       JSch jsch=new JSch();
-      Session session=jsch.getSession(user, host, 22);
+      Session session=jsch.getSession(user, host, port);
 
       session.setConfig("StrictHostKeyChecking", "no");
       session.setPassword(pass);

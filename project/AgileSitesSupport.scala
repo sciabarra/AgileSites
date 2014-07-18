@@ -42,7 +42,6 @@ trait AgileSitesSupport extends AgileSitesUtil {
 
         // generate tags
         val tlds = file(srcDir) / "WEB-INF" / "futuretense_cs"
-          
         val l = if(tlds.isDirectory) for {
           tld <- tlds.listFiles
           if tld.getName.endsWith(".tld")
@@ -84,7 +83,7 @@ trait AgileSitesSupport extends AgileSitesUtil {
       (argTask, wcsHome, wcsVersion, wcsUrl, wcsSites, wcsUser, wcsPassword, fullClasspath in Compile, streams, runner) map {
         (args, home, version, url, sites, user, password, classpath, s, runner) =>
 
-          val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d|spring-\\d|commons-logging-|servlet-api|sites-security|esapi-|cs-|http(client|core|mime)-).*.jar$".r;
+          val re = "^(cas-client-core-\\d|csdt-client-\\d|rest-api-\\d|wem-sso-api-\\d|wem-sso-api-cas-\\d|spring-\\d|commons-logging-|commons-codec-|servlet-api|sites-security|esapi-|cs-|http(client|core|mime)-).*.jar$".r;
           val seljars = classpath.files.filter(f => !re.findAllIn(f.getName).isEmpty)
           
           val workspaces = (file("export") / "envision").listFiles.filter(_.isDirectory).map(_.getName)
@@ -283,7 +282,10 @@ trait AgileSitesSupport extends AgileSitesUtil {
 
         val targetUri = new java.net.URI(target)
         val Array(user, pass) = targetUri.getUserInfo.split(":")
-        if(!wcs.build.ScpTo.scp(source, user, pass, targetUri.getHost, targetUri.getPath))
+        val host =  targetUri.getHost
+        val path = targetUri.getPath
+        val port = if(targetUri.getPort == -1) 22 else targetUri.getPort
+        if(!wcs.build.ScpTo.scp(source, user, pass, host, port, path))
            s.log.error("cannot upload "+source)
         else
            s.log.info("uploaded "+target) 

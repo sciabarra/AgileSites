@@ -50,7 +50,7 @@ object AgileSitesBuild extends Build with AgileSitesSupport {
     "ics.jar" || "cs.jar" || "xcelerate.jar" || "gator.jar" || "visitor.jar" || "ehcache-*" || "sites-*" || "esapi-*"
 
   /// END CHANGES
-  val v = "1.8.1"
+  val v = "1.8.1a"
 
   val includeFilterUnmanagedJars = includeFilter in unmanagedJars := unmanagedFilter
 
