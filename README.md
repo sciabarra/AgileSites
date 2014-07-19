@@ -1,4 +1,6 @@
-#  AgileSites 1.8.2-SNAPSHOT
+#  AgileSites 2.0-SNAPSHOT
+
+*HIGHLY UNSTABLE DEVELOPMENT BUILD - DO NOT USE IF YOU ARE NOT TESTING IT AND WILLING TO FACE BUGS*
 
 
 Welcome to **AgileSites**, the Open Source framework for Agile development with Oracle WebCenter Sites (formerly Fatwire Content Server).
