@@ -10,4 +10,5 @@ Here there are more detailed information than you ever wanted to know.
 - [Shell](reference/Shell.md): all the available command line commands 
 - [Picker](reference/Picker.md): detailed documentation for the Picker
 - [Releases](https://github.com/sciabarra/AgileSites/releases): release history
+- [QA](https://github.com/sciabarra/AgileSites/qa): QA procedure 
 
