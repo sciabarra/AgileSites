@@ -2,7 +2,7 @@
 
 - many bug fixes
 - universal naming convention (prefix everywhere in Sites and nowhere in AgileSites)
-- added an embedde installer for the full Sites
+- added an embedded installer for the full Sites
 
 ## Release Notes for 1.8
 
