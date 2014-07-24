@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:assetBean xmlns:ns2="http://www.fatwire.com/schema/rest/1.0">
-    <id>Page:1392725625396</id>
-    <name>About</name>
+    <id>Page:1351276305604</id>
+    <name>Section</name>
     <createdby>fwadmin</createdby>
-    <createddate>2013-12-16T20:40:46.297Z</createddate>
-    <description>About</description>
+    <createddate>2014-05-04T19:24:36.381Z</createddate>
+    <description></description>
     <publist>Demo</publist>
     <status>ED</status>
-    <subtype>Demo_Content</subtype>
+    <subtype>Content</subtype>
     <updatedby>fwadmin</updatedby>
-    <updateddate>2014-03-09T21:54:04.491Z</updateddate>
+    <updateddate>2013-06-01T18:03:38.324Z</updateddate>
     <attribute>
         <name>startdate</name>
         <data/>
@@ -53,13 +53,13 @@
     <attribute>
         <name>fw_uid</name>
         <data>
-            <stringValue>e24854ab-5e8d-4040-916a-ad3f10b966d6</stringValue>
+            <stringValue>e96e3290-848a-43d9-87ea-810a32a6112e</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>id</name>
         <data>
-            <longValue>1392725625396</longValue>
+            <longValue>1351276305604</longValue>
         </data>
     </attribute>
     <attribute>
@@ -71,25 +71,21 @@
         <data/>
     </attribute>
     <attribute>
-        <name>Webreference</name>
-        <data/>
-    </attribute>
-    <attribute>
         <name>category</name>
         <data>
-            <stringValue>acct</stringValue>
+            <stringValue></stringValue>
         </data>
     </attribute>
     <attribute>
         <name>SPTParent</name>
         <data>
-            <stringValue>SitePlan:1392725625383</stringValue>
+            <stringValue>Page:1351276305504</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>SPTRank</name>
         <data>
-            <integerValue>3</integerValue>
+            <integerValue>1</integerValue>
         </data>
     </attribute>
     <attribute>
@@ -101,19 +97,19 @@
     <attribute>
         <name>flextemplateid</name>
         <data>
-            <stringValue>PageDefinition:1392725625334</stringValue>
+            <stringValue>PageDefinition:1351276305571</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>Demo_Title</name>
         <data>
-            <stringValue>About</stringValue>
+            <stringValue>Section</stringValue>
         </data>
     </attribute>
     <attribute>
         <name>Demo_Subtitle</name>
         <data>
-            <stringValue>About</stringValue>
+            <stringValue>Section</stringValue>
         </data>
     </attribute>
     <attribute>
@@ -124,7 +120,7 @@
         <name>Demo_Summary</name>
         <data>
             <stringValue>&lt;div&gt;
-	About&lt;/div&gt;
+	Section&lt;/div&gt;
 </stringValue>
         </data>
     </attribute>
@@ -132,7 +128,7 @@
         <name>Demo_Detail</name>
         <data>
             <stringValue>&lt;div&gt;
-	About&lt;/div&gt;
+	Section&lt;/div&gt;
 </stringValue>
         </data>
     </attribute>
@@ -145,16 +141,14 @@
         <data/>
     </attribute>
     <attribute>
-        <name>Demo_TeaserLink</name>
-        <data/>
-    </attribute>
-    <attribute>
         <name>Demo_Related</name>
         <data/>
     </attribute>
     <attribute>
         <name>Demo_SeeAlso</name>
-        <data/>
+        <data>
+            <stringList>Page:1351276305505</stringList>
+        </data>
     </attribute>
     <associations>
         <href>myPathassociations</href>
@@ -163,54 +157,73 @@
 
 <!--==================___ METADATA ___================
 <dependencies>
-  <linked-hash-set>
+  <list>
+    <dependency>
+      <depType>E</depType>
+      <resType>Page</resType>
+      <resId>1351276305505</resId>
+      <uid>83ee131a-608e-4ef5-a7df-79d76a0ffb7e</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>Page</resType>
+      <resId>1351276305605</resId>
+      <uid>2d346e77-ba6f-4344-b0cd-421de865b855</uid>
+    </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1392725625308</resId>
+      <resId>1351276305496</resId>
+      <uid>bd9fde78-f4d8-4768-9732-a25cdd864138</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351276305507</resId>
       <uid>eeff1b67-f704-4bd4-9b6a-1d712dcea3f3</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1392725625319</resId>
-      <uid>4a4ee922-5ac9-4cd6-b7b0-05015acab5a2</uid>
-    </dependency>
-    <dependency>
-      <depType>E</depType>
-      <resType>PageAttribute</resType>
-      <resId>1392725625324</resId>
+      <resId>1351276305519</resId>
       <uid>0af911fc-942b-473a-af83-bc038e03bfe2</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
       <resType>PageAttribute</resType>
-      <resId>1392725625329</resId>
+      <resId>1351276305539</resId>
       <uid>f7a19b42-b7b4-4f52-b574-1afb01083e11</uid>
     </dependency>
     <dependency>
       <depType>E</depType>
+      <resType>PageAttribute</resType>
+      <resId>1351276305563</resId>
+      <uid>96a78f25-3d32-47ef-80fb-c8560c8ed816</uid>
+    </dependency>
+    <dependency>
+      <depType>E</depType>
       <resType>PageDefinition</resType>
-      <resId>1392725625334</resId>
+      <resId>1351276305571</resId>
       <uid>5136914e-a0f7-47d6-a014-b3c1ade5319e</uid>
     </dependency>
     <dependency>
       <depType>N</depType>
       <resType>Page</resType>
-      <resId>1392725625396</resId>
-      <uid>e24854ab-5e8d-4040-916a-ad3f10b966d6</uid>
+      <resId>1351276305604</resId>
+      <uid>e96e3290-848a-43d9-87ea-810a32a6112e</uid>
     </dependency>
     <dependency>
-      <depType>E</depType>
-      <resType>SitePlan</resType>
-      <resId>1392725625383</resId>
-      <uid>3c8911be-1317-4792-8ff3-7b59fc3ba63a</uid>
+      <depType>N</depType>
+      <resType>Page</resType>
+      <resId>1351276305504</resId>
+      <uid>4adc5be5-d187-4c2b-a299-670a3011382e</uid>
     </dependency>
-  </linked-hash-set>
+  </list>
 </dependencies>
 ==================______________________==================
 #
-key=Page-e24854ab-5e8d-4040-916a-ad3f10b966d6
+#Sun May 04 19:29:54 UTC 2014
+key=Page-e96e3290-848a-43d9-87ea-810a32a6112e
 type=ASSETDATA
 sites=Demo
 
