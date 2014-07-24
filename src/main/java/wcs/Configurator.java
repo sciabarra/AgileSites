@@ -132,8 +132,7 @@ public class Configurator extends JFrame implements ActionListener {
 			textfields[2].setText(jarFile);
 		}
 		if (iniFile == null)
-			JOptionPane
-					.showMessageDialog(
+			JOptionPane.showMessageDialog(
 							this,
 							"The folder is not a JSK/Fatwire/Sites installation folder.",
 							"WARNING", JOptionPane.ERROR_MESSAGE);
@@ -171,6 +170,7 @@ public class Configurator extends JFrame implements ActionListener {
 
 	private void enableConfigure() {
     out.println();
+		out.println();
 		out.println("CS version: " + version);
 		out.println("CS Home   : " + iniFile.getProperty("CSFTAppServerRoot"));
 		out.println("CS Shared : " + iniFile.getProperty("CSInstallSharedDirectory"));		
@@ -189,23 +189,27 @@ public class Configurator extends JFrame implements ActionListener {
 			  out.print(".");
 				searchIniJar(son);
 			} else if (son.getName().equals("omii.ini")) {
+		                if(!son.getParentFile().getName().equalsIgnoreCase("ominstallinfo"))
+				  continue;		
+				System.out.print("#");
 				iniFile = new Properties();
 				try {
 					iniFile.load(new FileReader(son.getAbsolutePath()));
-
-					if (iniFile.getProperty("CSInstallAppServerType")
-							.startsWith("tomcat")) {
-							
-						webApp = iniFile.getProperty("CSInstallAppServerPath");
+					String jsproot = iniFile.getProperty("csjsproot");
+					if (jsproot!=null) {
+						webApp = new File(jsproot).getParentFile().getAbsolutePath();
 					    if(!webApp.endsWith("/")) webApp = webApp + "/";
-					    webApp = webApp + "webapps" + iniFile.getProperty("sCgiPath");
 					}
 
+					if(iniFile.getProperty("CSFTAppServerRoot")==null) 
+				               iniFile.setProperty("CSFTAppServerRoot",  
+                                                       son.getParentFile().getParentFile().getAbsolutePath());
 				} catch (Exception e) {
 					iniFile = null;
 					e.printStackTrace();
 				}		    
 			} else if (son.getName().equals("omproduct.ini")) {
+				System.out.print("#");
 				try {
 					Properties productFile = new Properties();
 					productFile.load(new FileReader(son.getAbsolutePath()));
@@ -217,6 +221,7 @@ public class Configurator extends JFrame implements ActionListener {
 
 			} else if (son.getName().endsWith(".jar")
 					&& son.getName().startsWith("csdt-client")) {
+				System.out.print("#");
 				jarFile = son.getAbsolutePath();
 
 				// heuristic to choose the right version
