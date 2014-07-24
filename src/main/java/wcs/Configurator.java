@@ -189,25 +189,34 @@ public class Configurator extends JFrame implements ActionListener {
 			  out.print(".");
 				searchIniJar(son);
 			} else if (son.getName().equals("omii.ini")) {
-		                if(!son.getParentFile().getName().equalsIgnoreCase("ominstallinfo"))
+				if(!son.getParentFile().getName().equalsIgnoreCase("ominstallinfo"))
 				  continue;		
 				System.out.print("#");
 				iniFile = new Properties();
 				try {
 					iniFile.load(new FileReader(son.getAbsolutePath()));
-					String jsproot = iniFile.getProperty("csjsproot");
-					if (jsproot!=null) {
-						webApp = new File(jsproot).getParentFile().getAbsolutePath();
-					    if(!webApp.endsWith("/")) webApp = webApp + "/";
+					// try to locate the webapp folder for tomcat
+					if (iniFile.getProperty("CSInstallAppServerType").startsWith("tomcat")) {
+						webApp = iniFile.getProperty("CSInstallAppServerPath").replace('\\', '/');
+						if(!webApp.endsWith("/")) webApp = webApp + "/";
+						webApp = webApp + "webapps" + iniFile.getProperty("sCgiPath");
 					}
-
+					// try to locate the webapp folder for weblogic
+					if (iniFile.getProperty("CSInstallAppServerType").startsWith("wls")) {
+						String jsproot = iniFile.getProperty("csjsproot");
+						if (jsproot!=null) {
+							webApp = new File(jsproot).getParentFile().getAbsolutePath().replace('\\', '/');
+					    	if(!webApp.endsWith("/")) webApp = webApp + "/";
+					    }
+					}
+					// try to set the home folder
 					if(iniFile.getProperty("CSFTAppServerRoot")==null) 
 				               iniFile.setProperty("CSFTAppServerRoot",  
-                                                       son.getParentFile().getParentFile().getAbsolutePath());
+                                   son.getParentFile().getParentFile().getAbsolutePath());
 				} catch (Exception e) {
 					iniFile = null;
 					e.printStackTrace();
-				}		    
+				}
 			} else if (son.getName().equals("omproduct.ini")) {
 				System.out.print("#");
 				try {
