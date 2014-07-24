@@ -2,6 +2,13 @@
 layout: page
 title: Releases
 ---
+## Release Notes for 1.8.1a
+
+
+- configurator now works for weblogic
+- Demo-11.8 csdt export was broken - fixed
+
+
 ## Release Notes for 1.8.1
 
 - many bug fixes
