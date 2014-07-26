@@ -1,5 +1,6 @@
 build.sbt
 *.build
+.worksheet/
 *.class
 *.log
 *.bak
@@ -20,3 +21,4 @@ project/repo/
 project/ivy2/
 project/plugins/project/
 doc/temp/
+wcs/repo/

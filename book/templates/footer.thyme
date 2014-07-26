@@ -1,0 +1,14 @@
+<footer th:fragment="footer" id="foot" class="container">
+    <div class="row"></div>
+    <div class="credits span3">
+        <p>Copyright &copy;Sciabarra.com ltd<br/>
+            All rights reserved</p>
+    </div>
+    <div class="certifications span6">
+        <small>Our Certifications:</small>
+        <img src="img/logo-sun.png" alt="Sun - Java Certified Programmer"/>
+        <img src="img/logo-oracle.png" alt="Oracle - Java Certified Master"/>
+        <img src="img/logo-scrummaster.png" alt="Certified Scrum Master"/>
+        <img src="img/logo-oraclecertif.png" alt="Oracle -  Certified Specialist"/> 
+    </div>
+</footer>

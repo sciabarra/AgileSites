@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ScrivenerProject Template="No" Version="1.0" Creator="SCRWIN-1.7.1.0">
+    <Binder>
+        <BinderItem ID="0" Created="2014-06-14 07:15:33 +0000" Modified="2014-06-14 07:15:33 +0000" Type="DraftFolder">
+            <Title>Bozza</Title>
+            <MetaData>
+                <NotesTextSelection>0,0</NotesTextSelection>
+            </MetaData>
+            <CorkboardAndOutliner>
+                <CorkboardSettings>
+                    <FreeformMode>Yes</FreeformMode>
+                </CorkboardSettings>
+            </CorkboardAndOutliner>
+            <Children>
+                <BinderItem ID="4" Created="2014-06-14 07:22:56 +0000" Modified="2014-06-25 21:26:18 +0000" Type="Folder">
+                    <Title>section</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <Target Type="Words">0</Target>
+                    </TextSettings>
+                    <CorkboardAndOutliner>
+                        <CorkboardSettings>
+                            <FreeformMode>Yes</FreeformMode>
+                        </CorkboardSettings>
+                    </CorkboardAndOutliner>
+                    <Children>
+                        <BinderItem ID="3" Created="2014-06-14 07:15:33 +0000" Modified="2014-06-25 21:26:04 +0000" Type="Text">
+                            <Title>Document</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>rtf</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextMode>Script</TextMode>
+                                <TextSelection>181,181</TextSelection>
+                                <Target Type="Words">0</Target>
+                            </TextSettings>
+                            <CorkboardAndOutliner>
+                                <CorkboardSettings>
+                                    <FreeformMode>Yes</FreeformMode>
+                                </CorkboardSettings>
+                            </CorkboardAndOutliner>
+                            <Children>
+                                <BinderItem ID="7" Created="2014-06-16 05:08:09 +0000" Modified="2014-06-25 21:26:26 +0000" Type="Text">
+                                    <Title>Item</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextMode>Script</TextMode>
+                                        <Target Type="Words">0</Target>
+                                    </TextSettings>
+                                    <CorkboardAndOutliner>
+                                        <CorkboardSettings>
+                                            <FreeformMode>Yes</FreeformMode>
+                                        </CorkboardSettings>
+                                    </CorkboardAndOutliner>
+                                </BinderItem>
+                                <BinderItem ID="9" Created="2014-06-25 21:26:31 +0000" Modified="2014-06-25 21:26:36 +0000" Type="Text">
+                                    <Title>Item2</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextMode>Script</TextMode>
+                                        <Target Type="Words">0</Target>
+                                    </TextSettings>
+                                    <CorkboardAndOutliner>
+                                        <CorkboardSettings>
+                                            <FreeformMode>Yes</FreeformMode>
+                                        </CorkboardSettings>
+                                    </CorkboardAndOutliner>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="6" Created="2014-06-15 21:49:37 +0000" Modified="2014-06-25 21:27:12 +0000" Type="Folder">
+                            <Title>subsection</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <Target Type="Words">0</Target>
+                            </TextSettings>
+                            <CorkboardAndOutliner>
+                                <CorkboardSettings>
+                                    <FreeformMode>Yes</FreeformMode>
+                                </CorkboardSettings>
+                            </CorkboardAndOutliner>
+                            <Children>
+                                <BinderItem ID="5" Created="2014-06-14 07:23:12 +0000" Modified="2014-06-25 21:27:28 +0000" Type="Text">
+                                    <Title>Document</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <FileExtension>rtf</FileExtension>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextMode>Script</TextMode>
+                                        <TextSelection>56,56</TextSelection>
+                                        <Target Type="Words">0</Target>
+                                    </TextSettings>
+                                    <CorkboardAndOutliner>
+                                        <CorkboardSettings>
+                                            <FreeformMode>Yes</FreeformMode>
+                                        </CorkboardSettings>
+                                    </CorkboardAndOutliner>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+            </Children>
+        </BinderItem>
+        <BinderItem ID="1" Created="2014-06-14 07:15:33 +0000" Modified="2014-06-14 07:15:33 +0000" Type="ResearchFolder">
+            <Title>Ricerca</Title>
+            <MetaData>
+                <NotesTextSelection>0,0</NotesTextSelection>
+            </MetaData>
+            <CorkboardAndOutliner>
+                <CorkboardSettings>
+                    <FreeformMode>Yes</FreeformMode>
+                </CorkboardSettings>
+            </CorkboardAndOutliner>
+        </BinderItem>
+        <BinderItem ID="2" Created="2014-06-14 07:15:33 +0000" Modified="2014-06-14 07:15:33 +0000" Type="TrashFolder">
+            <Title>Cestino</Title>
+            <MetaData>
+                <NotesTextSelection>0,0</NotesTextSelection>
+            </MetaData>
+            <CorkboardAndOutliner>
+                <CorkboardSettings>
+                    <FreeformMode>Yes</FreeformMode>
+                </CorkboardSettings>
+            </CorkboardAndOutliner>
+        </BinderItem>
+    </Binder>
+    <Collections>
+        <Collection Type="Binder" ID="0f603618-77a2-487c-badb-33e6566611c0" Color="0.901961 0.917647 0.933333">
+            <Title>Raccoglitore</Title>
+        </Collection>
+        <Collection Type="RecentSearch" ID="cf4ed9ed-e3d8-4236-8977-f28be3f36085" Color="0.901961 0.901961 0.980392">
+            <Title>Risultati Ricerca</Title>
+            <SearchSettings Operator="Exact" Type="All" Scope="All" CompileSetting="All" CaseSensitive="No"></SearchSettings>
+        </Collection>
+    </Collections>
+    <LabelSettings>
+        <Title>Etichetta</Title>
+        <DefaultLabelID>-1</DefaultLabelID>
+        <Labels>
+            <Label ID="-1">Nessuna etichetta</Label>
+            <Label ID="0" Color="0.752941 0.752941 1.000000">Concetto</Label>
+            <Label ID="1" Color="1.000000 0.752941 0.752941">Capitolo</Label>
+        </Labels>
+    </LabelSettings>
+    <StatusSettings>
+        <Title>Stato</Title>
+        <DefaultStatusID>-1</DefaultStatusID>
+        <StatusItems>
+            <Status ID="-1">Nessuno Stato</Status>
+            <Status ID="0">N/D</Status>
+            <Status ID="1">Da fare</Status>
+            <Status ID="2">Prima Bozza</Status>
+            <Status ID="3">Bozza revisionata</Status>
+            <Status ID="4">Bozza definitiva</Status>
+            <Status ID="5">Fatto</Status>
+        </StatusItems>
+    </StatusSettings>
+    <ProjectProperties/>
+    <ProjectTargets>
+        <DraftTarget Type="Words" CountIncludedOnly="No" CurrentCompileGroupOnly="No">0</DraftTarget>
+        <SessionTarget Type="Words" CountDraftOnly="No" AllowNegatives="No" ResetType="Midnight" DeterminedFromDeadline="No" CanWriteOnDeadlineDate="No" WritingDays="">0</SessionTarget>
+    </ProjectTargets>
+    <PrintSettings PaperType="A4" LeftMargin="17.0363" RightMargin="17.1213" TopMargin="11.9906" BottomMargin="12.2457" Orientation="Portrait" Collates="No" ReverseOrder="No"/>
+</ScrivenerProject>

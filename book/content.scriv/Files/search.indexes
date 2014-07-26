@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SearchIndexes Version="1.0">
+    <Documents>
+        <Document ID="3">
+            <Title>Document</Title>
+        </Document>
+        <Document ID="4">
+            <Title>section</Title>
+        </Document>
+        <Document ID="5">
+            <Title>Document</Title>
+        </Document>
+        <Document ID="6">
+            <Title>subsection</Title>
+        </Document>
+        <Document ID="7">
+            <Title>Item</Title>
+        </Document>
+        <Document ID="9">
+            <Title>Item2</Title>
+        </Document>
+    </Documents>
+</SearchIndexes>

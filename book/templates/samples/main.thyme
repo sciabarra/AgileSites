@@ -1,0 +1,21 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header.thyme::head"/>
+<body>
+ <div th:fragment="header">
+	<div th:replace="navbar :: all"></div>
+	<div th:replace="carousel :: all"></div>
+ </div>
+ <div class="container marketing">
+    <div id="pagecontent" class="row">
+        <div class="span9">
+            <div class="block">
+                Inserire qui contenuto
+            </div>
+        </div>
+ 		<div th:replace="menu.thyme::menu">menu</div>
+    </div>
+ </div>
+ <div th:replace="footer.thyme::footer">footer</div>
+</body>
+</html>
