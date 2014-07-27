@@ -8,7 +8,7 @@ import java.io.File
 /**
  * Parse the index of a scrivener document
  */
-class Document(sourceFolder: File) extends TreeBuilder with Utils {
+class Document(sourceFolder: File, targetFolder: File) extends TreeBuilder with Utils {
 
   val source = file(sourceFolder, "project.scrivx")
   //println(source)
@@ -26,13 +26,12 @@ class Document(sourceFolder: File) extends TreeBuilder with Utils {
         val id = attrs("ID").text.toInt
         val tree = node(id, tpe)
         stack = tree :: stack
-        //println(">>> push " + tree)
+      //println(">>> push " + tree)
 
       case EvElemEnd(_, "BinderItem") =>
         val child :: parent :: rest = stack
-        //stack = parent.copy(children= node::parent.children) ::rest
         stack = addChild(parent, child) :: rest
-        //println("<<< pop " + child)
+      //println("<<< pop " + child)
 
       case EvElemStart(_, "Title", _, _) => inTitle = true
 
@@ -49,11 +48,13 @@ class Document(sourceFolder: File) extends TreeBuilder with Utils {
 
   //println(stack(0))
 
-  val root = findNode(stack(0), _.kind == "DraftFolder").getOrElse(node(0, "Empty"))
+  val root = {
+    findNode(stack(0), _.kind == "DraftFolder").getOrElse(node(0, "Empty")).copy(name = targetFolder.getName)
+  }
 
   def dump {
     treeDump(root)
   }
 
-  def fileList(folder: File) = asFileList(root, folder)
+  def fileNodeList = fileByNode(root, targetFolder.getParentFile)
 }

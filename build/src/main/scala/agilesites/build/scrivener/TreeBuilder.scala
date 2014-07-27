@@ -12,7 +12,8 @@ trait TreeBuilder {
 
   def addChild(parent: Tree, child: Tree) = parent.copy(children = (parent.children ++ (child :: Nil)))
 
-  def setTitle(tree: Tree, _title: String) = tree.copy(name = _title.toLowerCase().replace(" ", "-"), title = _title)
+  def setTitle(tree: Tree, _title: String) =
+     tree.copy(name = _title.toLowerCase().replace(" ", "-"), title = _title)
 
   /**
    * Dump the tree
@@ -39,23 +40,23 @@ trait TreeBuilder {
         ll(0)
     }
   }
-  
+
   /**
    * Construct a list of files with references to nodes
    */
-  def asFileList(node: Tree, parent: File): Seq[(File, Tree)] = {
+  def fileByNode(node: Tree, parent: File): Seq[(File, Tree)] = {
     val dir = new File(parent, node.name)
-    val file: File = new File(parent, ""+node.id+".html")
+    val file: File = new File(parent, node.name+".html")
     if (node.children.size == 0) {
-      Seq((file,node))
+      Seq((file, node))
     } else {
       val ls = for {
         child <- node.children
-        sub <- asFileList(child, dir)
+        sub <- fileByNode(child, dir)
       } yield {
         sub
-      }    
-      ls ++ Seq((file,node))
+      }
+      ls ++ Seq((file, node))
     }
   }
 }

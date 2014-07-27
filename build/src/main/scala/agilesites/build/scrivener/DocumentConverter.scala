@@ -5,7 +5,7 @@ import java.io.File
 class DocumentConverter(sourceDocument: File, targetFolder: File)(unoPython: File, unoConv: File)
   extends Utils {
 
-  val doc = new Document(sourceDocument)
+  val doc = new Document(sourceDocument, targetFolder)
   val source: File = file(file(sourceDocument, "Files"), "Docs")
 
   def rtf2html(rtf: File, target: File) {
@@ -16,11 +16,12 @@ class DocumentConverter(sourceDocument: File, targetFolder: File)(unoPython: Fil
   }
 
   def convert() {
-    for ((tgtFile, node) <- doc.fileList(targetFolder)) {
-      println(tgtFile + " (" + node.kind + ")")
+    for ((tgtFile, node) <- doc.fileNodeList) {
+      //println(tgtFile + " (" + node.kind + ")")
       if (node.kind == "Text") {
         val srcFile = new File(source, node.id + ".rtf")
-        rtf2html(srcFile, tgtFile)
+        println(s"${srcFile} -> ${tgtFile}" )
+        //rtf2html(srcFile, tgtFile)
       }
     }
   }
