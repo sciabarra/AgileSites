@@ -9,11 +9,11 @@ import java.io.File
  * Parse the index of a scrivener document
  */
 class Document(sourceFolder: File) extends TreeBuilder with Utils {
-  
+
   val source = file(sourceFolder, "project.scrivx")
   //println(source)
-  
-  var stack = node(-1, "Home") :: Nil
+
+  var stack = node(-1, "Root") :: Nil
   var inTitle = false
   val src = Source.fromFile(source)
 
@@ -22,31 +22,38 @@ class Document(sourceFolder: File) extends TreeBuilder with Utils {
   for (event <- reader) {
     event match {
       case EvElemStart(_, "BinderItem", attrs, _) =>
-        val tree = node(attrs("ID").text.toInt, attrs("Type").text)
-        stack = tree  :: stack
-        println(">>> push "+tree)
-        
+        val tpe = attrs("Type").text
+        val id = attrs("ID").text.toInt
+        val tree = node(id, tpe)
+        stack = tree :: stack
+        //println(">>> push " + tree)
+
       case EvElemEnd(_, "BinderItem") =>
         val child :: parent :: rest = stack
         //stack = parent.copy(children= node::parent.children) ::rest
         stack = addChild(parent, child) :: rest
-        println("<<< pop "+child)
-        
+        //println("<<< pop " + child)
+
       case EvElemStart(_, "Title", _, _) => inTitle = true
-     
+
       case EvElemEnd(_, "Title") => inTitle = false
-   
-      case EvText(text) => 
-        println(text)
-        if(inTitle) stack = setTitle(stack.head, text) :: stack.tail
-        
+
+      case EvText(text) =>
+        //println(text)
+        if (inTitle) stack = setTitle(stack.head, text) :: stack.tail
+
       case x =>
-        //println(x)
+      //println(x)
     }
   }
-  
-  def dump { treeDump(stack(0)) }
 
-  //val map = treeMap(Map[String,Node](), "", stack(0))
+  //println(stack(0))
 
+  val root = findNode(stack(0), _.kind == "DraftFolder").getOrElse(node(0, "Empty"))
+
+  def dump {
+    treeDump(root)
+  }
+
+  def fileList(folder: File) = asFileList(root, folder)
 }
