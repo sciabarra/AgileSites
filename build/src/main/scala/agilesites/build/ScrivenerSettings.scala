@@ -27,7 +27,7 @@ trait ScrivenerSettings {
   lazy val unoPythonKey = settingKey[String]("uno-python")
   lazy val unoConvKey = settingKey[String]("uno-conv")
   lazy val scrivenerSourceDocumentKey = settingKey[String]("scrivener-source-document")
-  lazy val scrivenerTargetFolderKey = settingKey[String]("scriveber-target-folder")
+  lazy val scrivenerTargetFolderKey = settingKey[String]("scrivener-target-folder")
 
   val scrivenerSettings = Seq(
     scrivenerTargetFolderKey := "content",

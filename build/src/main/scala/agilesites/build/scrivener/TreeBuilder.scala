@@ -46,7 +46,7 @@ trait TreeBuilder {
    */
   def fileByNode(node: Tree, parent: File): Seq[(File, Tree)] = {
     val dir = new File(parent, node.name)
-    val file: File = new File(parent, node.name+".html")
+    val file: File = new File(parent, node.name)
     if (node.children.size == 0) {
       Seq((file, node))
     } else {
