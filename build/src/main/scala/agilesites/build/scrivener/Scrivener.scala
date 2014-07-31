@@ -6,15 +6,16 @@ import java.io.File
  * Scrivener export support
  *
  */
-object Scrivener {
+object Scrivener extends TreeBuilder {
 
-  def export(sourceDocument: File, targetFolder: File)(unoPython: File, unoConv: File) = {
-    val dc = new DocumentConverter(sourceDocument, targetFolder)(unoPython, unoConv)
+  def export(sourceDocument: File, outputFolder: File)(unoPython: File, unoConv: File): Seq[File] = {
+    val dc = new DocumentConverter(sourceDocument, outputFolder)(unoPython, unoConv)
 
+    // show current state
     dc.dump
 
+    // convert and return a list of converted files
     dc.convert
-    
   }
 
 }

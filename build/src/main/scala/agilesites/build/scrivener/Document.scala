@@ -49,12 +49,13 @@ class Document(sourceFolder: File, targetFolder: File) extends TreeBuilder with 
   //println(stack(0))
 
   val root = {
-    findNode(stack(0), _.kind == "DraftFolder").getOrElse(node(0, "Empty")).copy(name = targetFolder.getName)
+    findNode(stack(0), _.kind == "DraftFolder").getOrElse(node(0, "Empty"))
+    .copy(name = targetFolder.getName)
   }
 
   def dump {
     treeDump(root)
   }
 
-  def fileNodeList = fileByNode(root, targetFolder.getParentFile)
+  def fileNodeList: Seq[Tree] = fileByNode(root, targetFolder.getParentFile)
 }

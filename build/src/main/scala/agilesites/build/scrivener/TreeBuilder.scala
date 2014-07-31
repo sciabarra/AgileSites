@@ -6,7 +6,7 @@ import java.io.File
  */
 trait TreeBuilder {
 
-  case class Tree(id: Int, kind: String, children: List[Tree] = Nil, name: String = "", title: String = "")
+  case class Tree(id: Int, kind: String, children: List[Tree] = Nil, name: String = "", title: String = "", file: Option[File]= None)
 
   def node(id: Int, kind: String) = Tree(id, kind)
 
@@ -44,11 +44,12 @@ trait TreeBuilder {
   /**
    * Construct a list of files with references to nodes
    */
-  def fileByNode(node: Tree, parent: File): Seq[(File, Tree)] = {
+  def fileByNode(node: Tree, parent: File): Seq[Tree] = {
     val dir = new File(parent, node.name)
     val file: File = new File(parent, node.name)
     if (node.children.size == 0) {
-      Seq((file, node))
+      //Seq((file, node))
+      Seq(node.copy(file=Some(file)))
     } else {
       val ls = for {
         child <- node.children
@@ -56,7 +57,7 @@ trait TreeBuilder {
       } yield {
         sub
       }
-      ls ++ Seq((file, node))
+      ls ++ Seq(node.copy(file=Some(file)))
     }
   }
 }

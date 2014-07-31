@@ -7,15 +7,17 @@ import java.io.File
 trait JBakeSettings {
   this: Plugin =>
 
-  val jbakeConfig = config("jbake")
+  lazy val jbakeConfig = config("jbake")
 
-  val jbakeClasspath = taskKey[Seq[File]]("jbake-classpath")
+  lazy val jbakeClasspath = taskKey[Seq[File]]("jbake-classpath")
   val jbakeClasspathTask = jbakeClasspath <<= (update) map {
     report => report.select(configurationFilter("jbake"))
   }
 
-  val jbake = inputKey[Int]("jbake")
-  val jbakeTask = jbake := {
+  lazy val jbakeContent = settingKey[String]("jbake-content") 
+  
+  lazy val jbake = inputKey[Int]("jbake")
+  lazy val jbakeTask = jbake := {
 
     val args: Seq[String] = Def.spaceDelimited("<arg>").parsed
     val jvmOpts = Seq("-cp", jbakeClasspath.value.mkString(File.pathSeparator))
@@ -32,6 +34,7 @@ trait JBakeSettings {
   //val scrivenerExport = InputKey[Unit]("scrivener-export") := {
 
   val jBakeSettings = Seq(
+    jbakeContent := "content",
     jbakeClasspathTask,
     jbakeTask,
     ivyConfigurations += jbakeConfig,
