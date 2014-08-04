@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
+<installation version="1.0">
+    <info>
+        <appname>AgileSites</appname>
+        <appversion>2.0</appversion>
+        <appsubpath>Agilesites2.0</appsubpath>
+        <authors>
+            <author email="michele@sciabarra.com" name="Michele Sciabarra"/>
+        </authors>
+        <url>http://www.agilesites.org</url>
+        <uninstaller name="Uninstaller.jar" write="yes"/>
+        <javaversion>1.7.0_06</javaversion>
+        <requiresjdk>yes</requiresjdk>
+        <writeinstallationinformation>no</writeinstallationinformation>
+        <pack200/>
+        <run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/>
+    </info>
+    <guiprefs height="480" resizable="no" width="640">
+        <modifier key="useFlags" value="yes"/>
+        <modifier key="langDisplayType" value="default"/>
+    </guiprefs>
+    <locale>
+        <langpack iso3="eng"/>
+    </locale>
+    <resources>
+        <res id="installer.langsel.img" src="A:\agilesites\2.0\setup\setup_logo.png"/>
+        <res id="Installer.image" src="A:\agilesites\2.0\setup\setup_side.png"/>
+        <res id="userInputSpec.xml" src="setup_userInputSpec.xml"/>
+        <res id="ProcessPanel.Spec.xml" src="setup_processPanelSpec.xml"/>
+    </resources>
+    <panels>
+        <panel classname="CheckedHelloPanel"/>
+        <panel classname="PacksPanel"/>
+        <panel classname="TargetPanel"/>
+        <panel classname="InstallPanel"/>
+        <panel classname="UserInputPanel"/>
+        <panel classname="ProcessPanel"/>
+        <panel classname="SimpleFinishPanel"/>
+    </panels>
+    <packs>
+        <pack name="Configurator" preselected="yes" required="yes">
+            <description/>
+            <file override="update"
+                src="A:\agilesites\2.0\setup\target\scala-2.10\setup" targetdir="$INSTALL_PATH/"/>
+            <file override="update"
+                src="A:\agilesites\2.0\setup\setup.bat" targetdir="$INSTALL_PATH/setup/">
+                <os family="Windows"/>
+            </file>
+            <file override="update"
+                src="A:\agilesites\2.0\setup\setup.sh" targetdir="$INSTALL_PATH/setup">
+                <os family="Unix"/>
+            </file>
+        </pack>
+    </packs>
+</installation>

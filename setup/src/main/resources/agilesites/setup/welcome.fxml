@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.image.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="135.0" fitWidth="200.0" layoutX="386.0" layoutY="251.0">
+         <image>
+            <Image url="@black_swan.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="80.0" layoutY="45.0" text="The Easy framework">
+         <font>
+            <Font name="Arial" size="48.0" />
+         </font>
+      </Label>
+      <Label layoutX="126.0" layoutY="127.0" text="for Agile development">
+         <font>
+            <Font name="Arial" size="36.0" />
+         </font>
+      </Label>
+      <Label layoutX="69.0" layoutY="193.0" text="with Oracle WebCenter Sites">
+         <font>
+            <Font name="Arial" size="36.0" />
+         </font>
+      </Label>
+      <Label layoutX="22.0" layoutY="305.0" text="Now JavaScript Powered!">
+         <font>
+            <Font name="Arial Narrow Italic" size="36.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

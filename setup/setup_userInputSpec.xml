@@ -1,0 +1,13 @@
+<userInput>
+    <panel order="0">
+        <field size="2" txt="Installation Options" type="title"/>
+        <field type="text" variable="PORT">
+            <description align="left" txt="Web Center Sites http port"/>
+            <spec set="8181" size="15" txt="Port"/>
+        </field>
+        <field type="text" variable="SITE">
+            <description align="left" txt="Initial site to be created"/>
+            <spec set="MySite" size="15" txt="Site"/>
+        </field>
+    </panel>
+</userInput>
