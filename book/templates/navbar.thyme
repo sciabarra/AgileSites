@@ -16,7 +16,6 @@
   padding-right: 10px; 
 }
 			</style>
-
 			<script>
   var myCallback = function() {
   $("div.gsc-control-cse").removeClass().addClass("my-control-cse")
@@ -39,10 +38,9 @@
 
      </div>
      <ul id="topnavbar" class="nav pull-right">
-	    <li><a href="index.php">home</a></li>
-	    <li><a href="about.php">about</a></li>
-	    <li><a href="cases.php">cases</a></li>
-	    <li><a href="http://www.sciabarra.com/fatwire">blog</a></li>
+	    <li><a href="/">home</a></li>
+	    <li><a href="/blog/">blog</a></li>
+	    <li><a href="/docs/">docs</a></li>
 	    <li><a href="contactform/contactform.php">contacts</a></li>
      </ul>
 

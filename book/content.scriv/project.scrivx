@@ -12,8 +12,8 @@
                 </CorkboardSettings>
             </CorkboardAndOutliner>
             <Children>
-                <BinderItem ID="4" Created="2014-06-14 07:22:56 +0000" Modified="2014-06-25 21:26:18 +0000" Type="Folder">
-                    <Title>section</Title>
+                <BinderItem ID="11" Created="2014-07-27 20:30:58 +0000" Modified="2014-07-27 20:31:02 +0000" Type="Folder">
+                    <Title>blog</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
                         <NotesTextSelection>0,0</NotesTextSelection>
@@ -27,16 +27,13 @@
                         </CorkboardSettings>
                     </CorkboardAndOutliner>
                     <Children>
-                        <BinderItem ID="3" Created="2014-06-14 07:15:33 +0000" Modified="2014-06-25 21:26:04 +0000" Type="Text">
-                            <Title>Document</Title>
+                        <BinderItem ID="12" Created="2014-07-27 20:31:40 +0000" Modified="2014-07-27 20:31:43 +0000" Type="Folder">
+                            <Title>2013</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
-                                <FileExtension>rtf</FileExtension>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
                             <TextSettings>
-                                <TextMode>Script</TextMode>
-                                <TextSelection>181,181</TextSelection>
                                 <Target Type="Words">0</Target>
                             </TextSettings>
                             <CorkboardAndOutliner>
@@ -45,14 +42,14 @@
                                 </CorkboardSettings>
                             </CorkboardAndOutliner>
                             <Children>
-                                <BinderItem ID="7" Created="2014-06-16 05:08:09 +0000" Modified="2014-06-25 21:26:26 +0000" Type="Text">
-                                    <Title>Item</Title>
+                                <BinderItem ID="13" Created="2014-07-27 20:31:58 +0000" Modified="2014-07-27 20:32:03 +0000" Type="Text">
+                                    <Title>First Post</Title>
                                     <MetaData>
                                         <IncludeInCompile>Yes</IncludeInCompile>
                                         <NotesTextSelection>0,0</NotesTextSelection>
                                     </MetaData>
                                     <TextSettings>
-                                        <TextMode>Script</TextMode>
+                                        <TextSelection>11,11</TextSelection>
                                         <Target Type="Words">0</Target>
                                     </TextSettings>
                                     <CorkboardAndOutliner>
@@ -61,7 +58,93 @@
                                         </CorkboardSettings>
                                     </CorkboardAndOutliner>
                                 </BinderItem>
-                                <BinderItem ID="9" Created="2014-06-25 21:26:31 +0000" Modified="2014-06-25 21:26:36 +0000" Type="Text">
+                                <BinderItem ID="14" Created="2014-07-27 20:32:08 +0000" Modified="2014-07-30 15:34:03 +0000" Type="Text">
+                                    <Title>Second Post</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>12,12</TextSelection>
+                                        <Target Type="Words">0</Target>
+                                    </TextSettings>
+                                    <CorkboardAndOutliner>
+                                        <CorkboardSettings>
+                                            <FreeformMode>Yes</FreeformMode>
+                                        </CorkboardSettings>
+                                    </CorkboardAndOutliner>
+                                </BinderItem>
+                                <BinderItem ID="15" Created="2014-07-30 15:25:12 +0000" Modified="2014-07-30 15:31:09 +0000" Type="Text">
+                                    <Title>Third Post</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>10,10</TextSelection>
+                                        <Target Type="Words">0</Target>
+                                    </TextSettings>
+                                    <CorkboardAndOutliner>
+                                        <CorkboardSettings>
+                                            <FreeformMode>Yes</FreeformMode>
+                                        </CorkboardSettings>
+                                    </CorkboardAndOutliner>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="4" Created="2014-06-14 07:22:56 +0000" Modified="2014-07-31 05:16:17 +0000" Type="Folder">
+                    <Title>docs</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <Target Type="Words">0</Target>
+                    </TextSettings>
+                    <CorkboardAndOutliner>
+                        <CorkboardSettings>
+                            <FreeformMode>Yes</FreeformMode>
+                        </CorkboardSettings>
+                    </CorkboardAndOutliner>
+                    <Children>
+                        <BinderItem ID="3" Created="2014-06-14 07:15:33 +0000" Modified="2014-07-31 05:18:22 +0000" Type="Text">
+                            <Title>Welcome</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>rtf</FileExtension>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextMode>Script</TextMode>
+                                <TextSelection>16,16</TextSelection>
+                                <Target Type="Words">0</Target>
+                            </TextSettings>
+                            <CorkboardAndOutliner>
+                                <CorkboardSettings>
+                                    <FreeformMode>Yes</FreeformMode>
+                                </CorkboardSettings>
+                            </CorkboardAndOutliner>
+                            <Children>
+                                <BinderItem ID="7" Created="2014-06-16 05:08:09 +0000" Modified="2014-07-26 18:34:57 +0000" Type="Text">
+                                    <Title>Item</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextMode>Script</TextMode>
+                                        <TextSelection>15,15</TextSelection>
+                                        <Target Type="Words">0</Target>
+                                    </TextSettings>
+                                    <CorkboardAndOutliner>
+                                        <CorkboardSettings>
+                                            <FreeformMode>Yes</FreeformMode>
+                                        </CorkboardSettings>
+                                    </CorkboardAndOutliner>
+                                </BinderItem>
+                                <BinderItem ID="9" Created="2014-06-25 21:26:31 +0000" Modified="2014-07-26 18:35:04 +0000" Type="Text">
                                     <Title>Item2</Title>
                                     <MetaData>
                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -69,6 +152,7 @@
                                     </MetaData>
                                     <TextSettings>
                                         <TextMode>Script</TextMode>
+                                        <TextSelection>14,14</TextSelection>
                                         <Target Type="Words">0</Target>
                                     </TextSettings>
                                     <CorkboardAndOutliner>
@@ -94,8 +178,8 @@
                                 </CorkboardSettings>
                             </CorkboardAndOutliner>
                             <Children>
-                                <BinderItem ID="5" Created="2014-06-14 07:23:12 +0000" Modified="2014-06-25 21:27:28 +0000" Type="Text">
-                                    <Title>Document</Title>
+                                <BinderItem ID="5" Created="2014-06-14 07:23:12 +0000" Modified="2014-07-26 18:35:28 +0000" Type="Text">
+                                    <Title>Subdocument</Title>
                                     <MetaData>
                                         <IncludeInCompile>Yes</IncludeInCompile>
                                         <FileExtension>rtf</FileExtension>
@@ -103,7 +187,7 @@
                                     </MetaData>
                                     <TextSettings>
                                         <TextMode>Script</TextMode>
-                                        <TextSelection>56,56</TextSelection>
+                                        <TextSelection>97,97</TextSelection>
                                         <Target Type="Words">0</Target>
                                     </TextSettings>
                                     <CorkboardAndOutliner>
@@ -115,6 +199,38 @@
                             </Children>
                         </BinderItem>
                     </Children>
+                </BinderItem>
+                <BinderItem ID="8" Created="2014-07-27 20:28:45 +0000" Modified="2014-07-31 13:19:46 +0000" Type="Text">
+                    <Title>about</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>38,38</TextSelection>
+                        <Target Type="Words">0</Target>
+                    </TextSettings>
+                    <CorkboardAndOutliner>
+                        <CorkboardSettings>
+                            <FreeformMode>Yes</FreeformMode>
+                        </CorkboardSettings>
+                    </CorkboardAndOutliner>
+                </BinderItem>
+                <BinderItem ID="10" Created="2014-07-27 20:28:58 +0000" Modified="2014-07-31 05:18:01 +0000" Type="Text">
+                    <Title>contact</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>36,36</TextSelection>
+                        <Target Type="Words">0</Target>
+                    </TextSettings>
+                    <CorkboardAndOutliner>
+                        <CorkboardSettings>
+                            <FreeformMode>Yes</FreeformMode>
+                        </CorkboardSettings>
+                    </CorkboardAndOutliner>
                 </BinderItem>
             </Children>
         </BinderItem>

@@ -6,6 +6,7 @@
  <div class="container marketing">
   <div id="pagecontent" class="row">
    <div class="span9">
+    <div th:utext='${content.uri}'>uri</div>
     <div class="block" th:utext='${content.body}'>body</div>
    </div><!-- span9 -->
    <div class="span3">

@@ -1,3 +1,4 @@
 output/
 templates/sample/
 templates/site/
+content/**.html
