@@ -3,7 +3,7 @@ package agilesites.build
 import sbt._
 import Keys._
 import agilesites.build.scrivener.Scrivener
-import agilesites.build.jbake.JBake
+import agilesites.build.util.JBake
 
 trait ScrivenerSettings {
 

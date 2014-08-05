@@ -13,10 +13,13 @@
    <bottom>
       <HBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="prevButton" mnemonicParsing="false" onAction="#onPrev" text="&lt;&lt; Prev">
+            <Button fx:id="prevButton" mnemonicParsing="false" onAction="#onPrev" text="&lt;&lt; Previous">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
+               <font>
+                  <Font size="18.0" />
+               </font>
             </Button>
             <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
                <children>
@@ -26,6 +29,9 @@
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
+               <font>
+                  <Font size="18.0" />
+               </font>
             </Button>
          </children>
          <BorderPane.margin>
@@ -34,17 +40,17 @@
       </HBox>
    </bottom>
    <top>
-      <HBox alignment="CENTER" prefHeight="84.0" prefWidth="598.0" style="-fx-background-color: blue;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="84.0" prefWidth="598.0" style="-fx-background-color: red;" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" text="AgileSites 2.0" textFill="WHITE">
+            <Label alignment="CENTER" contentDisplay="CENTER" text="AgileSites 2.0 Configurator" textAlignment="CENTER" textFill="WHITE">
                <font>
-                  <Font name="Arial Black" size="60.0" />
+                  <Font name="Arial Black" size="36.0" />
                </font>
             </Label>
          </children>
       </HBox>
    </top>
    <center>
-      <HBox fx:id="mainHbox" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <HBox fx:id="mainHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

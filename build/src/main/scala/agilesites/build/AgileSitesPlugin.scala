@@ -2,18 +2,19 @@ package agilesites.build
 
 import sbt._
 import Keys._
-import agilesites.build._
-import jbake._
 
-object AgileSitesPlugin extends Plugin
+object AgileSitesPlugin
+  extends Plugin
   with UtilSettings
+  with ConfigSettings
+  with CoreSettings
   with JBakeSettings
   with ScrivenerSettings {
 
   lazy val jbakeScrivener = taskKey[Unit]("jbake-scrivener")
   val jbakeScrivenerTask = jbakeScrivener <<= (scrivenerExport, jbakeContent) map {
     (files, base) =>
-      JBake.convert(file(base), files)
+      agilesites.build.util.JBake.convert(file(base), files)
   }
 
   /*
@@ -25,6 +26,7 @@ object AgileSitesPlugin extends Plugin
 
   override lazy val settings =
     utilSettings ++
+      configSettings ++
       jBakeSettings ++
       scrivenerSettings ++
       Seq(jbakeScrivenerTask)

@@ -1,0 +1,8 @@
+sites.webapp=wcs/webapps/cs/
+sites.home=wcs/home
+sites.shared=wcs/shared
+sites.user=fwadmin
+sites.password=xceladmin
+sites.url=http://localhost:8181/cs
+sites.version=11.1.1.8.0
+sites.csdt.jar=wcs/Sites/csdt-client-11.1.1.8.0.jar

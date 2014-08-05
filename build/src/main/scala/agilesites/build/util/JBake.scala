@@ -1,7 +1,9 @@
-package agilesites.build.jbake
+package agilesites.build.util
 
 import java.io.File
 import agilesites.build.scrivener.TreeBuilder
+import org.jsoup.Jsoup
+import scala.Array.canBuildFrom
 
 object JBake extends TreeBuilder {
 
