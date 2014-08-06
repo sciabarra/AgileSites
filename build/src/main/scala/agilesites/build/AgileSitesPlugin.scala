@@ -8,6 +8,7 @@ object AgileSitesPlugin
   with UtilSettings
   with ConfigSettings
   with CoreSettings
+  with ToolsSettings
   with JBakeSettings
   with ScrivenerSettings {
 
@@ -17,18 +18,16 @@ object AgileSitesPlugin
       agilesites.build.util.JBake.convert(file(base), files)
   }
 
-  /*
-  jbakeScrivenerTask <<= (scrivenerExport) map {
-    converted =>
-      //JBake.convert(file(jbakeContent.value), converted)
-      ()
-  }*/
+  //jbakeScrivenerTask <<= (scrivenerExport) map {
+  // converted =>
+  //   JBake.convert(file(jbakeContent.value), converted)
+  //}
 
   override lazy val settings =
     utilSettings ++
       configSettings ++
       jBakeSettings ++
       scrivenerSettings ++
-      Seq(jbakeScrivenerTask)
+      toolSettings
 
 }

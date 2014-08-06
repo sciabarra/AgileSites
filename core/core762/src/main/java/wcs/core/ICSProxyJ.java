@@ -24,7 +24,6 @@ import COM.FutureTense.Interfaces.ISyncHash;
 import COM.FutureTense.Interfaces.PastramiEngine;
 import COM.FutureTense.Util.ftErrors;
 import COM.FutureTense.XML.Template.Seed;
-import COM.FutureTense.Mobility.DeviceHelper;
 
 import com.fatwire.cs.core.db.PreparedStmt;
 import com.fatwire.cs.core.db.StatementParam;

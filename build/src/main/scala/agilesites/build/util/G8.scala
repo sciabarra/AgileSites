@@ -3,7 +3,7 @@ package agilesites.build.util
 import java.io.File
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.Charsets.UTF_8
-import wcs.build.Dialog._
+import agilesites.build.util.Dialog._
 
 object G8 {
   import scala.util.control.Exception.allCatch
@@ -361,7 +361,7 @@ object ScaffoldPlugin extends sbt.Plugin {
           .filter(f => f.isDirectory && !f.isHidden)
           .map(_.getName: Parser[String])
 
-        (Space+) ~> templates.reduce(token(_) | token(_))
+        (Space.+) ~> templates.reduce(token(_) | token(_))
     }
 
   val scaffoldTask = scaffold <<= InputTask(parser) { (argTask: TaskKey[String]) =>

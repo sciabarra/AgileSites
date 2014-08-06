@@ -24,12 +24,13 @@ trait UtilSettings {
       if (!prpFile.exists) {
         //log.info("not found property file " + prpFile)
       } else {
-        //log.info("loading "+prpFile)
+        System.out.println("loading " + prpFile)
         prp.load(new java.io.FileInputStream(prpFile))
       }
     }
-    if(prp.size == 0)
-      throw new Error("FATAL: agilesites.properties not found")  
+    //if(prp.size == 0)
+    //  throw new Error("FATAL: agilesites.properties not found")  
+    System.out.println(prp)
     prp.asScala.toMap
   }
 

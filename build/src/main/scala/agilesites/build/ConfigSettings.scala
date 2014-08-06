@@ -15,11 +15,11 @@ trait ConfigSettings {
   val sitesPassword = settingKey[String]("Sites user password")
 
   val configSettings = Seq(
-    sitesVersion    := asPropertyMap.value("sites.version"),
-    sitesHome       := asPropertyMap.value("sites.home"),
-    sitesShared     := asPropertyMap.value("sites.shared"),
-    sitesWebapp     := asPropertyMap.value("sites.webapp"),
-    sitesUrl        := asPropertyMap.value("sites.url"),
-    sitesUser       := asPropertyMap.value("sites.user"),
-    sitesPassword   := asPropertyMap.value("sites.password"))
+    sitesVersion    := asPropertyMap.value.getOrElse("sites.version", "11.1.1.8.0"),
+    sitesHome       := asPropertyMap.value.getOrElse("sites.home", "../wcs/home"),
+    sitesShared     := asPropertyMap.value.getOrElse("sites.shared", "../wcs/shared"),
+    sitesWebapp     := asPropertyMap.value.getOrElse("sites.webapp", "../wcs/webapps/cs"),
+    sitesUrl        := asPropertyMap.value.getOrElse("sites.url", "http://localhost:8181/cs"),
+    sitesUser       := asPropertyMap.value.getOrElse("sites.user", "fwadmin"),
+    sitesPassword   := asPropertyMap.value.getOrElse("sites.password", "xceladmin"))
 }

@@ -1,1 +1,1 @@
-../build/bin/asbt.cmd
+../build/bin/asbt.cmd %1 %2 %3

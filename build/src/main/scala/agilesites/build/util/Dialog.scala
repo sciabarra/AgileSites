@@ -1,4 +1,4 @@
-package wcs.build
+package agilesites.build.util
 
 import javax.swing._
 

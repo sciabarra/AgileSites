@@ -23,7 +23,7 @@ class DocumentConverter(sourceDocument: File, targetFolder: File)(unoPython: Fil
       if (!tgt.exists() || rtf.lastModified() > tgt.lastModified()) {
         val cmd = s""""${unoPython}" "${unoConv}" -f html -o "${tgtDir}" "${rtf}""""
         println(cmd)
-        cmd !
+        cmd.!
       }
     }
     

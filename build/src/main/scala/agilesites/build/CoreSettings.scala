@@ -7,6 +7,7 @@ import agilesites.build.util.TagWrapperGenerator
 trait CoreSettings {
   this: Plugin with ConfigSettings =>
 
+    /*
   val asCoreWrapperGeneratorTask = Def.task {
 
     val dstDir = (sourceManaged in Compile).value
@@ -50,5 +51,5 @@ trait CoreSettings {
     // return files generated and copied
     l.toSeq ++ ll.toSeq
   }
-
+*/
 }

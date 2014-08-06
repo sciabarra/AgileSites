@@ -124,8 +124,8 @@ public static %s %s() {
       val required = attrs.filter { a => (a \ "required").text == "true" }.distinct
       val optional = attrs.filter { a => (a \ "required").text == "false" }.distinct
 
-      val reqList = required.map { _ \\ "name" text }.toList
-      val optList = optional.map { _ \\ "name" text }.toList
+      val reqList = required.map { x=> ( x \\ "name").text }.toList
+      val optList = optional.map { x=> ( x \\ "name").text }.toList
 
       val parList = reqList ::: optList
 
