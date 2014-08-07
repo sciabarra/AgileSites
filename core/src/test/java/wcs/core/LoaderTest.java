@@ -13,6 +13,7 @@ import java.nio.file.StandardCopyOption;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.xeustechnologies.jcl.JarClassLoader;
 
 /**
  * 

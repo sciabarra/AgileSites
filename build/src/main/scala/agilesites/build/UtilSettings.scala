@@ -28,8 +28,6 @@ trait UtilSettings {
         prp.load(new java.io.FileInputStream(prpFile))
       }
     }
-    //if(prp.size == 0)
-    //  throw new Error("FATAL: agilesites.properties not found")  
     System.out.println(prp)
     prp.asScala.toMap
   }
