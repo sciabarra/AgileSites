@@ -13,6 +13,8 @@ trait ConfigSettings {
   val sitesUrl      = settingKey[String]("Sites URL")
   val sitesUser     = settingKey[String]("Sites user ")
   val sitesPassword = settingKey[String]("Sites user password")
+  val sitesEmbeddedPort = settingKey[String]("Local port for Embedded Sites")
+
 
   val configSettings = Seq(
     sitesVersion    := asPropertyMap.value.getOrElse("sites.version", "11.1.1.8.0"),
@@ -21,5 +23,7 @@ trait ConfigSettings {
     sitesWebapp     := asPropertyMap.value.getOrElse("sites.webapp", "../wcs/webapps/cs"),
     sitesUrl        := asPropertyMap.value.getOrElse("sites.url", "http://localhost:8181/cs"),
     sitesUser       := asPropertyMap.value.getOrElse("sites.user", "fwadmin"),
-    sitesPassword   := asPropertyMap.value.getOrElse("sites.password", "xceladmin"))
+    sitesPassword   := asPropertyMap.value.getOrElse("sites.password", "xceladmin"),
+    sitesEmbeddedPort  := asPropertyMap.value.getOrElse("sites.embedded.port", "8181"))
+
 }

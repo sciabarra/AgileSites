@@ -15,7 +15,7 @@ cd core
 call sbt "core762/sitesTagWrapperGen %1" "core762/publishM2" "core762/publish-local"
 cd ..
 cd api
-call sbt "api762/publishM2"  "api762/publish-local"
+call sbt "api762/publishM2" "api762/publish-local"
 cd ..
 goto end
 :nofile

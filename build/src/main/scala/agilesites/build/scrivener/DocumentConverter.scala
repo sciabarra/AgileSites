@@ -1,12 +1,14 @@
 package agilesites.build.scrivener
 
 import java.io.File
+import agilesites.build.util.Utils
+import sbt._
 
 class DocumentConverter(sourceDocument: File, targetFolder: File)(unoPython: File, unoConv: File)
   extends Utils with TreeBuilder {
 
   val doc = new Document(sourceDocument, targetFolder)
-  val source: File = file(file(sourceDocument, "Files"), "Docs")
+  val source: File = sourceDocument / "Files" / "Docs"
 
   /**
    * Convert a rtf file in an html file via Libreoffice - only if source not modified
@@ -14,7 +16,7 @@ class DocumentConverter(sourceDocument: File, targetFolder: File)(unoPython: Fil
   def rtf2html(rtf: File, tgtDir: File, title: String) = {
     import scala.sys.process._
 
-    val tgt = file(tgtDir, rtf.getName().split("\\.").head + ".html")
+    val tgt = tgtDir / (rtf.getName().split("\\.").head + ".html")
 
     if (rtf.exists()) {
 

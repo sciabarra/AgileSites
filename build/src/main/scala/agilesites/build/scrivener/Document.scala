@@ -4,13 +4,15 @@ import scala.xml.Text
 import scala.xml.pull._
 import scala.io.Source
 import java.io.File
+import agilesites.build.util.Utils
+import sbt._
 
 /**
  * Parse the index of a scrivener document
  */
 class Document(sourceFolder: File, targetFolder: File) extends TreeBuilder with Utils {
 
-  val source = file(sourceFolder, "project.scrivx")
+  val source = sourceFolder / "project.scrivx"
   //println(source)
 
   var stack = node(-1, "Root") :: Nil

@@ -5,7 +5,7 @@ import Keys._
 import java.io.File
 
 trait JBakeSettings {
-  this: Plugin =>
+  this: Plugin with ScrivenerSettings =>
 
   lazy val jbakeConfig = config("jbake")
 
@@ -14,8 +14,8 @@ trait JBakeSettings {
     report => report.select(configurationFilter("jbake"))
   }
 
-  lazy val jbakeContent = settingKey[String]("jbake-content") 
-  
+  lazy val jbakeContent = settingKey[String]("jbake-content")
+
   lazy val jbake = inputKey[Int]("jbake")
   lazy val jbakeTask = jbake := {
 
@@ -56,4 +56,10 @@ trait JBakeSettings {
       "org.slf4j" % "slf4j-api" % "1.7.5" % "jbake",
       "ch.qos.logback" % "logback-classic" % "1.0.9" % "jbake",
       "ch.qos.logback" % "logback-core" % "1.0.9" % "jbake"))
+
+  lazy val jbakeScrivener = taskKey[Unit]("jbake-scrivener")
+  val jbakeScrivenerTask = jbakeScrivener <<= (scrivenerExport, jbakeContent) map {
+    (files, base) =>
+      agilesites.build.util.JBake.convert(file(base), files)
+  }
 }

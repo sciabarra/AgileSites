@@ -1,17 +1,17 @@
-scalaVersion := "2.10.4"
-
 name := "agilesites2-setup"
 
-version := "2.0"
+version := "1.9"
 
-unmanagedJars in Compile += Attributed.blank( file(scala.util.Properties.javaHome) / "lib" / "jfxrt.jar")
+scalaVersion := "2.10.4"
 
-libraryDependencies += "org.scalafx" %% "scalafx" % "1.0.0-R8"
-
-libraryDependencies += "org.scalafx" %% "scalafxml-core" % "0.2"
+offline  := true
 
 fork  := true
 
+externalResolvers := externalResolvers.value filter { _.name == "local" }
+
+unmanagedJars in Compile += Attributed.blank( file(scala.util.Properties.javaHome) / "lib" / "jfxrt.jar")
+	
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.0" cross CrossVersion.full)
 
 jfxSettings

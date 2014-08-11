@@ -1,0 +1,2 @@
+@set PATH=""""C:\Java\jdk1.7.0_60"""\bin";"A:\agilesites\2.0\sites\\bin";"A:\agilesites\2.0\sites\\home\bin";%PATH% 
+@""""C:\Java\jdk1.7.0_60"""\bin\java" -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory="A:\agilesites\2.0\sites\\repo"\boot -Dsbt.ivy.home="A:\agilesites\2.0\sites\\repo" -jar "A:\agilesites\2.0\sites\\bin\sbt-launch.jar" %1 %2 %3 %4 %5 %6 %7 %8 %9 

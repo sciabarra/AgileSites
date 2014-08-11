@@ -4,14 +4,17 @@ echo Please exit from Eclipse or any other IDE before.
 echo After the cleanup you may need to repeat the wcs-setup-offline
 echo Press control-c if you are unsure otherwise press any key.
 pause
-rd /s /q project\ivy2\cache\com.sciabarra
-rd /s /q project\ivy2\local\com.sciabarra
-rd /s /q target 
-rd /s /q project\target
-rd /s /q app\target
-rd /s /q api\target
+rd /s /q wcs\repo
 rd /s /q core\target
-rd /s /q project\boot
-rd /s /q project\project
-rd /s /q project\repo
-del bin\*.class
+rd /s /q core\core116\target
+rd /s /q core\core118\target
+rd /s /q core\core762\target
+rd /s /q core\core116\src\main\java\wcs\core\tags
+rd /s /q core\core118\src\main\java\wcs\core\tags
+rd /s /q core\core762\src\main\java\wcs\core\tags
+rd /s /q api\target
+rd /s /q api\api116\target
+rd /s /q api\api118\target
+rd /s /q api\api762\target
+rd /s /q %USERPROFILE%\.m2\repository\com\sciabarra
+rd /s /q %USERPROFILE%\.m2\repository\com\oracle\sites

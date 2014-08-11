@@ -5,7 +5,6 @@ import Keys._
 import agilesites.build.scrivener.Scrivener
 import agilesites.build.util.JBake
 import scala.language.postfixOps
- 
 
 trait ScrivenerSettings {
 

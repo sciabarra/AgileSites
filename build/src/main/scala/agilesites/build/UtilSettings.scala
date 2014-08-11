@@ -32,10 +32,13 @@ trait UtilSettings {
     prp.asScala.toMap
   }
 
+  // display a prompt with the project name
   val asShellPromptTask = shellPrompt in ThisBuild := {
     state => Project.extract(state).currentRef.project + "> "
   }
 
+ 
+  // sample command
   lazy val asHelloCommand =
     Command.command("as-hello") { (state: State) =>
       println("Hello")

@@ -3,8 +3,9 @@ package agilesites.build
 import sbt._
 import Keys._
 import agilesites.build.util.TagWrapperGenerator
+import agilesites.build.util.Utils
 
-trait ToolsSettings {
+trait ToolsSettings  {
   this: Plugin =>
 
   lazy val sitesTagWrapperGen = inputKey[Unit]("Generate Tag Wrappers")
@@ -22,10 +23,10 @@ trait ToolsSettings {
         for {
           tld <- tldDir.listFiles
           if tld.getName.endsWith(".tld")
+        } yield {
           val src = tld.getAbsolutePath
           val clsj = TagWrapperGenerator.tld2class(src)
           val dstj = file(dstDir / clsj + ".java")
-        } yield {
           val bodyj = TagWrapperGenerator(src)
           IO.write(dstj, bodyj)
           println("+++ " + dstj)
@@ -35,5 +36,5 @@ trait ToolsSettings {
     }
   }
 
-  val toolSettings = Seq(sitesTagWrapperGenTask)
+  val toolsSettings = Seq(sitesTagWrapperGenTask)
 }
