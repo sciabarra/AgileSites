@@ -34,10 +34,11 @@ public class Unzip {
             outputDirectory.mkdir();
  
             // 2.0 Unzip (create folders & copy files)
+            ZipInputStream zip = null;
             try {
  
                 // 2.1 Get zip input stream
-                ZipInputStream zip = new ZipInputStream(new FileInputStream(zipFile));
+                zip = new ZipInputStream(new FileInputStream(zipFile));
  
                 ZipEntry entry = null;
                 int len;
@@ -73,6 +74,12 @@ public class Unzip {
                     e.printStackTrace();
             } catch (IOException e) {
                     e.printStackTrace();
+            } finally {
+            	try {
+					zip.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
             }
      }
 }

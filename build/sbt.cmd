@@ -1,8 +1,12 @@
 @echo off
-set BASE=%~dp0\..\sites
+setlocal
 if not defined JAVA_HOME goto nojavahome
-set REPO=%BASE%\repo
-set PATH="%JAVA_HOME%"\bin;"%BASE%"\bin;"%BASE%"\home\bin;%PATH%
+set BASE=%~dp0
+pushd ..
+cd sites
+set REPO="%cd%\repo"
+popd
+set PATH="%JAVA_HOME%\bin";"%BASE%\bin";"%BASE%\home\bin";%PATH%
 if not exist "%JAVA_HOME%"\bin\java.exe goto notfoundjava
 if not exist "%JAVA_HOME%"\bin\javac.exe goto notfoundjavac
 java -Xms128m -Xmx512m -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -Dsbt.boot.directory=%REPO%\boot -Dsbt.ivy.home=%REPO% -jar "%BASE%\bin\sbt-launch.jar" %*

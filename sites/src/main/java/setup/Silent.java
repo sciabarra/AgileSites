@@ -17,11 +17,20 @@ public class Silent {
 	public static void main(String[] args) throws FileNotFoundException,
 			IOException {
 
-		if (args.length != 4) {
+		if (args.length < 4) {
 			System.out
-					.println("usage: <base> <base-ini> <install-ini> <output-ini>");
+					.println("usage: <base> <base-ini> <install-ini> <output-ini> [host] [port] [dbtype]");
 			System.exit(0);
 		}
+		
+		String host = "localhost";
+		String port = "8181";
+		String db = "HSQLDB";
+		
+		if(args.length>=5) host = args[4];
+		if(args.length>=6) port = args[5];
+		if(args.length>=7) db = args[6];
+		
 		Properties baseIni = new Properties();
 		File baseFile = new File(args[0]);
 		File baseIniFile = new File(args[1]);		
@@ -29,7 +38,7 @@ public class Silent {
 		File outputIniFile = new File(args[3]);
 		baseIni.load(new FileReader(baseIniFile));
 		baseIni.setProperty("CSInstallDBDSN", "csDataSource");
-		baseIni.setProperty("CASHostNameActual", "localhost");
+		baseIni.setProperty("CASHostNameActual", host);
 		baseIni.setProperty("CSInstallDirectory",
 				fix(new File(baseFile, "home")));
 		baseIni.setProperty("CSFTAppServerRoot",
@@ -37,13 +46,13 @@ public class Silent {
 		baseIni.setProperty("sCgiPath", "/cs/");
 		baseIni.setProperty("CSInstallSharedDirectory", 
 			    fix(new File(baseFile, "shared")));
-		baseIni.setProperty("CSInstallWebServerPort", "8181");
-		baseIni.setProperty("CASPortNumberLocal", "8181");
-		baseIni.setProperty("CASHostName", "localhost");
+		baseIni.setProperty("CSInstallWebServerPort", port);
+		baseIni.setProperty("CASPortNumberLocal", port);
+		baseIni.setProperty("CASHostName", host);
 		baseIni.setProperty("CSInstallDBDSN", "csDataSource");
-		baseIni.setProperty("CASPortNumber", "8181");
-		baseIni.setProperty("CASHostNameLocal", "127.0.0.1");
-		baseIni.setProperty("CSInstallDatabaseType", "HSQLDB");
+		baseIni.setProperty("CASPortNumber", port);
+		baseIni.setProperty("CASHostNameLocal", host);
+		baseIni.setProperty("CSInstallDatabaseType", db);
 
 		// disable
 		baseIni.setProperty("CommerceConnector", "false");
@@ -58,7 +67,7 @@ public class Silent {
 		}	
 
 		// those are to make happy the configurator
-		baseIni.setProperty("CSConnectString", "http://localhost:8181/cs");
+		baseIni.setProperty("CSConnectString", "http://"+host+":"+port+"/cs");
 		baseIni.setProperty("CSInstallAppName", "fwadmin");
 		baseIni.setProperty("CSInstallAppServerPath", fix(baseFile));
 

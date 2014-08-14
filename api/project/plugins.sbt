@@ -1,4 +1,4 @@
-addSbtPlugin("com.sciabarra" % "agilesites2-build" % "2.0-SNAPSHOT")
+addSbtPlugin("com.sciabarra" % "agilesites2-build" % "1.9-SNAPSHOT")
 
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.5.0")
 

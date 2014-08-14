@@ -4,7 +4,7 @@ echo Please exit from Eclipse or any other IDE before.
 echo After the cleanup you may need to repeat the wcs-setup-offline
 echo Press control-c if you are unsure otherwise press any key.
 pause
-rd /s /q wcs\repo
+rd /s /q sites\repo
 rd /s /q core\target
 rd /s /q core\core116\target
 rd /s /q core\core118\target

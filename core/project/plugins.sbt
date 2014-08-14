@@ -1,5 +1,3 @@
-lazy val plugin = file("..") / "build"
-
-lazy val root = project.in(file(".")).dependsOn(plugin.toURI)
+addSbtPlugin("com.sciabarra" % "agilesites2-build" % "1.9-SNAPSHOT")
 
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.5.0")

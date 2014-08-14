@@ -2,3 +2,7 @@ Sites/
 SitesExplorer/
 misc/
 sbt.cmd
+sbt.sh
+repo/
+agilesites.properties
+sites-server*

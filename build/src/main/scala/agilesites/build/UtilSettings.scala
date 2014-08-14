@@ -28,8 +28,10 @@ trait UtilSettings {
         prp.load(new java.io.FileInputStream(prpFile))
       }
     }
-    System.out.println(prp)
-    prp.asScala.toMap
+    val map = prp.asScala.toMap
+    for ((k, v) <- map)
+      println(s"${k}=${v}")
+    map
   }
 
   // display a prompt with the project name
@@ -37,7 +39,6 @@ trait UtilSettings {
     state => Project.extract(state).currentRef.project + "> "
   }
 
- 
   // sample command
   lazy val asHelloCommand =
     Command.command("as-hello") { (state: State) =>

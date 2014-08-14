@@ -12,11 +12,15 @@ call mvn install:install-file -Dfile="%h%\xcelerate.jar" -DgroupId=com.oracle.si
 call mvn install:install-file -Dfile="%h%\jsoup-1.5.2.jar" -DgroupId=com.oracle.sites -DartifactId=jsoup -Dversion=%v% -Dpackaging=jar
 call mvn install:install-file -Dfile="%h%\xstream-1.4.2.jar" -DgroupId=com.oracle.sites -DartifactId=xstream -Dversion=%v% -Dpackaging=jar
 :gen
+cd build
+call sbt "publish-local" "publishM2"
+cd ..
+:core
 cd core
 call sbt "core118/sitesTagWrapperGen %1" "core118/publishM2" "core118/publish-local"
 cd ..
 cd api
-call sbt "api118/publishM2"  "api118/publish-local"
+call sbt "api118/publishM2" "api118/publish-local"
 cd ..
 goto end
 :nofile
