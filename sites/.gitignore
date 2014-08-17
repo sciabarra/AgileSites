@@ -6,3 +6,6 @@ sbt.sh
 repo/
 agilesites.properties
 sites-server*
+bin/tools.jar
+bin/lib
+izpack/setup.jar

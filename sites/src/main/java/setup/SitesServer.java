@@ -12,8 +12,21 @@ class SitesServer {
 	public static void main(String[] args) throws Exception {
 
 		if (args.length < 2) {
-			System.out.println("usage: <port> <base> [<context>=<webapp>]*");
+			System.out.println("usage: <port> <base> [<context>=<webapp>]* | stop");
 			System.exit(0);
+		}
+
+		if (args.length == 2 && args[0].equals("stop")) {
+		  try {
+			Socket sock = new Socket("127.0.0.1", Integer.parseInt(args[1]));
+			sock.getInputStream().read();
+			sock.close();
+		  	System.out.println("Shutdown request accepted.");
+			System.exit(0);
+		  } catch(Exception ex) {
+		  	System.out.println("Server not running.");
+		  	System.exit(0);
+		  }
 		}
 
 		final int port = Integer.parseInt(args[0]);
@@ -72,5 +85,4 @@ class SitesServer {
 		tomcat.start();
 		tomcat.getServer().await();
 	}
-
 }

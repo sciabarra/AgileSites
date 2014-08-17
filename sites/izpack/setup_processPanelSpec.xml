@@ -1,0 +1,15 @@
+<processing>
+    <logfiledir>$INSTALL_PATH/</logfiledir>
+    <job name="download.cmd">
+        <os family="Windows"/>
+        <executefile name="$INSTALL_PATH/download.cmd">
+            <arg>"$JAVA_HOME" "$INSTALL_PATH"</arg>
+        </executefile>
+    </job>
+    <job name="setup.cmd">
+        <os family="Windows"/>
+        <executefile name="$INSTALL_PATH/setup.cmd">
+            <arg>"$JAVA_HOME" "$HOST" "$PORT"</arg>
+        </executefile>
+    </job>
+</processing>

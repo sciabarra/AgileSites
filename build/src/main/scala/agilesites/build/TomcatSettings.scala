@@ -12,7 +12,7 @@ trait TomcatSettings extends Utils {
     report => report.select(configurationFilter("tomcat"))
   }
 
-  def tomcatEmbedded(base: File, port: Int, classpath: Seq[File], webapps: Seq[String], debug: Boolean, onlyCreateScript: Boolean = false) = {
+  def tomcatEmbedded(base: File, port: Int, classpath: Seq[File], webapps: Seq[String], debug: Boolean) = {
 
     import java.io._
     import java.io.File.pathSeparator
@@ -37,20 +37,67 @@ trait TomcatSettings extends Utils {
 
     val cmd = opts ++ args
 
-    if (onlyCreateScript) {
-      def sel(x: String, y: String) = if (File.pathSeparator == ";") x else y
-      val script = "sites-server" + (if (debug) "-debug." else ".") + sel("bat", "sh")
-      val fw = new FileWriter(script)
-      fw.write(sel("set ", "") + "CATALINA_HOME=\"" + base.getAbsolutePath + "\"" + sel("\r\n", "\n"))
-      fw.write(cmd.mkString("java ", " ", sel("\r\n", "\n")))
+    val forkOpt = ForkOptions(
+      runJVMOptions = opts,
+      envVars = Map("CATALINA_HOME" -> base.getAbsolutePath),
+      workingDirectory = Some(base))
+    Fork.java(forkOpt, "setup.SitesServer" +: args)
+  }
+
+  def tomcatEmbeddedScript(base: File, port: Int, classpath: Seq[File], webapps: Seq[String]) = {
+    if (java.io.File.pathSeparator == ";") {
+      val basepath = base.getAbsolutePath
+      val classpathCmd = classpath.map(x => "set CP=%CP%;\"" + x.getAbsolutePath + "\"").mkString("\r\n")
+      val classpathSvc = classpath.map(x => "\"" + x.getAbsolutePath + "\"").mkString(";")
+      
+      val fw = new java.io.FileWriter("sites-server.cmd")
+      val javahome = System.getProperty("java.home")
+      val apps = webapps.mkString("\"", "\" \"", "\"")
+      val apps2 = webapps.mkString("\"", "\";\"", "\"")
+      val startArgs = s"""${port} "${basepath}"  ${apps}"""
+      val startArgs2 = s"""${port};"${basepath}";${apps2}"""
+      val port1 = (port + 1).toString
+      val opts = """-Djava.io.tmpdir="${basepath}\temp" -Xms256m -Xmx1024m -XX:MaxPermSize=256m -Dorg.owasp.esapi.resources="${basepath}\bin""""
+      val opts2 = opts.replace(' ', ';')
+
+      
+      fw.write(s"""@echo off
+set CATALINA_HOME="${basepath}"
+set JAVA="${javahome}\\bin\\java.exe"
+set PRUN="${basepath}\\bin\\sites.exe"
+set CP="${basepath}\\bin";"${basepath}\\bin\\setup.jar";"${basepath}\\home\\bin"
+${classpathCmd}
+set OPTS=${opts}
+if "%~1"=="debug" set OPTS=%OPTS% -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
+if "%~1"=="stop" goto stop
+if "%~1"=="start" goto start
+if "%~1"=="install" goto install
+if "%~1"=="uninstall" goto uninstall
+if "%~1"=="run" goto run
+if "%~1"=="debug" goto run
+if "%~1"=="kill" goto kill
+echo "usage: start|stop|install|uninstall|run|debug|kill"
+goto end
+:run
+%JAVA% -cp %CP% %OPTS% setup.SitesServer ${startArgs}
+goto end
+:install
+%PRUN% //IS//sites --DisplayName="Sites" --Install="sites.exe" --Startup=auto --JavaHome="${javahome}" --Classpath=${classpathSvc} --StartClass=setup.SitesServer --StartParams=${startArgs2} --StopClass=setup.SitesServer ++StopParams="stop;${port1}" --StartMode=java ++JvmOptions="${opts2}"  --LogPath="${base}\\logs" --StdOutput --StdError
+goto end
+:uninstall
+%PRUN% //DS//sites
+goto end
+:start
+%PRUN% //ES//sites
+goto end
+:stop
+%PRUN% //SS//sites
+goto end
+:kill
+%JAVA% -cp %CP% %OPTS% setup.SitesServer stop ${port + 1}
+:end
+""")
       fw.close
-      println("+++ " + script)
-    } else {
-      val forkOpt = ForkOptions(
-        runJVMOptions = opts,
-        envVars = Map("CATALINA_HOME" -> base.getAbsolutePath),
-        workingDirectory = Some(base))
-      Fork.java(forkOpt, "setup.SitesServer" +: args)
     }
   }
 
@@ -124,8 +171,7 @@ trait TomcatSettings extends Utils {
         println(httpCallRaw(url + "/HelloCS"))
 
       case Some("script") =>
-        tomcatEmbedded(base, port, classpath, webapps, false, true)
-        tomcatEmbedded(base, port, classpath, webapps, true, true)
+        tomcatEmbeddedScript(base, port, classpath, webapps)
 
       case Some(thing) =>
         println(usage)

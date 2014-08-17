@@ -1,0 +1,13 @@
+<userInput>
+    <panel order="0">
+        <field bold="true" size="1" txt="Installation Options" type="title"/>
+        <field type="text" variable="HOST">
+            <description align="left" txt="WebCenter Sites host"/>
+            <spec set="localhost" size="15" txt="Host"/>
+        </field>
+        <field type="text" variable="PORT">
+            <description align="left" txt="Web Center Sites port"/>
+            <spec set="8181" size="15" txt="Port"/>
+        </field>
+    </panel>
+</userInput>

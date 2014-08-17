@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<shortcuts>
+    <skipIfNotSupported/>
+    <programGroup defaultName="AgileSites2" location="applications"/>
+    <shortcut KdeUsername="root" applications="no" commandLine="run"
+        description="WebCenter Sites with AgileSites" desktop="yes"
+        encoding="UTF-8" initialState="normal" name="Sites"
+        programGroup="yes" startMenu="no" startup="no"
+        target="$INSTALL_PATH/sites-server.cmd" type="Application" workingDirectory="$INSTALL_PATH"/>
+    <shortcut KdeUsername="root" applications="no" commandLine="debug"
+        description="Sites with Debugging" desktop="yes"
+        encoding="UTF-8" initialState="normal" name="Sites (debug)"
+        programGroup="yes" startMenu="no" startup="no"
+        target="$INSTALL_PATH/sites-server.cmd" type="Application" workingDirectory="$INSTALL_PATH"/>
+</shortcuts>
