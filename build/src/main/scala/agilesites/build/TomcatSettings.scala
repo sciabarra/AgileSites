@@ -182,16 +182,15 @@ goto end
   val tomcatVersion = "7.0.52"
   val hsqlVersion = "1.8.0.10"
   def tomcatDeps(tomcatConfig: String) = Seq(
-    "org.apache.tomcat" % "tomcat-catalina" % tomcatVersion % tomcatConfig,
+    //"org.apache.tomcat" % "tomcat-catalina" % tomcatVersion % tomcatConfig,
     "org.apache.tomcat" % "tomcat-dbcp" % tomcatVersion % tomcatConfig,
     "org.apache.tomcat.embed" % "tomcat-embed-logging-log4j" % tomcatVersion % tomcatConfig,
-    "org.apache.tomcat.embed" % "tomcat-embed-core" % tomcatVersion % tomcatConfig,
     "org.apache.tomcat.embed" % "tomcat-embed-core" % tomcatVersion % tomcatConfig,
     "org.apache.tomcat.embed" % "tomcat-embed-jasper" % tomcatVersion % tomcatConfig,
     "org.hsqldb" % "hsqldb" % hsqlVersion % tomcatConfig)
 
   val tomcatSettings = Seq(ivyConfigurations += config("tomcat"),
-    libraryDependencies ++= tomcatDeps("tomcat") ++ tomcatDeps("compile"),
+    libraryDependencies ++= tomcatDeps("tomcat") ++ tomcatDeps("provided"),
     tomcatEmbeddedClasspathTask, sitesServerTask)
-
+    
 }

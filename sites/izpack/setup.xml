@@ -13,7 +13,6 @@
         <requiresjdk>yes</requiresjdk>
         <writeinstallationinformation>yes</writeinstallationinformation>
         <pack200/>
-        <run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/>
     </info>
     <guiprefs height="480" resizable="no" width="640">
         <modifier key="useFlags" value="yes"/>
@@ -39,7 +38,7 @@
         <panel classname="UserInputPanel"/>
         <panel classname="ProcessPanel"/>
         <panel classname="ShortcutPanel"/>
-        <panel classname="SimpleFinishPanel"/>
+        <panel classname="FinishPanel"/>
     </panels>
     <variables>
         <variable name="DesktopShortcutCheckboxEnabled" value="true"/>

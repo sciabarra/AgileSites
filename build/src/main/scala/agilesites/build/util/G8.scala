@@ -62,6 +62,8 @@ object G8 {
       case x => x
     }: _*)
 
+    println(toPath)
+    
     new File(toPath, new StringTemplate(formatize(relative)).setAttributes(fileParams).registerRenderer(renderer).toString)
   }
   private def formatize(s: String) = s.replaceAll("""\$(\w+)__(\w+)\$""", """\$$1;format="$2"\$""")
@@ -318,64 +320,4 @@ class StringRenderer extends org.clapper.scalasti.AttributeRenderer[String] {
     case "ndeprefix" => ndeprefix(value)
     case _ => value
   }
-}
-
-import sbt._
-
-object ScaffoldPlugin extends sbt.Plugin {
-  import Keys._
-  import scala.io.Source
-
-  object ScaffoldingKeys {
-    lazy val templatesPath = SettingKey[String]("wcs-templates-path")
-    lazy val scaffold = InputKey[Unit]("wcs-generate",
-      """|
-         |Usage:
-         | wcs-generate <scaffold_name>
-         |
-         |The name of the scaffold is the name of the folder located directly under `src/main/scaffolds`
-         |Assuming you `scaffolds` folder has the following structure:
-         |
-         |    scaffolds
-         |    |_ site
-         |    |_ cselement
-         |    |_ template
-         |
-         |You have 3 different generations available.
-         |
-         |To generate a new template, just type `wcs-generate <scaffold>`.
-         |It will ask for the variable values, and generate the correct code.
-         |""".stripMargin)
-  }
-
-  import ScaffoldingKeys._
-  import complete._
-  import complete.DefaultParsers._
-
-  val parser: sbt.Project.Initialize[State => Parser[String]] =
-    (baseDirectory, templatesPath) { (b, t) =>
-      (state: State) =>
-        val folder = b / t
-
-        val templates = Option(folder.listFiles).toList.flatten
-          .filter(f => f.isDirectory && !f.isHidden)
-          .map(_.getName: Parser[String])
-
-        (Space.+) ~> templates.reduce(token(_) | token(_))
-    }
-
-  val scaffoldTask = scaffold <<= InputTask(parser) { (argTask: TaskKey[String]) =>
-    (baseDirectory, templatesPath, argTask) map { (b, t, name) =>
-      val folder = b / t
-      val res = G8Helpers.applyRaw(folder / name, b, Nil)
-      //println(ls)
-      res.fold(
-        e => sys.error(e),
-        r => println("***\n*** wcs-generate successful\n*** remember to create the site in WCS then wcs-deploy new templates/cselements\n***"))
-    }
-  }
-
-  lazy val scaffoldSettings: Seq[sbt.Project.Setting[_]] = Seq(
-    templatesPath := "api/scaffolds",
-    scaffoldTask)
 }

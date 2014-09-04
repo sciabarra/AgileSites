@@ -9,3 +9,5 @@ sites-server*
 bin/tools.jar
 bin/lib
 izpack/setup.jar
+sites.zip
+temp/*

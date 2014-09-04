@@ -5,19 +5,23 @@ import Keys._
 
 object AgileSitesPlugin
   extends Plugin
-  with UtilSettings
   with ConfigSettings
-  with ToolsSettings 
+  with UtilSettings
+  with ToolsSettings
   with TomcatSettings
+  with SetupSettings
+  with DeploySettings 
+  with ScaffoldSettings
   //with JBakeSettings
   //with ScrivenerSettings 
   {
 
   override lazy val settings =
-    utilSettings ++
-      configSettings ++
+    configSettings ++
+      utilSettings ++
       toolsSettings ++
-      tomcatSettings
-
+      tomcatSettings ++
+      deploySettings ++
+      scaffoldSettings
   // val bookSettings = jBakeSettings ++ scrivenerSettings
 }

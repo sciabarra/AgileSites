@@ -3,8 +3,10 @@ package agilesites.build
 import sbt._
 import Keys._
 
-trait UtilSettings {
-  this: Plugin =>
+import agilesites.build.util.Utils
+
+trait UtilSettings extends Utils {
+  this: Plugin with ConfigSettings =>
 
   // where the property files are
   val asProperties = settingKey[Seq[String]]("AgileSites Property files")
@@ -39,15 +41,45 @@ trait UtilSettings {
     state => Project.extract(state).currentRef.project + "> "
   }
 
-  // sample command
-  lazy val asHelloCommand =
-    Command.command("as-hello") { (state: State) =>
-      println("Hello")
-      state
-    }
+  // hello
+  val sitesHello = taskKey[Option[String]]("Sites Hello")
+  val sitesHelloTask = sitesHello := {
+    try {
+      val url = sitesUrl.value
+      val res = httpCallRaw(url + "/HelloCS")
 
+      val reprp = """(\d+\.\d+)\..*""".r
+      val reprp(javaVersion) = System.getProperty("java.version")
+
+      val reweb = """(?s).*java\.version=(\d+\.\d+)\..*""".r
+      res match {
+        case reweb(sitesVersion) =>
+
+          if (javaVersion != sitesVersion) {
+            println("""*** WebCenter Sites use java %s and AgileSites uses java %s
+                      |*** They are different major versions of Java. 
+            		  |*** The compiler may generate incompatible bytecode
+      	              |*** Please set JAVA_HOME and use the same major java version for both
+      	              |***""".format(sitesVersion, javaVersion).stripMargin)
+            None
+          } else {
+            println("WebCenter Sites running with java " + sitesVersion)
+            Some(javaVersion)
+          }
+        case _ =>
+          //println(" no match ")
+          println("WebCenter Sites running")
+          Some("unknown")
+      }
+    } catch {
+      case ex: Throwable =>
+        println("WebCenter Sites NOT running")
+        None
+    }
+  }
+   
   val utilSettings = Seq(asShellPromptTask,
-    commands += asHelloCommand,
     asProperties := Seq("agilesites.properties"),
-    asPropertyMapTask)
+    asPropertyMapTask,
+    sitesHelloTask) 
 }

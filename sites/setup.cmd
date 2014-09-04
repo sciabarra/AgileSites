@@ -1,4 +1,3 @@
-@echo off
 if not "%~1"=="" set JAVA_HOME=%~1
 if "%~2"=="" set HOST=localhost
 if not "%~2"=="" set HOST=%2
@@ -7,6 +6,7 @@ if not "%~3"=="" set PORT=%3
 if "%~4"=="" set DB=HSQLDB
 if not "%~4"=="" set DB=%4
 if not defined JAVA_HOME goto nojavahome
+set JAVA_HOME=%JAVA_HOME:"=%
 set PATH="%JAVA_HOME%\bin";%PATH%
 if not exist "%JAVA_HOME%\bin\java.exe" goto notfoundjava
 set BDRV=%~d0
