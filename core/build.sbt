@@ -1,7 +1,9 @@
+val v = "1.9-M2"
+
 def settingsByVersion(ver: String) = bintrayPublishSettings ++ Seq(
   name := "agilesites2-core",
   organization := "com.sciabarra",
-  version := ver + "_1.9-M1",
+  version := ver + "_"+v,
   scalaVersion := "2.10.4",
   resolvers += Resolver.mavenLocal,
   publishArtifact in packageDoc := false,
@@ -10,6 +12,7 @@ def settingsByVersion(ver: String) = bintrayPublishSettings ++ Seq(
   bintray.Keys.repository in bintray.Keys.bintray := "maven",
   publishMavenStyle := true,
   unmanagedSourceDirectories in Compile += baseDirectory.value.getParentFile / "src" / "main" / "java",
+  unmanagedResourceDirectories in Compile += baseDirectory.value.getParentFile / "src" / "main" / "resources",
   libraryDependencies ++= Seq(
   	   "com.novocode" % "junit-interface" % "0.9" % "test",
  	   "org.xeustechnologies" % "jcl-core" % "2.2.1", 

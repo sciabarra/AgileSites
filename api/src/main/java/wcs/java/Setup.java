@@ -1,11 +1,17 @@
 package wcs.java;
+
+import wcs.Api;
 import wcs.api.Log;
+import wcs.core.tag.AssetTag;
 import wcs.java.util.Util;
+
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
 import com.fatwire.assetapi.common.AssetAccessException;
 import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AssetDataManager;
@@ -18,6 +24,7 @@ import com.fatwire.assetapi.query.SimpleQuery;
 import com.fatwire.system.Session;
 import com.fatwire.system.SessionFactory;
 import com.openmarket.xcelerate.asset.AssetIdImpl;
+
 import COM.FutureTense.Interfaces.ICS;
 
 /**
@@ -53,6 +60,7 @@ abstract public class Setup implements wcs.core.Setup {
 
 	private Session session;
 	private AssetDataManager adm;
+	private ICS ics;
 
 	// future use
 	// private SiteManager sim;
@@ -70,6 +78,7 @@ abstract public class Setup implements wcs.core.Setup {
 		session = SessionFactory.newSession(username, password);
 		adm = (AssetDataManager) session.getManager(AssetDataManager.class
 				.getName());
+		this.ics = ics;
 
 		this._site = new Site(site);
 
@@ -151,22 +160,35 @@ abstract public class Setup implements wcs.core.Setup {
 	 */
 	MutableAssetData findByName(String name, String type, String subtype,
 			List<String> attributes) {
-		log.debug("findByName " + name + ":" + type);
-		Condition c = ConditionFactory.createCondition("name",
-				OpTypeEnum.EQUALS, name);
-		SimpleQuery query = new SimpleQuery(type, subtype, c, attributes);
-		// query.getProperties().setIsBasicSearch(true);
-		// query.getProperties().setReadAll(false);
+		log.debug("findByName " + name + ":" + type + " / " + subtype);
+
+		String tmp = Api.tmp();
+		if (subtype != null) {
+			AssetTag.list().type(type).field1("name").value1(name)
+					.field2("subtype").value2(subtype).list(tmp).run(ics);
+		} else {
+			AssetTag.list().type(type).field1("name").value1(name).list(tmp)
+					.run(ics);
+		}
+		if (ics.GetList(tmp) == null || ics.GetList(tmp).numRows()==0) {
+			log.debug("not found");
+			return null;
+		}
 		try {
-			for (MutableAssetData data : adm.readForUpdate(query)) {
-				log.trace("found asset");
+			String id = ics.GetList(tmp).getValue("id");
+			// AssetTag.get().name(tmp).field("id").output(tmp).run(ics);
+			// String id = ics.GetVar(tmp);
+			log.debug("found id=%s", id);
+			AssetId aid = new AssetIdImpl(type, Long.parseLong(id));
+			log.debug("loading data for " + aid);
+			for (MutableAssetData data : adm.readForUpdate(Arrays.asList(aid))) {
+				log.debug("found asset " + data.getAssetId());
 				return data;
 			}
-		} catch (AssetAccessException e) {
+		} catch (Exception e) {
 			log.warn("EXCEPTION " + e.getMessage());
 			e.printStackTrace();
 		}
-		log.trace("not found");
 		return null;
 	}
 
@@ -187,7 +209,7 @@ abstract public class Setup implements wcs.core.Setup {
 		try {
 
 			MutableAssetData data = findByName(setup.getName(), setup.getC(),
-					null, setup.getAttributes());
+					setup.getSubtype(), setup.getAttributes());
 
 			// inserting
 			if (data == null)
