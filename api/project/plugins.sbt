@@ -1,5 +1,5 @@
-//addSbtPlugin("com.sciabarra" % "agilesites2-build" % "1.9-M1")
-val plugin = project.in(file(".")).dependsOn( (file("..") / "build").toURI)
+addSbtPlugin("com.sciabarra" % "agilesites2-build" % "1.9-M7")
+//val plugin = project.in(file(".")).dependsOn( (file("..") / "build").toURI)
 
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.5.0")
 

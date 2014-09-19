@@ -1,4 +1,4 @@
-val v = "1.9-M2"
+val v = "1.9-M3"
 
 def settingsByVersion(ver: String) = Seq(
     name := "agilesites2-api",
