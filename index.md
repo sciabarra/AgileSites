@@ -5,6 +5,8 @@ tagline: the Easy framework for  Agile development with Oracle  WebCenter Sites 
 ---
 {% include JB/setup %}
 
+<h1>Where we are with AgileSites 2? Check the <a href="http://blog.agilesites.org">AgileSites Development Blog</a></h1>
+
 <div id="containingBlock">
   <div class="videoWrapper">
     <object width="840" height="630" >
@@ -15,4 +17,5 @@ tagline: the Easy framework for  Agile development with Oracle  WebCenter Sites 
     </object>
   </div>
 </div>
+
 {% include README.md %}
