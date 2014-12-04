@@ -2,6 +2,9 @@
 BASE="$(dirname $0)"
 BASE="$(cd $BASE; pwd)"
 export PATH="$BASE/bin:$BASE/wcs/home/bin:$PATH"
+if test -e /usr/libexec/java_home
+then JAVA_HOME=$(/usr/libexec/java_home)
+fi
 if test -n "$JAVA_HOME"
 then export PATH="$JAVA_HOME/bin:$PATH"
 else echo JAVA_HOME must be defined and pointing to a JDK - not a JRE ; exit
