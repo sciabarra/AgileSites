@@ -244,6 +244,7 @@ margin: 30px 10px 0px 0px;
 .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container { width: 724px; }
 
    .navbar { margin-bottom: 0px; }
+   .navbar .brand { float:none; }
 	
 	.nav-collapse, .nav-collapse.collapse { 
 		background: #fff;
