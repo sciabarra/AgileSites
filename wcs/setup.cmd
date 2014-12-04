@@ -12,7 +12,7 @@ del home\*.done
 echo >home\hsql.flag
 echo >home\setup.flag
 java -cp ..\bin\wcs.jar wcs.Silent %BASE% misc\silentinstaller\generic_omii.ini Sites\install.ini Sites\omii.ini
-java -cp ..\bin\wcs.jar wcs.Silent %BASE% misc\silentinstaller\generic_omii.ini Sites\install.ini home\ominstall\omii.ini
+copy Sites\omii.ini home\ominstallinfo\omii.ini
 java -cp ..\bin\wcs.jar wcs.Replacer ../ %REPLACE% <context.xml >webapps\cs\META-INF\context.xml
 java -cp ..\bin\wcs.jar wcs.Unzip Sites\csdt.zip home
 cd ..
