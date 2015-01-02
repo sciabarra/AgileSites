@@ -1,11 +1,14 @@
 package wcs.java;
 import wcs.api.Log;
 import wcs.java.util.Util;
+
 import java.io.CharArrayWriter;
+import java.io.File;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
+
 import com.fatwire.assetapi.common.AssetAccessException;
 import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AssetDataManager;
@@ -18,6 +21,7 @@ import com.fatwire.assetapi.query.SimpleQuery;
 import com.fatwire.system.Session;
 import com.fatwire.system.SessionFactory;
 import com.openmarket.xcelerate.asset.AssetIdImpl;
+
 import COM.FutureTense.Interfaces.ICS;
 
 /**
@@ -85,6 +89,8 @@ abstract public class Setup implements wcs.core.Setup {
 
 			// future use
 			// sb.append("\nSite: " + getSite().createOrUpdate(sim));
+			
+			attachJar(site, ics, sb);
 
 			for (Class<?> clazz : getAssets()) {
 				log.debug("instantiating " + clazz.getCanonicalName());
@@ -106,6 +112,20 @@ abstract public class Setup implements wcs.core.Setup {
 		}
 		sb.append("\n<<< Setup END\n");
 		return sb.toString();
+	}
+
+	/**
+	 * Attach the jar
+	 * 
+	 * @param site
+	 * @param ics
+	 * @param sb
+	 */
+	private void attachJar(String site, ICS ics, StringBuilder sb) {
+		File file = new File("C:\\Users\\miche_000\\Local\\AgileSites\\wcs\\shared\\agilesites\\agilesites-all-assembly-11.1.1.8.0_1.8.1.jar");
+		CSElementJar jar = new CSElementJar(site+".jar",file);
+		jar.init(site);
+		sb.append("JAR ATTACK\n" + insertOrUpdate(ics, jar));		
 	}
 
 	// recursive setup to handle the getNextAsset

@@ -1,7 +1,12 @@
 package wcs.java.util;
 
 import wcs.api.Log;
+
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
 import com.fatwire.assetapi.data.AssetData;
 import com.fatwire.assetapi.data.AttributeDataImpl;
 import com.fatwire.assetapi.data.BlobObject;
@@ -326,5 +332,29 @@ public class Util {
 		if (name.startsWith(site))
 			return name;
 		return site + "_" + name;
+	}
+
+	/**
+	 * Read a file as an array of bytes
+	 */
+	public static byte[] readFile(File file) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		InputStream in = null;
+		try {
+			in = new FileInputStream(file);
+			int c = in.read();
+			while (c != -1) {
+				baos.write(c);
+				c = in.read();
+			}
+		} catch (IOException ex) {
+			log.warn(ex, "cannot read file");
+		} finally {
+			try {
+				in.close();
+			} catch (IOException e) {
+			}
+		}
+		return baos.toByteArray();
 	}
 }

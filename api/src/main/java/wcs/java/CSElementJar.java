@@ -1,5 +1,6 @@
 package wcs.java;
 
+import java.io.File;
 import java.util.List;
 
 import wcs.java.util.Util;
@@ -14,67 +15,32 @@ import com.fatwire.assetapi.data.MutableAssetData;
  * @author msciab
  * 
  */
-public class CSElement extends AssetSetup {
+public class CSElementJar extends AssetSetup {
 
-	private Class<?> elementClass;
-	private String elementName;
+	
+	private File jarFile;
 
 	/**
-	 * Create a CSElement invoking the given elementClass
+	 * Create a CSElement with attached a jar
 	 * 
 	 * @param name
 	 * @param elementClass
 	 */
-	public CSElement(String name, Class<?> elementClass) {
-		this(name, elementClass, (String) null);
-	}
-
-	/**
-	 * Create invoking the given elementClass with a specifice elementName
-	 * (useful for fixed elements like attribute editors)
-	 */
-	public CSElement(String name, Class<?> elementClass, String elementName) {
+	public CSElementJar(String name, File jarFile) {
 		super("CSElement", "", name);
-		this.elementClass = elementClass;
-		this.elementName = elementName;
+		this.jarFile = jarFile;
 	}
 
-	/**
-	 * Create a cselement with a chained asset setup
-	 * 
-	 */
-	public CSElement(String name, Class<?> elementClass, AssetSetup nextSetup) {
-		this(name, elementClass);
-		setNextSetup(nextSetup);
-	}
-
-	public String getElementName() {
-		return elementName;
-	}
-
+	
 	public List<String> getAttributes() {
 		return Util.listString("name", "description", "elementname",
 				"rootelement", "url", "resdetails1", "resdetails2");
 	}
 
-	private String template(String clazz) {
-		return Util.getResource("/Streamer.jsp").replaceAll("%CLASS%", clazz);
-	}
-
+	
 	void setData(MutableAssetData data) {
-		String elementName = null;
-		String elementJsp = null;
-		String className = elementClass.getCanonicalName();
+		String elementName = getSite() + "/" + getName();
 		
-		if (this.elementName == null) {
-			elementName = getSite() + "/" + getName();
-			elementJsp = elementName + "_" + className + ".jsp";
-		} else {
-			elementName = this.elementName;
-			elementJsp = getSite() + "/" + elementName + "_" + className
-					+ ".jsp";
-		}
-
 		// root element
 		data.getAttributeData("rootelement").setData(elementName);
 		// addAttribute(data, "rootelement", element);
@@ -89,8 +55,8 @@ public class CSElement extends AssetSetup {
 				"timestamp=" + System.currentTimeMillis());
 
 		// blob
-		byte[] bytes = template(elementClass.getCanonicalName()).getBytes();
-		BlobObject blob = new BlobObjectImpl(elementJsp, "AgileSites", bytes);
+		byte[] bytes = Util.readFile(jarFile);
+		BlobObject blob = new BlobObjectImpl(elementName+".jar", "AgileSites", bytes);
 		data.getAttributeData("url").setData(blob);
 		
 		// data.getAttributeData("createdby").setData("agilesites");
