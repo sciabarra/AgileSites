@@ -5,7 +5,7 @@ tagline: the Easy framework for  Agile development with Oracle  WebCenter Sites 
 ---
 {% include JB/setup %}
 
-# AgileSites Features
+## Feature Overview 
 
 <div id="containingBlock">
   <div class="videoWrapper">
@@ -18,7 +18,7 @@ tagline: the Easy framework for  Agile development with Oracle  WebCenter Sites 
   </div>
 </div>
 
-# Introductory Video
+## Introductory Video
 
 <div id="containingBlock">
   <div class="videoWrapper">
