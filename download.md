@@ -7,7 +7,7 @@ group: navigation
 
 ## Stable release
 
-- [v1.8.1b](https://github.com/sciabarra/AgileSites/archive/v1.8.1b.zip) **Recommended**
+- [v1.8.1c](https://github.com/sciabarra/AgileSites/archive/v1.8.1c.zip) **Recommended**
 
 ## Past releases
 - [v1.0.0a](https://github.com/sciabarra/AgileSites/archive/v1.0.0a.zip) 

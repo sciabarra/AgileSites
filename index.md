@@ -5,6 +5,21 @@ tagline: the Easy framework for  Agile development with Oracle  WebCenter Sites 
 ---
 {% include JB/setup %}
 
+# AgileSites Features
+
+<div id="containingBlock">
+  <div class="videoWrapper">
+    <object width="840" height="630" >
+      <param name="movie" value="http://www.youtube.com/v/mB8ZL0mnaA8&hl=en&fs=1"></param>
+      <param name="allowFullScreen" value="true"></param>
+      <param name="allowscriptaccess" value="always"></param>
+      <embed src="http://www.youtube.com/v/mB8ZL0mnaA8&hl=en&fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="840" height="630" ></embed>
+    </object>
+  </div>
+</div>
+
+# Introductory Video
+
 <div id="containingBlock">
   <div class="videoWrapper">
     <object width="840" height="630" >
