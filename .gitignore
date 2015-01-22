@@ -20,3 +20,5 @@ project/repo/
 project/ivy2/
 project/plugins/project/
 doc/temp/
+tomcat.sh
+tomcat.bat

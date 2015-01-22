@@ -342,6 +342,10 @@ trait AgileSitesUtil {
 
     val opts = "-cp" :: cp :: 
       "-Djava.io.tmpdir="+(temp.getAbsolutePath) ::
+      "-Djava.net.preferIPv4Stack=true" ::
+      "-Dfile.encoding=UTF-8" ::
+      //"-Dnet.sf.ehcache.enableShutdownHook=true" ::
+      "-Duser.timezone=UTC" ::
       "-Xms256m" :: "-Xmx1024m" :: "-XX:MaxPermSize=256m" ::
       "-Dorg.owasp.esapi.resources=../bin" ::  Nil
 
