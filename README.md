@@ -1,4 +1,4 @@
-#  AgileSites 1.8.1a
+#  AgileSites 1.8.1c
 
 Welcome to **AgileSites**, the Open Source framework for Agile development with Oracle WebCenter Sites (formerly Fatwire Content Server).
 
