@@ -1,3 +1,0 @@
-## minor updates
-- excludes license files under base dirs.
-- adds `assembledMappings` task to allow customization of jar content.
