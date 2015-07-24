@@ -1,0 +1,2 @@
+## bug fixes
+- Fixes META-INF merging. [#9](https://github.com/eed3si9n/sbt-assembly/issues/9) reported by [@tlockney](https://github.com/tlockney).

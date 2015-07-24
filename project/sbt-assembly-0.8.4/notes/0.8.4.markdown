@@ -1,0 +1,5 @@
+## minor enhancements and bug fixes
+
+- Fixes Windows path handling contributed by [@stejsks][@stejsks]
+
+  [@stejsks]: https://github.com/stejsks

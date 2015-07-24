@@ -1,0 +1,6 @@
+## bug fixes and minor updates
+- sbt 0.11.1
+- closes service provider files when done reading them. contributed by [@rjmac][@rjmac]
+- fixes `META-INF/services` merging. contributed by [@rjmac][@rjmac]
+
+  [@rjmac]: https://github.com/rjmac

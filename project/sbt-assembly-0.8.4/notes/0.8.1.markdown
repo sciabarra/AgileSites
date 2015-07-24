@@ -1,0 +1,6 @@
+## minor enhancements
+- sbt 0.11.3
+- [more default exclusions and merges][38] contributed by [@rjmac][@rjmac]
+
+  [38]: https://github.com/sbt/sbt-assembly/pull/38
+  [@rjmac]: https://github.com/rjmac

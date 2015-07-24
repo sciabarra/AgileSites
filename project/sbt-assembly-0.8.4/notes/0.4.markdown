@@ -1,0 +1,4 @@
+## breaking changes
+Settings are no longer loaded automatically. Add the following to `build.sbt`:
+
+    seq(sbtassembly.Plugin.assemblySettings: _*)

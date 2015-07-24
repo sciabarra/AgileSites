@@ -1,0 +1,17 @@
+## no more throwing out licenses
+
+Prior to this release, sbt-assembly has been excluding readme and license files by default. It was initially implemented this way probaby due to the high likelihood of path conflict (e.g. some.jar includes `META-INF/LICENSE/x` and you also include `META-INF/LICENSE`).
+
+Excluding these files from the assembly jar may result to the violation of the licenses especially if it is used to redistribute the software.
+
+### `rename` and `discard` strategy
+
+sbt-assembly 0.8.2 subsumes the old `excludedFiles` behavior by unifying everything under the improved `mergeStrategy` behavior.
+
+First, it adds two new strategies called `rename` and `discard`. The `rename` strategy renames the conflicting files by appending the jar name while keeping the files originating from your projects intact. The `discard` strategy simply discards all conflicting files.
+
+Second, new `mergeStrategy` is now applied to all files whether it conflicts with other files or not. This allows the merge strategy to exlude files by using `discard`.
+
+Finally, `rename` strategy is applied to readme and license files.
+
+See [readme](https://github.com/sbt/sbt-assembly) for more details.

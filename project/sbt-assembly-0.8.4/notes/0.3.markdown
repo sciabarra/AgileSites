@@ -1,0 +1,3 @@
+- cross published for sbt 0.10.0 and 0.10.1.
+
+        libraryDependencies <+= (sbtVersion) { sv => "com.eed3si9n" %% "sbt-assembly" % ("sbt" + sv + "_0.3") }

@@ -1,0 +1,35 @@
+## breaking changes
+In an effort to solve namespace conflicts and to increase consistency among the plugins, a number of sbt plugin authors have discussed on the mailing list, and come up with [sbt plugins best practices](https://github.com/harrah/xsbt/wiki/Plugins-Best-Practices). I've made my effort to conform to the guideline while minimizing the impact on the existing builds. Here are the changes:
+
+### keys are under `AssemblyKeys` object
+Keys provided by sbt-assembly now resides in `AssemblyKeys` object. Place the following at the top of your `build.sbt`:
+
+    import AssemblyKeys._
+
+Scala identifiers for the keys remain the same (e.g. `jarName`), but key names accessible from the shell are now prefixed with `assembly-` (e.g. `assembly-jar-name`).
+
+### settings are scoped under `assembly`
+`assembly`-specific settings are now scoped under `assembly` task, instead of `Assembly` configuration.
+
+    jarName in assembly := "foo.jar"
+
+### use `assembleArtifact` instead of `publishArtifact` 
+To exclude Scala library,
+
+    assembleArtifact in packageScala := false
+
+### configuration-neutral
+To build assembly for `Test` configuration,
+
+    seq(inConfig(Test)(baseAssemblySettings): _*)
+
+    jarName in (Test, assembly) := "foo-test.jar"
+
+## minor enhancements and bug fixes
+- Adds `excludedJars` setting to skip certain jars.
+
+To exclude some jar file, first consider using `"provided"` dependency. The dependency will be part of compilation, but excluded from the runtime. Next, try creating a custom configuration that describes your classpath. If all efforts fail, here's a way to exclude jars:
+
+    excludedJars in assembly <<= (fullClasspath in assembly) map { cp => 
+      cp filter {_.data.getName == "compile-0.1.0.jar"}
+    }

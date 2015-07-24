@@ -1,0 +1,2 @@
+## bug fixes
+- Fixes exclusion of binary via `packageDependency`, `assembleArtifact in packageBin`, etc. [#18](https://github.com/eed3si9n/sbt-assembly/issues/18) reported by [@vasa-chi ](https://github.com/vasa-chi).

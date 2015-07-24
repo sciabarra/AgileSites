@@ -1,0 +1,10 @@
+## minor enhancements and bug fixes
+
+This is a bug fix release contributed by [@rjmac][@rjmac].
+
+- Fixes regex to match readme and license files under `META-INF`.
+- Refactors merge strategy notification.
+- Stabilizes the output by sorting the jars.
+- Skips `rename` if the dir contains a class file.
+
+  [@rjmac]: https://github.com/rjmac

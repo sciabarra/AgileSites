@@ -1,0 +1,24 @@
+## Merge Strategy
+
+sbt-assembly 0.8.0 adds merge strategy feature contributed by [@rkuhn][@rkuhn] (Roland from Akka team) and [@sirthias][@sirthias] (Mathias the spray guy).
+
+The original use case for `MergeStrategy` is to merge `reference.conf` from multiple Akka jars into one configuration file. We then realized that a strategy can be expressed as a function value `Seq[File] => Either[String, File]`, which takes a sequence of conflicted files and returns either an error message or a file. The actual type is a bit more complicated, but that's the gist. Let's look at the six strategies that we ship with sbt-assembly.
+
+- `MergeStrategy.first` picks the first of the conflicting files in classpath order
+- `MergeStrategy.last` picks the last one
+- `MergeStrategy.error` bails out with an error message
+- `MergeStrategy.deduplicate` verifies that all candidates have the same contents and error out otherwise
+- `MergeStrategy.concat` simply concatenates all conflicting files and includes the result
+- `MergeStrategy.filterDistinctLines` also concatenates, but leaves out duplicates along the way
+
+A function from path name to a merge strategy can be set to newly added `mergeStrategy` key.
+The default implementation looks like this:
+
+    mergeStrategy in assembly := { 
+      case "reference.conf" => MergeStrategy.concat
+      case n if n.startsWith("META-INF/services/") => MergeStrategy.filterDistinctLines
+      case _ => MergeStrategy.deduplicate
+    }
+
+  [@rkuhn]: https://github.com/rkuhn
+  [@sirthias]: https://github.com/sirthias
