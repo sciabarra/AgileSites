@@ -1,4 +1,7 @@
-#  AgileSites 1.8.1c
+#  AgileSites 1.8.1e
+
+NOTE - this is the unsupported community edition.
+For the supported AgileSites 2.0.x (still open source) contact Sciabarra.com ltd http://www.sciabarra.com
 
 Welcome to **AgileSites**, the Open Source framework for Agile development with Oracle WebCenter Sites (formerly Fatwire Content Server).
 
