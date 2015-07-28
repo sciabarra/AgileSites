@@ -5,7 +5,7 @@ import wcs.api.Index;
 import wcs.java.util.TestElement;
 import org.junit.Before;
 import org.junit.Test;
-import $site;format="normalize"$.element.$type;format="normalize"$.$subtype;format="deprefix"$Layout;
+import $site;format="normalize"$.element.$type;format="ndeprefix"$.$subtype;format="deprefix"$Layout;
 
 // this test must be run by AgileSites TestRunnerElement
 @Index("$site;format="normalize"$/tests.txt")

@@ -15,7 +15,7 @@ public class $subtype;format="deprefix"$Layout extends Element {
 	public static AssetSetup setup() {		
 		return new Template("$type$", "$subtype;format="deprefix"$Layout", 
 			Template.LAYOUT, // change template type here
-			"$subtype$", $site;format="normalize"$.element.$type;format="normalize"$.$subtype;format="deprefix"$Layout.class) //
+			"$subtype$", $site;format="normalize"$.element.$type;format="ndeprefix"$.$subtype;format="deprefix"$Layout.class) //
 			.cache("false", "false") // change caching here
 			.description("Layout for type $type$ $subtype$");
 	}
