@@ -1,5 +1,4 @@
 #!/bin/bash
-export JAVA_HOME=$(/usr/libexec/java_home -version 1.7)
 BASE="$(dirname $0)"
 BASE="$(cd $BASE; pwd)"
 export PATH="$BASE/bin:$BASE/wcs/home/bin:$PATH"
