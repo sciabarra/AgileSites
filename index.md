@@ -5,7 +5,13 @@ tagline: the Easy framework for  Agile development with Oracle  WebCenter Sites 
 ---
 {% include JB/setup %}
 
-## Feature Overview 
+## AgileSites 3 is here!
+
+[![AgileSites3](http://www.agile4sites.com/images/Logo@2x.png)](http://www.agile4sites.com)
+
+## AgileSites 1.8 Open Source
+
+This website is about the open source AgileSites 1.8.x:
 
 <div id="containingBlock">
   <div class="videoWrapper">
